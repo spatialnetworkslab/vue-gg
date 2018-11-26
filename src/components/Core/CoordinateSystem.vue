@@ -7,12 +7,12 @@
 </template>
 
 <script>
-import NestedCoordinateSystem from '@/mixins/Context/CoordinateSystem/NestedCoordinateSystem.js'
+import CoordinateSystem from '@/mixins/Context/CoordinateSystem/CoordinateSystem.js'
 import Rectangular from '@/mixins/Marks/Rectangular.js'
 
 export default {
   name: 'CoordinateSystem',
 
-  mixins: [NestedCoordinateSystem, Rectangular]
+  mixins: [CoordinateSystem, Rectangular]
 }
 </script>

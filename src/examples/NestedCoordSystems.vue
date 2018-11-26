@@ -11,7 +11,8 @@
         :x2="800"
         :y="0"
         :y2="800"
-        :system="outerSystem">
+        :system="outerSystem"
+        :domains="domains">
 
         <CoordinateSystem
           v-for="(cs, i) in nestedCoordinateSystems"
@@ -94,10 +95,10 @@ export default {
   computed: {
     nestedCoordinateSystems () {
       return [
-        { x: 0, x2: 400, y: 0, y2: 400, color: 'green' },
-        { x: 400, x2: 800, y: 0, y2: 400, color: 'red' },
-        { x: 0, x2: 400, y: 400, y2: 800, color: 'yellow' },
-        { x: 400, x2: 800, y: 400, y2: 800, color: 'blue' }
+        { x: 0, x2: 50, y: 0, y2: 50, color: 'green' },
+        { x: 50, x2: 100, y: 0, y2: 50, color: 'red' },
+        { x: 0, x2: 50, y: 50, y2: 100, color: 'yellow' },
+        { x: 50, x2: 100, y: 50, y2: 100, color: 'blue' }
       ]
     },
 
