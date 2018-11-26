@@ -30,7 +30,11 @@ export function interpolatePathFromFunc (func, transformer, domains,
 
   for (let i = 0; i <= resolution; ++i) {
     let x = interpolator(i / resolution)
-    points.push([x, func(x)])
+    let y = func(x)
+
+    if (inDomain([x, y], domains)) {
+      points.push([x, y])
+    }
   }
 
   let path = createPath(points, transformer, close, precision)
@@ -56,4 +60,8 @@ function createPath (points, transformer, close = false, precision = 2) {
 
 function round (input, precision) {
   return Math.round(input * 10 ** precision) / 10 ** precision
+}
+
+function inDomain (point, domains) {
+  return point[1] > domains.y[0] && point[1] < domains.y[1]
 }
