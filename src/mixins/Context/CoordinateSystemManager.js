@@ -39,6 +39,30 @@ export default class CoordinateSystemManager {
     this._update++
   }
 
+  removeBranch (id) {
+    let branchPath = this._branchPaths[id]
+    let currentLocation = this._coordinateSystemTree
+
+    for (let branchID of branchPath) {
+      let childBranch = currentLocation.children[branchID]
+      if (childBranch.id === id) {
+        delete currentLocation.children[branchID]
+        break
+      } else {
+        currentLocation = childBranch
+      }
+    }
+
+    for (let branchPathID in this._branchPaths) {
+      let path = this._branchPaths[branchPathID]
+      if (path.includes(id)) {
+        delete this._branchPaths[branchPathID]
+      }
+    }
+
+    this._update++
+  }
+
   getTransformer (id) {
     let transformer = function ([x, y]) {
       let currentLocation = this.getBranch(id)

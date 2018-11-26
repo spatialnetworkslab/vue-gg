@@ -73,6 +73,10 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    this.$$context.coordinateSystem.removeBranch(this.id)
+  },
+
   mounted () {
     this._setCoordinateSystem()
     this.ready = true
