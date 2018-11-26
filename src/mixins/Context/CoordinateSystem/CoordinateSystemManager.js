@@ -41,22 +41,24 @@ export default class CoordinateSystemManager {
 
   removeBranch (id) {
     let branchPath = this._branchPaths[id]
-    let currentLocation = this._coordinateSystemTree
+    if (branchPath) {
+      let currentLocation = this._coordinateSystemTree
 
-    for (let branchID of branchPath) {
-      let childBranch = currentLocation.children[branchID]
-      if (childBranch.id === id) {
-        delete currentLocation.children[branchID]
-        break
-      } else {
-        currentLocation = childBranch
+      for (let branchID of branchPath) {
+        let childBranch = currentLocation.children[branchID]
+        if (childBranch.id === id) {
+          delete currentLocation.children[branchID]
+          break
+        } else {
+          currentLocation = childBranch
+        }
       }
-    }
 
-    for (let branchPathID in this._branchPaths) {
-      let path = this._branchPaths[branchPathID]
-      if (path.includes(id)) {
-        delete this._branchPaths[branchPathID]
+      for (let branchPathID in this._branchPaths) {
+        let path = this._branchPaths[branchPathID]
+        if (path.includes(id)) {
+          delete this._branchPaths[branchPathID]
+        }
       }
     }
 
