@@ -109,9 +109,13 @@ export default {
     },
 
     dataToPolar ([x, y]) {
-      let r = x
-      let thetaFunc = d3.scaleLinear().domain(this._domains.y).range([0, 2 * Math.PI])
-      let theta = thetaFunc(y)
+      // Since our polar coordinate system starts from the top (12 o'clock) and
+      // then goes clockwise, we will map y to the radius and x to theta.
+      // Usually people map x to r and y to theta, but that is when the polar
+      // system starts on the right (3 o'clock)
+      let r = y
+      let thetaFunc = d3.scaleLinear().domain(this._domains.x).range([0, 2 * Math.PI])
+      let theta = thetaFunc(x)
 
       return [r, theta]
     },

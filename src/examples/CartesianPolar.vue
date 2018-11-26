@@ -96,10 +96,10 @@ export default {
 
     rectangles () {
       let rectangles = [
-        { x: 10, x2: 100, y: 0, y2: 20, color: 'green' },
-        { x: 20, x2: 100, y: 20, y2: 50, color: 'red' },
-        { x: 30, x2: 100, y: 50, y2: 60, color: 'yellow' },
-        { x: 40, x2: 100, y: 60, y2: 100, color: 'blue' }
+        { x: 0, x2: 15, y: 30, y2: 70, color: 'green' },
+        { x: 15, x2: 50, y: 30, y2: 70, color: 'red' },
+        { x: 50, x2: 75, y: 30, y2: 70, color: 'yellow' },
+        { x: 75, x2: 100, y: 30, y2: 70, color: 'blue' }
       ]
 
       return rectangles
