@@ -1,4 +1,4 @@
-import CoordinateSystemManager from './CoordinateSystemManager.js'
+import CoordinateSystemManager from './CoordinateSystem/CoordinateSystemManager.js'
 
 export default {
   data () {

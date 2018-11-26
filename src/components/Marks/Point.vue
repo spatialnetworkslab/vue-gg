@@ -1,10 +1,10 @@
 <script>
-import ContextReceiver from '@/mixins/Context/ContextReceiver.js'
+import Mark from '@/mixins/Marks/Mark.js'
 
 export default {
   name: 'Point',
 
-  mixins: [ContextReceiver],
+  mixins: [Mark],
 
   props: {
     x: {

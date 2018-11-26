@@ -1,12 +1,12 @@
 <script>
-import ContextReceiver from '@/mixins/Context/ContextReceiver.js'
+import Mark from '@/mixins/Marks/Mark.js'
 import Rectangular from '@/mixins/Marks/Rectangular.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
   name: 'Rectangle',
 
-  mixins: [ContextReceiver, Rectangular],
+  mixins: [Mark, Rectangular],
 
   props: {
     color: {
