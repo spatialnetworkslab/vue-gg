@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import Graphic from '@/components/Graphic.vue'
-import CoordinateSystem from '@/components/CoordinateSystem.vue'
+import Graphic from '@/components/Core/Graphic.vue'
+import CoordinateSystem from '@/components/Core/CoordinateSystem.vue'
 import Point from '@/components/Marks/Point.vue'
 import Rectangle from '@/components/Marks/Rectangle.vue'
 import Edge from '@/components/Marks/Edge.vue'
