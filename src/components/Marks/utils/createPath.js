@@ -63,5 +63,7 @@ function round (input, precision) {
 }
 
 function inDomain (point, domains) {
-  return point[1] > domains.y[0] && point[1] < domains.y[1]
+  let yMin = Math.min(...domains.y)
+  let yMax = Math.max(...domains.y)
+  return point[1] > yMin && point[1] < yMax
 }
