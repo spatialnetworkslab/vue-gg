@@ -114,7 +114,12 @@ export default {
       // Usually people map x to r and y to theta, but that is when the polar
       // system starts on the right (3 o'clock)
       let r = y
-      let thetaFunc = d3.scaleLinear().domain(this._domains.x).range([0, 2 * Math.PI])
+
+      let minX = Math.min(...this._domains.x)
+      let maxX = Math.max(...this._domains.x)
+
+      // let thetaFunc = d3.scaleLinear().domain(this._domains.x).range([0, 2 * Math.PI])
+      let thetaFunc = d3.scaleLinear().domain([minX, maxX]).range([0, 2 * Math.PI])
       let theta = thetaFunc(x)
 
       return [r, theta]
