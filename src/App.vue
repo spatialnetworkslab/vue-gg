@@ -1,11 +1,19 @@
 <template>
   <div id="app">
 
+    <ProjectionMatrix v-if="example === 'ProjectionMatrix'" />
+
     <CartesianPolar v-if="example === 'CartesianPolar'" />
 
     <NestedCoordSystems v-if="example === 'NestedCoordSystems'" />
 
     <div class="bottom">
+      <button
+        :disabled="example === 'ProjectionMatrix'"
+        @click="example = 'ProjectionMatrix'">
+        Projection matrix test
+      </button>
+
       <button
         :disabled="example === 'CartesianPolar'"
         @click="example = 'CartesianPolar'">
@@ -23,6 +31,7 @@
 </template>
 
 <script>
+import ProjectionMatrix from './examples/ProjectionMatrix'
 import CartesianPolar from './examples/CartesianPolar.vue'
 import NestedCoordSystems from './examples/NestedCoordSystems.vue'
 
@@ -30,13 +39,14 @@ export default {
   name: 'App',
 
   components: {
+    ProjectionMatrix,
     CartesianPolar,
     NestedCoordSystems
   },
 
   data () {
     return {
-      example: 'CartesianPolar'
+      example: 'ProjectionMatrix'
     }
   }
 }
