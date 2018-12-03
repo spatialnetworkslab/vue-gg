@@ -3,7 +3,7 @@ import Mark from '@/mixins/Marks/Mark.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
-  name: 'VPolygon',
+  name: 'Polygon',
 
   mixins: [Mark],
 

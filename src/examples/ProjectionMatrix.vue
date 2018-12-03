@@ -1,12 +1,12 @@
 <template>
   <div>
 
-    <Graphic
+    <vgg-graphic
       :width="700"
       :height="700"
       class="graphic">
 
-      <CoordinateSystem
+      <vgg-coordinate-system
         :x="0"
         :x2="700"
         :y="0"
@@ -19,21 +19,21 @@
         }"
       >
 
-        <Point
+        <vgg-point
           :x="0"
           :y="0"
         />
 
-        <VPolygon
+        <vgg-polygon
           v-for="(rect, i) in rectsProjected"
           :key="i"
           :points="rect.corners"
           :fill="rect.color"
         />
 
-      </CoordinateSystem>
+      </vgg-coordinate-system>
 
-    </Graphic>
+    </vgg-graphic>
 
     <div style="margin-top: 10px;">
       <div class="row">
@@ -76,20 +76,8 @@
 <script>
 import { project } from '@/utils/matrix.js'
 
-import Graphic from '@/components/Core/Graphic.vue'
-import CoordinateSystem from '@/components/Core/CoordinateSystem.vue'
-import Point from '@/components/Marks/Point.vue'
-import VPolygon from '@/components/Marks/Polygon.vue'
-
 export default {
   name: 'CartesianPolar',
-
-  components: {
-    Graphic,
-    CoordinateSystem,
-    Point,
-    VPolygon
-  },
 
   data () {
     return {

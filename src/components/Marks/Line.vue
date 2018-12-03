@@ -3,7 +3,7 @@ import Mark from '@/mixins/Marks/Mark.js'
 import { interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
 
 export default {
-  name: 'Edge',
+  name: 'Line',
 
   mixins: [Mark],
 

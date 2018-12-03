@@ -1,12 +1,12 @@
 <template>
   <div>
 
-    <Graphic
+    <vgg-graphic
       :width="800"
       :height="800"
       class="graphic">
 
-      <CoordinateSystem
+      <vgg-coordinate-system
         :x="100"
         :x2="700"
         :y="100"
@@ -15,7 +15,7 @@
         :domains="domains"
       >
 
-        <Rectangle
+        <vgg-rectangle
           v-for="(r, i) in rectangles"
           :key="'r' + i"
           :x="r.x"
@@ -25,18 +25,18 @@
           :color="r.color"
         />
 
-        <Point
+        <vgg-point
           v-for="(p, i) in points"
           :key="'p' + i"
           :x="p.x"
           :y="p.y"
         />
 
-        <Edge :func="x => 0.02 * (x ** 2)" />
+        <vgg-line :func="x => 0.02 * (x ** 2)" />
 
-      </CoordinateSystem>
+      </vgg-coordinate-system>
 
-    </Graphic>
+    </vgg-graphic>
 
     <div style="margin-top: 10px;">
       <select v-model="system">
@@ -49,22 +49,8 @@
 </template>
 
 <script>
-import Graphic from '@/components/Core/Graphic.vue'
-import CoordinateSystem from '@/components/Core/CoordinateSystem.vue'
-import Point from '@/components/Marks/Point.vue'
-import Rectangle from '@/components/Marks/Rectangle.vue'
-import Edge from '@/components/Marks/Edge.vue'
-
 export default {
   name: 'CartesianPolar',
-
-  components: {
-    Graphic,
-    CoordinateSystem,
-    Point,
-    Rectangle,
-    Edge
-  },
 
   data () {
     return {

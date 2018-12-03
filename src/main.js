@@ -1,8 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
+import components from './components'
 
 Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App)
 }).$mount('#app')
+
+// Register components globally
+for (let key in components) {
+  Vue.component(`Vgg${key}`, components[key])
+}
