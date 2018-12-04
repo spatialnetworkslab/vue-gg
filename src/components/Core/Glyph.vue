@@ -14,8 +14,6 @@
 import RootContext from '@/mixins/Context/RootContext.js'
 
 export default {
-  name: 'Glyph',
-
   mixins: [RootContext],
 
   props: {

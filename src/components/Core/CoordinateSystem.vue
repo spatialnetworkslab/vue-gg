@@ -11,8 +11,6 @@ import CoordinateSystem from '@/mixins/Context/CoordinateSystem/CoordinateSystem
 import Rectangular from '@/mixins/Marks/Rectangular.js'
 
 export default {
-  name: 'CoordinateSystem',
-
   mixins: [CoordinateSystem, Rectangular]
 }
 </script>

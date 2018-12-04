@@ -3,8 +3,6 @@ import Mark from '@/mixins/Marks/Mark.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
-  name: 'Polygon',
-
   mixins: [Mark],
 
   props: {

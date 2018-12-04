@@ -2,8 +2,6 @@
 import Mark from '@/mixins/Marks/Mark.js'
 
 export default {
-  name: 'Point',
-
   mixins: [Mark],
 
   props: {

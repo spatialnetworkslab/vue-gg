@@ -4,8 +4,6 @@ import Rectangular from '@/mixins/Marks/Rectangular.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
-  name: 'Rectangle',
-
   mixins: [Mark, Rectangular],
 
   props: {
