@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import * as math from 'mathjs'
 import id from '@/utils/id.js'
 
 export default {
@@ -68,6 +69,18 @@ export default {
           let cartesian = this.polarToCartesian(polar)
 
           return [scaleX(cartesian[0]), scaleY(cartesian[1])]
+        }
+      }
+
+      if (this.system === 'conformal') {
+        return ([x, y]) => {
+          let z = math.complex(x, y)
+          let w = math.divide(
+            math.subtract(1, z),
+            math.add(1, z)
+          )
+
+          return [w.re, w.im]
         }
       }
     }

@@ -6,7 +6,6 @@ Vue.config.productionTip = false
 
 // Register components globally
 for (let key in components) {
-  console.log(`Vgg${key}`)
   Vue.component(`Vgg${key}`, components[key])
 }
 

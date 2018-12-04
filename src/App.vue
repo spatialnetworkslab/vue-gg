@@ -7,6 +7,8 @@
 
     <NestedCoordSystems v-if="example === 'NestedCoordSystems'" />
 
+    <ComplexMapping v-if="example === 'ComplexMapping'" />
+
     <div class="bottom">
       <button
         :disabled="example === 'ProjectionMatrix'"
@@ -34,6 +36,7 @@
 import ProjectionMatrix from './examples/ProjectionMatrix'
 import CartesianPolar from './examples/CartesianPolar.vue'
 import NestedCoordSystems from './examples/NestedCoordSystems.vue'
+import ComplexMapping from './examples/ComplexMapping.vue'
 
 export default {
   name: 'App',
@@ -41,12 +44,13 @@ export default {
   components: {
     ProjectionMatrix,
     CartesianPolar,
-    NestedCoordSystems
+    NestedCoordSystems,
+    ComplexMapping
   },
 
   data () {
     return {
-      example: 'ProjectionMatrix'
+      example: 'ComplexMapping'
     }
   }
 }
