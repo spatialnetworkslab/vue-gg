@@ -11,21 +11,9 @@
 </template>
 
 <script>
-import RootContext from '@/mixins/Context/RootContext.js'
+import CoordinateSystem from '@/mixins/CoordinateSystem.js'
 
 export default {
-  mixins: [RootContext],
-
-  props: {
-    width: {
-      type: Number,
-      required: true
-    },
-
-    height: {
-      type: Number,
-      required: true
-    }
-  }
+  mixins: [CoordinateSystem]
 }
 </script>

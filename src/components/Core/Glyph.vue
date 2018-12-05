@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import Mark from '@/mixins/Marks/Mark.js'
-import RootContext from '@/mixins/Context/RootContext.js'
+import Mark from '@/mixins/Mark.js'
+import CoordinateSystem from '@/mixins/CoordinateSystem.js'
 
 export default {
-  mixins: [Mark, RootContext],
+  mixins: [Mark, CoordinateSystem],
 
   props: {
     x: {
