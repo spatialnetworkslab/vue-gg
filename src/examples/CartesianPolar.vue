@@ -34,6 +34,20 @@
 
         <vgg-line :func="x => 0.02 * (x ** 2)" />
 
+        <vgg-glyph
+          :x="0"
+          :y="100"
+          :width="100"
+          :height="100">
+
+          <vgg-point
+            :x="50"
+            :y="50"
+            :radius="10"
+          />
+
+        </vgg-glyph>
+
       </vgg-coordinate-system>
 
     </vgg-graphic>
