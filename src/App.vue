@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <CartesianPolar v-if="example === 'CartesianPolar'" />
+    <Glyphs v-if="example === 'Glyphs'" />
 
     <NestedCoordSystems v-if="example === 'NestedCoordSystems'" />
 
     <div class="bottom">
       <button
-        :disabled="example === 'CartesianPolar'"
-        @click="example = 'CartesianPolar'">
-        Cartesian/polar test
+        :disabled="example === 'Glyphs'"
+        @click="example = 'Glyphs'">
+        Glyphs
       </button>
 
       <button
@@ -22,20 +22,20 @@
 </template>
 
 <script>
-import CartesianPolar from './examples/CartesianPolar.vue'
+import Glyphs from './examples/Glyphs.vue'
 import NestedCoordSystems from './examples/NestedCoordSystems.vue'
 
 export default {
   name: 'App',
 
   components: {
-    CartesianPolar,
+    Glyphs,
     NestedCoordSystems
   },
 
   data () {
     return {
-      example: 'CartesianPolar'
+      example: 'Glyphs'
     }
   }
 }
