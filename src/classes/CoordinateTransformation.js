@@ -23,7 +23,6 @@ export default class CoordinateTransformation {
     // 'domains' refers to the values of the marks inside of the transformation,
     // while 'ranges' refers to the portion of the parent coordinate space that
     // the values of the marks will be mapped to.
-
     if (options.type === 'linear') {
       this.transform = ([x, y]) => {
         let domainX = options.domains.x

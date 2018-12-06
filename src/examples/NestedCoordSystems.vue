@@ -11,7 +11,6 @@
         :x2="800"
         :y="0"
         :y2="800"
-        :system="outerSystem"
         :domains="domains">
 
         <vgg-coordinate-transformation
@@ -21,7 +20,6 @@
           :x2="cs.x2"
           :y="cs.y"
           :y2="cs.y2"
-          :system="innerSystem"
           :domains="domains"
         >
 
@@ -92,10 +90,8 @@ export default {
 
     domains () {
       return {
-        x: 0,
-        x2: 100,
-        y: 0,
-        y2: 100
+        x: [0, 100],
+        y: [0, 100]
       }
     },
 

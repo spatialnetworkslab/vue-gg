@@ -11,7 +11,7 @@
         :x2="700"
         :y="100"
         :y2="700"
-        :system="system"
+        :type="coordTransformation"
         :domains="domains"
       >
 
@@ -53,8 +53,8 @@
     </vgg-graphic>
 
     <div style="margin-top: 10px;">
-      <select v-model="system">
-        <option value="cartesian">Cartesian</option>
+      <select v-model="coordTransformation">
+        <option value="linear">Linear</option>
         <option value="polar">Polar</option>
       </select>
     </div>
@@ -68,17 +68,15 @@ export default {
 
   data () {
     return {
-      system: 'cartesian'
+      coordTransformation: 'linear'
     }
   },
 
   computed: {
     domains () {
       return {
-        x: 0,
-        x2: 100,
-        y: 0,
-        y2: 100
+        x: [0, 100],
+        y: [0, 100]
       }
     },
 

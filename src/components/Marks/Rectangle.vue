@@ -6,6 +6,26 @@ export default {
   mixins: [Mark],
 
   props: {
+    x: {
+      type: Number,
+      required: true
+    },
+
+    x2: {
+      type: Number,
+      required: true
+    },
+
+    y: {
+      type: Number,
+      required: true
+    },
+
+    y2: {
+      type: Number,
+      required: true
+    },
+
     color: {
       type: String,
       default: '#000000'
