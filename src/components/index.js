@@ -1,4 +1,4 @@
-import CoordinateSystem from './Core/CoordinateSystem.vue'
+import CoordinateTransformation from './Core/CoordinateTransformation.vue'
 import Glyph from './Core/Glyph.vue'
 import Graphic from './Core/Graphic.vue'
 
@@ -8,7 +8,7 @@ import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
 
 export default {
-  CoordinateSystem,
+  CoordinateTransformation,
   Glyph,
   Graphic,
   Line,

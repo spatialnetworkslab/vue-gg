@@ -6,7 +6,7 @@
       :height="800"
       class="graphic">
 
-      <vgg-coordinate-system
+      <vgg-coordinate-transformation
         :x="100"
         :x2="700"
         :y="100"
@@ -32,7 +32,7 @@
           :y="p.y"
         />
 
-        <vgg-line :func="x => 0.02 * (x ** 2)" />
+        <!-- <vgg-line :func="x => 0.02 * (x ** 2)" /> -->
 
         <vgg-glyph
           :x="0"
@@ -48,7 +48,7 @@
 
         </vgg-glyph>
 
-      </vgg-coordinate-system>
+      </vgg-coordinate-transformation>
 
     </vgg-graphic>
 

@@ -1,4 +1,4 @@
-import Transformation from '@/classes/Transformation.js'
+import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
 import id from '@/utils/id.js'
 
 export default {
@@ -7,15 +7,30 @@ export default {
   props: {
     type: {
       type: String,
+      default: 'linear'
+    },
+
+    x: {
+      type: Number,
+      required: true
+    },
+
+    x2: {
+      type: Number,
+      required: true
+    },
+
+    y: {
+      type: Number,
+      required: true
+    },
+
+    y2: {
+      type: Number,
       required: true
     },
 
     domains: {
-      type: [Object, undefined],
-      default: undefined
-    },
-
-    ranges: {
       type: [Object, undefined],
       default: undefined
     },
@@ -30,6 +45,15 @@ export default {
     return {
       ready: false,
       id: id()
+    }
+  },
+
+  computed: {
+    ranges () {
+      return {
+        x: [this.x, this.x2],
+        y: [this.y, this.y2]
+      }
     }
   },
 
@@ -51,7 +75,7 @@ export default {
 
   methods: {
     setCoordinateTreeBranch () {
-      let transformation = new Transformation({
+      let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this.domains,
         ranges: this.ranges,
@@ -66,7 +90,7 @@ export default {
     },
 
     updateCoordinateTreeBranch () {
-      let transformation = new Transformation({
+      let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this.domains,
         ranges: this.ranges,
@@ -78,9 +102,9 @@ export default {
   },
 
   provide () {
-    let $$transformation = this.$$coordinateTree.getTransformation(this.id)
+    let $$transform = this.$$coordinateTree.getTotalTransformation(this.id)
     let $$coordinateTreeParent = this.id
 
-    return { $$transformation, $$coordinateTreeParent }
+    return { $$transform, $$coordinateTreeParent }
   }
 }

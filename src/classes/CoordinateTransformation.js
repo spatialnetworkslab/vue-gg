@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-export default class Transformation {
+export default class CoordinateTransformation {
   constructor (options) {
     // For every type other than 'custom', we will expect two more option keys:
     //   - domains

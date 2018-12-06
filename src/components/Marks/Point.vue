@@ -1,5 +1,5 @@
 <script>
-import Mark from '@/mixins/Marks/Mark.js'
+import Mark from '@/mixins/Mark.js'
 
 export default {
   mixins: [Mark],
@@ -23,27 +23,16 @@ export default {
     color: {
       type: String,
       default: '#000000'
-    },
-
-    anchorPoint: {
-      type: String,
-      default: 'center'
-    }
-  },
-
-  computed: {
-    screenCoords () {
-      if (this.anchorPoint === 'center') {
-        return this.transformer([this.x, this.y])
-      }
     }
   },
 
   render (h) {
+    let [cx, cy] = this.$$transform([this.x, this.y])
+
     return h('circle', {
       attrs: {
-        'cx': this.screenCoords[0],
-        'cy': this.screenCoords[1],
+        'cx': cx,
+        'cy': cy,
         'r': this.radius,
         'fill': this.color,
         'stroke-width': 0

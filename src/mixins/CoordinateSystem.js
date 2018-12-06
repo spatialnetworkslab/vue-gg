@@ -1,5 +1,5 @@
 import CoordinateTree from '@/classes/CoordinateTree.js'
-import Transformation from '@/classes/Transformation.js'
+import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
 
 export default {
   props: {
@@ -47,8 +47,8 @@ export default {
         ranges.y = [this.height, 0]
       }
 
-      let transformation = new Transformation({
-        type: 'stretch',
+      let transformation = new CoordinateTransformation({
+        type: 'linear',
         domains,
         ranges
       })
@@ -59,9 +59,9 @@ export default {
 
   provide () {
     let $$coordinateTree = this.coordinateTree
-    let $$transformation = this.coordinateTree.getTransformation('root')
+    let $$transform = this.coordinateTree.getTotalTransformation('root')
     let $$coordinateTreeParent = 'root'
 
-    return { $$coordinateTree, $$transformation, $$coordinateTreeParent }
+    return { $$coordinateTree, $$transform, $$coordinateTreeParent }
   }
 }

@@ -1,5 +1,5 @@
 <script>
-import Mark from '@/mixins/Marks/Mark.js'
+import Mark from '@/mixins/Mark.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
@@ -38,7 +38,7 @@ export default {
         points.push(points[0])
       }
 
-      let path = interpolatePath(this.points, this.transformer)
+      let path = interpolatePath(this.points, this.$$transform)
 
       return path
     }

@@ -1,10 +1,9 @@
 <script>
-import Mark from '@/mixins/Marks/Mark.js'
-import Rectangular from '@/mixins/Marks/Rectangular.js'
+import Mark from '@/mixins/Mark.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
-  mixins: [Mark, Rectangular],
+  mixins: [Mark],
 
   props: {
     color: {
@@ -23,7 +22,7 @@ export default {
         [this.x, this.y]
       ]
 
-      let path = interpolatePath(coords, this.transformer)
+      let path = interpolatePath(coords, this.$$transform)
 
       return path
     }

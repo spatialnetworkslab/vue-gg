@@ -1,5 +1,5 @@
 <script>
-import Mark from '@/mixins/Marks/Mark.js'
+import Mark from '@/mixins/Mark.js'
 import { interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
 
 export default {
@@ -50,7 +50,7 @@ export default {
       if (this.func) {
         let domains = this.parentCoordinateSystem.domains
 
-        path = interpolatePathFromFunc(this.func, this.transformer, domains)
+        path = interpolatePathFromFunc(this.func, this.$$transform, domains)
       }
 
       if (!this.func) {
@@ -59,7 +59,7 @@ export default {
           [this.x2, this.y2]
         ]
 
-        path = interpolatePath(coords, this.transformer)
+        path = interpolatePath(coords, this.$$transform)
       }
 
       return path

@@ -6,7 +6,7 @@
       :height="800"
       class="graphic">
 
-      <vgg-coordinate-system
+      <vgg-coordinate-transformation
         :x="0"
         :x2="800"
         :y="0"
@@ -14,7 +14,7 @@
         :system="outerSystem"
         :domains="domains">
 
-        <vgg-coordinate-system
+        <vgg-coordinate-transformation
           v-for="(cs, i) in nestedCoordinateSystems"
           :key="'cs' + i"
           :x="cs.x"
@@ -42,9 +42,9 @@
             style="opacity: 0.2;"
           />
 
-        </vgg-coordinate-system>
+        </vgg-coordinate-transformation>
 
-      </vgg-coordinate-system>
+      </vgg-coordinate-transformation>
 
     </vgg-graphic>
 

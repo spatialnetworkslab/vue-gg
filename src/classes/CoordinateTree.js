@@ -65,7 +65,7 @@ export default class CoordinateTree {
     this._update++
   }
 
-  getTransformation (id) {
+  getTotalTransformation (id) {
     let transformation = function ([x, y]) {
       let currentLocation = this.getBranch(id)
       let result = currentLocation.transform([x, y])
@@ -83,21 +83,18 @@ export default class CoordinateTree {
 }
 
 class Branch {
-  constructor (id, parentID, { type, domains, ranges, transform }) {
+  constructor (id, parentID, coordinateTransformation) {
     this.id = id
     this.parentID = parentID
 
-    this.type = type
-    this.domains = domains
-    this.ranges = ranges
-    this.transform = transform
+    this.update(coordinateTransformation)
 
     this.children = {}
   }
 
-  update (coordinateSystem) {
-    for (let key in coordinateSystem) {
-      this[key] = coordinateSystem[key]
+  update (coordinateTransformation) {
+    for (let key in coordinateTransformation) {
+      this[key] = coordinateTransformation[key]
     }
   }
 }
