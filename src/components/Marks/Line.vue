@@ -45,24 +45,26 @@ export default {
 
   computed: {
     path () {
-      let path
+      if (this.__update) {
+        let path
 
-      if (this.func) {
-        let domains = this.parentCoordinateSystem.domains
+        if (this.func) {
+          let domains = this.parentCoordinateSystem.domains
 
-        path = interpolatePathFromFunc(this.func, this.$$transform, domains)
+          path = interpolatePathFromFunc(this.func, this.$$transform, domains)
+        }
+
+        if (!this.func) {
+          let coords = [
+            [this.x, this.y],
+            [this.x2, this.y2]
+          ]
+
+          path = interpolatePath(coords, this.$$transform)
+        }
+
+        return path
       }
-
-      if (!this.func) {
-        let coords = [
-          [this.x, this.y],
-          [this.x2, this.y2]
-        ]
-
-        path = interpolatePath(coords, this.$$transform)
-      }
-
-      return path
     }
   },
 

@@ -29,22 +29,26 @@ export default {
 
   computed: {
     path () {
-      let points = this.points
-      let lastID = points.length - 1
+      if (this.__update) {
+        let points = this.points
+        let lastID = points.length - 1
 
-      // Check if polygon is closed
-      if (points[0][0] !== points[lastID][0] ||
-        points[0][1] !== points[lastID][1]) {
-        points.push(points[0])
+        // Check if polygon is closed
+        if (points[0][0] !== points[lastID][0] ||
+          points[0][1] !== points[lastID][1]) {
+          points.push(points[0])
+        }
+
+        let path = interpolatePath(this.points, this.$$transform)
+
+        return path
       }
-
-      let path = interpolatePath(this.points, this.$$transform)
-
-      return path
     }
   },
 
   render (h) {
+    if (this.__update) {}
+
     return h('path', {
       attrs: {
         'd': this.path,

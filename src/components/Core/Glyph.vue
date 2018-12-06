@@ -39,7 +39,9 @@ export default {
 
   computed: {
     transformedXY () {
-      return this.$$transform([this.x, this.y])
+      if (this.__update) {
+        return this.$$transform([this.x, this.y])
+      }
     },
 
     anchorPointAdjustedXY () {

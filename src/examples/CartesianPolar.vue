@@ -7,11 +7,11 @@
       class="graphic">
 
       <vgg-coordinate-transformation
+        :type="coordTransformation"
         :x="100"
         :x2="700"
         :y="100"
         :y2="700"
-        :type="coordTransformation"
         :domains="domains"
       >
 

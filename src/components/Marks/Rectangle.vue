@@ -34,17 +34,19 @@ export default {
 
   computed: {
     path () {
-      let coords = [
-        [this.x, this.y],
-        [this.x, this.y2],
-        [this.x2, this.y2],
-        [this.x2, this.y],
-        [this.x, this.y]
-      ]
+      if (this.__update) {
+        let coords = [
+          [this.x, this.y],
+          [this.x, this.y2],
+          [this.x2, this.y2],
+          [this.x2, this.y],
+          [this.x, this.y]
+        ]
 
-      let path = interpolatePath(coords, this.$$transform)
+        let path = interpolatePath(coords, this.$$transform)
 
-      return path
+        return path
+      }
     }
   },
 

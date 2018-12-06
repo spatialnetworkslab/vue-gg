@@ -27,6 +27,8 @@ export default {
   },
 
   render (h) {
+    if (this.__update) {}
+
     let [cx, cy] = this.$$transform([this.x, this.y])
 
     return h('circle', {

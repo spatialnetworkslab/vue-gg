@@ -7,6 +7,7 @@
       class="graphic">
 
       <vgg-coordinate-transformation
+        :type="outerTransformation"
         :x="0"
         :x2="800"
         :y="0"
@@ -15,6 +16,7 @@
 
         <vgg-coordinate-transformation
           v-for="(cs, i) in nestedCoordinateSystems"
+          :type="innerTransformation"
           :key="'cs' + i"
           :x="cs.x"
           :x2="cs.x2"
@@ -49,16 +51,16 @@
     <div style="margin-top: 10px;">
       <span class="pad-buttons">
         Outer:
-        <select v-model="outerSystem">
-          <option value="cartesian">Cartesian</option>
+        <select v-model="outerTransformation">
+          <option value="linear">Linear</option>
           <option value="polar">Polar</option>
         </select>
       </span>
 
       <span class="pad-buttons">
         Inner:
-        <select v-model="innerSystem">
-          <option value="cartesian">Cartesian</option>
+        <select v-model="innerTransformation">
+          <option value="linear">Linear</option>
           <option value="polar">Polar</option>
         </select>
       </span>
@@ -73,8 +75,8 @@ export default {
 
   data () {
     return {
-      outerSystem: 'cartesian',
-      innerSystem: 'cartesian'
+      outerTransformation: 'linear',
+      innerTransformation: 'linear'
     }
   },
 
