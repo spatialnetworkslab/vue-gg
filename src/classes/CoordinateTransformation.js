@@ -9,7 +9,7 @@ export default class CoordinateTransformation {
     // Behind each of these keys will be an array of length two. For example:
     //
     // {
-    //   type: 'stretch',
+    //   type: 'linear',
     //   domains: {
     //     x: [-100, 100],
     //     y: [-200, 200]
@@ -24,25 +24,59 @@ export default class CoordinateTransformation {
     // while 'ranges' refers to the portion of the parent coordinate space that
     // the values of the marks will be mapped to.
     if (options.type === 'linear') {
+      let domainX = options.domains.x
+      let domainY = options.domains.y
+      let rangeX = options.ranges.x
+      let rangeY = options.ranges.y
+
+      let scaleX = d3.scaleLinear().domain(domainX).range(rangeX)
+      let scaleY = d3.scaleLinear().domain(domainY).range(rangeY)
+
       this.transform = ([x, y]) => {
-        let domainX = options.domains.x
-        let domainY = options.domains.y
-        let rangeX = options.ranges.x
-        let rangeY = options.ranges.y
-
-        let scaleX = d3.scaleLinear().domain(domainX).range(rangeX)
-        let scaleY = d3.scaleLinear().domain(domainY).range(rangeY)
-
         return [scaleX(x), scaleY(y)]
       }
     }
 
     if (options.type === 'polar') {
-      // TODO
-    }
+      let domainX = options.domains.x
+      let domainY = options.domains.y
+      let rangeX = options.ranges.x
+      let rangeY = options.ranges.y
 
-    if (options.type === 'custom') {
-      this.transform = options.tranform
+      let deltaDomainX = domainX[1] - domainX[0]
+      let deltaDomainY = domainY[1] - domainY[0]
+
+      let mirrorDomainX = [-deltaDomainX, deltaDomainX]
+      let mirrorDomainY = [-deltaDomainY, deltaDomainY]
+
+      let scaleX = d3.scaleLinear().domain(mirrorDomainX).range(rangeX)
+      let scaleY = d3.scaleLinear().domain(mirrorDomainY).range(rangeY)
+
+      this.transform = ([x, y]) => {
+        let polar = dataToPolar([x, y])
+        let cartesian = polarToCartesian(polar)
+
+        return [scaleX(cartesian[0]), scaleY(cartesian[1])]
+      }
     }
   }
+}
+
+function dataToPolar ([x, y]) {
+  // Since our polar coordinate system starts from the top (12 o'clock) and
+  // then goes clockwise, we will map y to the radius and x to theta.
+  // Usually people map x to r and y to theta, but that is when the polar
+  // system starts on the right (3 o'clock)
+  let r = y
+  let thetaFunc = d3.scaleLinear().domain(this._domains.x).range([0, 2 * Math.PI])
+  let theta = thetaFunc(x)
+
+  return [r, theta]
+}
+
+function polarToCartesian ([r, theta]) {
+  let x = r * Math.sin(theta)
+  let y = r * Math.cos(theta)
+
+  return [x, y]
 }

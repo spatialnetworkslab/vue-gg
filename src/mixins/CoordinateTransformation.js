@@ -31,13 +31,8 @@ export default {
     },
 
     domains: {
-      type: [Object, undefined],
-      default: undefined
-    },
-
-    transform: {
-      type: [Function, undefined],
-      default: undefined
+      type: Object,
+      required: true
     }
   },
 
@@ -69,8 +64,7 @@ export default {
   watch: {
     type: 'updateCoordinateTreeBranch',
     domains: 'updateCoordinateTreeBranch',
-    ranges: 'updateCoordinateTreeBranch',
-    transform: 'updateCoordinateTreeBranch'
+    ranges: 'updateCoordinateTreeBranch'
   },
 
   methods: {
@@ -78,8 +72,7 @@ export default {
       let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this.domains,
-        ranges: this.ranges,
-        transform: this.transform
+        ranges: this.ranges
       })
 
       this.$$coordinateTree.addBranch(
@@ -93,8 +86,7 @@ export default {
       let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this.domains,
-        ranges: this.ranges,
-        transform: this.transform
+        ranges: this.ranges
       })
 
       this.$$coordinateTree.updateBranch(this.id, transformation)
