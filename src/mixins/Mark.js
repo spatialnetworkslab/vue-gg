@@ -1,5 +1,5 @@
 export default {
-  inject: ['$$transform', '$$coordinateTree'],
+  inject: ['$$transform', '$$coordinateTree', '$$coordinateTreeParent'],
 
   computed: {
     __update () {

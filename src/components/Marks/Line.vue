@@ -49,7 +49,8 @@ export default {
         let path
 
         if (this.func) {
-          let domains = this.parentCoordinateSystem.domains
+          let parentId = this.$$coordinateTreeParent
+          let domains = this.$$coordinateTree.getBranch(parentId).domains
 
           path = interpolatePathFromFunc(this.func, this.$$transform, domains)
         }

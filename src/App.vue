@@ -4,6 +4,8 @@
 
     <NestedCoordSystems v-if="example === 'NestedCoordSystems'" />
 
+    <Plot v-if="example === 'Plot'" />
+
     <div class="bottom">
       <button
         :disabled="example === 'Glyphs'"
@@ -16,6 +18,12 @@
         @click="example = 'NestedCoordSystems'">
         Nested coordinate systems
       </button>
+
+      <button
+        :disabled="example === 'Plot'"
+        @click="example = 'Plot'">
+        Plot
+      </button>
     </div>
 
   </div>
@@ -24,13 +32,15 @@
 <script>
 import Glyphs from './examples/Glyphs.vue'
 import NestedCoordSystems from './examples/NestedCoordSystems.vue'
+import Plot from './examples/Plot.vue'
 
 export default {
   name: 'App',
 
   components: {
     Glyphs,
-    NestedCoordSystems
+    NestedCoordSystems,
+    Plot
   },
 
   data () {

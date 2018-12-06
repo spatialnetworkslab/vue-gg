@@ -35,6 +35,9 @@ export default class CoordinateTransformation {
       this.transform = ([x, y]) => {
         return [scaleX(x), scaleY(y)]
       }
+
+      this.domains = options.domains
+      this.ranges = options.ranges
     }
 
     if (options.type === 'polar') {
@@ -60,6 +63,9 @@ export default class CoordinateTransformation {
 
         return [scaleX(cartesian[0]), scaleY(cartesian[1])]
       }
+
+      this.domains = options.domains
+      this.ranges = options.ranges
     }
   }
 }
