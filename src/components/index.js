@@ -2,6 +2,7 @@
 import CoordinateTransformation from './Core/CoordinateTransformation.vue'
 import Glyph from './Core/Glyph.vue'
 import Graphic from './Core/Graphic.vue'
+import Map from './Core/Map.vue'
 
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'
@@ -16,6 +17,7 @@ export default {
   CoordinateTransformation,
   Glyph,
   Graphic,
+  Map,
 
   Piechart,
 

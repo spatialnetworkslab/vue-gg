@@ -35,6 +35,19 @@
           :transformation="innerTransformation"
         />
 
+        <vgg-map
+          :data="[20, 40, 60, 80]"
+          :mapping="{
+            x: row => row,
+            y: row => row,
+            radius: row => row / 5
+          }"
+        >
+
+          <vgg-point />
+
+        </vgg-map>
+
       </vgg-coordinate-transformation>
 
     </vgg-graphic>
