@@ -7,21 +7,8 @@
       :data="xy"
       class="graphic">
 
-      <!-- Custom mapping -->
-      <!-- <vgg-coordinate-transformation
-        :x="100"
-        :x2="700"
-        :y="100"
-        :y2="700">
-
-        <vgg-map :mapping="mapping">
-          <vgg-point />
-        </vgg-map>
-
-      </vgg-coordinate-transformation> -->
-
       <!-- Identity mapping, and setting coordinate domains from data -->
-      <vgg-coordinate-transformation
+      <!-- <vgg-coordinate-transformation
         :x="100"
         :x2="700"
         :y="100"
@@ -42,7 +29,48 @@
           <vgg-point />
         </vgg-map>
 
+      </vgg-coordinate-transformation> -->
+
+      <!-- Shorthand mapping -->
+      <vgg-coordinate-transformation
+        :x="100"
+        :x2="700"
+        :y="100"
+        :y2="700"
+      >
+
+        <vgg-map
+          :mapping="{
+            x: {
+              type: 'scale',
+              variable: 'explanatory',
+              scale: 'linear',
+            },
+            y: {
+              type: 'scale',
+              variable: 'dependent',
+              scale: 'linear'
+            },
+            radius: () => Math.random() * 10
+          }"
+        >
+          <vgg-point />
+        </vgg-map>
+
       </vgg-coordinate-transformation>
+
+      <!-- Custom mapping -->
+      <!-- <vgg-coordinate-transformation
+        :x="100"
+        :x2="700"
+        :y="100"
+        :y2="700">
+
+        <vgg-map :mapping="mapping">
+          <vgg-point />
+        </vgg-map>
+
+      </vgg-coordinate-transformation> -->
 
     </vgg-graphic>
 
@@ -54,7 +82,7 @@
 </template>
 
 <script>
-import * as d3 from 'd3'
+// import * as d3 from 'd3'
 import { xy } from './dummyData.js'
 
 export default {
@@ -66,27 +94,27 @@ export default {
     }
   },
 
-  computed: {
-    mapping () {
-      return {
-        x: {
-          type: 'custom',
-          variable: 'explanatory',
-          construct: ({ domains, ranges }) => {
-            return d3.scaleLinear().domain(domains['explanatory']).range(ranges.x)
-          }
-        },
-        y: {
-          type: 'custom',
-          variable: 'dependent',
-          construct: ({ domains, ranges }) => {
-            return d3.scaleLinear().domain(domains['dependent']).range(ranges.y)
-          }
-        },
-        r: () => 3
-      }
-    }
-  },
+  // computed: {
+  //   mapping () {
+  //     return {
+  //       x: {
+  //         type: 'custom',
+  //         variable: 'explanatory',
+  //         construct: ({ domains, ranges }) => {
+  //           return d3.scaleLinear().domain(domains['explanatory']).range(ranges.x)
+  //         }
+  //       },
+  //       y: {
+  //         type: 'custom',
+  //         variable: 'dependent',
+  //         construct: ({ domains, ranges }) => {
+  //           return d3.scaleLinear().domain(domains['dependent']).range(ranges.y)
+  //         }
+  //       },
+  //       radius: () => Math.random() * 10
+  //     }
+  //   }
+  // },
 
   methods: {
     generateNewData () {

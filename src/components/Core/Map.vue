@@ -2,6 +2,8 @@
 import DataReceiver from '@/mixins/DataReceiver.js'
 import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
 
+import createScale from '@/scales/createScale.js'
+
 export default {
   mixins: [DataReceiver, CoordinateTreeUser],
 
@@ -45,7 +47,7 @@ export default {
         if (variableMapping.constructor === Object) {
           // 2. Shorthand mapping (linear, log etc)
           if (variableMapping.type === 'scale') {
-            // TODO
+            parsedMapping[key] = createScale(key, context, variableMapping)
           }
 
           if (variableMapping.type === 'positioner') {
