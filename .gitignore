@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+discussion-points.md
 
 # local env files
 .env.local
