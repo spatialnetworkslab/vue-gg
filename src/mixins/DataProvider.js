@@ -22,8 +22,8 @@ export default {
   },
 
   provide () {
-    let $$dataContainer = this.dataContainer
+    let $$dataContainerContext = this
 
-    return { $$dataContainer }
+    return { $$dataContainerContext }
   }
 }

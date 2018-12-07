@@ -1,3 +1,9 @@
 export default {
-  inject: ['$$dataContainer']
+  inject: ['$$dataContainerContext'],
+
+  computed: {
+    $$dataContainer () {
+      return this.$$dataContainerContext.dataContainer
+    }
+  }
 }

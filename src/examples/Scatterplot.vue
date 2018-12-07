@@ -13,9 +13,9 @@
 
     </vgg-graphic>
 
-    <!-- <div>
-
-    </div> -->
+    <div style="margin-top: 10px;">
+      <button @click="generateNewData()">Generate new data</button>
+    </div>
 
   </div>
 </template>
@@ -52,6 +52,13 @@ export default {
         },
         r: () => 3
       }
+    }
+  },
+
+  methods: {
+    generateNewData () {
+      let newData = xy('explanatory', 'dependent')
+      this.xy = newData
     }
   }
 }
