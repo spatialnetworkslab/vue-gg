@@ -12,8 +12,9 @@
 
 <script>
 import CoordinateSystem from '@/mixins/CoordinateSystem.js'
+import DataProvider from '@/mixins/DataProvider.js'
 
 export default {
-  mixins: [CoordinateSystem]
+  mixins: [CoordinateSystem, DataProvider]
 }
 </script>

@@ -1,5 +1,9 @@
+import CoordinateTreeUser from './CoordinateTreeUser.js'
+
 export default {
-  inject: ['$$transform', '$$coordinateTree', '$$coordinateTreeParent'],
+  mixins: [CoordinateTreeUser],
+
+  inject: ['$$transform'],
 
   computed: {
     __update () {

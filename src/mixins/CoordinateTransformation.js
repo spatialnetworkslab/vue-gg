@@ -1,8 +1,9 @@
 import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
+import CoordinateTreeUser from './CoordinateTreeUser.js'
 import id from '@/utils/id.js'
 
 export default {
-  inject: ['$$coordinateTree', '$$coordinateTreeParent'],
+  mixins: [CoordinateTreeUser],
 
   props: {
     type: {
