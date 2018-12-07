@@ -7,7 +7,7 @@
       :data="xy"
       class="graphic">
 
-      <vgg-map>
+      <vgg-map :mapping="mapping">
         <vgg-point />
       </vgg-map>
 
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import * as d3 from 'd3'
 import { xy } from './dummyData.js'
 
 export default {
@@ -29,6 +30,28 @@ export default {
   data () {
     return {
       xy: xy('explanatory', 'dependent')
+    }
+  },
+
+  computed: {
+    mapping () {
+      return {
+        x: {
+          type: 'custom',
+          variable: 'explanatory',
+          construct: ({ domains, ranges }) => {
+            return d3.scaleLinear().domain(domains['explanatory']).range(ranges.x)
+          }
+        },
+        y: {
+          type: 'custom',
+          variable: 'dependent',
+          construct: ({ domains, ranges }) => {
+            return d3.scaleLinear().domain(domains['dependent']).range(ranges.y)
+          }
+        },
+        r: () => 3
+      }
     }
   }
 }

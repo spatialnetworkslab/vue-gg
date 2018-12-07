@@ -28,21 +28,22 @@ export default {
       for (let key in this.mapping) {
         let variableMapping = this.mapping[key]
 
-        // The variable mapping can be specified in three ways:
-        // - Mapping the variable directly without transformation (identity)
-        // - Mapping the variable by a shorthand mapping function
-        // - Mapping the variable by a custom function
+        // The variable mapping can be specified in four ways:
+        // 1. Mapping the variable directly without transformation (identity)
+        // 2. Mapping the variable by a shorthand to a mapping function
+        // 3. Mapping the variable by constructing a function
+        // 4. Mapping a variable by giving a getter function
         //
-        // These three ways are specified through the constructor of the
+        // These four ways are specified through the constructor of the
         // variableMapping variable. Respectively:
 
-        // Direct mapping (identity)
+        // 1. Direct mapping (identity)
         if (variableMapping.constructor === String) {
           parsedMapping[key] = (row, index) => row[variableMapping]
         }
 
-        // Shorthand mapping (linear, log etc)
         if (variableMapping.constructor === Object) {
+          // 2. Shorthand mapping (linear, log etc)
           if (variableMapping.type === 'scale') {
             // TODO
           }
@@ -51,6 +52,7 @@ export default {
             // TODO
           }
 
+          // 3. Mapping by constructing a function
           if (variableMapping.type === 'custom') {
             // The variableMapping.construct function here will return another
             // function constructed with the context object. The returned
@@ -59,7 +61,7 @@ export default {
           }
         }
 
-        // Custom mapping function that takes (row, i)
+        // 4. Getter mapping function that takes (row, i)
         if (variableMapping.constructor === Function) {
           parsedMapping[key] = variableMapping
         }
@@ -71,7 +73,16 @@ export default {
         let props = {}
 
         for (let key in parsedMapping) {
-          props[key] = parsedMapping[key](row, i)
+          // If this.mapping[key].variable is not specified, we will pass the
+          // entire row to the mapping function instead of just the value for
+          // that variable in that row.
+          if (this.mapping[key].constructor === Object &&
+              this.mapping[key].hasOwnProperty('variable')) {
+            let variable = this.mapping[key].variable
+            props[key] = parsedMapping[key](row[variable], i)
+          } else {
+            props[key] = parsedMapping[key](row, i)
+          }
         }
 
         components.push(h(tag, { props }))

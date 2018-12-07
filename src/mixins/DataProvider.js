@@ -22,7 +22,7 @@ export default {
   },
 
   provide () {
-    let $$dataContainer = this.DataContainer
+    let $$dataContainer = this.dataContainer
 
     return { $$dataContainer }
   }

@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <Glyphs v-if="example === 'Glyphs'" />
+    <glyphs v-if="example === 'Glyphs'" />
 
-    <NestedCoordSystems v-if="example === 'NestedCoordSystems'" />
+    <nested-coord-systems v-if="example === 'NestedCoordSystems'" />
 
-    <PlotLines v-if="example === 'PlotLines'" />
+    <plot-lines v-if="example === 'PlotLines'" />
+
+    <scatterplot v-if="example === 'Scatterplot'" />
 
     <div class="bottom">
       <button
@@ -24,6 +26,12 @@
         @click="example = 'PlotLines'">
         Plot lines
       </button>
+
+      <button
+        :disabled="example === 'Scatterplot'"
+        @click="example = 'Scatterplot'">
+        Scatterplot
+      </button>
     </div>
 
   </div>
@@ -33,6 +41,7 @@
 import Glyphs from './examples/Glyphs.vue'
 import NestedCoordSystems from './examples/NestedCoordSystems.vue'
 import PlotLines from './examples/PlotLines.vue'
+import Scatterplot from './examples/Scatterplot.vue'
 
 export default {
   name: 'App',
@@ -40,7 +49,8 @@ export default {
   components: {
     Glyphs,
     NestedCoordSystems,
-    PlotLines
+    PlotLines,
+    Scatterplot
   },
 
   data () {
