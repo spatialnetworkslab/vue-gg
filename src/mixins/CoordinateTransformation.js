@@ -50,6 +50,12 @@ export default {
         x: [this.x, this.x2],
         y: [this.y, this.y2]
       }
+    },
+
+    _domains () {
+      if (this.domains) { return this.domains }
+
+      if (!this.domains) { return this.ranges }
     }
   },
 
@@ -72,7 +78,7 @@ export default {
     setCoordinateTreeBranch () {
       let transformation = new CoordinateTransformation({
         type: this.type,
-        domains: this.domains,
+        domains: this._domains,
         ranges: this.ranges
       })
 
@@ -86,7 +92,7 @@ export default {
     updateCoordinateTreeBranch () {
       let transformation = new CoordinateTransformation({
         type: this.type,
-        domains: this.domains,
+        domains: this._domains,
         ranges: this.ranges
       })
 
