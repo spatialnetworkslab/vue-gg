@@ -50,13 +50,18 @@ export default {
           if (variableMapping.type === 'positioner') {
             // TODO
           }
+
+          if (variableMapping.type === 'custom') {
+            // The variableMapping.construct function here will return another
+            // function constructed with the context object. The returned
+            // function will take the row and i as an argument
+            parsedMapping[key] = variableMapping.construct(context)
+          }
         }
 
-        // Custom mapping function
+        // Custom mapping function that takes (row, i)
         if (variableMapping.constructor === Function) {
-          // The variableMapping function here will return another function
-          // that takes the row and i as an argument
-          parsedMapping[key] = variableMapping(context)
+          parsedMapping[key] = variableMapping
         }
       }
 
