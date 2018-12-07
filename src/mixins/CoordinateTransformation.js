@@ -32,8 +32,8 @@ export default {
     },
 
     domains: {
-      type: Object,
-      required: true
+      type: [Object, undefined],
+      default: undefined
     }
   },
 

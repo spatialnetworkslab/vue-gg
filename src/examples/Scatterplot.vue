@@ -7,9 +7,17 @@
       :data="xy"
       class="graphic">
 
-      <vgg-map :mapping="mapping">
-        <vgg-point />
-      </vgg-map>
+      <vgg-coordinate-transformation
+        :x="100"
+        :x2="700"
+        :y="100"
+        :y2="700">
+
+        <vgg-map :mapping="mapping">
+          <vgg-point />
+        </vgg-map>
+
+      </vgg-coordinate-transformation>
 
     </vgg-graphic>
 
