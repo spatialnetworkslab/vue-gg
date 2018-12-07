@@ -7,13 +7,38 @@
       :data="xy"
       class="graphic">
 
-      <vgg-coordinate-transformation
+      <!-- Custom mapping -->
+      <!-- <vgg-coordinate-transformation
         :x="100"
         :x2="700"
         :y="100"
         :y2="700">
 
         <vgg-map :mapping="mapping">
+          <vgg-point />
+        </vgg-map>
+
+      </vgg-coordinate-transformation> -->
+
+      <!-- Identity mapping, and setting coordinate domains from data -->
+      <vgg-coordinate-transformation
+        :x="100"
+        :x2="700"
+        :y="100"
+        :y2="700"
+        :domains="{
+          x: ({ domains }) => domains.explanatory,
+          y: ({ domains }) => domains.dependent
+        }"
+      >
+
+        <vgg-map
+          :mapping="{
+            x: 'explanatory',
+            y: 'dependent',
+            radius: () => Math.random() * 10
+          }"
+        >
           <vgg-point />
         </vgg-map>
 
