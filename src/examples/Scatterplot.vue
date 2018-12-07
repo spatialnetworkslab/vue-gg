@@ -8,7 +8,7 @@
       class="graphic">
 
       <!-- Identity mapping, and setting coordinate domains from data -->
-      <!-- <vgg-coordinate-transformation
+      <vgg-coordinate-transformation
         :x="100"
         :x2="700"
         :y="100"
@@ -29,10 +29,10 @@
           <vgg-point />
         </vgg-map>
 
-      </vgg-coordinate-transformation> -->
+      </vgg-coordinate-transformation>
 
       <!-- Shorthand mapping -->
-      <vgg-coordinate-transformation
+      <!-- <vgg-coordinate-transformation
         :x="100"
         :x2="700"
         :y="100"
@@ -57,7 +57,7 @@
           <vgg-point />
         </vgg-map>
 
-      </vgg-coordinate-transformation>
+      </vgg-coordinate-transformation> -->
 
       <!-- Custom mapping -->
       <!-- <vgg-coordinate-transformation
