@@ -11,6 +11,7 @@ export default function (prop, context, variableMapping) {
   }
 
   if (['color'].includes(prop)) {
+    console.log(context)
     let domain = context.domains[variableMapping.variable]
     let fromZero = variableMapping.fromZero
 
