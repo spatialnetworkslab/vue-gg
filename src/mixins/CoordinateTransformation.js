@@ -10,6 +10,11 @@ export default {
   props: {
     type: {
       type: String,
+      default: 'scale'
+    },
+
+    scale: {
+      type: String,
       default: 'linear'
     },
 
@@ -113,6 +118,7 @@ export default {
 
   watch: {
     type: 'updateCoordinateTreeBranch',
+    scale: 'updateCoordinateTreeBranch',
     domains: 'updateCoordinateTreeBranch',
     ranges: 'updateCoordinateTreeBranch'
   },
@@ -121,6 +127,7 @@ export default {
     setCoordinateTreeBranch () {
       let transformation = new CoordinateTransformation({
         type: this.type,
+        scale: this.scale,
         domains: this._domains,
         ranges: this.ranges
       })
@@ -135,6 +142,7 @@ export default {
     updateCoordinateTreeBranch () {
       let transformation = new CoordinateTransformation({
         type: this.type,
+        scale: this.scale,
         domains: this._domains,
         ranges: this.ranges
       })

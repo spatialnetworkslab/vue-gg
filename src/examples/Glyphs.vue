@@ -43,7 +43,7 @@
       <span class="pad-buttons">
         Outer:
         <select v-model="outerTransformation">
-          <option value="linear">Linear</option>
+          <option value="scale">Scale</option>
           <option value="polar">Polar</option>
         </select>
       </span>
@@ -51,7 +51,7 @@
       <span class="pad-buttons">
         Inner:
         <select v-model="innerTransformation">
-          <option value="linear">Linear</option>
+          <option value="scale">Scale</option>
           <option value="polar">Polar</option>
         </select>
       </span>
@@ -66,7 +66,7 @@ export default {
 
   data () {
     return {
-      outerTransformation: 'linear',
+      outerTransformation: 'scale',
       innerTransformation: 'polar'
     }
   },

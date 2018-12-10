@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import xy from '@/scales/shorthands/xy.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
@@ -23,14 +24,14 @@ export default class CoordinateTransformation {
     // 'domains' refers to the values of the marks inside of the transformation,
     // while 'ranges' refers to the portion of the parent coordinate space that
     // the values of the marks will be mapped to.
-    if (options.type === 'linear') {
+    if (options.type === 'scale') {
       let domainX = options.domains.x
       let domainY = options.domains.y
       let rangeX = options.ranges.x
       let rangeY = options.ranges.y
 
-      let scaleX = d3.scaleLinear().domain(domainX).range(rangeX)
-      let scaleY = d3.scaleLinear().domain(domainY).range(rangeY)
+      let scaleX = xy[options.scale](domainX, rangeX)
+      let scaleY = xy[options.scale](domainY, rangeY)
 
       this.transform = ([x, y]) => {
         return [scaleX(x), scaleY(y)]
