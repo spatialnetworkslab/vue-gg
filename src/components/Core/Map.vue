@@ -27,8 +27,8 @@ export default {
         ranges: this.$$coordinateTree.getBranch(this.$$coordinateTreeParent).domains
       }
 
-      for (let key in this.mapping) {
-        let variableMapping = this.mapping[key]
+      for (let propKey in this.mapping) {
+        let variableMapping = this.mapping[propKey]
 
         // The variable mapping can be specified in four ways:
         // 1. Mapping the variable directly without transformation (identity)
@@ -41,13 +41,13 @@ export default {
 
         // 1. Direct mapping (identity)
         if (variableMapping.constructor === String) {
-          parsedMapping[key] = (row, index) => row[variableMapping]
+          parsedMapping[propKey] = (row, index) => row[variableMapping]
         }
 
         if (variableMapping.constructor === Object) {
           // 2. Shorthand mapping (linear, log etc)
           if (variableMapping.type === 'scale') {
-            parsedMapping[key] = createScale(key, context, variableMapping)
+            parsedMapping[propKey] = createScale(propKey, context, variableMapping)
           }
 
           if (variableMapping.type === 'positioner') {
@@ -59,13 +59,13 @@ export default {
             // The variableMapping.construct function here will return another
             // function constructed with the context object. The returned
             // function will take the row and i as an argument
-            parsedMapping[key] = variableMapping.construct(context)
+            parsedMapping[propKey] = variableMapping.construct(context)
           }
         }
 
         // 4. Getter mapping function that takes (row, i)
         if (variableMapping.constructor === Function) {
-          parsedMapping[key] = variableMapping
+          parsedMapping[propKey] = variableMapping
         }
       }
 

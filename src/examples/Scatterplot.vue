@@ -23,7 +23,12 @@
           :mapping="{
             x: 'explanatory',
             y: 'dependent',
-            radius: () => Math.random() * 10
+            radius: () => Math.random() * 10,
+            color: {
+              type: 'scale',
+              variable: 'explanatory',
+              scale: 'viridis'
+            }
           }"
         >
           <vgg-point />
