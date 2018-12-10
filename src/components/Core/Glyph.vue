@@ -12,6 +12,8 @@
 import Mark from '@/mixins/Mark.js'
 import CoordinateSystem from '@/mixins/CoordinateSystem.js'
 
+import adjustToAnchorPoint from '@/utils/adjustToAnchorPoint.js'
+
 export default {
   mixins: [Mark, CoordinateSystem],
 
@@ -34,6 +36,12 @@ export default {
     height: {
       type: Number,
       required: true
+    },
+
+    anchorPoint: {
+      type: String,
+      default: 'center',
+      validator: p => ['center', 'lb', 'lt', 'rt', 'rb'].includes(p)
     }
   },
 
@@ -46,10 +54,8 @@ export default {
 
     anchorPointAdjustedXY () {
       let xy = this.transformedXY
-      let x = xy[0] - (this.width / 2)
-      let y = xy[1] - (this.height / 2)
 
-      return [x, y]
+      return adjustToAnchorPoint(xy, this.width, this.height, 'lt', this.anchorPoint)
     },
 
     translate () {
