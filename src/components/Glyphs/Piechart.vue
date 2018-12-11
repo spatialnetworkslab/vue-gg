@@ -20,9 +20,9 @@
       <vgg-rectangle
         v-for="(rect, i) in rectangles"
         :key="i"
-        :x="rect.x"
+        :x1="rect.x1"
         :x2="rect.x2"
-        :y="rect.y"
+        :y1="rect.y1"
         :y2="rect.y2"
         :color="rect.color"
       />
@@ -63,10 +63,10 @@ export default {
 
     rectangles () {
       let rectangles = [
-        { x: 0, x2: 15, y: 0, y2: 100, color: 'green' },
-        { x: 15, x2: 50, y: 0, y2: 100, color: 'red' },
-        { x: 50, x2: 75, y: 0, y2: 100, color: 'yellow' },
-        { x: 75, x2: 100, y: 0, y2: 100, color: 'blue' }
+        { x1: 0, x2: 15, y1: 0, y2: 100, color: 'green' },
+        { x1: 15, x2: 50, y1: 0, y2: 100, color: 'red' },
+        { x1: 50, x2: 75, y1: 0, y2: 100, color: 'yellow' },
+        { x1: 75, x2: 100, y1: 0, y2: 100, color: 'blue' }
       ]
 
       return rectangles

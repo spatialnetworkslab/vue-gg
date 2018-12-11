@@ -19,9 +19,9 @@
       >
 
         <vgg-rectangle
-          :x="0"
+          :x1="0"
           :x2="100"
-          :y="0"
+          :y1="0"
           :y2="100"
           color="#ffffff"
         />
