@@ -9,9 +9,9 @@
 
       <!-- Identity scaling, and setting coordinate domains from data -->
       <vgg-coordinate-transformation
-        :x="100"
+        :x1="100"
         :x2="700"
-        :y="100"
+        :y1="100"
         :y2="700"
         :domains="{
           x: ({ domains }) => domains.explanatory,
@@ -37,9 +37,9 @@
 
       <!-- Shorthand scaling -->
       <!-- <vgg-coordinate-transformation
-        :x="100"
+        :x1="100"
         :x2="700"
-        :y="100"
+        :y1="100"
         :y2="700"
       >
 
@@ -60,9 +60,9 @@
 
       <!-- Custom scaling -->
       <!-- <vgg-coordinate-transformation
-        :x="100"
+        :x1="100"
         :x2="700"
-        :y="100"
+        :y1="100"
         :y2="700">
 
         <vgg-map :scaling="scaling">

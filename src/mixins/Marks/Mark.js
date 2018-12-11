@@ -1,4 +1,4 @@
-import CoordinateTreeUser from './CoordinateTreeUser.js'
+import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
 
 export default {
   mixins: [CoordinateTreeUser],

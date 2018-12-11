@@ -7,9 +7,9 @@
 
     <vgg-coordinate-transformation
       :type="transformation"
-      :x="0"
+      :x1="0"
       :x2="wh"
-      :y="0"
+      :y1="0"
       :y2="wh"
       :domains="{
         x: [0, 100],

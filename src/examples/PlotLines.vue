@@ -5,9 +5,9 @@
     class="graphic">
 
     <vgg-coordinate-transformation
-      :x="100"
+      :x1="100"
       :x2="700"
-      :y="100"
+      :y1="100"
       :y2="700"
       :domains="{
         x: [-1, 1],

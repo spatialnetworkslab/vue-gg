@@ -1,11 +1,12 @@
 import CoordinateTreeUser from './CoordinateTreeUser.js'
-import DataReceiver from '@/mixins/DataReceiver.js'
+import DataReceiver from './DataReceiver.js'
+import Rectangular from './Marks/Rectangular.js'
 
 import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
 import id from '@/utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataReceiver],
+  mixins: [CoordinateTreeUser, DataReceiver, Rectangular],
 
   props: {
     type: {
@@ -16,26 +17,6 @@ export default {
     scale: {
       type: String,
       default: 'linear'
-    },
-
-    x: {
-      type: Number,
-      required: true
-    },
-
-    x2: {
-      type: Number,
-      required: true
-    },
-
-    y: {
-      type: Number,
-      required: true
-    },
-
-    y2: {
-      type: Number,
-      required: true
     },
 
     domains: {
@@ -54,8 +35,8 @@ export default {
   computed: {
     ranges () {
       return {
-        x: [this.x, this.x2],
-        y: [this.y, this.y2]
+        x: [this._x1, this._x2],
+        y: [this._y1, this._y2]
       }
     },
 

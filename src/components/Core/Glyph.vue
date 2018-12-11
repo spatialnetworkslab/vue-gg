@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Mark from '@/mixins/Mark.js'
+import Mark from '@/mixins/Marks/Mark.js'
 import CoordinateSystem from '@/mixins/CoordinateSystem.js'
 
 import adjustToAnchorPoint from '@/utils/adjustToAnchorPoint.js'

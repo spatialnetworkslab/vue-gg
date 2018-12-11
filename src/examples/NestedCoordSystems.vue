@@ -8,9 +8,9 @@
 
       <vgg-coordinate-transformation
         :type="outerTransformation"
-        :x="0"
+        :x1="0"
         :x2="800"
-        :y="0"
+        :y1="0"
         :y2="800"
         :domains="domains">
 
@@ -18,9 +18,9 @@
           v-for="(cs, i) in nestedCoordinateSystems"
           :type="innerTransformation"
           :key="'cs' + i"
-          :x="cs.x"
+          :x1="cs.x1"
           :x2="cs.x2"
-          :y="cs.y"
+          :y1="cs.y1"
           :y2="cs.y2"
           :domains="domains"
         >
@@ -83,10 +83,10 @@ export default {
   computed: {
     nestedCoordinateSystems () {
       return [
-        { x: 0, x2: 50, y: 0, y2: 50, color: 'green' },
-        { x: 50, x2: 100, y: 0, y2: 50, color: 'red' },
-        { x: 0, x2: 50, y: 50, y2: 100, color: 'yellow' },
-        { x: 50, x2: 100, y: 50, y2: 100, color: 'blue' }
+        { x1: 0, x2: 50, y1: 0, y2: 50, color: 'green' },
+        { x1: 50, x2: 100, y1: 0, y2: 50, color: 'red' },
+        { x1: 0, x2: 50, y1: 50, y2: 100, color: 'yellow' },
+        { x1: 50, x2: 100, y1: 50, y2: 100, color: 'blue' }
       ]
     },
 
