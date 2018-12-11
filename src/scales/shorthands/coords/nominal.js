@@ -18,5 +18,7 @@ function equidistant (domain, range, padStart = 0, padEnd = 0) {
     i++
   })
 
-  return x => mapping[x]
+  return x => {
+    return mapping[x]
+  }
 }

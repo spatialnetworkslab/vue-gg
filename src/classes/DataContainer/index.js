@@ -36,26 +36,24 @@ export default class {
       throw new Error('Data of type dataFrame must be passed as an array')
     }
 
+    // Parse metadata, or generate metadata by inferring types and stuff
     let firstRow = data[0]
     let metadataParsed = parseMetadata(metadataOriginal, firstRow)
 
+    // Initialize domain object
     let domainPerVariable = initDomains(metadataParsed.variables)
 
+    // Find domains
     for (let row of data) {
       checkRowFormat(row, metadataParsed.variables)
       domainPerVariable = updateDomains(row, domainPerVariable, metadataParsed.variables)
     }
 
+    // Special treatment for temporal data
     for (let variable in domainPerVariable) {
-      let domain = domainPerVariable[variable]
-
-      let variableType = metadataParsed.variables[variable].type
-
-      if (variableType === 'nominal') {
-        domainPerVariable[variable] = [0, domain.size]
-      } else if (variableType === 'temporal') {
-        domainPerVariable[variable] = d3.extent(domain)
-      } else {}
+      if (metadataParsed.variables[variable].type === 'temporal') {
+        domainPerVariable[variable] = d3.extent(domainPerVariable[variable])
+      }
     }
 
     this._dataset = data

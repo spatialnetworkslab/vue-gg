@@ -15,3 +15,28 @@ export function xy (xName, yName, errorRange = 20) {
 
   return data
 }
+
+export function bars (xName, yName) {
+  let data = []
+  let fruits = [
+    'apple',
+    'banana',
+    'kiwi',
+    'pomelo',
+    'jackfruit',
+    'guava',
+    'cherry',
+    'dragonfruit',
+    'grape',
+    'durian'
+  ]
+
+  for (let i = 0; i < 10; i++) {
+    let row = {}
+    row[xName] = fruits[i]
+    row[yName] = Math.round(Math.random() * 100)
+    data.push(row)
+  }
+
+  return data
+}

@@ -8,6 +8,8 @@
 
     <scatterplot v-if="example === 'Scatterplot'" />
 
+    <bars v-if="example === 'Bars'" />
+
     <div class="bottom">
       <button
         :disabled="example === 'Glyphs'"
@@ -32,6 +34,12 @@
         @click="example = 'Scatterplot'">
         Scatterplot
       </button>
+
+      <button
+        :disabled="example === 'Bars'"
+        @click="example = 'Bars'">
+        Bars
+      </button>
     </div>
 
   </div>
@@ -42,6 +50,7 @@ import Glyphs from './examples/Glyphs.vue'
 import NestedCoordSystems from './examples/NestedCoordSystems.vue'
 import PlotLines from './examples/PlotLines.vue'
 import Scatterplot from './examples/Scatterplot.vue'
+import Bars from './examples/Bars.vue'
 
 export default {
   name: 'App',
@@ -50,12 +59,13 @@ export default {
     Glyphs,
     NestedCoordSystems,
     PlotLines,
-    Scatterplot
+    Scatterplot,
+    Bars
   },
 
   data () {
     return {
-      example: 'Glyphs'
+      example: 'Bars'
     }
   }
 }

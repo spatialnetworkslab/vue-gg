@@ -80,14 +80,25 @@ export default {
         let props = {}
 
         for (let key in parsedMapping) {
+          //
+          if (this.scaling[key].constructor === String) {
+            let variable = this.scaling[key]
+            props[key] = parsedMapping[key](row[variable])
+          }
+
           // If this.scaling[key].variable is not specified, we will pass the
           // entire row to the mapping function instead of just the value for
           // that variable in that row.
-          if (this.scaling[key].constructor === Object &&
-              this.scaling[key].hasOwnProperty('variable')) {
-            let variable = this.scaling[key].variable
-            props[key] = parsedMapping[key](row[variable], i)
-          } else {
+          if (this.scaling[key].constructor === Object) {
+            if (this.scaling[key].hasOwnProperty('variable')) {
+              let variable = this.scaling[key].variable
+              props[key] = parsedMapping[key](row[variable])
+            } else {
+              props[key] = parsedMapping[key](row)
+            }
+          }
+
+          if (this.scaling[key].constructor === Function) {
             props[key] = parsedMapping[key](row, i)
           }
         }

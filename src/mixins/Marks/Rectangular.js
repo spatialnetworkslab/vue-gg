@@ -1,3 +1,5 @@
+import { is, isnt } from '@/utils/equals.js'
+
 export default {
   props: {
     x1: {
@@ -43,11 +45,11 @@ export default {
 
   computed: {
     _x1 () {
-      if (this.x1 !== undefined) { return this.x1 }
+      if (is(this.x1)) { return this.x1 }
 
-      if (this.x2 && this.w && (this.x === undefined)) {
+      if (is(this.x2) && is(this.w) && isnt(this.x)) {
         return this.x2 - this.w
-      } else if (this.x && this.w && (this.x2 === undefined)) {
+      } else if (is(this.x) && is(this.w) && isnt(this.x2)) {
         return this.x - (this.w / 2)
       } else {
         throw new Error('Invalid combination of props (x, x1, x2, w)')
@@ -55,11 +57,11 @@ export default {
     },
 
     _x2 () {
-      if (this.x2 !== undefined) { return this.x2 }
+      if (is(this.x2)) { return this.x2 }
 
-      if (this.x1 && this.w && (this.x === undefined)) {
+      if (is(this.x1) && is(this.w) && isnt(this.x)) {
         return this.x1 + this.w
-      } else if (this.x && this.w && (this.x1 === undefined)) {
+      } else if (is(this.x) && is(this.w) && isnt(this.x1)) {
         return this.x + (this.w / 2)
       } else {
         throw new Error('Invalid combination of props (x, x1, x2, w)')
@@ -67,11 +69,11 @@ export default {
     },
 
     _y1 () {
-      if (this.y1 !== undefined) { return this.y1 }
+      if (is(this.y1)) { return this.y1 }
 
-      if (this.y2 && this.h && (this.y === undefined)) {
+      if (is(this.y2) && is(this.h) && isnt(this.y)) {
         return this.y2 - this.h
-      } else if (this.y && this.h && (this.y2 === undefined)) {
+      } else if (is(this.y) && is(this.h) && isnt(this.y2)) {
         return this.y - (this.h / 2)
       } else {
         throw new Error('Invalid combination of props (y, y1, y2, h)')
@@ -79,14 +81,14 @@ export default {
     },
 
     _y2 () {
-      if (this.y2 !== undefined) { return this.y2 }
+      if (is(this.y2)) { return this.y2 }
 
-      if (this.y1 && this.h && (this.y === undefined)) {
+      if (is(this.y1) && is(this.h) && isnt(this.y)) {
         return this.y1 + this.h
-      } else if (this.y && this.h && (this.y1 === undefined)) {
+      } else if (is(this.y) && is(this.h) && isnt(this.y1)) {
         return this.y + (this.h / 2)
       } else {
-        // throw new Error('Invalid combination of props (y, y1, y2, h)')
+        throw new Error('Invalid combination of props (y, y1, y2, h)')
       }
     }
   }
