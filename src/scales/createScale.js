@@ -1,10 +1,10 @@
-import createXYScale from './shorthands/xy/createXYScale.js'
+import createCoordsScale from './shorthands/coords/createCoordsScale.js'
 import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 
 export default function (prop, context, variableScaling) {
   if (['x', 'y'].includes(prop)) {
-    return createXYScale(prop, context, variableScaling)
+    return createCoordsScale(prop, context, variableScaling)
   }
 
   if (prop === 'color') {

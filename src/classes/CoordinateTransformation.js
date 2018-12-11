@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import numericScales from '@/scales/shorthands/xy/numeric.js'
+import coordsScales from '@/scales/shorthands/coords/numeric.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
@@ -30,8 +30,8 @@ export default class CoordinateTransformation {
       let rangeX = options.ranges.x
       let rangeY = options.ranges.y
 
-      let scaleX = numericScales[options.scale](domainX, rangeX)
-      let scaleY = numericScales[options.scale](domainY, rangeY)
+      let scaleX = coordsScales[options.scale](domainX, rangeX)
+      let scaleY = coordsScales[options.scale](domainY, rangeY)
 
       this.transform = ([x, y]) => {
         return [scaleX(x), scaleY(y)]
