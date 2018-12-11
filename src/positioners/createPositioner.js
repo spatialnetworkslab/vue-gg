@@ -1,5 +1,5 @@
-export default function (prop, context, variableMapping) {
+export default function (prop, context, variablePositioning) {
   if (['x', 'y'].includes(prop)) {
-    
+
   }
 }

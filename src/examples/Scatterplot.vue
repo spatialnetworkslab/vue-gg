@@ -7,7 +7,7 @@
       :data="xy"
       class="graphic">
 
-      <!-- Identity mapping, and setting coordinate domains from data -->
+      <!-- Identity scaling, and setting coordinate domains from data -->
       <vgg-coordinate-transformation
         :x="100"
         :x2="700"
@@ -20,12 +20,11 @@
       >
 
         <vgg-map
-          :mapping="{
-            x: 'explanatory',
-            y: 'dependent',
+          :scaling="{
+            x: row => row.explanatory,
+            y: row => row.dependent,
             radius: () => Math.random() * 10,
             color: {
-              type: 'scale',
               variable: 'explanatory',
               scale: 'viridis'
             }
@@ -36,7 +35,7 @@
 
       </vgg-coordinate-transformation>
 
-      <!-- Shorthand mapping -->
+      <!-- Shorthand scaling -->
       <!-- <vgg-coordinate-transformation
         :x="100"
         :x2="700"
@@ -45,16 +44,11 @@
       >
 
         <vgg-map
-          :mapping="{
-            x: {
-              type: 'scale',
-              variable: 'explanatory',
-              scale: 'linear',
-            },
+          :scaling="{
+            x: 'explanatory',
             y: {
-              type: 'scale',
               variable: 'dependent',
-              scale: 'linear'
+              scale: 'squareRoot'
             },
             radius: () => Math.random() * 10
           }"
@@ -64,14 +58,14 @@
 
       </vgg-coordinate-transformation> -->
 
-      <!-- Custom mapping -->
+      <!-- Custom scaling -->
       <!-- <vgg-coordinate-transformation
         :x="100"
         :x2="700"
         :y="100"
         :y2="700">
 
-        <vgg-map :mapping="mapping">
+        <vgg-map :scaling="scaling">
           <vgg-point />
         </vgg-map>
 
@@ -100,17 +94,15 @@ export default {
   },
 
   // computed: {
-  //   mapping () {
+  //   scaling () {
   //     return {
   //       x: {
-  //         type: 'custom',
   //         variable: 'explanatory',
   //         construct: ({ domains, ranges }) => {
   //           return d3.scaleLinear().domain(domains['explanatory']).range(ranges.x)
   //         }
   //       },
   //       y: {
-  //         type: 'custom',
   //         variable: 'dependent',
   //         construct: ({ domains, ranges }) => {
   //           return d3.scaleLinear().domain(domains['dependent']).range(ranges.y)

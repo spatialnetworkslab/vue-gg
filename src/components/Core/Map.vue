@@ -8,7 +8,7 @@ export default {
   mixins: [DataReceiver, CoordinateTreeUser],
 
   props: {
-    mapping: {
+    scaling: {
       type: Object,
       required: true
     }
@@ -19,68 +19,73 @@ export default {
       let slotContent = this.$slots.default[0]
       let tag = slotContent.componentOptions.tag
 
-      let parsedMapping = {}
-
       let context = {
         domains: this.$$dataContainer.getDomains(),
         metadata: this.$$dataContainer.getMetadata(),
         ranges: this.$$coordinateTree.getBranch(this.$$coordinateTreeParent).domains
       }
 
-      for (let propKey in this.mapping) {
-        let variableMapping = this.mapping[propKey]
+      // First, scaling
+      let parsedScaling = {}
 
-        // The variable mapping can be specified in four ways:
-        // 1. Mapping the variable directly without transformation (identity)
-        // 2. Mapping the variable by a shorthand to a mapping function
-        // 3. Mapping the variable by constructing a function
-        // 4. Mapping a variable by giving a getter function
+      for (let propKey in this.scaling) {
+        let variableScaling = this.scaling[propKey]
+
+        // The variable scaling can be specified in four ways:
+        // 1. Scaling the variable by a shorthand scale with the default settings
+        // 2. Scaling the variable by a shorthand scale with custom settings
+        // 3. Scaling the variable by constructing your own scale
+        // 4. Scaling a variable by using a getter function
         //
         // These four ways are specified through the constructor of the
-        // variableMapping variable. Respectively:
+        // variableScaling variable. Respectively:
 
-        // 1. Direct mapping (identity)
-        if (variableMapping.constructor === String) {
-          parsedMapping[propKey] = (row, index) => row[variableMapping]
+        // 1. Scaling the variable by a shorthand scale with the default settings.
+        // Here we just need to a string id of the variable
+        if (variableScaling.constructor === String) {
+          parsedScaling[propKey] = createScale(propKey, context, {
+            variable: variableScaling
+          })
         }
 
-        if (variableMapping.constructor === Object) {
-          // 2. Shorthand mapping (linear, log etc)
-          if (variableMapping.type === 'scale') {
-            parsedMapping[propKey] = createScale(propKey, context, variableMapping)
+        if (variableScaling.constructor === Object) {
+          // 2. Scaling the variable by a shorthand scale with custom settings.
+          // In this case we need an object with settings with at least a 'variable' key.
+          if (!variableScaling.construct) {
+            parsedScaling[propKey] = createScale(propKey, context, variableScaling)
           }
 
-          if (variableMapping.type === 'positioner') {
-            // TODO
-          }
-
-          // 3. Mapping by constructing a function
-          if (variableMapping.type === 'custom') {
-            // The variableMapping.construct function here will return another
-            // function constructed with the context object. The returned
-            // function will take the row and i as an argument
-            parsedMapping[propKey] = variableMapping.construct(context)
+          // 3. Scaling the variable by constructing your own scale.
+          // In this case we need a 'construct' function. 'variable' key is optional.
+          if (variableScaling.construct) {
+            parsedScaling[propKey] = variableScaling.construct(context)
           }
         }
 
-        // 4. Getter mapping function that takes (row, i)
-        if (variableMapping.constructor === Function) {
-          parsedMapping[propKey] = variableMapping
+        // 4. Scaling the variable by using a getter function that takes (row, i)
+        if (variableScaling.constructor === Function) {
+          parsedScaling[propKey] = variableScaling
         }
       }
 
+      // Second, positioning.
+      // TODO
+
+      let parsedMapping = parsedScaling // for now
+
+      // Third, applying the mapping
       let components = []
 
       this.$$dataContainer.forEachRow((row, i) => {
         let props = {}
 
         for (let key in parsedMapping) {
-          // If this.mapping[key].variable is not specified, we will pass the
+          // If this.scaling[key].variable is not specified, we will pass the
           // entire row to the mapping function instead of just the value for
           // that variable in that row.
-          if (this.mapping[key].constructor === Object &&
-              this.mapping[key].hasOwnProperty('variable')) {
-            let variable = this.mapping[key].variable
+          if (this.scaling[key].constructor === Object &&
+              this.scaling[key].hasOwnProperty('variable')) {
+            let variable = this.scaling[key].variable
             props[key] = parsedMapping[key](row[variable], i)
           } else {
             props[key] = parsedMapping[key](row, i)

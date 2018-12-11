@@ -1,17 +1,17 @@
-import createXY from './shorthands/xy/createXY.js'
-import createColor from './shorthands/color/createColor.js'
-import createOpacity from './shorthands/opacity/createOpacity.js'
+import createXYScale from './shorthands/xy/createXYScale.js'
+import createColorScale from './shorthands/color/createColorScale.js'
+import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 
-export default function (prop, context, variableMapping) {
+export default function (prop, context, variableScaling) {
   if (['x', 'y'].includes(prop)) {
-    return createXY(prop, context, variableMapping)
+    return createXYScale(prop, context, variableScaling)
   }
 
   if (prop === 'color') {
-    return createColor(prop, context, variableMapping)
+    return createColorScale(prop, context, variableScaling)
   }
 
   if (prop === 'opacity') {
-    return createOpacity(prop, context, variableMapping)
+    return createOpacityScale(prop, context, variableScaling)
   }
 }
