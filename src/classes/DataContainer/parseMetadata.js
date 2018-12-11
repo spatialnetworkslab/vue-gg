@@ -35,7 +35,7 @@ export function inferVariableType (value) {
       return 'nominal'
     }
     case Number: {
-      return value % 1 === 0 ? 'count' : 'ratio'
+      return value % 1 === 0 && value > 0 ? 'count' : 'ratio'
     }
     case Date: {
       return 'temporal'
