@@ -6,17 +6,17 @@ export default {
   mixins: [Mark],
 
   props: {
-    x: {
-      type: Number,
-      default: 0
-    },
-
-    y: {
+    x1: {
       type: Number,
       default: 0
     },
 
     x2: {
+      type: Number,
+      default: 0
+    },
+
+    y1: {
       type: Number,
       default: 0
     },
@@ -57,7 +57,7 @@ export default {
 
         if (!this.func) {
           let coords = [
-            [this.x, this.y],
+            [this.x1, this.y1],
             [this.x2, this.y2]
           ]
 
