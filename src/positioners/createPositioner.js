@@ -1,13 +1,12 @@
 import wh from './wh.js'
 
-export default function (prop, context, variablePositioning, currentMapping) {
+export default function (prop, context, positioningSettings) {
   if (['w', 'h'].includes(prop)) {
-    let dimension = variablePositioning.dimension || prop === 'w' ? 'x' : 'y'
-    let positioner = variablePositioning.positioner || 'bulge'
+    let positioner = positioningSettings.positioner
 
-    let domain = context.domains[dimension]
-    let mapping = currentMapping[dimension]
+    let dimension = positioningSettings.dimension || prop === 'w' ? 'x' : 'y'
+    let range = context.ranges[dimension]
 
-    return wh[positioner](domain, mapping, variablePositioning)
+    return wh[positioner](range, positioningSettings, prop)
   }
 }

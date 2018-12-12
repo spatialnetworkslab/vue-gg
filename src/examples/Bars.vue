@@ -27,12 +27,18 @@
 
       <vgg-map
         :assign="{
-          w: 7,
           y1: 0
         }"
         :scale="{
           x: 'fruit',
           y2: 'quantity'
+        }"
+        :position="{
+          w: {
+            positioner: 'bulge',
+            basedOn: 'x',
+            padding: 0.5
+          }
         }"
       >
 

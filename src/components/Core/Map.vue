@@ -3,6 +3,7 @@ import DataReceiver from '@/mixins/DataReceiver.js'
 import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
 
 import createScale from '@/scales/createScale.js'
+import createPositioner from '@/positioners/createPositioner.js'
 
 import { is } from '@/utils/equals.js'
 
@@ -18,6 +19,11 @@ export default {
     scale: {
       type: Object,
       required: true
+    },
+
+    position: {
+      type: [Object, undefined],
+      default: undefined
     }
   },
 
@@ -80,8 +86,8 @@ export default {
         }
       }
 
-      // Third, applying the mapping
-      let components = []
+      // Third, applying the mapping and constructing the props for every  mark
+      let propsPerMark = []
 
       this.$$dataContainer.forEachRow((row, i) => {
         let props = {}
@@ -89,21 +95,26 @@ export default {
         for (let key in parsedMapping) {
           // Now we will use the assigned values and scaling to calculate prop values.
 
-          // If no positioning is being used, scaling will happen
+          // If a scale has been specified:
           if (is(this.scale[key])) {
+            // If the scale is a string, it is assumed to be the identifier of
+            // a variable.
             if (this.scale[key].constructor === String) {
               let variable = this.scale[key]
               props[key] = parsedMapping[key](row[variable])
             }
 
-            // If this.scaling[key].variable is not specified, we will pass the
-            // entire row to the mapping function instead of just the value for
-            // that variable in that row.
+            // If the scale is an object:
             if (this.scale[key].constructor === Object) {
+              // If this.scaling[key].variable is specified, it will be used
+              // as the identifier of a variable.
               if (this.scale[key].hasOwnProperty('variable')) {
                 let variable = this.scale[key].variable
                 props[key] = parsedMapping[key](row[variable])
               } else {
+                // If this.scaling[key].variable is not specified, we will pass the
+                // entire row to the mapping function instead of just the value for
+                // that variable in that row.
                 props[key] = parsedMapping[key](row)
               }
             }
@@ -113,15 +124,24 @@ export default {
               props[key] = parsedMapping[key](row, i)
             }
           } else if (is(this.assign[key])) {
-            // Finally, if the is no positioning nor scaling happening,
-            // we will check if there is at least just assigning.
+            // Finally, if no scaling is happening,
+            // we will check if there is anything that should be assigned.
             props[key] = this.assign[key]
           }
         }
 
-        components.push(h(tag, { props }))
+        propsPerMark.push(props)
       })
 
+      // Fourth, we will apply positioning if necessary
+      if (this.position) {
+        for (let propKey in this.position) {
+          let position = createPositioner(propKey, context, this.position[propKey])
+          position(propsPerMark) // Positioners work in-place
+        }
+      }
+
+      let components = propsPerMark.map(props => h(tag, { props }))
       return h('g', components)
     }
 
