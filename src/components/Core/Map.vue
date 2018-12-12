@@ -80,20 +80,14 @@ export default {
         }
       }
 
-      // Third, positioning.
-      // TODO
-
-      // Fourth, applying the mapping
+      // Third, applying the mapping
       let components = []
 
       this.$$dataContainer.forEachRow((row, i) => {
         let props = {}
 
         for (let key in parsedMapping) {
-          // Now we will use the parsed mapping to calculate prop values.
-
-          // Positioning will override scaling and assignment
-          // TODO
+          // Now we will use the assigned values and scaling to calculate prop values.
 
           // If no positioning is being used, scaling will happen
           if (is(this.scale[key])) {
