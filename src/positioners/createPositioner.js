@@ -7,6 +7,6 @@ export default function (prop, context, positioningSettings) {
     let dimension = positioningSettings.dimension || prop === 'w' ? 'x' : 'y'
     let range = context.ranges[dimension]
 
-    return wh[positioner](range, positioningSettings, prop)
+    return wh[positioner](prop, range, positioningSettings)
   }
 }

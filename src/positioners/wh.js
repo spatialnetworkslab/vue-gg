@@ -2,7 +2,7 @@ export default {
   bulge
 }
 
-function bulge (range, positioningSettings, prop) {
+function bulge (prop, range, positioningSettings) {
   let basedOn = positioningSettings.basedOn
   let padding = positioningSettings.padding
 
@@ -33,10 +33,7 @@ function bulge (range, positioningSettings, prop) {
         dRight -= padding
       }
 
-      let value = Math.min(dLeft, dRight)
-
-      if (['w', 'h'].includes(prop)) { value *= 2 }
-      // if (['r', 'radius'].includes(prop)) {}
+      let value = Math.min(dLeft, dRight) * 2
 
       let originalIndex = coordsSorted[i][1]
       propsPerMark[originalIndex][prop] = value

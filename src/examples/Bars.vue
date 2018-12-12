@@ -31,7 +31,8 @@
         }"
         :scale="{
           x: 'fruit',
-          y2: 'quantity'
+          y2: 'quantity',
+          color: 'quantity'
         }"
         :position="{
           w: {

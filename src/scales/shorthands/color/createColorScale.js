@@ -1,5 +1,6 @@
 import setDomainFromZero from '@/scales/utils/setDomainFromZero.js'
 import numeric from './numeric.js'
+import categorical from './categorical.js'
 
 export default function (prop, context, variableScaling) {
   let variableID = variableScaling.variable
@@ -30,6 +31,7 @@ export default function (prop, context, variableScaling) {
   }
 
   if (variableType === 'categorical') {
-
+    let scale = variableScaling.scale || 'colors'
+    return categorical[scale](domain)
   }
 }
