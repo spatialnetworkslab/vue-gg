@@ -18,10 +18,12 @@
     >
 
       <vgg-map
+        :assign="{
+          w: 7,
+          y1: 0
+        }"
         :scale="{
           x: 'fruit',
-          w: () => 7,
-          y1: () => 0,
           y2: 'quantity'
         }"
       >
