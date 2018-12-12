@@ -20,7 +20,7 @@
       >
 
         <vgg-map
-          :scaling="{
+          :scale="{
             x: row => row.explanatory,
             y: row => row.dependent,
             radius: () => Math.random() * 10,
@@ -44,7 +44,7 @@
       >
 
         <vgg-map
-          :scaling="{
+          :scale="{
             x: 'explanatory',
             y: {
               variable: 'dependent',
@@ -65,7 +65,7 @@
         :y1="100"
         :y2="700">
 
-        <vgg-map :scaling="scaling">
+        <vgg-map :scale="scaling">
           <vgg-point />
         </vgg-map>
 

@@ -18,7 +18,7 @@
     >
 
       <vgg-map
-        :scaling="{
+        :scale="{
           x: 'fruit',
           w: () => 7,
           y1: () => 0,

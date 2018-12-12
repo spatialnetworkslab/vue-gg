@@ -8,7 +8,12 @@ export default {
   mixins: [DataReceiver, CoordinateTreeUser],
 
   props: {
-    scaling: {
+    assign: {
+      type: [Object, undefined],
+      default: undefined
+    },
+
+    scale: {
       type: Object,
       required: true
     }
@@ -28,8 +33,8 @@ export default {
       // First, scaling
       let parsedScaling = {}
 
-      for (let propKey in this.scaling) {
-        let variableScaling = this.scaling[propKey]
+      for (let propKey in this.scale) {
+        let variableScaling = this.scale[propKey]
 
         // The variable scaling can be specified in four ways:
         // 1. Scaling the variable by a shorthand scale with the default settings
@@ -81,24 +86,24 @@ export default {
 
         for (let key in parsedMapping) {
           //
-          if (this.scaling[key].constructor === String) {
-            let variable = this.scaling[key]
+          if (this.scale[key].constructor === String) {
+            let variable = this.scale[key]
             props[key] = parsedMapping[key](row[variable])
           }
 
           // If this.scaling[key].variable is not specified, we will pass the
           // entire row to the mapping function instead of just the value for
           // that variable in that row.
-          if (this.scaling[key].constructor === Object) {
-            if (this.scaling[key].hasOwnProperty('variable')) {
-              let variable = this.scaling[key].variable
+          if (this.scale[key].constructor === Object) {
+            if (this.scale[key].hasOwnProperty('variable')) {
+              let variable = this.scale[key].variable
               props[key] = parsedMapping[key](row[variable])
             } else {
               props[key] = parsedMapping[key](row)
             }
           }
 
-          if (this.scaling[key].constructor === Function) {
+          if (this.scale[key].constructor === Function) {
             props[key] = parsedMapping[key](row, i)
           }
         }
