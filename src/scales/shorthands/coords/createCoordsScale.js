@@ -2,7 +2,7 @@ import setDomainFromZero from '@/scales/utils/setDomainFromZero.js'
 
 import numeric from './numeric.js'
 import temporal from './temporal.js'
-import nominal from './nominal.js'
+import categorical from './categorical.js'
 
 export default function (prop, context, variableScaling) {
   let variableID = variableScaling.variable
@@ -41,10 +41,10 @@ export default function (prop, context, variableScaling) {
     return temporal[scale](domain, range)
   }
 
-  if (variableType === 'nominal') {
+  if (variableType === 'categorical') {
     let scale = variableScaling.scale || 'equidistant'
 
-    return nominal[scale](domain, range)
+    return categorical[scale](domain, range)
   }
 }
 

@@ -32,7 +32,7 @@ export default function (metadataOriginal, firstRow) {
 export function inferVariableType (value) {
   switch (value.constructor) {
     case String: {
-      return 'nominal'
+      return 'categorical'
     }
     case Number: {
       return value % 1 === 0 && value > 0 ? 'count' : 'ratio'

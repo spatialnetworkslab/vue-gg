@@ -17,6 +17,14 @@
       }"
     >
 
+      <vgg-rectangle
+        :x1="0"
+        :x2="100"
+        :y1="0"
+        :y2="100"
+        color="#ffffff"
+      />
+
       <vgg-map
         :assign="{
           w: 7,

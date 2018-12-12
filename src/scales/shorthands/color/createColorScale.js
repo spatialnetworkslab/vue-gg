@@ -29,7 +29,7 @@ export default function (prop, context, variableScaling) {
     }
   }
 
-  if (variableType === 'nominal') {
+  if (variableType === 'categorical') {
 
   }
 }

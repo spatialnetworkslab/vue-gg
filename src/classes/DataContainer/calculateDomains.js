@@ -14,7 +14,7 @@ export function initDomains (variablesMetadata) {
       domainPerVariable[variableKey] = []
     }
 
-    if (variableType === 'nominal') {
+    if (variableType === 'categorical') {
       domainPerVariable[variableKey] = new Set()
     }
   }
@@ -39,7 +39,7 @@ export function updateDomains (row, currentDomains, variableMetadata) {
       domain.push(formatValue)
     }
 
-    if (variableType === 'nominal') { domain.add(value) }
+    if (variableType === 'categorical') { domain.add(value) }
   }
 
   return currentDomains
