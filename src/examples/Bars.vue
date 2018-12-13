@@ -25,13 +25,6 @@
         color="#ffffff"
       />
 
-      <vgg-rectangle
-        :x1="10"
-        :w="11"
-        :y1="25"
-        :y2="75"
-      />
-
     </vgg-coordinate-transformation>
 
   </vgg-graphic>
