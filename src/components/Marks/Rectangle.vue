@@ -1,6 +1,5 @@
 <script>
 import Rectangular from '@/mixins/Marks/Rectangular.js'
-import Mark from '@/mixins/Marks/Mark.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
