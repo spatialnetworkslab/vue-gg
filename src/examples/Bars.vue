@@ -25,23 +25,7 @@
         color="#ffffff"
       />
 
-      <vgg-map
-        :assign="{
-          y1: 0
-        }"
-        :scale="{
-          x: 'fruit',
-          y2: 'quantity',
-          color: 'quantity'
-        }"
-        :position="{
-          w: {
-            positioner: 'bulge',
-            basedOn: 'x',
-            padding: 0.5
-          }
-        }"
-      >
+      <vgg-map>
 
         <vgg-rectangle />
 
