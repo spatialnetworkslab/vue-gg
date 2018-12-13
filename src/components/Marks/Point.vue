@@ -6,13 +6,13 @@ export default {
 
   props: {
     x: {
-      type: Number,
-      default: 0
+      type: [Number, Object, undefined],
+      default: undefined
     },
 
     y: {
-      type: Number,
-      default: 0
+      type: [Number, Object, undefined],
+      default: undefined
     },
 
     radius: {
@@ -21,25 +21,31 @@ export default {
     },
 
     color: {
-      type: String,
-      default: '#000000'
+      type: [String, Object, undefined],
+      default: undefined
     }
   },
 
+  computed: {
+    _x () { return this.default(this.x, 0) },
+    _y () { return this.default(this.y, 0) },
+    _color () { return this.default(this.color, '#000000') }
+  },
+
   render (h) {
-    if (this.__update) {}
+    if (!this.$$map && this.__update) {
+      let [cx, cy] = this.$$transform([this._x, this._y])
 
-    let [cx, cy] = this.$$transform([this.x, this.y])
-
-    return h('circle', {
-      attrs: {
-        'cx': cx,
-        'cy': cy,
-        'r': this.radius,
-        'fill': this.color,
-        'stroke-width': 0
-      }
-    })
+      return h('circle', {
+        attrs: {
+          'cx': cx,
+          'cy': cy,
+          'r': this.radius,
+          'fill': this._color,
+          'stroke-width': 0
+        }
+      })
+    }
   }
 }
 </script>
