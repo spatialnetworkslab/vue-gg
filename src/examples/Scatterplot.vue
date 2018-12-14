@@ -25,7 +25,7 @@
             :x="{ scale: 'explanatory' }"
             :y="{ scale: 'dependent' }"
             :radius="3"
-            :color="{ scale: 'explanatory' }"
+            :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
           />
 
         </vgg-map>

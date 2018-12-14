@@ -22,7 +22,13 @@ export default {
 
   methods: {
     default (prop, defaultVal) {
-      if (!this.$$map) { return prop || defaultVal }
+      if (!this.$$map) {
+        if (prop && prop.constructor === Object) {
+          throw new Error('Error: trying to map without vgg-map component.')
+        }
+
+        return prop || defaultVal
+      }
       if (this.$$map) {
         return (prop && prop.constructor === Object) ? prop : { assign: prop || defaultVal }
       }

@@ -6,6 +6,7 @@ export default {
   mixins: [Mark],
 
   props: {
+    // Mappable
     x: {
       type: [Number, Object, undefined],
       default: undefined
@@ -21,6 +22,7 @@ export default {
       default: undefined
     },
 
+    // Non-mappable
     radius: {
       type: Number,
       default: 3
@@ -37,8 +39,8 @@ export default {
     _y () { return this.default(this.y, 0) },
     _color () { return this.default(this.color, '#000000') },
 
-    _radius () { return this.$$map ? { assign: this.radius } : this.radius },
-    _strokeWidth () { return this.$$map ? { assign: this.strokeWidth } : this.strokeWidth },
+    _radius () { return this.default(this.radius, 3) },
+    _strokeWidth () { return this.default(this.strokeWidth, 0) },
 
     aesthetics () {
       return {
@@ -52,8 +54,8 @@ export default {
   },
 
   methods: {
-    renderSVG (createElement, transform, aesthetics) {
-      let [cx, cy] = transform([aesthetics.x, aesthetics.y])
+    renderSVG (createElement, aesthetics) {
+      let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
       return createElement('circle', {
         attrs: {
@@ -71,7 +73,7 @@ export default {
     if (this.__update) {
       if (!this.$$map) {
         // Create svg element using aesthetics
-        return this.renderSVG(createElement, this.$$transform, this.aesthetics)
+        return this.renderSVG(createElement, this.aesthetics)
       }
 
       if (this.$$map) {
@@ -86,7 +88,7 @@ export default {
         let components = []
         for (let aesthetics of aestheticsPerMark) {
           components.push(
-            this.renderSVG(createElement, this.$$transform, aesthetics)
+            this.renderSVG(createElement, aesthetics)
           )
         }
 
