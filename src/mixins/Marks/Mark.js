@@ -24,7 +24,7 @@ export default {
     default (prop, defaultVal) {
       if (!this.$$map) { return prop || defaultVal }
       if (this.$$map) {
-        return prop.constructor === Object ? prop : { assign: prop || defaultVal }
+        return (prop && prop.constructor === Object) ? prop : { assign: prop || defaultVal }
       }
     }
   }

@@ -11,6 +11,7 @@ export default function (aesthetics, context, dataContainer) {
   // First, extract the assigners, scales and positioners
   for (let aesKey in aesthetics) {
     let passedProp = aesthetics[aesKey]
+
     if (passedProp.hasOwnProperty('assign')) {
       assigners[aesKey] = passedProp.assign
     }
@@ -65,9 +66,9 @@ export default function (aesthetics, context, dataContainer) {
   }
 
   // Third, we apply the scales and calculate props for each mark
-  let propsPerMark = []
+  let aestheticsPerMark = []
 
-  this.$$dataContainer.forEachRow((row, i) => {
+  dataContainer.forEachRow((row, i) => {
     let props = {}
 
     for (let aesKey in parsedScales) {
@@ -108,14 +109,16 @@ export default function (aesthetics, context, dataContainer) {
       }
     }
 
-    propsPerMark.push(props)
+    aestheticsPerMark.push(props)
   })
 
   // Fourth, we will apply positioning if necessary
   if (Object.keys(positioners).length > 0) {
     for (let aesKey in positioners) {
       let position = createPositioner(aesKey, context, positioners[aesKey])
-      position(propsPerMark) // Positioners work in-place
+      position(aestheticsPerMark) // Positioners work in-place
     }
   }
+
+  return aestheticsPerMark
 }
