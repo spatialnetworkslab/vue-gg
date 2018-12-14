@@ -47,90 +47,96 @@ export default {
   },
 
   computed: {
-    // This looks very complicated, but it basically means this:
-    // You can have:
-    // - Nothing
-    // - just x1
-    // - just x2
-    // - just x1 and x2
-    // - just x1 and w
-    // - just x2 and w
-    // - just x and w
-    //
-    // If you have nothing or just x1 or x2, the missing values will default to 0.
-    // If you have any other combination than listed above, we throw an error.
-    // Same goes for y1, y2 etc.
+    invalidX () {
+      return invalidCombination(this.x1, this.x2, this.x, this.w)
+    },
 
-    _x1 () {
-      if (isnt(this.x) && isnt(this.w)) {
-        // If there is nothing, just x1, just x2, or just x1 and x2
-        return this.default(this.x1, 0)
-      } else if (is(this.x1) && isnt(this.x2) && isnt(this.x) && is(this.w)) {
-        // If there is just x1 and w
-        return this.default(this.x1, 0)
-      } else if (isnt(this.x1) && is(this.x2) && isnt(this.x) && is(this.w)) {
-        // If there is just x2 and w
-        return this.default(this.x2 - this.w, 0)
-      } else if (isnt(this.x1) && isnt(this.x2) && is(this.x) && is(this.w)) {
-        // If there is just x and w
-        return this.default(this.x - (this.w / 2), 0)
-      } else {
+    invalidY () {
+      return invalidCombination(this.y1, this.y2, this.y, this.h)
+    },
+
+    _x1 () { return this.default(this.x1, undefined) },
+    _x2 () { return this.default(this.x2, undefined) },
+    _y1 () { return this.default(this.y1, undefined) },
+    _y2 () { return this.default(this.y2, undefined) },
+    _x () { return this.default(this.x, undefined) },
+    _y () { return this.default(this.y, undefined) },
+    _w () { return this.default(this.w, undefined) },
+    _h () { return this.default(this.h, undefined) },
+
+    aesthetics () {
+      if (this.invalidX) {
         throw new Error('Invalid combination of props x1, x2, x and w')
       }
-    },
 
-    _x2 () {
-      if (isnt(this.x) && isnt(this.w)) {
-        // If there is nothing, just x1, just x2, or just x1 and x2
-        return this.default(this.x2, 0)
-      } else if (is(this.x1) && isnt(this.x2) && isnt(this.x) && is(this.w)) {
-        // If there is just x1 and w
-        return this.default(this.x1 + this.w, 0)
-      } else if (isnt(this.x1) && is(this.x2) && isnt(this.x) && is(this.w)) {
-        // If there is just x2 and w
-        return this.default(this.x2, 0)
-      } else if (isnt(this.x1) && isnt(this.x2) && is(this.x) && is(this.w)) {
-        // If there is just x and w
-        return this.default(this.x + (this.w / 2), 0)
-      } else {
-        throw new Error('Invalid combination of props x1, x2, x and w')
-      }
-    },
-
-    _y1 () {
-      if (isnt(this.y) && isnt(this.h)) {
-        // If there is nothing, just y1, just y2, or just y1 and y2
-        return this.default(this.y1, 0)
-      } else if (is(this.y1) && isnt(this.y2) && isnt(this.y) && is(this.h)) {
-        // If there is just y1 and h
-        return this.default(this.y1, 0)
-      } else if (isnt(this.y1) && is(this.y2) && isnt(this.y) && is(this.h)) {
-        // If there is just y2 and h
-        return this.default(this.y2 - this.h, 0)
-      } else if (isnt(this.y1) && isnt(this.y2) && is(this.y) && is(this.h)) {
-        // If there is just y and h
-        return this.default(this.y - (this.h / 2), 0)
-      } else {
+      if (this.invalidY) {
         throw new Error('Invalid combination of props y1, y2, y and h')
       }
-    },
 
-    _y2 () {
-      if (isnt(this.y) && isnt(this.h)) {
-        // If there is nothing, just y1, just y2, or just y1 and y2
-        return this.default(this.y2, 0)
-      } else if (is(this.y1) && isnt(this.y2) && isnt(this.y) && is(this.h)) {
-        // If there is just y1 and h
-        return this.default(this.y1 + this.h, 0)
-      } else if (isnt(this.y1) && is(this.y2) && isnt(this.y) && is(this.h)) {
-        // If there is just y2 and h
-        return this.default(this.y2, 0)
-      } else if (isnt(this.y1) && isnt(this.y2) && is(this.y) && is(this.h)) {
-        // If there is just y and h
-        return this.default(this.y + (this.h / 2), 0)
-      } else {
-        throw new Error('Invalid combination of props y1, y2, y and h')
+      return {
+        'x1': this._x1,
+        'x2': this._x2,
+        'y1': this._y1,
+        'y2': this._y2,
+        'x': this._x,
+        'y': this._y,
+        'w': this._w,
+        'h': this._h,
+        'color': this._color
       }
     }
+  },
+
+  methods: {
+    convertCoordinateSpecification (aes) {
+      let [x1, x2] = convertSpecification(aes.x1, aes.x2, aes.x, aes.w)
+      let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h)
+
+      for (let aesKey in ['x', 'y', 'w', 'h']) {
+        if (aes[aesKey]) { delete aes[aesKey] }
+      }
+
+      aes.x1 = x1
+      aes.x2 = x2
+      aes.y1 = y1
+      aes.y2 = y2
+
+      return aes
+    }
+  }
+}
+
+function invalidCombination (x1, x2, x, w) {
+  let validCombinations = [
+    // If there is nothing, just x1, just x2, or just x1 and x2
+    isnt(x) && isnt(w),
+    // If there is just x1 and w
+    is(x1) && isnt(x2) && isnt(x) && is(w),
+    // If there is just x2 and w
+    isnt(x1) && is(x2) && isnt(x) && is(w),
+    // If there is just x and w
+    isnt(x1) && isnt(x2) && is(x) && is(w)
+  ]
+
+  return !(validCombinations.some(combo => combo === true))
+}
+
+// Converts any valid combination of x1, x2, x and w to [x1, x2]
+function convertSpecification (x1, x2, x, w) {
+  // If there is nothing, just x1, just x2, or just x1 and x2
+  if (isnt(x) && isnt(w)) {
+    return [x1, x2]
+  }
+  // If there is just x1 and w
+  if (is(x1) && isnt(x2) && isnt(x) && is(w)) {
+    return [x1, x1 + w]
+  }
+  // If there is just x2 and w
+  if (isnt(x1) && is(x2) && isnt(x) && is(w)) {
+    return [x2 - w, x2]
+  }
+  // If there is just x and w
+  if (isnt(x1) && isnt(x2) && is(x) && is(w)) {
+    return [x - (w / 2), x + (w / 2)]
   }
 }

@@ -3,10 +3,10 @@ export default {
 }
 
 function bulge (prop, range, positioningSettings) {
-  let basedOn = positioningSettings.basedOn
-  let padding = positioningSettings.padding
-
   return propsPerMark => {
+    let basedOn = positioningSettings.basedOn || guessBasedOn(prop, propsPerMark[0])
+    let padding = positioningSettings.padding || 0
+
     // Sort ascending
     let coordsSorted = propsPerMark.map((props, ix) => [props[basedOn], ix]).sort((a, b) => a[0] > b[0])
     let len = coordsSorted.length
@@ -28,15 +28,27 @@ function bulge (prop, range, positioningSettings) {
         dRight = Math.abs(center - coordsSorted[i + 1][0]) / 2
       }
 
-      if (padding) {
-        dLeft -= padding
-        dRight -= padding
-      }
+      dLeft -= padding
+      dRight -= padding
 
       let value = Math.min(dLeft, dRight) * 2
 
       let originalIndex = coordsSorted[i][1]
       propsPerMark[originalIndex][prop] = value
     }
+  }
+}
+
+function guessBasedOn (prop, firstRow) {
+  if (prop === 'w') {
+    if (firstRow.hasOwnProperty('x1')) { return 'x1' }
+    if (firstRow.hasOwnProperty('x2')) { return 'x2' }
+    if (firstRow.hasOwnProperty('x')) { return 'x' }
+  }
+
+  if (prop === 'h') {
+    if (firstRow.hasOwnProperty('y1')) { return 'y1' }
+    if (firstRow.hasOwnProperty('y2')) { return 'y2' }
+    if (firstRow.hasOwnProperty('y')) { return 'y' }
   }
 }

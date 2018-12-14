@@ -34,9 +34,10 @@ export default {
 
   computed: {
     ranges () {
+      let aes = this.convertCoordinateSpecification(this.aesthetics)
       return {
-        x: [this._x1, this._x2],
-        y: [this._y1, this._y2]
+        x: [aes.x1, aes.x2],
+        y: [aes.y1, aes.y2]
       }
     },
 

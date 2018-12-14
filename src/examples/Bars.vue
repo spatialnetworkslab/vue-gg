@@ -17,13 +17,24 @@
       }"
     >
 
-      <vgg-rectangle
-        :x1="0"
-        :x2="100"
-        :y1="0"
-        :y2="100"
-        color="#ffffff"
-      />
+      <vgg-map>
+
+        <vgg-rectangle
+          :x="{ scale: 'fruit' }"
+          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :y1="0"
+          :y2="{ scale: 'quantity' }"
+        />
+
+        <vgg-line
+          :x1="{ scale: 'fruit' }"
+          :x2="{ scale: 'fruit' }"
+          :y1="0"
+          :y2="{ scale: 'quantity' }"
+          color="#ced02d"
+        />
+
+      </vgg-map>
 
     </vgg-coordinate-transformation>
 

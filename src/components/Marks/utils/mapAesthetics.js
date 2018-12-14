@@ -12,7 +12,7 @@ export default function (aesthetics, context, dataContainer) {
   for (let aesKey in aesthetics) {
     let passedProp = aesthetics[aesKey]
 
-    if (passedProp.hasOwnProperty('assign')) {
+    if (passedProp.hasOwnProperty('assign') && is(passedProp.assign)) {
       assigners[aesKey] = passedProp.assign
     }
     if (passedProp.hasOwnProperty('scale')) {
@@ -115,7 +115,17 @@ export default function (aesthetics, context, dataContainer) {
   // Fourth, we will apply positioning if necessary
   if (Object.keys(positioners).length > 0) {
     for (let aesKey in positioners) {
-      let position = createPositioner(aesKey, context, positioners[aesKey])
+      let positioningOptions = positioners[aesKey]
+      let position
+
+      if (positioningOptions.constructor === String) {
+        position = createPositioner(aesKey, context, { positioner: positioningOptions })
+      }
+
+      if (positioningOptions.constructor === Object) {
+        position = createPositioner(aesKey, context, positioningOptions)
+      }
+
       position(aestheticsPerMark) // Positioners work in-place
     }
   }

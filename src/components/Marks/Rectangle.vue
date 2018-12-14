@@ -1,5 +1,6 @@
 <script>
 import Rectangular from '@/mixins/Marks/Rectangular.js'
+import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
@@ -13,33 +14,57 @@ export default {
   },
 
   computed: {
-    _color () { return this.default(this.color, '#000000') },
+    _color () { return this.default(this.color, '#000000') }
+  },
 
-    path () {
-      if (!this.$$map && this.__update) {
-        let points = [
-          [this._x1, this._y1],
-          [this._x1, this._y2],
-          [this._x2, this._y2],
-          [this._x2, this._y1],
-          [this._x1, this._y1]
-        ]
+  methods: {
+    renderSVG (createElement, aesthetics) {
+      let aes = this.convertCoordinateSpecification(aesthetics)
 
-        let path = interpolatePath(points, this.$$transform)
+      let points = [
+        [aes.x1, aes.y1],
+        [aes.x1, aes.y2],
+        [aes.x2, aes.y2],
+        [aes.x2, aes.y1],
+        [aes.x1, aes.y1]
+      ]
 
-        return path
-      }
+      let path = interpolatePath(points, this.$$transform)
+
+      return createElement('path', {
+        attrs: {
+          'd': path,
+          'style': `fill: ${aesthetics.color}`
+        }
+      })
     }
   },
 
-  render (h) {
-    if (!this.$$map) {
-      return h('path', {
-        attrs: {
-          'd': this.path,
-          'style': `fill: ${this._color}`
+  render (createElement) {
+    if (this.__update) {
+      if (!this.$$map) {
+        // Create svg element using aesthetics
+        return this.renderSVG(createElement, this.aesthetics)
+      }
+
+      if (this.$$map) {
+        // Create the aesthetics for each mark
+        let aestheticsPerMark = mapAesthetics(
+          this.aesthetics,
+          this.context,
+          this.$$dataContainer
+        )
+
+        // Create svg element for each mark from aesthetics
+        let components = []
+        for (let aesthetics of aestheticsPerMark) {
+          components.push(
+            this.renderSVG(createElement, aesthetics)
+          )
         }
-      })
+
+        return createElement('g', components)
+      }
     }
   }
 }
