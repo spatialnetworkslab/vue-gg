@@ -1,19 +1,16 @@
 <script>
 import Mark from '@/mixins/Marks/Mark.js'
+import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
   mixins: [Mark],
 
   props: {
+    // Mappable
     points: {
       type: [Array, Object],
       required: true
-    },
-
-    width: {
-      type: Number,
-      default: 2
     },
 
     color: {
@@ -24,17 +21,27 @@ export default {
     fill: {
       type: [String, Object, undefined],
       default: undefined
+    },
+
+    // Non-mappable
+    width: {
+      type: Number,
+      default: 2
     }
   },
 
   computed: {
+    _points () { return this.points },
     _color () { return this.default(this.color, '#000000') },
     _fill () { return this.default(this.fill, 'none') },
+    _width () { return this.default(this.width, 2) },
 
-    path () {
-      if (!this.$$map && this.__update) {
-        let points = this.points
-        return this.createPath(points)
+    aesthetics () {
+      return {
+        points: this._points,
+        color: this._color,
+        fill: this._fill,
+        width: this._width
       }
     }
   },
@@ -53,19 +60,47 @@ export default {
       let path = interpolatePath(this.points, this.$$transform)
 
       return path
+    },
+
+    renderSVG (createElement, aesthetics) {
+      let path = this.createPath(aesthetics.points)
+
+      return createElement('path', {
+        attrs: {
+          'd': path,
+          'stroke': aesthetics.color,
+          'stroke-width': aesthetics.width,
+          'fill': aesthetics.fill
+        }
+      })
     }
   },
 
-  render (h) {
-    if (!this.$$map && this.__update) {
-      return h('path', {
-        attrs: {
-          'd': this.path,
-          'stroke': this._color,
-          'stroke-width': this.width,
-          'fill': this._fill
+  render (createElement) {
+    if (this.__update) {
+      if (!this.$$map) {
+        // Create svg element using aesthetics
+        return this.renderSVG(createElement, this.aesthetics)
+      }
+
+      if (!this.$$map) {
+        // Create the aesthetics for each mark
+        let aestheticsPerMark = mapAesthetics(
+          this.aesthetics,
+          this.context,
+          this.$$dataContainer
+        )
+
+        // Create svg element for each mark from aesthetics
+        let components = []
+        for (let aesthetics of aestheticsPerMark) {
+          components.push(
+            this.renderSVG(createElement, aesthetics)
+          )
         }
-      })
+
+        return createElement('g', components)
+      }
     }
   }
 }
