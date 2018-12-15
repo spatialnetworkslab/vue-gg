@@ -6,7 +6,7 @@
       :height="800"
       class="graphic">
 
-      <vgg-coordinate-transformation
+      <vgg-section
         :type="outerTransformation"
         :x1="0"
         :x2="800"
@@ -14,7 +14,7 @@
         :y2="800"
         :domains="domains">
 
-        <vgg-coordinate-transformation
+        <vgg-section
           v-for="(cs, i) in nestedCoordinateSystems"
           :type="innerTransformation"
           :key="'cs' + i"
@@ -42,9 +42,9 @@
             style="opacity: 0.2;"
           />
 
-        </vgg-coordinate-transformation>
+        </vgg-section>
 
-      </vgg-coordinate-transformation>
+      </vgg-section>
 
     </vgg-graphic>
 

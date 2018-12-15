@@ -8,7 +8,7 @@
       class="graphic">
 
       <!-- Identity scaling, and setting coordinate domains from data -->
-      <vgg-coordinate-transformation
+      <vgg-section
         :x1="100"
         :x2="700"
         :y1="100"
@@ -30,7 +30,7 @@
 
         </vgg-map>
 
-      </vgg-coordinate-transformation>
+      </vgg-section>
 
     </vgg-graphic>
 

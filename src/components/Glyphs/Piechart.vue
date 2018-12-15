@@ -5,7 +5,7 @@
     :width="wh"
     :height="wh">
 
-    <vgg-coordinate-transformation
+    <vgg-section
       :type="transformation"
       :x1="0"
       :x2="wh"
@@ -27,7 +27,7 @@
         :color="rect.color"
       />
 
-    </vgg-coordinate-transformation>
+    </vgg-section>
 
   </vgg-glyph>
 </template>
