@@ -34,6 +34,26 @@
           color="#ced02d"
         />
 
+        <vgg-section
+          :x="{ scale: 'fruit' }"
+          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :y1="0"
+          :y2="{ scale: 'quantity' }"
+          :domains="{
+            x: [-1, 1],
+            y: [-1, 1]
+          }"
+        >
+
+          <vgg-point
+            :x="0"
+            :y="0"
+            :radius="10"
+            color="#8b0000"
+          />
+
+        </vgg-section>
+
       </vgg-map>
 
     </vgg-section>

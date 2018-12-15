@@ -1,12 +1,20 @@
-import CoordinateTreeUser from './CoordinateTreeUser.js'
-import DataReceiver from './DataReceiver.js'
-import Rectangular from './Marks/Rectangular.js'
+<template>
+  <g v-if="ready">
+
+    <slot />
+
+  </g>
+</template>
+
+<script>
+import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
+import DataReceiver from '@/mixins/DataReceiver.js'
 
 import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
 import id from '@/utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataReceiver, Rectangular],
+  mixins: [CoordinateTreeUser, DataReceiver],
 
   props: {
     type: {
@@ -22,6 +30,11 @@ export default {
     domains: {
       type: [Object, undefined],
       default: undefined
+    },
+
+    ranges: {
+      type: Object,
+      required: true
     }
   },
 
@@ -33,14 +46,6 @@ export default {
   },
 
   computed: {
-    ranges () {
-      let aes = this.convertCoordinateSpecification(this.aesthetics)
-      return {
-        x: [aes.x1, aes.x2],
-        y: [aes.y1, aes.y2]
-      }
-    },
-
     _domains () {
       if (this.domains) {
         let domains = {}
@@ -89,6 +94,13 @@ export default {
     }
   },
 
+  watch: {
+    type: 'updateCoordinateTreeBranch',
+    scale: 'updateCoordinateTreeBranch',
+    domains: 'updateCoordinateTreeBranch',
+    ranges: 'updateCoordinateTreeBranch'
+  },
+
   beforeDestroy () {
     this.$$coordinateTree.removeBranch(this.id)
   },
@@ -96,13 +108,6 @@ export default {
   mounted () {
     this.setCoordinateTreeBranch()
     this.ready = true
-  },
-
-  watch: {
-    type: 'updateCoordinateTreeBranch',
-    scale: 'updateCoordinateTreeBranch',
-    domains: 'updateCoordinateTreeBranch',
-    ranges: 'updateCoordinateTreeBranch'
   },
 
   methods: {
@@ -140,3 +145,4 @@ export default {
     return { $$transform, $$coordinateTreeParent, $$map: false }
   }
 }
+</script>
