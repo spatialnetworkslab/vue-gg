@@ -28,6 +28,12 @@
             :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
           />
 
+          <!-- <vgg-piechart
+            :x="{ scale: 'explanatory' }"
+            :y="{ scale: 'dependent' }"
+            :radius="5"
+          /> -->
+
         </vgg-map>
 
       </vgg-section>

@@ -36,12 +36,12 @@
 export default {
   props: {
     x: {
-      type: Number,
+      type: [Number, Object],
       required: true
     },
 
     y: {
-      type: Number,
+      type: [Number, Object],
       required: true
     },
 

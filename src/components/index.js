@@ -1,8 +1,8 @@
 // Core
-import Glyph from './Core/Glyph.vue'
+import Glyph from './Core/GlyphWrapper.vue'
 import Graphic from './Core/Graphic.vue'
 import Map from './Core/Map.vue'
-import Section from './Core/Section.vue'
+import Section from './Core/SectionWrapper.vue'
 
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'

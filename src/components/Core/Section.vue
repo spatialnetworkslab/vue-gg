@@ -1,10 +1,20 @@
+<template>
+  <g v-if="ready">
+
+    <slot />
+
+  </g>
+</template>
+
 <script>
-import SectionWrapped from '@/components/Core/SectionWrapped.vue'
-import Rectangular from '@/mixins/Marks/Rectangular.js'
-import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
+import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
+import DataReceiver from '@/mixins/DataReceiver.js'
+
+import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
+import id from '@/utils/id.js'
 
 export default {
-  mixins: [Rectangular],
+  mixins: [CoordinateTreeUser, DataReceiver],
 
   props: {
     type: {
@@ -20,54 +30,119 @@ export default {
     domains: {
       type: [Object, undefined],
       default: undefined
+    },
+
+    ranges: {
+      type: Object,
+      required: true
     }
+  },
+
+  data () {
+    return {
+      ready: false,
+      id: id()
+    }
+  },
+
+  computed: {
+    _domains () {
+      if (this.domains) {
+        let domains = {}
+
+        let x = this.domains.x
+        let y = this.domains.y
+
+        if (x.constructor === Array) {
+          domains.x = x
+        }
+
+        if (x.constructor === Function) {
+          if (this.$$dataContainer) {
+            let context = {
+              domains: this.$$dataContainer.getDomains(),
+              metadata: this.$$dataContainer.getMetadata()
+            }
+
+            domains.x = x(context)
+          } else {
+            throw new Error('Cannot set variable domain without data')
+          }
+        }
+
+        if (y.constructor === Array) {
+          domains.y = y
+        }
+
+        if (y.constructor === Function) {
+          if (this.$$dataContainer) {
+            let context = {
+              domains: this.$$dataContainer.getDomains(),
+              metadata: this.$$dataContainer.getMetadata()
+            }
+
+            domains.y = y(context)
+          } else {
+            throw new Error('Cannot set variable domain without data')
+          }
+        }
+
+        return domains
+      }
+
+      if (!this.domains) { return this.ranges }
+    }
+  },
+
+  watch: {
+    type: 'updateCoordinateTreeBranch',
+    scale: 'updateCoordinateTreeBranch',
+    domains: 'updateCoordinateTreeBranch',
+    ranges: 'updateCoordinateTreeBranch'
+  },
+
+  beforeDestroy () {
+    this.$$coordinateTree.removeBranch(this.id)
+  },
+
+  mounted () {
+    this.setCoordinateTreeBranch()
+    this.ready = true
   },
 
   methods: {
-    calculateRanges (aesthetics) {
-      let aes = this.convertCoordinateSpecification(aesthetics)
-      return {
-        x: [aes.x1, aes.x2],
-        y: [aes.y1, aes.y2]
-      }
+    setCoordinateTreeBranch () {
+      let transformation = new CoordinateTransformation({
+        type: this.type,
+        scale: this.scale,
+        domains: this._domains,
+        ranges: this.ranges
+      })
+
+      this.$$coordinateTree.addBranch(
+        this.id,
+        this.$$coordinateTreeParent,
+        transformation
+      )
     },
 
-    renderSection (createElement, aesthetics) {
-      let ranges = this.calculateRanges(aesthetics)
+    updateCoordinateTreeBranch () {
+      let transformation = new CoordinateTransformation({
+        type: this.type,
+        scale: this.scale,
+        domains: this._domains,
+        ranges: this.ranges
+      })
 
-      return createElement(SectionWrapped, {
-        props: {
-          type: this.type,
-          scale: this.scale,
-          domains: this.domains,
-          ranges
-        }
-      }, this.$slots.default)
+      this.$$coordinateTree.updateBranch(this.id, transformation)
     }
   },
 
-  render (createElement) {
-    if (!this.$$map) {
-      return this.renderSection(createElement, this.aesthetics)
-    }
+  provide () {
+    let $$transform = this.$$coordinateTree.getTotalTransformation(this.id)
+    let $$coordinateTreeParent = this.id
 
-    if (this.$$map) {
-      let aestheticsPerSection = mapAesthetics(
-        this.aesthetics,
-        this.context,
-        this.$$dataContainer
-      )
-
-      // Create svg element for each mark from aesthetics
-      let sections = []
-      for (let aesthetics of aestheticsPerSection) {
-        sections.push(
-          this.renderSection(createElement, aesthetics)
-        )
-      }
-
-      return createElement('g', sections)
-    }
+    return { $$transform, $$coordinateTreeParent, $$map: false }
   }
 }
 </script>
