@@ -35,20 +35,14 @@ export default {
   },
 
   computed: {
-    _x () { return this.default(this.x, 0) },
-    _y () { return this.default(this.y, 0) },
-    _color () { return this.default(this.color, '#000000') },
-
-    _radius () { return this.default(this.radius, 3) },
-    _strokeWidth () { return this.default(this.strokeWidth, 0) },
-
     aesthetics () {
       return {
-        'x': this._x,
-        'y': this._y,
-        'color': this._color,
-        'radius': this._radius,
-        'strokeWidth': this._strokeWidth
+        'x': this.parseMappable(this.x, 0),
+        'y': this.parseMappable(this.y, 0),
+        'color': this.parseMappable(this.color, '#000000'),
+
+        'radius': this.parseUnmappable(this.radius, 3),
+        'strokeWidth': this.parseUnmappable(this.strokeWidth, 0)
       }
     }
   },

@@ -31,17 +31,13 @@ export default {
   },
 
   computed: {
-    _points () { return this.points },
-    _color () { return this.default(this.color, '#000000') },
-    _fill () { return this.default(this.fill, 'none') },
-    _width () { return this.default(this.width, 2) },
-
     aesthetics () {
       return {
-        points: this._points,
-        color: this._color,
-        fill: this._fill,
-        width: this._width
+        points: this.points,
+        color: this.parseMappable(this.color, '#000000'),
+        fill: this.parseMappable(this.fill, 'none'),
+
+        width: this.parseUnmappable(this.width, 2)
       }
     }
   },

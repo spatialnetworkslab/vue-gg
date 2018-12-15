@@ -46,24 +46,16 @@ export default {
   },
 
   computed: {
-    _x1 () { return this.default(this.x1, 0) },
-    _x2 () { return this.default(this.x2, 0) },
-    _y1 () { return this.default(this.y1, 0) },
-    _y2 () { return this.default(this.y2, 0) },
-    _func () { return this.default(this.func, undefined) },
-    _color () { return this.default(this.color, '#000000') },
-
-    _width () { return this.default(this.width, 2) },
-
     aesthetics () {
       return {
-        'x1': this._x1,
-        'y1': this._y1,
-        'x2': this._x2,
-        'y2': this._y2,
-        'func': this._func,
-        'color': this._color,
-        'width': this._width
+        'x1': this.parseMappable(this.x1, 0),
+        'y1': this.parseMappable(this.y1, 0),
+        'x2': this.parseMappable(this.x2, 0),
+        'y2': this.parseMappable(this.y2, 0),
+        'func': this.parseMappable(this.func, undefined),
+        'color': this.parseMappable(this.color, '#000000'),
+
+        'width': this.parseUnmappable(this.width, 2)
       }
     }
   },

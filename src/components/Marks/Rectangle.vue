@@ -6,17 +6,6 @@ import { interpolatePath } from './utils/createPath.js'
 export default {
   mixins: [Rectangular],
 
-  props: {
-    color: {
-      type: [String, Object, undefined],
-      default: undefined
-    }
-  },
-
-  computed: {
-    _color () { return this.default(this.color, '#000000') }
-  },
-
   methods: {
     renderSVG (createElement, aesthetics) {
       let aes = this.convertCoordinateSpecification(aesthetics)

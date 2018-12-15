@@ -23,7 +23,23 @@ export default {
   },
 
   methods: {
-    default (prop, defaultVal) {
+    parseMappable (prop, defaultVal) {
+      if (!this.$$map) {
+        if (is(prop) && prop.constructor === Object) {
+          throw new Error('Error: trying to map without vgg-map component.')
+        }
+
+        if (is(prop)) { return prop }
+        if (isnt(prop)) { return defaultVal }
+      }
+      if (this.$$map) {
+        if (is(prop) && prop.constructor === Object) { return prop }
+        if (is(prop) && prop.constructor !== Object) { return { assign: prop } }
+        if (isnt(prop)) { return { assign: defaultVal } }
+      }
+    },
+
+    parseUnmappable (prop, defaultVal) {
       if (!this.$$map) {
         if (is(prop) && prop.constructor === Object) {
           throw new Error('Error: trying to map without vgg-map component.')
@@ -33,9 +49,13 @@ export default {
         if (is(prop)) { return prop }
         if (isnt(prop)) { return defaultVal }
       }
+
       if (this.$$map) {
-        if (is(prop) && prop.constructor === Object) { return prop }
-        if (is(prop) && prop.constructor !== Object) { return { assign: prop } }
+        if (is(prop) && prop.constructor === Object) {
+          throw new Error(`Error: property '${prop}' is unmappable.`)
+        }
+
+        if (is(prop)) { return { assign: prop } }
         if (isnt(prop)) { return { assign: defaultVal } }
       }
     }

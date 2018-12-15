@@ -43,6 +43,11 @@ export default {
     h: {
       type: [Number, Object, undefined],
       default: undefined
+    },
+
+    color: {
+      type: [String, Object, undefined],
+      default: undefined
     }
   },
 
@@ -55,15 +60,6 @@ export default {
       return invalidCombination(this.y1, this.y2, this.y, this.h)
     },
 
-    _x1 () { return this.default(this.x1, undefined) },
-    _x2 () { return this.default(this.x2, undefined) },
-    _y1 () { return this.default(this.y1, undefined) },
-    _y2 () { return this.default(this.y2, undefined) },
-    _x () { return this.default(this.x, undefined) },
-    _y () { return this.default(this.y, undefined) },
-    _w () { return this.default(this.w, undefined) },
-    _h () { return this.default(this.h, undefined) },
-
     aesthetics () {
       if (this.invalidX) {
         throw new Error('Invalid combination of props x1, x2, x and w')
@@ -74,15 +70,15 @@ export default {
       }
 
       return {
-        'x1': this._x1,
-        'x2': this._x2,
-        'y1': this._y1,
-        'y2': this._y2,
-        'x': this._x,
-        'y': this._y,
-        'w': this._w,
-        'h': this._h,
-        'color': this._color
+        'x1': this.parseMappable(this.x1, undefined),
+        'x2': this.parseMappable(this.x2, undefined),
+        'y1': this.parseMappable(this.y1, undefined),
+        'y2': this.parseMappable(this.y2, undefined),
+        'x': this.parseMappable(this.x, undefined),
+        'y': this.parseMappable(this.y, undefined),
+        'w': this.parseMappable(this.w, undefined),
+        'h': this.parseMappable(this.h, undefined),
+        'color': this.parseMappable(this.color, '#000000')
       }
     }
   },
