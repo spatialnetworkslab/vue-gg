@@ -9,7 +9,7 @@ export default function (aesthetics, context, dataContainer) {
   let funcs = {}
   let positioners = {}
 
-  // First, extract the assigners, scales, funcs and positioners
+  // First, extract the assigners, scales, getter-funcs and positioners
   for (let aesKey in aesthetics) {
     let passedProp = aesthetics[aesKey]
 
@@ -27,19 +27,15 @@ export default function (aesthetics, context, dataContainer) {
     }
   }
 
-  // Second, we will parse the assigners and scales
+  // Second, we will parse the scales
   let parsedScales = {}
 
   for (let aesKey in scales) {
     let scalingOptions = scales[aesKey]
-    // The scale can be specified in four ways:
+    // The scale can be specified in three ways:
     // 1. Set the scale with a shorthand with the default settings
     // 2. Set the scale with a shorthand with custom settings
     // 3. Set the scale by constructing your own scale
-    // 4. Use a getter function, for custom stuff or an identity scale
-    //
-    // These four ways are specified through the constructor of the
-    // aestheticScaling variable. Respectively:
 
     // 1. Set the scale with a shorthand with the default settings.
     // Here we just need the string id of the variable we want to scale
@@ -61,11 +57,6 @@ export default function (aesthetics, context, dataContainer) {
       if (scalingOptions.construct) {
         parsedScales[aesKey] = scalingOptions.construct(context)
       }
-    }
-
-    // 4. Use a getter function that takes (row, i)
-    if (scalingOptions.constructor === Function) {
-      parsedScales[aesKey] = scalingOptions
     }
   }
 
@@ -101,11 +92,11 @@ export default function (aesthetics, context, dataContainer) {
         }
       } else if (is(funcs[aesKey])) {
         // If a function was used instead of a scale object:
-        // We pass it the context object, the entire row, and the row index
-        props[aesKey] = funcs[aesKey](context, row, i)
+        // We pass it the entire row, the row index and the context object
+        props[aesKey] = funcs[aesKey](row, i, context)
       } else if (is(assigners[aesKey])) {
-        // Finally, if no scaling is happening,
-        // we will check if there is anything that should be assigned.
+        // Finally, if there were no scales or getter functions specified,
+        // we will assign a constant value if necessary.
         props[aesKey] = assigners[aesKey]
       }
     }

@@ -22,8 +22,8 @@
         <vgg-map>
 
           <vgg-point
-            :x="(context, row) => row.explanatory"
-            :y="(context, row) => row.dependent"
+            :x="row => row.explanatory"
+            :y="row => row.dependent"
             :radius="3"
             :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
           />
