@@ -1,11 +1,8 @@
 import { configure } from '@storybook/vue'
 import Vue from 'vue'
+import VueGG from '@'
 
-// temp hack to register vgg components globally
-import components from '../src/components'
-for (let key in components) {
-  Vue.component(`Vgg${key}`, components[key])
-}
+Vue.use(VueGG)
 
 function loadStories() {
   // You can require as many stories as you need.
