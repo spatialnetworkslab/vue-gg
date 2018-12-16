@@ -8,7 +8,7 @@
       class="graphic">
 
       <!-- Identity scaling, and setting coordinate domains from data -->
-      <vgg-coordinate-transformation
+      <vgg-section
         :x1="100"
         :x2="700"
         :y1="100"
@@ -19,57 +19,24 @@
         }"
       >
 
-        <vgg-map
-          :scale="{
-            x: row => row.explanatory,
-            y: row => row.dependent,
-            radius: () => Math.random() * 10,
-            color: {
-              variable: 'explanatory',
-              scale: 'viridis'
-            }
-          }"
-        >
-          <vgg-point />
+        <vgg-map>
+
+          <vgg-point
+            :x="row => row.explanatory"
+            :y="row => row.dependent"
+            :radius="3"
+            :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
+          />
+
+          <!-- <vgg-piechart
+            :x="{ scale: 'explanatory' }"
+            :y="{ scale: 'dependent' }"
+            :radius="5"
+          /> -->
+
         </vgg-map>
 
-      </vgg-coordinate-transformation>
-
-      <!-- Shorthand scaling -->
-      <!-- <vgg-coordinate-transformation
-        :x1="100"
-        :x2="700"
-        :y1="100"
-        :y2="700"
-      >
-
-        <vgg-map
-          :scale="{
-            x: 'explanatory',
-            y: {
-              variable: 'dependent',
-              scale: 'squareRoot'
-            },
-            radius: () => Math.random() * 10
-          }"
-        >
-          <vgg-point />
-        </vgg-map>
-
-      </vgg-coordinate-transformation> -->
-
-      <!-- Custom scaling -->
-      <!-- <vgg-coordinate-transformation
-        :x1="100"
-        :x2="700"
-        :y1="100"
-        :y2="700">
-
-        <vgg-map :scale="scaling">
-          <vgg-point />
-        </vgg-map>
-
-      </vgg-coordinate-transformation> -->
+      </vgg-section>
 
     </vgg-graphic>
 

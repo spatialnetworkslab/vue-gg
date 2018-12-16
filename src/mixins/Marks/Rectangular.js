@@ -1,95 +1,138 @@
+import Mark from './Mark.js'
 import { is, isnt } from '@/utils/equals.js'
 
 export default {
+  mixins: [Mark],
+
   props: {
     x1: {
-      type: [Number, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Number, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y1: {
-      type: [Number, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Number, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     x: {
-      type: [Number, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     w: {
-      type: [Number, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     h: {
-      type: [Number, undefined],
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    color: {
+      type: [String, Object, Function, undefined],
       default: undefined
     }
   },
 
   computed: {
-    _x1 () {
-      if (is(this.x1)) { return this.x1 }
-
-      if (is(this.x2) && is(this.w) && isnt(this.x)) {
-        return this.x2 - this.w
-      } else if (is(this.x) && is(this.w) && isnt(this.x2)) {
-        return this.x - (this.w / 2)
-      } else {
-        throw new Error('Invalid combination of props (x, x1, x2, w)')
-      }
+    invalidX () {
+      return invalidCombination(this.x1, this.x2, this.x, this.w)
     },
 
-    _x2 () {
-      if (is(this.x2)) { return this.x2 }
-
-      if (is(this.x1) && is(this.w) && isnt(this.x)) {
-        return this.x1 + this.w
-      } else if (is(this.x) && is(this.w) && isnt(this.x1)) {
-        return this.x + (this.w / 2)
-      } else {
-        throw new Error('Invalid combination of props (x, x1, x2, w)')
-      }
+    invalidY () {
+      return invalidCombination(this.y1, this.y2, this.y, this.h)
     },
 
-    _y1 () {
-      if (is(this.y1)) { return this.y1 }
-
-      if (is(this.y2) && is(this.h) && isnt(this.y)) {
-        return this.y2 - this.h
-      } else if (is(this.y) && is(this.h) && isnt(this.y2)) {
-        return this.y - (this.h / 2)
-      } else {
-        throw new Error('Invalid combination of props (y, y1, y2, h)')
+    aesthetics () {
+      if (this.invalidX) {
+        throw new Error('Invalid combination of props x1, x2, x and w')
       }
-    },
 
-    _y2 () {
-      if (is(this.y2)) { return this.y2 }
+      if (this.invalidY) {
+        throw new Error('Invalid combination of props y1, y2, y and h')
+      }
 
-      if (is(this.y1) && is(this.h) && isnt(this.y)) {
-        return this.y1 + this.h
-      } else if (is(this.y) && is(this.h) && isnt(this.y1)) {
-        return this.y + (this.h / 2)
-      } else {
-        throw new Error('Invalid combination of props (y, y1, y2, h)')
+      return {
+        x1: this.parseMappable(this.x1, undefined),
+        x2: this.parseMappable(this.x2, undefined),
+        y1: this.parseMappable(this.y1, undefined),
+        y2: this.parseMappable(this.y2, undefined),
+        x: this.parseMappable(this.x, undefined),
+        y: this.parseMappable(this.y, undefined),
+        w: this.parseMappable(this.w, undefined),
+        h: this.parseMappable(this.h, undefined),
+        color: this.parseMappable(this.color, '#000000')
       }
     }
+  },
+
+  methods: {
+    convertCoordinateSpecification (aes) {
+      let [x1, x2] = convertSpecification(aes.x1, aes.x2, aes.x, aes.w)
+      let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h)
+
+      for (let aesKey in ['x', 'y', 'w', 'h']) {
+        if (aes[aesKey]) { delete aes[aesKey] }
+      }
+
+      aes.x1 = x1
+      aes.x2 = x2
+      aes.y1 = y1
+      aes.y2 = y2
+
+      return aes
+    }
+  }
+}
+
+function invalidCombination (x1, x2, x, w) {
+  let validCombinations = [
+    // If there is nothing, just x1, just x2, or just x1 and x2
+    isnt(x) && isnt(w),
+    // If there is just x1 and w
+    is(x1) && isnt(x2) && isnt(x) && is(w),
+    // If there is just x2 and w
+    isnt(x1) && is(x2) && isnt(x) && is(w),
+    // If there is just x and w
+    isnt(x1) && isnt(x2) && is(x) && is(w)
+  ]
+
+  return !(validCombinations.some(combo => combo === true))
+}
+
+// Converts any valid combination of x1, x2, x and w to [x1, x2]
+function convertSpecification (x1, x2, x, w) {
+  // If there is nothing, just x1, just x2, or just x1 and x2
+  if (isnt(x) && isnt(w)) {
+    return [x1, x2]
+  }
+  // If there is just x1 and w
+  if (is(x1) && isnt(x2) && isnt(x) && is(w)) {
+    return [x1, x1 + w]
+  }
+  // If there is just x2 and w
+  if (isnt(x1) && is(x2) && isnt(x) && is(w)) {
+    return [x2 - w, x2]
+  }
+  // If there is just x and w
+  if (isnt(x1) && isnt(x2) && is(x) && is(w)) {
+    return [x - (w / 2), x + (w / 2)]
   }
 }

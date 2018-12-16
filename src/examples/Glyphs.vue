@@ -6,7 +6,7 @@
       :height="800"
       class="graphic">
 
-      <vgg-coordinate-transformation
+      <vgg-section
         :type="outerTransformation"
         :x1="100"
         :x2="700"
@@ -35,7 +35,7 @@
           :transformation="innerTransformation"
         />
 
-      </vgg-coordinate-transformation>
+      </vgg-section>
 
     </vgg-graphic>
 

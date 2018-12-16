@@ -2,9 +2,10 @@
   <vgg-graphic
     :width="800"
     :height="800"
+    :data="test"
     class="graphic">
 
-    <vgg-coordinate-transformation
+    <vgg-section
       :x1="100"
       :x2="700"
       :y1="100"
@@ -30,7 +31,20 @@
         :y2="0"
       />
 
-      <!-- Lines -->
+      <!-- Mapping test -->
+      <vgg-map>
+
+        <vgg-line
+          :x1="{ scale: 'a' }"
+          :x2="{ scale: 'a' }"
+          :y1="-1"
+          :y2="1"
+          :width="1"
+        />
+
+      </vgg-map>
+
+      <!-- Graphs -->
       <vgg-line
         :func="x => x ** 2"
         :width="3"
@@ -49,7 +63,17 @@
         color="#00919c"
       />
 
-    </vgg-coordinate-transformation>
+    </vgg-section>
 
   </vgg-graphic>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      test: [{ a: -1 }, { a: -0.5 }, { a: 0.5 }, { a: 1 }]
+    }
+  }
+}
+</script>

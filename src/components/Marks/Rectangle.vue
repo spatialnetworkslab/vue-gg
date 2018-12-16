@@ -1,43 +1,60 @@
 <script>
 import Rectangular from '@/mixins/Marks/Rectangular.js'
-import Mark from '@/mixins/Marks/Mark.js'
+import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
 import { interpolatePath } from './utils/createPath.js'
 
 export default {
-  mixins: [Rectangular, Mark],
+  mixins: [Rectangular],
 
-  props: {
-    color: {
-      type: String,
-      default: '#000000'
+  methods: {
+    renderSVG (createElement, aesthetics) {
+      let aes = this.convertCoordinateSpecification(aesthetics)
+
+      let points = [
+        [aes.x1, aes.y1],
+        [aes.x1, aes.y2],
+        [aes.x2, aes.y2],
+        [aes.x2, aes.y1],
+        [aes.x1, aes.y1]
+      ]
+
+      let path = interpolatePath(points, this.$$transform)
+
+      return createElement('path', {
+        attrs: {
+          'd': path,
+          'style': `fill: ${aesthetics.color}`
+        }
+      })
     }
   },
 
-  computed: {
-    path () {
-      if (this.__update) {
-        let coords = [
-          [this._x1, this._y1],
-          [this._x1, this._y2],
-          [this._x2, this._y2],
-          [this._x2, this._y1],
-          [this._x1, this._y1]
-        ]
+  render (createElement) {
+    if (this.__update) {
+      if (!this.$$map) {
+        // Create svg element using aesthetics
+        return this.renderSVG(createElement, this.aesthetics)
+      }
 
-        let path = interpolatePath(coords, this.$$transform)
+      if (this.$$map) {
+        // Create the aesthetics for each mark
+        let aestheticsPerMark = mapAesthetics(
+          this.aesthetics,
+          this.context,
+          this.$$dataContainer
+        )
 
-        return path
+        // Create svg element for each mark from aesthetics
+        let components = []
+        for (let aesthetics of aestheticsPerMark) {
+          components.push(
+            this.renderSVG(createElement, aesthetics)
+          )
+        }
+
+        return createElement('g', components)
       }
     }
-  },
-
-  render (h) {
-    return h('path', {
-      attrs: {
-        'd': this.path,
-        'style': `fill: ${this.color}`
-      }
-    })
   }
 }
 </script>

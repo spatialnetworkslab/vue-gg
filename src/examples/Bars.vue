@@ -6,7 +6,7 @@
     :data="bars"
     class="graphic">
 
-    <vgg-coordinate-transformation
+    <vgg-section
       :x1="100"
       :x2="700"
       :y1="100"
@@ -17,37 +17,46 @@
       }"
     >
 
-      <vgg-rectangle
-        :x1="0"
-        :x2="100"
-        :y1="0"
-        :y2="100"
-        color="#ffffff"
-      />
+      <vgg-map>
 
-      <vgg-map
-        :assign="{
-          y1: 0
-        }"
-        :scale="{
-          x: 'fruit',
-          y2: 'quantity',
-          color: 'quantity'
-        }"
-        :position="{
-          w: {
-            positioner: 'bulge',
-            basedOn: 'x',
-            padding: 0.5
-          }
-        }"
-      >
+        <vgg-rectangle
+          :x="{ scale: 'fruit' }"
+          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :y1="0"
+          :y2="{ scale: 'quantity' }"
+        />
 
-        <vgg-rectangle />
+        <vgg-line
+          :x1="{ scale: 'fruit' }"
+          :x2="{ scale: 'fruit' }"
+          :y1="0"
+          :y2="{ scale: 'quantity' }"
+          color="#ced02d"
+        />
+
+        <vgg-section
+          :x="{ scale: 'fruit' }"
+          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :y1="0"
+          :y2="{ scale: 'quantity' }"
+          :domains="{
+            x: [-1, 1],
+            y: [-1, 1]
+          }"
+        >
+
+          <vgg-point
+            :x="0"
+            :y="0"
+            :radius="10"
+            color="#8b0000"
+          />
+
+        </vgg-section>
 
       </vgg-map>
 
-    </vgg-coordinate-transformation>
+    </vgg-section>
 
   </vgg-graphic>
 </template>

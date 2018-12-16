@@ -65,7 +65,7 @@ export default {
 
   data () {
     return {
-      example: 'Bars'
+      example: 'Scatterplot'
     }
   }
 }

@@ -1,83 +1,127 @@
 <script>
 import Mark from '@/mixins/Marks/Mark.js'
+import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
 import { interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
 
 export default {
   mixins: [Mark],
 
   props: {
+    // Mappable
     x1: {
-      type: Number,
-      default: 0
-    },
-
-    x2: {
-      type: Number,
-      default: 0
-    },
-
-    y1: {
-      type: Number,
-      default: 0
-    },
-
-    y2: {
-      type: Number,
-      default: 0
-    },
-
-    func: {
-      type: [Function, undefined],
-      required: false,
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
-    width: {
-      type: Number,
-      default: 2
+    x2: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    y1: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    y2: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    func: {
+      type: [Function, Object, Function, undefined],
+      default: undefined
     },
 
     color: {
-      type: String,
-      default: '#000000'
+      type: [String, Object, Function, undefined],
+      default: undefined
+    },
+
+    // Non-mappable
+    width: {
+      type: Number,
+      default: 2
     }
   },
 
   computed: {
-    path () {
-      if (this.__update) {
-        let path
+    aesthetics () {
+      return {
+        x1: this.parseMappable(this.x1, 0),
+        y1: this.parseMappable(this.y1, 0),
+        x2: this.parseMappable(this.x2, 0),
+        y2: this.parseMappable(this.y2, 0),
+        func: this.parseMappable(this.func, undefined, true),
+        color: this.parseMappable(this.color, '#000000'),
 
-        if (this.func) {
-          let parentId = this.$$coordinateTreeParent
-          let domains = this.$$coordinateTree.getBranch(parentId).domains
-
-          path = interpolatePathFromFunc(this.func, this.$$transform, domains)
-        }
-
-        if (!this.func) {
-          let coords = [
-            [this.x1, this.y1],
-            [this.x2, this.y2]
-          ]
-
-          path = interpolatePath(coords, this.$$transform)
-        }
-
-        return path
+        width: this.parseUnmappable(this.width, 2)
       }
     }
   },
 
-  render (h) {
-    return h('path', {
-      attrs: {
-        'd': this.path,
-        'stroke': this.color,
-        'stroke-width': this.width,
-        'fill': 'none'
+  methods: {
+    createPath (func, coords) {
+      let path
+
+      if (func) {
+        let parentId = this.$$coordinateTreeParent
+        let domains = this.$$coordinateTree.getBranch(parentId).domains
+
+        path = interpolatePathFromFunc(this.func, this.$$transform, domains)
       }
-    })
+
+      if (!func) {
+        path = interpolatePath(coords, this.$$transform)
+      }
+
+      return path
+    },
+
+    renderSVG (createElement, aesthetics) {
+      let coords = [
+        [aesthetics.x1, aesthetics.y1],
+        [aesthetics.x2, aesthetics.y2]
+      ]
+      let path = this.createPath(aesthetics.func, coords)
+
+      return createElement('path', {
+        attrs: {
+          'd': path,
+          'stroke': aesthetics.color,
+          'stroke-width': aesthetics.width,
+          'fill': 'none'
+        }
+      })
+    }
+  },
+
+  render (createElement) {
+    if (this.__update) {
+      if (!this.$$map) {
+        // Create svg element using aesthetics
+        return this.renderSVG(createElement, this.aesthetics)
+      }
+
+      if (this.$$map) {
+        // Create the aesthetics for each mark
+        let aestheticsPerMark = mapAesthetics(
+          this.aesthetics,
+          this.context,
+          this.$$dataContainer
+        )
+
+        // Create svg element for each mark from aesthetics
+        let components = []
+        for (let aesthetics of aestheticsPerMark) {
+          components.push(
+            this.renderSVG(createElement, aesthetics)
+          )
+        }
+
+        return createElement('g', components)
+      }
+    }
   }
 }
 </script>

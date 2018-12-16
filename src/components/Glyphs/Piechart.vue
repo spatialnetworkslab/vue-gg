@@ -5,7 +5,7 @@
     :width="wh"
     :height="wh">
 
-    <vgg-coordinate-transformation
+    <vgg-section
       :type="transformation"
       :x1="0"
       :x2="wh"
@@ -27,7 +27,7 @@
         :color="rect.color"
       />
 
-    </vgg-coordinate-transformation>
+    </vgg-section>
 
   </vgg-glyph>
 </template>
@@ -36,12 +36,12 @@
 export default {
   props: {
     x: {
-      type: Number,
+      type: [Number, Object, Function],
       required: true
     },
 
     y: {
-      type: Number,
+      type: [Number, Object, Function],
       required: true
     },
 

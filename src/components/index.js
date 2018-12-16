@@ -1,8 +1,8 @@
 // Core
-import CoordinateTransformation from './Core/CoordinateTransformation.vue'
-import Glyph from './Core/Glyph.vue'
+import Glyph from './Core/GlyphWrapper.vue'
 import Graphic from './Core/Graphic.vue'
 import Map from './Core/Map.vue'
+import Section from './Core/SectionWrapper.vue'
 
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'
@@ -14,10 +14,10 @@ import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
 
 export default {
-  CoordinateTransformation,
   Glyph,
   Graphic,
   Map,
+  Section,
 
   Piechart,
 
