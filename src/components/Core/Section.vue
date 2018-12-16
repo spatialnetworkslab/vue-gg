@@ -12,6 +12,7 @@ import DataReceiver from '@/mixins/Data/DataReceiver.js'
 
 import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
 import id from '@/utils/id.js'
+import parseDomain from './utils/parseDomain.js'
 
 export default {
   mixins: [CoordinateTreeUser, DataReceiver],
@@ -20,11 +21,6 @@ export default {
     type: {
       type: String,
       default: 'scale'
-    },
-
-    scale: {
-      type: String,
-      default: 'linear'
     },
 
     domains: {
@@ -50,44 +46,8 @@ export default {
       if (this.domains) {
         let domains = {}
 
-        let x = this.domains.x
-        let y = this.domains.y
-
-        if (x.constructor === Array) {
-          domains.x = x
-        }
-
-        if (x.constructor === Function) {
-          if (this.$$dataContainer) {
-            let context = {
-              domains: this.$$dataContainer.getDomains(),
-              metadata: this.$$dataContainer.getMetadata()
-            }
-
-            domains.x = x(context)
-          } else {
-            // If no data is available yet, set domain to range for now
-            domains.x = this.ranges.x
-          }
-        }
-
-        if (y.constructor === Array) {
-          domains.y = y
-        }
-
-        if (y.constructor === Function) {
-          if (this.$$dataContainer) {
-            let context = {
-              domains: this.$$dataContainer.getDomains(),
-              metadata: this.$$dataContainer.getMetadata()
-            }
-
-            domains.y = y(context)
-          } else {
-            // If no data is available yet, set domain to range for now
-            domains.y = this.ranges.y
-          }
-        }
+        domains.x = parseDomain(this.domains.x, this.$$dataContainer)
+        domains.y = parseDomain(this.domains.y, this.$$dataContainer)
 
         return domains
       }
@@ -96,9 +56,9 @@ export default {
     },
 
     allowDomains () {
-      let xFunction = this.domains.x.constructor === Function
-      let yFunction = this.domains.y.constructor === Function
-      if (!this.$$dataContainer && (xFunction || yFunction)) {
+      let xNotArray = this.domains.x.constructor !== Array
+      let yNotArray = this.domains.y.constructor !== Array
+      if (!this.$$dataContainer && (xNotArray || yNotArray)) {
         return false
       } else {
         return true
@@ -108,7 +68,6 @@ export default {
 
   watch: {
     type: 'updateCoordinateTreeBranch',
-    scale: 'updateCoordinateTreeBranch',
     domains: 'updateCoordinateTreeBranch',
     ranges: 'updateCoordinateTreeBranch'
   },
@@ -126,7 +85,6 @@ export default {
     setCoordinateTreeBranch () {
       let transformation = new CoordinateTransformation({
         type: this.type,
-        scale: this.scale,
         domains: this._domains,
         ranges: this.ranges
       })
@@ -141,7 +99,6 @@ export default {
     updateCoordinateTreeBranch () {
       let transformation = new CoordinateTransformation({
         type: this.type,
-        scale: this.scale,
         domains: this._domains,
         ranges: this.ranges
       })

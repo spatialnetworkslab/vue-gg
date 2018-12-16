@@ -13,8 +13,8 @@
         :y1="100"
         :y2="700"
         :domains="{
-          x: ({ domains }) => domains.explanatory,
-          y: ({ domains }) => domains.dependent
+          x: 'explanatory',
+          y: 'dependent'
         }"
       >
 

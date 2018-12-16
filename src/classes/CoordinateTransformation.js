@@ -3,35 +3,14 @@ import coordsScales from '@/scales/shorthands/coords/numeric.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
-    // For every type other than 'custom', we will expect two more option keys:
-    //   - domains
-    //   - ranges
-    // Both of these will be objects with x and y keys
-    // Behind each of these keys will be an array of length two. For example:
-    //
-    // {
-    //   type: 'linear',
-    //   domains: {
-    //     x: [-100, 100],
-    //     y: [-200, 200]
-    //   },
-    //   ranges: {
-    //     x: [0, 500],
-    //     y: [0, 500]
-    //   }
-    // }
-    //
-    // 'domains' refers to the values of the marks inside of the transformation,
-    // while 'ranges' refers to the portion of the parent coordinate space that
-    // the values of the marks will be mapped to.
     if (options.type === 'scale') {
       let domainX = options.domains.x
       let domainY = options.domains.y
       let rangeX = options.ranges.x
       let rangeY = options.ranges.y
 
-      let scaleX = coordsScales[options.scale](domainX, rangeX)
-      let scaleY = coordsScales[options.scale](domainY, rangeY)
+      let scaleX = coordsScales['linear'](domainX, rangeX)
+      let scaleY = coordsScales['linear'](domainY, rangeY)
 
       this.transform = ([x, y]) => {
         return [scaleX(x), scaleY(y)]
