@@ -3,7 +3,6 @@
   <vgg-graphic
     :width="800"
     :height="800"
-    :data="bars"
     class="graphic">
 
     <vgg-section
@@ -17,7 +16,7 @@
       }"
     >
 
-      <vgg-map>
+      <vgg-map :data="bars">
 
         <vgg-rectangle
           :x="{ scale: 'fruit' }"

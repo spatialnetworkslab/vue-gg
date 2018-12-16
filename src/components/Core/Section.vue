@@ -1,5 +1,5 @@
 <template>
-  <g v-if="ready">
+  <g v-if="ready && allowDomains">
 
     <slot />
 
@@ -8,7 +8,7 @@
 
 <script>
 import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
-import DataReceiver from '@/mixins/DataReceiver.js'
+import DataReceiver from '@/mixins/Data/DataReceiver.js'
 
 import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
 import id from '@/utils/id.js'
@@ -66,7 +66,8 @@ export default {
 
             domains.x = x(context)
           } else {
-            throw new Error('Cannot set variable domain without data')
+            // If no data is available yet, set domain to range for now
+            domains.x = this.ranges.x
           }
         }
 
@@ -83,7 +84,8 @@ export default {
 
             domains.y = y(context)
           } else {
-            throw new Error('Cannot set variable domain without data')
+            // If no data is available yet, set domain to range for now
+            domains.y = this.ranges.y
           }
         }
 
@@ -91,6 +93,16 @@ export default {
       }
 
       if (!this.domains) { return this.ranges }
+    },
+
+    allowDomains () {
+      let xFunction = this.domains.x.constructor === Function
+      let yFunction = this.domains.y.constructor === Function
+      if (!this.$$dataContainer && (xFunction || yFunction)) {
+        return false
+      } else {
+        return true
+      }
     }
   },
 

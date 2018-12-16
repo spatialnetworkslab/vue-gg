@@ -1,5 +1,5 @@
 import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
-import DataReceiver from '@/mixins/DataReceiver.js'
+import DataReceiver from '@/mixins/Data/DataReceiver.js'
 
 import { is, isnt } from '@/utils/equals.js'
 
