@@ -1,6 +1,8 @@
 import DataContainer from '@/classes/DataContainer'
 
 export default {
+  inject: ['$$dataContainerContext'],
+
   props: {
     data: {
       type: [Array, Object, undefined],
@@ -14,6 +16,10 @@ export default {
   },
 
   computed: {
+    $$dataContainer () {
+      return this.$$dataContainerContext.dataContainer
+    },
+
     dataContainer () {
       if (this.data) {
         return new DataContainer(this.data, this.metadata)
@@ -22,7 +28,7 @@ export default {
   },
 
   provide () {
-    if (this.data) {
+    if (this.dataContainer) {
       let $$dataContainerContext = this
 
       return { $$dataContainerContext }

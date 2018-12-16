@@ -1,5 +1,7 @@
 <template>
-  <g><slot /></g>
+  <g v-if="$$dataContainer || dataContainer">
+    <slot />
+  </g>
 </template>
 
 <script>
