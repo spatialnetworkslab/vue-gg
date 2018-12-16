@@ -70,15 +70,15 @@ export default {
       }
 
       return {
-        'x1': this.parseMappable(this.x1, undefined),
-        'x2': this.parseMappable(this.x2, undefined),
-        'y1': this.parseMappable(this.y1, undefined),
-        'y2': this.parseMappable(this.y2, undefined),
-        'x': this.parseMappable(this.x, undefined),
-        'y': this.parseMappable(this.y, undefined),
-        'w': this.parseMappable(this.w, undefined),
-        'h': this.parseMappable(this.h, undefined),
-        'color': this.parseMappable(this.color, '#000000')
+        x1: this.parseMappable(this.x1, undefined),
+        x2: this.parseMappable(this.x2, undefined),
+        y1: this.parseMappable(this.y1, undefined),
+        y2: this.parseMappable(this.y2, undefined),
+        x: this.parseMappable(this.x, undefined),
+        y: this.parseMappable(this.y, undefined),
+        w: this.parseMappable(this.w, undefined),
+        h: this.parseMappable(this.h, undefined),
+        color: this.parseMappable(this.color, '#000000')
       }
     }
   },
