@@ -1,7 +1,7 @@
 import { configure } from '@storybook/vue'
 import Vue from 'vue'
 
-// temp hack to register components globally
+// temp hack to register vgg components globally
 import components from '../src/components'
 for (let key in components) {
   Vue.component(`Vgg${key}`, components[key])
