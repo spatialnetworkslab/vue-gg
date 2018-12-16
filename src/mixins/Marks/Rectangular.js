@@ -6,47 +6,47 @@ export default {
 
   props: {
     x1: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y1: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     x: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     w: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     h: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     color: {
-      type: [String, Object, undefined],
+      type: [String, Object, Function, undefined],
       default: undefined
     }
   },

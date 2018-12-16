@@ -9,17 +9,17 @@ export default {
   props: {
     // Mappable
     points: {
-      type: [Array, Object],
+      type: [Array, Object, Function],
       required: true
     },
 
     color: {
-      type: [String, Object, undefined],
+      type: [String, Object, Function, undefined],
       default: undefined
     },
 
     fill: {
-      type: [String, Object, undefined],
+      type: [String, Object, Function, undefined],
       default: undefined
     },
 
@@ -33,7 +33,7 @@ export default {
   computed: {
     aesthetics () {
       return {
-        points: this.points,
+        points: this.parseMappable(this.points, undefined),
         color: this.parseMappable(this.color, '#000000'),
         fill: this.parseMappable(this.fill, 'none'),
 

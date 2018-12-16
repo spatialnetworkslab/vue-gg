@@ -8,17 +8,17 @@ export default {
   props: {
     // Mappable
     x: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     color: {
-      type: [String, Object, undefined],
+      type: [String, Object, Function, undefined],
       default: undefined
     },
 

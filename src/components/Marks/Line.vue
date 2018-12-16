@@ -9,32 +9,32 @@ export default {
   props: {
     // Mappable
     x1: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y1: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Number, Object, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     func: {
-      type: [Function, Object, undefined],
+      type: [Function, Object, Function, undefined],
       default: undefined
     },
 
     color: {
-      type: [String, Object, undefined],
+      type: [String, Object, Function, undefined],
       default: undefined
     },
 
@@ -52,7 +52,7 @@ export default {
         y1: this.parseMappable(this.y1, 0),
         x2: this.parseMappable(this.x2, 0),
         y2: this.parseMappable(this.y2, 0),
-        func: this.parseMappable(this.func, undefined),
+        func: this.parseMappable(this.func, undefined, true),
         color: this.parseMappable(this.color, '#000000'),
 
         width: this.parseUnmappable(this.width, 2)

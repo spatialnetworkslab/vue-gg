@@ -23,39 +23,49 @@ export default {
   },
 
   methods: {
-    parseMappable (prop, defaultVal) {
+    parseMappable (prop, defaultVal, funcProp = false) {
       if (!this.$$map) {
         if (is(prop) && prop.constructor === Object) {
-          throw new Error('Error: trying to map without vgg-map component.')
+          throw new Error('Trying to map without vgg-map component.')
+        }
+
+        if (is(prop) && prop.constructor === Function && funcProp === false) {
+          throw new Error('Trying to map without vgg-map component.')
         }
 
         if (is(prop)) { return prop }
         if (isnt(prop)) { return defaultVal }
       }
       if (this.$$map) {
-        if (is(prop) && prop.constructor === Object) { return prop }
-        if (is(prop) && prop.constructor !== Object) { return { assign: prop } }
+        let isObject = is(prop) && prop.constructor === Object
+        let isFunction = is(prop) && prop.constructor === Function
+
+        if (is(prop) && isObject) { return prop }
+        if (is(prop) && isFunction) { return { func: prop } }
+        if (is(prop) && !isObject && !isFunction) { return { assign: prop } }
         if (isnt(prop)) { return { assign: defaultVal } }
       }
     },
 
     parseUnmappable (prop, defaultVal) {
       if (!this.$$map) {
-        if (is(prop) && prop.constructor === Object) {
-          throw new Error('Error: trying to map without vgg-map component.')
+        if (is(prop) && (prop.constructor === Object || prop.constructor === Function)) {
+          throw new Error('Trying to map without vgg-map component.')
         }
 
-        // return prop || defaultVal
         if (is(prop)) { return prop }
         if (isnt(prop)) { return defaultVal }
       }
 
       if (this.$$map) {
         if (is(prop) && prop.constructor === Object) {
-          throw new Error(`Error: property '${prop}' is unmappable.`)
+          throw new Error(`Property '${prop}' is unmappable.`)
         }
 
-        if (is(prop)) { return { assign: prop } }
+        let isFunction = is(prop) && prop.constructor === Function
+
+        if (is(prop) && isFunction) { return { func: prop } }
+        if (is(prop) && !isFunction) { return { assign: prop } }
         if (isnt(prop)) { return { assign: defaultVal } }
       }
     }

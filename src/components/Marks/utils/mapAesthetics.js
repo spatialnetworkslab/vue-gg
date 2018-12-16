@@ -6,9 +6,10 @@ import { is } from '@/utils/equals.js'
 export default function (aesthetics, context, dataContainer) {
   let assigners = {}
   let scales = {}
+  let funcs = {}
   let positioners = {}
 
-  // First, extract the assigners, scales and positioners
+  // First, extract the assigners, scales, funcs and positioners
   for (let aesKey in aesthetics) {
     let passedProp = aesthetics[aesKey]
 
@@ -18,13 +19,16 @@ export default function (aesthetics, context, dataContainer) {
     if (passedProp.hasOwnProperty('scale')) {
       scales[aesKey] = passedProp.scale
     }
+    if (passedProp.hasOwnProperty('func')) {
+      funcs[aesKey] = passedProp.func
+    }
     if (passedProp.hasOwnProperty('position')) {
       positioners[aesKey] = passedProp.position
     }
   }
 
   // Second, we will parse the assigners and scales
-  let parsedScales = assigners
+  let parsedScales = {}
 
   for (let aesKey in scales) {
     let scalingOptions = scales[aesKey]
@@ -65,16 +69,14 @@ export default function (aesthetics, context, dataContainer) {
     }
   }
 
-  // Third, we apply the scales and calculate props for each mark
+  // Third, we apply the scales, functions and assigners and calculate props for each mark
   let aestheticsPerMark = []
 
   dataContainer.forEachRow((row, i) => {
     let props = {}
 
-    for (let aesKey in parsedScales) {
-      // Now we will use the assigned values and scaling to calculate prop values.
-
-      // If a scale has been specified:
+    for (let aesKey in aesthetics) {
+      // If a scale has been specified for this aesthetic:
       if (is(scales[aesKey])) {
         // If the scale was specified a string, it is assumed to be the
         // identifier of a variable (see above).
@@ -97,11 +99,10 @@ export default function (aesthetics, context, dataContainer) {
             props[aesKey] = parsedScales[aesKey](row)
           }
         }
-
-        // If a function was passed, we will pass the entire row to that function
-        if (scales[aesKey].constructor === Function) {
-          props[aesKey] = parsedScales[aesKey](row, i)
-        }
+      } else if (is(funcs[aesKey])) {
+        // If a function was used instead of a scale object:
+        // We pass it the context object, the entire row, and the row index
+        props[aesKey] = funcs[aesKey](context, row, i)
       } else if (is(assigners[aesKey])) {
         // Finally, if no scaling is happening,
         // we will check if there is anything that should be assigned.
