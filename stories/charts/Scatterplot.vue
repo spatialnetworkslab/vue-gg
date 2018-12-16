@@ -4,8 +4,7 @@
     <vgg-graphic
       :width="800"
       :height="800"
-      :data="xy"
-      class="graphic">
+      :data="xy">
 
       <!-- Identity scaling, and setting coordinate domains from data -->
       <vgg-section

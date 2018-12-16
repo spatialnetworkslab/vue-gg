@@ -2,8 +2,7 @@
 
   <vgg-graphic
     :width="800"
-    :height="800"
-    class="graphic">
+    :height="800">
 
     <vgg-section
       :x1="100"
