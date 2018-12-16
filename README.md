@@ -7,13 +7,9 @@ yarn install
 
 ### Compiles and hot-reloads for development
 ```
-yarn run serve
+yarn run storybook
 ```
 
-### Compiles and minifies for production
-```
-yarn run build
-```
 
 <!-- ### Run your tests
 ```
