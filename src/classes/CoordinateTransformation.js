@@ -1,22 +1,107 @@
 import * as d3 from 'd3'
-import coordsScales from '@/scales/shorthands/coords/numeric.js'
+import numericCoordScales from '@/scales/shorthands/coords/numeric.js'
+import createScale from '@/scales/createScale.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
     if (options.type === 'scale') {
-      let domainX = options.domains.x
-      let domainY = options.domains.y
+      let context
+
+      if (options.dataContainer) {
+        context = {
+          ranges: options.ranges,
+          domains: options.dataContainer.getDomains(),
+          metadata: options.dataContainer.getMetadata()
+        }
+      }
+
+      // X
+      let domainX
+      let scaleX
+
+      let domainSpecificationX = options.domains.x
       let rangeX = options.ranges.x
+
+      if (domainSpecificationX.constructor === Array) {
+        domainX = domainSpecificationX
+        scaleX = numericCoordScales['linear'](domainX, rangeX)
+      } else {
+        if (options.dataContainer) {
+          if (domainSpecificationX.constructor === Function) {
+            domainX = domainSpecificationX(context.domains)
+            scaleX = numericCoordScales['linear'](domainX, rangeX)
+          }
+
+          if (domainSpecificationX.constructor === String) {
+            let variable = domainSpecificationX
+            domainX = context.domains[variable]
+            scaleX = createScale('x', context, { variable })
+          }
+
+          if (domainSpecificationX.constructor === Object) {
+            if (!domainSpecificationX.hasOwnProperty('variable')) {
+              throw new Error(`Missing required key 'variable'`)
+            }
+
+            domainX = context.domains[domainSpecificationX.variable]
+            scaleX = createScale('x', context, domainSpecificationX)
+          }
+        }
+
+        if (!options.dataContainer) {
+          domainX = rangeX
+          scaleX = numericCoordScales['linear'](domainX, rangeX)
+        }
+      }
+
+      // Y
+      let domainY
+      let scaleY
+
+      let domainSpecificationY = options.domains.y
       let rangeY = options.ranges.y
 
-      let scaleX = coordsScales['linear'](domainX, rangeX)
-      let scaleY = coordsScales['linear'](domainY, rangeY)
+      if (domainSpecificationY.constructor === Array) {
+        domainY = domainSpecificationY
+        scaleY = numericCoordScales['linear'](domainY, rangeY)
+      } else {
+        if (options.dataContainer) {
+          if (domainSpecificationY.constructor === Function) {
+            domainY = domainSpecificationY(context.domains)
+            scaleY = numericCoordScales['linear'](domainY, rangeY)
+          }
+
+          if (domainSpecificationY.constructor === String) {
+            let variable = domainSpecificationY
+            domainY = context.domains[variable]
+            scaleY = createScale('y', context, { variable })
+          }
+
+          if (domainSpecificationY.constructor === Object) {
+            if (!domainSpecificationY.hasOwnProperty('variable')) {
+              throw new Error(`Missing required key 'variable'`)
+            }
+
+            domainY = context.domains[domainSpecificationY.variable]
+            scaleY = createScale('y', context, domainSpecificationY)
+          }
+        }
+
+        if (!options.dataContainer) {
+          domainY = rangeY
+          scaleY = numericCoordScales['linear'](domainY, rangeY)
+        }
+      }
 
       this.transform = ([x, y]) => {
         return [scaleX(x), scaleY(y)]
       }
 
-      this.domains = options.domains
+      this.domains = {
+        x: domainX,
+        y: domainY
+      }
+
       this.ranges = options.ranges
     }
 

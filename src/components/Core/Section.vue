@@ -12,7 +12,6 @@ import DataReceiver from '@/mixins/Data/DataReceiver.js'
 
 import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
 import id from '@/utils/id.js'
-import parseDomain from './utils/parseDomain.js'
 
 export default {
   mixins: [CoordinateTreeUser, DataReceiver],
@@ -43,21 +42,13 @@ export default {
 
   computed: {
     _domains () {
-      if (this.domains) {
-        let domains = {}
-
-        domains.x = parseDomain(this.domains.x, this.$$dataContainer)
-        domains.y = parseDomain(this.domains.y, this.$$dataContainer)
-
-        return domains
-      }
-
+      if (this.domains) { return this.domains }
       if (!this.domains) { return this.ranges }
     },
 
     allowDomains () {
-      let xNotArray = this.domains.x.constructor !== Array
-      let yNotArray = this.domains.y.constructor !== Array
+      let xNotArray = this._domains.x.constructor !== Array
+      let yNotArray = this._domains.y.constructor !== Array
       if (!this.$$dataContainer && (xNotArray || yNotArray)) {
         return false
       } else {
@@ -86,7 +77,8 @@ export default {
       let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this._domains,
-        ranges: this.ranges
+        ranges: this.ranges,
+        dataContainer: this.$$dataContainer
       })
 
       this.$$coordinateTree.addBranch(
@@ -100,7 +92,8 @@ export default {
       let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this._domains,
-        ranges: this.ranges
+        ranges: this.ranges,
+        dataContainer: this.$$dataContainer
       })
 
       this.$$coordinateTree.updateBranch(this.id, transformation)

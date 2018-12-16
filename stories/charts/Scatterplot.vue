@@ -6,15 +6,14 @@
       :height="800"
       :data="xy">
 
-      <!-- Identity scaling, and setting coordinate domains from data -->
       <vgg-section
         :x1="100"
         :x2="700"
         :y1="100"
         :y2="700"
         :domains="{
-          x: 'explanatory',
-          y: 'dependent'
+          x: { scale: 'squareRoot', variable: 'explanatory' },
+          y: ({ dependent }) => dependent
         }"
       >
 
