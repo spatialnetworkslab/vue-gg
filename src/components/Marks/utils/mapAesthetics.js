@@ -108,17 +108,37 @@ export default function (aesthetics, context, dataContainer) {
   if (Object.keys(positioners).length > 0) {
     for (let aesKey in positioners) {
       let positioningOptions = positioners[aesKey]
-      let position
 
-      if (positioningOptions.constructor === String) {
-        position = createPositioner(aesKey, context, { positioner: positioningOptions })
+      if (positioningOptions.constructor !== Array) {
+        let position
+
+        if (positioningOptions.constructor === String) {
+          position = createPositioner(aesKey, context, { positioner: positioningOptions })
+        }
+
+        if (positioningOptions.constructor === Object) {
+          position = createPositioner(aesKey, context, positioningOptions)
+        }
+
+        position(aestheticsPerMark) // Positioners work in-place
       }
 
-      if (positioningOptions.constructor === Object) {
-        position = createPositioner(aesKey, context, positioningOptions)
-      }
+      // Positioners can be chained by passing an array of positioningOptions-objects
+      if (positioningOptions.constructor === Array) {
+        for (let chainedOptions of positioningOptions) {
+          let position
 
-      position(aestheticsPerMark) // Positioners work in-place
+          if (chainedOptions.constructor === String) {
+            position = createPositioner(aesKey, context, { positioner: chainedOptions })
+          }
+
+          if (chainedOptions.constructor === Object) {
+            position = createPositioner(aesKey, context, chainedOptions)
+          }
+
+          position(aestheticsPerMark) // Positioners work in-place
+        }
+      }
     }
   }
 

@@ -28,12 +28,6 @@
             :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
           />
 
-          <!-- <vgg-piechart
-            :x="{ scale: 'explanatory' }"
-            :y="{ scale: 'dependent' }"
-            :radius="5"
-          /> -->
-
         </vgg-map>
 
       </vgg-section>
@@ -48,7 +42,6 @@
 </template>
 
 <script>
-// import * as d3 from 'd3'
 import { xy } from './dummyData.js'
 
 export default {
@@ -59,26 +52,6 @@ export default {
       xy: xy('explanatory', 'dependent')
     }
   },
-
-  // computed: {
-  //   scaling () {
-  //     return {
-  //       x: {
-  //         variable: 'explanatory',
-  //         construct: ({ domains, ranges }) => {
-  //           return d3.scaleLinear().domain(domains['explanatory']).range(ranges.x)
-  //         }
-  //       },
-  //       y: {
-  //         variable: 'dependent',
-  //         construct: ({ domains, ranges }) => {
-  //           return d3.scaleLinear().domain(domains['dependent']).range(ranges.y)
-  //         }
-  //       },
-  //       radius: () => Math.random() * 10
-  //     }
-  //   }
-  // },
 
   methods: {
     generateNewData () {
