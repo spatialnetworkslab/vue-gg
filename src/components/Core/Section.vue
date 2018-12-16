@@ -8,7 +8,7 @@
 
 <script>
 import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
-import DataReceiver from '@/mixins/DataReceiver.js'
+import DataReceiver from '@/mixins/Data/DataReceiver.js'
 
 import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
 import id from '@/utils/id.js'
