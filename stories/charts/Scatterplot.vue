@@ -7,13 +7,14 @@
       :data="xy">
 
       <vgg-section
+        :type="'polar'"
         :x1="100"
         :x2="500"
         :y1="100"
         :y2="500"
         :domains="{
           x: 'explanatory',
-          y: ({ dependent }) => dependent
+          y: 'dependent'
         }"
         :scale="{
           x: 'linear',
