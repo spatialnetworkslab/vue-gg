@@ -30,6 +30,11 @@ export default {
     ranges: {
       type: Object,
       required: true
+    },
+
+    scale: {
+      type: [String, Object],
+      default: 'linear'
     }
   },
 
@@ -60,7 +65,8 @@ export default {
   watch: {
     type: 'updateCoordinateTreeBranch',
     domains: 'updateCoordinateTreeBranch',
-    ranges: 'updateCoordinateTreeBranch'
+    ranges: 'updateCoordinateTreeBranch',
+    scale: 'updateCoordinateTreeBranch'
   },
 
   beforeDestroy () {
@@ -78,6 +84,7 @@ export default {
         type: this.type,
         domains: this._domains,
         ranges: this.ranges,
+        scale: this.scale,
         dataContainer: this.$$dataContainer
       })
 
@@ -93,6 +100,7 @@ export default {
         type: this.type,
         domains: this._domains,
         ranges: this.ranges,
+        scale: this.scale,
         dataContainer: this.$$dataContainer
       })
 

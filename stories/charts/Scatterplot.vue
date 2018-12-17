@@ -12,8 +12,12 @@
         :y1="100"
         :y2="700"
         :domains="{
-          x: { scale: 'squareRoot', variable: 'explanatory' },
+          x: 'explanatory',
           y: ({ dependent }) => dependent
+        }"
+        :scale="{
+          x: 'linear',
+          y: 'linear'
         }"
       >
 

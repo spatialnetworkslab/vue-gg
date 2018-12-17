@@ -13,7 +13,7 @@ export default {
     },
 
     scale: {
-      type: String,
+      type: [String, Object],
       default: 'linear'
     },
 

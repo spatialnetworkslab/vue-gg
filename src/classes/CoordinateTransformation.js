@@ -1,97 +1,38 @@
 import * as d3 from 'd3'
 import numericCoordScales from '@/scales/shorthands/coords/numeric.js'
-import createScale from '@/scales/createScale.js'
+import parseDomain from './utils/parseDomain.js'
+import parseScale from './utils/parseScale.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
     if (options.type === 'scale') {
-      let context
+      let domainSpecifications = options.domains
+      let ranges = options.ranges
+
+      let variableDomains
+      let variableMetadata
 
       if (options.dataContainer) {
-        context = {
-          ranges: options.ranges,
-          domains: options.dataContainer.getDomains(),
-          metadata: options.dataContainer.getMetadata()
-        }
+        variableDomains = options.dataContainer.getDomains()
+        variableMetadata = options.dataContainer.getMetadata()
       }
 
-      // X
-      let domainX
-      let scaleX
+      let domainX = parseDomain(
+        domainSpecifications.x,
+        variableDomains,
+        variableMetadata
+      )
 
-      let domainSpecificationX = options.domains.x
-      let rangeX = options.ranges.x
+      let domainY = parseDomain(
+        domainSpecifications.y,
+        variableDomains,
+        variableMetadata
+      )
 
-      if (domainSpecificationX.constructor === Array) {
-        domainX = domainSpecificationX
-        scaleX = numericCoordScales['linear'](domainX, rangeX)
-      } else {
-        if (options.dataContainer) {
-          if (domainSpecificationX.constructor === Function) {
-            domainX = domainSpecificationX(context.domains)
-            scaleX = numericCoordScales['linear'](domainX, rangeX)
-          }
+      let [scaleTypeX, scaleTypeY] = parseScale(options.scale)
 
-          if (domainSpecificationX.constructor === String) {
-            let variable = domainSpecificationX
-            domainX = context.domains[variable]
-            scaleX = createScale('x', context, { variable })
-          }
-
-          if (domainSpecificationX.constructor === Object) {
-            if (!domainSpecificationX.hasOwnProperty('variable')) {
-              throw new Error(`Missing required key 'variable'`)
-            }
-
-            domainX = context.domains[domainSpecificationX.variable]
-            scaleX = createScale('x', context, domainSpecificationX)
-          }
-        }
-
-        if (!options.dataContainer) {
-          domainX = rangeX
-          scaleX = numericCoordScales['linear'](domainX, rangeX)
-        }
-      }
-
-      // Y
-      let domainY
-      let scaleY
-
-      let domainSpecificationY = options.domains.y
-      let rangeY = options.ranges.y
-
-      if (domainSpecificationY.constructor === Array) {
-        domainY = domainSpecificationY
-        scaleY = numericCoordScales['linear'](domainY, rangeY)
-      } else {
-        if (options.dataContainer) {
-          if (domainSpecificationY.constructor === Function) {
-            domainY = domainSpecificationY(context.domains)
-            scaleY = numericCoordScales['linear'](domainY, rangeY)
-          }
-
-          if (domainSpecificationY.constructor === String) {
-            let variable = domainSpecificationY
-            domainY = context.domains[variable]
-            scaleY = createScale('y', context, { variable })
-          }
-
-          if (domainSpecificationY.constructor === Object) {
-            if (!domainSpecificationY.hasOwnProperty('variable')) {
-              throw new Error(`Missing required key 'variable'`)
-            }
-
-            domainY = context.domains[domainSpecificationY.variable]
-            scaleY = createScale('y', context, domainSpecificationY)
-          }
-        }
-
-        if (!options.dataContainer) {
-          domainY = rangeY
-          scaleY = numericCoordScales['linear'](domainY, rangeY)
-        }
-      }
+      let scaleX = numericCoordScales[scaleTypeX](domainX, ranges.x)
+      let scaleY = numericCoordScales[scaleTypeY](domainY, ranges.y)
 
       this.transform = ([x, y]) => {
         return [scaleX(x), scaleY(y)]
