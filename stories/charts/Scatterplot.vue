@@ -2,15 +2,15 @@
   <div>
 
     <vgg-graphic
-      :width="800"
-      :height="800"
+      :width="600"
+      :height="600"
       :data="xy">
 
       <vgg-section
         :x1="100"
-        :x2="700"
+        :x2="500"
         :y1="100"
-        :y2="700"
+        :y2="500"
         :domains="{
           x: 'explanatory',
           y: ({ dependent }) => dependent
