@@ -46,39 +46,29 @@ export default class CoordinateTransformation {
     }
 
     if (options.type === 'polar') {
-      let deltaDomainX = domainX[1] - domainX[0]
-      let deltaDomainY = domainY[1] - domainY[0]
+      let toTheta = numericCoordScales[scaleTypeX](domainX, [0, 2 * Math.PI])
+      let toRadius = numericCoordScales[scaleTypeY](domainY, [0, 1])
 
-      let mirrorDomainX = [-deltaDomainX, deltaDomainX]
-      let mirrorDomainY = [-deltaDomainY, deltaDomainY]
-
-      let scaleX = numericCoordScales[scaleTypeX](mirrorDomainX, ranges.x)
-      let scaleY = numericCoordScales[scaleTypeY](mirrorDomainY, ranges.y)
-
-      let scaleTheta = numericCoordScales['linear'](domainX, [0, 2 * Math.PI])
+      let toRangeX = numericCoordScales['linear']([-1, 1], ranges.x)
+      let toRangeY = numericCoordScales['linear']([-1, 1], ranges.y)
 
       this.transform = ([x, y]) => {
-        let polar = dataToPolar([x, y], scaleTheta)
-        let cartesian = polarToCartesian(polar)
+        // First, we map x and y to the polar domains [0, 2 * PI] and [0, 1]
+        let theta = toTheta(x)
+        let radius = toRadius(y)
 
-        return [scaleX(cartesian[0]), scaleY(cartesian[1])]
+        // Second, we convert the polar domains back to cartesian domains:
+        // x: [-1, 1], y: [-1, 1]
+        let [xMini, yMini] = polarToCartesian(theta, radius)
+
+        // Third, we scale the domains x: [-1, 1], y: [-1, 1] to the ranges x/y
+        return [toRangeX(xMini), toRangeY(yMini)]
       }
     }
   }
 }
 
-function dataToPolar ([x, y], scaleTheta) {
-  // Since our polar coordinate system starts from the top (12 o'clock) and
-  // then goes clockwise, we will map y to the radius and x to theta.
-  // Usually people map x to r and y to theta, but that is when the polar
-  // system starts on the right (3 o'clock)
-  let theta = scaleTheta(x)
-  let r = y
-
-  return [theta, r]
-}
-
-function polarToCartesian ([theta, r]) {
+function polarToCartesian (theta, r) {
   let x = r * Math.sin(theta)
   let y = r * Math.cos(theta)
 

@@ -7,7 +7,6 @@
       :data="xy">
 
       <vgg-section
-        :type="'polar'"
         :x1="100"
         :x2="500"
         :y1="100"
