@@ -89,6 +89,8 @@ export default {
 
       let parentBranch = this.$$coordinateTree.getBranch(this.$$coordinateTreeParent)
 
+      // This is a trick to allow creating a new (numeric) Section inside a
+      // categorical/temporal Section. See CoordinateTransformation.js
       if (['categorical', 'temporal'].includes(xType)) {
         ranges.x = this.ranges.x.map(x => parentBranch.scaleX(x))
       } else {

@@ -53,12 +53,8 @@ export default class CoordinateTransformation {
     })
 
     // We will wrap the scaling functions in this 'get' function.
-    // Makes the Section 'transparent', i.e. skips transformation, for
-    // categorical/temporal scales where the transform function receives a Number.
-    // This is necessary for nested Sections, where this transformation is
-    // already performed in the component (see Section.vue, _ranges computed property).
-    // Otherwise, using Numbers for categorical props is never allowed- see
-    // parseMappable method in mixins/Marks/Mark.js
+    // Together with the logic in the _ranges computed property in Section.vue,
+    // this allows us to create nested Sections with various domain types.
     this.getX = x => {
       if (['categorical', 'temporal'].includes(this.domainTypes.x) && x.constructor === Number) {
         return x
