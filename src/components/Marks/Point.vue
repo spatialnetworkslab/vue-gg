@@ -8,12 +8,12 @@ export default {
   props: {
     // Mappable
     x: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, String, undefined],
       default: undefined
     },
 

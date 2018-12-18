@@ -6,42 +6,42 @@ export default {
 
   props: {
     x1: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     y1: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     x: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     w: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     h: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 

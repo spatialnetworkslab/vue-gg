@@ -10,8 +10,13 @@ export default function (domainSpecification, variableDomains, variableMetadata)
 
   if (domainSpecification.constructor === Array) {
     checkValidDomainArray(domainSpecification)
-    domain = domainSpecification
-    domainType = inferVariableType(domain[0])
+    domainType = inferVariableType(domainSpecification[0])
+
+    if (domainType === 'categorical') {
+      domain = new Set(domainSpecification)
+    } else {
+      domain = domainSpecification
+    }
   } else {
     if (variableDomains) {
       if (domainSpecification.constructor === String) {
