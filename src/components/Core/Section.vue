@@ -47,7 +47,21 @@ export default {
 
   computed: {
     _domains () {
-      if (this.domains) { return this.domains }
+      if (this.domains) {
+        let domains = {}
+
+        if (this.domains.hasOwnProperty('x')) {
+          domains.x = this.domains.x
+        } else {
+          domains.x = this.ranges.x
+        }
+        if (this.domains.hasOwnProperty('y')) {
+          domains.y = this.domains.y
+        } else {
+          domains.y = this.ranges.y
+        }
+      }
+
       if (!this.domains) { return this.ranges }
     },
 
