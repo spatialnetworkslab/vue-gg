@@ -13,6 +13,8 @@ import DataReceiver from '@/mixins/Data/DataReceiver.js'
 import CoordinateTransformation from '@/classes/CoordinateTree/CoordinateTransformation.js'
 import id from '@/utils/id.js'
 
+import { inferVariableType } from '@/classes/DataContainer/parseMetadata.js'
+
 export default {
   mixins: [CoordinateTreeUser, DataReceiver],
 
@@ -75,6 +77,29 @@ export default {
       } else {
         return true
       }
+    },
+
+    _ranges () {
+      let ranges = {}
+
+      let xType = inferVariableType(this.ranges.x[0])
+      let yType = inferVariableType(this.ranges.y[0])
+
+      let parentBranch = this.$$coordinateTree.getBranch(this.$$coordinateTreeParent)
+
+      if (['categorical', 'temporal'].includes(xType)) {
+        ranges.x = this.ranges.x.map(x => parentBranch.scaleX(x))
+      } else {
+        ranges.x = this.ranges.x
+      }
+
+      if (['categorical', 'temporal'].includes(yType)) {
+        ranges.y = this.ranges.y.map(y => parentBranch.scaleY(y))
+      } else {
+        ranges.y = this.ranges.y
+      }
+
+      return ranges
     }
   },
 
@@ -99,7 +124,7 @@ export default {
       let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this._domains,
-        ranges: this.ranges,
+        ranges: this._ranges,
         scale: this.scale,
         dataContainer: this.$$dataContainer
       })
@@ -115,7 +140,7 @@ export default {
       let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this._domains,
-        ranges: this.ranges,
+        ranges: this._ranges,
         scale: this.scale,
         dataContainer: this.$$dataContainer
       })

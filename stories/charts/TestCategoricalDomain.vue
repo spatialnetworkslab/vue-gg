@@ -17,8 +17,33 @@
       <vgg-point
         :x="'b'"
         :y="50"
-        :radius="30"
+        :radius="3"
       />
+
+      <vgg-point
+        :x="'c'"
+        :y="50"
+        :radius="3"
+      />
+
+      <vgg-section
+        :x1="'b'"
+        :x2="'c'"
+        :y1="25"
+        :y2="75"
+        :domains="{
+          x: [0, 10],
+          y: [0, 10]
+        }"
+      >
+
+        <vgg-point
+          :x="5"
+          :y="5"
+          :radius="5"
+        />
+
+      </vgg-section>
 
     </vgg-section>
 

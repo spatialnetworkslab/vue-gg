@@ -5,6 +5,7 @@ import parseScale from './parseScale.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
+    console.log(options)
     let domainSpecifications = options.domains
     let ranges = options.ranges
 
@@ -44,16 +45,39 @@ export default class CoordinateTransformation {
 
     this.ranges = options.ranges
 
-    if (options.type === 'scale') {
-      let scaleX = createCoordsScale('x', domainXType, domainX, ranges.x, {
-        scale: scaleTypeX
-      })
-      let scaleY = createCoordsScale('y', domainYType, domainY, ranges.y, {
-        scale: scaleTypeY
-      })
+    // Create the scaling functions
+    this.scaleX = createCoordsScale('x', domainXType, domainX, ranges.x, {
+      scale: scaleTypeX
+    })
+    this.scaleY = createCoordsScale('y', domainYType, domainY, ranges.y, {
+      scale: scaleTypeY
+    })
 
+    // We will wrap the scaling functions in this 'get' function.
+    // Makes the Section 'transparent', i.e. skips transformation, for
+    // categorical/temporal scales where the transform function receives a Number.
+    // This is necessary for nested Sections, where this transformation is
+    // already performed in the component (see Section.vue, _ranges computed property).
+    // Otherwise, using Numbers for categorical props is never allowed- see
+    // parseMappable method in mixins/Marks/Mark.js
+    this.getX = x => {
+      if (['categorical', 'temporal'].includes(this.domainTypes.x) && x.constructor === Number) {
+        return x
+      } else {
+        return this.scaleX(x)
+      }
+    }
+    this.getY = y => {
+      if (['categorical', 'temporal'].includes(this.domainTypes.y) && y.constructor === Number) {
+        return y
+      } else {
+        return this.scaleY(y)
+      }
+    }
+
+    if (options.type === 'scale') {
       this.transform = ([x, y]) => {
-        return [scaleX(x), scaleY(y)]
+        return [this.getX(x), this.getY(y)]
       }
     }
 
