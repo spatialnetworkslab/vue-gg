@@ -1,6 +1,8 @@
 import numericCoordScales from '@/scales/shorthands/coords/numeric.js'
-import parseDomain from './utils/parseDomain.js'
-import parseScale from './utils/parseScale.js'
+import createScale from '@/scales/createScale.js'
+
+import parseDomain from './parseDomain.js'
+import parseScale from './parseScale.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
@@ -36,10 +38,12 @@ export default class CoordinateTransformation {
       y: domainY
     }
 
-    this.ranges = options.ranges
+    this.domainTypes = {
+      x: domainXType,
+      y: domainYType
+    }
 
-    // Do typechecking
-    // TODO
+    this.ranges = options.ranges
 
     if (options.type === 'scale') {
       let scaleX = numericCoordScales[scaleTypeX](domainX, ranges.x)

@@ -1,5 +1,5 @@
-import CoordinateTree from '@/classes/CoordinateTree.js'
-import CoordinateTransformation from '@/classes/CoordinateTransformation.js'
+import CoordinateTree from '@/classes/CoordinateTree/CoordinateTree.js'
+import CoordinateTransformation from '@/classes/CoordinateTree/CoordinateTransformation.js'
 
 export default {
   props: {
