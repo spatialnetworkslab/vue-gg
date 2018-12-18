@@ -4,18 +4,10 @@ import numeric from './numeric.js'
 import temporal from './temporal.js'
 import categorical from './categorical.js'
 
-export default function (prop, context, variableScaling) {
-  let variableID = variableScaling.variable
-  let variableType = context.metadata.variables[variableID].type
-
-  let domain = context.domains[variableScaling.variable]
-
-  let dimension = getDimension(prop)
-  let range = context.ranges[dimension]
-
+export default function (prop, variableType, domain, range, scalingOptions) {
   if (variableType === 'ratio') {
-    let scale = variableScaling.scale || 'linear'
-    let fromZero = variableScaling.fromZero || false
+    let scale = scalingOptions.scale || 'linear'
+    let fromZero = scalingOptions.fromZero || false
 
     if (fromZero) {
       return numeric[scale](setDomainFromZero(domain), range)
@@ -25,8 +17,8 @@ export default function (prop, context, variableScaling) {
   }
 
   if (variableType === 'count') {
-    let scale = variableScaling.scale || 'linear'
-    let fromZero = variableScaling.fromZero || true
+    let scale = scalingOptions.scale || 'linear'
+    let fromZero = scalingOptions.fromZero || true
 
     if (fromZero) {
       return numeric[scale](setDomainFromZero(domain), range)
@@ -36,19 +28,14 @@ export default function (prop, context, variableScaling) {
   }
 
   if (variableType === 'temporal') {
-    let scale = variableScaling.scale || 'temporal'
+    let scale = scalingOptions.scale || 'temporal'
 
     return temporal[scale](domain, range)
   }
 
   if (variableType === 'categorical') {
-    let scale = variableScaling.scale || 'equidistant'
+    let scale = scalingOptions.scale || 'equidistant'
 
     return categorical[scale](domain, range)
   }
-}
-
-function getDimension (prop) {
-  if (['x', 'x1', 'x2', 'w'].includes(prop)) { return 'x' }
-  if (['y', 'y1', 'y2', 'h'].includes(prop)) { return 'y' }
 }

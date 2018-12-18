@@ -1,5 +1,5 @@
 import numericCoordScales from '@/scales/shorthands/coords/numeric.js'
-import createScale from '@/scales/createScale.js'
+// import createScale from '@/scales/createScale.js'
 
 import parseDomain from './parseDomain.js'
 import parseScale from './parseScale.js'
