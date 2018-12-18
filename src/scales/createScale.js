@@ -2,6 +2,8 @@ import createCoordsScale from './shorthands/coords/createCoordsScale.js'
 import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 
+import getDimension from '@/utils/getDimension.js'
+
 export default function (prop, context, scalingOptions) {
   let variableID = scalingOptions.variable
   let variableType = context.metadata.variables[variableID].type
@@ -22,9 +24,4 @@ export default function (prop, context, scalingOptions) {
   if (prop === 'opacity') {
     return createOpacityScale(prop, variableType, domain, scalingOptions)
   }
-}
-
-function getDimension (prop) {
-  if (['x', 'x1', 'x2', 'w'].includes(prop)) { return 'x' }
-  if (['y', 'y1', 'y2', 'h'].includes(prop)) { return 'y' }
 }

@@ -39,8 +39,8 @@ export default {
   computed: {
     aesthetics () {
       return {
-        'x': this.parseMappable(this.x, 0),
-        'y': this.parseMappable(this.y, 0),
+        'x': this.parseCoord(this.x, 'x'),
+        'y': this.parseCoord(this.y, 'y'),
 
         'width': this.parseUnmappable(this.width, 10),
         'height': this.parseUnmappable(this.height, 10),
