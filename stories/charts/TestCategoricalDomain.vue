@@ -15,10 +15,19 @@
       }"
     >
 
-      <vgg-point
-        :x="new Date('November 17, 2018')"
-        :y="50"
-      />
+      <vgg-map :data="[
+        { d: new Date('November 16, 2018') },
+        { d: new Date('November 17, 2018') },
+        { d: new Date('November 18, 2018') }
+      ]">
+
+        <vgg-point
+          :x="row => row.d"
+          :y="50"
+          :radius="7"
+        />
+
+      </vgg-map>
 
     </vgg-section>
 

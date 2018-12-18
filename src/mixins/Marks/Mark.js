@@ -40,8 +40,7 @@ export default {
         if (is(prop)) {
           let parentRangeType = this.parentRangeTypes[dimension]
           if (invalidValueForRangeType(prop, parentRangeType)) {
-            console.warn(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
-            return undefined
+            throw new Error(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
           } else {
             return prop
           }
@@ -58,7 +57,7 @@ export default {
           // block if used with categorical or temporal parent Section range
           let parentRangeType = this.parentRangeTypes[dimension]
           if (['categorical', 'temporal'].includes(parentRangeType)) {
-            console.warn(`Cannot map ${prop} to parent Section domain type ${parentRangeType}`)
+            throw new Error(`Cannot map ${prop} to parent Section domain type ${parentRangeType}`)
           }
           return prop
         }
@@ -66,8 +65,7 @@ export default {
         if (is(prop) && !isObject && !isFunction) {
           let parentRangeType = this.parentRangeTypes[dimension]
           if (invalidValueForRangeType(prop, parentRangeType)) {
-            console.warn(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
-            return { assign: undefined }
+            throw new Error(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
           } else {
             return { assign: prop }
           }
