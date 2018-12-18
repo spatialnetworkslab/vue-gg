@@ -5,7 +5,6 @@ import parseScale from './parseScale.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
-    console.log(options)
     let domainSpecifications = options.domains
     let ranges = options.ranges
 
