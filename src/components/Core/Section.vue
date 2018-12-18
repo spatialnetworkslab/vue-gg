@@ -33,8 +33,8 @@ export default {
     },
 
     scale: {
-      type: [String, Object],
-      default: 'linear'
+      type: [String, Object, undefined],
+      default: undefined
     }
   },
 
@@ -60,6 +60,8 @@ export default {
         } else {
           domains.y = this.ranges.y
         }
+
+        return domains
       }
 
       if (!this.domains) { return this.ranges }

@@ -21,7 +21,7 @@ export default function (metadataOriginal, firstRow) {
     // If variable metadata has no type attribute: try to guess the type
     if (!metadata.variables[variableKey].type) {
       let value = firstRow[variableKey]
-      let variableType = inferVariableType(value)
+      let variableType = inferVariableType(value, 'dataContainer')
       metadata.variables[variableKey].type = variableType
     }
   }
@@ -29,7 +29,13 @@ export default function (metadataOriginal, firstRow) {
   return metadata
 }
 
-export function inferVariableType (value) {
+export function inferVariableType (value, callContext) {
+  let errString = 'Failed to infer type.'
+
+  if (callContext === 'dataContainer') {
+    errString = 'Failed to infer type. Please supply correct type in metadata.'
+  }
+
   switch (value.constructor) {
     case String: {
       return 'categorical'
@@ -40,6 +46,6 @@ export function inferVariableType (value) {
     case Date: {
       return 'temporal'
     }
-    default: throw new Error('Failed to infer type. Please supply type for variable.')
+    default: throw new Error(errString)
   }
 }
