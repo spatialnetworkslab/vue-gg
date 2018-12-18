@@ -4,7 +4,7 @@
     :height="600"
   >
 
-    <vgg-section
+    <!-- <vgg-section
       :x1="100"
       :x2="500"
       :y1="100"
@@ -29,9 +29,9 @@
 
       </vgg-map>
 
-    </vgg-section>
+    </vgg-section> -->
 
-    <!-- <vgg-section
+    <vgg-section
       :x1="100"
       :x2="500"
       :y1="100"
@@ -73,7 +73,7 @@
 
       </vgg-section>
 
-    </vgg-section> -->
+    </vgg-section>
 
   </vgg-graphic>
 </template>

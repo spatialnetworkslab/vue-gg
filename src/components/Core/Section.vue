@@ -13,8 +13,6 @@ import DataReceiver from '@/mixins/Data/DataReceiver.js'
 import CoordinateTransformation from '@/classes/CoordinateTree/CoordinateTransformation.js'
 import id from '@/utils/id.js'
 
-import { inferVariableType } from '@/classes/DataContainer/parseMetadata.js'
-
 export default {
   mixins: [CoordinateTreeUser, DataReceiver],
 
@@ -79,11 +77,15 @@ export default {
       }
     },
 
+    parentRangeTypes () {
+      return this.$$coordinateTree.getBranch(this.$$coordinateTreeParent).domainTypes
+    },
+
     _ranges () {
       let ranges = {}
 
-      let xType = inferVariableType(this.ranges.x[0])
-      let yType = inferVariableType(this.ranges.y[0])
+      let xType = this.parentRangeTypes.x
+      let yType = this.parentRangeTypes.y
 
       let parentBranch = this.$$coordinateTree.getBranch(this.$$coordinateTreeParent)
 
