@@ -7,6 +7,10 @@ import Section from './Core/SectionWrapper.vue'
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'
 
+// Guides
+import XAxis from './Guides/XAxis.vue'
+import YAxis from './Guides/YAxis.vue'
+
 // Marks
 import Line from './Marks/Line.vue'
 import Point from './Marks/Point.vue'
@@ -20,6 +24,9 @@ export default {
   Section,
 
   Piechart,
+
+  XAxis,
+  YAxis,
 
   Line,
   Point,

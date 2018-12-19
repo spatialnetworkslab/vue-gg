@@ -2,7 +2,8 @@
 
   <vgg-graphic
     :width="600"
-    :height="600">
+    :height="600"
+    :data="bars">
 
     <vgg-section
       :x1="100"
@@ -15,7 +16,7 @@
       }"
     >
 
-      <vgg-map :data="bars">
+      <vgg-map>
 
         <vgg-rectangle
           :x="{ scale: 'fruit' }"
@@ -55,6 +56,35 @@
       </vgg-map>
 
     </vgg-section>
+
+    <vgg-x-axis
+      :x1="100"
+      :x2="500"
+      :y1="50"
+      :y2="100"
+      :domain="'fruit'"
+      :tick-values="[
+        'apple',
+        'banana',
+        'kiwi',
+        'pomelo',
+        'jackfruit',
+        'guava',
+        'cherry',
+        'dragonfruit',
+        'grape',
+        'durian'
+      ]"
+    />
+
+    <vgg-y-axis
+      :x1="500"
+      :x2="550"
+      :y1="100"
+      :y2="500"
+      :domain="'quantity'"
+      :tick-values="[0, 25, 50, 75]"
+    />
 
   </vgg-graphic>
 </template>
