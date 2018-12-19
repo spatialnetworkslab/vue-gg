@@ -3,7 +3,8 @@
     :x="x"
     :y="y"
     :width="wh"
-    :height="wh">
+    :height="wh"
+    :anchor-point="anchorPoint">
 
     <vgg-section
       :type="transformation"
@@ -53,6 +54,11 @@ export default {
     transformation: {
       type: String,
       default: 'polar'
+    },
+
+    anchorPoint: {
+      type: String,
+      default: 'center'
     }
   },
 
