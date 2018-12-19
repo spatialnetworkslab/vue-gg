@@ -17,17 +17,15 @@ export default {
       return {
         domains: this.$$dataContainer.getDomains(),
         metadata: this.$$dataContainer.getMetadata(),
-        ranges: this.$$coordinateTree.getBranch(this.$$coordinateTreeParent).domains
+        ranges: this.parentBranch.domains
       }
-    },
-
-    parentRangeTypes () {
-      return this.$$coordinateTree.getBranch(this.$$coordinateTreeParent).domainTypes
     }
   },
 
   methods: {
     parseCoord (prop, dimension) {
+      let parentRangeType = this.parentRangeTypes[dimension]
+
       if (!this.$$map) {
         if (is(prop) && prop.constructor === Object) {
           throw new Error('Trying to map without vgg-map component.')
@@ -38,10 +36,15 @@ export default {
         }
 
         if (is(prop)) {
-          let parentRangeType = this.parentRangeTypes[dimension]
+          // Here we check whether the passed prop (String, Number, etc)
+          // is compatible with the parent domain (categorical, ratio, etc)
           if (invalidValueForRangeType(prop, parentRangeType)) {
             throw new Error(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
           } else {
+            // We will already convert categorical and temporal data here.
+            if (['categorical', 'temporal'].includes(parentRangeType)) {
+              return convertToNumeric(prop, dimension, this.parentBranch)
+            }
             return prop
           }
         }
@@ -54,8 +57,8 @@ export default {
         let isFunction = is(prop) && prop.constructor === Function
 
         if (is(prop) && isObject) {
-          // block if used with categorical or temporal parent Section range
-          let parentRangeType = this.parentRangeTypes[dimension]
+          // block object mapping syntax if used with categorical or temporal
+          // parent domain
           if (['categorical', 'temporal'].includes(parentRangeType)) {
             throw new Error(`Cannot map ${prop} to parent Section domain type ${parentRangeType}`)
           }
@@ -63,10 +66,15 @@ export default {
         }
         if (is(prop) && isFunction) { return { func: prop } }
         if (is(prop) && !isObject && !isFunction) {
-          let parentRangeType = this.parentRangeTypes[dimension]
+          // Here we check whether the passed prop (String, Number, etc)
+          // is compatible with the parent domain (categorical, ratio, etc)
           if (invalidValueForRangeType(prop, parentRangeType)) {
             throw new Error(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
           } else {
+            // We will already convert categorical and temporal data here.
+            if (['categorical', 'temporal'].includes(parentRangeType)) {
+              return { assign: convertToNumeric(prop, dimension, this.parentBranch) }
+            }
             return { assign: prop }
           }
         }
@@ -133,4 +141,9 @@ function invalidValueForRangeType (value, rangeType) {
   } else if (rangeType === 'temporal') {
     return value.constructor !== Date
   }
+}
+
+function convertToNumeric (prop, dimension, parentBranch) {
+  if (dimension === 'x') { return parentBranch.scaleX(prop) }
+  if (dimension === 'y') { return parentBranch.scaleY(prop) }
 }

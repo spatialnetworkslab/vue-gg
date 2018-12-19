@@ -53,17 +53,23 @@ export default class CoordinateTransformation {
     })
 
     // We will wrap the scaling functions in this 'get' function.
-    // Together with the logic in the _ranges computed property in Section.vue,
-    // this allows us to create nested Sections with various domain types.
+    // For categorical and temporal domains, we don't need to apply the scaling,
+    // since we've already done this when the prop was passed (see Mark.js,
+    // parseCoord function). This is because we need to support nested Sections,
+    // where the parent is for example categorical but the child is numeric. It
+    // is also necessary to properly interpolate in the interpolatePath function
+    // (you cannot interpolate between 'A' and 'B'). So for these components,
+    // we already need to know the converted (numeric) value before the transform
+    // function is used.
     this.getX = x => {
-      if (['categorical', 'temporal'].includes(this.domainTypes.x) && x.constructor === Number) {
+      if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
         return x
       } else {
         return this.scaleX(x)
       }
     }
     this.getY = y => {
-      if (['categorical', 'temporal'].includes(this.domainTypes.y) && y.constructor === Number) {
+      if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
         return y
       } else {
         return this.scaleY(y)

@@ -75,36 +75,31 @@ export default {
       } else {
         return true
       }
-    },
-
-    parentRangeTypes () {
-      return this.$$coordinateTree.getBranch(this.$$coordinateTreeParent).domainTypes
-    },
-
-    _ranges () {
-      let ranges = {}
-
-      let xType = this.parentRangeTypes.x
-      let yType = this.parentRangeTypes.y
-
-      let parentBranch = this.$$coordinateTree.getBranch(this.$$coordinateTreeParent)
-
-      // This is a trick to allow creating a new (numeric) Section inside a
-      // categorical/temporal Section. See CoordinateTransformation.js
-      if (['categorical', 'temporal'].includes(xType)) {
-        ranges.x = this.ranges.x.map(x => parentBranch.scaleX(x))
-      } else {
-        ranges.x = this.ranges.x
-      }
-
-      if (['categorical', 'temporal'].includes(yType)) {
-        ranges.y = this.ranges.y.map(y => parentBranch.scaleY(y))
-      } else {
-        ranges.y = this.ranges.y
-      }
-
-      return ranges
     }
+    // _ranges () {
+    //   let ranges = {}
+    //
+    //   let xType = this.parentRangeTypes.x
+    //   let yType = this.parentRangeTypes.y
+    //
+    //   let parentBranch = this.parentBranch
+    //
+    //   // This is a trick to allow creating a new (numeric) Section inside a
+    //   // categorical/temporal Section. See CoordinateTransformation.js
+    //   if (['categorical', 'temporal'].includes(xType)) {
+    //     ranges.x = this.ranges.x.map(x => parentBranch.scaleX(x))
+    //   } else {
+    //     ranges.x = this.ranges.x
+    //   }
+    //
+    //   if (['categorical', 'temporal'].includes(yType)) {
+    //     ranges.y = this.ranges.y.map(y => parentBranch.scaleY(y))
+    //   } else {
+    //     ranges.y = this.ranges.y
+    //   }
+    //
+    //   return ranges
+    // }
   },
 
   watch: {
@@ -128,7 +123,7 @@ export default {
       let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this._domains,
-        ranges: this._ranges,
+        ranges: this.ranges,
         scale: this.scale,
         dataContainer: this.$$dataContainer
       })
@@ -144,7 +139,7 @@ export default {
       let transformation = new CoordinateTransformation({
         type: this.type,
         domains: this._domains,
-        ranges: this._ranges,
+        ranges: this.ranges,
         scale: this.scale,
         dataContainer: this.$$dataContainer
       })
