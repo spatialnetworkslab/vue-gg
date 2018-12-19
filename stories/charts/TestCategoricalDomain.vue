@@ -43,27 +43,24 @@
       }"
     >
 
-      <vgg-rectangle
-        :x1="'a'"
-        :x2="'b'"
-        :y1="25"
-        :y2="75"
-        color="#8b0000"
-      />
-      <vgg-rectangle
-        :x1="'b'"
-        :x2="'c'"
-        :y1="25"
-        :y2="75"
-        color="#ced02d"
-      />
-      <vgg-rectangle
-        :x1="'c'"
-        :x2="'d'"
-        :y1="25"
-        :y2="75"
-        color="#00919c"
-      />
+      <vgg-map
+        :data="[
+          { x: 'a', color: '#8b0000' },
+          { x: 'b', color: '#ced02d' },
+          { x: 'c', color: '#00919c' },
+          { x: 'd', color: '#d3d3d3' }
+        ]"
+      >
+
+        <vgg-rectangle
+          :x="row => row.x"
+          :w="{ position: 'bulge' }"
+          :y1="25"
+          :y2="75"
+          :color="row => row.color"
+        />
+
+      </vgg-map>
 
     </vgg-section>
 

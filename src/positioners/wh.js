@@ -32,7 +32,6 @@ function bulge (prop, range, positioningSettings) {
       dRight -= padding
 
       let value = Math.min(dLeft, dRight) * 2
-
       let originalIndex = coordsSorted[i][1]
       propsPerMark[originalIndex][prop] = value
     }

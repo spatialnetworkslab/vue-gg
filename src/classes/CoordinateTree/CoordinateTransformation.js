@@ -32,17 +32,27 @@ export default class CoordinateTransformation {
     let [scaleTypeX, scaleTypeY] = parseScale(options.scale)
 
     // Store domains and ranges
-    this.domains = {
-      x: domainX,
-      y: domainY
-    }
-
     this.domainTypes = {
       x: domainXType,
       y: domainYType
     }
 
-    this.ranges = options.ranges
+    // If we have a categorical or temporal domain: set ranges as domains
+    this.domains = {}
+
+    if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
+      this.domains.x = ranges.x
+    } else {
+      this.domains.x = domainX
+    }
+
+    if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
+      this.domains.y = ranges.y
+    } else {
+      this.domains.y = domainY
+    }
+
+    this.ranges = ranges
 
     // Create the scaling functions
     this.scaleX = createCoordsScale('x', domainXType, domainX, ranges.x, {

@@ -2,6 +2,7 @@ import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
 import DataReceiver from '@/mixins/Data/DataReceiver.js'
 
 import { is, isnt } from '@/utils/equals.js'
+import convertToNumeric from '@/utils/convertToNumeric.js'
 
 export default {
   mixins: [CoordinateTreeUser, DataReceiver],
@@ -17,7 +18,8 @@ export default {
       return {
         domains: this.$$dataContainer.getDomains(),
         metadata: this.$$dataContainer.getMetadata(),
-        ranges: this.parentBranch.domains
+        ranges: this.parentBranch.domains,
+        parentBranch: this.parentBranch
       }
     }
   },
@@ -59,8 +61,8 @@ export default {
         if (is(prop) && isObject) {
           // block object mapping syntax if used with categorical or temporal
           // parent domain
-          if (['categorical', 'temporal'].includes(parentRangeType)) {
-            throw new Error(`Cannot map ${prop} to parent Section domain type ${parentRangeType}`)
+          if (['categorical', 'temporal'].includes(parentRangeType) && prop.hasOwnProperty('scale')) {
+            throw new Error(`Cannot scale ${prop} to parent Section domain type ${parentRangeType}`)
           }
           return prop
         }
@@ -141,9 +143,4 @@ function invalidValueForRangeType (value, rangeType) {
   } else if (rangeType === 'temporal') {
     return value.constructor !== Date
   }
-}
-
-function convertToNumeric (prop, dimension, parentBranch) {
-  if (dimension === 'x') { return parentBranch.scaleX(prop) }
-  if (dimension === 'y') { return parentBranch.scaleY(prop) }
 }
