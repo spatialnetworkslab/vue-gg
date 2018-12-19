@@ -37,9 +37,9 @@
         <vgg-line
           :x1="0.5"
           :y1="tick => tick.y"
-          :x2="0.75"
+          :x2="0.65"
           :y2="tick => tick.y"
-          :width="1"
+          :width="0.5"
           color="#808080"
         />
 

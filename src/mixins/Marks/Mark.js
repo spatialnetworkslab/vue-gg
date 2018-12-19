@@ -94,7 +94,7 @@ export default {
     },
 
     parseMappable (prop, defaultVal, funcProp = false) {
-      if (funcProp) {
+      if (prop && funcProp) {
         for (let key in this.parentRangeTypes) {
           if (['categorical', 'temporal'].includes(this.parentRangeTypes[key])) {
             throw new Error(`

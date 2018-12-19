@@ -38,8 +38,8 @@
           :x1="tick => tick.x"
           :y1="0.5"
           :x2="tick => tick.x"
-          :y2="0.75"
-          :width="1"
+          :y2="0.65"
+          :width="0.5"
           color="#808080"
         />
 
