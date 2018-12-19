@@ -62,6 +62,10 @@
 
       </vgg-map>
 
+      <vgg-line
+        :func="i => i"
+      />
+
     </vgg-section>
 
   </vgg-graphic>

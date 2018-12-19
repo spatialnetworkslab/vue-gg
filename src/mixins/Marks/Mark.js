@@ -94,6 +94,17 @@ export default {
     },
 
     parseMappable (prop, defaultVal, funcProp = false) {
+      if (funcProp) {
+        for (let key in this.parentRangeTypes) {
+          if (['categorical', 'temporal'].includes(this.parentRangeTypes[key])) {
+            throw new Error(`
+              Cannot use :func prop on 'vgg-line' in combination with
+              '${this.parentRangeTypes[key]}' parent domain
+            `)
+          }
+        }
+      }
+
       if (!this.$$map) {
         if (is(prop) && prop.constructor === Object) {
           throw new Error('Trying to map without vgg-map component.')
