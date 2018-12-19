@@ -25,7 +25,7 @@ export default {
   },
 
   methods: {
-    parseCoord (prop, dimension) {
+    parseCoord (prop, dimension, wh) {
       let parentRangeType = this.parentRangeTypes[dimension]
 
       if (!this.$$map) {
@@ -43,8 +43,11 @@ export default {
           if (invalidValueForRangeType(prop, parentRangeType)) {
             throw new Error(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
           } else {
-            // We will already convert categorical and temporal data here.
             if (['categorical', 'temporal'].includes(parentRangeType)) {
+              if (wh) {
+                throw new Error(`Cannot set 'w' or 'h' value in parent domain '${parentRangeType}'`)
+              }
+              // We will already convert categorical and temporal data here.
               return convertToNumeric(prop, dimension, this.parentBranch)
             }
             return prop
@@ -54,6 +57,7 @@ export default {
           return undefined
         }
       }
+
       if (this.$$map) {
         let isObject = is(prop) && prop.constructor === Object
         let isFunction = is(prop) && prop.constructor === Function
@@ -73,8 +77,11 @@ export default {
           if (invalidValueForRangeType(prop, parentRangeType)) {
             throw new Error(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
           } else {
-            // We will already convert categorical and temporal data here.
             if (['categorical', 'temporal'].includes(parentRangeType)) {
+              if (wh) {
+                throw new Error(`Cannot set 'w' or 'h' value in parent domain '${parentRangeType}'`)
+              }
+              // We will already convert categorical and temporal data here.
               return { assign: convertToNumeric(prop, dimension, this.parentBranch) }
             }
             return { assign: prop }

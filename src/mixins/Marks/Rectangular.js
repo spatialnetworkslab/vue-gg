@@ -76,8 +76,8 @@ export default {
         y2: this.parseCoord(this.y2, 'y'),
         x: this.parseCoord(this.x, 'x'),
         y: this.parseCoord(this.y, 'y'),
-        w: this.parseCoord(this.w, 'x'),
-        h: this.parseCoord(this.h, 'y'),
+        w: this.parseCoord(this.w, 'x', true),
+        h: this.parseCoord(this.h, 'y', true),
         color: this.parseMappable(this.color, '#000000')
       }
     }
