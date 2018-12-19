@@ -32,6 +32,7 @@
     </vgg-section> -->
 
     <vgg-section
+      :type="'polar'"
       :x1="100"
       :x2="500"
       :y1="100"
@@ -42,36 +43,27 @@
       }"
     >
 
-      <vgg-point
-        :x="'b'"
-        :y="50"
-        :radius="3"
+      <vgg-rectangle
+        :x1="'a'"
+        :x2="'b'"
+        :y1="25"
+        :y2="75"
+        color="#8b0000"
       />
-
-      <vgg-point
-        :x="'c'"
-        :y="50"
-        :radius="3"
-      />
-
-      <vgg-section
+      <vgg-rectangle
         :x1="'b'"
         :x2="'c'"
         :y1="25"
         :y2="75"
-        :domains="{
-          x: [0, 10],
-          y: [0, 10]
-        }"
-      >
-
-        <vgg-point
-          :x="5"
-          :y="5"
-          :radius="5"
-        />
-
-      </vgg-section>
+        color="#ced02d"
+      />
+      <vgg-rectangle
+        :x1="'c'"
+        :x2="'d'"
+        :y1="25"
+        :y2="75"
+        color="#00919c"
+      />
 
     </vgg-section>
 

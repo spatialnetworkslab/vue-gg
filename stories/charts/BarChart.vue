@@ -5,6 +5,7 @@
     :height="600">
 
     <vgg-section
+      :type="'polar'"
       :x1="100"
       :x2="500"
       :y1="100"

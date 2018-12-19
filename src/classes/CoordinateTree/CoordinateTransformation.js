@@ -76,32 +76,31 @@ export default class CoordinateTransformation {
       }
     }
 
-    // if (options.type === 'polar') {
-    //   let toTheta = numericCoordScales[scaleTypeX](domainX, [0, 2 * Math.PI])
-    //   let toRadius = numericCoordScales[scaleTypeY](domainY, [0, 1])
-    //
-    //   let toRangeX = numericCoordScales['linear']([-1, 1], ranges.x)
-    //   let toRangeY = numericCoordScales['linear']([-1, 1], ranges.y)
-    //
-    //   this.transform = ([x, y]) => {
-    //     // First, we map x and y to the polar domains [0, 2 * PI] and [0, 1]
-    //     let theta = toTheta(x)
-    //     let radius = toRadius(y)
-    //
-    //     // Second, we convert the polar domains back to cartesian domains:
-    //     // x: [-1, 1], y: [-1, 1]
-    //     let [xMini, yMini] = polarToCartesian(theta, radius)
-    //
-    //     // Third, we scale the domains x: [-1, 1], y: [-1, 1] to the ranges x/y
-    //     return [toRangeX(xMini), toRangeY(yMini)]
-    //   }
-    // }
+    if (options.type === 'polar') {
+      let toTheta = createCoordsScale('x', 'ratio', ranges.x, [0, 2 * Math.PI], {})
+      let toRadius = createCoordsScale('y', 'ratio', ranges.y, [0, 1], {})
+
+      let toRangeX = createCoordsScale('x', 'ratio', [-1, 1], ranges.x, {})
+      let toRangeY = createCoordsScale('y', 'ratio', [-1, 1], ranges.y, {})
+
+      this.transform = ([x, y]) => {
+        let scaledX = this.getX(x)
+        let scaledY = this.getY(y)
+
+        let theta = toTheta(scaledX)
+        let radius = toRadius(scaledY)
+
+        let cartesian = polarToCartesian(theta, radius)
+
+        return [toRangeX(cartesian[0]), toRangeY(cartesian[1])]
+      }
+    }
   }
 }
 
-// function polarToCartesian (theta, r) {
-//   let x = r * Math.sin(theta)
-//   let y = r * Math.cos(theta)
-//
-//   return [x, y]
-// }
+function polarToCartesian (theta, r) {
+  let x = r * Math.sin(theta)
+  let y = r * Math.cos(theta)
+
+  return [x, y]
+}
