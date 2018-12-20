@@ -2,36 +2,37 @@
   <vgg-graphic
     :width="600"
     :height="600"
+    :data="[
+      { date: new Date('November 16, 2018') },
+      { date: new Date('November 17, 2018') },
+      { date: new Date('November 18, 2018') }
+    ]"
   >
 
-    <!-- <vgg-section
+    <vgg-section
       :x1="100"
       :x2="500"
       :y1="100"
       :y2="500"
       :domains="{
-        x: [new Date('November 16, 2018'), new Date('November 18, 2018')],
+        x: 'date',
         y: [0, 100]
       }"
     >
 
-      <vgg-map :data="[
-        { d: new Date('November 16, 2018') },
-        { d: new Date('November 17, 2018') },
-        { d: new Date('November 18, 2018') }
-      ]">
+      <vgg-map>
 
         <vgg-point
-          :x="row => row.d"
+          :x="row => row.date"
           :y="50"
           :radius="7"
         />
 
       </vgg-map>
 
-    </vgg-section> -->
+    </vgg-section>
 
-    <vgg-section
+    <!-- <vgg-section
       :type="'polar'"
       :x1="100"
       :x2="500"
@@ -62,7 +63,7 @@
 
       </vgg-map>
 
-    </vgg-section>
+    </vgg-section> -->
 
   </vgg-graphic>
 </template>
