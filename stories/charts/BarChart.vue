@@ -84,7 +84,6 @@
       :y1="100"
       :y2="500"
       :domain="'quantity'"
-      :tick-values="[0, 25, 50, 75]"
     />
 
   </vgg-graphic>

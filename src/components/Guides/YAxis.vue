@@ -37,9 +37,9 @@
         <!-- Tick lines -->
         <vgg-line
           :x1="0.5"
-          :y1="tick => tick.y"
+          :y1="tick => tick.value"
           :x2="0.35"
-          :y2="tick => tick.y"
+          :y2="tick => tick.value"
           :width="0.5"
           color="#808080"
         />
@@ -48,8 +48,8 @@
         <vgg-label
           v-if="!rotateLabel"
           :x="0.55"
-          :y="tick => tick.y"
-          :text="tick => tick.y"
+          :y="tick => tick.value"
+          :text="tick => tick.value"
           :font-size="10"
           anchor-point="l"
         />
@@ -57,8 +57,8 @@
         <vgg-label
           v-if="rotateLabel"
           :x="0.55"
-          :y="tick => tick.y"
-          :text="tick => tick.y"
+          :y="tick => tick.value"
+          :text="tick => tick.value"
           :font-size="10"
           :rotation="30"
           anchor-point="l"
@@ -72,21 +72,27 @@
 </template>
 
 <script>
+import * as d3 from 'd3'
 import Rectangular from '@/mixins/Marks/Rectangular.js'
-// import calculateNiceInterval from '@/utils/calculateNiceInterval.js'
+import { inferVariableType } from '@/classes/DataContainer/parseMetadata.js'
 
 export default {
   mixins: [Rectangular],
 
   props: {
     domain: {
-      type: [Array, Function, String, undefined],
+      type: [Array, String, undefined],
       default: undefined
     },
 
     tickValues: {
       type: [Array, undefined],
       default: undefined
+    },
+
+    tickCount: {
+      type: Number,
+      default: 10
     },
 
     rotateLabel: {
@@ -100,14 +106,45 @@ export default {
       return this.convertCoordinateSpecification(this.aesthetics)
     },
 
+    _domain () {
+      if (this.domain.constructor === Array) {
+        return this.domain
+      }
+      if (this.domain.constructor === String) {
+        return this.$$dataContainer.getDomain(this.domain)
+      }
+    },
+
+    _domainType () {
+      if (this.domain.constructor === Array) {
+        return inferVariableType(this.domain[0])
+      }
+      if (this.domain.constructor === String) {
+        return this.$$dataContainer.getVariableMetadata(this.domain).type
+      }
+    },
+
     tickData () {
       if (this.tickValues) {
         return this.tickValues.map(value => {
-          return { y: value }
+          return { value }
         })
       } else {
-        // let range = this.yDomain[1] - this.yDomain[0]
-        // let interval = calculateNiceInterval(range)
+        let ticks
+        if (this._domainType === 'ratio') {
+          ticks = d3.ticks(...this._domain, this.tickCount).map(value => { return { value } })
+        }
+        if (this._domainType === 'count') {
+          ticks = d3.ticks(0, this._domain[1], 10, this.tickCount).map(value => { return { value } })
+        }
+        if (this._domainType === 'categorical') {
+          ticks = this._domain.map(value => { return { value } })
+        }
+        if (this._domainType === 'temporal') {
+          // TODO
+        }
+
+        return ticks
       }
     }
   }

@@ -72,14 +72,13 @@
 
 <script>
 import Rectangular from '@/mixins/Marks/Rectangular.js'
-// import calculateNiceInterval from '@/utils/calculateNiceInterval.js'
 
 export default {
   mixins: [Rectangular],
 
   props: {
     domain: {
-      type: [Array, Function, String, undefined],
+      type: [Array, String, undefined],
       default: undefined
     },
 
