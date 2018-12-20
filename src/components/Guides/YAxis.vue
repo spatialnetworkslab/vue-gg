@@ -38,14 +38,20 @@
         <vgg-line
           :x1="0.5"
           :y1="tick => tick.y"
-          :x2="0.65"
+          :x2="0.35"
           :y2="tick => tick.y"
           :width="0.5"
           color="#808080"
         />
 
         <!-- Tick labels -->
-        <!-- TODO -->
+        <vgg-label
+          :x="0.5"
+          :y="tick => tick.y"
+          :text="tick => tick.y"
+          :font-size="10"
+          anchor-point="l"
+        />
 
       </vgg-map>
 

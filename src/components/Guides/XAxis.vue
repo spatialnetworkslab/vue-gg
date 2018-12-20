@@ -44,7 +44,13 @@
         />
 
         <!-- Tick labels -->
-        <!-- TODO -->
+        <vgg-label
+          :x="tick => tick.x"
+          :y="0.5"
+          :text="tick => tick.x"
+          :font-size="10"
+          anchor-point="t"
+        />
 
       </vgg-map>
 
