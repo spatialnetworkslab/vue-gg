@@ -33,6 +33,11 @@ export default {
       default: undefined
     },
 
+    rotation: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
     // Unmappable
     anchorPoint: {
       type: String,
@@ -48,16 +53,23 @@ export default {
         x: this.parseCoord(this.x, 'x'),
         y: this.parseCoord(this.y, 'y'),
         color: this.parseMappable(this.color, '#000000'),
-        fontSize: this.parseMappable(this.fontSize, 16)
+        fontSize: this.parseMappable(this.fontSize, 16),
+        rotation: this.parseMappable(this.rotation, 0)
       }
     }
   },
 
   methods: {
+    calcTransform (rotation, cx, cy) {
+      return `rotate(${rotation}, ${cx}, ${cy})`
+    },
+
     renderSVG (createElement, aesthetics) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
       let anchorPoint = textAnchorPoint(this.anchorPoint)
+
+      let transform = this.calcTransform(aesthetics.rotation, cx, cy)
 
       let el = createElement('text', {
         attrs: {
@@ -65,7 +77,8 @@ export default {
           'y': cy,
           'fill': aesthetics.color,
           'text-anchor': anchorPoint.textAnchor,
-          'dominant-baseline': anchorPoint.dominantBaseline
+          'dominant-baseline': anchorPoint.dominantBaseline,
+          'transform': transform
         },
         style: {
           'font-size': aesthetics.fontSize + 'px'

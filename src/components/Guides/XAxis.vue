@@ -45,11 +45,22 @@
 
         <!-- Tick labels -->
         <vgg-label
+          v-if="!rotateLabel"
           :x="tick => tick.x"
           :y="0.5"
           :text="tick => tick.x"
           :font-size="10"
           anchor-point="t"
+        />
+
+        <vgg-label
+          v-if="rotateLabel"
+          :x="tick => tick.x"
+          :y="0.5"
+          :text="tick => tick.x"
+          :font-size="10"
+          :rotation="-30"
+          anchor-point="rt"
         />
 
       </vgg-map>
@@ -75,6 +86,11 @@ export default {
     tickValues: {
       type: [Array, undefined],
       default: undefined
+    },
+
+    rotateLabel: {
+      type: Boolean,
+      default: false
     }
   },
 

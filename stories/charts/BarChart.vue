@@ -75,6 +75,7 @@
         'grape',
         'durian'
       ]"
+      rotate-label
     />
 
     <vgg-y-axis
