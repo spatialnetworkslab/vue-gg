@@ -1,5 +1,3 @@
-import * as d3 from 'd3'
-
 export function initDomains (variablesMetadata) {
   let domainPerVariable = {}
 
@@ -35,19 +33,10 @@ export function updateDomains (row, currentDomains, variableMetadata) {
     }
 
     if (variableType === 'temporal') {
-      let date
+      let epoch = value.getTime()
 
-      if (variableMetadata[variableKey].format) {
-        let format = d3.timeParse(variableMetadata[variableKey].format)
-        date = format(value)
-      } else {
-        date = value
-      }
-
-      let epoch = date.getTime()
-
-      if (domain[0].getTime() >= epoch) { domain[0] = date }
-      if (domain[1].getTime() <= epoch) { domain[1] = date }
+      if (domain[0].getTime() >= epoch) { domain[0] = value }
+      if (domain[1].getTime() <= epoch) { domain[1] = value }
     }
 
     if (variableType === 'categorical') { domain.add(value) }

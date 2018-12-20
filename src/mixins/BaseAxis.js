@@ -24,14 +24,15 @@ export default {
     rotateLabel: {
       type: Boolean,
       default: false
+    },
+
+    format: {
+      type: [String, undefined],
+      default: undefined
     }
   },
 
   computed: {
-    ranges () {
-      return this.convertCoordinateSpecification(this.aesthetics)
-    },
-
     _domain () {
       if (this.domain.constructor === Array) {
         return this.domain
@@ -50,6 +51,10 @@ export default {
       }
     },
 
+    ranges () {
+      return this.convertCoordinateSpecification(this.aesthetics)
+    },
+
     tickData () {
       if (this.tickValues) {
         return this.tickValues.map(value => {
@@ -57,12 +62,20 @@ export default {
         })
       } else {
         let ticks
+        let format = x => x
+
         if (this._domainType === 'ratio') {
-          ticks = d3.ticks(...this._domain, this.tickCount).map(value => { return { value } })
+          ticks = d3.ticks(...this._domain, this.tickCount).map(value => {
+            return { value, label: format(value) }
+          })
         }
+
         if (this._domainType === 'count') {
-          ticks = d3.ticks(0, this._domain[1], 10, this.tickCount).map(value => { return { value } })
+          ticks = d3.ticks(0, this._domain[1], 10, this.tickCount).map(value => {
+            return { value, label: format(value) }
+          })
         }
+
         if (this._domainType === 'categorical') {
           let domain
           if (this._domain.constructor === Set) {
@@ -70,10 +83,21 @@ export default {
           } else {
             domain = this._domain
           }
-          ticks = domain.map(value => { return { value } })
+          ticks = domain.map(value => {
+            return { value, label: format(value) }
+          })
         }
+
         if (this._domainType === 'temporal') {
-          // TODO
+          format = d3.timeFormat(this.format || '%d/%m/%Y')
+
+          let scale = d3.scaleTime().domain(this._domain)
+
+          ticks = scale.ticks(this.tickCount).map(value => {
+            let date = new Date(value)
+            return { value: date, label: format(date) }
+          })
+          console.log(this._domain)
         }
 
         return ticks

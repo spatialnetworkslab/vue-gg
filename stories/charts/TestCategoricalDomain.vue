@@ -32,6 +32,15 @@
 
     </vgg-section>
 
+    <vgg-x-axis
+      :x1="100"
+      :x2="500"
+      :y1="50"
+      :y2="100"
+      :tick-count="3"
+      domain="date"
+    />
+
     <!-- <vgg-section
       :type="'polar'"
       :x1="100"

@@ -49,7 +49,7 @@
           v-if="!rotateLabel"
           :x="0.55"
           :y="tick => tick.value"
-          :text="tick => tick.value"
+          :text="tick => tick.label"
           :font-size="10"
           anchor-point="l"
         />
@@ -58,7 +58,7 @@
           v-if="rotateLabel"
           :x="0.55"
           :y="tick => tick.value"
-          :text="tick => tick.value"
+          :text="tick => tick.label"
           :font-size="10"
           :rotation="30"
           anchor-point="l"
