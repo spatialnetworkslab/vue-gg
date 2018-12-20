@@ -1,6 +1,7 @@
 <script>
 import Mark from '@/mixins/Marks/Mark.js'
 import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
+import { textAnchorPoint } from '@/utils/anchorPoint.js'
 
 export default {
   mixins: [Mark],
@@ -36,7 +37,7 @@ export default {
     anchorPoint: {
       type: String,
       default: 'center',
-      validator: p => ['center', 'lb', 'lt', 'rt', 'rb'].includes(p)
+      validator: p => ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'].includes(p)
     }
   },
 
@@ -47,14 +48,31 @@ export default {
         x: this.parseCoord(this.x, 'x'),
         y: this.parseCoord(this.y, 'y'),
         color: this.parseMappable(this.color, '#000000'),
-        fontSize: this.parseMappable(this.fontSize, 12)
+        fontSize: this.parseMappable(this.fontSize, 16)
       }
     }
   },
 
   methods: {
     renderSVG (createElement, aesthetics) {
-      // TODO
+      let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
+
+      let anchorPoint = textAnchorPoint(this.anchorPoint)
+
+      let el = createElement('text', {
+        attrs: {
+          'x': cx,
+          'y': cy,
+          'fill': aesthetics.color,
+          'text-anchor': anchorPoint.textAnchor,
+          'dominant-baseline': anchorPoint.dominantBaseline
+        },
+        style: {
+          'font-size': aesthetics.fontSize + 'px'
+        }
+      }, aesthetics.text)
+
+      return el
     }
   },
 

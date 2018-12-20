@@ -30,6 +30,13 @@
             :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
           />
 
+          <vgg-label
+            :x="row => row.explanatory"
+            :y="row => row.dependent"
+            :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
+            text="a"
+          />
+
         </vgg-map>
 
       </vgg-section>

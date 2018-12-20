@@ -12,7 +12,7 @@
 import Mark from '@/mixins/Marks/Mark.js'
 import CoordinateSystem from '@/mixins/CoordinateSystem.js'
 
-import adjustToAnchorPoint from '@/utils/adjustToAnchorPoint.js'
+import { adjustToAnchorPoint } from '@/utils/anchorPoint.js'
 
 export default {
   mixins: [Mark, CoordinateSystem],

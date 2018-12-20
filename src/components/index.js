@@ -16,6 +16,7 @@ import Line from './Marks/Line.vue'
 import Point from './Marks/Point.vue'
 import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
+import Label from './Marks/Label.vue'
 
 export default {
   Glyph,
@@ -31,5 +32,6 @@ export default {
   Line,
   Point,
   Polygon,
-  Rectangle
+  Rectangle,
+  Label
 }
