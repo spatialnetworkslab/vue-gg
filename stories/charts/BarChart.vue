@@ -63,18 +63,6 @@
       :y1="50"
       :y2="100"
       :domain="'fruit'"
-      :tick-values="[
-        'apple',
-        'banana',
-        'kiwi',
-        'pomelo',
-        'jackfruit',
-        'guava',
-        'cherry',
-        'dragonfruit',
-        'grape',
-        'durian'
-      ]"
       rotate-label
     />
 

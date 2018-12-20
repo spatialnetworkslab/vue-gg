@@ -35,9 +35,9 @@
 
         <!-- Tick lines -->
         <vgg-line
-          :x1="tick => tick.x"
+          :x1="tick => tick.value"
           :y1="0.5"
-          :x2="tick => tick.x"
+          :x2="tick => tick.value"
           :y2="0.65"
           :width="0.5"
           color="#808080"
@@ -46,18 +46,18 @@
         <!-- Tick labels -->
         <vgg-label
           v-if="!rotateLabel"
-          :x="tick => tick.x"
+          :x="tick => tick.value"
           :y="0.5"
-          :text="tick => tick.x"
+          :text="tick => tick.value"
           :font-size="10"
           anchor-point="t"
         />
 
         <vgg-label
           v-if="rotateLabel"
-          :x="tick => tick.x"
+          :x="tick => tick.value"
           :y="0.5"
-          :text="tick => tick.x"
+          :text="tick => tick.value"
           :font-size="10"
           :rotation="-30"
           anchor-point="rt"
@@ -71,43 +71,9 @@
 </template>
 
 <script>
-import Rectangular from '@/mixins/Marks/Rectangular.js'
+import BaseAxis from '@/mixins/BaseAxis.js'
 
 export default {
-  mixins: [Rectangular],
-
-  props: {
-    domain: {
-      type: [Array, String, undefined],
-      default: undefined
-    },
-
-    tickValues: {
-      type: [Array, undefined],
-      default: undefined
-    },
-
-    rotateLabel: {
-      type: Boolean,
-      default: false
-    }
-  },
-
-  computed: {
-    ranges () {
-      return this.convertCoordinateSpecification(this.aesthetics)
-    },
-
-    tickData () {
-      if (this.tickValues) {
-        return this.tickValues.map(value => {
-          return { x: value }
-        })
-      } else {
-        // let range = this.yDomain[1] - this.yDomain[0]
-        // let interval = calculateNiceInterval(range)
-      }
-    }
-  }
+  mixins: [BaseAxis]
 }
 </script>
