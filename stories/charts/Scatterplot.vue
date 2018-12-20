@@ -34,6 +34,22 @@
 
       </vgg-section>
 
+      <vgg-x-grid
+        :x1="100"
+        :x2="500"
+        :y1="100"
+        :y2="500"
+        :domain="'explanatory'"
+      />
+
+      <vgg-y-grid
+        :x1="100"
+        :x2="500"
+        :y1="100"
+        :y2="500"
+        :domain="'dependent'"
+      />
+
       <vgg-x-axis
         :x1="100"
         :x2="500"

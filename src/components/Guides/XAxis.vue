@@ -17,7 +17,6 @@
       :x2="1"
       :y2="0.5"
       :width="1"
-      color="#808080"
     />
 
     <!-- Ticks -->
@@ -40,7 +39,6 @@
           :x2="tick => tick.value"
           :y2="0.65"
           :width="0.5"
-          color="#808080"
         />
 
         <!-- Tick labels -->
@@ -71,7 +69,7 @@
 </template>
 
 <script>
-import BaseAxis from '@/mixins/BaseAxis.js'
+import BaseAxis from '@/mixins/Guides/BaseAxis.js'
 
 export default {
   mixins: [BaseAxis]

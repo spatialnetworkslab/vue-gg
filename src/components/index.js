@@ -10,6 +10,8 @@ import Piechart from './Glyphs/Piechart.vue'
 // Guides
 import XAxis from './Guides/XAxis.vue'
 import YAxis from './Guides/YAxis.vue'
+import XGrid from './Guides/XGrid.vue'
+import YGrid from './Guides/YGrid.vue'
 
 // Marks
 import Line from './Marks/Line.vue'
@@ -28,6 +30,8 @@ export default {
 
   XAxis,
   YAxis,
+  XGrid,
+  YGrid,
 
   Line,
   Point,

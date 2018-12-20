@@ -11,24 +11,9 @@ export default {
       default: undefined
     },
 
-    tickValues: {
-      type: [Array, undefined],
-      default: undefined
-    },
-
-    tickCount: {
-      type: Number,
+    gridLines: {
+      type: [Array, Number],
       default: 10
-    },
-
-    rotateLabel: {
-      type: Boolean,
-      default: false
-    },
-
-    format: {
-      type: [String, Function, undefined],
-      default: undefined
     }
   },
 
@@ -55,24 +40,23 @@ export default {
       return this.convertCoordinateSpecification(this.aesthetics)
     },
 
-    tickData () {
-      if (this.tickValues) {
-        return this.tickValues.map(value => {
+    cells () {
+      if (this.gridLines.constructor === Array) {
+        return this.gridLines.map(value => {
           return { value }
         })
       } else {
-        let ticks
-        let format = this.format && this.format.constructor === Function ? this.format : x => x
+        let cells
 
         if (this._domainType === 'ratio') {
-          ticks = d3.ticks(...this._domain, this.tickCount).map(value => {
-            return { value, label: format(value) }
+          cells = d3.ticks(...this._domain, this.gridLines).map(value => {
+            return { value }
           })
         }
 
         if (this._domainType === 'count') {
-          ticks = d3.ticks(0, this._domain[1], 10, this.tickCount).map(value => {
-            return { value, label: format(value) }
+          cells = d3.ticks(0, this._domain[1], this.gridLines).map(value => {
+            return { value }
           })
         }
 
@@ -83,28 +67,21 @@ export default {
           } else {
             domain = this._domain
           }
-          ticks = domain.map(value => {
-            return { value, label: format(value) }
+          cells = domain.map(value => {
+            return { value }
           })
         }
 
         if (this._domainType === 'temporal') {
-          if (this.format) {
-            if (this.format.constructor === String) { format = d3.timeFormat(this.format) }
-          } else {
-            format = d3.timeFormat('%d/%m/%Y')
-          }
-
           let scale = d3.scaleTime().domain(this._domain)
 
-          ticks = scale.ticks(this.tickCount).map(value => {
+          cells = scale.ticks(this.tickCount).map(value => {
             let date = new Date(value)
-            return { value: date, label: format(date) }
+            return { value: date }
           })
-          console.log(this._domain)
         }
 
-        return ticks
+        return cells
       }
     }
   }

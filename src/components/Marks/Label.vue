@@ -78,7 +78,8 @@ export default {
           'fill': aesthetics.color,
           'text-anchor': anchorPoint.textAnchor,
           'dominant-baseline': anchorPoint.dominantBaseline,
-          'transform': transform
+          'transform': transform,
+          'class': 'vgg-label'
         },
         style: {
           'font-size': aesthetics.fontSize + 'px'
@@ -118,3 +119,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.vgg-label {
+  font-family: sans-serif;
+}
+</style>
