@@ -27,7 +27,7 @@ export default {
     },
 
     format: {
-      type: [String, undefined],
+      type: [String, Function, undefined],
       default: undefined
     }
   },
@@ -62,7 +62,7 @@ export default {
         })
       } else {
         let ticks
-        let format = x => x
+        let format = this.format && this.format.constructor === Function ? this.format : x => x
 
         if (this._domainType === 'ratio') {
           ticks = d3.ticks(...this._domain, this.tickCount).map(value => {
@@ -89,7 +89,11 @@ export default {
         }
 
         if (this._domainType === 'temporal') {
-          format = d3.timeFormat(this.format || '%d/%m/%Y')
+          if (this.format) {
+            if (this.format.constructor === String) { format = d3.timeFormat(this.format) }
+          } else {
+            format = d3.timeFormat('%d/%m/%Y')
+          }
 
           let scale = d3.scaleTime().domain(this._domain)
 
