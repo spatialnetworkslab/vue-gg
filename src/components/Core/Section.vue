@@ -60,7 +60,6 @@ export default {
         } else {
           domains.y = this.ranges.y
         }
-
         return domains
       }
 
@@ -76,30 +75,6 @@ export default {
         return true
       }
     }
-    // _ranges () {
-    //   let ranges = {}
-    //
-    //   let xType = this.parentRangeTypes.x
-    //   let yType = this.parentRangeTypes.y
-    //
-    //   let parentBranch = this.parentBranch
-    //
-    //   // This is a trick to allow creating a new (numeric) Section inside a
-    //   // categorical/temporal Section. See CoordinateTransformation.js
-    //   if (['categorical', 'temporal'].includes(xType)) {
-    //     ranges.x = this.ranges.x.map(x => parentBranch.scaleX(x))
-    //   } else {
-    //     ranges.x = this.ranges.x
-    //   }
-    //
-    //   if (['categorical', 'temporal'].includes(yType)) {
-    //     ranges.y = this.ranges.y.map(y => parentBranch.scaleY(y))
-    //   } else {
-    //     ranges.y = this.ranges.y
-    //   }
-    //
-    //   return ranges
-    // }
   },
 
   watch: {

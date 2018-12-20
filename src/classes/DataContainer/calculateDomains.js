@@ -11,7 +11,8 @@ export function initDomains (variablesMetadata) {
     }
 
     if (variableType === 'temporal') {
-      domainPerVariable[variableKey] = []
+      // https://en.wikipedia.org/wiki/Unix_time
+      domainPerVariable[variableKey] = [new Date('19 January 2038'), new Date(0)]
     }
 
     if (variableType === 'categorical') {
@@ -34,9 +35,19 @@ export function updateDomains (row, currentDomains, variableMetadata) {
     }
 
     if (variableType === 'temporal') {
-      let format = d3.timeParse(variableMetadata[variableKey].format)
-      let formatValue = format(value)
-      domain.push(formatValue)
+      let date
+
+      if (variableMetadata[variableKey].format) {
+        let format = d3.timeParse(variableMetadata[variableKey].format)
+        date = format(value)
+      } else {
+        date = value
+      }
+
+      let epoch = date.getTime()
+
+      if (domain[0].getTime() >= epoch) { domain[0] = date }
+      if (domain[1].getTime() <= epoch) { domain[1] = date }
     }
 
     if (variableType === 'categorical') { domain.add(value) }
