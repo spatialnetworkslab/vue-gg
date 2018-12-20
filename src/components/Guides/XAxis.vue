@@ -37,7 +37,7 @@
           :x1="tick => tick.value"
           :y1="0.5"
           :x2="tick => tick.value"
-          :y2="0.65"
+          :y2="flip ? 0.35 : 0.65"
           :width="0.5"
         />
 
@@ -45,20 +45,20 @@
         <vgg-label
           v-if="!rotateLabel"
           :x="tick => tick.value"
-          :y="0.5"
+          :y="flip ? 0.59 : 0.45"
           :text="tick => tick.label"
           :font-size="10"
-          anchor-point="t"
+          :anchor-point="flip ? 'b' : 't'"
         />
 
         <vgg-label
           v-if="rotateLabel"
           :x="tick => tick.value"
-          :y="0.5"
+          :y="flip ? 0.59 : 0.45"
           :text="tick => tick.label"
           :font-size="10"
-          :rotation="-30"
-          anchor-point="rt"
+          :rotation="flip ? 30 : -30"
+          :anchor-point="flip ? 'rb' : 'rt'"
         />
 
       </vgg-map>

@@ -29,6 +29,11 @@ export default {
     format: {
       type: [String, Function, undefined],
       default: undefined
+    },
+
+    flip: {
+      type: Boolean,
+      default: false
     }
   },
 

@@ -37,7 +37,7 @@
         <vgg-line
           :x1="0.5"
           :y1="tick => tick.value"
-          :x2="0.35"
+          :x2="flip ? 0.65 : 0.35"
           :y2="tick => tick.value"
           :width="0.5"
         />
@@ -45,21 +45,21 @@
         <!-- Tick labels -->
         <vgg-label
           v-if="!rotateLabel"
-          :x="0.55"
+          :x="flip ? 0.45 : 0.59"
           :y="tick => tick.value"
           :text="tick => tick.label"
           :font-size="10"
-          anchor-point="l"
+          :anchor-point="flip ? 'r' : 'l'"
         />
 
         <vgg-label
           v-if="rotateLabel"
-          :x="0.55"
+          :x="flip ? 0.41 : 0.59"
           :y="tick => tick.value"
           :text="tick => tick.label"
           :font-size="10"
-          :rotation="30"
-          anchor-point="l"
+          :rotation="flip ? -30 : 30"
+          :anchor-point="flip ? 'r' : 'l'"
         />
 
       </vgg-map>
