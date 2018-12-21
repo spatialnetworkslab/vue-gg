@@ -48,14 +48,8 @@ export default {
       } else {
         let cells
 
-        if (this._domainType === 'ratio') {
+        if (this._domainType === 'quantitative') {
           cells = d3.ticks(...this._domain, this.gridLines).map(value => {
-            return { value }
-          })
-        }
-
-        if (this._domainType === 'count') {
-          cells = d3.ticks(0, this._domain[1], this.gridLines).map(value => {
             return { value }
           })
         }

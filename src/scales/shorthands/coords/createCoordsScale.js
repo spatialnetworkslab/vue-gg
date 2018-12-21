@@ -6,22 +6,10 @@ import temporal from './temporal.js'
 import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, range, scalingOptions) {
-  if (variableType === 'ratio') {
+  if (variableType === 'quantitative') {
     let scale = scalingOptions.scale || 'linear'
     checkValidScale(prop, variableType, scale, numeric)
     let fromZero = scalingOptions.fromZero || false
-
-    if (fromZero) {
-      return numeric[scale](setDomainFromZero(domain), range)
-    } else {
-      return numeric[scale](domain, range)
-    }
-  }
-
-  if (variableType === 'count') {
-    let scale = scalingOptions.scale || 'linear'
-    checkValidScale(prop, variableType, scale, numeric)
-    let fromZero = scalingOptions.fromZero || true
 
     if (fromZero) {
       return numeric[scale](setDomainFromZero(domain), range)

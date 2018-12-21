@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import { initDomains, updateDomains } from './calculateDomains.js'
 import parseMetadata from './parseMetadata.js'
 // const datasetTypes = ['dataFrame', 'geojson']
-// const variableTypes = ['ratio', 'count', 'temporal', 'categorical']
+// const variableTypes = ['quantitative', 'temporal', 'categorical']
 
 export default class {
   constructor (data, metadataOriginal) {

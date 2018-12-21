@@ -93,11 +93,11 @@ export default class CoordinateTransformation {
     }
 
     if (options.type === 'polar') {
-      let toTheta = createCoordsScale('x', 'ratio', ranges.x, [0, 2 * Math.PI], {})
-      let toRadius = createCoordsScale('y', 'ratio', ranges.y, [0, 1], {})
+      let toTheta = createCoordsScale('x', 'quantitative', ranges.x, [0, 2 * Math.PI], {})
+      let toRadius = createCoordsScale('y', 'quantitative', ranges.y, [0, 1], {})
 
-      let toRangeX = createCoordsScale('x', 'ratio', [-1, 1], ranges.x, {})
-      let toRangeY = createCoordsScale('y', 'ratio', [-1, 1], ranges.y, {})
+      let toRangeX = createCoordsScale('x', 'quantitative', [-1, 1], ranges.x, {})
+      let toRangeY = createCoordsScale('y', 'quantitative', [-1, 1], ranges.y, {})
 
       this.transform = ([x, y]) => {
         let scaledX = this.getX(x)

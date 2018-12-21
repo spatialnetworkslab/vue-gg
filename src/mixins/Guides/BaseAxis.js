@@ -69,14 +69,8 @@ export default {
         let ticks
         let format = this.format && this.format.constructor === Function ? this.format : x => x
 
-        if (this._domainType === 'ratio') {
+        if (this._domainType === 'quantitative') {
           ticks = d3.ticks(...this._domain, this.tickCount).map(value => {
-            return { value, label: format(value) }
-          })
-        }
-
-        if (this._domainType === 'count') {
-          ticks = d3.ticks(0, this._domain[1], this.tickCount).map(value => {
             return { value, label: format(value) }
           })
         }

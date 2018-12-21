@@ -11,21 +11,13 @@
         :x2="500"
         :y1="100"
         :y2="500"
-        :domains="{
-          x: 'explanatory',
-          y: 'dependent'
-        }"
-        :scale="{
-          x: 'linear',
-          y: 'linear'
-        }"
       >
 
         <vgg-map>
 
           <vgg-point
-            :x="row => row.explanatory"
-            :y="row => row.dependent"
+            :x="{ scale: 'explanatory' }"
+            :y="{ scale: 'dependent' }"
             :radius="3"
             :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
           />
