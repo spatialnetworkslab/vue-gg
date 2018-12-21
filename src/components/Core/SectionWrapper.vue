@@ -12,13 +12,13 @@ export default {
       default: 'scale'
     },
 
-    scale: {
-      type: String,
-      default: 'linear'
-    },
-
     domains: {
       type: [Object, undefined],
+      default: undefined
+    },
+
+    scale: {
+      type: [String, Object, undefined],
       default: undefined
     }
   },

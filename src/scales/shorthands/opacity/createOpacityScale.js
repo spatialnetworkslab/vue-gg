@@ -1,15 +1,13 @@
 import setDomainFromZero from '@/scales/utils/setDomainFromZero.js'
+import checkValidScale from '@/scales/utils/checkValidScale.js'
+
 import numeric from './numeric.js'
 
-export default function (prop, context, variableScaling) {
-  let variableID = variableScaling.variable
-  let variableType = context.metadata.variables[variableID].type
-
-  let domain = context.domains[variableScaling.variable]
-
+export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'ratio') {
-    let scale = variableScaling.scale || 'linear'
-    let fromZero = variableScaling.fromZero || false
+    let scale = scalingOptions.scale || 'linear'
+    checkValidScale(prop, variableType, scale, numeric)
+    let fromZero = scalingOptions.fromZero || false
 
     if (fromZero) {
       return numeric[scale](setDomainFromZero(domain))
@@ -19,8 +17,9 @@ export default function (prop, context, variableScaling) {
   }
 
   if (variableType === 'count') {
-    let scale = variableScaling.scale || 'linear'
-    let fromZero = variableScaling.fromZero || true
+    let scale = scalingOptions.scale || 'linear'
+    checkValidScale(prop, variableType, scale, numeric)
+    let fromZero = scalingOptions.fromZero || true
 
     if (fromZero) {
       return numeric[scale](setDomainFromZero(domain))

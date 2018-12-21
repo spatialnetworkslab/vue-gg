@@ -2,6 +2,8 @@ import createScale from '@/scales/createScale.js'
 import createPositioner from '@/positioners/createPositioner.js'
 
 import { is } from '@/utils/equals.js'
+import getDimension from '@/utils/getDimension.js'
+import convertToNumeric from '@/utils/convertToNumeric.js'
 
 export default function (aesthetics, context, dataContainer) {
   let assigners = {}
@@ -93,7 +95,16 @@ export default function (aesthetics, context, dataContainer) {
       } else if (is(funcs[aesKey])) {
         // If a function was used instead of a scale object:
         // We pass it the entire row, the row index and the context object
-        props[aesKey] = funcs[aesKey](row, i, context)
+        let value = funcs[aesKey](row, i, context)
+
+        // If the value is categorical or temporal, and a coord,
+        // we have to convert it to numeric
+        let dimension = getDimension(aesKey)
+        if (dimension && [String, Date].includes(value.constructor)) {
+          props[aesKey] = convertToNumeric(value, dimension, context.parentBranch)
+        } else {
+          props[aesKey] = value
+        }
       } else if (is(assigners[aesKey])) {
         // Finally, if there were no scales or getter functions specified,
         // we will assign a constant value if necessary.

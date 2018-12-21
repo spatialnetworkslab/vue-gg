@@ -9,27 +9,27 @@ export default {
   props: {
     // Mappable
     x1: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     y1: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     func: {
-      type: [Function, Object, Function, undefined],
+      type: [Function, Object, undefined],
       default: undefined
     },
 
@@ -48,10 +48,10 @@ export default {
   computed: {
     aesthetics () {
       return {
-        x1: this.parseMappable(this.x1, 0),
-        y1: this.parseMappable(this.y1, 0),
-        x2: this.parseMappable(this.x2, 0),
-        y2: this.parseMappable(this.y2, 0),
+        x1: this.parseCoord(this.x1, 'x'),
+        y1: this.parseCoord(this.y1, 'y'),
+        x2: this.parseCoord(this.x2, 'x'),
+        y2: this.parseCoord(this.y2, 'y'),
         func: this.parseMappable(this.func, undefined, true),
         color: this.parseMappable(this.color, '#000000'),
 

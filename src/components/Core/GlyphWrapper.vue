@@ -9,12 +9,12 @@ export default {
   props: {
     // Mappable
     x: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, String, Date, Object, Function, undefined],
       default: undefined
     },
 
@@ -39,12 +39,12 @@ export default {
   computed: {
     aesthetics () {
       return {
-        'x': this.parseMappable(this.x, 0),
-        'y': this.parseMappable(this.y, 0),
+        x: this.parseCoord(this.x, 'x'),
+        y: this.parseCoord(this.y, 'y'),
 
-        'width': this.parseUnmappable(this.width, 10),
-        'height': this.parseUnmappable(this.height, 10),
-        'anchorPoint': this.anchorPoint
+        width: this.parseUnmappable(this.width, 10),
+        height: this.parseUnmappable(this.height, 10),
+        anchorPoint: this.parseUnmappable(this.anchorPoint, 'center')
       }
     }
   },

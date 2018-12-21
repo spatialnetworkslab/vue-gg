@@ -1,12 +1,18 @@
 <script>
 import Mark from '@/mixins/Marks/Mark.js'
 import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
+import { textAnchorPoint } from '@/utils/anchorPoint.js'
 
 export default {
   mixins: [Mark],
 
   props: {
     // Mappable
+    text: {
+      type: [String, Object, Function, undefined],
+      default: undefined
+    },
+
     x: {
       type: [Number, String, Date, Object, Function, undefined],
       default: undefined
@@ -22,44 +28,65 @@ export default {
       default: undefined
     },
 
-    // Non-mappable
-    radius: {
-      type: Number,
-      default: 3
+    fontSize: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
     },
 
-    strokeWidth: {
-      type: Number,
-      default: 0
+    rotation: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    // Unmappable
+    anchorPoint: {
+      type: String,
+      default: 'center',
+      validator: p => ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'].includes(p)
     }
   },
 
   computed: {
     aesthetics () {
       return {
+        text: this.parseMappable(this.text, undefined),
         x: this.parseCoord(this.x, 'x'),
         y: this.parseCoord(this.y, 'y'),
         color: this.parseMappable(this.color, '#000000'),
-
-        radius: this.parseUnmappable(this.radius, 3),
-        strokeWidth: this.parseUnmappable(this.strokeWidth, 0)
+        fontSize: this.parseMappable(this.fontSize, 16),
+        rotation: this.parseMappable(this.rotation, 0)
       }
     }
   },
 
   methods: {
+    calcTransform (rotation, cx, cy) {
+      return `rotate(${rotation}, ${cx}, ${cy})`
+    },
+
     renderSVG (createElement, aesthetics) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
-      return createElement('circle', {
+      let anchorPoint = textAnchorPoint(this.anchorPoint)
+
+      let transform = this.calcTransform(aesthetics.rotation, cx, cy)
+
+      let el = createElement('text', {
         attrs: {
-          'cx': cx,
-          'cy': cy,
+          'x': cx,
+          'y': cy,
           'fill': aesthetics.color,
-          'r': aesthetics.radius,
-          'stroke-width': aesthetics.strokeWidth
+          'text-anchor': anchorPoint.textAnchor,
+          'dominant-baseline': anchorPoint.dominantBaseline,
+          'transform': transform,
+          'class': 'vgg-label'
+        },
+        style: {
+          'font-size': aesthetics.fontSize + 'px'
         }
-      })
+      }, aesthetics.text)
+
+      return el
     }
   },
 
@@ -92,3 +119,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.vgg-label {
+  font-family: sans-serif;
+}
+</style>
