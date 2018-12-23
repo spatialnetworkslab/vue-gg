@@ -31,7 +31,7 @@ function square (domain, range) {
 
   let scale = d3.scalePow().exponent(2).domain(domainCopy).range(range)
 
-  return offsetZeroes(scale)
+  return scale
 }
 
 function squareRoot (domain, range) {
@@ -42,5 +42,5 @@ function squareRoot (domain, range) {
 
   let scale = d3.scalePow().exponent(1 / 2).domain(domain).range(range)
 
-  return offsetZeroes(scale)
+  return scale
 }
