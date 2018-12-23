@@ -46,6 +46,15 @@
       />
 
       <vgg-line
+        :x1="-1"
+        :x2="1"
+        :y1="-1"
+        :y2="1"
+        :width="5"
+        color="#535347"
+      />
+
+      <vgg-line
         :func="x => (x ** 3) + (x / 2)"
         :width="3"
         color="#00919c"
