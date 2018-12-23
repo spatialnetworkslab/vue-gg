@@ -1,4 +1,7 @@
-import * as d3 from 'd3'
+import { ticks as arrayTicks } from 'd3-array'
+import { scaleTime } from 'd3-scale'
+import { timeFormat } from 'd3-time-format'
+
 import Rectangular from '@/mixins/Marks/Rectangular.js'
 import { inferVariableType } from '@/classes/DataContainer/parseMetadata.js'
 
@@ -70,7 +73,7 @@ export default {
         let format = this.format && this.format.constructor === Function ? this.format : x => x
 
         if (this._domainType === 'quantitative') {
-          ticks = d3.ticks(...this._domain, this.tickCount).map(value => {
+          ticks = arrayTicks(...this._domain, this.tickCount).map(value => {
             return { value, label: format(value) }
           })
         }
@@ -89,12 +92,12 @@ export default {
 
         if (this._domainType === 'temporal') {
           if (this.format) {
-            if (this.format.constructor === String) { format = d3.timeFormat(this.format) }
+            if (this.format.constructor === String) { format = timeFormat(this.format) }
           } else {
-            format = d3.timeFormat('%d/%m/%Y')
+            format = timeFormat('%d/%m/%Y')
           }
 
-          let scale = d3.scaleTime().domain(this._domain)
+          let scale = scaleTime().domain(this._domain)
 
           ticks = scale.ticks(this.tickCount).map(value => {
             let date = new Date(value)

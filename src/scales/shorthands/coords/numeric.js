@@ -1,4 +1,4 @@
-import * as d3 from 'd3'
+import * as d3 from 'd3-scale'
 import offsetZeroes from '@/scales/utils/offsetZeroes.js'
 
 export default {

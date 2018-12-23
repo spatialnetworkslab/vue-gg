@@ -1,4 +1,4 @@
-import * as d3 from 'd3'
+import { extent } from 'd3-array'
 import { initDomains, updateDomains } from './calculateDomains.js'
 import parseMetadata from './parseMetadata.js'
 // const datasetTypes = ['dataFrame', 'geojson']
@@ -52,7 +52,7 @@ export default class {
     // Special treatment for temporal data
     for (let variable in domainPerVariable) {
       if (metadataParsed.variables[variable].type === 'temporal') {
-        domainPerVariable[variable] = d3.extent(domainPerVariable[variable])
+        domainPerVariable[variable] = extent(domainPerVariable[variable])
       }
     }
 

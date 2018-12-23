@@ -1,4 +1,6 @@
-import * as d3 from 'd3'
+import { ticks as arrayTicks } from 'd3-array'
+import { scaleTime } from 'd3-scale'
+
 import Rectangular from '@/mixins/Marks/Rectangular.js'
 import { inferVariableType } from '@/classes/DataContainer/parseMetadata.js'
 
@@ -49,7 +51,7 @@ export default {
         let cells
 
         if (this._domainType === 'quantitative') {
-          cells = d3.ticks(...this._domain, this.gridLines).map(value => {
+          cells = arrayTicks(...this._domain, this.gridLines).map(value => {
             return { value }
           })
         }
@@ -67,7 +69,7 @@ export default {
         }
 
         if (this._domainType === 'temporal') {
-          let scale = d3.scaleTime().domain(this._domain)
+          let scale = scaleTime().domain(this._domain)
 
           cells = scale.ticks(this.tickCount).map(value => {
             let date = new Date(value)

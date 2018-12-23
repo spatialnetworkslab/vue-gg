@@ -1,4 +1,4 @@
-import * as d3 from 'd3'
+import { interpolate } from 'd3-interpolate'
 
 export function interpolatePath (corners, transformer, close = false,
   precision = 2, resolution = 100) {
@@ -9,7 +9,7 @@ export function interpolatePath (corners, transformer, close = false,
     let from = corners[i]
     let to = corners[i + 1]
 
-    let interpolator = d3.interpolate(from, to)
+    let interpolator = interpolate(from, to)
 
     for (let j = 1; j <= resolution; ++j) {
       let point = interpolator(j / resolution)
@@ -26,7 +26,7 @@ export function interpolatePathFromFunc (func, transformer, domains,
   close = false, precision = 2, resolution = 300) {
   let points = []
 
-  let interpolator = d3.interpolate(...domains.x)
+  let interpolator = interpolate(...domains.x)
 
   for (let i = 0; i <= resolution; ++i) {
     let x = interpolator(i / resolution)
