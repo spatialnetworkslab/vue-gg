@@ -15,6 +15,7 @@ import YGrid from './Guides/YGrid.vue'
 
 // Marks
 import Line from './Marks/Line.vue'
+import MultiLine from './Marks/MultiLine.vue'
 import Point from './Marks/Point.vue'
 import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
@@ -34,6 +35,7 @@ export default {
   YGrid,
 
   Line,
+  MultiLine,
   Point,
   Polygon,
   Rectangle,
