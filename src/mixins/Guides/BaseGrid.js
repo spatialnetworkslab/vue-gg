@@ -13,6 +13,11 @@ export default {
       default: undefined
     },
 
+    scale: {
+      type: [String, Object],
+      default: () => { return {} }
+    },
+
     gridLines: {
       type: [Array, Number],
       default: 10

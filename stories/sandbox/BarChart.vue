@@ -72,6 +72,7 @@
       :y1="100"
       :y2="500"
       :domain="'quantity'"
+      :scale="{ domain: [0, null] }"
     />
 
   </vgg-graphic>

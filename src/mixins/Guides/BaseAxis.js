@@ -14,6 +14,11 @@ export default {
       default: undefined
     },
 
+    scale: {
+      type: [String, Object],
+      default: () => { return {} }
+    },
+
     tickValues: {
       type: [Array, undefined],
       default: undefined

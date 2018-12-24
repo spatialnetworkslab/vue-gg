@@ -30,7 +30,7 @@
         y: domain
       }"
       :scale="{
-        y: { domain: [0, null] }
+        y: scale
       }"
     >
 
