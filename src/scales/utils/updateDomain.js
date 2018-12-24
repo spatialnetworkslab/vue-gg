@@ -1,4 +1,4 @@
-export default function (domain, { scale, fromZero, updateDomain }) {
+export default function (domain, { updateDomain }) {
   let newDomain = JSON.parse(JSON.stringify(domain))
 
   if (updateDomain) {
@@ -8,10 +8,6 @@ export default function (domain, { scale, fromZero, updateDomain }) {
 
     if (is(updateDomain[0])) { newDomain[0] = updateDomain[0] }
     if (is(updateDomain[1])) { newDomain[1] = updateDomain[1] }
-  }
-
-  if (!updateDomain && fromZero !== false) {
-    if (newDomain[0] > 0) { newDomain[0] = 0 }
   }
 
   return newDomain
