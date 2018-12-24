@@ -6531,9 +6531,9 @@ vue-eslint-parser@^4.0.2:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
-vue-gg@spatialnetworkslab/vue-gg#8bb3848:
+"vue-gg@git://github.com/spatialnetworkslab/vue-gg.git":
   version "0.1.0"
-  resolved "https://codeload.github.com/spatialnetworkslab/vue-gg/tar.gz/8bb3848e21c8c2e833cc20e1778bccf3ec5f7888"
+  resolved "git://github.com/spatialnetworkslab/vue-gg.git#12de77ca49a3389529cb6327a1f71b8ba67e2d7d"
   dependencies:
     d3-array "^2.0.2"
     d3-interpolate "^1.3.2"
