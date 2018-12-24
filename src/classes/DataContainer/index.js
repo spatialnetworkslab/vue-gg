@@ -1,5 +1,6 @@
 import { initDomains, updateDomains } from './calculateDomains.js'
 // const datasetTypes = ['dataFrame', 'geojson']
+// const variableTypes = ['quantitative', 'temporal', 'categorical']
 
 export default class {
   constructor (data, type) {

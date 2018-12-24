@@ -1,6 +1,7 @@
 export default function (domain) {
   let newDomain = JSON.parse(JSON.stringify(domain))
-  newDomain[0] = 1e-6
-
+  if (newDomain[0] > 0) {
+    newDomain[0] = 0
+  }
   return newDomain
 }

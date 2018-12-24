@@ -6,7 +6,7 @@ export function initDomains (firstRow) {
   for (let variableKey in firstRow) {
     let variableType = getDataType(firstRow[variableKey])
 
-    if (variableType === 'numeric') {
+    if (variableType === 'quantitative') {
       domainPerVariable[variableKey] = [Infinity, -Infinity]
     }
 
@@ -21,7 +21,6 @@ export function initDomains (firstRow) {
 
     // if (variableType === 'nested') {} // TODO
   }
-
   return domainPerVariable
 }
 
@@ -31,7 +30,7 @@ export function updateDomains (row, currentDomains) {
     let variableType = getDataType(value)
     let domain = currentDomains[variableKey]
 
-    if (variableType === 'numeric') {
+    if (variableType === 'quantitative') {
       if (domain[0] >= value) { domain[0] = value }
       if (domain[1] <= value) { domain[1] = value }
     }

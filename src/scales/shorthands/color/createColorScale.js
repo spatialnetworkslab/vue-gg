@@ -5,22 +5,10 @@ import numeric from './numeric.js'
 import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
-  if (variableType === 'ratio') {
+  if (variableType === 'quantitative') {
     let scale = scalingOptions.scale || 'blues'
     checkValidScale(prop, variableType, scale, numeric)
     let fromZero = scalingOptions.fromZero || false
-
-    if (fromZero) {
-      return numeric[scale](setDomainFromZero(domain))
-    } else {
-      return numeric[scale](domain)
-    }
-  }
-
-  if (variableType === 'count') {
-    let scale = scalingOptions.scale || 'reds'
-    checkValidScale(prop, variableType, scale, numeric)
-    let fromZero = scalingOptions.fromZero || true
 
     if (fromZero) {
       return numeric[scale](setDomainFromZero(domain))

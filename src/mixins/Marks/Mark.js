@@ -39,7 +39,7 @@ export default {
 
         if (is(prop)) {
           // Here we check whether the passed prop (String, Number, etc)
-          // is compatible with the parent domain (categorical, ratio, etc)
+          // is compatible with the parent domain (categorical, quantitative, etc)
           if (invalidValueForRangeType(prop, parentRangeType)) {
             throw new Error(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
           } else {
@@ -73,7 +73,7 @@ export default {
         if (is(prop) && isFunction) { return { func: prop } }
         if (is(prop) && !isObject && !isFunction) {
           // Here we check whether the passed prop (String, Number, etc)
-          // is compatible with the parent domain (categorical, ratio, etc)
+          // is compatible with the parent domain (categorical, quantitative, etc)
           if (invalidValueForRangeType(prop, parentRangeType)) {
             throw new Error(`Invalid input ${prop} for parent Section domain type ${parentRangeType}`)
           } else {
@@ -154,7 +154,7 @@ export default {
 }
 
 function invalidValueForRangeType (value, rangeType) {
-  if (['ratio', 'count'].includes(rangeType)) {
+  if (rangeType === 'quantitative') {
     return value.constructor !== Number
   } else if (rangeType === 'categorical') {
     return value.constructor !== String
