@@ -18,11 +18,6 @@ export default {
       default: undefined
     },
 
-    fill: {
-      type: [String, Object, Function, undefined],
-      default: undefined
-    },
-
     // Non-mappable
     width: {
       type: Number,
@@ -35,7 +30,6 @@ export default {
       return {
         points: this.parseMappable(this.points, undefined),
         color: this.parseMappable(this.color, '#000000'),
-        fill: this.parseMappable(this.fill, 'none'),
 
         width: this.parseUnmappable(this.width, 2)
       }
@@ -44,17 +38,7 @@ export default {
 
   methods: {
     createPath (points) {
-      let lastID = points.length - 1
-
-      // Check if polygon is closed
-      if (points[0][0] !== points[lastID][0] ||
-        points[0][1] !== points[lastID][1]) {
-        // If not, close
-        points.push(points[0])
-      }
-
       let path = interpolatePath(points, this.$$transform)
-
       return path
     },
 
@@ -66,7 +50,7 @@ export default {
           'd': path,
           'stroke': aesthetics.color,
           'stroke-width': aesthetics.width,
-          'fill': aesthetics.fill
+          'fill': 'none'
         }
       })
     }
@@ -79,7 +63,7 @@ export default {
         return this.renderSVG(createElement, this.aesthetics)
       }
 
-      if (!this.$$map) {
+      if (this.$$map) {
         // Create the aesthetics for each mark
         let aestheticsPerMark = mapAesthetics(
           this.aesthetics,

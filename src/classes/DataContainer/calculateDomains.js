@@ -4,7 +4,7 @@ export function initDomains (variablesMetadata) {
   for (let variableKey in variablesMetadata) {
     let variableType = variablesMetadata[variableKey].type
 
-    if (['ratio', 'count'].includes(variableType)) {
+    if (variableType === 'quantitative') {
       domainPerVariable[variableKey] = [Infinity, -Infinity]
     }
 
@@ -17,7 +17,6 @@ export function initDomains (variablesMetadata) {
       domainPerVariable[variableKey] = new Set()
     }
   }
-
   return domainPerVariable
 }
 
@@ -27,7 +26,7 @@ export function updateDomains (row, currentDomains, variableMetadata) {
     let value = row[variableKey]
     let domain = currentDomains[variableKey]
 
-    if (['ratio', 'count'].includes(variableType)) {
+    if (variableType === 'quantitative') {
       if (domain[0] >= value) { domain[0] = value }
       if (domain[1] <= value) { domain[1] = value }
     }

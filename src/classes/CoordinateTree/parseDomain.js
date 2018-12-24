@@ -29,7 +29,7 @@ export default function (domainSpecification, variableDomains, variableMetadata)
       }
     } else {
       domain = [0, 1] // placeholder until real data is available
-      domainType = 'count'
+      domainType = 'quantitative'
     }
   }
 

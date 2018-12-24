@@ -1,6 +1,7 @@
-import * as d3 from 'd3'
+import { interpolate } from 'd3-interpolate'
+import { line } from 'd3-shape'
 
-export function interpolatePath (corners, transformer, close = false,
+export function interpolatePath (corners, transformer,
   precision = 2, resolution = 100) {
   let points = []
   points.push(corners[0])
@@ -9,7 +10,7 @@ export function interpolatePath (corners, transformer, close = false,
     let from = corners[i]
     let to = corners[i + 1]
 
-    let interpolator = d3.interpolate(from, to)
+    let interpolator = interpolate(from, to)
 
     for (let j = 1; j <= resolution; ++j) {
       let point = interpolator(j / resolution)
@@ -17,16 +18,16 @@ export function interpolatePath (corners, transformer, close = false,
     }
   }
 
-  let path = createPath(points, transformer, close, precision)
+  let path = createPath(points, transformer, precision)
 
   return path
 }
 
 export function interpolatePathFromFunc (func, transformer, domains,
-  close = false, precision = 2, resolution = 300) {
+  precision = 2, resolution = 300) {
   let points = []
 
-  let interpolator = d3.interpolate(...domains.x)
+  let interpolator = interpolate(...domains.x)
 
   for (let i = 0; i <= resolution; ++i) {
     let x = interpolator(i / resolution)
@@ -37,23 +38,17 @@ export function interpolatePathFromFunc (func, transformer, domains,
     }
   }
 
-  let path = createPath(points, transformer, close, precision)
+  let path = createPath(points, transformer, precision)
 
   return path
 }
 
-function createPath (points, transformer, close = false, precision = 2) {
-  let [ x, y ] = transformer(points[0]).map(c => round(c, precision))
-
-  let path = `M ${x} ${y}`
-
-  for (let i = 1; i < points.length; ++i) {
-    [ x, y ] = transformer(points[i]).map(c => round(c, precision))
-
-    path += ` L ${x} ${y}`
-  }
-
-  if (close) { path += ' Z' }
+function createPath (points, transformer, precision = 2) {
+  let transformedPoints = points.map(p => {
+    return transformer(p).map(c => round(c, precision))
+  })
+  const lineGenerator = line()
+  let path = lineGenerator(transformedPoints)
 
   return path
 }

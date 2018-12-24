@@ -1,9 +1,9 @@
-import * as d3 from 'd3'
+import { scaleOrdinal } from 'd3-scale'
 
 export default {
   colors
 }
 
 function colors (domain, range) {
-  return d3.scaleOrdinal().domain(domain).range(range)
+  return scaleOrdinal().domain(domain).range(range)
 }
