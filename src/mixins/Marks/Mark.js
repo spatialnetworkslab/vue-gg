@@ -17,7 +17,6 @@ export default {
     context () {
       return {
         domains: this.$$dataContainer.getDomains(),
-        metadata: this.$$dataContainer.getMetadata(),
         ranges: this.parentBranch.domains,
         parentBranch: this.parentBranch
       }

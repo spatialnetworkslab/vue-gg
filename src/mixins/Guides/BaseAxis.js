@@ -3,7 +3,7 @@ import { scaleTime } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '@/mixins/Marks/Rectangular.js'
-import { inferVariableType } from '@/classes/DataContainer/parseMetadata.js'
+import getDataType from '@/utils/getDataType.js'
 
 export default {
   mixins: [Rectangular],
@@ -51,11 +51,8 @@ export default {
     },
 
     _domainType () {
-      if (this.domain.constructor === Array) {
-        return inferVariableType(this.domain[0])
-      }
-      if (this.domain.constructor === String) {
-        return this.$$dataContainer.getVariableMetadata(this.domain).type
+      if (this.domain) {
+        return getDataType(this.domain[0])
       }
     },
 
