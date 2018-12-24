@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import BaseGrid from '@/mixins/Guides/BaseGrid.js'
+import BaseGrid from '../../mixins/Guides/BaseGrid.js'
 
 export default {
   mixins: [BaseGrid]

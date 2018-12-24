@@ -2,6 +2,7 @@
   "name": "vue-gg",
   "version": "0.1.0",
   "private": true,
+  "main": "src/index.js",
   "scripts": {
     "storybook": "start-storybook -p 9001 -c .storybook"
   },

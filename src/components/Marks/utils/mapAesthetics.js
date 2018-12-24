@@ -1,9 +1,9 @@
-import createScale from '@/scales/createScale.js'
-import createPositioner from '@/positioners/createPositioner.js'
+import createScale from '../../../scales/createScale.js'
+import createPositioner from '../../../positioners/createPositioner.js'
 
-import { is } from '@/utils/equals.js'
-import getDimension from '@/utils/getDimension.js'
-import convertToNumeric from '@/utils/convertToNumeric.js'
+import { is } from '../../../utils/equals.js'
+import getDimension from '../../../utils/getDimension.js'
+import convertToNumeric from '../../../utils/convertToNumeric.js'
 
 export default function (aesthetics, context, dataContainer) {
   let assigners = {}

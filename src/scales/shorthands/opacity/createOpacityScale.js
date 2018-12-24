@@ -1,5 +1,5 @@
-import setDomainFromZero from '@/scales/utils/setDomainFromZero.js'
-import checkValidScale from '@/scales/utils/checkValidScale.js'
+import setDomainFromZero from '../../utils/setDomainFromZero.js'
+import checkValidScale from '../../utils/checkValidScale.js'
 
 import numeric from './numeric.js'
 

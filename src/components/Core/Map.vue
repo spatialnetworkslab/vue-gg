@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import DataValve from '@/mixins/Data/DataValve.js'
+import DataValve from '../../mixins/Data/DataValve.js'
 
 export default {
   mixins: [DataValve],
