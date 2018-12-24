@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "vue": "^2.5.17",
-    "vue-gg": "spatialnetworkslab/vue-gg#examples"
+    "vue-gg": "spatialnetworkslab/vue-gg#master"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
