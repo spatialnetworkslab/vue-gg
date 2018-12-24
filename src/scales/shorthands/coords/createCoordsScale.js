@@ -1,5 +1,5 @@
-import setDomainFromZero from '@/scales/utils/setDomainFromZero.js'
 import checkValidScale from '@/scales/utils/checkValidScale.js'
+import updateDomain from '@/scales/utils/updateDomain.js'
 
 import numeric from './numeric.js'
 import temporal from './temporal.js'
@@ -9,13 +9,8 @@ export default function (prop, variableType, domain, range, scalingOptions) {
   if (variableType === 'quantitative') {
     let scale = scalingOptions.scale || 'linear'
     checkValidScale(prop, variableType, scale, numeric)
-    let fromZero = scalingOptions.fromZero || false
 
-    if (fromZero) {
-      return numeric[scale](setDomainFromZero(domain), range)
-    } else {
-      return numeric[scale](domain, range)
-    }
+    return numeric[scale](updateDomain(domain, scalingOptions), range)
   }
 
   if (variableType === 'temporal') {
