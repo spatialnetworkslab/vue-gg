@@ -45,10 +45,12 @@ export default class CoordinateTransformation {
 
     // Create the scaling functions
     this.scaleX = createCoordsScale('x', domainXType, domainX, ranges.x, {
-      scale: scaleTypeX
+      scale: scaleTypeX,
+      fromZero: false
     })
     this.scaleY = createCoordsScale('y', domainYType, domainY, ranges.y, {
-      scale: scaleTypeY
+      scale: scaleTypeY,
+      fromZero: false
     })
 
     // We will wrap the scaling functions in this 'get' function.

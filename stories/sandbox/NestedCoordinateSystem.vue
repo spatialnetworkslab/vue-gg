@@ -2,16 +2,16 @@
   <div>
 
     <vgg-graphic
-      :width="800"
-      :height="800"
+      :width="600"
+      :height="600"
       class="graphic">
 
       <vgg-section
         :type="outerTransformation"
         :x1="0"
-        :x2="800"
+        :x2="600"
         :y1="0"
-        :y2="800"
+        :y2="600"
         :domains="domains">
 
         <vgg-section
