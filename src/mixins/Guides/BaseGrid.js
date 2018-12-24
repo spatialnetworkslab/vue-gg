@@ -1,8 +1,8 @@
 import { ticks as arrayTicks } from 'd3-array'
 import { scaleTime } from 'd3-scale'
 
-import Rectangular from '@/mixins/Marks/Rectangular.js'
-import { inferVariableType } from '@/classes/DataContainer/parseMetadata.js'
+import Rectangular from '../Marks/Rectangular.js'
+import { inferVariableType } from '../../classes/DataContainer/parseMetadata.js'
 
 export default {
   mixins: [Rectangular],

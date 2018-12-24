@@ -1,5 +1,5 @@
 import Mark from './Mark.js'
-import { is, isnt } from '@/utils/equals.js'
+import { is, isnt } from '../../utils/equals.js'
 
 export default {
   mixins: [Mark],

@@ -1,7 +1,7 @@
 <script>
-import Mark from '@/mixins/Marks/Mark.js'
-import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
-import { textAnchorPoint } from '@/utils/anchorPoint.js'
+import Mark from '../../mixins/Marks/Mark.js'
+import mapAesthetics from './utils/mapAesthetics.js'
+import { textAnchorPoint } from '../../utils/anchorPoint.js'
 
 export default {
   mixins: [Mark],

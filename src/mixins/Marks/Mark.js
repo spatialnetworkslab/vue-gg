@@ -1,8 +1,8 @@
-import CoordinateTreeUser from '@/mixins/CoordinateTreeUser.js'
-import DataReceiver from '@/mixins/Data/DataReceiver.js'
+import CoordinateTreeUser from '../CoordinateTreeUser.js'
+import DataReceiver from '../Data/DataReceiver.js'
 
-import { is, isnt } from '@/utils/equals.js'
-import convertToNumeric from '@/utils/convertToNumeric.js'
+import { is, isnt } from '../../utils/equals.js'
+import convertToNumeric from '../../utils/convertToNumeric.js'
 
 export default {
   mixins: [CoordinateTreeUser, DataReceiver],

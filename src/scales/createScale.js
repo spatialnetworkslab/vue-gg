@@ -2,7 +2,7 @@ import createCoordsScale from './shorthands/coords/createCoordsScale.js'
 import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 
-import getDimension from '@/utils/getDimension.js'
+import getDimension from '../utils/getDimension.js'
 
 export default function (prop, context, scalingOptions) {
   let variableID = scalingOptions.variable

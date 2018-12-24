@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import CoordinateSystem from '@/mixins/CoordinateSystem.js'
-import DataProvider from '@/mixins/Data/DataProvider.js'
+import CoordinateSystem from '../../mixins/CoordinateSystem.js'
+import DataProvider from '../../mixins/Data/DataProvider.js'
 
 export default {
   mixins: [CoordinateSystem, DataProvider]
