@@ -1,29 +1,25 @@
-import * as d3 from 'd3'
 import { initDomains, updateDomains } from './calculateDomains.js'
-import parseMetadata from './parseMetadata.js'
 // const datasetTypes = ['dataFrame', 'geojson']
-// const variableTypes = ['ratio', 'count', 'temporal', 'categorical']
 
 export default class {
-  constructor (data, metadataOriginal) {
+  constructor (data, type) {
     this._dataset = []
-    this._metadata = {}
     this._domains = {}
 
-    if (!metadataOriginal) {
-      // If no metadata is provided, we will assume it's a dataFrame
-      this.setDataFrame(data, metadataOriginal)
+    if (!type) {
+      // If no type is provided, we will assume it's a dataFrame
+      this.setDataFrame(data)
     }
 
-    if (metadataOriginal) {
+    if (type) {
       // Determine data structure if a metadata object was passed.
-      switch (metadataOriginal.type) {
+      switch (type) {
         case 'dataFrame': {
-          this.setDataFrame(data, metadataOriginal)
+          this.setDataFrame(data)
           break
         }
         case 'geojson': {
-          this.setGeoJSON(data, metadataOriginal)
+          this.setGeoJSON(data)
           break
         }
         default: throw new Error('Unknown type!')
@@ -36,28 +32,17 @@ export default class {
       throw new Error('Data of type dataFrame must be passed as an array')
     }
 
-    // Parse metadata, or generate metadata by inferring types and stuff
-    let firstRow = data[0]
-    let metadataParsed = parseMetadata(metadataOriginal, firstRow)
-
     // Initialize domain object
-    let domainPerVariable = initDomains(metadataParsed.variables)
+    let firstRow = data[0]
+    let domainPerVariable = initDomains(firstRow)
 
     // Find domains
     for (let row of data) {
-      checkRowFormat(row, metadataParsed.variables)
-      domainPerVariable = updateDomains(row, domainPerVariable, metadataParsed.variables)
-    }
-
-    // Special treatment for temporal data
-    for (let variable in domainPerVariable) {
-      if (metadataParsed.variables[variable].type === 'temporal') {
-        domainPerVariable[variable] = d3.extent(domainPerVariable[variable])
-      }
+      checkRowFormat(row, firstRow)
+      domainPerVariable = updateDomains(row, domainPerVariable)
     }
 
     this._dataset = data
-    this._metadata = metadataParsed
     this._domains = domainPerVariable
   }
 
@@ -81,20 +66,12 @@ export default class {
     return result
   }
 
-  getMetadata () {
-    return this._metadata
-  }
-
   getDomain (variable) {
     return this._domains[variable]
   }
 
   getDomains () {
     return this._domains
-  }
-
-  getVariableMetadata (variable) {
-    return this._metadata.variables[variable]
   }
 
   forEachRow (callback) {

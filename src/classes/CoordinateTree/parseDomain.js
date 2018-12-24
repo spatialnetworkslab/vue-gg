@@ -1,6 +1,6 @@
-import { inferVariableType } from '../DataContainer/parseMetadata.js'
+import getDataType from '@/utils/getDataType.js'
 
-export default function (domainSpecification, variableDomains, variableMetadata) {
+export default function (domainSpecification, variableDomains) {
   let domain
   let domainType
 
@@ -10,7 +10,7 @@ export default function (domainSpecification, variableDomains, variableMetadata)
 
   if (domainSpecification.constructor === Array) {
     checkValidDomainArray(domainSpecification)
-    domainType = inferVariableType(domainSpecification[0])
+    domainType = getDataType(domainSpecification[0])
 
     if (domainType === 'categorical') {
       domain = new Set(domainSpecification)
@@ -25,11 +25,11 @@ export default function (domainSpecification, variableDomains, variableMetadata)
         }
 
         domain = variableDomains[domainSpecification]
-        domainType = variableMetadata.variables[domainSpecification].type
+        domainType = getDataType(variableDomains[0]) // TODO test if Set[0] is ok
       }
     } else {
       domain = [0, 1] // placeholder until real data is available
-      domainType = 'count'
+      domainType = 'numeric'
     }
   }
 
