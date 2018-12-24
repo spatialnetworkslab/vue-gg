@@ -1,5 +1,6 @@
-export default function (domain, { updateDomain }) {
+export default function (domain, scalingOptions) {
   let newDomain = JSON.parse(JSON.stringify(domain))
+  let updateDomain = scalingOptions.domain
 
   if (updateDomain) {
     if (updateDomain.constructor !== Array && updateDomain.length !== 2) {

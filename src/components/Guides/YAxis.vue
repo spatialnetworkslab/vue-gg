@@ -29,6 +29,9 @@
       :domains="{
         y: domain
       }"
+      :scale="{
+        y: { domain: [0, null] }
+      }"
     >
 
       <vgg-map :data="tickData">
