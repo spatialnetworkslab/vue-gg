@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "vue": "^2.5.17",
-    "vue-gg": "file:../../src/"
+    "vue-gg": "git+https://9e462371b928bd1f139c5f08f2096d8acef1c625:x-oauth-basic@github.com/spatialnetworkslab/vue-gg.git#master"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
