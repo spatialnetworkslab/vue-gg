@@ -31,8 +31,8 @@ export function updateDomains (row, currentDomains) {
     let domain = currentDomains[variableKey]
 
     if (variableType === 'quantitative') {
-      if (domain[0] >= value) { domain[0] = value }
-      if (domain[1] <= value) { domain[1] = value }
+      if (domain[0] >= value) { domain[0] = Math.floor(value) }
+      if (domain[1] <= value) { domain[1] = Math.ceil(value) }
     }
 
     if (variableType === 'categorical') {

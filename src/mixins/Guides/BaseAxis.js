@@ -52,7 +52,7 @@ export default {
 
     _domainType () {
       if (this.domain) {
-        return getDataType(this.domain[0])
+        return getDataType(this._domain[0])
       }
     },
 

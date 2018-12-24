@@ -21,7 +21,7 @@ export default function (domainSpecification, variableDomains) {
         }
 
         domain = variableDomains[domainSpecification]
-        domainType = getDataType(variableDomains[0])
+        domainType = getDataType(domain[0])
       }
     } else {
       domain = [0, 1] // placeholder until real data is available
