@@ -7,7 +7,7 @@ function equidistant (domain, range, padStart = 0, padEnd = 0) {
   let deltaRange = range[1] - range[0]
   let paddedRange = deltaRange - padStart - padEnd
 
-  let sections = domain.size
+  let sections = domain.length
   let sectionLength = paddedRange / sections
 
   let mapping = {}

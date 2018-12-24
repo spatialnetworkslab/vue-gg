@@ -12,20 +12,16 @@ export default function (domainSpecification, variableDomains) {
     checkValidDomainArray(domainSpecification)
     domainType = getDataType(domainSpecification[0])
 
-    if (domainType === 'categorical') {
-      domain = new Set(domainSpecification)
-    } else {
-      domain = domainSpecification
-    }
+    domain = domainSpecification
   } else {
     if (variableDomains) {
       if (domainSpecification.constructor === String) {
         if (!variableDomains[domainSpecification]) {
-          throw new Error(`Invalid domain specification: variable doens't exist`)
+          throw new Error(`Invalid domain specification: variable does not exist`)
         }
 
         domain = variableDomains[domainSpecification]
-        domainType = getDataType(variableDomains[0]) // TODO test if Set[0] is ok
+        domainType = getDataType(variableDomains[0])
       }
     } else {
       domain = [0, 1] // placeholder until real data is available

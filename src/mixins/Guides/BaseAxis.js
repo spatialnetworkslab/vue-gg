@@ -79,13 +79,7 @@ export default {
         }
 
         if (this._domainType === 'categorical') {
-          let domain
-          if (this._domain.constructor === Set) {
-            domain = Array.from(this._domain)
-          } else {
-            domain = this._domain
-          }
-          ticks = domain.map(value => {
+          ticks = this._domain.map(value => {
             return { value, label: format(value) }
           })
         }

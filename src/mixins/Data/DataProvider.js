@@ -7,8 +7,8 @@ export default {
       default: undefined
     },
 
-    metadata: {
-      type: [Object, undefined],
+    dataType: {
+      type: [String, undefined],
       default: undefined
     }
   },
@@ -16,7 +16,7 @@ export default {
   computed: {
     dataContainer () {
       if (this.data) {
-        return new DataContainer(this.data, this.metadata)
+        return new DataContainer(this.data, this.dataType)
       }
     }
   },

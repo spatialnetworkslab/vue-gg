@@ -11,7 +11,7 @@ export function initDomains (firstRow) {
     }
 
     if (variableType === 'categorical') {
-      domainPerVariable[variableKey] = new Set()
+      domainPerVariable[variableKey] = []
     }
 
     if (variableType === 'temporal') {
@@ -35,7 +35,9 @@ export function updateDomains (row, currentDomains) {
       if (domain[1] <= value) { domain[1] = value }
     }
 
-    if (variableType === 'categorical') { domain.add(value) }
+    if (variableType === 'categorical') {
+      if (!domain.includes(value)) { domain.push(value) }
+    }
 
     if (variableType === 'temporal') {
       let epoch = value.getTime()

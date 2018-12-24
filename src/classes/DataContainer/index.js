@@ -13,7 +13,6 @@ export default class {
     }
 
     if (type) {
-      // Determine data structure if a metadata object was passed.
       switch (type) {
         case 'dataFrame': {
           this.setDataFrame(data)
@@ -28,7 +27,7 @@ export default class {
     }
   }
 
-  setDataFrame (data, metadataOriginal) {
+  setDataFrame (data) {
     if (data.constructor !== Array) {
       throw new Error('Data of type dataFrame must be passed as an array')
     }
@@ -47,7 +46,7 @@ export default class {
     this._domains = domainPerVariable
   }
 
-  setGeoJSON (data, metadata) {
+  setGeoJSON (data) {
     if (data.constructor !== Object) {
       throw new Error('Data of type geojson must be passed as an object')
     }
@@ -85,14 +84,14 @@ export default class {
 ///           ///
 /// Utilities ///
 //            ///
-function checkRowFormat (row, requiredObjStructure) {
+function checkRowFormat (row, firstRow) {
   // Check if it is an array of objects
   if (row.constructor !== Object) {
     throw new Error('Data array must contain only objects')
   }
 
-  // Check if all have the same keys using variable metadata
-  if (!objectsHaveSameKeys(row, requiredObjStructure)) {
+  // Check if all have the same keys using first row
+  if (!objectsHaveSameKeys(row, firstRow)) {
     throw new Error('All objects in data array must have same keys')
   }
 }

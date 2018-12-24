@@ -1,7 +1,7 @@
 export default function (value) {
   switch (value.constructor) {
     case Number:
-      return 'numeric'
+      return 'quantitative'
     case String:
       return 'categorical'
     case Date:
