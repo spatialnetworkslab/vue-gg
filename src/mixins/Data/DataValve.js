@@ -1,4 +1,4 @@
-import DataContainer from '@/classes/DataContainer'
+import DataContainer from '../../classes/DataContainer'
 
 export default {
   inject: ['$$dataContainerContext'],

@@ -1,5 +1,5 @@
 import * as d3 from 'd3-scale'
-import offsetZeroes from '@/scales/utils/offsetZeroes.js'
+import offsetZeroes from '../../utils/offsetZeroes.js'
 
 export default {
   linear,

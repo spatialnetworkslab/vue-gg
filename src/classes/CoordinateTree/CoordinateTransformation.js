@@ -1,4 +1,4 @@
-import createCoordsScale from '@/scales/shorthands/coords/createCoordsScale.js'
+import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
 
 import parseDomain from './parseDomain.js'
 import parseScale from './parseScale.js'

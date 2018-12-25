@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import BaseAxis from '@/mixins/Guides/BaseAxis.js'
+import BaseAxis from '../../mixins/Guides/BaseAxis.js'
 
 export default {
   mixins: [BaseAxis]

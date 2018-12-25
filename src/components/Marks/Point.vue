@@ -1,6 +1,6 @@
 <script>
-import Mark from '@/mixins/Marks/Mark.js'
-import mapAesthetics from '@/components/Marks/utils/mapAesthetics.js'
+import Mark from '../../mixins/Marks/Mark.js'
+import mapAesthetics from './utils/mapAesthetics.js'
 
 export default {
   mixins: [Mark],
