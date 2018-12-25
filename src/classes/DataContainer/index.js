@@ -1,29 +1,25 @@
-import { extent } from 'd3-array'
 import { initDomains, updateDomains } from './calculateDomains.js'
-import parseMetadata from './parseMetadata.js'
 // const datasetTypes = ['dataFrame', 'geojson']
 // const variableTypes = ['quantitative', 'temporal', 'categorical']
 
 export default class {
-  constructor (data, metadataOriginal) {
+  constructor (data, type) {
     this._dataset = []
-    this._metadata = {}
     this._domains = {}
 
-    if (!metadataOriginal) {
-      // If no metadata is provided, we will assume it's a dataFrame
-      this.setDataFrame(data, metadataOriginal)
+    if (!type) {
+      // If no type is provided, we will assume it's a dataFrame
+      this.setDataFrame(data)
     }
 
-    if (metadataOriginal) {
-      // Determine data structure if a metadata object was passed.
-      switch (metadataOriginal.type) {
+    if (type) {
+      switch (type) {
         case 'dataFrame': {
-          this.setDataFrame(data, metadataOriginal)
+          this.setDataFrame(data)
           break
         }
         case 'geojson': {
-          this.setGeoJSON(data, metadataOriginal)
+          this.setGeoJSON(data)
           break
         }
         default: throw new Error('Unknown type!')
@@ -31,37 +27,26 @@ export default class {
     }
   }
 
-  setDataFrame (data, metadataOriginal) {
+  setDataFrame (data) {
     if (data.constructor !== Array) {
       throw new Error('Data of type dataFrame must be passed as an array')
     }
 
-    // Parse metadata, or generate metadata by inferring types and stuff
-    let firstRow = data[0]
-    let metadataParsed = parseMetadata(metadataOriginal, firstRow)
-
     // Initialize domain object
-    let domainPerVariable = initDomains(metadataParsed.variables)
+    let firstRow = data[0]
+    let domainPerVariable = initDomains(firstRow)
 
     // Find domains
     for (let row of data) {
-      checkRowFormat(row, metadataParsed.variables)
-      domainPerVariable = updateDomains(row, domainPerVariable, metadataParsed.variables)
-    }
-
-    // Special treatment for temporal data
-    for (let variable in domainPerVariable) {
-      if (metadataParsed.variables[variable].type === 'temporal') {
-        domainPerVariable[variable] = extent(domainPerVariable[variable])
-      }
+      checkRowFormat(row, firstRow)
+      domainPerVariable = updateDomains(row, domainPerVariable)
     }
 
     this._dataset = data
-    this._metadata = metadataParsed
     this._domains = domainPerVariable
   }
 
-  setGeoJSON (data, metadata) {
+  setGeoJSON (data) {
     if (data.constructor !== Object) {
       throw new Error('Data of type geojson must be passed as an object')
     }
@@ -81,20 +66,12 @@ export default class {
     return result
   }
 
-  getMetadata () {
-    return this._metadata
-  }
-
   getDomain (variable) {
     return this._domains[variable]
   }
 
   getDomains () {
     return this._domains
-  }
-
-  getVariableMetadata (variable) {
-    return this._metadata.variables[variable]
   }
 
   forEachRow (callback) {
@@ -107,14 +84,14 @@ export default class {
 ///           ///
 /// Utilities ///
 //            ///
-function checkRowFormat (row, requiredObjStructure) {
+function checkRowFormat (row, firstRow) {
   // Check if it is an array of objects
   if (row.constructor !== Object) {
     throw new Error('Data array must contain only objects')
   }
 
-  // Check if all have the same keys using variable metadata
-  if (!objectsHaveSameKeys(row, requiredObjStructure)) {
+  // Check if all have the same keys using first row
+  if (!objectsHaveSameKeys(row, firstRow)) {
     throw new Error('All objects in data array must have same keys')
   }
 }

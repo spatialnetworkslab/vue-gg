@@ -9,7 +9,7 @@ export default {
       default: undefined
     },
 
-    metadata: {
+    dataType: {
       type: [Object, undefined],
       default: undefined
     }
@@ -22,7 +22,7 @@ export default {
 
     dataContainer () {
       if (this.data) {
-        return new DataContainer(this.data, this.metadata)
+        return new DataContainer(this.data, this.dataType)
       }
     }
   },

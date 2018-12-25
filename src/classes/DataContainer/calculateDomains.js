@@ -1,11 +1,17 @@
-export function initDomains (variablesMetadata) {
+import getDataType from '@/utils/getDataType.js'
+
+export function initDomains (firstRow) {
   let domainPerVariable = {}
 
-  for (let variableKey in variablesMetadata) {
-    let variableType = variablesMetadata[variableKey].type
+  for (let variableKey in firstRow) {
+    let variableType = getDataType(firstRow[variableKey])
 
     if (variableType === 'quantitative') {
       domainPerVariable[variableKey] = [Infinity, -Infinity]
+    }
+
+    if (variableType === 'categorical') {
+      domainPerVariable[variableKey] = []
     }
 
     if (variableType === 'temporal') {
@@ -13,22 +19,24 @@ export function initDomains (variablesMetadata) {
       domainPerVariable[variableKey] = [new Date('19 January 2038'), new Date(0)]
     }
 
-    if (variableType === 'categorical') {
-      domainPerVariable[variableKey] = new Set()
-    }
+    // if (variableType === 'nested') {} // TODO
   }
   return domainPerVariable
 }
 
-export function updateDomains (row, currentDomains, variableMetadata) {
+export function updateDomains (row, currentDomains) {
   for (let variableKey in row) {
-    let variableType = variableMetadata[variableKey].type
     let value = row[variableKey]
+    let variableType = getDataType(value)
     let domain = currentDomains[variableKey]
 
     if (variableType === 'quantitative') {
       if (domain[0] >= value) { domain[0] = value }
       if (domain[1] <= value) { domain[1] = value }
+    }
+
+    if (variableType === 'categorical') {
+      if (!domain.includes(value)) { domain.push(value) }
     }
 
     if (variableType === 'temporal') {
@@ -38,7 +46,7 @@ export function updateDomains (row, currentDomains, variableMetadata) {
       if (domain[1].getTime() <= epoch) { domain[1] = value }
     }
 
-    if (variableType === 'categorical') { domain.add(value) }
+    // if (variableType === 'nested') {} // TODO
   }
 
   return currentDomains

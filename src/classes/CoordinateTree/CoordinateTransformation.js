@@ -9,27 +9,16 @@ export default class CoordinateTransformation {
     let ranges = options.ranges
 
     let variableDomains
-    let variableMetadata
 
     if (options.dataContainer) {
       variableDomains = options.dataContainer.getDomains()
-      variableMetadata = options.dataContainer.getMetadata()
     }
 
     // Check for validity, and fetch variable domains from dataContainer if necessary
-    let [domainX, domainXType] = parseDomain(
-      domainSpecifications.x,
-      variableDomains,
-      variableMetadata
-    )
+    let [domainX, domainXType] = parseDomain(domainSpecifications.x, variableDomains)
+    let [domainY, domainYType] = parseDomain(domainSpecifications.y, variableDomains)
 
-    let [domainY, domainYType] = parseDomain(
-      domainSpecifications.y,
-      variableDomains,
-      variableMetadata
-    )
-
-    let [scaleTypeX, scaleTypeY] = parseScale(options.scale)
+    let [scaleOptionsX, scaleOptionsY] = parseScale(options.scale)
 
     // Store domains and ranges
     this.domainTypes = {
@@ -54,13 +43,12 @@ export default class CoordinateTransformation {
 
     this.ranges = ranges
 
-    // Create the scaling functions
-    this.scaleX = createCoordsScale('x', domainXType, domainX, ranges.x, {
-      scale: scaleTypeX
-    })
-    this.scaleY = createCoordsScale('y', domainYType, domainY, ranges.y, {
-      scale: scaleTypeY
-    })
+    this.scaleX = createCoordsScale('x', domainXType, domainX, ranges.x,
+      scaleOptionsX
+    )
+    this.scaleY = createCoordsScale('y', domainYType, domainY, ranges.y,
+      scaleOptionsY
+    )
 
     // We will wrap the scaling functions in this 'get' function.
     // For categorical and temporal domains, we don't need to apply the scaling,

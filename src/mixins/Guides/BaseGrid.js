@@ -1,8 +1,8 @@
 import { ticks as arrayTicks } from 'd3-array'
 import { scaleTime } from 'd3-scale'
 
-import Rectangular from '../Marks/Rectangular.js'
-import { inferVariableType } from '../../classes/DataContainer/parseMetadata.js'
+import Rectangular from '@/mixins/Marks/Rectangular.js'
+import getDataType from '@/utils/getDataType.js'
 
 export default {
   mixins: [Rectangular],
@@ -11,6 +11,11 @@ export default {
     domain: {
       type: [Array, String, undefined],
       default: undefined
+    },
+
+    scale: {
+      type: [String, Object],
+      default: () => { return {} }
     },
 
     gridLines: {
@@ -30,11 +35,8 @@ export default {
     },
 
     _domainType () {
-      if (this.domain.constructor === Array) {
-        return inferVariableType(this.domain[0])
-      }
-      if (this.domain.constructor === String) {
-        return this.$$dataContainer.getVariableMetadata(this.domain).type
+      if (this.domain) {
+        return getDataType(this._domain[0])
       }
     },
 
@@ -57,13 +59,7 @@ export default {
         }
 
         if (this._domainType === 'categorical') {
-          let domain
-          if (this._domain.constructor === Set) {
-            domain = Array.from(this._domain)
-          } else {
-            domain = this._domain
-          }
-          cells = domain.map(value => {
+          cells = this._domain.map(value => {
             return { value }
           })
         }
