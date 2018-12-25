@@ -1,7 +1,8 @@
 <script>
-import Mark from '../../mixins/Marks/Mark.js'
+import Mark from '@/mixins/Marks/Mark.js'
 import mapAesthetics from './utils/mapAesthetics.js'
 import { interpolatePath } from './utils/createPath.js'
+import checkPoints from './utils/checkPoints.js'
 
 export default {
   mixins: [Mark],
@@ -9,8 +10,18 @@ export default {
   props: {
     // Mappable
     points: {
-      type: [Array, Object, Function],
-      required: true
+      type: [Array, Object, Function, undefined],
+      default: undefined
+    },
+
+    x: {
+      type: [Array, Object, String, Function, undefined],
+      default: undefined
+    },
+
+    y: {
+      type: [Array, Object, String, Function, undefined],
+      default: undefined
     },
 
     color: {
@@ -27,8 +38,10 @@ export default {
 
   computed: {
     aesthetics () {
+      let points = checkPoints(this.points, this.x, this.y)
+
       return {
-        points: this.parseMappable(this.points, undefined),
+        points: this.parseMappable(points, undefined),
         color: this.parseMappable(this.color, '#000000'),
 
         width: this.parseUnmappable(this.width, 2)
