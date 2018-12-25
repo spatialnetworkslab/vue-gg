@@ -1,4 +1,4 @@
-import { is, isnt } from '@/utils/equals.js'
+import { is, isnt } from '../../../utils/equals.js'
 
 export default function (points, x, y) {
   if (is(points) && (is(x) && is(y))) {

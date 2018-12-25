@@ -2,8 +2,8 @@ import createCoordsScale from './shorthands/coords/createCoordsScale.js'
 import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 
-import getDimension from '@/utils/getDimension.js'
-import getDataType from '@/utils/getDataType.js'
+import getDimension from '../utils/getDimension.js'
+import getDataType from '../utils/getDataType.js'
 
 export default function (prop, context, scalingOptions) {
   let domain = context.domains[scalingOptions.variable]

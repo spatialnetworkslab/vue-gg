@@ -1,4 +1,4 @@
-import getDataType from '@/utils/getDataType.js'
+import getDataType from '../../utils/getDataType.js'
 
 export default function (domainSpecification, variableDomains) {
   let domain
