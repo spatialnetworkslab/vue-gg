@@ -41,22 +41,40 @@ export default {
       checkPoints(this.points, this.x, this.y)
 
       return {
-        points: this.parseAesthetic(this.points, {}),
-        color: this.parseAesthetic(this.color, { default: '#000000' }),
+        points: this.parseGeometry(this.points, {}),
 
+        x: this.parseCoordinateSet(this.x, { dimension: 'x' }),
+        y: this.parseCoordinateSet(this.y, { dimension: 'y' }),
+
+        color: this.parseAesthetic(this.color, { default: '#000000' }),
         width: this.parseProperty(this.width, { default: 2 })
       }
     }
   },
 
   methods: {
+    generatePoints (aesthetics) {
+      if (aesthetics.points) { return aesthetics.points }
+
+      if (aesthetics.x.length !== aesthetics.y.length) {
+        throw new Error(`'x' and 'y' coordinate sets have different lengths`)
+      } else {
+        let zipped = []
+        for (let i = 0; i < aesthetics.x.length; ++i) {
+          zipped.push(aesthetics.x[i], aesthetics.y[i])
+        }
+        return zipped
+      }
+    },
+
     createPath (points) {
       let path = interpolatePath(points, this.$$transform)
       return path
     },
 
     renderSVG (createElement, aesthetics) {
-      let path = this.createPath(aesthetics.points)
+      let points = this.generatePoints(aesthetics)
+      let path = this.createPath(points)
 
       return createElement('path', {
         attrs: {

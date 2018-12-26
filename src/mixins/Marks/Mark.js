@@ -5,6 +5,7 @@ import {
   parseAesthetic,
   parseCoordinate,
   parseCoordinateSet,
+  parseGeometry,
   parsePixelValue,
   parseProperty
 } from './utils'
@@ -29,17 +30,19 @@ export default {
   },
 
   methods: {
+    parseAesthetic,
     parseCoordinate,
     parseCoordinateSet,
-    parseAesthetic,
+    parseGeometry,
     parsePixelValue,
     parseProperty
   },
 
   mounted () {
+    this.parseAesthetic.bind(this)
     this.parseCoordinate.bind(this)
     this.parseCoordinateSet.bind(this)
-    this.parseAesthetic.bind(this)
+    this.parseGeometry.bind(this)
     this.parsePixelValue.bind(this)
     this.parseProperty.bind(this)
   }
