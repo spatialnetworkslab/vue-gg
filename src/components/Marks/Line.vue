@@ -48,14 +48,14 @@ export default {
   computed: {
     aesthetics () {
       return {
-        x1: this.parseCoord(this.x1, 'x'),
-        y1: this.parseCoord(this.y1, 'y'),
-        x2: this.parseCoord(this.x2, 'x'),
-        y2: this.parseCoord(this.y2, 'y'),
-        func: this.parseMappable(this.func, undefined, true),
-        color: this.parseMappable(this.color, '#000000'),
+        x1: this.parseCoordinate(this.x1, 'x'),
+        y1: this.parseCoordinate(this.y1, 'y'),
+        x2: this.parseCoordinate(this.x2, 'x'),
+        y2: this.parseCoordinate(this.y2, 'y'),
+        func: this.parseAesthetic(this.func, undefined, true),
+        color: this.parseAesthetic(this.color, '#000000'),
 
-        width: this.parseUnmappable(this.width, 2)
+        width: this.parseProperty(this.width, 2)
       }
     }
   },
