@@ -26,7 +26,7 @@
 
       </vgg-map>
 
-      <vgg-multi-line
+      <vgg-path
         :x="'a'"
         :y="'b'"
       />

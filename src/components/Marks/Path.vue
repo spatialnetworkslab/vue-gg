@@ -7,12 +7,12 @@ export default {
   props: {
     _sortX: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     _close: {
       type: Boolean,
-      default: false
+      default: true
     }
   }
 }
