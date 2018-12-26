@@ -33,6 +33,11 @@ export default {
     width: {
       type: Number,
       default: 2
+    },
+
+    _sortX: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -61,10 +66,14 @@ export default {
       } else {
         let zipped = []
         for (let i = 0; i < aesthetics.x.length; ++i) {
-          zipped.push(aesthetics.x[i], aesthetics.y[i])
+          zipped.push([aesthetics.x[i], aesthetics.y[i]])
         }
         return zipped
       }
+    },
+
+    sort (points) {
+      return points.sort((a, b) => a[0] - b[0])
     },
 
     createPath (points) {
@@ -74,6 +83,11 @@ export default {
 
     renderSVG (createElement, aesthetics) {
       let points = this.generatePoints(aesthetics)
+
+      if (this._sortX) {
+        points = this.sort(points)
+      }
+
       let path = this.createPath(points)
 
       return createElement('path', {

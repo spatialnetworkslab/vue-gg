@@ -9,18 +9,27 @@
       :x2="500"
       :y1="100"
       :y2="500"
+      :domains="{
+        x: 'a',
+        y: 'b'
+      }"
     >
 
       <vgg-map>
 
         <vgg-point
-          :x="{ scale: 'a' }"
-          :y="{ scale: 'b' }"
+          :x="row => row.a"
+          :y="row => row.b"
           :radius="3"
           :color="{ scale: { scale: 'viridis', variable: 'a' } }"
         />
 
       </vgg-map>
+
+      <vgg-multi-line
+        :x="'a'"
+        :y="'b'"
+      />
 
     </vgg-section>
 
