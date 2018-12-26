@@ -26,11 +26,6 @@
 
       </vgg-map>
 
-      <vgg-polygon
-        :x="'a'"
-        :y="'b'"
-      />
-
     </vgg-section>
 
     <vgg-x-grid

@@ -60,7 +60,7 @@ export default function (prop, { dimension }) {
   }
 }
 
-function invalidValueForRangeType (value, rangeType) {
+export function invalidValueForRangeType (value, rangeType) {
   if (rangeType === 'quantitative') {
     return value.constructor !== Number
   } else if (rangeType === 'categorical') {
