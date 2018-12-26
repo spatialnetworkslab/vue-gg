@@ -1,65 +1,40 @@
 <script>
-import Mark from '../../mixins/Marks/Mark.js'
+import MultiLine from '../../mixins/Marks/MultiLine.js'
 import mapAesthetics from './utils/mapAesthetics.js'
-import { interpolatePath } from './utils/createPath.js'
 
 export default {
-  mixins: [Mark],
+  mixins: [MultiLine],
 
   props: {
-    // Mappable
-    points: {
-      type: [Array, Object, Function],
-      required: true
-    },
-
-    color: {
-      type: [String, Object, Function, undefined],
-      default: undefined
-    },
-
     fill: {
       type: [String, Object, Function, undefined],
       default: undefined
     },
 
-    // Non-mappable
-    width: {
-      type: Number,
-      default: 2
-    }
-  },
+    _sortX: {
+      type: Boolean,
+      default: false
+    },
 
-  computed: {
-    aesthetics () {
-      return {
-        points: this.parseAesthetic(this.points, {}),
-        color: this.parseAesthetic(this.color, { default: '#000000' }),
-        fill: this.parseAesthetic(this.fill, { default: 'none' }),
-
-        width: this.parseProperty(this.width, { default: 2 })
-      }
+    _close: {
+      type: Boolean,
+      default: true
     }
   },
 
   methods: {
-    createPath (points) {
-      let lastID = points.length - 1
+    renderSVG (createElement, aesthetics) {
+      let points = this.generatePoints(aesthetics)
 
-      // Check if polygon is closed
-      if (points[0][0] !== points[lastID][0] ||
-        points[0][1] !== points[lastID][1]) {
-        // If not, close
-        points.push(points[0])
+      let path = this.createPath(points)
+
+      if (this._sortX) {
+        points = this.sort(points)
       }
 
-      let path = interpolatePath(points, this.$$transform)
-
-      return path
-    },
-
-    renderSVG (createElement, aesthetics) {
-      let path = this.createPath(aesthetics.points)
+      if (this._close) {
+        points = this.close(points)
+      }
 
       return createElement('path', {
         attrs: {

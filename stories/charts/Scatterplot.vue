@@ -26,7 +26,7 @@
 
       </vgg-map>
 
-      <vgg-path
+      <vgg-polygon
         :x="'a'"
         :y="'b'"
       />

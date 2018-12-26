@@ -80,6 +80,19 @@ export default {
       return points.sort((a, b) => a[0] - b[0])
     },
 
+    close (points) {
+      // Check if polygon is closed
+      let lastID = points.length - 1
+
+      if (points[0][0] !== points[lastID][0] ||
+        points[0][1] !== points[lastID][1]) {
+        // If not, close
+        points.push(points[0])
+      }
+
+      return points
+    },
+
     createPath (points) {
       let path = interpolatePath(points, this.$$transform)
       return path
@@ -90,6 +103,10 @@ export default {
 
       if (this._sortX) {
         points = this.sort(points)
+      }
+
+      if (this._close) {
+        points = this.close(points)
       }
 
       let path = this.createPath(points)
