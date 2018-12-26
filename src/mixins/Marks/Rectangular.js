@@ -70,15 +70,15 @@ export default {
       }
 
       return {
-        x1: this.parseCoordinate(this.x1, 'x'),
-        x2: this.parseCoordinate(this.x2, 'x'),
-        y1: this.parseCoordinate(this.y1, 'y'),
-        y2: this.parseCoordinate(this.y2, 'y'),
-        x: this.parseCoordinate(this.x, 'x'),
-        y: this.parseCoordinate(this.y, 'y'),
-        w: this.parseCoordinate(this.w, 'x', true),
-        h: this.parseCoordinate(this.h, 'y', true),
-        color: this.parseAesthetic(this.color, '#000000')
+        x1: this.parseCoordinate(this.x1, { dimension: 'x' }),
+        x2: this.parseCoordinate(this.x2, { dimension: 'x' }),
+        y1: this.parseCoordinate(this.y1, { dimension: 'y' }),
+        y2: this.parseCoordinate(this.y2, { dimension: 'y' }),
+        x: this.parseCoordinate(this.x, { dimension: 'x' }),
+        y: this.parseCoordinate(this.y, { dimension: 'y' }),
+        w: this.parseCoordinate(this.w, { dimension: 'x', wh: true }),
+        h: this.parseCoordinate(this.h, { dimension: 'y', wh: true }),
+        color: this.parseAesthetic(this.color, { default: '#000000' })
       }
     }
   },

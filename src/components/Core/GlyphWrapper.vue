@@ -39,12 +39,12 @@ export default {
   computed: {
     aesthetics () {
       return {
-        x: this.parseCoordinate(this.x, 'x'),
-        y: this.parseCoordinate(this.y, 'y'),
+        x: this.parseCoordinate(this.x, { dimension: 'x' }),
+        y: this.parseCoordinate(this.y, { dimension: 'y' }),
 
-        width: this.parseProperty(this.width, 10),
-        height: this.parseProperty(this.height, 10),
-        anchorPoint: this.parseProperty(this.anchorPoint, 'center')
+        width: this.parseProperty(this.width, { default: 10 }),
+        height: this.parseProperty(this.height, { default: 10 }),
+        anchorPoint: this.parseProperty(this.anchorPoint, { default: 'center' })
       }
     }
   },

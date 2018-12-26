@@ -1,7 +1,7 @@
 import { is, isnt } from '../../../utils/equals.js'
 import convertToNumeric from '../../../utils/convertToNumeric.js'
 
-export default function (prop, dimension, wh) {
+export default function (prop, { dimension, wh }) {
   let parentRangeType = this.parentRangeTypes[dimension]
 
   if (!this.$$map) {

@@ -37,12 +37,12 @@ export default {
   computed: {
     aesthetics () {
       return {
-        x: this.parseCoordinate(this.x, 'x'),
-        y: this.parseCoordinate(this.y, 'y'),
-        color: this.parseAesthetic(this.color, '#000000'),
+        x: this.parseCoordinate(this.x, { dimension: 'x' }),
+        y: this.parseCoordinate(this.y, { dimension: 'y' }),
+        color: this.parseAesthetic(this.color, { default: '#000000' }),
 
-        radius: this.parseProperty(this.radius, 3),
-        strokeWidth: this.parseProperty(this.strokeWidth, 0)
+        radius: this.parseProperty(this.radius, { default: 3 }),
+        strokeWidth: this.parseProperty(this.strokeWidth, { default: 0 })
       }
     }
   },

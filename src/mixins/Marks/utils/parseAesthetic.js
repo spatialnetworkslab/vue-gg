@@ -1,7 +1,7 @@
 import { is, isnt } from '../../../utils/equals.js'
 
-export default function (prop, defaultVal, funcProp = false) {
-  if (prop && funcProp) {
+export default function (prop, options) {
+  if (prop && is(options.isFunction)) {
     for (let key in this.parentRangeTypes) {
       if (['categorical', 'temporal'].includes(this.parentRangeTypes[key])) {
         throw new Error(`
@@ -17,12 +17,12 @@ export default function (prop, defaultVal, funcProp = false) {
       throw new Error('Trying to map without vgg-map component.')
     }
 
-    if (is(prop) && prop.constructor === Function && funcProp === false) {
+    if (is(prop) && prop.constructor === Function && isnt(options.isFunction)) {
       throw new Error('Trying to map without vgg-map component.')
     }
 
     if (is(prop)) { return prop }
-    if (isnt(prop)) { return defaultVal }
+    if (isnt(prop)) { return options.default }
   }
   if (this.$$map) {
     let isObject = is(prop) && prop.constructor === Object
@@ -31,6 +31,6 @@ export default function (prop, defaultVal, funcProp = false) {
     if (is(prop) && isObject) { return prop }
     if (is(prop) && isFunction) { return { func: prop } }
     if (is(prop) && !isObject && !isFunction) { return { assign: prop } }
-    if (isnt(prop)) { return { assign: defaultVal } }
+    if (isnt(prop)) { return { assign: options.default } }
   }
 }

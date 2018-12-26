@@ -41,10 +41,10 @@ export default {
       checkPoints(this.points, this.x, this.y)
 
       return {
-        points: this.parseAesthetic(this.points, undefined),
-        color: this.parseAesthetic(this.color, '#000000'),
+        points: this.parseAesthetic(this.points, {}),
+        color: this.parseAesthetic(this.color, { default: '#000000' }),
 
-        width: this.parseProperty(this.width, 2)
+        width: this.parseProperty(this.width, { default: 2 })
       }
     }
   },

@@ -33,11 +33,11 @@ export default {
   computed: {
     aesthetics () {
       return {
-        points: this.parseAesthetic(this.points, undefined),
-        color: this.parseAesthetic(this.color, '#000000'),
-        fill: this.parseAesthetic(this.fill, 'none'),
+        points: this.parseAesthetic(this.points, {}),
+        color: this.parseAesthetic(this.color, { default: '#000000' }),
+        fill: this.parseAesthetic(this.fill, { default: 'none' }),
 
-        width: this.parseProperty(this.width, 2)
+        width: this.parseProperty(this.width, { default: 2 })
       }
     }
   },
