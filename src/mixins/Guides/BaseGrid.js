@@ -2,7 +2,6 @@ import { ticks as arrayTicks } from 'd3-array'
 import { scaleTime } from 'd3-scale'
 
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import getDataType from '../../utils/getDataType.js'
 
 import parseDomain from '../../classes/CoordinateTree/parseDomain.js'
 
@@ -27,36 +26,21 @@ export default {
   },
 
   computed: {
+    _parsedDomain () {
+      let variableDomains = this.$$dataContainer.getDomains()
+      return parseDomain(this.domain, variableDomains)
+    },
+
     _domain () {
-      if (this.domain.constructor === Array) {
-        return this.domain
-      }
-
-      if (this.domain.constructor === String) {
-        let domain = this.$$dataContainer.getDomain(this.domain)
-        if (!domain) {
-          throw new Error(`Invalid domain specification: variable does not exist`)
-        }
-        return domain
-      }
-
-      if (this.domain.constructor === Object) {
-        if (!this.domain.variable || this.domain.variable.constructor !== String) {
-          throw new Error('Domain specification object must have variable key of type String')
-        }
-
-        let domain = this.$$dataContainer.getDomain(this.domain.variable)
-        if (!domain) {
-          throw new Error(`Invalid domain specification: variable does not exist`)
-        }
-        return domain
-      }
+      return this._parsedDomain[0]
     },
 
     _domainType () {
-      if (this.domain) {
-        return getDataType(this._domain[0])
-      }
+      return this._parsedDomain[1]
+    },
+
+    _scalingOptions () {
+      return this._parsedDomain[2]
     },
 
     ranges () {
