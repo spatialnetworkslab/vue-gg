@@ -66,6 +66,10 @@ export default class {
     return result
   }
 
+  hasVariable (variable) {
+    return this._domains.hasOwnProperty(variable)
+  }
+
   getDomain (variable) {
     return this._domains[variable]
   }

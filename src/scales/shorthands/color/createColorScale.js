@@ -1,5 +1,5 @@
-import checkValidScale from '@/scales/utils/checkValidScale.js'
-import updateDomain from '@/scales/utils/updateDomain.js'
+import checkValidScale from '../../utils/checkValidScale.js'
+import updateDomain from '../../utils/updateDomain.js'
 
 import numeric from './numeric.js'
 import categorical from './categorical.js'

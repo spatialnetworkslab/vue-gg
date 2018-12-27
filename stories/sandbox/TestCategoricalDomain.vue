@@ -30,6 +30,14 @@
 
       </vgg-map>
 
+      <vgg-polygon
+        :points="[
+          [new Date('November 16, 2018'), 25],
+          [new Date('November 17, 2018'), 75],
+          [new Date('November 18, 2018'), 50]
+        ]"
+      />
+
     </vgg-section>
 
     <vgg-x-axis

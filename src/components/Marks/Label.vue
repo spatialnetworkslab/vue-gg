@@ -49,12 +49,12 @@ export default {
   computed: {
     aesthetics () {
       return {
-        text: this.parseMappable(this.text, undefined),
-        x: this.parseCoord(this.x, 'x'),
-        y: this.parseCoord(this.y, 'y'),
-        color: this.parseMappable(this.color, '#000000'),
-        fontSize: this.parseMappable(this.fontSize, 16),
-        rotation: this.parseMappable(this.rotation, 0)
+        text: this.parseAesthetic(this.text, {}),
+        x: this.parseCoordinate(this.x, { dimension: 'x' }),
+        y: this.parseCoordinate(this.y, { dimension: 'y' }),
+        color: this.parseAesthetic(this.color, { default: '#000000' }),
+        fontSize: this.parseAesthetic(this.fontSize, { default: 16 }),
+        rotation: this.parseAesthetic(this.rotation, { default: 0 })
       }
     }
   },

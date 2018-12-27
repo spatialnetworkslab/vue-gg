@@ -1,7 +1,7 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
 import mapAesthetics from './utils/mapAesthetics.js'
-import { interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
+import { createPath, interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
 
 export default {
   mixins: [Mark],
@@ -48,14 +48,14 @@ export default {
   computed: {
     aesthetics () {
       return {
-        x1: this.parseCoord(this.x1, 'x'),
-        y1: this.parseCoord(this.y1, 'y'),
-        x2: this.parseCoord(this.x2, 'x'),
-        y2: this.parseCoord(this.y2, 'y'),
-        func: this.parseMappable(this.func, undefined, true),
-        color: this.parseMappable(this.color, '#000000'),
+        x1: this.parseCoordinate(this.x1, { dimension: 'x' }),
+        y1: this.parseCoordinate(this.y1, { dimension: 'y' }),
+        x2: this.parseCoordinate(this.x2, { dimension: 'x' }),
+        y2: this.parseCoordinate(this.y2, { dimension: 'y' }),
+        func: this.parseAesthetic(this.func, { isFunction: true }),
+        color: this.parseAesthetic(this.color, { default: '#000000' }),
 
-        width: this.parseUnmappable(this.width, 2)
+        width: this.parseProperty(this.width, { default: 2 })
       }
     }
   },
@@ -72,7 +72,13 @@ export default {
       }
 
       if (!func) {
-        path = interpolatePath(coords, this.$$transform)
+        if (this._interpolate) {
+          path = interpolatePath(coords, this.$$transform)
+        }
+
+        if (!this._interpolate) {
+          path = createPath(coords, this.$$transform)
+        }
       }
 
       return path
