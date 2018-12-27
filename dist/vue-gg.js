@@ -1,1 +1,5714 @@
-import"core-js/modules/es6.array.fill";import"core-js/modules/es6.set";import"core-js/modules/es6.object.keys";import"core-js/modules/es6.array.sort";import"core-js/modules/es6.string.starts-with";import"core-js/modules/es6.string.ends-with";import"core-js/modules/es6.string.iterator";import"core-js/modules/es6.array.from";import"core-js/modules/es6.function.name";import"core-js/modules/es6.regexp.to-string";import"core-js/modules/es6.regexp.flags";import"core-js/modules/es6.regexp.match";import"core-js/modules/es6.number.constructor";import"core-js/modules/es7.array.includes";import"core-js/modules/es6.string.includes";import"core-js/modules/web.dom.iterable";import"core-js/modules/es7.symbol.async-iterator";import"core-js/modules/es6.symbol";import"core-js/modules/es6.regexp.replace";import"core-js/modules/es6.regexp.constructor";import"core-js/modules/es6.regexp.split";import _typeof from"/Users/ate/Documents/vue-gg-prototype/node_modules/@babel/runtime/helpers/esm/typeof";import"core-js/modules/es6.array.iterator";import"core-js/modules/es6.promise";import"core-js/modules/es7.promise.finally";(function(e,t){"object"===("undefined"==typeof exports?"undefined":_typeof(exports))&&"undefined"!=typeof module?module.exports=t(require("d3-scale"),require("d3-scale-chromatic"),require("d3-array"),require("d3-time-format"),require("d3-interpolate"),require("d3-shape")):"function"==typeof define&&define.amd?define(["d3-scale","d3-scale-chromatic","d3-array","d3-time-format","d3-interpolate","d3-shape"],t):e.VueGG=t(e.d3,e.d3$1,e.d3Array,e.d3TimeFormat,e.d3Interpolate,e.d3Shape)})(this,function(e,t,a,n,r,o){"use strict";var ce=Math.min;function s(e){return s="function"==typeof Symbol&&"symbol"===d(Symbol.iterator)?function(e){return d(e)}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":d(e)},s(e)}function d(e){return d="function"==typeof Symbol&&"symbol"===s(Symbol.iterator)?function(e){return s(e)}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":s(e)},d(e)}function c(e){if(Array.isArray(e))return e}function l(e,t){var a=[],n=!0,r=!1,o=void 0;try{for(var i,s=e[Symbol.iterator]();!(n=(i=s.next()).done)&&(a.push(i.value),!(t&&a.length===t));n=!0);}catch(e){r=!0,o=e}finally{try{n||null==s["return"]||s["return"]()}finally{if(r)throw o}}return a}function p(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}function u(e,t){return c(e)||l(e,t)||p()}function m(e){return e!==void 0}function g(e){return e===void 0}function h(e,t){if(e&&m(t.isFunction))for(var a in this.parentRangeTypes)if(["categorical","temporal"].includes(this.parentRangeTypes[a]))throw new Error("\n          Cannot use :func prop on 'vgg-line' in combination with\n          '".concat(this.parentRangeTypes[a],"' parent domain\n        "));if(!this.$$map){if(m(e)&&e.constructor===Object)throw new Error("Trying to map without vgg-map component.");if(m(e)&&e.constructor===Function&&g(t.isFunction))throw new Error("Trying to map without vgg-map component.");if(m(e))return e;if(g(e))return t.default}if(this.$$map){var n=m(e)&&e.constructor===Object,r=m(e)&&e.constructor===Function;if(m(e)&&n)return e;if(m(e)&&r)return{func:e};if(m(e)&&!n&&!r)return{assign:e};if(g(e))return{assign:t.default}}}function f(e,t,a){return"x"===t?a.scaleX(e):"y"===t?a.scaleY(e):void 0}function _(e,t){if("quantitative"===t)return e.constructor!==Number;return"categorical"===t?e.constructor!==String:"temporal"===t?e.constructor!==Date:void 0}function x(e,t){if("quantitative"===t)return e.constructor!==Number;return"categorical"===t?e.constructor!==String:"temporal"===t?e.constructor!==Date:void 0}function b(e,t,a,n){var r=[],o=!0,i=!1,s=void 0;try{for(var d,c,l=e[Symbol.iterator]();!(o=(d=l.next()).done);o=!0)if(c=d.value,x(c,t))throw new Error("Invalid input ".concat(c," for parent Section domain type ").concat(t));else["categorical","temporal"].includes(t)?r.push(f(c,a,n)):r.push(c)}catch(e){i=!0,s=e}finally{try{o||null==l.return||l.return()}finally{if(i)throw s}}return r}function v(e,t,a){var n=["x","y"],r=[],o=!0,s=!1,d=void 0;try{for(var c,l=e[Symbol.iterator]();!(o=(c=l.next()).done);o=!0){for(var p=c.value,u=[],y=0;y<n.length;++y){var m=n[y],g=t[m];if(x(p[y],g))throw new Error("Invalid input ".concat(p[y]," for parent Section domain type ").concat(g));else["categorical","temporal"].includes(g)?u.push(f(p[y],m,a)):u.push(p[y])}r.push(u)}}catch(e){s=!0,d=e}finally{try{o||null==l.return||l.return()}finally{if(s)throw d}}return r}function $(e){if(Array.isArray(e)){for(var t=0,a=Array(e.length);t<e.length;t++)a[t]=e[t];return a}}function T(e){if(Symbol.iterator in Object(e)||"[object Arguments]"===Object.prototype.toString.call(e))return Array.from(e)}function S(){throw new TypeError("Invalid attempt to spread non-iterable instance")}function P(e){return $(e)||T(e)||S()}function w(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function C(e,t){for(var a,n=0;n<t.length;n++)a=t[n],a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}function R(e,t,a){return t&&C(e.prototype,t),a&&C(e,a),e}function I(e,t,a,n){if(!n.hasOwnProperty(a))throw new Error("\n      Prop '".concat(e,"', variable type '").concat(t,"':\n      No scale '").concat(a,"' found\n    "))}function L(e,t){var a=JSON.parse(JSON.stringify(e)),n=t.domain;if(n){if(n.constructor!==Array&&2!==n.length)throw new Error("Invalid domain modification");E(n[0])&&(a[0]=n[0]),E(n[1])&&(a[1]=n[1])}return a}function E(e){return e!==void 0&&null!==e}function G(e){return function(t){return 0===t&&(t=1e6),e(t)}}function F(e,t,a,n,r){if("quantitative"===t){var o=r.scale||"linear";return I(e,t,o,Na),Na[o](L(a,r),n)}if("temporal"===t){var i=r.scale||"temporal";return I(e,t,i,Ba),Ba[i](a,n)}if("categorical"===t){var s=r.scale||"equidistant";return I(e,t,s,qa),qa[s](a,n)}}function A(e){switch(e.constructor){case Number:return"quantitative";case String:return"categorical";case Date:return"temporal";case Array:return"nested";default:throw new Error("Invalid data");}}function O(e,t){var a,n;if(![Array,String].includes(e.constructor))throw new Error("Invalid domain specification: only Array or String allowed");if(e.constructor===Array)D(e),n=A(e[0]),a=e;else if(!t)a=[0,1],n="quantitative";else if(e.constructor===String){if(!t[e])throw new Error("Invalid domain specification: variable does not exist");a=t[e],n=A(a[0])}return[a,n]}function D(e){if(2>e.length)throw new Error("Invalid domain specification array: length shorter than 2");var t=!1;if(e[0].constructor===Number)(e[1].constructor!==Number||2!==e.length)&&(t=!0);else if(e[0].constructor===String){for(var a=1;a<e.length;a++)if(e[a].constructor!==String){t=!0;break}}else if(e[0].constructor===Date)for(var n=1;n<e.length;n++)if(e[n].constructor!==Date){t=!0;break}if(t)throw new Error("Invalid domain specification array")}function N(e){var t,a;if(e===void 0)return[{},{}];if(e.constructor===String)t={scale:e},a={scale:e};else if(e.constructor===Object){if(!e.hasOwnProperty("x"))t={};else if(e.x.constructor===String)t={scale:e.x};else if(e.x.constructor===Object)t=e.x;else throw new Error("Scale specification x must be String or Object");if(!e.hasOwnProperty("y"))a={};else if(e.y.constructor===String)a={scale:e.y};else if(e.y.constructor===Object)a=e.y;else throw new Error("Scale specification y must be String or Object")}else throw new Error("Scale specification must be String or Object");return[t,a]}function B(e,t){var a=t*Math.sin(e),n=t*Math.cos(e);return[a,n]}function q(e,t,a,n,r){var o=u(e,2),i=o[0],s=o[1];if(n===r)return[i,s];var d=[];if("center"===n?d=[i,s]:(d[0]=n.startsWith("l")?i-t/2:i+t/2,d[1]=n.endsWith("b")?s+a/2:s-a/2),"center"===r)return d;var c=d,l=u(c,2),p=l[0],y=l[1],m=[];return m[0]=r.startsWith("l")?p+t/2:p-t/2,m[1]=r.endsWith("b")?y-a/2:y+a/2,m}function V(e){return"center"===e?{textAnchor:"middle",dominantBaseline:"middle"}:"lb"===e?{textAnchor:"start",dominantBaseline:"alphabetic"}:"lt"===e?{textAnchor:"start",dominantBaseline:"hanging"}:"rt"===e?{textAnchor:"end",dominantBaseline:"hanging"}:"rb"===e?{textAnchor:"end",dominantBaseline:"alphabetic"}:"l"===e?{textAnchor:"start",dominantBaseline:"middle"}:"r"===e?{textAnchor:"end",dominantBaseline:"middle"}:"b"===e?{textAnchor:"middle",dominantBaseline:"alphabetic"}:"t"===e?{textAnchor:"middle",dominantBaseline:"hanging"}:void 0}function K(e,t,a,n){if("quantitative"===t){var r=n.scale||"blues";return I(e,t,r,rn),rn[r](L(a,n))}if("categorical"===t){var o=n.scale||"colors";return I(e,t,o,on),on[o](a)}}function Y(e,t,a,n){if("quantitative"===t){var r=n.scale||"linear";return I(e,t,r,sn),sn[r](L(a,n))}}function H(e){return["x","x1","x2","w"].includes(e)?"x":["y","y1","y2","h"].includes(e)?"y":void 0}function M(e,t,a){var n=t.domains[a.variable],r=A(n[0]);if(["x1","x2","y1","y2","x","y","w","h"].includes(e)){var o=H(e),i=t.ranges[o];return F(e,r,n,i,a)}return"color"===e?K(e,r,n,a):"opacity"===e?Y(e,r,n,a):void 0}function X(e,t){if("w"===e){if(t.hasOwnProperty("x1"))return"x1";if(t.hasOwnProperty("x2"))return"x2";if(t.hasOwnProperty("x"))return"x"}if("h"===e){if(t.hasOwnProperty("y1"))return"y1";if(t.hasOwnProperty("y2"))return"y2";if(t.hasOwnProperty("y"))return"y"}}function W(e,t,a){if(["w","h"].includes(e)){var n=a.positioner,r=a.dimension||"w"===e?"x":"y",o=t.ranges[r];return mn[n](e,o,a)}}function z(e,t,a){var n={},r={},o={},i={};for(var s in e){var d=e[s];d.hasOwnProperty("assign")&&m(d.assign)&&(n[s]=d.assign),d.hasOwnProperty("scale")&&(r[s]=d.scale),d.hasOwnProperty("func")&&(o[s]=d.func),d.hasOwnProperty("position")&&(i[s]=d.position)}var c={};for(var l in r){var p=r[l];p.constructor===String&&(c[l]=M(l,t,{variable:p})),p.constructor===Object&&(!p.construct&&(c[l]=M(l,t,p)),p.construct&&(c[l]=p.construct(t)))}var u=[];if(a.forEachRow(function(a,s){var i={};for(var d in e)if(m(r[d])){if(r[d].constructor===String){var l=r[d];i[d]=c[d](a[l])}if(r[d].constructor===Object)if(r[d].hasOwnProperty("variable")){var p=r[d].variable;i[d]=c[d](a[p])}else i[d]=c[d](a)}else if(m(o[d])){var y=o[d](a,s,t),g=H(d);i[d]=g&&[String,Date].includes(y.constructor)?f(y,g,t.parentBranch):y}else m(n[d])&&(i[d]=n[d]);u.push(i)}),0<Object.keys(i).length)for(var y in i){var g=i[y];if(g.constructor!==Array){var h=void 0;g.constructor===String&&(h=W(y,t,{positioner:g})),g.constructor===Object&&(h=W(y,t,g)),h(u)}if(g.constructor===Array){var _=!0,x=!1,b=void 0;try{for(var v,$=g[Symbol.iterator]();!(_=(v=$.next()).done);_=!0){var T=v.value,S=void 0;T.constructor===String&&(S=W(y,t,{positioner:T})),T.constructor===Object&&(S=W(y,t,T)),S(u)}}catch(e){x=!0,b=e}finally{try{_||null==$.return||$.return()}finally{if(x)throw b}}}}return u}function U(e){var t={};for(var a in e){var n=A(e[a]);"quantitative"===n&&(t[a]=[1/0,-Infinity]),"categorical"===n&&(t[a]=[]),"temporal"===n&&(t[a]=[new Date("19 January 2038"),new Date(0)])}return t}function J(e,t){for(var a in e){var n=e[a],r=A(n),o=t[a];if("quantitative"===r&&(o[0]>=n&&(o[0]=n),o[1]<=n&&(o[1]=n)),"categorical"!==r||o.includes(n)||o.push(n),"temporal"===r){var i=n.getTime();o[0].getTime()>=i&&(o[0]=n),o[1].getTime()<=i&&(o[1]=n)}}return t}function Q(e,t){if(e.constructor!==Object)throw new Error("Data array must contain only objects");if(!Z(e,t))throw new Error("All objects in data array must have same keys")}function Z(){for(var e=arguments.length,t=Array(e),a=0;a<e;a++)t[a]=arguments[a];var n=t.reduce(function(e,t){return e.concat(Object.keys(t))},[]),r=new Set(n);return t.every(function(e){return r.size===Object.keys(e).length})}function ee(){return"_"+Math.random().toString()}function y(e,t,a,n){var r=[g(a)&&g(n),m(e)&&g(t)&&g(a)&&m(n),g(e)&&m(t)&&g(a)&&m(n),g(e)&&g(t)&&m(a)&&m(n)];return!r.some(function(e){return!0===e})}function te(e,t,a,n){return g(a)&&g(n)?[e,t]:m(e)&&g(t)&&g(a)&&m(n)?[e,e+n]:g(e)&&m(t)&&g(a)&&m(n)?[t-n,t]:g(e)&&g(t)&&m(a)&&m(n)?[a-n/2,a+n/2]:void 0}function ae(e,t){var a=2<arguments.length&&arguments[2]!==void 0?arguments[2]:2,n=3<arguments.length&&arguments[3]!==void 0?arguments[3]:100,o=[];o.push(e[0]);for(var s=0;s<e.length-1;++s)for(var d,c=e[s],l=e[s+1],p=r.interpolate(c,l),u=1;u<=n;++u)d=p(u/n),o.push([d[0],d[1]]);var y=re(o,t,a);return y}function ne(e,t,a){for(var n=3<arguments.length&&arguments[3]!==void 0?arguments[3]:2,o=4<arguments.length&&arguments[4]!==void 0?arguments[4]:300,s=[],d=r.interpolate.apply(void 0,P(a.x)),c=0;c<=o;++c){var l=d(c/o),p=e(l);ie([l,p],a)&&s.push([l,p])}var u=re(s,t,n);return u}function re(e,t){var a=2<arguments.length&&arguments[2]!==void 0?arguments[2]:2,n=e.map(function(e){return t(e).map(function(e){return oe(e,a)})}),r=o.line(),i=r(n);return i}function oe(e,t){var a=Math.pow;return Math.round(e*a(10,t))/a(10,t)}function ie(e,t){var a=ce.apply(Math,P(t.y)),n=Math.max.apply(Math,P(t.y));return e[1]>a&&e[1]<n}function se(e,t,a){if(m(e)&&m(t)&&m(a))throw new Error("Cannot have both 'points', and 'x' and 'y' props");if(g(e)&&g(t)&&g(a))throw new Error("Missing required props (either 'points', or 'x' and 'y')");if(g(e)&&!(m(t)&&m(a)))throw new Error("Both 'x' and 'y' props must be specified")}function de(){var e=document.head||document.getElementsByTagName("head")[0],t=de.styles||(de.styles={}),a="undefined"!=typeof navigator&&/msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());return function(n,r){if(!document.querySelector("style[data-vue-ssr-id~=\""+n+"\"]")){var o=a?r.media||"default":n,i=t[o]||(t[o]={ids:[],parts:[],element:void 0});if(!i.ids.includes(n)){var s=r.source,d=i.ids.length;if(i.ids.push(n),r.map&&(s+="\n/*# sourceURL="+r.map.sources[0]+" */",s+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r.map))))+" */"),a&&(i.element=i.element||document.querySelector("style[data-group="+o+"]")),!i.element){var c=i.element=document.createElement("style");c.type="text/css",r.media&&c.setAttribute("media",r.media),a&&(c.setAttribute("data-group",o),c.setAttribute("data-next-index","0")),e.appendChild(c)}if(a&&(d=parseInt(i.element.getAttribute("data-next-index")),i.element.setAttribute("data-next-index",d+1)),i.element.styleSheet)i.parts.push(s),i.element.styleSheet.cssText=i.parts.filter(Boolean).join("\n");else{var l=document.createTextNode(s),p=i.element.childNodes;p[d]&&i.element.removeChild(p[d]),p.length?i.element.insertBefore(l,p[d]):i.element.appendChild(l)}}}}}require("./_wks-define")("asyncIterator"),require("./_fix-re-wks")("replace",2,function(e,t,a){return[function(n,r){var o=e(this),i=n==null?void 0:n[t];return i===void 0?a.call(o+"",n,r):i.call(n,o,r)},a]});var le=require("./_global"),pe=require("./_inherit-if-required"),ue=require("./_object-dp").f,ye=require("./_object-gopn").f,me=require("./_is-regexp"),ge=require("./_flags"),he=le.RegExp,fe=he,_e=he.prototype,xe=/a/g,be=/a/g,ve=new he(xe)!==xe;if(require("./_descriptors")&&(!ve||require("./_fails")(function(){return be[require("./_wks")("match")]=!1,he(xe)!=xe||he(be)==be||"/a/i"!=he(xe,"i")}))){he=function(e,t){var a=this instanceof he,n=me(e),r=t===void 0;return!a&&n&&e.constructor===he&&r?e:pe(ve?new fe(n&&!r?e.source:e,t):fe((n=e instanceof he)?e.source:e,n&&r?ge.call(e):t),a?this:_e,he)};for(var $e=function(e){(e in he)||ue(he,e,{configurable:!0,get:function(){return fe[e]},set:function(t){fe[e]=t}})},Te=ye(fe),Se=0;Te.length>Se;)$e(Te[Se++]);_e.constructor=he,he.prototype=_e,require("./_redefine")(le,"RegExp",he)}require("./_set-species")("RegExp"),require("./_fix-re-wks")("split",2,function(e,t,a){var n=require("./_is-regexp"),r=a,o=[].push,i="split",s="length",d="lastIndex";if("c"=="abbc"[i](/(b)*/)[1]||4!="test"[i](/(?:)/,-1)[s]||2!="ab"[i](/(?:ab)*/)[s]||4!="."[i](/(.?)(.?)/)[s]||1<"."[i](/()()/)[s]||""[i](/.?/)[s]){var c=/()??/.exec("")[1]===void 0;a=function(e,t){var a=this+"";if(void 0===e&&0===t)return[];if(!n(e))return r.call(a,e,t);var l,p,u,y,m,g=[],h=(e.ignoreCase?"i":"")+(e.multiline?"m":"")+(e.unicode?"u":"")+(e.sticky?"y":""),f=0,_=void 0===t?4294967295:t>>>0,x=new RegExp(e.source,h+"g");for(c||(l=new RegExp("^"+x.source+"$(?!\\s)",h));(p=x.exec(a))&&(u=p.index+p[0][s],!(u>f&&(g.push(a.slice(f,p.index)),!c&&1<p[s]&&p[0].replace(l,function(){for(m=1;m<arguments[s]-2;m++)void 0===arguments[m]&&(p[m]=void 0)}),1<p[s]&&p.index<a[s]&&o.apply(g,p.slice(1)),y=p[0][s],f=u,g[s]>=_)));)x[d]===p.index&&x[d]++;return f===a[s]?(y||!x.test(""))&&g.push(""):g.push(a.slice(f)),g[s]>_?g.slice(0,_):g}}else"0"[i](void 0,0)[s]&&(a=function(e,t){return void 0===e&&0===t?[]:r.call(this,e,t)});return[function(n,r){var o=e(this),i=n==null?void 0:n[t];return i===void 0?a.call(o+"",n,r):i.call(n,o,r)},a]});var Pe=require("./_global"),we=require("./_has"),Ce=require("./_descriptors"),Re=require("./_export"),ke=require("./_redefine"),Ie=require("./_meta").KEY,Le=require("./_fails"),Ee=require("./_shared"),Ge=require("./_set-to-string-tag"),Fe=require("./_uid"),je=require("./_wks"),Ae=require("./_wks-ext"),Oe=require("./_wks-define"),De=require("./_enum-keys"),Ne=require("./_is-array"),Be=require("./_an-object"),qe=require("./_is-object"),Ve=require("./_to-iobject"),Ke=require("./_to-primitive"),Ye=require("./_property-desc"),He=require("./_object-create"),Me=require("./_object-gopn-ext"),Xe=require("./_object-gopd"),We=require("./_object-dp"),ze=require("./_object-keys"),Ue=Xe.f,Je=We.f,Qe=Me.f,Ze=Pe.Symbol,et=Pe.JSON,tt=et&&et.stringify,at="prototype",nt=je("_hidden"),rt=je("toPrimitive"),ot={}.propertyIsEnumerable,it=Ee("symbol-registry"),st=Ee("symbols"),dt=Ee("op-symbols"),ct=Object[at],lt="function"==typeof Ze,pt=Pe.QObject,ut=!pt||!pt[at]||!pt[at].findChild,yt=Ce&&Le(function(){return 7!=He(Je({},"a",{get:function(){return Je(this,"a",{value:7}).a}})).a})?function(e,t,a){var n=Ue(ct,t);n&&delete ct[t],Je(e,t,a),n&&e!==ct&&Je(ct,t,n)}:Je,mt=function(e){var t=st[e]=He(Ze[at]);return t._k=e,t},gt=lt&&"symbol"==d(Ze.iterator)?function(e){return"symbol"==d(e)}:function(e){return e instanceof Ze},ht=function(e,t,a){return e===ct&&ht(dt,t,a),Be(e),t=Ke(t,!0),Be(a),we(st,t)?(a.enumerable?(we(e,nt)&&e[nt][t]&&(e[nt][t]=!1),a=He(a,{enumerable:Ye(0,!1)})):(!we(e,nt)&&Je(e,nt,Ye(1,{})),e[nt][t]=!0),yt(e,t,a)):Je(e,t,a)},ft=function(e,t){Be(e);for(var a,n=De(t=Ve(t)),r=0,o=n.length;o>r;)ht(e,a=n[r++],t[a]);return e},_t=function(e){var t=ot.call(this,e=Ke(e,!0));return(this!==ct||!we(st,e)||we(dt,e))&&(!(t||!we(this,e)||!we(st,e)||we(this,nt)&&this[nt][e])||t)},xt=function(e,t){if(e=Ve(e),t=Ke(t,!0),e!==ct||!we(st,t)||we(dt,t)){var a=Ue(e,t);return a&&we(st,t)&&!(we(e,nt)&&e[nt][t])&&(a.enumerable=!0),a}},bt=function(e){for(var t,a=Qe(Ve(e)),n=[],r=0;a.length>r;)we(st,t=a[r++])||t==nt||t==Ie||n.push(t);return n},vt=function(e){for(var t,a=e===ct,n=Qe(a?dt:Ve(e)),r=[],o=0;n.length>o;)we(st,t=n[o++])&&(!a||we(ct,t))&&r.push(st[t]);return r};lt||(Ze=function(){if(this instanceof Ze)throw TypeError("Symbol is not a constructor!");var e=Fe(0<arguments.length?arguments[0]:void 0);return Ce&&ut&&yt(ct,e,{configurable:!0,set:function t(a){this===ct&&t.call(dt,a),we(this,nt)&&we(this[nt],e)&&(this[nt][e]=!1),yt(this,e,Ye(1,a))}}),mt(e)},ke(Ze[at],"toString",function(){return this._k}),Xe.f=xt,We.f=ht,require("./_object-gopn").f=Me.f=bt,require("./_object-pie").f=_t,require("./_object-gops").f=vt,Ce&&!require("./_library")&&ke(ct,"propertyIsEnumerable",_t,!0),Ae.f=function(e){return mt(je(e))}),Re(Re.G+Re.W+Re.F*!lt,{Symbol:Ze});for(var $t=["hasInstance","isConcatSpreadable","iterator","match","replace","search","species","split","toPrimitive","toStringTag","unscopables"],Tt=0;$t.length>Tt;)je($t[Tt++]);for(var St=ze(je.store),Pt=0;St.length>Pt;)Oe(St[Pt++]);Re(Re.S+Re.F*!lt,"Symbol",{for:function(e){return we(it,e+="")?it[e]:it[e]=Ze(e)},keyFor:function(e){if(!gt(e))throw TypeError(e+" is not a symbol!");for(var t in it)if(it[t]===e)return t},useSetter:function(){ut=!0},useSimple:function(){ut=!1}}),Re(Re.S+Re.F*!lt,"Object",{create:function(e,t){return t===void 0?He(e):ft(He(e),t)},defineProperty:ht,defineProperties:ft,getOwnPropertyDescriptor:xt,getOwnPropertyNames:bt,getOwnPropertySymbols:vt}),et&&Re(Re.S+Re.F*(!lt||Le(function(){var e=Ze();return"[null]"!=tt([e])||"{}"!=tt({a:e})||"{}"!=tt(Object(e))})),"JSON",{stringify:function(e){for(var t,a,n=[e],r=1;arguments.length>r;)n.push(arguments[r++]);if(a=t=n[1],(qe(t)||void 0!==e)&&!gt(e))return Ne(t)||(t=function(e,t){if("function"==typeof a&&(t=a.call(this,e,t)),!gt(t))return t}),n[1]=t,tt.apply(et,n)}}),Ze[at][rt]||require("./_hide")(Ze[at],rt,Ze[at].valueOf),Ge(Ze,"Symbol"),Ge(Math,"Math",!0),Ge(Pe.JSON,"JSON",!0);for(var wt=require("./es6.array.iterator"),Ct=require("./_object-keys"),Rt=require("./_redefine"),kt=require("./_global"),It=require("./_hide"),Lt=require("./_iterators"),Et=require("./_wks"),Gt=Et("iterator"),Ft=Et("toStringTag"),jt=Lt.Array,At={CSSRuleList:!0,CSSStyleDeclaration:!1,CSSValueList:!1,ClientRectList:!1,DOMRectList:!1,DOMStringList:!1,DOMTokenList:!0,DataTransferItemList:!1,FileList:!1,HTMLAllCollection:!1,HTMLCollection:!1,HTMLFormElement:!1,HTMLSelectElement:!1,MediaList:!0,MimeTypeArray:!1,NamedNodeMap:!1,NodeList:!0,PaintRequestList:!1,Plugin:!1,PluginArray:!1,SVGLengthList:!1,SVGNumberList:!1,SVGPathSegList:!1,SVGPointList:!1,SVGStringList:!1,SVGTransformList:!1,SourceBufferList:!1,StyleSheetList:!0,TextTrackCueList:!1,TextTrackList:!1,TouchList:!1},Ot=Ct(At),Dt=0;Dt<Ot.length;Dt++){var Nt,Bt=Ot[Dt],qt=At[Bt],Vt=kt[Bt],Kt=Vt&&Vt.prototype;if(Kt&&(Kt[Gt]||It(Kt,Gt,jt),Kt[Ft]||It(Kt,Ft,Bt),Lt[Bt]=jt,qt))for(Nt in wt)Kt[Nt]||Rt(Kt,Nt,wt[Nt],!0)}var Yt=require("./_export"),Ht=require("./_array-includes")(!0);Yt(Yt.P,"Array",{includes:function(e){return Ht(this,e,1<arguments.length?arguments[1]:void 0)}}),require("./_add-to-unscopables")("includes");var Mt=require("./_export"),Xt=require("./_string-context"),Wt="includes";Mt(Mt.P+Mt.F*require("./_fails-is-regexp")(Wt),"String",{includes:function(e){return!!~Xt(this,e,Wt).indexOf(e,1<arguments.length?arguments[1]:void 0)}});var zt=require("./_global"),Ut=require("./_has"),Jt=require("./_cof"),Qt=require("./_inherit-if-required"),Zt=require("./_to-primitive"),ea=require("./_fails"),ta=require("./_object-gopn").f,aa=require("./_object-gopd").f,na=require("./_object-dp").f,ra=require("./_string-trim").trim,oa="Number",ia=zt[oa],sa=ia,da=ia.prototype,ca=Jt(require("./_object-create")(da))==oa,la="trim"in String.prototype,pa=function(e){var t=Zt(e,!1);if("string"==typeof t&&2<t.length){t=la?t.trim():ra(t,3);var a,n,r,o=t.charCodeAt(0);if(43===o||45===o){if(a=t.charCodeAt(2),88===a||120===a)return NaN;}else if(48===o){switch(t.charCodeAt(1)){case 66:case 98:n=2,r=49;break;case 79:case 111:n=8,r=55;break;default:return+t;}for(var s,d=t.slice(2),c=0,p=d.length;c<p;c++)if(s=d.charCodeAt(c),48>s||s>r)return NaN;return parseInt(d,n)}}return+t};if(!ia(" 0o1")||!ia("0b1")||ia("+0x1")){ia=function(e){var t=1>arguments.length?0:e,a=this;return a instanceof ia&&(ca?ea(function(){da.valueOf.call(a)}):Jt(a)!=oa)?Qt(new sa(pa(t)),a,ia):pa(t)};for(var ua,ya=require("./_descriptors")?ta(sa):"MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger".split(","),ma=0;ya.length>ma;ma++)Ut(sa,ua=ya[ma])&&!Ut(ia,ua)&&na(ia,ua,aa(sa,ua));ia.prototype=da,da.constructor=ia,require("./_redefine")(zt,oa,ia)}var ga={inject:["$$coordinateTree","$$coordinateTreeParent"],computed:{parentBranch:function(){return this.$$coordinateTree.getBranch(this.$$coordinateTreeParent)},parentRangeTypes:function(){return this.parentBranch.domainTypes}}},ha={inject:["$$dataContainerContext"],computed:{$$dataContainer:function(){return this.$$dataContainerContext.dataContainer}}},fa={mixins:[ga,ha],inject:["$$transform","$$map"],props:{interpolate:{type:Boolean,default:!0}},computed:{__update:function(){return this.$$coordinateTree._update},_interpolate:function(){return this.interpolate},context:function(){return{domains:this.$$dataContainer.getDomains(),ranges:this.parentBranch.domains,parentBranch:this.parentBranch}}},methods:{parseAesthetic:h,parseCoordinate:function(e,t){var a=t.dimension,n=t.wh,r=this.parentRangeTypes[a];if(!this.$$map){if(m(e)&&e.constructor===Object)throw new Error("Trying to map without vgg-map component.");if(m(e)&&e.constructor===Function)throw new Error("Trying to map without vgg-map component.");if(m(e))if(_(e,r))throw new Error("Invalid input ".concat(e," for parent Section domain type ").concat(r));else{if(["categorical","temporal"].includes(r)){if(n)throw new Error("Cannot set 'w' or 'h' value in parent domain '".concat(r,"'"));return f(e,a,this.parentBranch)}return e}if(g(e))return}if(this.$$map){var o=m(e)&&e.constructor===Object,i=m(e)&&e.constructor===Function;if(m(e)&&o){if(["categorical","temporal"].includes(r)&&e.hasOwnProperty("scale"))throw new Error("Cannot scale ".concat(e," to parent Section domain type ").concat(r));return e}if(m(e)&&i)return{func:e};if(m(e)&&!o&&!i)if(_(e,r))throw new Error("Invalid input ".concat(e," for parent Section domain type ").concat(r));else{if(["categorical","temporal"].includes(r)){if(n)throw new Error("Cannot set 'w' or 'h' value in parent domain '".concat(r,"'"));return{assign:f(e,a,this.parentBranch)}}return{assign:e}}if(g(e))return{assign:void 0}}},parseCoordinateSet:function(e,t){var a=t.dimension,n=this.parentRangeTypes[a];if(!this.$$map){if(m(e)&&e.constructor===Object)throw new Error("Trying to map without vgg-map component.");if(m(e)&&e.constructor===Function)throw new Error("Trying to map without vgg-map component.");if(m(e)&&e.constructor===Array)return b(e,n,a,this.parentBranch);if(m(e)&&e.constructor===String){if(!this.$$dataContainer.hasVariable(e))throw new Error("Variable ".concat(e," not found"));var r=this.$$dataContainer.getVariableData(e);return b(r,n,a,this.parentBranch)}if(g(e))return}if(this.$$map){var o=m(e)&&e.constructor===Object,i=m(e)&&e.constructor===Function;if(m(e)&&o){if(["categorical","temporal"].includes(n)&&e.hasOwnProperty("scale"))throw new Error("Cannot scale ".concat(e," to parent Section domain type ").concat(n));return e}if(m(e)&&i)return{func:e};if(m(e)&&e.constructor===Array)return{assign:b(e,n,a,this.parentBranch)};if(m(e)&&e.constructor===String)throw new Error("Cannot set Mark coordinates from variable when mapping");if(g(e))return{assign:void 0}}},parseGeometry:function(e){if(!this.$$map){if(m(e)&&e.constructor===Array)return v(e,this.parentRangeTypes,this.parentBranch);if(g(e))return}if(this.$$map){if(m(e)&&e.constructor===Array)return{assign:v(e,this.parentRangeTypes,this.parentBranch)};if(g(e))return{assign:void 0}}},parsePixelValue:function(){},parseProperty:function(e,t){if(!this.$$map){if(m(e)&&(e.constructor===Object||e.constructor===Function))throw new Error("Trying to map without vgg-map component.");if(m(e))return e;if(g(e))return t.default}if(this.$$map){if(m(e)&&e.constructor===Object)throw new Error("Property '".concat(e,"' is unmappable."));var a=m(e)&&e.constructor===Function;if(m(e)&&a)return{func:e};if(m(e)&&!a)return{assign:e};if(g(e))return{assign:t.default}}}},mounted:function(){this.parseAesthetic.bind(this),this.parseCoordinate.bind(this),this.parseCoordinateSet.bind(this),this.parseGeometry.bind(this),this.parsePixelValue.bind(this),this.parseProperty.bind(this)}},_a=require("./_string-at")(!0);require("./_iter-define")(String,"String",function(e){this._t=e+"",this._i=0},function(){var e,t=this._t,a=this._i;return a>=t.length?{value:void 0,done:!0}:(e=_a(t,a),this._i+=e.length,{value:e,done:!1})});var xa=require("./_ctx"),ba=require("./_export"),va=require("./_to-object"),$a=require("./_iter-call"),Ta=require("./_is-array-iter"),Sa=require("./_to-length"),Pa=require("./_create-property"),wa=require("./core.get-iterator-method");ba(ba.S+ba.F*!require("./_iter-detect")(function(){}),"Array",{from:function(e){var t,a,n,r,o=va(e),i="function"==typeof this?this:Array,s=arguments.length,d=1<s?arguments[1]:void 0,c=void 0!==d,l=0,p=wa(o);if(c&&(d=xa(d,2<s?arguments[2]:void 0,2)),null!=p&&!(i==Array&&Ta(p)))for(r=p.call(o),a=new i;!(n=r.next()).done;l++)Pa(a,l,c?$a(r,d,[n.value,l],!0):n.value);else for(t=Sa(o.length),a=new i(t);t>l;l++)Pa(a,l,c?d(o[l],l):o[l]);return a.length=l,a}}),require("./_fix-re-wks")("match",1,function(e,t,a){return[function(a){var n=e(this),r=a==null?void 0:a[t];return r===void 0?new RegExp(a)[t](n+""):r.call(a,n)},a]});var Ca=require("./_object-dp").f,Ra=Function.prototype,ka=/^\s*function ([^ (]*)/,Ia="name";Ia in Ra||require("./_descriptors")&&Ca(Ra,Ia,{configurable:!0,get:function(){try{return(""+this).match(ka)[1]}catch(t){return""}}}),require("./_descriptors")&&"g"!=/./g.flags&&require("./_object-dp").f(RegExp.prototype,"flags",{configurable:!0,get:require("./_flags")}),require("./es6.regexp.flags");var La=require("./_an-object"),Ea=require("./_flags"),Ga=require("./_descriptors"),Fa="toString",ja=/./[Fa],Aa=function(e){require("./_redefine")(RegExp.prototype,Fa,e,!0)};require("./_fails")(function(){return"/a/b"!=ja.call({source:"a",flags:"b"})})?Aa(function(){var e=La(this);return"/".concat(e.source,"/","flags"in e?e.flags:!Ga&&e instanceof RegExp?Ea.call(e):void 0)}):ja.name!=Fa&&Aa(function(){return ja.call(this)});var Oa=function(){function e(){w(this,e),this._coordinateTree=null,this._branchPaths={},this._update=1}return R(e,[{key:"setRoot",value:function(e){this._coordinateTree=new Da("root",null,e),this._branchPaths.root=[]}},{key:"addBranch",value:function(e,t,a){var n=this.getBranch(t);n.children[e]=new Da(e,t,a);var r=this._branchPaths[t];this._branchPaths[e]=P(r).concat([e]),this._update++}},{key:"getBranch",value:function(e){var t=this._branchPaths[e],a=this._coordinateTree,n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a=a.children[s]}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return a}},{key:"updateBranch",value:function(e,t){var a=this.getBranch(e);a.update(t),this._update++}},{key:"removeBranch",value:function(e){var t=this._branchPaths[e];if(t){var a=this._coordinateTree,n=!0,r=!1,o=void 0;try{for(var i,s=t[Symbol.iterator]();!(n=(i=s.next()).done);n=!0){var d=i.value,c=a.children[d];if(c.id===e){delete a.children[d];break}else a=c}}catch(e){r=!0,o=e}finally{try{n||null==s.return||s.return()}finally{if(r)throw o}}for(var l in this._branchPaths){var p=this._branchPaths[l];p.includes(e)&&delete this._branchPaths[l]}}this._update++}},{key:"getTotalTransformation",value:function(e){return function(t){for(var a=u(t,2),n=a[0],r=a[1],o=this.getBranch(e),i=o.transform([n,r]);o.parentID;)o=this.getBranch(o.parentID),i=o.transform(i);return i}.bind(this)}}]),e}(),Da=function(){function e(t,a,n){w(this,e),this.id=t,this.parentID=a,this.update(n),this.children={}}return R(e,[{key:"update",value:function(e){for(var t in e)"dataContainer"!=t&&(this[t]=e[t])}}]),e}(),Na={linear:function(t,a){return e.scaleLinear().domain(t).range(a)},log:function(t,a){var n=JSON.parse(JSON.stringify(t));0===n[0]&&(n[0]+=1e-6);var r=e.scaleLog().domain(n).range(a);return G(r)},square:function(t,a){var n=e.scalePow().exponent(2).domain(t).range(a);return n},squareRoot:function(t,a){var n=e.scalePow().exponent(1/2).domain(t).range(a);return n}},Ba={temporal:function(t,a){return e.scaleTime().domain(t).nice().range(a)}},qa={equidistant:function(e,t){var a=2<arguments.length&&void 0!==arguments[2]?arguments[2]:0,n=3<arguments.length&&void 0!==arguments[3]?arguments[3]:0,r=t[1]-t[0],o=e.length,s=(r-a-n)/o,d={},c=0;return e.forEach(function(e){d[e]=t[0]+a+c*s+s/2,c++}),function(e){return d[e]}}},Va=function e(t){var a=Math.PI,n=this;w(this,e);var r,o=t.domains,i=t.ranges;t.dataContainer&&(r=t.dataContainer.getDomains());var s=O(o.x,r),d=u(s,2),c=d[0],l=d[1],p=O(o.y,r),y=u(p,2),m=y[0],g=y[1],h=N(t.scale),f=u(h,2),_=f[0],x=f[1];if(this.domainTypes={x:l,y:g},this.domains={},this.domains.x=["categorical","temporal"].includes(this.domainTypes.x)?i.x:c,this.domains.y=["categorical","temporal"].includes(this.domainTypes.y)?i.y:m,this.ranges=i,this.scaleX=F("x",l,c,i.x,_),this.scaleY=F("y",g,m,i.y,x),this.getX=function(e){return["categorical","temporal"].includes(n.domainTypes.x)?e:n.scaleX(e)},this.getY=function(e){return["categorical","temporal"].includes(n.domainTypes.y)?e:n.scaleY(e)},"scale"===t.type&&(this.transform=function(e){var t=u(e,2),a=t[0],r=t[1];return[n.getX(a),n.getY(r)]}),"polar"===t.type){var b=F("x","quantitative",i.x,[0,2*a],{}),v=F("y","quantitative",i.y,[0,1],{}),$=F("x","quantitative",[-1,1],i.x,{}),T=F("y","quantitative",[-1,1],i.y,{});this.transform=function(e){var t=u(e,2),a=t[0],r=t[1],o=n.getX(a),i=n.getY(r),s=b(o),d=v(i),c=B(s,d);return[$(c[0]),T(c[1])]}}},Ka={props:{width:{type:Number,required:!0},height:{type:Number,required:!0},flip:{type:Boolean,default:!0}},data:function(){return{ready:!1,coordinateTree:new Oa}},mounted:function(){this.setCoordinateTreeRoot(),this.ready=!0},methods:{setCoordinateTreeRoot:function(){var e={x:[0,this.width],y:[0,this.height]},t={x:[0,this.width],y:[0,this.height]};this.flip&&(t.y=[this.height,0]);var a=new Va({type:"scale",scale:"linear",domains:e,ranges:t});this.coordinateTree.setRoot(a)}},provide:function(){var e=this.coordinateTree,t=this.coordinateTree.getTotalTransformation("root");return{$$coordinateTree:e,$$transform:t,$$coordinateTreeParent:"root",$$map:!1}}},Ya=require("./_export"),Ha=require("./_to-length"),Ma=require("./_string-context"),Xa="endsWith",Wa=""[Xa];Ya(Ya.P+Ya.F*require("./_fails-is-regexp")(Xa),"String",{endsWith:function(e){var t=Ma(this,e,Xa),a=1<arguments.length?arguments[1]:void 0,n=Ha(t.length),r=a===void 0?n:ce(Ha(a),n),o=e+"";return t.slice(r-o.length,r)===o}});var za=require("./_export"),Ua=require("./_to-length"),Ja=require("./_string-context"),Qa="startsWith",Za=""[Qa];za(za.P+za.F*require("./_fails-is-regexp")(Qa),"String",{startsWith:function(e){var t=Ja(this,e,Qa),a=Ua(ce(1<arguments.length?arguments[1]:void 0,t.length)),n=e+"";return t.slice(a,a+n.length)===n}});var en={mixins:[fa,Ka],props:{x:{type:Number,required:!0},y:{type:Number,required:!0},width:{type:Number,required:!0},height:{type:Number,required:!0},anchorPoint:{type:String,default:"center",validator:function(e){return["center","lb","lt","rt","rb"].includes(e)}}},computed:{transformedXY:function(){if(this.__update)return this.$$transform([this.x,this.y])},anchorPointAdjustedXY:function(){var e=this.transformedXY;return q(e,this.width,this.height,"lt",this.anchorPoint)},translate:function(){var e=u(this.anchorPointAdjustedXY,2),t=e[0],a=e[1];return"translate(".concat(t,", ").concat(a,")")}}},tn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Glyph.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return e.ready?a("g",{attrs:{transform:e.translate}},[e._t("default")],2):e._e()},staticRenderFns:[]},void 0,en,void 0,!1,void 0,void 0,void 0),an=require("./_to-object"),nn=require("./_object-keys");require("./_object-sap")("keys",function(){return function(e){return nn(an(e))}});var rn={brownBlue:function(a){return e.scaleDiverging(t.interpolateBrBG).domain(a)},purpleGreen:function(a){return e.scaleDiverging(t.interpolatePRGn).domain(a)},pinkGreen:function(a){return e.scaleDiverging(t.interpolatePiYG).domain(a)},purpleOrange:function(a){return e.scaleDiverging(t.interpolatePuOr).domain(a)},redBlue:function(a){return e.scaleDiverging(t.interpolateRdBu).domain(a)},redGray:function(a){return e.scaleDiverging(t.interpolateRdGy).domain(a)},redYellowBlue:function(a){return e.scaleDiverging(t.interpolateRdYlBu).domain(a)},redYellowGreen:function(a){return e.scaleDiverging(t.interpolateRdYlGn).domain(a)},spectral:function(a){return e.scaleDiverging(t.interpolateSpectral).domain(a)},blues:function(a){return e.scaleSequential(t.interpolateBlues).domain(a)},greens:function(a){return e.scaleSequential(t.interpolateGreens).domain(a)},greys:function(a){return e.scaleSequential(t.interpolateGreys).domain(a)},oranges:function(a){return e.scaleSequential(t.interpolateOranges).domain(a)},purples:function(a){return e.scaleSequential(t.interpolatePurples).domain(a)},reds:function(a){return e.scaleSequential(t.interpolateReds).domain(a)},viridis:function(a){return e.scaleSequential(t.interpolateViridis).domain(a)},inferno:function(a){return e.scaleSequential(t.interpolateInferno).domain(a)},magma:function(a){return e.scaleSequential(t.interpolateMagma).domain(a)},plasma:function(a){return e.scaleSequential(t.interpolatePlasma).domain(a)},warm:function(a){return e.scaleSequential(t.interpolateWarm).domain(a)},cool:function(a){return e.scaleSequential(t.interpolateCool).domain(a)},cubehelixDefault:function(a){return e.scaleSequential(t.interpolateCubehelixDefault).domain(a)},rainbow:function(a){return e.scaleSequential(t.interpolateRainbow).domain(a)},sinebow:function(a){return e.scaleSequential(t.interpolateSinebow).domain(a)}},on={colors:function(t,a){return e.scaleOrdinal().domain(t).range(a)}},sn={linear:function(t){return e.scaleLinear().domain(t).range([0,1])}},dn=require("./_export"),cn=require("./_a-function"),ln=require("./_to-object"),pn=require("./_fails"),un=[].sort,yn=[1,2,3];dn(dn.P+dn.F*(pn(function(){yn.sort(void 0)})||!pn(function(){yn.sort(null)})||!require("./_strict-method")(un)),"Array",{sort:function(e){return e===void 0?un.call(ln(this)):un.call(ln(this),cn(e))}});var mn={bulge:function(e,t,a){return function(n){for(var r=Math.abs,o=a.basedOn||X(e,n[0]),s=a.padding||0,d=n.map(function(e,t){return[e[o],t]}).sort(function(e,t){return e[0]>t[0]}),c=d.length,l=0;l<c;++l){var p=d[l][0],u=void 0,y=void 0;u=0==l?r(p-t[0]):r(p-d[l-1][0])/2,y=l==c-1?r(p-t[1]):r(p-d[l+1][0])/2,u-=s,y-=s;var m=2*ce(u,y),g=d[l][1];n[g][e]=m}}}},gn={mixins:[fa],props:{x:{type:[Number,String,Date,Object,Function,void 0],default:void 0},y:{type:[Number,String,Date,Object,Function,void 0],default:void 0},width:{type:Number,default:10},height:{type:Number,default:10},anchorPoint:{type:String,default:"center",validator:function(e){return["center","lb","lt","rt","rb"].includes(e)}}},computed:{aesthetics:function(){return{x:this.parseCoordinate(this.x,{dimension:"x"}),y:this.parseCoordinate(this.y,{dimension:"y"}),width:this.parseProperty(this.width,{default:10}),height:this.parseProperty(this.height,{default:10}),anchorPoint:this.parseProperty(this.anchorPoint,{default:"center"})}}},methods:{renderGlyph:function(e,t){return e(tn,{props:t},this.$slots.default)}},render:function(e){if(!this.$$map)return this.renderGlyph(e,this.aesthetics);if(this.$$map){var t=z(this.aesthetics,this.context,this.$$dataContainer),a=[],n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a.push(this.renderGlyph(e,s))}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return e("g",a)}}},hn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="GlyphWrapper.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({},void 0,gn,void 0,void 0,void 0,void 0,void 0),fn=require("./_collection-strong"),_n=require("./_validate-collection"),xn="Set";module.exports=require("./_collection")(xn,function(e){return function(){return e(this,0<arguments.length?arguments[0]:void 0)}},{add:function(e){return fn.def(_n(this,xn),e=0===e?0:e,e)}},fn);var bn=function(){function e(t,a){if(w(this,e),this._dataset=[],this._domains={},a||this.setDataFrame(t),a)switch(a){case"dataFrame":{this.setDataFrame(t);break}case"geojson":{this.setGeoJSON(t);break}default:throw new Error("Unknown type!");}}return R(e,[{key:"setDataFrame",value:function(e){if(e.constructor!==Array)throw new Error("Data of type dataFrame must be passed as an array");var t=e[0],a=U(t),n=!0,r=!1,o=void 0;try{for(var i,s,d=e[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,Q(s,t),a=J(s,a)}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}this._dataset=e,this._domains=a}},{key:"setGeoJSON",value:function(e){if(e.constructor!==Object)throw new Error("Data of type geojson must be passed as an object")}},{key:"getDataset",value:function(){return this._dataset}},{key:"getVariableData",value:function(e){var t=[],a=this._dataset;for(var n in a)t.push(a[n][e]);return t}},{key:"hasVariable",value:function(e){return this._domains.hasOwnProperty(e)}},{key:"getDomain",value:function(e){return this._domains[e]}},{key:"getDomains",value:function(){return this._domains}},{key:"forEachRow",value:function(e){this._dataset.forEach(function(t,a){e(t,a)})}}]),e}(),vn={props:{data:{type:[Array,Object,void 0],default:void 0},dataType:{type:[String,void 0],default:void 0}},computed:{dataContainer:function(){if(this.data)return new bn(this.data,this.dataType)}},provide:function(){var e=this;return{$$dataContainerContext:e}}},$n=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Graphic.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return e.ready?a("svg",{attrs:{width:e.width,height:e.height}},[e._t("default")],2):e._e()},staticRenderFns:[]},void 0,{mixins:[Ka,vn]},void 0,!1,void 0,void 0,void 0),Tn={inject:["$$dataContainerContext"],props:{data:{type:[Array,Object,void 0],default:void 0},dataType:{type:[Object,void 0],default:void 0}},computed:{$$dataContainer:function(){return this.$$dataContainerContext.dataContainer},dataContainer:function(){if(this.data)return new bn(this.data,this.dataType)}},provide:function(){if(this.dataContainer){var e=this;return{$$dataContainerContext:e}}}},Sn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Map.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return e.$$dataContainer||e.dataContainer?a("g",[e._t("default")],2):e._e()},staticRenderFns:[]},void 0,{mixins:[Tn],provide:function(){return{$$map:!0}}},void 0,!1,void 0,void 0,void 0),Pn={mixins:[ga,ha],props:{type:{type:String,default:"scale"},domains:{type:[Object,void 0],default:void 0},ranges:{type:Object,required:!0},scale:{type:[String,Object,void 0],default:void 0}},data:function(){return{ready:!1,id:ee()}},computed:{_domains:function(){if(this.domains){var e={};return e.x=this.domains.hasOwnProperty("x")?this.domains.x:this.ranges.x,e.y=this.domains.hasOwnProperty("y")?this.domains.y:this.ranges.y,e}return this.domains?void 0:this.ranges},allowDomains:function(){var e=this._domains.x.constructor!==Array,t=this._domains.y.constructor!==Array;return!(!this.$$dataContainer&&(e||t))}},watch:{type:"updateCoordinateTreeBranch",domains:"updateCoordinateTreeBranch",ranges:"updateCoordinateTreeBranch",scale:"updateCoordinateTreeBranch"},beforeDestroy:function(){this.$$coordinateTree.removeBranch(this.id)},mounted:function(){this.setCoordinateTreeBranch(),this.ready=!0},methods:{setCoordinateTreeBranch:function(){var e=new Va({type:this.type,domains:this._domains,ranges:this.ranges,scale:this.scale,dataContainer:this.$$dataContainer});this.$$coordinateTree.addBranch(this.id,this.$$coordinateTreeParent,e)},updateCoordinateTreeBranch:function(){var e=new Va({type:this.type,domains:this._domains,ranges:this.ranges,scale:this.scale,dataContainer:this.$$dataContainer});this.$$coordinateTree.updateBranch(this.id,e)}},provide:function(){var e=this.$$coordinateTree.getTotalTransformation(this.id),t=this.id;return{$$transform:e,$$coordinateTreeParent:t,$$map:!1}}},wn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Section.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return e.ready&&e.allowDomains?a("g",[e._t("default")],2):e._e()},staticRenderFns:[]},void 0,Pn,void 0,!1,void 0,void 0,void 0),Cn={mixins:[fa],props:{x1:{type:[Number,String,Date,Object,Function,void 0],default:void 0},x2:{type:[Number,String,Date,Object,Function,void 0],default:void 0},y1:{type:[Number,String,Date,Object,Function,void 0],default:void 0},y2:{type:[Number,String,Date,Object,Function,void 0],default:void 0},x:{type:[Number,String,Date,Object,Function,void 0],default:void 0},y:{type:[Number,String,Date,Object,Function,void 0],default:void 0},w:{type:[Number,String,Date,Object,Function,void 0],default:void 0},h:{type:[Number,String,Date,Object,Function,void 0],default:void 0},color:{type:[String,Object,Function,void 0],default:void 0}},computed:{invalidX:function(){return y(this.x1,this.x2,this.x,this.w)},invalidY:function(){return y(this.y1,this.y2,this.y,this.h)},aesthetics:function(){if(this.invalidX)throw new Error("Invalid combination of props x1, x2, x and w");if(this.invalidY)throw new Error("Invalid combination of props y1, y2, y and h");return{x1:this.parseCoordinate(this.x1,{dimension:"x"}),x2:this.parseCoordinate(this.x2,{dimension:"x"}),y1:this.parseCoordinate(this.y1,{dimension:"y"}),y2:this.parseCoordinate(this.y2,{dimension:"y"}),x:this.parseCoordinate(this.x,{dimension:"x"}),y:this.parseCoordinate(this.y,{dimension:"y"}),w:this.parseCoordinate(this.w,{dimension:"x",wh:!0}),h:this.parseCoordinate(this.h,{dimension:"y",wh:!0}),color:this.parseAesthetic(this.color,{default:"#000000"})}}},methods:{convertCoordinateSpecification:function(e){var t=te(e.x1,e.x2,e.x,e.w),a=u(t,2),n=a[0],r=a[1],o=te(e.y1,e.y2,e.y,e.h),i=u(o,2),s=i[0],d=i[1];for(var c in["x","y","w","h"])e[c]&&delete e[c];return e.x1=n,e.x2=r,e.y1=s,e.y2=d,e}}},Rn={mixins:[Cn],props:{type:{type:String,default:"scale"},domains:{type:[Object,void 0],default:void 0},scale:{type:[String,Object,void 0],default:void 0}},methods:{calculateRanges:function(e){var t=this.convertCoordinateSpecification(e);return{x:[t.x1,t.x2],y:[t.y1,t.y2]}},renderSection:function(e,t){var a=this.calculateRanges(t);return e(wn,{props:{type:this.type,scale:this.scale,domains:this.domains,ranges:a}},this.$slots.default)}},render:function(e){if(!this.$$map)return this.renderSection(e,this.aesthetics);if(this.$$map){var t=z(this.aesthetics,this.context,this.$$dataContainer),a=[],n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a.push(this.renderSection(e,s))}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return e("g",a)}}},kn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="SectionWrapper.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({},void 0,Rn,void 0,void 0,void 0,void 0,void 0),In={props:{x:{type:[Number,Object,Function],required:!0},y:{type:[Number,Object,Function],required:!0},radius:{type:Number,required:!0},transformation:{type:String,default:"polar"},anchorPoint:{type:String,default:"center"}},computed:{wh:function(){return 2*this.radius},rectangles:function e(){var e=[{x1:0,x2:15,y1:0,y2:100,color:"green"},{x1:15,x2:50,y1:0,y2:100,color:"red"},{x1:50,x2:75,y1:0,y2:100,color:"yellow"},{x1:75,x2:100,y1:0,y2:100,color:"blue"}];return e}}},Ln=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Piechart.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("vgg-glyph",{attrs:{x:e.x,y:e.y,width:e.wh,height:e.wh,"anchor-point":e.anchorPoint}},[a("vgg-section",{attrs:{type:e.transformation,x1:0,x2:e.wh,y1:0,y2:e.wh,domains:{x:[0,100],y:[0,100]}}},e._l(e.rectangles,function(e,t){return a("vgg-rectangle",{key:t,attrs:{x1:e.x1,x2:e.x2,y1:e.y1,y2:e.y2,color:e.color}})}),1)],1)},staticRenderFns:[]},void 0,In,void 0,!1,void 0,void 0,void 0),En={mixins:[Cn],props:{domain:{type:[Array,String,void 0],default:void 0},scale:{type:[String,Object],default:function(){return{}}},tickValues:{type:[Array,void 0],default:void 0},tickCount:{type:Number,default:10},rotateLabel:{type:Boolean,default:!1},format:{type:[String,Function,void 0],default:void 0},flip:{type:Boolean,default:!1}},computed:{_domain:function(){return this.domain.constructor===Array?this.domain:this.domain.constructor===String?this.$$dataContainer.getDomain(this.domain):void 0},_domainType:function(){if(this.domain)return A(this._domain[0])},ranges:function(){return this.convertCoordinateSpecification(this.aesthetics)},tickData:function(){if(this.tickValues)return this.tickValues.map(function(e){return{value:e}});var t,r=this.format&&this.format.constructor===Function?this.format:function(e){return e};if("quantitative"===this._domainType&&(t=a.ticks.apply(void 0,P(this._domain).concat([this.tickCount])).map(function(e){return{value:e,label:r(e)}})),"categorical"===this._domainType&&(t=this._domain.map(function(e){return{value:e,label:r(e)}})),"temporal"===this._domainType){this.format?this.format.constructor===String&&(r=n.timeFormat(this.format)):r=n.timeFormat("%d/%m/%Y");var o=e.scaleTime().domain(this._domain);t=o.ticks(this.tickCount).map(function(e){var t=new Date(e);return{value:t,label:r(t)}})}return t}}},Gn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="XAxis.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("vgg-section",{attrs:{x1:e.ranges.x1,x2:e.ranges.x2,y1:e.ranges.y1,y2:e.ranges.y2,domains:{x:[0,1],y:[0,1]}}},[a("vgg-line",{attrs:{x1:0,y1:.5,x2:1,y2:.5,width:1}}),a("vgg-section",{attrs:{x1:0,x2:1,y1:0,y2:1,domains:{x:e.domain},scale:{x:e.scale}}},[a("vgg-map",{attrs:{data:e.tickData}},[a("vgg-line",{attrs:{x1:function(e){return e.value},y1:.5,x2:function(e){return e.value},y2:e.flip?.35:.65,width:.5}}),e.rotateLabel?e._e():a("vgg-label",{attrs:{x:function(e){return e.value},y:e.flip?.59:.45,text:function(e){return e.label},"font-size":10,"anchor-point":e.flip?"b":"t"}}),e.rotateLabel?a("vgg-label",{attrs:{x:function(e){return e.value},y:e.flip?.59:.45,text:function(e){return e.label},"font-size":10,rotation:e.flip?30:-30,"anchor-point":e.flip?"rb":"rt"}}):e._e()],1)],1)],1)},staticRenderFns:[]},void 0,{mixins:[En]},void 0,!1,void 0,void 0,void 0),Fn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="YAxis.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("vgg-section",{attrs:{x1:e.ranges.x1,x2:e.ranges.x2,y1:e.ranges.y1,y2:e.ranges.y2,domains:{x:[0,1],y:[0,1]}}},[a("vgg-line",{attrs:{x1:.5,y1:0,x2:.5,y2:1,width:1}}),e.domain===void 0?e._e():a("vgg-section",{attrs:{x1:0,x2:1,y1:0,y2:1,domains:{y:e.domain},scale:{y:e.scale}}},[a("vgg-map",{attrs:{data:e.tickData}},[a("vgg-line",{attrs:{x1:.5,y1:function(e){return e.value},x2:e.flip?.65:.35,y2:function(e){return e.value},width:.5}}),e.rotateLabel?e._e():a("vgg-label",{attrs:{x:e.flip?.45:.59,y:function(e){return e.value},text:function(e){return e.label},"font-size":10,"anchor-point":e.flip?"r":"l"}}),e.rotateLabel?a("vgg-label",{attrs:{x:e.flip?.41:.59,y:function(e){return e.value},text:function(e){return e.label},"font-size":10,rotation:e.flip?-30:30,"anchor-point":e.flip?"r":"l"}}):e._e()],1)],1)],1)},staticRenderFns:[]},void 0,{mixins:[En]},void 0,!1,void 0,void 0,void 0),jn={mixins:[Cn],props:{domain:{type:[Array,String,void 0],default:void 0},scale:{type:[String,Object],default:function(){return{}}},gridLines:{type:[Array,Number],default:10}},computed:{_domain:function(){return this.domain.constructor===Array?this.domain:this.domain.constructor===String?this.$$dataContainer.getDomain(this.domain):void 0},_domainType:function(){if(this.domain)return A(this._domain[0])},ranges:function(){return this.convertCoordinateSpecification(this.aesthetics)},cells:function t(){if(this.gridLines.constructor===Array)return this.gridLines.map(function(e){return{value:e}});var t;if("quantitative"===this._domainType&&(t=a.ticks.apply(void 0,P(this._domain).concat([this.gridLines])).map(function(e){return{value:e}})),"categorical"===this._domainType&&(t=this._domain.map(function(e){return{value:e}})),"temporal"===this._domainType){var n=e.scaleTime().domain(this._domain);t=n.ticks(this.tickCount).map(function(e){var t=new Date(e);return{value:t}})}return t}}},An=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="XGrid.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("vgg-section",{attrs:{x1:e.ranges.x1,x2:e.ranges.x2,y1:e.ranges.y1,y2:e.ranges.y2,domains:{x:e.domain,y:[0,1]},scale:{x:e.scale}}},e._l(e.cells,function(e,t){return a("vgg-line",{key:t,attrs:{x1:e.value,y1:0,x2:e.value,y2:1,width:.5,color:"#808080"}})}),1)},staticRenderFns:[]},void 0,{mixins:[jn]},void 0,!1,void 0,void 0,void 0),On=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="YGrid.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({render:function(){var e=this,t=e.$createElement,a=e._self._c||t;return a("vgg-section",{attrs:{x1:e.ranges.x1,x2:e.ranges.x2,y1:e.ranges.y1,y2:e.ranges.y2,domains:{x:[0,1],y:e.domain},scale:{y:e.scale}}},e._l(e.cells,function(e,t){return a("vgg-line",{key:t,attrs:{x1:0,y1:e.value,x2:1,y2:e.value,width:.5,color:"#808080"}})}),1)},staticRenderFns:[]},void 0,{mixins:[jn]},void 0,!1,void 0,void 0,void 0),Dn={mixins:[fa],props:{x1:{type:[Number,String,Date,Object,Function,void 0],default:void 0},x2:{type:[Number,String,Date,Object,Function,void 0],default:void 0},y1:{type:[Number,String,Date,Object,Function,void 0],default:void 0},y2:{type:[Number,String,Date,Object,Function,void 0],default:void 0},func:{type:[Function,Object,void 0],default:void 0},color:{type:[String,Object,Function,void 0],default:void 0},width:{type:Number,default:2}},computed:{aesthetics:function(){return{x1:this.parseCoordinate(this.x1,{dimension:"x"}),y1:this.parseCoordinate(this.y1,{dimension:"y"}),x2:this.parseCoordinate(this.x2,{dimension:"x"}),y2:this.parseCoordinate(this.y2,{dimension:"y"}),func:this.parseAesthetic(this.func,{isFunction:!0}),color:this.parseAesthetic(this.color,{default:"#000000"}),width:this.parseProperty(this.width,{default:2})}}},methods:{createPath:function(e,t){var a;if(e){var n=this.$$coordinateTreeParent,r=this.$$coordinateTree.getBranch(n).domains;a=ne(this.func,this.$$transform,r)}return e||(this._interpolate&&(a=ae(t,this.$$transform)),!this._interpolate&&(a=re(t,this.$$transform))),a},renderSVG:function(e,t){var a=[[t.x1,t.y1],[t.x2,t.y2]],n=this.createPath(t.func,a);return e("path",{attrs:{d:n,stroke:t.color,"stroke-width":t.width,fill:"none"}})}},render:function(e){if(this.__update){if(!this.$$map)return this.renderSVG(e,this.aesthetics);if(this.$$map){var t=z(this.aesthetics,this.context,this.$$dataContainer),a=[],n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a.push(this.renderSVG(e,s))}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return e("g",a)}}}},Nn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Line.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({},void 0,Dn,void 0,void 0,void 0,void 0,void 0),Bn={mixins:[fa],props:{points:{type:[Array,Object,Function,void 0],default:void 0},x:{type:[Array,Object,String,Function,void 0],default:void 0},y:{type:[Array,Object,String,Function,void 0],default:void 0},color:{type:[String,Object,Function,void 0],default:void 0},width:{type:Number,default:2},sortX:{type:Boolean,default:!0},close:{type:Boolean,default:!1}},computed:{aesthetics:function(){return se(this.points,this.x,this.y),{points:this.parseGeometry(this.points,{}),x:this.parseCoordinateSet(this.x,{dimension:"x"}),y:this.parseCoordinateSet(this.y,{dimension:"y"}),color:this.parseAesthetic(this.color,{default:"#000000"}),width:this.parseProperty(this.width,{default:2})}}},methods:{generatePoints:function(e){if(e.points)return e.points;if(e.x.length!==e.y.length)throw new Error("'x' and 'y' coordinate sets have different lengths");else{for(var t=[],a=0;a<e.x.length;++a)t.push([e.x[a],e.y[a]]);return t}},sort:function(e){return e.sort(function(e,t){return e[0]-t[0]})},close:function(e){var t=e.length-1;return(e[0][0]!==e[t][0]||e[0][1]!==e[t][1])&&e.push(e[0]),e},createPath:function(e){return this._interpolate?ae(e,this.$$transform):this._interpolate?void 0:re(e,this.$$transform)},renderSVG:function(e,t){var a=this.generatePoints(t);this.sortX&&(a=this.sort(a)),this.close&&(a=this.close(a));var n=this.createPath(a);return e("path",{attrs:{d:n,stroke:t.color,"stroke-width":t.width,fill:"none"}})}},render:function(e){if(this.__update){if(!this.$$map)return this.renderSVG(e,this.aesthetics);if(this.$$map){var t=z(this.aesthetics,this.context,this.$$dataContainer),a=[],n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a.push(this.renderSVG(e,s))}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return e("g",a)}}}},qn={mixins:[Bn],props:{sortX:{type:Boolean,default:!0},close:{type:Boolean,default:!1}}},Vn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="MultiLine.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({},void 0,qn,void 0,void 0,void 0,void 0,void 0),Kn={mixins:[Bn],props:{sortX:{type:Boolean,default:!1},close:{type:Boolean,default:!0}}},Yn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Path.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({},void 0,Kn,void 0,void 0,void 0,void 0,void 0),Hn={mixins:[fa],props:{x:{type:[Number,String,Date,Object,Function,void 0],default:void 0},y:{type:[Number,String,Date,Object,Function,String,void 0],default:void 0},color:{type:[String,Object,Function,void 0],default:void 0},radius:{type:Number,default:3},strokeWidth:{type:Number,default:0}},computed:{aesthetics:function(){return{x:this.parseCoordinate(this.x,{dimension:"x"}),y:this.parseCoordinate(this.y,{dimension:"y"}),color:this.parseAesthetic(this.color,{default:"#000000"}),radius:this.parseProperty(this.radius,{default:3}),strokeWidth:this.parseProperty(this.strokeWidth,{default:0})}}},methods:{renderSVG:function(e,t){var a=this.$$transform([t.x,t.y]),n=u(a,2),r=n[0],o=n[1];return e("circle",{attrs:{cx:r,cy:o,fill:t.color,r:t.radius,"stroke-width":t.strokeWidth}})}},render:function(e){if(this.__update){if(!this.$$map)return this.renderSVG(e,this.aesthetics);if(this.$$map){var t=z(this.aesthetics,this.context,this.$$dataContainer),a=[],n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a.push(this.renderSVG(e,s))}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return e("g",a)}}}},Mn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Point.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({},void 0,Hn,void 0,void 0,void 0,void 0,void 0),Xn=require("./_export");Xn(Xn.P,"Array",{fill:require("./_array-fill")}),require("./_add-to-unscopables")("fill");var Wn={mixins:[Bn],props:{fill:{type:[String,Object,Function,void 0],default:void 0},sortX:{type:Boolean,default:!1},close:{type:Boolean,default:!0}},methods:{renderSVG:function(e,t){var a=this.generatePoints(t),n=this.createPath(a);return this.sortX&&(a=this.sort(a)),this.close&&(a=this.close(a)),e("path",{attrs:{d:n,stroke:t.color,"stroke-width":t.width,fill:t.fill}})}},render:function(e){if(this.__update){if(!this.$$map)return this.renderSVG(e,this.aesthetics);if(!this.$$map){var t=z(this.aesthetics,this.context,this.$$dataContainer),a=[],n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a.push(this.renderSVG(e,s))}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return e("g",a)}}}},zn=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Polygon.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({},void 0,Wn,void 0,void 0,void 0,void 0,void 0),Un=function(e,t,a,n,r){var o=("function"==typeof a?a.options:a)||{};return o.__file="Rectangle.vue",o.render||(o.render=e.render,o.staticRenderFns=e.staticRenderFns,o._compiled=!0,r&&(o.functional=!0)),o._scopeId=n,o}({},void 0,{mixins:[Cn],methods:{renderSVG:function(e,t){var a,n=this.convertCoordinateSpecification(t),r=[[n.x1,n.y1],[n.x1,n.y2],[n.x2,n.y2],[n.x2,n.y1],[n.x1,n.y1]];return this._interpolate&&(a=ae(r,this.$$transform)),this._interpolate||(a=re(r,this.$$transform)),e("path",{attrs:{d:a,style:"fill: ".concat(t.color)}})}},render:function(e){if(this.__update){if(!this.$$map)return this.renderSVG(e,this.aesthetics);if(this.$$map){var t=z(this.aesthetics,this.context,this.$$dataContainer),a=[],n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a.push(this.renderSVG(e,s))}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return e("g",a)}}}},void 0,void 0,void 0,void 0,void 0),Jn={mixins:[fa],props:{text:{type:[String,Object,Function,void 0],default:void 0},x:{type:[Number,String,Date,Object,Function,void 0],default:void 0},y:{type:[Number,String,Date,Object,Function,String,void 0],default:void 0},color:{type:[String,Object,Function,void 0],default:void 0},fontSize:{type:[Number,Object,Function,void 0],default:void 0},rotation:{type:[Number,Object,Function,void 0],default:void 0},anchorPoint:{type:String,default:"center",validator:function(e){return["center","lb","lt","rt","rb","l","r","t","b"].includes(e)}}},computed:{aesthetics:function(){return{text:this.parseAesthetic(this.text,{}),x:this.parseCoordinate(this.x,{dimension:"x"}),y:this.parseCoordinate(this.y,{dimension:"y"}),color:this.parseAesthetic(this.color,{default:"#000000"}),fontSize:this.parseAesthetic(this.fontSize,{default:16}),rotation:this.parseAesthetic(this.rotation,{default:0})}}},methods:{calcTransform:function(e,t,a){return"rotate(".concat(e,", ").concat(t,", ").concat(a,")")},renderSVG:function(e,t){var a=this.$$transform([t.x,t.y]),n=u(a,2),r=n[0],o=n[1],i=V(this.anchorPoint),s=this.calcTransform(t.rotation,r,o),d=e("text",{attrs:{x:r,y:o,fill:t.color,"text-anchor":i.textAnchor,"dominant-baseline":i.dominantBaseline,transform:s,class:"vgg-label"},style:{"font-size":t.fontSize+"px"}},t.text);return d}},render:function(e){if(this.__update){if(!this.$$map)return this.renderSVG(e,this.aesthetics);if(this.$$map){var t=z(this.aesthetics,this.context,this.$$dataContainer),a=[],n=!0,r=!1,o=void 0;try{for(var i,s,d=t[Symbol.iterator]();!(n=(i=d.next()).done);n=!0)s=i.value,a.push(this.renderSVG(e,s))}catch(e){r=!0,o=e}finally{try{n||null==d.return||d.return()}finally{if(r)throw o}}return e("g",a)}}}},Qn=function(e,t,a,n,r,o,i){var s=("function"==typeof a?a.options:a)||{};s.__file="Label.vue",s.render||(s.render=e.render,s.staticRenderFns=e.staticRenderFns,s._compiled=!0,r&&(s.functional=!0)),s._scopeId=n;{var d;if(t&&(d=function(e){t.call(this,i(e))}),void 0!=d)if(s.functional){var c=s.render;s.render=function(e,t){return d.call(t),c(e,t)}}else{var l=s.beforeCreate;s.beforeCreate=l?[].concat(l,d):[d]}}return s}({},function(e){e&&e("data-v-a472028e_0",{source:".vgg-label[data-v-a472028e]{font-family:sans-serif}",map:void 0,media:void 0})},Jn,"data-v-a472028e",void 0,void 0,de,void 0),Zn={Glyph:hn,Graphic:$n,Map:Sn,Section:kn,Piechart:Ln,XAxis:Gn,YAxis:Fn,XGrid:An,YGrid:On,Line:Nn,MultiLine:Vn,Path:Yn,Point:Mn,Polygon:zn,Rectangle:Un,Label:Qn};return{install:function(e,t){var a="Vgg";for(var n in t&&t.prefix&&(a=t.prefix),Zn){var r=a+n;e.component(r,Zn[n])}}}});
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('d3-scale'), require('d3-scale-chromatic'), require('d3-array'), require('d3-time-format'), require('d3-interpolate'), require('d3-shape')) :
+  typeof define === 'function' && define.amd ? define(['d3-scale', 'd3-scale-chromatic', 'd3-array', 'd3-time-format', 'd3-interpolate', 'd3-shape'], factory) :
+  (global = global || self, global.VueGG = factory(global.d3, global.d3$1, global.d3Array, global.d3TimeFormat, global.d3Interpolate, global.d3Shape));
+}(this, function (d3, d3$1, d3Array, d3TimeFormat, d3Interpolate, d3Shape) { 'use strict';
+
+  require('./_wks-define')('asyncIterator');
+
+  // @@replace logic
+  require('./_fix-re-wks')('replace', 2, function (defined, REPLACE, $replace) {
+    // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
+    return [function replace(searchValue, replaceValue) {
+
+      var O = defined(this);
+      var fn = searchValue == undefined ? undefined : searchValue[REPLACE];
+      return fn !== undefined ? fn.call(searchValue, O, replaceValue) : $replace.call(String(O), searchValue, replaceValue);
+    }, $replace];
+  });
+
+  var global = require('./_global');
+
+  var inheritIfRequired = require('./_inherit-if-required');
+
+  var dP = require('./_object-dp').f;
+
+  var gOPN = require('./_object-gopn').f;
+
+  var isRegExp = require('./_is-regexp');
+
+  var $flags = require('./_flags');
+
+  var $RegExp = global.RegExp;
+  var Base = $RegExp;
+  var proto = $RegExp.prototype;
+  var re1 = /a/g;
+  var re2 = /a/g; // "new" creates a new object, old webkit buggy here
+
+  var CORRECT_NEW = new $RegExp(re1) !== re1;
+
+  if (require('./_descriptors') && (!CORRECT_NEW || require('./_fails')(function () {
+    re2[require('./_wks')('match')] = false; // RegExp constructor can alter flags and IsRegExp works correct with @@match
+
+    return $RegExp(re1) != re1 || $RegExp(re2) == re2 || $RegExp(re1, 'i') != '/a/i';
+  }))) {
+    $RegExp = function RegExp(p, f) {
+      var tiRE = this instanceof $RegExp;
+      var piRE = isRegExp(p);
+      var fiU = f === undefined;
+      return !tiRE && piRE && p.constructor === $RegExp && fiU ? p : inheritIfRequired(CORRECT_NEW ? new Base(piRE && !fiU ? p.source : p, f) : Base((piRE = p instanceof $RegExp) ? p.source : p, piRE && fiU ? $flags.call(p) : f), tiRE ? this : proto, $RegExp);
+    };
+
+    var proxy = function proxy(key) {
+      key in $RegExp || dP($RegExp, key, {
+        configurable: true,
+        get: function get() {
+          return Base[key];
+        },
+        set: function set(it) {
+          Base[key] = it;
+        }
+      });
+    };
+
+    for (var keys = gOPN(Base), i = 0; keys.length > i;) {
+      proxy(keys[i++]);
+    }
+
+    proto.constructor = $RegExp;
+    $RegExp.prototype = proto;
+
+    require('./_redefine')(global, 'RegExp', $RegExp);
+  }
+
+  require('./_set-species')('RegExp');
+
+  // @@split logic
+  require('./_fix-re-wks')('split', 2, function (defined, SPLIT, $split) {
+
+    var isRegExp = require('./_is-regexp');
+
+    var _split = $split;
+    var $push = [].push;
+    var $SPLIT = 'split';
+    var LENGTH = 'length';
+    var LAST_INDEX = 'lastIndex';
+
+    if ('abbc'[$SPLIT](/(b)*/)[1] == 'c' || 'test'[$SPLIT](/(?:)/, -1)[LENGTH] != 4 || 'ab'[$SPLIT](/(?:ab)*/)[LENGTH] != 2 || '.'[$SPLIT](/(.?)(.?)/)[LENGTH] != 4 || '.'[$SPLIT](/()()/)[LENGTH] > 1 || ''[$SPLIT](/.?/)[LENGTH]) {
+      var NPCG = /()??/.exec('')[1] === undefined; // nonparticipating capturing group
+      // based on es5-shim implementation, need to rework it
+
+      $split = function $split(separator, limit) {
+        var string = String(this);
+        if (separator === undefined && limit === 0) return []; // If `separator` is not a regex, use native split
+
+        if (!isRegExp(separator)) return _split.call(string, separator, limit);
+        var output = [];
+        var flags = (separator.ignoreCase ? 'i' : '') + (separator.multiline ? 'm' : '') + (separator.unicode ? 'u' : '') + (separator.sticky ? 'y' : '');
+        var lastLastIndex = 0;
+        var splitLimit = limit === undefined ? 4294967295 : limit >>> 0; // Make `global` and avoid `lastIndex` issues by working with a copy
+
+        var separatorCopy = new RegExp(separator.source, flags + 'g');
+        var separator2, match, lastIndex, lastLength, i; // Doesn't need flags gy, but they don't hurt
+
+        if (!NPCG) separator2 = new RegExp('^' + separatorCopy.source + '$(?!\\s)', flags);
+
+        while (match = separatorCopy.exec(string)) {
+          // `separatorCopy.lastIndex` is not reliable cross-browser
+          lastIndex = match.index + match[0][LENGTH];
+
+          if (lastIndex > lastLastIndex) {
+            output.push(string.slice(lastLastIndex, match.index)); // Fix browsers whose `exec` methods don't consistently return `undefined` for NPCG
+            // eslint-disable-next-line no-loop-func
+
+            if (!NPCG && match[LENGTH] > 1) match[0].replace(separator2, function () {
+              for (i = 1; i < arguments[LENGTH] - 2; i++) {
+                if (arguments[i] === undefined) match[i] = undefined;
+              }
+            });
+            if (match[LENGTH] > 1 && match.index < string[LENGTH]) $push.apply(output, match.slice(1));
+            lastLength = match[0][LENGTH];
+            lastLastIndex = lastIndex;
+            if (output[LENGTH] >= splitLimit) break;
+          }
+
+          if (separatorCopy[LAST_INDEX] === match.index) separatorCopy[LAST_INDEX]++; // Avoid an infinite loop
+        }
+
+        if (lastLastIndex === string[LENGTH]) {
+          if (lastLength || !separatorCopy.test('')) output.push('');
+        } else output.push(string.slice(lastLastIndex));
+
+        return output[LENGTH] > splitLimit ? output.slice(0, splitLimit) : output;
+      }; // Chakra, V8
+
+    } else if ('0'[$SPLIT](undefined, 0)[LENGTH]) {
+      $split = function $split(separator, limit) {
+        return separator === undefined && limit === 0 ? [] : _split.call(this, separator, limit);
+      };
+    } // 21.1.3.17 String.prototype.split(separator, limit)
+
+
+    return [function split(separator, limit) {
+      var O = defined(this);
+      var fn = separator == undefined ? undefined : separator[SPLIT];
+      return fn !== undefined ? fn.call(separator, O, limit) : $split.call(String(O), separator, limit);
+    }, $split];
+  });
+
+  function _typeof2(obj) {
+    if (typeof Symbol === "function" && _typeof$$1(Symbol.iterator) === "symbol") {
+      _typeof2 = function _typeof2(obj) {
+        return _typeof$$1(obj);
+      };
+    } else {
+      _typeof2 = function _typeof2(obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof$$1(obj);
+      };
+    }
+
+    return _typeof2(obj);
+  }
+
+  function _typeof$$1(obj) {
+    if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+      _typeof$$1 = function _typeof$$1(obj) {
+        return _typeof2(obj);
+      };
+    } else {
+      _typeof$$1 = function _typeof$$1(obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+      };
+    }
+
+    return _typeof$$1(obj);
+  }
+
+  var global$1 = require('./_global');
+
+  var has = require('./_has');
+
+  var DESCRIPTORS = require('./_descriptors');
+
+  var $export = require('./_export');
+
+  var redefine = require('./_redefine');
+
+  var META = require('./_meta').KEY;
+
+  var $fails = require('./_fails');
+
+  var shared = require('./_shared');
+
+  var setToStringTag = require('./_set-to-string-tag');
+
+  var uid = require('./_uid');
+
+  var wks = require('./_wks');
+
+  var wksExt = require('./_wks-ext');
+
+  var wksDefine = require('./_wks-define');
+
+  var enumKeys = require('./_enum-keys');
+
+  var isArray = require('./_is-array');
+
+  var anObject = require('./_an-object');
+
+  var isObject = require('./_is-object');
+
+  var toIObject = require('./_to-iobject');
+
+  var toPrimitive = require('./_to-primitive');
+
+  var createDesc = require('./_property-desc');
+
+  var _create = require('./_object-create');
+
+  var gOPNExt = require('./_object-gopn-ext');
+
+  var $GOPD = require('./_object-gopd');
+
+  var $DP = require('./_object-dp');
+
+  var $keys = require('./_object-keys');
+
+  var gOPD = $GOPD.f;
+  var dP$1 = $DP.f;
+  var gOPN$1 = gOPNExt.f;
+  var $Symbol = global$1.Symbol;
+  var $JSON = global$1.JSON;
+
+  var _stringify = $JSON && $JSON.stringify;
+
+  var PROTOTYPE = 'prototype';
+  var HIDDEN = wks('_hidden');
+  var TO_PRIMITIVE = wks('toPrimitive');
+  var isEnum = {}.propertyIsEnumerable;
+  var SymbolRegistry = shared('symbol-registry');
+  var AllSymbols = shared('symbols');
+  var OPSymbols = shared('op-symbols');
+  var ObjectProto = Object[PROTOTYPE];
+  var USE_NATIVE = typeof $Symbol == 'function';
+  var QObject = global$1.QObject; // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
+
+  var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild; // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
+
+  var setSymbolDesc = DESCRIPTORS && $fails(function () {
+    return _create(dP$1({}, 'a', {
+      get: function get() {
+        return dP$1(this, 'a', {
+          value: 7
+        }).a;
+      }
+    })).a != 7;
+  }) ? function (it, key, D) {
+    var protoDesc = gOPD(ObjectProto, key);
+    if (protoDesc) delete ObjectProto[key];
+    dP$1(it, key, D);
+    if (protoDesc && it !== ObjectProto) dP$1(ObjectProto, key, protoDesc);
+  } : dP$1;
+
+  var wrap = function wrap(tag) {
+    var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
+
+    sym._k = tag;
+    return sym;
+  };
+
+  var isSymbol = USE_NATIVE && _typeof$$1($Symbol.iterator) == 'symbol' ? function (it) {
+    return _typeof$$1(it) == 'symbol';
+  } : function (it) {
+    return it instanceof $Symbol;
+  };
+
+  var $defineProperty = function defineProperty(it, key, D) {
+    if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
+    anObject(it);
+    key = toPrimitive(key, true);
+    anObject(D);
+
+    if (has(AllSymbols, key)) {
+      if (!D.enumerable) {
+        if (!has(it, HIDDEN)) dP$1(it, HIDDEN, createDesc(1, {}));
+        it[HIDDEN][key] = true;
+      } else {
+        if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
+        D = _create(D, {
+          enumerable: createDesc(0, false)
+        });
+      }
+
+      return setSymbolDesc(it, key, D);
+    }
+
+    return dP$1(it, key, D);
+  };
+
+  var $defineProperties = function defineProperties(it, P) {
+    anObject(it);
+    var keys = enumKeys(P = toIObject(P));
+    var i = 0;
+    var l = keys.length;
+    var key;
+
+    while (l > i) {
+      $defineProperty(it, key = keys[i++], P[key]);
+    }
+
+    return it;
+  };
+
+  var $create = function create(it, P) {
+    return P === undefined ? _create(it) : $defineProperties(_create(it), P);
+  };
+
+  var $propertyIsEnumerable = function propertyIsEnumerable(key) {
+    var E = isEnum.call(this, key = toPrimitive(key, true));
+    if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
+    return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
+  };
+
+  var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
+    it = toIObject(it);
+    key = toPrimitive(key, true);
+    if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
+    var D = gOPD(it, key);
+    if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
+    return D;
+  };
+
+  var $getOwnPropertyNames = function getOwnPropertyNames(it) {
+    var names = gOPN$1(toIObject(it));
+    var result = [];
+    var i = 0;
+    var key;
+
+    while (names.length > i) {
+      if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
+    }
+
+    return result;
+  };
+
+  var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
+    var IS_OP = it === ObjectProto;
+    var names = gOPN$1(IS_OP ? OPSymbols : toIObject(it));
+    var result = [];
+    var i = 0;
+    var key;
+
+    while (names.length > i) {
+      if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
+    }
+
+    return result;
+  }; // 19.4.1.1 Symbol([description])
+
+
+  if (!USE_NATIVE) {
+    $Symbol = function _Symbol() {
+      if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
+      var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
+
+      var $set = function $set(value) {
+        if (this === ObjectProto) $set.call(OPSymbols, value);
+        if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
+        setSymbolDesc(this, tag, createDesc(1, value));
+      };
+
+      if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, {
+        configurable: true,
+        set: $set
+      });
+      return wrap(tag);
+    };
+
+    redefine($Symbol[PROTOTYPE], 'toString', function toString() {
+      return this._k;
+    });
+    $GOPD.f = $getOwnPropertyDescriptor;
+    $DP.f = $defineProperty;
+    require('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames;
+    require('./_object-pie').f = $propertyIsEnumerable;
+    require('./_object-gops').f = $getOwnPropertySymbols;
+
+    if (DESCRIPTORS && !require('./_library')) {
+      redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
+    }
+
+    wksExt.f = function (name) {
+      return wrap(wks(name));
+    };
+  }
+
+  $export($export.G + $export.W + $export.F * !USE_NATIVE, {
+    Symbol: $Symbol
+  });
+
+  for (var es6Symbols = // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
+  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'.split(','), j = 0; es6Symbols.length > j;) {
+    wks(es6Symbols[j++]);
+  }
+
+  for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) {
+    wksDefine(wellKnownSymbols[k++]);
+  }
+
+  $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
+    // 19.4.2.1 Symbol.for(key)
+    'for': function _for(key) {
+      return has(SymbolRegistry, key += '') ? SymbolRegistry[key] : SymbolRegistry[key] = $Symbol(key);
+    },
+    // 19.4.2.5 Symbol.keyFor(sym)
+    keyFor: function keyFor(sym) {
+      if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
+
+      for (var key in SymbolRegistry) {
+        if (SymbolRegistry[key] === sym) return key;
+      }
+    },
+    useSetter: function useSetter() {
+      setter = true;
+    },
+    useSimple: function useSimple() {
+      setter = false;
+    }
+  });
+  $export($export.S + $export.F * !USE_NATIVE, 'Object', {
+    // 19.1.2.2 Object.create(O [, Properties])
+    create: $create,
+    // 19.1.2.4 Object.defineProperty(O, P, Attributes)
+    defineProperty: $defineProperty,
+    // 19.1.2.3 Object.defineProperties(O, Properties)
+    defineProperties: $defineProperties,
+    // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+    getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
+    // 19.1.2.7 Object.getOwnPropertyNames(O)
+    getOwnPropertyNames: $getOwnPropertyNames,
+    // 19.1.2.8 Object.getOwnPropertySymbols(O)
+    getOwnPropertySymbols: $getOwnPropertySymbols
+  }); // 24.3.2 JSON.stringify(value [, replacer [, space]])
+
+  $JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
+    var S = $Symbol(); // MS Edge converts symbol values to JSON as {}
+    // WebKit converts symbol values to JSON as null
+    // V8 throws on boxed symbols
+
+    return _stringify([S]) != '[null]' || _stringify({
+      a: S
+    }) != '{}' || _stringify(Object(S)) != '{}';
+  })), 'JSON', {
+    stringify: function stringify(it) {
+      var args = [it];
+      var i = 1;
+      var replacer, $replacer;
+
+      while (arguments.length > i) {
+        args.push(arguments[i++]);
+      }
+
+      $replacer = replacer = args[1];
+      if (!isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+
+      if (!isArray(replacer)) replacer = function replacer(key, value) {
+        if (typeof $replacer == 'function') value = $replacer.call(this, key, value);
+        if (!isSymbol(value)) return value;
+      };
+      args[1] = replacer;
+      return _stringify.apply($JSON, args);
+    }
+  }); // 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
+
+  $Symbol[PROTOTYPE][TO_PRIMITIVE] || require('./_hide')($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf); // 19.4.3.5 Symbol.prototype[@@toStringTag]
+
+  setToStringTag($Symbol, 'Symbol'); // 20.2.1.9 Math[@@toStringTag]
+
+  setToStringTag(Math, 'Math', true); // 24.3.3 JSON[@@toStringTag]
+
+  setToStringTag(global$1.JSON, 'JSON', true);
+
+  var $iterators = require('./es6.array.iterator');
+
+  var getKeys = require('./_object-keys');
+
+  var redefine$1 = require('./_redefine');
+
+  var global$2 = require('./_global');
+
+  var hide = require('./_hide');
+
+  var Iterators = require('./_iterators');
+
+  var wks$1 = require('./_wks');
+
+  var ITERATOR = wks$1('iterator');
+  var TO_STRING_TAG = wks$1('toStringTag');
+  var ArrayValues = Iterators.Array;
+  var DOMIterables = {
+    CSSRuleList: true,
+    // TODO: Not spec compliant, should be false.
+    CSSStyleDeclaration: false,
+    CSSValueList: false,
+    ClientRectList: false,
+    DOMRectList: false,
+    DOMStringList: false,
+    DOMTokenList: true,
+    DataTransferItemList: false,
+    FileList: false,
+    HTMLAllCollection: false,
+    HTMLCollection: false,
+    HTMLFormElement: false,
+    HTMLSelectElement: false,
+    MediaList: true,
+    // TODO: Not spec compliant, should be false.
+    MimeTypeArray: false,
+    NamedNodeMap: false,
+    NodeList: true,
+    PaintRequestList: false,
+    Plugin: false,
+    PluginArray: false,
+    SVGLengthList: false,
+    SVGNumberList: false,
+    SVGPathSegList: false,
+    SVGPointList: false,
+    SVGStringList: false,
+    SVGTransformList: false,
+    SourceBufferList: false,
+    StyleSheetList: true,
+    // TODO: Not spec compliant, should be false.
+    TextTrackCueList: false,
+    TextTrackList: false,
+    TouchList: false
+  };
+
+  for (var collections = getKeys(DOMIterables), i$1 = 0; i$1 < collections.length; i$1++) {
+    var NAME = collections[i$1];
+    var explicit = DOMIterables[NAME];
+    var Collection = global$2[NAME];
+    var proto$1 = Collection && Collection.prototype;
+    var key;
+
+    if (proto$1) {
+      if (!proto$1[ITERATOR]) hide(proto$1, ITERATOR, ArrayValues);
+      if (!proto$1[TO_STRING_TAG]) hide(proto$1, TO_STRING_TAG, NAME);
+      Iterators[NAME] = ArrayValues;
+      if (explicit) for (key in $iterators) {
+        if (!proto$1[key]) redefine$1(proto$1, key, $iterators[key], true);
+      }
+    }
+  }
+
+  var $export$1 = require('./_export');
+
+  var $includes = require('./_array-includes')(true);
+
+  $export$1($export$1.P, 'Array', {
+    includes: function includes(el
+    /* , fromIndex = 0 */
+    ) {
+      return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  require('./_add-to-unscopables')('includes');
+
+  // 21.1.3.7 String.prototype.includes(searchString, position = 0)
+
+  var $export$2 = require('./_export');
+
+  var context = require('./_string-context');
+
+  var INCLUDES = 'includes';
+  $export$2($export$2.P + $export$2.F * require('./_fails-is-regexp')(INCLUDES), 'String', {
+    includes: function includes(searchString
+    /* , position = 0 */
+    ) {
+      return !!~context(this, searchString, INCLUDES).indexOf(searchString, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  var global$3 = require('./_global');
+
+  var has$1 = require('./_has');
+
+  var cof = require('./_cof');
+
+  var inheritIfRequired$1 = require('./_inherit-if-required');
+
+  var toPrimitive$1 = require('./_to-primitive');
+
+  var fails = require('./_fails');
+
+  var gOPN$2 = require('./_object-gopn').f;
+
+  var gOPD$1 = require('./_object-gopd').f;
+
+  var dP$2 = require('./_object-dp').f;
+
+  var $trim = require('./_string-trim').trim;
+
+  var NUMBER = 'Number';
+  var $Number = global$3[NUMBER];
+  var Base$1 = $Number;
+  var proto$2 = $Number.prototype; // Opera ~12 has broken Object#toString
+
+  var BROKEN_COF = cof(require('./_object-create')(proto$2)) == NUMBER;
+  var TRIM = 'trim' in String.prototype; // 7.1.3 ToNumber(argument)
+
+  var toNumber = function toNumber(argument) {
+    var it = toPrimitive$1(argument, false);
+
+    if (typeof it == 'string' && it.length > 2) {
+      it = TRIM ? it.trim() : $trim(it, 3);
+      var first = it.charCodeAt(0);
+      var third, radix, maxCode;
+
+      if (first === 43 || first === 45) {
+        third = it.charCodeAt(2);
+        if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
+      } else if (first === 48) {
+        switch (it.charCodeAt(1)) {
+          case 66:
+          case 98:
+            radix = 2;
+            maxCode = 49;
+            break;
+          // fast equal /^0b[01]+$/i
+
+          case 79:
+          case 111:
+            radix = 8;
+            maxCode = 55;
+            break;
+          // fast equal /^0o[0-7]+$/i
+
+          default:
+            return +it;
+        }
+
+        for (var digits = it.slice(2), i = 0, l = digits.length, code; i < l; i++) {
+          code = digits.charCodeAt(i); // parseInt parses a string to a first unavailable symbol
+          // but ToNumber should return NaN if a string contains unavailable symbols
+
+          if (code < 48 || code > maxCode) return NaN;
+        }
+
+        return parseInt(digits, radix);
+      }
+    }
+
+    return +it;
+  };
+
+  if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
+    $Number = function Number(value) {
+      var it = arguments.length < 1 ? 0 : value;
+      var that = this;
+      return that instanceof $Number // check on 1..constructor(foo) case
+      && (BROKEN_COF ? fails(function () {
+        proto$2.valueOf.call(that);
+      }) : cof(that) != NUMBER) ? inheritIfRequired$1(new Base$1(toNumber(it)), that, $Number) : toNumber(it);
+    };
+
+    for (var keys$1 = require('./_descriptors') ? gOPN$2(Base$1) : ( // ES3:
+    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' + // ES6 (in case, if modules with ES6 Number statics required before):
+    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' + 'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger').split(','), j$1 = 0, key$1; keys$1.length > j$1; j$1++) {
+      if (has$1(Base$1, key$1 = keys$1[j$1]) && !has$1($Number, key$1)) {
+        dP$2($Number, key$1, gOPD$1(Base$1, key$1));
+      }
+    }
+
+    $Number.prototype = proto$2;
+    proto$2.constructor = $Number;
+
+    require('./_redefine')(global$3, NUMBER, $Number);
+  }
+
+  function _arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+  }
+
+  function _iterableToArrayLimit(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"] != null) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance");
+  }
+
+  function _slicedToArray(arr, i) {
+    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+  }
+
+  var CoordinateTreeUser = {
+    inject: ['$$coordinateTree', '$$coordinateTreeParent'],
+    computed: {
+      parentBranch: function parentBranch() {
+        return this.$$coordinateTree.getBranch(this.$$coordinateTreeParent);
+      },
+      parentRangeTypes: function parentRangeTypes() {
+        return this.parentBranch.domainTypes;
+      }
+    }
+  };
+
+  var DataReceiver = {
+    inject: ['$$dataContainerContext'],
+    computed: {
+      $$dataContainer: function $$dataContainer() {
+        return this.$$dataContainerContext.dataContainer;
+      }
+    }
+  };
+
+  function is(value) {
+    return value !== undefined;
+  }
+  function isnt(value) {
+    return value === undefined;
+  }
+
+  function parseAesthetic (prop, options) {
+    if (prop && is(options.isFunction)) {
+      for (var key in this.parentRangeTypes) {
+        if (['categorical', 'temporal'].includes(this.parentRangeTypes[key])) {
+          throw new Error("\n          Cannot use :func prop on 'vgg-line' in combination with\n          '".concat(this.parentRangeTypes[key], "' parent domain\n        "));
+        }
+      }
+    }
+
+    if (!this.$$map) {
+      if (is(prop) && prop.constructor === Object) {
+        throw new Error('Trying to map without vgg-map component.');
+      }
+
+      if (is(prop) && prop.constructor === Function && isnt(options.isFunction)) {
+        throw new Error('Trying to map without vgg-map component.');
+      }
+
+      if (is(prop)) {
+        return prop;
+      }
+
+      if (isnt(prop)) {
+        return options.default;
+      }
+    }
+
+    if (this.$$map) {
+      var isObject = is(prop) && prop.constructor === Object;
+      var isFunction = is(prop) && prop.constructor === Function;
+
+      if (is(prop) && isObject) {
+        return prop;
+      }
+
+      if (is(prop) && isFunction) {
+        return {
+          func: prop
+        };
+      }
+
+      if (is(prop) && !isObject && !isFunction) {
+        return {
+          assign: prop
+        };
+      }
+
+      if (isnt(prop)) {
+        return {
+          assign: options.default
+        };
+      }
+    }
+  }
+
+  function convertToNumeric (prop, dimension, parentBranch) {
+    if (dimension === 'x') {
+      return parentBranch.scaleX(prop);
+    }
+
+    if (dimension === 'y') {
+      return parentBranch.scaleY(prop);
+    }
+  }
+
+  function parseCoordinate (prop, _ref) {
+    var dimension = _ref.dimension,
+        wh = _ref.wh;
+    var parentRangeType = this.parentRangeTypes[dimension];
+
+    if (!this.$$map) {
+      if (is(prop) && prop.constructor === Object) {
+        throw new Error('Trying to map without vgg-map component.');
+      }
+
+      if (is(prop) && prop.constructor === Function) {
+        throw new Error('Trying to map without vgg-map component.');
+      }
+
+      if (is(prop)) {
+        // Here we check whether the passed prop (String, Number, etc)
+        // is compatible with the parent domain (categorical, quantitative, etc)
+        if (invalidValueForRangeType(prop, parentRangeType)) {
+          throw new Error("Invalid input ".concat(prop, " for parent Section domain type ").concat(parentRangeType));
+        } else {
+          if (['categorical', 'temporal'].includes(parentRangeType)) {
+            if (wh) {
+              throw new Error("Cannot set 'w' or 'h' value in parent domain '".concat(parentRangeType, "'"));
+            } // We will already convert categorical and temporal data here.
+
+
+            return convertToNumeric(prop, dimension, this.parentBranch);
+          }
+
+          return prop;
+        }
+      }
+
+      if (isnt(prop)) {
+        return undefined;
+      }
+    }
+
+    if (this.$$map) {
+      var isObject = is(prop) && prop.constructor === Object;
+      var isFunction = is(prop) && prop.constructor === Function;
+
+      if (is(prop) && isObject) {
+        // block object mapping syntax if used with categorical or temporal
+        // parent domain
+        if (['categorical', 'temporal'].includes(parentRangeType) && prop.hasOwnProperty('scale')) {
+          throw new Error("Cannot scale ".concat(prop, " to parent Section domain type ").concat(parentRangeType));
+        }
+
+        return prop;
+      }
+
+      if (is(prop) && isFunction) {
+        return {
+          func: prop
+        };
+      }
+
+      if (is(prop) && !isObject && !isFunction) {
+        // Here we check whether the passed prop (String, Number, etc)
+        // is compatible with the parent domain (categorical, quantitative, etc)
+        if (invalidValueForRangeType(prop, parentRangeType)) {
+          throw new Error("Invalid input ".concat(prop, " for parent Section domain type ").concat(parentRangeType));
+        } else {
+          if (['categorical', 'temporal'].includes(parentRangeType)) {
+            if (wh) {
+              throw new Error("Cannot set 'w' or 'h' value in parent domain '".concat(parentRangeType, "'"));
+            } // We will already convert categorical and temporal data here.
+
+
+            return {
+              assign: convertToNumeric(prop, dimension, this.parentBranch)
+            };
+          }
+
+          return {
+            assign: prop
+          };
+        }
+      }
+
+      if (isnt(prop)) {
+        return {
+          assign: undefined
+        };
+      }
+    }
+  }
+
+  function invalidValueForRangeType(value, rangeType) {
+    if (rangeType === 'quantitative') {
+      return value.constructor !== Number;
+    } else if (rangeType === 'categorical') {
+      return value.constructor !== String;
+    } else if (rangeType === 'temporal') {
+      return value.constructor !== Date;
+    }
+  }
+
+  function parseCoordinateSet (prop, _ref) {
+    var dimension = _ref.dimension;
+    var parentRangeType = this.parentRangeTypes[dimension];
+
+    if (!this.$$map) {
+      if (is(prop) && prop.constructor === Object) {
+        throw new Error('Trying to map without vgg-map component.');
+      }
+
+      if (is(prop) && prop.constructor === Function) {
+        throw new Error('Trying to map without vgg-map component.');
+      }
+
+      if (is(prop) && prop.constructor === Array) {
+        return parseArray(prop, parentRangeType, dimension, this.parentBranch);
+      }
+
+      if (is(prop) && prop.constructor === String) {
+        if (!this.$$dataContainer.hasVariable(prop)) {
+          throw new Error("Variable ".concat(prop, " not found"));
+        }
+
+        var data = this.$$dataContainer.getVariableData(prop);
+        return parseArray(data, parentRangeType, dimension, this.parentBranch);
+      }
+
+      if (isnt(prop)) {
+        return undefined;
+      }
+    }
+
+    if (this.$$map) {
+      var isObject = is(prop) && prop.constructor === Object;
+      var isFunction = is(prop) && prop.constructor === Function;
+
+      if (is(prop) && isObject) {
+        // block object mapping syntax if used with categorical or temporal
+        // parent domain
+        if (['categorical', 'temporal'].includes(parentRangeType) && prop.hasOwnProperty('scale')) {
+          throw new Error("Cannot scale ".concat(prop, " to parent Section domain type ").concat(parentRangeType));
+        }
+
+        return prop;
+      }
+
+      if (is(prop) && isFunction) {
+        return {
+          func: prop
+        };
+      }
+
+      if (is(prop) && prop.constructor === Array) {
+        return {
+          assign: parseArray(prop, parentRangeType, dimension, this.parentBranch)
+        };
+      }
+
+      if (is(prop) && prop.constructor === String) {
+        throw new Error("Cannot set Mark coordinates from variable when mapping");
+      }
+
+      if (isnt(prop)) {
+        return {
+          assign: undefined
+        };
+      }
+    }
+  }
+  function invalidValueForRangeType$1(value, rangeType) {
+    if (rangeType === 'quantitative') {
+      return value.constructor !== Number;
+    } else if (rangeType === 'categorical') {
+      return value.constructor !== String;
+    } else if (rangeType === 'temporal') {
+      return value.constructor !== Date;
+    }
+  }
+
+  function parseArray(data, parentRangeType, dimension, parentBranch) {
+    // Here we check whether array entries' types (String, Number, etc)
+    // are compatible with the parent domain (categorical, quantitative, etc)
+    var parsed = [];
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var entry = _step.value;
+
+        if (invalidValueForRangeType$1(entry, parentRangeType)) {
+          throw new Error("Invalid input ".concat(entry, " for parent Section domain type ").concat(parentRangeType));
+        } else {
+          if (['categorical', 'temporal'].includes(parentRangeType)) {
+            // We will already convert categorical and temporal data here.
+            parsed.push(convertToNumeric(entry, dimension, parentBranch));
+          } else {
+            parsed.push(entry);
+          }
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    return parsed;
+  }
+
+  function parseGeometry (prop) {
+    if (!this.$$map) {
+      if (is(prop) && prop.constructor === Array) {
+        return parseArray$1(prop, this.parentRangeTypes, this.parentBranch);
+      }
+
+      if (isnt(prop)) {
+        return undefined;
+      }
+    }
+
+    if (this.$$map) {
+      if (is(prop) && prop.constructor === Array) {
+        return {
+          assign: parseArray$1(prop, this.parentRangeTypes, this.parentBranch)
+        };
+      }
+
+      if (isnt(prop)) {
+        return {
+          assign: undefined
+        };
+      }
+    }
+  }
+
+  function parseArray$1(data, parentRangeTypes, parentBranch) {
+    // Here we check whether array entries' types (String, Number, etc)
+    // are compatible with the parent domain (categorical, quantitative, etc)
+    var types = ['x', 'y'];
+    var parsed = [];
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var entry = _step.value;
+        var point = [];
+
+        for (var i = 0; i < types.length; ++i) {
+          var type = types[i];
+          var parentRangeType = parentRangeTypes[type];
+
+          if (invalidValueForRangeType$1(entry[i], parentRangeType)) {
+            throw new Error("Invalid input ".concat(entry[i], " for parent Section domain type ").concat(parentRangeType));
+          } else {
+            if (['categorical', 'temporal'].includes(parentRangeType)) {
+              // We will already convert categorical and temporal data here.
+              point.push(convertToNumeric(entry[i], type, parentBranch));
+            } else {
+              point.push(entry[i]);
+            }
+          }
+        }
+
+        parsed.push(point);
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    return parsed;
+  }
+
+  function parsePixelValue (prop) {}
+
+  function parseProperty (prop, options) {
+    if (!this.$$map) {
+      if (is(prop) && (prop.constructor === Object || prop.constructor === Function)) {
+        throw new Error('Trying to map without vgg-map component.');
+      }
+
+      if (is(prop)) {
+        return prop;
+      }
+
+      if (isnt(prop)) {
+        return options.default;
+      }
+    }
+
+    if (this.$$map) {
+      if (is(prop) && prop.constructor === Object) {
+        throw new Error("Property '".concat(prop, "' is unmappable."));
+      }
+
+      var isFunction = is(prop) && prop.constructor === Function;
+
+      if (is(prop) && isFunction) {
+        return {
+          func: prop
+        };
+      }
+
+      if (is(prop) && !isFunction) {
+        return {
+          assign: prop
+        };
+      }
+
+      if (isnt(prop)) {
+        return {
+          assign: options.default
+        };
+      }
+    }
+  }
+
+  var Mark = {
+    mixins: [CoordinateTreeUser, DataReceiver],
+    inject: ['$$transform', '$$map'],
+    props: {
+      interpolate: {
+        type: Boolean,
+        default: true
+      }
+    },
+    computed: {
+      __update: function __update() {
+        return this.$$coordinateTree._update;
+      },
+      _interpolate: function _interpolate() {
+        // TODO check if interpolation is necessary (i.e. if all parent
+        // coordinate transformations are linear)
+        return this.interpolate;
+      },
+      context: function context() {
+        return {
+          domains: this.$$dataContainer.getDomains(),
+          ranges: this.parentBranch.domains,
+          parentBranch: this.parentBranch
+        };
+      }
+    },
+    methods: {
+      parseAesthetic: parseAesthetic,
+      parseCoordinate: parseCoordinate,
+      parseCoordinateSet: parseCoordinateSet,
+      parseGeometry: parseGeometry,
+      parsePixelValue: parsePixelValue,
+      parseProperty: parseProperty
+    },
+    mounted: function mounted() {
+      this.parseAesthetic.bind(this);
+      this.parseCoordinate.bind(this);
+      this.parseCoordinateSet.bind(this);
+      this.parseGeometry.bind(this);
+      this.parsePixelValue.bind(this);
+      this.parseProperty.bind(this);
+    }
+  };
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
+      }
+
+      return arr2;
+    }
+  }
+
+  var $at = require('./_string-at')(true); // 21.1.3.27 String.prototype[@@iterator]()
+
+
+  require('./_iter-define')(String, 'String', function (iterated) {
+    this._t = String(iterated); // target
+
+    this._i = 0; // next index
+    // 21.1.5.2.1 %StringIteratorPrototype%.next()
+  }, function () {
+    var O = this._t;
+    var index = this._i;
+    var point;
+    if (index >= O.length) return {
+      value: undefined,
+      done: true
+    };
+    point = $at(O, index);
+    this._i += point.length;
+    return {
+      value: point,
+      done: false
+    };
+  });
+
+  var ctx = require('./_ctx');
+
+  var $export$3 = require('./_export');
+
+  var toObject = require('./_to-object');
+
+  var call = require('./_iter-call');
+
+  var isArrayIter = require('./_is-array-iter');
+
+  var toLength = require('./_to-length');
+
+  var createProperty = require('./_create-property');
+
+  var getIterFn = require('./core.get-iterator-method');
+
+  $export$3($export$3.S + $export$3.F * !require('./_iter-detect')(function (iter) {
+  }), 'Array', {
+    // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
+    from: function from(arrayLike
+    /* , mapfn = undefined, thisArg = undefined */
+    ) {
+      var O = toObject(arrayLike);
+      var C = typeof this == 'function' ? this : Array;
+      var aLen = arguments.length;
+      var mapfn = aLen > 1 ? arguments[1] : undefined;
+      var mapping = mapfn !== undefined;
+      var index = 0;
+      var iterFn = getIterFn(O);
+      var length, result, step, iterator;
+      if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2); // if object isn't iterable or it's array with default iterator - use simple case
+
+      if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
+        for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
+          createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
+        }
+      } else {
+        length = toLength(O.length);
+
+        for (result = new C(length); length > index; index++) {
+          createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
+        }
+      }
+
+      result.length = index;
+      return result;
+    }
+  });
+
+  // @@match logic
+  require('./_fix-re-wks')('match', 1, function (defined, MATCH, $match) {
+    // 21.1.3.11 String.prototype.match(regexp)
+    return [function match(regexp) {
+
+      var O = defined(this);
+      var fn = regexp == undefined ? undefined : regexp[MATCH];
+      return fn !== undefined ? fn.call(regexp, O) : new RegExp(regexp)[MATCH](String(O));
+    }, $match];
+  });
+
+  var dP$3 = require('./_object-dp').f;
+
+  var FProto = Function.prototype;
+  var nameRE = /^\s*function ([^ (]*)/;
+  var NAME$1 = 'name'; // 19.2.4.2 name
+
+  NAME$1 in FProto || require('./_descriptors') && dP$3(FProto, NAME$1, {
+    configurable: true,
+    get: function get() {
+      try {
+        return ('' + this).match(nameRE)[1];
+      } catch (e) {
+        return '';
+      }
+    }
+  });
+
+  // 21.2.5.3 get RegExp.prototype.flags()
+  if (require('./_descriptors') && /./g.flags != 'g') require('./_object-dp').f(RegExp.prototype, 'flags', {
+    configurable: true,
+    get: require('./_flags')
+  });
+
+  require('./es6.regexp.flags');
+
+  var anObject$1 = require('./_an-object');
+
+  var $flags$1 = require('./_flags');
+
+  var DESCRIPTORS$1 = require('./_descriptors');
+
+  var TO_STRING = 'toString';
+  var $toString = /./[TO_STRING];
+
+  var define = function define(fn) {
+    require('./_redefine')(RegExp.prototype, TO_STRING, fn, true);
+  }; // 21.2.5.14 RegExp.prototype.toString()
+
+
+  if (require('./_fails')(function () {
+    return $toString.call({
+      source: 'a',
+      flags: 'b'
+    }) != '/a/b';
+  })) {
+    define(function toString() {
+      var R = anObject$1(this);
+      return '/'.concat(R.source, '/', 'flags' in R ? R.flags : !DESCRIPTORS$1 && R instanceof RegExp ? $flags$1.call(R) : undefined);
+    }); // FF44- RegExp#toString has a wrong name
+  } else if ($toString.name != TO_STRING) {
+    define(function toString() {
+      return $toString.call(this);
+    });
+  }
+
+  function _iterableToArray(iter) {
+    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance");
+  }
+
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
+
+  var CoordinateTree =
+  /*#__PURE__*/
+  function () {
+    function CoordinateTree() {
+      _classCallCheck(this, CoordinateTree);
+
+      this._coordinateTree = null;
+      this._branchPaths = {};
+      this._update = 1;
+    }
+
+    _createClass(CoordinateTree, [{
+      key: "setRoot",
+      value: function setRoot(coordinateTransformation) {
+        this._coordinateTree = new Branch('root', null, coordinateTransformation);
+        this._branchPaths['root'] = [];
+      }
+    }, {
+      key: "addBranch",
+      value: function addBranch(id, parentID, coordinateTransformation) {
+        var parent = this.getBranch(parentID);
+        parent.children[id] = new Branch(id, parentID, coordinateTransformation);
+        var parentBranchPath = this._branchPaths[parentID];
+        this._branchPaths[id] = _toConsumableArray(parentBranchPath).concat([id]);
+        this._update++;
+      }
+    }, {
+      key: "getBranch",
+      value: function getBranch(id) {
+        var branchPath = this._branchPaths[id];
+        var currentLocation = this._coordinateTree;
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = branchPath[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var branch = _step.value;
+            currentLocation = currentLocation.children[branch];
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return != null) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        return currentLocation;
+      }
+    }, {
+      key: "updateBranch",
+      value: function updateBranch(id, coordinateTransformation) {
+        var branch = this.getBranch(id);
+        branch.update(coordinateTransformation);
+        this._update++;
+      }
+    }, {
+      key: "removeBranch",
+      value: function removeBranch(id) {
+        var branchPath = this._branchPaths[id];
+
+        if (branchPath) {
+          var currentLocation = this._coordinateTree;
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
+
+          try {
+            for (var _iterator2 = branchPath[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              var branchID = _step2.value;
+              var childBranch = currentLocation.children[branchID];
+
+              if (childBranch.id === id) {
+                delete currentLocation.children[branchID];
+                break;
+              } else {
+                currentLocation = childBranch;
+              }
+            }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                _iterator2.return();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
+            }
+          }
+
+          for (var branchPathID in this._branchPaths) {
+            var path = this._branchPaths[branchPathID];
+
+            if (path.includes(id)) {
+              delete this._branchPaths[branchPathID];
+            }
+          }
+        }
+
+        this._update++;
+      }
+    }, {
+      key: "getTotalTransformation",
+      value: function getTotalTransformation(id) {
+        var transformation = function transformation(_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+              x = _ref2[0],
+              y = _ref2[1];
+
+          var currentLocation = this.getBranch(id);
+          var result = currentLocation.transform([x, y]);
+
+          while (currentLocation.parentID) {
+            currentLocation = this.getBranch(currentLocation.parentID);
+            result = currentLocation.transform(result);
+          }
+
+          return result;
+        };
+
+        return transformation.bind(this);
+      }
+    }]);
+
+    return CoordinateTree;
+  }();
+
+  var Branch =
+  /*#__PURE__*/
+  function () {
+    function Branch(id, parentID, coordinateTransformation) {
+      _classCallCheck(this, Branch);
+
+      this.id = id;
+      this.parentID = parentID;
+      this.update(coordinateTransformation);
+      this.children = {};
+    }
+
+    _createClass(Branch, [{
+      key: "update",
+      value: function update(coordinateTransformation) {
+        for (var key in coordinateTransformation) {
+          if (key !== 'dataContainer') {
+            this[key] = coordinateTransformation[key];
+          }
+        }
+      }
+    }]);
+
+    return Branch;
+  }();
+
+  function checkValidScale (prop, variableType, scale, availableScales) {
+    if (!availableScales.hasOwnProperty(scale)) {
+      throw new Error("\n      Prop '".concat(prop, "', variable type '").concat(variableType, "':\n      No scale '").concat(scale, "' found\n    "));
+    }
+  }
+
+  function updateDomain (domain, scalingOptions) {
+    var newDomain = JSON.parse(JSON.stringify(domain));
+    var updateDomain = scalingOptions.domain;
+
+    if (updateDomain) {
+      if (updateDomain.constructor !== Array && updateDomain.length !== 2) {
+        throw new Error('Invalid domain modification');
+      }
+
+      if (is$1(updateDomain[0])) {
+        newDomain[0] = updateDomain[0];
+      }
+
+      if (is$1(updateDomain[1])) {
+        newDomain[1] = updateDomain[1];
+      }
+    }
+
+    return newDomain;
+  }
+
+  function is$1(val) {
+    return val !== undefined && val !== null;
+  }
+
+  function offsetZeroes (func) {
+    return function (input) {
+      if (input === 0) {
+        input = 1e6;
+      }
+
+      return func(input);
+    };
+  }
+
+  var numeric = {
+    linear: linear,
+    log: log,
+    square: square,
+    squareRoot: squareRoot
+  };
+
+  function linear(domain, range) {
+    return d3.scaleLinear().domain(domain).range(range);
+  }
+
+  function log(domain, range) {
+    var domainCopy = JSON.parse(JSON.stringify(domain));
+
+    if (domainCopy[0] === 0) {
+      domainCopy[0] += 1e-6;
+    }
+
+    var scale = d3.scaleLog().domain(domainCopy).range(range);
+    return offsetZeroes(scale);
+  }
+
+  function square(domain, range) {
+    var scale = d3.scalePow().exponent(2).domain(domain).range(range);
+    return scale;
+  }
+
+  function squareRoot(domain, range) {
+    var scale = d3.scalePow().exponent(1 / 2).domain(domain).range(range);
+    return scale;
+  }
+
+  var temporal = {
+    temporal: temporal$1
+  };
+
+  function temporal$1(domain, range) {
+    return d3.scaleTime().domain(domain).nice().range(range);
+  }
+
+  var categorical = {
+    equidistant: equidistant // TODO better name
+
+  };
+
+  function equidistant(domain, range) {
+    var padStart = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var padEnd = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+    var deltaRange = range[1] - range[0];
+    var paddedRange = deltaRange - padStart - padEnd;
+    var sections = domain.length;
+    var sectionLength = paddedRange / sections;
+    var mapping = {};
+    var i = 0;
+    domain.forEach(function (entry) {
+      mapping[entry] = range[0] + padStart + i * sectionLength + sectionLength / 2;
+      i++;
+    });
+    return function (x) {
+      return mapping[x];
+    };
+  }
+
+  function createCoordsScale (prop, variableType, domain, range, scalingOptions) {
+    if (variableType === 'quantitative') {
+      var scale = scalingOptions.scale || 'linear';
+      checkValidScale(prop, variableType, scale, numeric);
+      return numeric[scale](updateDomain(domain, scalingOptions), range);
+    }
+
+    if (variableType === 'temporal') {
+      var _scale = scalingOptions.scale || 'temporal';
+
+      checkValidScale(prop, variableType, _scale, temporal);
+      return temporal[_scale](domain, range);
+    }
+
+    if (variableType === 'categorical') {
+      var _scale2 = scalingOptions.scale || 'equidistant';
+
+      checkValidScale(prop, variableType, _scale2, categorical);
+      return categorical[_scale2](domain, range);
+    }
+  }
+
+  function getDataType (value) {
+    switch (value.constructor) {
+      case Number:
+        return 'quantitative';
+
+      case String:
+        return 'categorical';
+
+      case Date:
+        return 'temporal';
+
+      case Array:
+        return 'nested';
+
+      default:
+        throw new Error('Invalid data');
+    }
+  }
+
+  function parseDomain (domainSpecification, variableDomains) {
+    var domain;
+    var domainType;
+
+    if (![Array, String].includes(domainSpecification.constructor)) {
+      throw new Error('Invalid domain specification: only Array or String allowed');
+    }
+
+    if (domainSpecification.constructor === Array) {
+      checkValidDomainArray(domainSpecification);
+      domainType = getDataType(domainSpecification[0]);
+      domain = domainSpecification;
+    } else {
+      if (variableDomains) {
+        if (domainSpecification.constructor === String) {
+          if (!variableDomains[domainSpecification]) {
+            throw new Error("Invalid domain specification: variable does not exist");
+          }
+
+          domain = variableDomains[domainSpecification];
+          domainType = getDataType(domain[0]);
+        }
+      } else {
+        domain = [0, 1]; // placeholder until real data is available
+
+        domainType = 'quantitative';
+      }
+    }
+
+    return [domain, domainType];
+  }
+
+  function checkValidDomainArray(array) {
+    if (array.length < 2) {
+      throw new Error('Invalid domain specification array: length shorter than 2');
+    }
+
+    var invalid = false;
+
+    if (array[0].constructor === Number) {
+      if (array[1].constructor !== Number || array.length !== 2) {
+        invalid = true;
+      }
+    } else if (array[0].constructor === String) {
+      for (var i = 1; i < array.length; i++) {
+        if (array[i].constructor !== String) {
+          invalid = true;
+          break;
+        }
+      }
+    } else if (array[0].constructor === Date) {
+      for (var _i = 1; _i < array.length; _i++) {
+        if (array[_i].constructor !== Date) {
+          invalid = true;
+          break;
+        }
+      }
+    }
+
+    if (invalid) {
+      throw new Error('Invalid domain specification array');
+    }
+  }
+
+  function parseScale (scaleSpecification) {
+    var scaleTypeX;
+    var scaleTypeY;
+
+    if (scaleSpecification === undefined) {
+      return [{}, {}];
+    }
+
+    if (scaleSpecification.constructor === String) {
+      scaleTypeX = {
+        scale: scaleSpecification
+      };
+      scaleTypeY = {
+        scale: scaleSpecification
+      };
+    } else if (scaleSpecification.constructor === Object) {
+      if (scaleSpecification.hasOwnProperty('x')) {
+        if (scaleSpecification.x.constructor === String) {
+          scaleTypeX = {
+            scale: scaleSpecification.x
+          };
+        } else if (scaleSpecification.x.constructor === Object) {
+          scaleTypeX = scaleSpecification.x;
+        } else {
+          throw new Error('Scale specification x must be String or Object');
+        }
+      } else {
+        scaleTypeX = {};
+      }
+
+      if (scaleSpecification.hasOwnProperty('y')) {
+        if (scaleSpecification.y.constructor === String) {
+          scaleTypeY = {
+            scale: scaleSpecification.y
+          };
+        } else if (scaleSpecification.y.constructor === Object) {
+          scaleTypeY = scaleSpecification.y;
+        } else {
+          throw new Error('Scale specification y must be String or Object');
+        }
+      } else {
+        scaleTypeY = {};
+      }
+    } else {
+      throw new Error('Scale specification must be String or Object');
+    }
+
+    return [scaleTypeX, scaleTypeY];
+  }
+
+  var CoordinateTransformation = function CoordinateTransformation(options) {
+    var _this = this;
+
+    _classCallCheck(this, CoordinateTransformation);
+
+    var domainSpecifications = options.domains;
+    var ranges = options.ranges;
+    var variableDomains;
+
+    if (options.dataContainer) {
+      variableDomains = options.dataContainer.getDomains();
+    } // Check for validity, and fetch variable domains from dataContainer if necessary
+
+
+    var _parseDomain = parseDomain(domainSpecifications.x, variableDomains),
+        _parseDomain2 = _slicedToArray(_parseDomain, 2),
+        domainX = _parseDomain2[0],
+        domainXType = _parseDomain2[1];
+
+    var _parseDomain3 = parseDomain(domainSpecifications.y, variableDomains),
+        _parseDomain4 = _slicedToArray(_parseDomain3, 2),
+        domainY = _parseDomain4[0],
+        domainYType = _parseDomain4[1];
+
+    var _parseScale = parseScale(options.scale),
+        _parseScale2 = _slicedToArray(_parseScale, 2),
+        scaleOptionsX = _parseScale2[0],
+        scaleOptionsY = _parseScale2[1]; // Store domains and ranges
+
+
+    this.domainTypes = {
+      x: domainXType,
+      y: domainYType // If we have a categorical or temporal domain: set ranges as domains
+
+    };
+    this.domains = {};
+
+    if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
+      this.domains.x = ranges.x;
+    } else {
+      this.domains.x = domainX;
+    }
+
+    if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
+      this.domains.y = ranges.y;
+    } else {
+      this.domains.y = domainY;
+    }
+
+    this.ranges = ranges;
+    this.scaleX = createCoordsScale('x', domainXType, domainX, ranges.x, scaleOptionsX);
+    this.scaleY = createCoordsScale('y', domainYType, domainY, ranges.y, scaleOptionsY); // We will wrap the scaling functions in this 'get' function.
+    // For categorical and temporal domains, we don't need to apply the scaling,
+    // since we've already done this when the prop was passed (see Mark.js,
+    // parseCoord function). This is because we need to support nested Sections,
+    // where the parent is for example categorical but the child is numeric. It
+    // is also necessary to properly interpolate in the interpolatePath function
+    // (you cannot interpolate between 'A' and 'B'). So for these components,
+    // we already need to know the converted (numeric) value before the transform
+    // function is used.
+
+    this.getX = function (x) {
+      if (['categorical', 'temporal'].includes(_this.domainTypes.x)) {
+        return x;
+      } else {
+        return _this.scaleX(x);
+      }
+    };
+
+    this.getY = function (y) {
+      if (['categorical', 'temporal'].includes(_this.domainTypes.y)) {
+        return y;
+      } else {
+        return _this.scaleY(y);
+      }
+    };
+
+    if (options.type === 'scale') {
+      this.transform = function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+            x = _ref2[0],
+            y = _ref2[1];
+
+        return [_this.getX(x), _this.getY(y)];
+      };
+    }
+
+    if (options.type === 'polar') {
+      var toTheta = createCoordsScale('x', 'quantitative', ranges.x, [0, 2 * Math.PI], {});
+      var toRadius = createCoordsScale('y', 'quantitative', ranges.y, [0, 1], {});
+      var toRangeX = createCoordsScale('x', 'quantitative', [-1, 1], ranges.x, {});
+      var toRangeY = createCoordsScale('y', 'quantitative', [-1, 1], ranges.y, {});
+
+      this.transform = function (_ref3) {
+        var _ref4 = _slicedToArray(_ref3, 2),
+            x = _ref4[0],
+            y = _ref4[1];
+
+        var scaledX = _this.getX(x);
+
+        var scaledY = _this.getY(y);
+
+        var theta = toTheta(scaledX);
+        var radius = toRadius(scaledY);
+        var cartesian = polarToCartesian(theta, radius);
+        return [toRangeX(cartesian[0]), toRangeY(cartesian[1])];
+      };
+    }
+  };
+
+  function polarToCartesian(theta, r) {
+    var x = r * Math.sin(theta);
+    var y = r * Math.cos(theta);
+    return [x, y];
+  }
+
+  var CoordinateSystem = {
+    props: {
+      width: {
+        type: Number,
+        required: true
+      },
+      height: {
+        type: Number,
+        required: true
+      },
+      flip: {
+        type: Boolean,
+        default: true
+      }
+    },
+    data: function data() {
+      return {
+        ready: false,
+        coordinateTree: new CoordinateTree()
+      };
+    },
+    mounted: function mounted() {
+      this.setCoordinateTreeRoot();
+      this.ready = true;
+    },
+    methods: {
+      setCoordinateTreeRoot: function setCoordinateTreeRoot() {
+        var domains = {
+          x: [0, this.width],
+          y: [0, this.height]
+        };
+        var ranges = {
+          x: [0, this.width],
+          y: [0, this.height]
+        };
+
+        if (this.flip) {
+          ranges.y = [this.height, 0];
+        }
+
+        var transformation = new CoordinateTransformation({
+          type: 'scale',
+          scale: 'linear',
+          domains: domains,
+          ranges: ranges
+        });
+        this.coordinateTree.setRoot(transformation);
+      }
+    },
+    provide: function provide() {
+      var $$coordinateTree = this.coordinateTree;
+      var $$transform = this.coordinateTree.getTotalTransformation('root');
+      var $$coordinateTreeParent = 'root';
+      return {
+        $$coordinateTree: $$coordinateTree,
+        $$transform: $$transform,
+        $$coordinateTreeParent: $$coordinateTreeParent,
+        $$map: false
+      };
+    }
+  };
+
+  // 21.1.3.6 String.prototype.endsWith(searchString [, endPosition])
+
+  var $export$4 = require('./_export');
+
+  var toLength$1 = require('./_to-length');
+
+  var context$1 = require('./_string-context');
+
+  var ENDS_WITH = 'endsWith';
+  var $endsWith = ''[ENDS_WITH];
+  $export$4($export$4.P + $export$4.F * require('./_fails-is-regexp')(ENDS_WITH), 'String', {
+    endsWith: function endsWith(searchString
+    /* , endPosition = @length */
+    ) {
+      var that = context$1(this, searchString, ENDS_WITH);
+      var endPosition = arguments.length > 1 ? arguments[1] : undefined;
+      var len = toLength$1(that.length);
+      var end = endPosition === undefined ? len : Math.min(toLength$1(endPosition), len);
+      var search = String(searchString);
+      return $endsWith ? $endsWith.call(that, search, end) : that.slice(end - search.length, end) === search;
+    }
+  });
+
+  // 21.1.3.18 String.prototype.startsWith(searchString [, position ])
+
+  var $export$5 = require('./_export');
+
+  var toLength$2 = require('./_to-length');
+
+  var context$2 = require('./_string-context');
+
+  var STARTS_WITH = 'startsWith';
+  var $startsWith = ''[STARTS_WITH];
+  $export$5($export$5.P + $export$5.F * require('./_fails-is-regexp')(STARTS_WITH), 'String', {
+    startsWith: function startsWith(searchString
+    /* , position = 0 */
+    ) {
+      var that = context$2(this, searchString, STARTS_WITH);
+      var index = toLength$2(Math.min(arguments.length > 1 ? arguments[1] : undefined, that.length));
+      var search = String(searchString);
+      return $startsWith ? $startsWith.call(that, search, index) : that.slice(index, index + search.length) === search;
+    }
+  });
+
+  function adjustToAnchorPoint(_ref, width, height, oldAnchorPoint, newAnchorPoint) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        x = _ref2[0],
+        y = _ref2[1];
+
+    // In this particular case we don't need to do anything
+    if (oldAnchorPoint === newAnchorPoint) {
+      return [x, y];
+    } // In all other cases:
+    // First we will convert the defaultAnchorPoint to a 'centered' anchor point
+
+
+    var centered = [];
+
+    if (oldAnchorPoint === 'center') {
+      centered = [x, y];
+    } else {
+      centered[0] = oldAnchorPoint.startsWith('l') ? x - width / 2 : x + width / 2;
+      centered[1] = oldAnchorPoint.endsWith('b') ? y + height / 2 : y - height / 2;
+    } // Second, we convert the centered anchor point to the new anchor point
+
+
+    if (newAnchorPoint === 'center') {
+      return centered;
+    } else {
+      var _centered = centered,
+          _centered2 = _slicedToArray(_centered, 2),
+          cx = _centered2[0],
+          cy = _centered2[1];
+
+      var translated = [];
+      translated[0] = newAnchorPoint.startsWith('l') ? cx + width / 2 : cx - width / 2;
+      translated[1] = newAnchorPoint.endsWith('b') ? cy - height / 2 : cy + height / 2;
+      return translated;
+    }
+  }
+  function textAnchorPoint(anchorPoint) {
+    // For setting the anchor point on a SVG text element
+    switch (anchorPoint) {
+      case 'center':
+        return {
+          textAnchor: 'middle',
+          dominantBaseline: 'middle'
+        };
+
+      case 'lb':
+        return {
+          textAnchor: 'start',
+          dominantBaseline: 'alphabetic'
+        };
+
+      case 'lt':
+        return {
+          textAnchor: 'start',
+          dominantBaseline: 'hanging'
+        };
+
+      case 'rt':
+        return {
+          textAnchor: 'end',
+          dominantBaseline: 'hanging'
+        };
+
+      case 'rb':
+        return {
+          textAnchor: 'end',
+          dominantBaseline: 'alphabetic'
+        };
+
+      case 'l':
+        return {
+          textAnchor: 'start',
+          dominantBaseline: 'middle'
+        };
+
+      case 'r':
+        return {
+          textAnchor: 'end',
+          dominantBaseline: 'middle'
+        };
+
+      case 'b':
+        return {
+          textAnchor: 'middle',
+          dominantBaseline: 'alphabetic'
+        };
+
+      case 't':
+        return {
+          textAnchor: 'middle',
+          dominantBaseline: 'hanging'
+        };
+    }
+  }
+
+  var script = {
+    mixins: [Mark, CoordinateSystem],
+    props: {
+      x: {
+        type: Number,
+        required: true
+      },
+      y: {
+        type: Number,
+        required: true
+      },
+      width: {
+        type: Number,
+        required: true
+      },
+      height: {
+        type: Number,
+        required: true
+      },
+      anchorPoint: {
+        type: String,
+        default: 'center',
+        validator: function validator(p) {
+          return ['center', 'lb', 'lt', 'rt', 'rb'].includes(p);
+        }
+      }
+    },
+    computed: {
+      transformedXY: function transformedXY() {
+        if (this.__update) {
+          return this.$$transform([this.x, this.y]);
+        }
+      },
+      anchorPointAdjustedXY: function anchorPointAdjustedXY() {
+        var xy = this.transformedXY;
+        return adjustToAnchorPoint(xy, this.width, this.height, 'lt', this.anchorPoint);
+      },
+      translate: function translate() {
+        var _this$anchorPointAdju = _slicedToArray(this.anchorPointAdjustedXY, 2),
+            x = _this$anchorPointAdju[0],
+            y = _this$anchorPointAdju[1];
+
+        return "translate(".concat(x, ", ").concat(y, ")");
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__ = script;
+  /* template */
+
+  var __vue_render__ = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _vm.ready ? _c('g', {
+      attrs: {
+        "transform": _vm.translate
+      }
+    }, [_vm._t("default")], 2) : _vm._e();
+  };
+
+  var __vue_staticRenderFns__ = [];
+  /* style */
+
+  var __vue_inject_styles__ = undefined;
+  /* scoped */
+
+  var __vue_scope_id__ = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__ = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__ = false;
+  /* component normalizer */
+
+  function __vue_normalize__(template, style, script$$1, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script$$1 === 'function' ? script$$1.options : script$$1) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Glyph.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Glyph = __vue_normalize__({
+    render: __vue_render__,
+    staticRenderFns: __vue_staticRenderFns__
+  }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, undefined, undefined);
+
+  // 19.1.2.14 Object.keys(O)
+  var toObject$1 = require('./_to-object');
+
+  var $keys$1 = require('./_object-keys');
+
+  require('./_object-sap')('keys', function () {
+    return function keys(it) {
+      return $keys$1(toObject$1(it));
+    };
+  });
+
+  var numeric$1 = {
+    brownBlue: brownBlue,
+    purpleGreen: purpleGreen,
+    pinkGreen: pinkGreen,
+    purpleOrange: purpleOrange,
+    redBlue: redBlue,
+    redGray: redGray,
+    redYellowBlue: redYellowBlue,
+    redYellowGreen: redYellowGreen,
+    spectral: spectral,
+    blues: blues,
+    greens: greens,
+    greys: greys,
+    oranges: oranges,
+    purples: purples,
+    reds: reds,
+    viridis: viridis,
+    inferno: inferno,
+    magma: magma,
+    plasma: plasma,
+    warm: warm,
+    cool: cool,
+    cubehelixDefault: cubehelixDefault,
+    rainbow: rainbow,
+    sinebow: sinebow // Diverging
+
+  };
+
+  function brownBlue(domain) {
+    return d3.scaleDiverging(d3$1.interpolateBrBG).domain(domain);
+  }
+
+  function purpleGreen(domain) {
+    return d3.scaleDiverging(d3$1.interpolatePRGn).domain(domain);
+  }
+
+  function pinkGreen(domain) {
+    return d3.scaleDiverging(d3$1.interpolatePiYG).domain(domain);
+  }
+
+  function purpleOrange(domain) {
+    return d3.scaleDiverging(d3$1.interpolatePuOr).domain(domain);
+  }
+
+  function redBlue(domain) {
+    return d3.scaleDiverging(d3$1.interpolateRdBu).domain(domain);
+  }
+
+  function redGray(domain) {
+    return d3.scaleDiverging(d3$1.interpolateRdGy).domain(domain);
+  }
+
+  function redYellowBlue(domain) {
+    return d3.scaleDiverging(d3$1.interpolateRdYlBu).domain(domain);
+  }
+
+  function redYellowGreen(domain) {
+    return d3.scaleDiverging(d3$1.interpolateRdYlGn).domain(domain);
+  }
+
+  function spectral(domain) {
+    return d3.scaleDiverging(d3$1.interpolateSpectral).domain(domain);
+  } // Sequential
+
+
+  function blues(domain) {
+    return d3.scaleSequential(d3$1.interpolateBlues).domain(domain);
+  }
+
+  function greens(domain) {
+    return d3.scaleSequential(d3$1.interpolateGreens).domain(domain);
+  }
+
+  function greys(domain) {
+    return d3.scaleSequential(d3$1.interpolateGreys).domain(domain);
+  }
+
+  function oranges(domain) {
+    return d3.scaleSequential(d3$1.interpolateOranges).domain(domain);
+  }
+
+  function purples(domain) {
+    return d3.scaleSequential(d3$1.interpolatePurples).domain(domain);
+  }
+
+  function reds(domain) {
+    return d3.scaleSequential(d3$1.interpolateReds).domain(domain);
+  } // Sequential - Multi-Hue
+
+
+  function viridis(domain) {
+    return d3.scaleSequential(d3$1.interpolateViridis).domain(domain);
+  }
+
+  function inferno(domain) {
+    return d3.scaleSequential(d3$1.interpolateInferno).domain(domain);
+  }
+
+  function magma(domain) {
+    return d3.scaleSequential(d3$1.interpolateMagma).domain(domain);
+  }
+
+  function plasma(domain) {
+    return d3.scaleSequential(d3$1.interpolatePlasma).domain(domain);
+  }
+
+  function warm(domain) {
+    return d3.scaleSequential(d3$1.interpolateWarm).domain(domain);
+  }
+
+  function cool(domain) {
+    return d3.scaleSequential(d3$1.interpolateCool).domain(domain);
+  }
+
+  function cubehelixDefault(domain) {
+    return d3.scaleSequential(d3$1.interpolateCubehelixDefault).domain(domain);
+  } // Cyclical
+
+
+  function rainbow(domain) {
+    return d3.scaleSequential(d3$1.interpolateRainbow).domain(domain);
+  }
+
+  function sinebow(domain) {
+    return d3.scaleSequential(d3$1.interpolateSinebow).domain(domain);
+  }
+
+  var categorical$1 = {
+    colors: colors
+  };
+
+  function colors(domain, range) {
+    return d3.scaleOrdinal().domain(domain).range(range);
+  }
+
+  function createColorScale (prop, variableType, domain, scalingOptions) {
+    if (variableType === 'quantitative') {
+      var scale = scalingOptions.scale || 'blues';
+      checkValidScale(prop, variableType, scale, numeric$1);
+      return numeric$1[scale](updateDomain(domain, scalingOptions));
+    }
+
+    if (variableType === 'categorical') {
+      var _scale = scalingOptions.scale || 'colors';
+
+      checkValidScale(prop, variableType, _scale, categorical$1);
+      return categorical$1[_scale](domain);
+    }
+  }
+
+  var numeric$2 = {
+    linear: function linear(domain) {
+      return d3.scaleLinear().domain(domain).range([0, 1]);
+    }
+  };
+
+  function createOpacityScale (prop, variableType, domain, scalingOptions) {
+    if (variableType === 'quantitative') {
+      var scale = scalingOptions.scale || 'linear';
+      checkValidScale(prop, variableType, scale, numeric$2);
+      return numeric$2[scale](updateDomain(domain, scalingOptions));
+    }
+  }
+
+  function getDimension (prop) {
+    if (['x', 'x1', 'x2', 'w'].includes(prop)) {
+      return 'x';
+    }
+
+    if (['y', 'y1', 'y2', 'h'].includes(prop)) {
+      return 'y';
+    }
+  }
+
+  function createScale (prop, context, scalingOptions) {
+    var domain = context.domains[scalingOptions.variable];
+    var variableType = getDataType(domain[0]);
+
+    if (['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(prop)) {
+      var dimension = getDimension(prop);
+      var range = context.ranges[dimension];
+      return createCoordsScale(prop, variableType, domain, range, scalingOptions);
+    }
+
+    if (prop === 'color') {
+      return createColorScale(prop, variableType, domain, scalingOptions);
+    }
+
+    if (prop === 'opacity') {
+      return createOpacityScale(prop, variableType, domain, scalingOptions);
+    }
+  }
+
+  var $export$6 = require('./_export');
+
+  var aFunction = require('./_a-function');
+
+  var toObject$2 = require('./_to-object');
+
+  var fails$1 = require('./_fails');
+
+  var $sort = [].sort;
+  var test = [1, 2, 3];
+  $export$6($export$6.P + $export$6.F * (fails$1(function () {
+    // IE8-
+    test.sort(undefined);
+  }) || !fails$1(function () {
+    // V8 bug
+    test.sort(null); // Old WebKit
+  }) || !require('./_strict-method')($sort)), 'Array', {
+    // 22.1.3.25 Array.prototype.sort(comparefn)
+    sort: function sort(comparefn) {
+      return comparefn === undefined ? $sort.call(toObject$2(this)) : $sort.call(toObject$2(this), aFunction(comparefn));
+    }
+  });
+
+  var wh = {
+    bulge: bulge
+  };
+
+  function bulge(prop, range, positioningSettings) {
+    return function (propsPerMark) {
+      var basedOn = positioningSettings.basedOn || guessBasedOn(prop, propsPerMark[0]);
+      var padding = positioningSettings.padding || 0; // Sort ascending
+
+      var coordsSorted = propsPerMark.map(function (props, ix) {
+        return [props[basedOn], ix];
+      }).sort(function (a, b) {
+        return a[0] > b[0];
+      });
+      var len = coordsSorted.length;
+
+      for (var i = 0; i < len; ++i) {
+        var center = coordsSorted[i][0];
+        var dLeft = void 0; // distance to nearest mark on the left
+
+        var dRight = void 0; // distance to nearest mark on the right
+
+        if (i === 0) {
+          dLeft = Math.abs(center - range[0]);
+        } else {
+          dLeft = Math.abs(center - coordsSorted[i - 1][0]) / 2;
+        }
+
+        if (i === len - 1) {
+          dRight = Math.abs(center - range[1]);
+        } else {
+          dRight = Math.abs(center - coordsSorted[i + 1][0]) / 2;
+        }
+
+        dLeft -= padding;
+        dRight -= padding;
+        var value = Math.min(dLeft, dRight) * 2;
+        var originalIndex = coordsSorted[i][1];
+        propsPerMark[originalIndex][prop] = value;
+      }
+    };
+  }
+
+  function guessBasedOn(prop, firstRow) {
+    if (prop === 'w') {
+      if (firstRow.hasOwnProperty('x1')) {
+        return 'x1';
+      }
+
+      if (firstRow.hasOwnProperty('x2')) {
+        return 'x2';
+      }
+
+      if (firstRow.hasOwnProperty('x')) {
+        return 'x';
+      }
+    }
+
+    if (prop === 'h') {
+      if (firstRow.hasOwnProperty('y1')) {
+        return 'y1';
+      }
+
+      if (firstRow.hasOwnProperty('y2')) {
+        return 'y2';
+      }
+
+      if (firstRow.hasOwnProperty('y')) {
+        return 'y';
+      }
+    }
+  }
+
+  function createPositioner (prop, context, positioningSettings) {
+    if (['w', 'h'].includes(prop)) {
+      var positioner = positioningSettings.positioner;
+      var dimension = positioningSettings.dimension || prop === 'w' ? 'x' : 'y';
+      var range = context.ranges[dimension];
+      return wh[positioner](prop, range, positioningSettings);
+    }
+  }
+
+  function mapAesthetics (aesthetics, context, dataContainer) {
+    var assigners = {};
+    var scales = {};
+    var funcs = {};
+    var positioners = {}; // First, extract the assigners, scales, getter-funcs and positioners
+
+    for (var aesKey in aesthetics) {
+      var passedProp = aesthetics[aesKey];
+
+      if (passedProp.hasOwnProperty('assign') && is(passedProp.assign)) {
+        assigners[aesKey] = passedProp.assign;
+      }
+
+      if (passedProp.hasOwnProperty('scale')) {
+        scales[aesKey] = passedProp.scale;
+      }
+
+      if (passedProp.hasOwnProperty('func')) {
+        funcs[aesKey] = passedProp.func;
+      }
+
+      if (passedProp.hasOwnProperty('position')) {
+        positioners[aesKey] = passedProp.position;
+      }
+    } // Second, we will parse the scales
+
+
+    var parsedScales = {};
+
+    for (var _aesKey in scales) {
+      var scalingOptions = scales[_aesKey]; // The scale can be specified in three ways:
+      // 1. Set the scale with a shorthand with the default settings
+      // 2. Set the scale with a shorthand with custom settings
+      // 3. Set the scale by constructing your own scale
+      // 1. Set the scale with a shorthand with the default settings.
+      // Here we just need the string id of the variable we want to scale
+
+      if (scalingOptions.constructor === String) {
+        parsedScales[_aesKey] = createScale(_aesKey, context, {
+          variable: scalingOptions
+        });
+      }
+
+      if (scalingOptions.constructor === Object) {
+        // 2. Set the scale with a shorthand with custom settings
+        // In this case we need an object with options with at least a 'variable' key.
+        if (!scalingOptions.construct) {
+          parsedScales[_aesKey] = createScale(_aesKey, context, scalingOptions);
+        } // 3. Set the scale by constructing your own scale
+        // In this case we need a 'construct' function. 'variable' key is optional.
+
+
+        if (scalingOptions.construct) {
+          parsedScales[_aesKey] = scalingOptions.construct(context);
+        }
+      }
+    } // Third, we apply the scales, functions and assigners and calculate props for each mark
+
+
+    var aestheticsPerMark = [];
+    dataContainer.forEachRow(function (row, i) {
+      var props = {};
+
+      for (var _aesKey2 in aesthetics) {
+        // If a scale has been specified for this aesthetic:
+        if (is(scales[_aesKey2])) {
+          // If the scale was specified a string, it is assumed to be the
+          // identifier of a variable (see above).
+          if (scales[_aesKey2].constructor === String) {
+            var variable = scales[_aesKey2];
+            props[_aesKey2] = parsedScales[_aesKey2](row[variable]);
+          } // If the scale was specified as an object:
+
+
+          if (scales[_aesKey2].constructor === Object) {
+            // If scales[key].variable is specified, it will be used
+            // as the identifier of a variable.
+            if (scales[_aesKey2].hasOwnProperty('variable')) {
+              var _variable = scales[_aesKey2].variable;
+              props[_aesKey2] = parsedScales[_aesKey2](row[_variable]);
+            } else {
+              // If scales[key].variable is not specified, we will pass the
+              // entire row to the mapping function instead of just the value for
+              // that variable in that row.
+              props[_aesKey2] = parsedScales[_aesKey2](row);
+            }
+          }
+        } else if (is(funcs[_aesKey2])) {
+          // If a function was used instead of a scale object:
+          // We pass it the entire row, the row index and the context object
+          var value = funcs[_aesKey2](row, i, context); // If the value is categorical or temporal, and a coord,
+          // we have to convert it to numeric
+
+
+          var dimension = getDimension(_aesKey2);
+
+          if (dimension && [String, Date].includes(value.constructor)) {
+            props[_aesKey2] = convertToNumeric(value, dimension, context.parentBranch);
+          } else {
+            props[_aesKey2] = value;
+          }
+        } else if (is(assigners[_aesKey2])) {
+          // Finally, if there were no scales or getter functions specified,
+          // we will assign a constant value if necessary.
+          props[_aesKey2] = assigners[_aesKey2];
+        }
+      }
+
+      aestheticsPerMark.push(props);
+    }); // Fourth, we will apply positioning if necessary
+
+    if (Object.keys(positioners).length > 0) {
+      for (var _aesKey3 in positioners) {
+        var positioningOptions = positioners[_aesKey3];
+
+        if (positioningOptions.constructor !== Array) {
+          var position = void 0;
+
+          if (positioningOptions.constructor === String) {
+            position = createPositioner(_aesKey3, context, {
+              positioner: positioningOptions
+            });
+          }
+
+          if (positioningOptions.constructor === Object) {
+            position = createPositioner(_aesKey3, context, positioningOptions);
+          }
+
+          position(aestheticsPerMark); // Positioners work in-place
+        } // Positioners can be chained by passing an array of positioningOptions-objects
+
+
+        if (positioningOptions.constructor === Array) {
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = positioningOptions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var chainedOptions = _step.value;
+
+              var _position = void 0;
+
+              if (chainedOptions.constructor === String) {
+                _position = createPositioner(_aesKey3, context, {
+                  positioner: chainedOptions
+                });
+              }
+
+              if (chainedOptions.constructor === Object) {
+                _position = createPositioner(_aesKey3, context, chainedOptions);
+              }
+
+              _position(aestheticsPerMark); // Positioners work in-place
+
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return aestheticsPerMark;
+  }
+
+  var script$1 = {
+    mixins: [Mark],
+    props: {
+      // Mappable
+      x: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      y: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      // Non-mappable
+      width: {
+        type: Number,
+        default: 10
+      },
+      height: {
+        type: Number,
+        default: 10
+      },
+      anchorPoint: {
+        type: String,
+        default: 'center',
+        validator: function validator(p) {
+          return ['center', 'lb', 'lt', 'rt', 'rb'].includes(p);
+        }
+      }
+    },
+    computed: {
+      aesthetics: function aesthetics() {
+        return {
+          x: this.parseCoordinate(this.x, {
+            dimension: 'x'
+          }),
+          y: this.parseCoordinate(this.y, {
+            dimension: 'y'
+          }),
+          width: this.parseProperty(this.width, {
+            default: 10
+          }),
+          height: this.parseProperty(this.height, {
+            default: 10
+          }),
+          anchorPoint: this.parseProperty(this.anchorPoint, {
+            default: 'center'
+          })
+        };
+      }
+    },
+    methods: {
+      renderGlyph: function renderGlyph(createElement, aesthetics) {
+        return createElement(Glyph, {
+          props: aesthetics
+        }, this.$slots.default);
+      }
+    },
+    render: function render(createElement) {
+      if (!this.$$map) {
+        return this.renderGlyph(createElement, this.aesthetics);
+      }
+
+      if (this.$$map) {
+        var aestheticsPerGlyph = mapAesthetics(this.aesthetics, this.context, this.$$dataContainer); // Create svg element for each mark from aesthetics
+
+        var glyphs = [];
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = aestheticsPerGlyph[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var aesthetics = _step.value;
+            glyphs.push(this.renderGlyph(createElement, aesthetics));
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return != null) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        return createElement('g', glyphs);
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$1 = script$1;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$1 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$1 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$1 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$1 = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$1(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "GlyphWrapper.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Glyph$1 = __vue_normalize__$1({}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, undefined, undefined);
+
+  var strong = require('./_collection-strong');
+
+  var validate = require('./_validate-collection');
+
+  var SET = 'Set'; // 23.2 Set Objects
+
+  module.exports = require('./_collection')(SET, function (get) {
+    return function Set() {
+      return get(this, arguments.length > 0 ? arguments[0] : undefined);
+    };
+  }, {
+    // 23.2.3.1 Set.prototype.add(value)
+    add: function add(value) {
+      return strong.def(validate(this, SET), value = value === 0 ? 0 : value, value);
+    }
+  }, strong);
+
+  function initDomains(firstRow) {
+    var domainPerVariable = {};
+
+    for (var variableKey in firstRow) {
+      var variableType = getDataType(firstRow[variableKey]);
+
+      if (variableType === 'quantitative') {
+        domainPerVariable[variableKey] = [Infinity, -Infinity];
+      }
+
+      if (variableType === 'categorical') {
+        domainPerVariable[variableKey] = [];
+      }
+
+      if (variableType === 'temporal') {
+        // https://en.wikipedia.org/wiki/Unix_time
+        domainPerVariable[variableKey] = [new Date('19 January 2038'), new Date(0)];
+      } // if (variableType === 'nested') {} // TODO
+
+    }
+
+    return domainPerVariable;
+  }
+  function updateDomains(row, currentDomains) {
+    for (var variableKey in row) {
+      var value = row[variableKey];
+      var variableType = getDataType(value);
+      var domain = currentDomains[variableKey];
+
+      if (variableType === 'quantitative') {
+        if (domain[0] >= value) {
+          domain[0] = value;
+        }
+
+        if (domain[1] <= value) {
+          domain[1] = value;
+        }
+      }
+
+      if (variableType === 'categorical') {
+        if (!domain.includes(value)) {
+          domain.push(value);
+        }
+      }
+
+      if (variableType === 'temporal') {
+        var epoch = value.getTime();
+
+        if (domain[0].getTime() >= epoch) {
+          domain[0] = value;
+        }
+
+        if (domain[1].getTime() <= epoch) {
+          domain[1] = value;
+        }
+      } // if (variableType === 'nested') {} // TODO
+
+    }
+
+    return currentDomains;
+  }
+
+  // const variableTypes = ['quantitative', 'temporal', 'categorical']
+
+  var _default =
+  /*#__PURE__*/
+  function () {
+    function _default(data, type) {
+      _classCallCheck(this, _default);
+
+      this._dataset = [];
+      this._domains = {};
+
+      if (!type) {
+        // If no type is provided, we will assume it's a dataFrame
+        this.setDataFrame(data);
+      }
+
+      if (type) {
+        switch (type) {
+          case 'dataFrame':
+            {
+              this.setDataFrame(data);
+              break;
+            }
+
+          case 'geojson':
+            {
+              this.setGeoJSON(data);
+              break;
+            }
+
+          default:
+            throw new Error('Unknown type!');
+        }
+      }
+    }
+
+    _createClass(_default, [{
+      key: "setDataFrame",
+      value: function setDataFrame(data) {
+        if (data.constructor !== Array) {
+          throw new Error('Data of type dataFrame must be passed as an array');
+        } // Initialize domain object
+
+
+        var firstRow = data[0];
+        var domainPerVariable = initDomains(firstRow); // Find domains
+
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var row = _step.value;
+            checkRowFormat(row, firstRow);
+            domainPerVariable = updateDomains(row, domainPerVariable);
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return != null) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        this._dataset = data;
+        this._domains = domainPerVariable;
+      }
+    }, {
+      key: "setGeoJSON",
+      value: function setGeoJSON(data) {
+        if (data.constructor !== Object) {
+          throw new Error('Data of type geojson must be passed as an object');
+        } // TODO
+
+      }
+    }, {
+      key: "getDataset",
+      value: function getDataset() {
+        return this._dataset;
+      }
+    }, {
+      key: "getVariableData",
+      value: function getVariableData(variable) {
+        var result = [];
+        var data = this._dataset;
+
+        for (var row in data) {
+          result.push(data[row][variable]);
+        }
+
+        return result;
+      }
+    }, {
+      key: "hasVariable",
+      value: function hasVariable(variable) {
+        return this._domains.hasOwnProperty(variable);
+      }
+    }, {
+      key: "getDomain",
+      value: function getDomain(variable) {
+        return this._domains[variable];
+      }
+    }, {
+      key: "getDomains",
+      value: function getDomains() {
+        return this._domains;
+      }
+    }, {
+      key: "forEachRow",
+      value: function forEachRow(callback) {
+        this._dataset.forEach(function (row, index) {
+          callback(row, index);
+        });
+      }
+    }]);
+
+    return _default;
+  }(); ///           ///
+
+  function checkRowFormat(row, firstRow) {
+    // Check if it is an array of objects
+    if (row.constructor !== Object) {
+      throw new Error('Data array must contain only objects');
+    } // Check if all have the same keys using first row
+
+
+    if (!objectsHaveSameKeys(row, firstRow)) {
+      throw new Error('All objects in data array must have same keys');
+    }
+  }
+
+  function objectsHaveSameKeys() {
+    for (var _len = arguments.length, objects = new Array(_len), _key = 0; _key < _len; _key++) {
+      objects[_key] = arguments[_key];
+    }
+
+    var allKeys = objects.reduce(function (keys, object) {
+      return keys.concat(Object.keys(object));
+    }, []);
+    var union = new Set(allKeys);
+    return objects.every(function (object) {
+      return union.size === Object.keys(object).length;
+    });
+  }
+
+  var DataProvider = {
+    props: {
+      data: {
+        type: [Array, Object, undefined],
+        default: undefined
+      },
+      dataType: {
+        type: [String, undefined],
+        default: undefined
+      }
+    },
+    computed: {
+      dataContainer: function dataContainer() {
+        if (this.data) {
+          return new _default(this.data, this.dataType);
+        }
+      }
+    },
+    provide: function provide() {
+      var $$dataContainerContext = this;
+      return {
+        $$dataContainerContext: $$dataContainerContext
+      };
+    }
+  };
+
+  //
+  var script$2 = {
+    mixins: [CoordinateSystem, DataProvider]
+  };
+
+  /* script */
+  var __vue_script__$2 = script$2;
+  /* template */
+
+  var __vue_render__$1 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _vm.ready ? _c('svg', {
+      attrs: {
+        "width": _vm.width,
+        "height": _vm.height
+      }
+    }, [_vm._t("default")], 2) : _vm._e();
+  };
+
+  var __vue_staticRenderFns__$1 = [];
+  /* style */
+
+  var __vue_inject_styles__$2 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$2 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$2 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$2 = false;
+  /* component normalizer */
+
+  function __vue_normalize__$2(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Graphic.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Graphic = __vue_normalize__$2({
+    render: __vue_render__$1,
+    staticRenderFns: __vue_staticRenderFns__$1
+  }, __vue_inject_styles__$2, __vue_script__$2, __vue_scope_id__$2, __vue_is_functional_template__$2, __vue_module_identifier__$2, undefined, undefined);
+
+  var DataValve = {
+    inject: ['$$dataContainerContext'],
+    props: {
+      data: {
+        type: [Array, Object, undefined],
+        default: undefined
+      },
+      dataType: {
+        type: [Object, undefined],
+        default: undefined
+      }
+    },
+    computed: {
+      $$dataContainer: function $$dataContainer() {
+        return this.$$dataContainerContext.dataContainer;
+      },
+      dataContainer: function dataContainer() {
+        if (this.data) {
+          return new _default(this.data, this.dataType);
+        }
+      }
+    },
+    provide: function provide() {
+      if (this.dataContainer) {
+        var $$dataContainerContext = this;
+        return {
+          $$dataContainerContext: $$dataContainerContext
+        };
+      }
+    }
+  };
+
+  //
+  var script$3 = {
+    mixins: [DataValve],
+    provide: function provide() {
+      return {
+        $$map: true
+      };
+    }
+  };
+
+  /* script */
+  var __vue_script__$3 = script$3;
+  /* template */
+
+  var __vue_render__$2 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _vm.$$dataContainer || _vm.dataContainer ? _c('g', [_vm._t("default")], 2) : _vm._e();
+  };
+
+  var __vue_staticRenderFns__$2 = [];
+  /* style */
+
+  var __vue_inject_styles__$3 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$3 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$3 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$3 = false;
+  /* component normalizer */
+
+  function __vue_normalize__$3(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Map.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Map = __vue_normalize__$3({
+    render: __vue_render__$2,
+    staticRenderFns: __vue_staticRenderFns__$2
+  }, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, undefined, undefined);
+
+  function id () {
+    return '_' + Math.random().toString();
+  }
+
+  //
+  var script$4 = {
+    mixins: [CoordinateTreeUser, DataReceiver],
+    props: {
+      type: {
+        type: String,
+        default: 'scale'
+      },
+      domains: {
+        type: [Object, undefined],
+        default: undefined
+      },
+      ranges: {
+        type: Object,
+        required: true
+      },
+      scale: {
+        type: [String, Object, undefined],
+        default: undefined
+      }
+    },
+    data: function data() {
+      return {
+        ready: false,
+        id: id()
+      };
+    },
+    computed: {
+      _domains: function _domains() {
+        if (this.domains) {
+          var domains = {};
+
+          if (this.domains.hasOwnProperty('x')) {
+            domains.x = this.domains.x;
+          } else {
+            domains.x = this.ranges.x;
+          }
+
+          if (this.domains.hasOwnProperty('y')) {
+            domains.y = this.domains.y;
+          } else {
+            domains.y = this.ranges.y;
+          }
+
+          return domains;
+        }
+
+        if (!this.domains) {
+          return this.ranges;
+        }
+      },
+      allowDomains: function allowDomains() {
+        var xNotArray = this._domains.x.constructor !== Array;
+        var yNotArray = this._domains.y.constructor !== Array;
+
+        if (!this.$$dataContainer && (xNotArray || yNotArray)) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
+    watch: {
+      type: 'updateCoordinateTreeBranch',
+      domains: 'updateCoordinateTreeBranch',
+      ranges: 'updateCoordinateTreeBranch',
+      scale: 'updateCoordinateTreeBranch'
+    },
+    beforeDestroy: function beforeDestroy() {
+      this.$$coordinateTree.removeBranch(this.id);
+    },
+    mounted: function mounted() {
+      this.setCoordinateTreeBranch();
+      this.ready = true;
+    },
+    methods: {
+      setCoordinateTreeBranch: function setCoordinateTreeBranch() {
+        var transformation = new CoordinateTransformation({
+          type: this.type,
+          domains: this._domains,
+          ranges: this.ranges,
+          scale: this.scale,
+          dataContainer: this.$$dataContainer
+        });
+        this.$$coordinateTree.addBranch(this.id, this.$$coordinateTreeParent, transformation);
+      },
+      updateCoordinateTreeBranch: function updateCoordinateTreeBranch() {
+        var transformation = new CoordinateTransformation({
+          type: this.type,
+          domains: this._domains,
+          ranges: this.ranges,
+          scale: this.scale,
+          dataContainer: this.$$dataContainer
+        });
+        this.$$coordinateTree.updateBranch(this.id, transformation);
+      }
+    },
+    provide: function provide() {
+      var $$transform = this.$$coordinateTree.getTotalTransformation(this.id);
+      var $$coordinateTreeParent = this.id;
+      return {
+        $$transform: $$transform,
+        $$coordinateTreeParent: $$coordinateTreeParent,
+        $$map: false
+      };
+    }
+  };
+
+  /* script */
+  var __vue_script__$4 = script$4;
+  /* template */
+
+  var __vue_render__$3 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _vm.ready && _vm.allowDomains ? _c('g', [_vm._t("default")], 2) : _vm._e();
+  };
+
+  var __vue_staticRenderFns__$3 = [];
+  /* style */
+
+  var __vue_inject_styles__$4 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$4 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$4 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$4 = false;
+  /* component normalizer */
+
+  function __vue_normalize__$4(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Section.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Section = __vue_normalize__$4({
+    render: __vue_render__$3,
+    staticRenderFns: __vue_staticRenderFns__$3
+  }, __vue_inject_styles__$4, __vue_script__$4, __vue_scope_id__$4, __vue_is_functional_template__$4, __vue_module_identifier__$4, undefined, undefined);
+
+  var Rectangular = {
+    mixins: [Mark],
+    props: {
+      x1: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      x2: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      y1: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      y2: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      x: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      y: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      w: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      h: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      color: {
+        type: [String, Object, Function, undefined],
+        default: undefined
+      }
+    },
+    computed: {
+      invalidX: function invalidX() {
+        return invalidCombination(this.x1, this.x2, this.x, this.w);
+      },
+      invalidY: function invalidY() {
+        return invalidCombination(this.y1, this.y2, this.y, this.h);
+      },
+      aesthetics: function aesthetics() {
+        if (this.invalidX) {
+          throw new Error('Invalid combination of props x1, x2, x and w');
+        }
+
+        if (this.invalidY) {
+          throw new Error('Invalid combination of props y1, y2, y and h');
+        }
+
+        return {
+          x1: this.parseCoordinate(this.x1, {
+            dimension: 'x'
+          }),
+          x2: this.parseCoordinate(this.x2, {
+            dimension: 'x'
+          }),
+          y1: this.parseCoordinate(this.y1, {
+            dimension: 'y'
+          }),
+          y2: this.parseCoordinate(this.y2, {
+            dimension: 'y'
+          }),
+          x: this.parseCoordinate(this.x, {
+            dimension: 'x'
+          }),
+          y: this.parseCoordinate(this.y, {
+            dimension: 'y'
+          }),
+          w: this.parseCoordinate(this.w, {
+            dimension: 'x',
+            wh: true
+          }),
+          h: this.parseCoordinate(this.h, {
+            dimension: 'y',
+            wh: true
+          }),
+          color: this.parseAesthetic(this.color, {
+            default: '#000000'
+          })
+        };
+      }
+    },
+    methods: {
+      convertCoordinateSpecification: function convertCoordinateSpecification(aes) {
+        var _convertSpecification = convertSpecification(aes.x1, aes.x2, aes.x, aes.w),
+            _convertSpecification2 = _slicedToArray(_convertSpecification, 2),
+            x1 = _convertSpecification2[0],
+            x2 = _convertSpecification2[1];
+
+        var _convertSpecification3 = convertSpecification(aes.y1, aes.y2, aes.y, aes.h),
+            _convertSpecification4 = _slicedToArray(_convertSpecification3, 2),
+            y1 = _convertSpecification4[0],
+            y2 = _convertSpecification4[1];
+
+        for (var aesKey in ['x', 'y', 'w', 'h']) {
+          if (aes[aesKey]) {
+            delete aes[aesKey];
+          }
+        }
+
+        aes.x1 = x1;
+        aes.x2 = x2;
+        aes.y1 = y1;
+        aes.y2 = y2;
+        return aes;
+      }
+    }
+  };
+
+  function invalidCombination(x1, x2, x, w) {
+    var validCombinations = [// If there is nothing, just x1, just x2, or just x1 and x2
+    isnt(x) && isnt(w), // If there is just x1 and w
+    is(x1) && isnt(x2) && isnt(x) && is(w), // If there is just x2 and w
+    isnt(x1) && is(x2) && isnt(x) && is(w), // If there is just x and w
+    isnt(x1) && isnt(x2) && is(x) && is(w)];
+    return !validCombinations.some(function (combo) {
+      return combo === true;
+    });
+  } // Converts any valid combination of x1, x2, x and w to [x1, x2]
+
+
+  function convertSpecification(x1, x2, x, w) {
+    // If there is nothing, just x1, just x2, or just x1 and x2
+    if (isnt(x) && isnt(w)) {
+      return [x1, x2];
+    } // If there is just x1 and w
+
+
+    if (is(x1) && isnt(x2) && isnt(x) && is(w)) {
+      return [x1, x1 + w];
+    } // If there is just x2 and w
+
+
+    if (isnt(x1) && is(x2) && isnt(x) && is(w)) {
+      return [x2 - w, x2];
+    } // If there is just x and w
+
+
+    if (isnt(x1) && isnt(x2) && is(x) && is(w)) {
+      return [x - w / 2, x + w / 2];
+    }
+  }
+
+  var script$5 = {
+    mixins: [Rectangular],
+    props: {
+      type: {
+        type: String,
+        default: 'scale'
+      },
+      domains: {
+        type: [Object, undefined],
+        default: undefined
+      },
+      scale: {
+        type: [String, Object, undefined],
+        default: undefined
+      }
+    },
+    methods: {
+      calculateRanges: function calculateRanges(aesthetics) {
+        var aes = this.convertCoordinateSpecification(aesthetics);
+        return {
+          x: [aes.x1, aes.x2],
+          y: [aes.y1, aes.y2]
+        };
+      },
+      renderSection: function renderSection(createElement, aesthetics) {
+        var ranges = this.calculateRanges(aesthetics);
+        return createElement(Section, {
+          props: {
+            type: this.type,
+            scale: this.scale,
+            domains: this.domains,
+            ranges: ranges
+          }
+        }, this.$slots.default);
+      }
+    },
+    render: function render(createElement) {
+      if (!this.$$map) {
+        return this.renderSection(createElement, this.aesthetics);
+      }
+
+      if (this.$$map) {
+        var aestheticsPerSection = mapAesthetics(this.aesthetics, this.context, this.$$dataContainer); // Create svg element for each mark from aesthetics
+
+        var sections = [];
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = aestheticsPerSection[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var aesthetics = _step.value;
+            sections.push(this.renderSection(createElement, aesthetics));
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return != null) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        return createElement('g', sections);
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$5 = script$5;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$5 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$5 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$5 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$5 = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$5(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "SectionWrapper.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Section$1 = __vue_normalize__$5({}, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  var script$6 = {
+    props: {
+      x: {
+        type: [Number, Object, Function],
+        required: true
+      },
+      y: {
+        type: [Number, Object, Function],
+        required: true
+      },
+      radius: {
+        type: Number,
+        required: true
+      },
+      transformation: {
+        type: String,
+        default: 'polar'
+      },
+      anchorPoint: {
+        type: String,
+        default: 'center'
+      }
+    },
+    computed: {
+      wh: function wh() {
+        return this.radius * 2;
+      },
+      rectangles: function rectangles() {
+        var rectangles = [{
+          x1: 0,
+          x2: 15,
+          y1: 0,
+          y2: 100,
+          color: 'green'
+        }, {
+          x1: 15,
+          x2: 50,
+          y1: 0,
+          y2: 100,
+          color: 'red'
+        }, {
+          x1: 50,
+          x2: 75,
+          y1: 0,
+          y2: 100,
+          color: 'yellow'
+        }, {
+          x1: 75,
+          x2: 100,
+          y1: 0,
+          y2: 100,
+          color: 'blue'
+        }];
+        return rectangles;
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$6 = script$6;
+  /* template */
+
+  var __vue_render__$4 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _c('vgg-glyph', {
+      attrs: {
+        "x": _vm.x,
+        "y": _vm.y,
+        "width": _vm.wh,
+        "height": _vm.wh,
+        "anchor-point": _vm.anchorPoint
+      }
+    }, [_c('vgg-section', {
+      attrs: {
+        "type": _vm.transformation,
+        "x1": 0,
+        "x2": _vm.wh,
+        "y1": 0,
+        "y2": _vm.wh,
+        "domains": {
+          x: [0, 100],
+          y: [0, 100]
+        }
+      }
+    }, _vm._l(_vm.rectangles, function (rect, i) {
+      return _c('vgg-rectangle', {
+        key: i,
+        attrs: {
+          "x1": rect.x1,
+          "x2": rect.x2,
+          "y1": rect.y1,
+          "y2": rect.y2,
+          "color": rect.color
+        }
+      });
+    }), 1)], 1);
+  };
+
+  var __vue_staticRenderFns__$4 = [];
+  /* style */
+
+  var __vue_inject_styles__$6 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$6 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$6 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$6 = false;
+  /* component normalizer */
+
+  function __vue_normalize__$6(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Piechart.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Piechart = __vue_normalize__$6({
+    render: __vue_render__$4,
+    staticRenderFns: __vue_staticRenderFns__$4
+  }, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
+
+  var BaseAxis = {
+    mixins: [Rectangular],
+    props: {
+      domain: {
+        type: [Array, String, undefined],
+        default: undefined
+      },
+      scale: {
+        type: [String, Object],
+        default: function _default() {
+          return {};
+        }
+      },
+      tickValues: {
+        type: [Array, undefined],
+        default: undefined
+      },
+      tickCount: {
+        type: Number,
+        default: 10
+      },
+      rotateLabel: {
+        type: Boolean,
+        default: false
+      },
+      format: {
+        type: [String, Function, undefined],
+        default: undefined
+      },
+      flip: {
+        type: Boolean,
+        default: false
+      }
+    },
+    computed: {
+      _domain: function _domain() {
+        if (this.domain.constructor === Array) {
+          return this.domain;
+        }
+
+        if (this.domain.constructor === String) {
+          return this.$$dataContainer.getDomain(this.domain);
+        }
+      },
+      _domainType: function _domainType() {
+        if (this.domain) {
+          return getDataType(this._domain[0]);
+        }
+      },
+      ranges: function ranges() {
+        return this.convertCoordinateSpecification(this.aesthetics);
+      },
+      tickData: function tickData() {
+        if (this.tickValues) {
+          return this.tickValues.map(function (value) {
+            return {
+              value: value
+            };
+          });
+        } else {
+          var ticks;
+          var format = this.format && this.format.constructor === Function ? this.format : function (x) {
+            return x;
+          };
+
+          if (this._domainType === 'quantitative') {
+            ticks = d3Array.ticks.apply(void 0, _toConsumableArray(this._domain).concat([this.tickCount])).map(function (value) {
+              return {
+                value: value,
+                label: format(value)
+              };
+            });
+          }
+
+          if (this._domainType === 'categorical') {
+            ticks = this._domain.map(function (value) {
+              return {
+                value: value,
+                label: format(value)
+              };
+            });
+          }
+
+          if (this._domainType === 'temporal') {
+            if (this.format) {
+              if (this.format.constructor === String) {
+                format = d3TimeFormat.timeFormat(this.format);
+              }
+            } else {
+              format = d3TimeFormat.timeFormat('%d/%m/%Y');
+            }
+
+            var scale = d3.scaleTime().domain(this._domain);
+            ticks = scale.ticks(this.tickCount).map(function (value) {
+              var date = new Date(value);
+              return {
+                value: date,
+                label: format(date)
+              };
+            });
+          }
+
+          return ticks;
+        }
+      }
+    }
+  };
+
+  //
+  var script$7 = {
+    mixins: [BaseAxis]
+  };
+
+  /* script */
+  var __vue_script__$7 = script$7;
+  /* template */
+
+  var __vue_render__$5 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _c('vgg-section', {
+      attrs: {
+        "x1": _vm.ranges.x1,
+        "x2": _vm.ranges.x2,
+        "y1": _vm.ranges.y1,
+        "y2": _vm.ranges.y2,
+        "domains": {
+          x: [0, 1],
+          y: [0, 1]
+        }
+      }
+    }, [_c('vgg-line', {
+      attrs: {
+        "x1": 0,
+        "y1": 0.5,
+        "x2": 1,
+        "y2": 0.5,
+        "width": 1
+      }
+    }), _c('vgg-section', {
+      attrs: {
+        "x1": 0,
+        "x2": 1,
+        "y1": 0,
+        "y2": 1,
+        "domains": {
+          x: _vm.domain
+        },
+        "scale": {
+          x: _vm.scale
+        }
+      }
+    }, [_c('vgg-map', {
+      attrs: {
+        "data": _vm.tickData
+      }
+    }, [_c('vgg-line', {
+      attrs: {
+        "x1": function x1(tick) {
+          return tick.value;
+        },
+        "y1": 0.5,
+        "x2": function x2(tick) {
+          return tick.value;
+        },
+        "y2": _vm.flip ? 0.35 : 0.65,
+        "width": 0.5
+      }
+    }), !_vm.rotateLabel ? _c('vgg-label', {
+      attrs: {
+        "x": function x(tick) {
+          return tick.value;
+        },
+        "y": _vm.flip ? 0.59 : 0.45,
+        "text": function text(tick) {
+          return tick.label;
+        },
+        "font-size": 10,
+        "anchor-point": _vm.flip ? 'b' : 't'
+      }
+    }) : _vm._e(), _vm.rotateLabel ? _c('vgg-label', {
+      attrs: {
+        "x": function x(tick) {
+          return tick.value;
+        },
+        "y": _vm.flip ? 0.59 : 0.45,
+        "text": function text(tick) {
+          return tick.label;
+        },
+        "font-size": 10,
+        "rotation": _vm.flip ? 30 : -30,
+        "anchor-point": _vm.flip ? 'rb' : 'rt'
+      }
+    }) : _vm._e()], 1)], 1)], 1);
+  };
+
+  var __vue_staticRenderFns__$5 = [];
+  /* style */
+
+  var __vue_inject_styles__$7 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$7 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$7 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$7 = false;
+  /* component normalizer */
+
+  function __vue_normalize__$7(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "XAxis.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var XAxis = __vue_normalize__$7({
+    render: __vue_render__$5,
+    staticRenderFns: __vue_staticRenderFns__$5
+  }, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
+
+  //
+  var script$8 = {
+    mixins: [BaseAxis]
+  };
+
+  /* script */
+  var __vue_script__$8 = script$8;
+  /* template */
+
+  var __vue_render__$6 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _c('vgg-section', {
+      attrs: {
+        "x1": _vm.ranges.x1,
+        "x2": _vm.ranges.x2,
+        "y1": _vm.ranges.y1,
+        "y2": _vm.ranges.y2,
+        "domains": {
+          x: [0, 1],
+          y: [0, 1]
+        }
+      }
+    }, [_c('vgg-line', {
+      attrs: {
+        "x1": 0.5,
+        "y1": 0,
+        "x2": 0.5,
+        "y2": 1,
+        "width": 1
+      }
+    }), _vm.domain !== undefined ? _c('vgg-section', {
+      attrs: {
+        "x1": 0,
+        "x2": 1,
+        "y1": 0,
+        "y2": 1,
+        "domains": {
+          y: _vm.domain
+        },
+        "scale": {
+          y: _vm.scale
+        }
+      }
+    }, [_c('vgg-map', {
+      attrs: {
+        "data": _vm.tickData
+      }
+    }, [_c('vgg-line', {
+      attrs: {
+        "x1": 0.5,
+        "y1": function y1(tick) {
+          return tick.value;
+        },
+        "x2": _vm.flip ? 0.65 : 0.35,
+        "y2": function y2(tick) {
+          return tick.value;
+        },
+        "width": 0.5
+      }
+    }), !_vm.rotateLabel ? _c('vgg-label', {
+      attrs: {
+        "x": _vm.flip ? 0.45 : 0.59,
+        "y": function y(tick) {
+          return tick.value;
+        },
+        "text": function text(tick) {
+          return tick.label;
+        },
+        "font-size": 10,
+        "anchor-point": _vm.flip ? 'r' : 'l'
+      }
+    }) : _vm._e(), _vm.rotateLabel ? _c('vgg-label', {
+      attrs: {
+        "x": _vm.flip ? 0.41 : 0.59,
+        "y": function y(tick) {
+          return tick.value;
+        },
+        "text": function text(tick) {
+          return tick.label;
+        },
+        "font-size": 10,
+        "rotation": _vm.flip ? -30 : 30,
+        "anchor-point": _vm.flip ? 'r' : 'l'
+      }
+    }) : _vm._e()], 1)], 1) : _vm._e()], 1);
+  };
+
+  var __vue_staticRenderFns__$6 = [];
+  /* style */
+
+  var __vue_inject_styles__$8 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$8 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$8 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$8 = false;
+  /* component normalizer */
+
+  function __vue_normalize__$8(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "YAxis.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var YAxis = __vue_normalize__$8({
+    render: __vue_render__$6,
+    staticRenderFns: __vue_staticRenderFns__$6
+  }, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+
+  var BaseGrid = {
+    mixins: [Rectangular],
+    props: {
+      domain: {
+        type: [Array, String, undefined],
+        default: undefined
+      },
+      scale: {
+        type: [String, Object],
+        default: function _default() {
+          return {};
+        }
+      },
+      gridLines: {
+        type: [Array, Number],
+        default: 10
+      }
+    },
+    computed: {
+      _domain: function _domain() {
+        if (this.domain.constructor === Array) {
+          return this.domain;
+        }
+
+        if (this.domain.constructor === String) {
+          return this.$$dataContainer.getDomain(this.domain);
+        }
+      },
+      _domainType: function _domainType() {
+        if (this.domain) {
+          return getDataType(this._domain[0]);
+        }
+      },
+      ranges: function ranges() {
+        return this.convertCoordinateSpecification(this.aesthetics);
+      },
+      cells: function cells() {
+        if (this.gridLines.constructor === Array) {
+          return this.gridLines.map(function (value) {
+            return {
+              value: value
+            };
+          });
+        } else {
+          var cells;
+
+          if (this._domainType === 'quantitative') {
+            cells = d3Array.ticks.apply(void 0, _toConsumableArray(this._domain).concat([this.gridLines])).map(function (value) {
+              return {
+                value: value
+              };
+            });
+          }
+
+          if (this._domainType === 'categorical') {
+            cells = this._domain.map(function (value) {
+              return {
+                value: value
+              };
+            });
+          }
+
+          if (this._domainType === 'temporal') {
+            var scale = d3.scaleTime().domain(this._domain);
+            cells = scale.ticks(this.tickCount).map(function (value) {
+              var date = new Date(value);
+              return {
+                value: date
+              };
+            });
+          }
+
+          return cells;
+        }
+      }
+    }
+  };
+
+  //
+  var script$9 = {
+    mixins: [BaseGrid]
+  };
+
+  /* script */
+  var __vue_script__$9 = script$9;
+  /* template */
+
+  var __vue_render__$7 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _c('vgg-section', {
+      attrs: {
+        "x1": _vm.ranges.x1,
+        "x2": _vm.ranges.x2,
+        "y1": _vm.ranges.y1,
+        "y2": _vm.ranges.y2,
+        "domains": {
+          x: _vm.domain,
+          y: [0, 1]
+        },
+        "scale": {
+          x: _vm.scale
+        }
+      }
+    }, _vm._l(_vm.cells, function (cell, i) {
+      return _c('vgg-line', {
+        key: i,
+        attrs: {
+          "x1": cell.value,
+          "y1": 0,
+          "x2": cell.value,
+          "y2": 1,
+          "width": 0.5,
+          "color": "#808080"
+        }
+      });
+    }), 1);
+  };
+
+  var __vue_staticRenderFns__$7 = [];
+  /* style */
+
+  var __vue_inject_styles__$9 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$9 = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$9 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$9 = false;
+  /* component normalizer */
+
+  function __vue_normalize__$9(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "XGrid.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var XGrid = __vue_normalize__$9({
+    render: __vue_render__$7,
+    staticRenderFns: __vue_staticRenderFns__$7
+  }, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
+
+  //
+  var script$a = {
+    mixins: [BaseGrid]
+  };
+
+  /* script */
+  var __vue_script__$a = script$a;
+  /* template */
+
+  var __vue_render__$8 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _c('vgg-section', {
+      attrs: {
+        "x1": _vm.ranges.x1,
+        "x2": _vm.ranges.x2,
+        "y1": _vm.ranges.y1,
+        "y2": _vm.ranges.y2,
+        "domains": {
+          x: [0, 1],
+          y: _vm.domain
+        },
+        "scale": {
+          y: _vm.scale
+        }
+      }
+    }, _vm._l(_vm.cells, function (cell, i) {
+      return _c('vgg-line', {
+        key: i,
+        attrs: {
+          "x1": 0,
+          "y1": cell.value,
+          "x2": 1,
+          "y2": cell.value,
+          "width": 0.5,
+          "color": "#808080"
+        }
+      });
+    }), 1);
+  };
+
+  var __vue_staticRenderFns__$8 = [];
+  /* style */
+
+  var __vue_inject_styles__$a = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$a = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$a = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$a = false;
+  /* component normalizer */
+
+  function __vue_normalize__$a(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "YGrid.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var YGrid = __vue_normalize__$a({
+    render: __vue_render__$8,
+    staticRenderFns: __vue_staticRenderFns__$8
+  }, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
+
+  function interpolatePath(corners, transformer) {
+    var precision = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
+    var resolution = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
+    var points = [];
+    points.push(corners[0]);
+
+    for (var i = 0; i < corners.length - 1; ++i) {
+      var from = corners[i];
+      var to = corners[i + 1];
+      var interpolator = d3Interpolate.interpolate(from, to);
+
+      for (var j = 1; j <= resolution; ++j) {
+        var point = interpolator(j / resolution);
+        points.push([point[0], point[1]]); // this pushes a deep copy of 'point'
+      }
+    }
+
+    var path = createPath(points, transformer, precision);
+    return path;
+  }
+  function interpolatePathFromFunc(func, transformer, domains) {
+    var precision = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2;
+    var resolution = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 300;
+    var points = [];
+    var interpolator = d3Interpolate.interpolate.apply(void 0, _toConsumableArray(domains.x));
+
+    for (var i = 0; i <= resolution; ++i) {
+      var x = interpolator(i / resolution);
+      var y = func(x);
+
+      if (inDomain([x, y], domains)) {
+        points.push([x, y]);
+      }
+    }
+
+    var path = createPath(points, transformer, precision);
+    return path;
+  }
+  function createPath(points, transformer) {
+    var precision = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
+    var transformedPoints = points.map(function (p) {
+      return transformer(p).map(function (c) {
+        return round(c, precision);
+      });
+    });
+    var lineGenerator = d3Shape.line();
+    var path = lineGenerator(transformedPoints);
+    return path;
+  }
+
+  function round(input, precision) {
+    return Math.round(input * Math.pow(10, precision)) / Math.pow(10, precision);
+  }
+
+  function inDomain(point, domains) {
+    var yMin = Math.min.apply(Math, _toConsumableArray(domains.y));
+    var yMax = Math.max.apply(Math, _toConsumableArray(domains.y));
+    return point[1] > yMin && point[1] < yMax;
+  }
+
+  var script$b = {
+    mixins: [Mark],
+    props: {
+      // Mappable
+      x1: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      x2: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      y1: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      y2: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      func: {
+        type: [Function, Object, undefined],
+        default: undefined
+      },
+      color: {
+        type: [String, Object, Function, undefined],
+        default: undefined
+      },
+      // Non-mappable
+      width: {
+        type: Number,
+        default: 2
+      }
+    },
+    computed: {
+      aesthetics: function aesthetics() {
+        return {
+          x1: this.parseCoordinate(this.x1, {
+            dimension: 'x'
+          }),
+          y1: this.parseCoordinate(this.y1, {
+            dimension: 'y'
+          }),
+          x2: this.parseCoordinate(this.x2, {
+            dimension: 'x'
+          }),
+          y2: this.parseCoordinate(this.y2, {
+            dimension: 'y'
+          }),
+          func: this.parseAesthetic(this.func, {
+            isFunction: true
+          }),
+          color: this.parseAesthetic(this.color, {
+            default: '#000000'
+          }),
+          width: this.parseProperty(this.width, {
+            default: 2
+          })
+        };
+      }
+    },
+    methods: {
+      createPath: function createPath$$1(func, coords) {
+        var path;
+
+        if (func) {
+          var parentId = this.$$coordinateTreeParent;
+          var domains = this.$$coordinateTree.getBranch(parentId).domains;
+          path = interpolatePathFromFunc(this.func, this.$$transform, domains);
+        }
+
+        if (!func) {
+          if (this._interpolate) {
+            path = interpolatePath(coords, this.$$transform);
+          }
+
+          if (!this._interpolate) {
+            path = createPath(coords, this.$$transform);
+          }
+        }
+
+        return path;
+      },
+      renderSVG: function renderSVG(createElement, aesthetics) {
+        var coords = [[aesthetics.x1, aesthetics.y1], [aesthetics.x2, aesthetics.y2]];
+        var path = this.createPath(aesthetics.func, coords);
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'stroke': aesthetics.color,
+            'stroke-width': aesthetics.width,
+            'fill': 'none'
+          }
+        });
+      }
+    },
+    render: function render(createElement) {
+      if (this.__update) {
+        if (!this.$$map) {
+          // Create svg element using aesthetics
+          return this.renderSVG(createElement, this.aesthetics);
+        }
+
+        if (this.$$map) {
+          // Create the aesthetics for each mark
+          var aestheticsPerMark = mapAesthetics(this.aesthetics, this.context, this.$$dataContainer); // Create svg element for each mark from aesthetics
+
+          var components = [];
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = aestheticsPerMark[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var aesthetics = _step.value;
+              components.push(this.renderSVG(createElement, aesthetics));
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+
+          return createElement('g', components);
+        }
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$b = script$b;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$b = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$b = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$b = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$b = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$b(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Line.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Line = __vue_normalize__$b({}, __vue_inject_styles__$b, __vue_script__$b, __vue_scope_id__$b, __vue_is_functional_template__$b, __vue_module_identifier__$b, undefined, undefined);
+
+  function checkPoints (points, x, y) {
+    if (is(points) && is(x) && is(y)) {
+      throw new Error("Cannot have both 'points', and 'x' and 'y' props");
+    }
+
+    if (isnt(points) && isnt(x) && isnt(y)) {
+      throw new Error("Missing required props (either 'points', or 'x' and 'y')");
+    }
+
+    if (isnt(points) && !(is(x) && is(y))) {
+      throw new Error("Both 'x' and 'y' props must be specified");
+    }
+  }
+
+  var MultiLine = {
+    mixins: [Mark],
+    props: {
+      // Mappable
+      points: {
+        type: [Array, Object, Function, undefined],
+        default: undefined
+      },
+      x: {
+        type: [Array, Object, String, Function, undefined],
+        default: undefined
+      },
+      y: {
+        type: [Array, Object, String, Function, undefined],
+        default: undefined
+      },
+      color: {
+        type: [String, Object, Function, undefined],
+        default: undefined
+      },
+      // Non-mappable
+      width: {
+        type: Number,
+        default: 2
+      },
+      sortX: {
+        type: Boolean,
+        default: true
+      },
+      close: {
+        type: Boolean,
+        default: false
+      }
+    },
+    computed: {
+      aesthetics: function aesthetics() {
+        checkPoints(this.points, this.x, this.y);
+        return {
+          points: this.parseGeometry(this.points, {}),
+          x: this.parseCoordinateSet(this.x, {
+            dimension: 'x'
+          }),
+          y: this.parseCoordinateSet(this.y, {
+            dimension: 'y'
+          }),
+          color: this.parseAesthetic(this.color, {
+            default: '#000000'
+          }),
+          width: this.parseProperty(this.width, {
+            default: 2
+          })
+        };
+      }
+    },
+    methods: {
+      generatePoints: function generatePoints(aesthetics) {
+        if (aesthetics.points) {
+          return aesthetics.points;
+        }
+
+        if (aesthetics.x.length !== aesthetics.y.length) {
+          throw new Error("'x' and 'y' coordinate sets have different lengths");
+        } else {
+          var zipped = [];
+
+          for (var i = 0; i < aesthetics.x.length; ++i) {
+            zipped.push([aesthetics.x[i], aesthetics.y[i]]);
+          }
+
+          return zipped;
+        }
+      },
+      sort: function sort(points) {
+        return points.sort(function (a, b) {
+          return a[0] - b[0];
+        });
+      },
+      close: function close(points) {
+        // Check if polygon is closed
+        var lastID = points.length - 1;
+
+        if (points[0][0] !== points[lastID][0] || points[0][1] !== points[lastID][1]) {
+          // If not, close
+          points.push(points[0]);
+        }
+
+        return points;
+      },
+      createPath: function createPath$$1(points) {
+        if (this._interpolate) {
+          return interpolatePath(points, this.$$transform);
+        }
+
+        if (!this._interpolate) {
+          return createPath(points, this.$$transform);
+        }
+      },
+      renderSVG: function renderSVG(createElement, aesthetics) {
+        var points = this.generatePoints(aesthetics);
+
+        if (this.sortX) {
+          points = this.sort(points);
+        }
+
+        if (this.close) {
+          points = this.close(points);
+        }
+
+        var path = this.createPath(points);
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'stroke': aesthetics.color,
+            'stroke-width': aesthetics.width,
+            'fill': 'none'
+          }
+        });
+      }
+    },
+    render: function render(createElement) {
+      if (this.__update) {
+        if (!this.$$map) {
+          // Create svg element using aesthetics
+          return this.renderSVG(createElement, this.aesthetics);
+        }
+
+        if (this.$$map) {
+          // Create the aesthetics for each mark
+          var aestheticsPerMark = mapAesthetics(this.aesthetics, this.context, this.$$dataContainer); // Create svg element for each mark from aesthetics
+
+          var components = [];
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = aestheticsPerMark[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var aesthetics = _step.value;
+              components.push(this.renderSVG(createElement, aesthetics));
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+
+          return createElement('g', components);
+        }
+      }
+    }
+  };
+
+  var script$c = {
+    mixins: [MultiLine],
+    props: {
+      sortX: {
+        type: Boolean,
+        default: true
+      },
+      close: {
+        type: Boolean,
+        default: false
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$c = script$c;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$c = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$c = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$c = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$c = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$c(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "MultiLine.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var MultiLine$1 = __vue_normalize__$c({}, __vue_inject_styles__$c, __vue_script__$c, __vue_scope_id__$c, __vue_is_functional_template__$c, __vue_module_identifier__$c, undefined, undefined);
+
+  var script$d = {
+    mixins: [MultiLine],
+    props: {
+      sortX: {
+        type: Boolean,
+        default: false
+      },
+      close: {
+        type: Boolean,
+        default: true
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$d = script$d;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$d = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$d = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$d = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$d = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$d(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Path.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Path = __vue_normalize__$d({}, __vue_inject_styles__$d, __vue_script__$d, __vue_scope_id__$d, __vue_is_functional_template__$d, __vue_module_identifier__$d, undefined, undefined);
+
+  var script$e = {
+    mixins: [Mark],
+    props: {
+      // Mappable
+      x: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      y: {
+        type: [Number, String, Date, Object, Function, String, undefined],
+        default: undefined
+      },
+      color: {
+        type: [String, Object, Function, undefined],
+        default: undefined
+      },
+      // Non-mappable
+      radius: {
+        type: Number,
+        default: 3
+      },
+      strokeWidth: {
+        type: Number,
+        default: 0
+      }
+    },
+    computed: {
+      aesthetics: function aesthetics() {
+        return {
+          x: this.parseCoordinate(this.x, {
+            dimension: 'x'
+          }),
+          y: this.parseCoordinate(this.y, {
+            dimension: 'y'
+          }),
+          color: this.parseAesthetic(this.color, {
+            default: '#000000'
+          }),
+          radius: this.parseProperty(this.radius, {
+            default: 3
+          }),
+          strokeWidth: this.parseProperty(this.strokeWidth, {
+            default: 0
+          })
+        };
+      }
+    },
+    methods: {
+      renderSVG: function renderSVG(createElement, aesthetics) {
+        var _this$$$transform = this.$$transform([aesthetics.x, aesthetics.y]),
+            _this$$$transform2 = _slicedToArray(_this$$$transform, 2),
+            cx = _this$$$transform2[0],
+            cy = _this$$$transform2[1];
+
+        return createElement('circle', {
+          attrs: {
+            'cx': cx,
+            'cy': cy,
+            'fill': aesthetics.color,
+            'r': aesthetics.radius,
+            'stroke-width': aesthetics.strokeWidth
+          }
+        });
+      }
+    },
+    render: function render(createElement) {
+      if (this.__update) {
+        if (!this.$$map) {
+          // Create svg element using aesthetics
+          return this.renderSVG(createElement, this.aesthetics);
+        }
+
+        if (this.$$map) {
+          // Create the aesthetics for each mark
+          var aestheticsPerMark = mapAesthetics(this.aesthetics, this.context, this.$$dataContainer); // Create svg element for each mark from aesthetics
+
+          var components = [];
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = aestheticsPerMark[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var aesthetics = _step.value;
+              components.push(this.renderSVG(createElement, aesthetics));
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+
+          return createElement('g', components);
+        }
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$e = script$e;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$e = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$e = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$e = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$e = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$e(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Point.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Point = __vue_normalize__$e({}, __vue_inject_styles__$e, __vue_script__$e, __vue_scope_id__$e, __vue_is_functional_template__$e, __vue_module_identifier__$e, undefined, undefined);
+
+  // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
+  var $export$7 = require('./_export');
+
+  $export$7($export$7.P, 'Array', {
+    fill: require('./_array-fill')
+  });
+
+  require('./_add-to-unscopables')('fill');
+
+  var script$f = {
+    mixins: [MultiLine],
+    props: {
+      fill: {
+        type: [String, Object, Function, undefined],
+        default: undefined
+      },
+      sortX: {
+        type: Boolean,
+        default: false
+      },
+      close: {
+        type: Boolean,
+        default: true
+      }
+    },
+    methods: {
+      renderSVG: function renderSVG(createElement, aesthetics) {
+        var points = this.generatePoints(aesthetics);
+        var path = this.createPath(points);
+
+        if (this.sortX) {
+          points = this.sort(points);
+        }
+
+        if (this.close) {
+          points = this.close(points);
+        }
+
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'stroke': aesthetics.color,
+            'stroke-width': aesthetics.width,
+            'fill': aesthetics.fill
+          }
+        });
+      }
+    },
+    render: function render(createElement) {
+      if (this.__update) {
+        if (!this.$$map) {
+          // Create svg element using aesthetics
+          return this.renderSVG(createElement, this.aesthetics);
+        }
+
+        if (!this.$$map) {
+          // Create the aesthetics for each mark
+          var aestheticsPerMark = mapAesthetics(this.aesthetics, this.context, this.$$dataContainer); // Create svg element for each mark from aesthetics
+
+          var components = [];
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = aestheticsPerMark[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var aesthetics = _step.value;
+              components.push(this.renderSVG(createElement, aesthetics));
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+
+          return createElement('g', components);
+        }
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$f = script$f;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$f = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$f = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$f = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$f = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$f(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Polygon.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Polygon = __vue_normalize__$f({}, __vue_inject_styles__$f, __vue_script__$f, __vue_scope_id__$f, __vue_is_functional_template__$f, __vue_module_identifier__$f, undefined, undefined);
+
+  var script$g = {
+    mixins: [Rectangular],
+    methods: {
+      renderSVG: function renderSVG(createElement, aesthetics) {
+        var aes = this.convertCoordinateSpecification(aesthetics);
+        var points = [[aes.x1, aes.y1], [aes.x1, aes.y2], [aes.x2, aes.y2], [aes.x2, aes.y1], [aes.x1, aes.y1]];
+        var path;
+
+        if (this._interpolate) {
+          path = interpolatePath(points, this.$$transform);
+        }
+
+        if (!this._interpolate) {
+          path = createPath(points, this.$$transform);
+        }
+
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'style': "fill: ".concat(aesthetics.color)
+          }
+        });
+      }
+    },
+    render: function render(createElement) {
+      if (this.__update) {
+        if (!this.$$map) {
+          // Create svg element using aesthetics
+          return this.renderSVG(createElement, this.aesthetics);
+        }
+
+        if (this.$$map) {
+          // Create the aesthetics for each mark
+          var aestheticsPerMark = mapAesthetics(this.aesthetics, this.context, this.$$dataContainer); // Create svg element for each mark from aesthetics
+
+          var components = [];
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = aestheticsPerMark[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var aesthetics = _step.value;
+              components.push(this.renderSVG(createElement, aesthetics));
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+
+          return createElement('g', components);
+        }
+      }
+    }
+  };
+
+  /* script */
+  var __vue_script__$g = script$g;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$g = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$g = undefined;
+  /* module identifier */
+
+  var __vue_module_identifier__$g = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$g = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$g(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Rectangle.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    return component;
+  }
+  /* style inject */
+
+  /* style inject SSR */
+
+
+  var Rectangle = __vue_normalize__$g({}, __vue_inject_styles__$g, __vue_script__$g, __vue_scope_id__$g, __vue_is_functional_template__$g, __vue_module_identifier__$g, undefined, undefined);
+
+  var script$h = {
+    mixins: [Mark],
+    props: {
+      // Mappable
+      text: {
+        type: [String, Object, Function, undefined],
+        default: undefined
+      },
+      x: {
+        type: [Number, String, Date, Object, Function, undefined],
+        default: undefined
+      },
+      y: {
+        type: [Number, String, Date, Object, Function, String, undefined],
+        default: undefined
+      },
+      color: {
+        type: [String, Object, Function, undefined],
+        default: undefined
+      },
+      fontSize: {
+        type: [Number, Object, Function, undefined],
+        default: undefined
+      },
+      rotation: {
+        type: [Number, Object, Function, undefined],
+        default: undefined
+      },
+      // Unmappable
+      anchorPoint: {
+        type: String,
+        default: 'center',
+        validator: function validator(p) {
+          return ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'].includes(p);
+        }
+      }
+    },
+    computed: {
+      aesthetics: function aesthetics() {
+        return {
+          text: this.parseAesthetic(this.text, {}),
+          x: this.parseCoordinate(this.x, {
+            dimension: 'x'
+          }),
+          y: this.parseCoordinate(this.y, {
+            dimension: 'y'
+          }),
+          color: this.parseAesthetic(this.color, {
+            default: '#000000'
+          }),
+          fontSize: this.parseAesthetic(this.fontSize, {
+            default: 16
+          }),
+          rotation: this.parseAesthetic(this.rotation, {
+            default: 0
+          })
+        };
+      }
+    },
+    methods: {
+      calcTransform: function calcTransform(rotation, cx, cy) {
+        return "rotate(".concat(rotation, ", ").concat(cx, ", ").concat(cy, ")");
+      },
+      renderSVG: function renderSVG(createElement, aesthetics) {
+        var _this$$$transform = this.$$transform([aesthetics.x, aesthetics.y]),
+            _this$$$transform2 = _slicedToArray(_this$$$transform, 2),
+            cx = _this$$$transform2[0],
+            cy = _this$$$transform2[1];
+
+        var anchorPoint = textAnchorPoint(this.anchorPoint);
+        var transform = this.calcTransform(aesthetics.rotation, cx, cy);
+        var el = createElement('text', {
+          attrs: {
+            'x': cx,
+            'y': cy,
+            'fill': aesthetics.color,
+            'text-anchor': anchorPoint.textAnchor,
+            'dominant-baseline': anchorPoint.dominantBaseline,
+            'transform': transform,
+            'class': 'vgg-label'
+          },
+          style: {
+            'font-size': aesthetics.fontSize + 'px'
+          }
+        }, aesthetics.text);
+        return el;
+      }
+    },
+    render: function render(createElement) {
+      if (this.__update) {
+        if (!this.$$map) {
+          // Create svg element using aesthetics
+          return this.renderSVG(createElement, this.aesthetics);
+        }
+
+        if (this.$$map) {
+          // Create the aesthetics for each mark
+          var aestheticsPerMark = mapAesthetics(this.aesthetics, this.context, this.$$dataContainer); // Create svg element for each mark from aesthetics
+
+          var components = [];
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = aestheticsPerMark[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var aesthetics = _step.value;
+              components.push(this.renderSVG(createElement, aesthetics));
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+
+          return createElement('g', components);
+        }
+      }
+    }
+  };
+
+  var __vue_script__$h = script$h;
+  /* template */
+
+  /* style */
+
+  var __vue_inject_styles__$h = function __vue_inject_styles__(inject) {
+    if (!inject) return;
+    inject("data-v-a472028e_0", {
+      source: ".vgg-label[data-v-a472028e]{font-family:sans-serif}",
+      map: undefined,
+      media: undefined
+    });
+  };
+  /* scoped */
+
+
+  var __vue_scope_id__$h = "data-v-a472028e";
+  /* module identifier */
+
+  var __vue_module_identifier__$h = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$h = undefined;
+  /* component normalizer */
+
+  function __vue_normalize__$h(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+    var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+    component.__file = "Label.vue";
+
+    if (!component.render) {
+      component.render = template.render;
+      component.staticRenderFns = template.staticRenderFns;
+      component._compiled = true;
+      if (functional) component.functional = true;
+    }
+
+    component._scopeId = scope;
+
+    {
+      var hook;
+
+      if (style) {
+        hook = function hook(context) {
+          style.call(this, createInjector(context));
+        };
+      }
+
+      if (hook !== undefined) {
+        if (component.functional) {
+          // register for functional component in vue file
+          var originalRender = component.render;
+
+          component.render = function renderWithStyleInjection(h, context) {
+            hook.call(context);
+            return originalRender(h, context);
+          };
+        } else {
+          // inject component registration as beforeCreate hook
+          var existing = component.beforeCreate;
+          component.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+        }
+      }
+    }
+
+    return component;
+  }
+  /* style inject */
+
+
+  function __vue_create_injector__() {
+    var head = document.head || document.getElementsByTagName('head')[0];
+    var styles = __vue_create_injector__.styles || (__vue_create_injector__.styles = {});
+    var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+    return function addStyle(id, css) {
+      if (document.querySelector('style[data-vue-ssr-id~="' + id + '"]')) return; // SSR styles are present.
+
+      var group = isOldIE ? css.media || 'default' : id;
+      var style = styles[group] || (styles[group] = {
+        ids: [],
+        parts: [],
+        element: undefined
+      });
+
+      if (!style.ids.includes(id)) {
+        var code = css.source;
+        var index = style.ids.length;
+        style.ids.push(id);
+
+        if (css.map) {
+          // https://developer.chrome.com/devtools/docs/javascript-debugging
+          // this makes source maps inside style tags work properly in Chrome
+          code += '\n/*# sourceURL=' + css.map.sources[0] + ' */'; // http://stackoverflow.com/a/26603875
+
+          code += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) + ' */';
+        }
+
+        if (isOldIE) {
+          style.element = style.element || document.querySelector('style[data-group=' + group + ']');
+        }
+
+        if (!style.element) {
+          var el = style.element = document.createElement('style');
+          el.type = 'text/css';
+          if (css.media) el.setAttribute('media', css.media);
+
+          if (isOldIE) {
+            el.setAttribute('data-group', group);
+            el.setAttribute('data-next-index', '0');
+          }
+
+          head.appendChild(el);
+        }
+
+        if (isOldIE) {
+          index = parseInt(style.element.getAttribute('data-next-index'));
+          style.element.setAttribute('data-next-index', index + 1);
+        }
+
+        if (style.element.styleSheet) {
+          style.parts.push(code);
+          style.element.styleSheet.cssText = style.parts.filter(Boolean).join('\n');
+        } else {
+          var textNode = document.createTextNode(code);
+          var nodes = style.element.childNodes;
+          if (nodes[index]) style.element.removeChild(nodes[index]);
+          if (nodes.length) style.element.insertBefore(textNode, nodes[index]);else style.element.appendChild(textNode);
+        }
+      }
+    };
+  }
+  /* style inject SSR */
+
+
+  var Label = __vue_normalize__$h({}, __vue_inject_styles__$h, __vue_script__$h, __vue_scope_id__$h, __vue_is_functional_template__$h, __vue_module_identifier__$h, __vue_create_injector__, undefined);
+
+  // Core
+  var components = {
+    Glyph: Glyph$1,
+    Graphic: Graphic,
+    Map: Map,
+    Section: Section$1,
+    Piechart: Piechart,
+    XAxis: XAxis,
+    YAxis: YAxis,
+    XGrid: XGrid,
+    YGrid: YGrid,
+    Line: Line,
+    MultiLine: MultiLine$1,
+    Path: Path,
+    Point: Point,
+    Polygon: Polygon,
+    Rectangle: Rectangle,
+    Label: Label
+  };
+
+  var index = {
+    install: function install(Vue, options) {
+      var prefix = 'Vgg';
+
+      if (options) {
+        if (options.prefix) {
+          prefix = options.prefix;
+        }
+      }
+
+      for (var key in components) {
+        var componentName = prefix + key;
+        Vue.component(componentName, components[key]);
+      }
+    }
+  };
+
+  return index;
+
+}));

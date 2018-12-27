@@ -22,10 +22,10 @@ const plugins = [
     runtimeHelpers: true,
     sourceMap: true,
     extensions: ['.js', '.vue']
-  }),
-  minify({
-    comments: false
   })
+  // minify({
+  //   comments: false
+  // })
 ]
 
 export default [
