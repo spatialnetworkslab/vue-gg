@@ -43,7 +43,7 @@ export function interpolatePathFromFunc (func, transformer, domains,
   return path
 }
 
-function createPath (points, transformer, precision = 2) {
+export function createPath (points, transformer, precision = 2) {
   let transformedPoints = points.map(p => {
     return transformer(p).map(c => round(c, precision))
   })
