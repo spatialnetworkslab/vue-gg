@@ -1,5 +1,6 @@
 import checkValidScale from '../../utils/checkValidScale.js'
 import updateDomain from '../../utils/updateDomain.js'
+import updateRange from '../../utils/updateRange.js'
 
 import numeric from './numeric.js'
 import temporal from './temporal.js'
@@ -10,7 +11,10 @@ export default function (prop, variableType, domain, range, scalingOptions) {
     let scale = scalingOptions.scale || 'linear'
     checkValidScale(prop, variableType, scale, numeric)
 
-    return numeric[scale](updateDomain(domain, scalingOptions), range)
+    return numeric[scale](
+      updateDomain(domain, scalingOptions),
+      updateRange(range, scalingOptions)
+    )
   }
 
   if (variableType === 'temporal') {
