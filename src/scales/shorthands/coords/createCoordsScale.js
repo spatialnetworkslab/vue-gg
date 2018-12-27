@@ -2,16 +2,16 @@ import checkValidScale from '../../utils/checkValidScale.js'
 import updateDomain from '../../utils/updateDomain.js'
 import updateRange from '../../utils/updateRange.js'
 
-import numeric from './numeric.js'
+import quantitative from './quantitative.js'
 import temporal from './temporal.js'
 import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, range, scalingOptions) {
   if (variableType === 'quantitative') {
     let scale = scalingOptions.scale || 'linear'
-    checkValidScale(prop, variableType, scale, numeric)
+    checkValidScale(prop, variableType, scale, quantitative)
 
-    return numeric[scale](
+    return quantitative[scale](
       updateDomain(domain, scalingOptions),
       updateRange(range, scalingOptions)
     )
@@ -21,7 +21,7 @@ export default function (prop, variableType, domain, range, scalingOptions) {
     let scale = scalingOptions.scale || 'temporal'
     checkValidScale(prop, variableType, scale, temporal)
 
-    return numeric[scale](
+    return quantitative[scale](
       updateDomain(domain, scalingOptions),
       updateRange(range, scalingOptions)
     )
@@ -35,7 +35,7 @@ export default function (prop, variableType, domain, range, scalingOptions) {
       console.warn('Cannot modify categorical domain')
     }
 
-    return numeric[scale](
+    return quantitative[scale](
       domain,
       updateRange(range, scalingOptions)
     )

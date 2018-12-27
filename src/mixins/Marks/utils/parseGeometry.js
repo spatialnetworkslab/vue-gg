@@ -1,5 +1,5 @@
 import { is, isnt } from '../../../utils/equals.js'
-import convertToNumeric from '../../../utils/convertToNumeric.js'
+import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 import { invalidValueForRangeType } from './parseCoordinateSet.js'
 
 export default function (prop) {
@@ -42,7 +42,7 @@ function parseArray (data, parentRangeTypes, parentBranch) {
       } else {
         if (['categorical', 'temporal'].includes(parentRangeType)) {
           // We will already convert categorical and temporal data here.
-          point.push(convertToNumeric(entry[i], type, parentBranch))
+          point.push(convertToQuantitative(entry[i], type, parentBranch))
         } else {
           point.push(entry[i])
         }

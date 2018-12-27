@@ -1,15 +1,15 @@
 import checkValidScale from '../../utils/checkValidScale.js'
 import updateDomain from '../../utils/updateDomain.js'
 
-import numeric from './numeric.js'
+import quantitative from './quantitative.js'
 import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {
     let scale = scalingOptions.scale || 'blues'
-    checkValidScale(prop, variableType, scale, numeric)
+    checkValidScale(prop, variableType, scale, quantitative)
 
-    return numeric[scale](updateDomain(domain, scalingOptions))
+    return quantitative[scale](updateDomain(domain, scalingOptions))
   }
 
   if (variableType === 'categorical') {
