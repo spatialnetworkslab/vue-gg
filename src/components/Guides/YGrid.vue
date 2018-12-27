@@ -8,9 +8,6 @@
       x: [0, 1],
       y: domain
     }"
-    :scale="{
-      y: scale
-    }"
   >
 
     <vgg-line

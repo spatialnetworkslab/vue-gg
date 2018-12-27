@@ -1,7 +1,6 @@
 import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
 
 import parseDomain from './parseDomain.js'
-import parseScale from './parseScale.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
@@ -15,10 +14,8 @@ export default class CoordinateTransformation {
     }
 
     // Check for validity, and fetch variable domains from dataContainer if necessary
-    let [domainX, domainXType] = parseDomain(domainSpecifications.x, variableDomains)
-    let [domainY, domainYType] = parseDomain(domainSpecifications.y, variableDomains)
-
-    let [scaleOptionsX, scaleOptionsY] = parseScale(options.scale)
+    let [domainX, domainXType, scaleOptionsX] = parseDomain(domainSpecifications.x, variableDomains)
+    let [domainY, domainYType, scaleOptionsY] = parseDomain(domainSpecifications.y, variableDomains)
 
     // Store domains and ranges
     this.domainTypes = {

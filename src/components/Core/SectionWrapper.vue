@@ -15,11 +15,6 @@ export default {
     domains: {
       type: [Object, undefined],
       default: undefined
-    },
-
-    scale: {
-      type: [String, Object, undefined],
-      default: undefined
     }
   },
 
@@ -38,7 +33,6 @@ export default {
       return createElement(Section, {
         props: {
           type: this.type,
-          scale: this.scale,
           domains: this.domains,
           ranges
         }

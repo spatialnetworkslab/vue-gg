@@ -29,8 +29,25 @@ export default {
       if (this.domain.constructor === Array) {
         return this.domain
       }
+
       if (this.domain.constructor === String) {
-        return this.$$dataContainer.getDomain(this.domain)
+        let domain = this.$$dataContainer.getDomain(this.domain)
+        if (!domain) {
+          throw new Error(`Invalid domain specification: variable does not exist`)
+        }
+        return domain
+      }
+
+      if (this.domain.constructor === Object) {
+        if (!this.domain.variable || this.domain.variable.constructor !== String) {
+          throw new Error('Domain specification object must have variable key of type String')
+        }
+
+        let domain = this.$$dataContainer.getDomain(this.domain.variable)
+        if (!domain) {
+          throw new Error(`Invalid domain specification: variable does not exist`)
+        }
+        return domain
       }
     },
 
