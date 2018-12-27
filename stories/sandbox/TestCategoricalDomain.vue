@@ -18,9 +18,6 @@
         x: 'date',
         y: [0, 100]
       }"
-      :scale="{
-        x: { domain: [new Date('November 16, 2018'), null] }
-      }"
     >
 
       <vgg-map>

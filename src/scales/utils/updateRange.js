@@ -2,7 +2,7 @@ export default function (range, scalingOptions) {
   let newRange
 
   if (range) {
-    newRange = JSON.parse(JSON.stringify(range))
+    newRange = [range[0], range[1]]
   } else {
     range = [0, 10]
   }
