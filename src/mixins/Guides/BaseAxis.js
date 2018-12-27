@@ -42,7 +42,10 @@ export default {
 
   computed: {
     _parsedDomain () {
-      let variableDomains = this.$$dataContainer.getDomains()
+      let variableDomains
+      if (this.$$dataContainer) {
+        variableDomains = this.$$dataContainer.getDomains()
+      }
       return parseDomain(this.domain, variableDomains)
     },
 

@@ -14,11 +14,6 @@ export default {
       default: undefined
     },
 
-    scale: {
-      type: [String, Object],
-      default: () => { return {} }
-    },
-
     gridLines: {
       type: [Array, Number],
       default: 10
@@ -27,7 +22,10 @@ export default {
 
   computed: {
     _parsedDomain () {
-      let variableDomains = this.$$dataContainer.getDomains()
+      let variableDomains
+      if (this.$$dataContainer) {
+        variableDomains = this.$$dataContainer.getDomains()
+      }
       return parseDomain(this.domain, variableDomains)
     },
 
