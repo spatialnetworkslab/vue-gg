@@ -19,7 +19,7 @@
         y: [0, 100]
       }"
       :scale="{
-        x: { range: [new Date('November 14, 2018'), null] }
+        x: { domain: [new Date('November 16, 2018'), null] }
       }"
     >
 

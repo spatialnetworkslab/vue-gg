@@ -21,7 +21,7 @@ export default function (prop, variableType, domain, range, scalingOptions) {
     let scale = scalingOptions.scale || 'temporal'
     checkValidScale(prop, variableType, scale, temporal)
 
-    return quantitative[scale](
+    return temporal[scale](
       updateDomain(domain, scalingOptions),
       updateRange(range, scalingOptions)
     )
@@ -35,7 +35,7 @@ export default function (prop, variableType, domain, range, scalingOptions) {
       console.warn('Cannot modify categorical domain')
     }
 
-    return quantitative[scale](
+    return categorical[scale](
       domain,
       updateRange(range, scalingOptions)
     )
