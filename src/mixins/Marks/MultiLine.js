@@ -80,7 +80,7 @@ export default {
       return points.sort((a, b) => a[0] - b[0])
     },
 
-    close (points) {
+    closePoints (points) {
       // Check if polygon is closed
       let lastID = points.length - 1
 
@@ -111,7 +111,7 @@ export default {
       }
 
       if (this.close) {
-        points = this.close(points)
+        points = this.closePoints(points)
       }
 
       let path = this.createPath(points)
