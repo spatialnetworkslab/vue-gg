@@ -11,12 +11,12 @@ export default {
       default: undefined
     },
 
-    _sortX: {
+    sortX: {
       type: Boolean,
       default: false
     },
 
-    _close: {
+    close: {
       type: Boolean,
       default: true
     }
@@ -28,11 +28,11 @@ export default {
 
       let path = this.createPath(points)
 
-      if (this._sortX) {
+      if (this.sortX) {
         points = this.sort(points)
       }
 
-      if (this._close) {
+      if (this.close) {
         points = this.close(points)
       }
 

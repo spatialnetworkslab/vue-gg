@@ -1,7 +1,7 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
 import mapAesthetics from './utils/mapAesthetics.js'
-import { interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
+import { createPath, interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
 
 export default {
   mixins: [Mark],
@@ -72,7 +72,13 @@ export default {
       }
 
       if (!func) {
-        path = interpolatePath(coords, this.$$transform)
+        if (this._interpolate) {
+          path = interpolatePath(coords, this.$$transform)
+        }
+
+        if (!this._interpolate) {
+          path = createPath(coords, this.$$transform)
+        }
       }
 
       return path

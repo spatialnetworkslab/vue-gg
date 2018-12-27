@@ -5,12 +5,12 @@ export default {
   mixins: [MultiLine],
 
   props: {
-    _sortX: {
+    sortX: {
       type: Boolean,
       default: false
     },
 
-    _close: {
+    close: {
       type: Boolean,
       default: true
     }

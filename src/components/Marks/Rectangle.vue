@@ -1,7 +1,7 @@
 <script>
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 import mapAesthetics from './utils/mapAesthetics.js'
-import { interpolatePath } from './utils/createPath.js'
+import { createPath, interpolatePath } from './utils/createPath.js'
 
 export default {
   mixins: [Rectangular],
@@ -18,7 +18,14 @@ export default {
         [aes.x1, aes.y1]
       ]
 
-      let path = interpolatePath(points, this.$$transform)
+      let path
+      if (this._interpolate) {
+        path = interpolatePath(points, this.$$transform)
+      }
+
+      if (!this._interpolate) {
+        path = createPath(points, this.$$transform)
+      }
 
       return createElement('path', {
         attrs: {

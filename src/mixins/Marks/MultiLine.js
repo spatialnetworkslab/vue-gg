@@ -1,6 +1,6 @@
 import Mark from './Mark.js'
 import mapAesthetics from '../../components/Marks/utils/mapAesthetics.js'
-import { interpolatePath } from '../../components/Marks/utils/createPath.js'
+import { createPath, interpolatePath } from '../../components/Marks/utils/createPath.js'
 import checkPoints from '../../components/Marks/utils/checkPoints.js'
 
 export default {
@@ -34,12 +34,12 @@ export default {
       default: 2
     },
 
-    _sortX: {
+    sortX: {
       type: Boolean,
       default: true
     },
 
-    _close: {
+    close: {
       type: Boolean,
       default: false
     }
@@ -94,18 +94,23 @@ export default {
     },
 
     createPath (points) {
-      let path = interpolatePath(points, this.$$transform)
-      return path
+      if (this._interpolate) {
+        return interpolatePath(points, this.$$transform)
+      }
+
+      if (!this._interpolate) {
+        return createPath(points, this.$$transform)
+      }
     },
 
     renderSVG (createElement, aesthetics) {
       let points = this.generatePoints(aesthetics)
 
-      if (this._sortX) {
+      if (this.sortX) {
         points = this.sort(points)
       }
 
-      if (this._close) {
+      if (this.close) {
         points = this.close(points)
       }
 

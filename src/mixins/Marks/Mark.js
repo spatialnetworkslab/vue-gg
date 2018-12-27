@@ -15,9 +15,22 @@ export default {
 
   inject: ['$$transform', '$$map'],
 
+  props: {
+    interpolate: {
+      type: Boolean,
+      default: true
+    }
+  },
+
   computed: {
     __update () {
       return this.$$coordinateTree._update
+    },
+
+    _interpolate () {
+      // TODO check if interpolation is necessary (i.e. if all parent
+      // coordinate transformations are linear)
+      return this.interpolate
     },
 
     context () {
