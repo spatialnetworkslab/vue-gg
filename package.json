@@ -4,9 +4,11 @@
   "private": true,
   "main": "src/index.js",
   "scripts": {
-    "storybook": "start-storybook -p 9001 -c .storybook"
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "docs:dev": "yarn vuepress dev docs",
+    "docs:build": "yarn vuepress build docs",
+    "now-build": "yarn run docs:build && mv docs/.vuepress/dist dist"
   },
-  "main": "src/index.js",
   "dependencies": {
     "d3-array": "^2.0.2",
     "d3-interpolate": "^1.3.2",
@@ -33,7 +35,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^4.7.1",
     "vue-loader": "^15.4.2",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "vuepress": "^1.0.0-alpha.30"
   },
   "postcss": {
     "plugins": {
