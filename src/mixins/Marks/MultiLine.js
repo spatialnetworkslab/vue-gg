@@ -28,12 +28,12 @@ export default {
       default: undefined
     },
 
-    // Non-mappable
     width: {
-      type: Number,
-      default: 2
+      type: [Number, Object, Function, undefined],
+      default: undefined
     },
 
+    // Non-mappable
     sortX: {
       type: Boolean,
       default: true
@@ -56,7 +56,7 @@ export default {
         y: this.parseCoordinateSet(this.y, { dimension: 'y' }),
 
         color: this.parseAesthetic(this.color, { default: '#000000' }),
-        width: this.parseProperty(this.width, { default: 2 })
+        width: this.parseAesthetic(this.width, { default: 2 })
       }
     }
   },

@@ -38,10 +38,9 @@ export default {
       default: undefined
     },
 
-    // Non-mappable
     width: {
-      type: Number,
-      default: 2
+      type: [Number, Object, Function, undefined],
+      default: undefined
     }
   },
 
@@ -54,8 +53,7 @@ export default {
         y2: this.parseCoordinate(this.y2, { dimension: 'y' }),
         func: this.parseAesthetic(this.func, { isFunction: true }),
         color: this.parseAesthetic(this.color, { default: '#000000' }),
-
-        width: this.parseProperty(this.width, { default: 2 })
+        width: this.parseAesthetic(this.width, { default: 2 })
       }
     }
   },

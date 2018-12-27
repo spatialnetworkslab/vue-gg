@@ -18,7 +18,7 @@
           <vgg-point
             :x="{ scale: 'explanatory' }"
             :y="{ scale: 'dependent' }"
-            :radius="3"
+            :radius="{ scale: { variable: 'dependent', range: [0, 7] } }"
             :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
           />
 

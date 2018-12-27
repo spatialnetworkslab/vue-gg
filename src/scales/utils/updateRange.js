@@ -1,11 +1,5 @@
 export default function (range, scalingOptions) {
-  let newRange
-
-  if (range) {
-    newRange = [range[0], range[1]]
-  } else {
-    range = [0, 10]
-  }
+  let newRange = [range[0], range[1]]
 
   let updateRange = scalingOptions.range
 

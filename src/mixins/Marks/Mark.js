@@ -6,7 +6,6 @@ import {
   parseCoordinate,
   parseCoordinateSet,
   parseGeometry,
-  parsePixelValue,
   parseProperty
 } from './utils'
 
@@ -47,7 +46,6 @@ export default {
     parseCoordinate,
     parseCoordinateSet,
     parseGeometry,
-    parsePixelValue,
     parseProperty
   },
 
@@ -56,7 +54,6 @@ export default {
     this.parseCoordinate.bind(this)
     this.parseCoordinateSet.bind(this)
     this.parseGeometry.bind(this)
-    this.parsePixelValue.bind(this)
     this.parseProperty.bind(this)
   }
 }

@@ -6,7 +6,6 @@ export default {
   mixins: [Mark],
 
   props: {
-    // Mappable
     x: {
       type: [Number, String, Date, Object, Function, undefined],
       default: undefined
@@ -22,15 +21,14 @@ export default {
       default: undefined
     },
 
-    // Non-mappable
     radius: {
-      type: Number,
-      default: 3
+      type: [Number, Object, Function, undefined],
+      default: undefined
     },
 
     strokeWidth: {
-      type: Number,
-      default: 0
+      type: [Number, Object, Function, undefined],
+      default: undefined
     }
   },
 
@@ -40,9 +38,8 @@ export default {
         x: this.parseCoordinate(this.x, { dimension: 'x' }),
         y: this.parseCoordinate(this.y, { dimension: 'y' }),
         color: this.parseAesthetic(this.color, { default: '#000000' }),
-
-        radius: this.parseProperty(this.radius, { default: 3 }),
-        strokeWidth: this.parseProperty(this.strokeWidth, { default: 0 })
+        radius: this.parseAesthetic(this.radius, { default: 3 }),
+        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 })
       }
     }
   },
