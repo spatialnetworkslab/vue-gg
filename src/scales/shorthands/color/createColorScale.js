@@ -16,6 +16,10 @@ export default function (prop, variableType, domain, scalingOptions) {
     let scale = scalingOptions.scale || 'colors'
     checkValidScale(prop, variableType, scale, categorical)
 
+    if (scalingOptions.domain) {
+      console.warn('Cannot modify categorical domain')
+    }
+
     return categorical[scale](domain)
   }
 }
