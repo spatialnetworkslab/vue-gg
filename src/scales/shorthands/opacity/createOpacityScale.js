@@ -8,6 +8,13 @@ export default function (prop, variableType, domain, scalingOptions) {
     let scale = scalingOptions.scale || 'linear'
     checkValidScale(prop, variableType, scale, quantitative)
 
-    return quantitative[scale](updateDomain(domain, scalingOptions))
+    let scaleFunc = quantitative[scale](updateDomain(domain, scalingOptions))
+
+    if (scalingOptions.absolute) {
+      return x => scaleFunc(Math.abs(x))
+    }
+    if (!scalingOptions.absolute) {
+      return scaleFunc
+    }
   }
 }

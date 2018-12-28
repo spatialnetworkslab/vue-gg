@@ -10,10 +10,17 @@ export default function (prop, variableType, domain, range, scalingOptions) {
     let scale = scalingOptions.scale || 'squareRoot'
     checkValidScale(prop, variableType, scale, quantitative)
 
-    return quantitative[scale](
+    let scaleFunc = quantitative[scale](
       updateDomain(domain, scalingOptions),
       updateRange(range, scalingOptions)
     )
+
+    if (scalingOptions.absolute) {
+      return x => scaleFunc(Math.abs(x))
+    }
+    if (!scalingOptions.absolute) {
+      return scaleFunc
+    }
   }
 
   if (variableType === 'categorical') {

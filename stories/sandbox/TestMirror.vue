@@ -15,7 +15,7 @@
       <vgg-point
         :x="450"
         :y="{ scale: 'name' }"
-        :radius="10"
+        :radius="{ scale: { variable: 'balance', absolute: true } }"
         :color="{ scale: { variable: 'balance', scale: 'redBlue' } }"
       />
 
@@ -30,7 +30,7 @@ export default {
     return {
       balance: [
         { name: 'Jim', balance: -1000 },
-        { name: 'Jerry', balance: 250 },
+        { name: 'Jerry', balance: 750 },
         { name: 'Jamal', balance: 1000 },
         { name: 'Jolisa', balance: -400 }
       ]
