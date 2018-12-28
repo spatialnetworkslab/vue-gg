@@ -7,6 +7,7 @@ import BarChart from './sandbox/BarChart.vue'
 import PlotLines from './sandbox/PlotLines.vue'
 import TestCategoricalDomain from './sandbox/TestCategoricalDomain.vue'
 import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
+import TestMirror from './sandbox/TestMirror.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -17,3 +18,4 @@ storiesOf('Sandbox', module)
   .add('Plot lines', () => (PlotLines))
   .add('Test: categorical domain', () => (TestCategoricalDomain))
   .add('Test: nested coordinate system', () => (NestedCoordinateSystem))
+  .add('Test: mirror', () => (TestMirror))

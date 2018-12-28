@@ -31,102 +31,114 @@ export default {
   sinebow
 }
 
+function scale (interpolator, domain, domainMid) {
+  if (domainMid) {
+    if (domainMid.constructor !== Number) {
+      throw new Error('domainMid must be Number')
+    }
+    let newDomain = [domain[0], domainMid, domain[1]]
+    return scaleDiverging(interpolator).domain(newDomain)
+  } else {
+    return scaleSequential(interpolator).domain(domain)
+  }
+}
+
 // Diverging
-function brownBlue (domain) {
-  return scaleDiverging(d3.interpolateBrBG).domain(domain)
+function brownBlue (domain, domainMid) {
+  return scale(d3.interpolateBrBG, domain, domainMid)
 }
 
-function purpleGreen (domain) {
-  return scaleDiverging(d3.interpolatePRGn).domain(domain)
+function purpleGreen (domain, domainMid) {
+  return scale(d3.interpolatePRGn, domain, domainMid)
 }
 
-function pinkGreen (domain) {
-  return scaleDiverging(d3.interpolatePiYG).domain(domain)
+function pinkGreen (domain, domainMid) {
+  return scale(d3.interpolatePiYG, domain, domainMid)
 }
 
-function purpleOrange (domain) {
-  return scaleDiverging(d3.interpolatePuOr).domain(domain)
+function purpleOrange (domain, domainMid) {
+  return scale(d3.interpolatePuOr, domain, domainMid)
 }
 
-function redBlue (domain) {
-  return scaleDiverging(d3.interpolateRdBu).domain(domain)
+function redBlue (domain, domainMid) {
+  return scale(d3.interpolateRdBu, domain, domainMid)
 }
 
-function redGray (domain) {
-  return scaleDiverging(d3.interpolateRdGy).domain(domain)
+function redGray (domain, domainMid) {
+  return scale(d3.interpolateRdGy, domain, domainMid)
 }
 
-function redYellowBlue (domain) {
-  return scaleDiverging(d3.interpolateRdYlBu).domain(domain)
+function redYellowBlue (domain, domainMid) {
+  return scale(d3.interpolateRdYlBu, domain, domainMid)
 }
 
-function redYellowGreen (domain) {
-  return scaleDiverging(d3.interpolateRdYlGn).domain(domain)
+function redYellowGreen (domain, domainMid) {
+  return scale(d3.interpolateRdYlGn, domain, domainMid)
 }
 
-function spectral (domain) {
-  return scaleDiverging(d3.interpolateSpectral).domain(domain)
+function spectral (domain, domainMid) {
+  return scale(d3.interpolateSpectral, domain, domainMid)
 }
 
 // Sequential
-function blues (domain) {
-  return scaleSequential(d3.interpolateBlues).domain(domain)
+function blues (domain, domainMid) {
+  return scale(d3.interpolateBlues, domain, domainMid)
 }
 
-function greens (domain) {
-  return scaleSequential(d3.interpolateGreens).domain(domain)
+function greens (domain, domainMid) {
+  return scale(d3.interpolateGreens, domain, domainMid)
 }
 
-function greys (domain) {
-  return scaleSequential(d3.interpolateGreys).domain(domain)
+function greys (domain, domainMid) {
+  return scale(d3.interpolateGreys, domain, domainMid)
 }
 
-function oranges (domain) {
-  return scaleSequential(d3.interpolateOranges).domain(domain)
+function oranges (domain, domainMid) {
+  return scale(d3.interpolateOranges, domain, domainMid)
 }
 
-function purples (domain) {
-  return scaleSequential(d3.interpolatePurples).domain(domain)
+function purples (domain, domainMid) {
+  return scale(d3.interpolatePurples, domain, domainMid)
 }
 
-function reds (domain) {
-  return scaleSequential(d3.interpolateReds).domain(domain)
+function reds (domain, domainMid) {
+  return scale(d3.interpolateReds, domain, domainMid)
 }
 
 // Sequential - Multi-Hue
-function viridis (domain) {
-  return scaleSequential(d3.interpolateViridis).domain(domain)
+function viridis (domain, domainMid) {
+  return scale(d3.interpolateViridis, domain, domainMid)
 }
 
-function inferno (domain) {
-  return scaleSequential(d3.interpolateInferno).domain(domain)
+function inferno (domain, domainMid) {
+  return scale(d3.interpolateInferno, domain, domainMid)
 }
 
-function magma (domain) {
-  return scaleSequential(d3.interpolateMagma).domain(domain)
+function magma (domain, domainMid) {
+  return scale(d3.interpolateMagma, domain, domainMid)
 }
 
-function plasma (domain) {
-  return scaleSequential(d3.interpolatePlasma).domain(domain)
+function plasma (domain, domainMid) {
+  return scale(d3.interpolatePlasma, domain, domainMid)
 }
 
-function warm (domain) {
-  return scaleSequential(d3.interpolateWarm).domain(domain)
+function warm (domain, domainMid) {
+  return scale(d3.interpolateWarm, domain, domainMid)
 }
 
-function cool (domain) {
-  return scaleSequential(d3.interpolateCool).domain(domain)
+function cool (domain, domainMid) {
+  return scale(d3.interpolateCool, domain, domainMid)
 }
 
-function cubehelixDefault (domain) {
-  return scaleSequential(d3.interpolateCubehelixDefault).domain(domain)
+function cubehelixDefault (domain, domainMid) {
+  return scale(d3.interpolateCubehelixDefault, domain, domainMid)
 }
 
 // Cyclical
-function rainbow (domain) {
-  return scaleSequential(d3.interpolateRainbow).domain(domain)
+function rainbow (domain, domainMid) {
+  return scale(d3.interpolateRainbow, domain, domainMid)
 }
 
-function sinebow (domain) {
-  return scaleSequential(d3.interpolateSinebow).domain(domain)
+function sinebow (domain, domainMid) {
+  return scale(d3.interpolateSinebow, domain, domainMid)
 }

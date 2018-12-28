@@ -9,7 +9,7 @@ export default function (prop, variableType, domain, scalingOptions) {
     let scale = scalingOptions.scale || 'blues'
     checkValidScale(prop, variableType, scale, quantitative)
 
-    return quantitative[scale](updateDomain(domain, scalingOptions))
+    return quantitative[scale](updateDomain(domain, scalingOptions), scalingOptions.domainMid)
   }
 
   if (variableType === 'categorical') {
