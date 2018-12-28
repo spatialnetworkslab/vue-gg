@@ -1,6 +1,7 @@
 import createCoordsScale from './shorthands/coords/createCoordsScale.js'
 import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
+import createRadiusScale from './shorthands/radius/createRadiusScale.js'
 
 import getDimension from '../utils/getDimension.js'
 import getDataType from '../utils/getDataType.js'
@@ -35,5 +36,15 @@ export default function (prop, context, scalingOptions) {
     } else { range = scalingOptions.range }
 
     return createCoordsScale(prop, variableType, domain, range, scalingOptions)
+  }
+
+  if (prop === 'radius') {
+    let range
+    if (!scalingOptions.range) {
+      console.warn(`No range specified for prop ${prop}. Defaulting to [0, 8]`)
+      range = [0, 8]
+    } else { range = scalingOptions.range }
+
+    return createRadiusScale(prop, variableType, domain, range, scalingOptions)
   }
 }
