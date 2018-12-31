@@ -5,7 +5,9 @@ import { is } from '../../../utils/equals.js'
 import getDimension from '../../../utils/getDimension.js'
 import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 
-export default function (aesthetics, context, dataContainer) {
+export default function (aesthetics, context) {
+  let dataContainer = context.dataContainer
+
   let assigners = {}
   let scales = {}
   let funcs = {}
