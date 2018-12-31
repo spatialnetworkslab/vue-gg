@@ -1,5 +1,10 @@
 export default function (domain, scalingOptions) {
-  let newDomain = JSON.parse(JSON.stringify(domain))
+  let newDomain = [domain[0], domain[1]]
+
+  if (scalingOptions.absolute) {
+    newDomain = [0, Math.max(...newDomain.map(value => Math.abs(value)))]
+  }
+
   let updateDomain = scalingOptions.domain
 
   if (updateDomain) {

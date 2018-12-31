@@ -1,5 +1,5 @@
 import { is, isnt } from '../../../utils/equals.js'
-import convertToNumeric from '../../../utils/convertToNumeric.js'
+import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 
 export default function (prop, { dimension }) {
   let parentRangeType = this.parentRangeTypes[dimension]
@@ -80,7 +80,7 @@ function parseArray (data, parentRangeType, dimension, parentBranch) {
     } else {
       if (['categorical', 'temporal'].includes(parentRangeType)) {
         // We will already convert categorical and temporal data here.
-        parsed.push(convertToNumeric(entry, dimension, parentBranch))
+        parsed.push(convertToQuantitative(entry, dimension, parentBranch))
       } else {
         parsed.push(entry)
       }

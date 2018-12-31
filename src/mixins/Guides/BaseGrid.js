@@ -2,7 +2,8 @@ import { ticks as arrayTicks } from 'd3-array'
 import { scaleTime } from 'd3-scale'
 
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import getDataType from '../../utils/getDataType.js'
+
+import parseDomain from '../../classes/CoordinateTree/parseDomain.js'
 
 export default {
   mixins: [Rectangular],
@@ -13,11 +14,6 @@ export default {
       default: undefined
     },
 
-    scale: {
-      type: [String, Object],
-      default: () => { return {} }
-    },
-
     gridLines: {
       type: [Array, Number],
       default: 10
@@ -25,19 +21,24 @@ export default {
   },
 
   computed: {
+    _parsedDomain () {
+      let variableDomains
+      if (this.$$dataContainer) {
+        variableDomains = this.$$dataContainer.getDomains()
+      }
+      return parseDomain(this.domain, variableDomains)
+    },
+
     _domain () {
-      if (this.domain.constructor === Array) {
-        return this.domain
-      }
-      if (this.domain.constructor === String) {
-        return this.$$dataContainer.getDomain(this.domain)
-      }
+      return this._parsedDomain[0]
     },
 
     _domainType () {
-      if (this.domain) {
-        return getDataType(this._domain[0])
-      }
+      return this._parsedDomain[1]
+    },
+
+    _scalingOptions () {
+      return this._parsedDomain[2]
     },
 
     ranges () {

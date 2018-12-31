@@ -3,7 +3,7 @@ import createPositioner from '../../../positioners/createPositioner.js'
 
 import { is } from '../../../utils/equals.js'
 import getDimension from '../../../utils/getDimension.js'
-import convertToNumeric from '../../../utils/convertToNumeric.js'
+import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 
 export default function (aesthetics, context, dataContainer) {
   let assigners = {}
@@ -98,10 +98,10 @@ export default function (aesthetics, context, dataContainer) {
         let value = funcs[aesKey](row, i, context)
 
         // If the value is categorical or temporal, and a coord,
-        // we have to convert it to numeric
+        // we have to convert it to quantitative
         let dimension = getDimension(aesKey)
         if (dimension && [String, Date].includes(value.constructor)) {
-          props[aesKey] = convertToNumeric(value, dimension, context.parentBranch)
+          props[aesKey] = convertToQuantitative(value, dimension, context.parentBranch)
         } else {
           props[aesKey] = value
         }

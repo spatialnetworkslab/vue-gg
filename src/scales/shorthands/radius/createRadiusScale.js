@@ -2,13 +2,12 @@ import checkValidScale from '../../utils/checkValidScale.js'
 import updateDomain from '../../utils/updateDomain.js'
 import updateRange from '../../utils/updateRange.js'
 
-import quantitative from './quantitative.js'
-import temporal from './temporal.js'
+import quantitative from '../coords/quantitative.js'
 import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, range, scalingOptions) {
   if (variableType === 'quantitative') {
-    let scale = scalingOptions.scale || 'linear'
+    let scale = scalingOptions.scale || 'squareRoot'
     checkValidScale(prop, variableType, scale, quantitative)
 
     let scaleFunc = quantitative[scale](
@@ -22,16 +21,6 @@ export default function (prop, variableType, domain, range, scalingOptions) {
     if (!scalingOptions.absolute) {
       return scaleFunc
     }
-  }
-
-  if (variableType === 'temporal') {
-    let scale = scalingOptions.scale || 'temporal'
-    checkValidScale(prop, variableType, scale, temporal)
-
-    return temporal[scale](
-      updateDomain(domain, scalingOptions),
-      updateRange(range, scalingOptions)
-    )
   }
 
   if (variableType === 'categorical') {

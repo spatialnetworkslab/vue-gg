@@ -1,13 +1,20 @@
 import checkValidScale from '../../utils/checkValidScale.js'
 import updateDomain from '../../utils/updateDomain.js'
 
-import numeric from './numeric.js'
+import quantitative from './quantitative.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {
     let scale = scalingOptions.scale || 'linear'
-    checkValidScale(prop, variableType, scale, numeric)
+    checkValidScale(prop, variableType, scale, quantitative)
 
-    return numeric[scale](updateDomain(domain, scalingOptions))
+    let scaleFunc = quantitative[scale](updateDomain(domain, scalingOptions))
+
+    if (scalingOptions.absolute) {
+      return x => scaleFunc(Math.abs(x))
+    }
+    if (!scalingOptions.absolute) {
+      return scaleFunc
+    }
   }
 }

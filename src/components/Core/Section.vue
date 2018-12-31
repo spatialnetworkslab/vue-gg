@@ -30,11 +30,6 @@ export default {
     ranges: {
       type: Object,
       required: true
-    },
-
-    scale: {
-      type: [String, Object, undefined],
-      default: undefined
     }
   },
 
@@ -67,10 +62,18 @@ export default {
     },
 
     allowDomains () {
-      let xNotArray = this._domains.x.constructor !== Array
-      let yNotArray = this._domains.y.constructor !== Array
-      if (!this.$$dataContainer && (xNotArray || yNotArray)) {
-        return false
+      // Allowed means: 'allowed IF there is NO DATACONTAINER'.
+      // So if there is NO DATACONTAINER, BOTH of these have to be TRUE.
+      // If this is not the case, we have to return FALSE.
+      let allowedObjX = this.checkAllowedObj(this._domains.x)
+      let allowedObjY = this.checkAllowedObj(this._domains.y)
+
+      if (!this.$$dataContainer) {
+        if (allowedObjX && allowedObjY) {
+          return true
+        } else {
+          return false
+        }
       } else {
         return true
       }
@@ -80,8 +83,7 @@ export default {
   watch: {
     type: 'updateCoordinateTreeBranch',
     domains: 'updateCoordinateTreeBranch',
-    ranges: 'updateCoordinateTreeBranch',
-    scale: 'updateCoordinateTreeBranch'
+    ranges: 'updateCoordinateTreeBranch'
   },
 
   beforeDestroy () {
@@ -99,7 +101,6 @@ export default {
         type: this.type,
         domains: this._domains,
         ranges: this.ranges,
-        scale: this.scale,
         dataContainer: this.$$dataContainer
       })
 
@@ -115,11 +116,20 @@ export default {
         type: this.type,
         domains: this._domains,
         ranges: this.ranges,
-        scale: this.scale,
         dataContainer: this.$$dataContainer
       })
 
       this.$$coordinateTree.updateBranch(this.id, transformation)
+    },
+
+    checkAllowedObj (domain) {
+      if (domain.constructor === Object) {
+        return domain.hasOwnProperty('domain') && !domain.hasOwnProperty('variable')
+      } else if (domain.constructor === Array) {
+        return true
+      } else {
+        return false
+      }
     }
   },
 

@@ -3,33 +3,78 @@ import getDataType from '../../utils/getDataType.js'
 export default function (domainSpecification, variableDomains) {
   let domain
   let domainType
+  let scaleOptions
 
-  if (![Array, String].includes(domainSpecification.constructor)) {
-    throw new Error('Invalid domain specification: only Array or String allowed')
+  if (![Array, String, Object].includes(domainSpecification.constructor)) {
+    throw new Error('Invalid domain specification: only Array, String or Object allowed')
   }
 
   if (domainSpecification.constructor === Array) {
     checkValidDomainArray(domainSpecification)
-    domainType = getDataType(domainSpecification[0])
-
     domain = domainSpecification
-  } else {
-    if (variableDomains) {
-      if (domainSpecification.constructor === String) {
-        if (!variableDomains[domainSpecification]) {
-          throw new Error(`Invalid domain specification: variable does not exist`)
-        }
+    domainType = getDataType(domain[0])
+    scaleOptions = {}
+  }
 
-        domain = variableDomains[domainSpecification]
-        domainType = getDataType(domain[0])
+  if (domainSpecification.constructor === String) {
+    if (variableDomains) {
+      if (!variableDomains[domainSpecification]) {
+        throw new Error(`Invalid domain specification: variable does not exist`)
       }
+
+      domain = variableDomains[domainSpecification]
+      domainType = getDataType(domain[0])
+      scaleOptions = {}
     } else {
       domain = [0, 1] // placeholder until real data is available
       domainType = 'quantitative'
+      scaleOptions = {}
     }
   }
 
-  return [domain, domainType]
+  if (domainSpecification.constructor === Object) {
+    let variable = domainSpecification.variable
+
+    if (variableDomains) {
+      if (!variable || !domainSpecification.domain) {
+        throw new Error('Invalid domain specification object')
+      }
+
+      if (variable && !variableDomains[variable]) {
+        throw new Error(`Invalid domain specification: variable does not exist`)
+      }
+
+      if (variable) {
+        domain = variableDomains[variable]
+        domainType = getDataType(domain[0])
+        scaleOptions = domainSpecification
+      }
+
+      if (!variable) {
+        checkValidDomainArray(domainSpecification.domain)
+        domain = domainSpecification.domain
+        domainType = getDataType(domain[0])
+        scaleOptions = domainSpecification
+      }
+    }
+
+    if (!variableDomains) {
+      if (variable) {
+        domain = [0, 1] // placeholder until real data is available
+        domainType = 'quantitative'
+        scaleOptions = {}
+      } else if (domainSpecification.domain) {
+        checkValidDomainArray(domainSpecification.domain)
+        domain = domainSpecification.domain
+        domainType = getDataType(domain[0])
+        scaleOptions = domainSpecification
+      } else {
+        throw new Error('Invalid domain specification object')
+      }
+    }
+  }
+
+  return [domain, domainType, scaleOptions]
 }
 
 function checkValidDomainArray (array) {

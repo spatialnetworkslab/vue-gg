@@ -33,7 +33,7 @@ export default {
       }
 
       if (this.close) {
-        points = this.close(points)
+        points = this.closePoints(points)
       }
 
       return createElement('path', {

@@ -1,7 +1,6 @@
 import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
 
 import parseDomain from './parseDomain.js'
-import parseScale from './parseScale.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
@@ -15,10 +14,8 @@ export default class CoordinateTransformation {
     }
 
     // Check for validity, and fetch variable domains from dataContainer if necessary
-    let [domainX, domainXType] = parseDomain(domainSpecifications.x, variableDomains)
-    let [domainY, domainYType] = parseDomain(domainSpecifications.y, variableDomains)
-
-    let [scaleOptionsX, scaleOptionsY] = parseScale(options.scale)
+    let [domainX, domainXType, scaleOptionsX] = parseDomain(domainSpecifications.x, variableDomains)
+    let [domainY, domainYType, scaleOptionsY] = parseDomain(domainSpecifications.y, variableDomains)
 
     // Store domains and ranges
     this.domainTypes = {
@@ -54,10 +51,10 @@ export default class CoordinateTransformation {
     // For categorical and temporal domains, we don't need to apply the scaling,
     // since we've already done this when the prop was passed (see Mark.js,
     // parseCoord function). This is because we need to support nested Sections,
-    // where the parent is for example categorical but the child is numeric. It
+    // where the parent is for example categorical but the child is quantitative. It
     // is also necessary to properly interpolate in the interpolatePath function
     // (you cannot interpolate between 'A' and 'B'). So for these components,
-    // we already need to know the converted (numeric) value before the transform
+    // we already need to know the converted (quantitative) value before the transform
     // function is used.
     this.getX = x => {
       if (['categorical', 'temporal'].includes(this.domainTypes.x)) {

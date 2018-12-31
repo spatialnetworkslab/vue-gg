@@ -1,5 +1,5 @@
 import { is, isnt } from '../../../utils/equals.js'
-import convertToNumeric from '../../../utils/convertToNumeric.js'
+import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 
 export default function (prop, { dimension, wh }) {
   let parentRangeType = this.parentRangeTypes[dimension]
@@ -24,7 +24,7 @@ export default function (prop, { dimension, wh }) {
             throw new Error(`Cannot set 'w' or 'h' value in parent domain '${parentRangeType}'`)
           }
           // We will already convert categorical and temporal data here.
-          return convertToNumeric(prop, dimension, this.parentBranch)
+          return convertToQuantitative(prop, dimension, this.parentBranch)
         }
         return prop
       }
@@ -58,7 +58,7 @@ export default function (prop, { dimension, wh }) {
             throw new Error(`Cannot set 'w' or 'h' value in parent domain '${parentRangeType}'`)
           }
           // We will already convert categorical and temporal data here.
-          return { assign: convertToNumeric(prop, dimension, this.parentBranch) }
+          return { assign: convertToQuantitative(prop, dimension, this.parentBranch) }
         }
         return { assign: prop }
       }
