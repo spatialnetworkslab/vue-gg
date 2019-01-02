@@ -14,7 +14,7 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :domains="{
+      :scales="{
         x: 'date',
         y: [0, 100]
       }"
@@ -46,7 +46,7 @@
       :y1="50"
       :y2="100"
       :tick-count="3"
-      domain="date"
+      scale="date"
     />
 
     <!-- <vgg-section
@@ -55,7 +55,7 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :domains="{
+      :scales="{
         x: ['a', 'b', 'c', 'd'],
         y: [0, 100]
       }"

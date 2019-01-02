@@ -87,6 +87,8 @@ function parseScales (scales, context) {
       }
     }
   }
+
+  return parsedScales
 }
 
 function mapRow (row, i, aesthetics, scales, parsedScales, funcs, assigners, context) {

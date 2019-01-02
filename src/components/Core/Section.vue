@@ -1,5 +1,5 @@
 <template>
-  <g v-if="ready && allowDomains">
+  <g v-if="ready && allowScales">
 
     <slot />
 
@@ -22,7 +22,7 @@ export default {
       default: 'scale'
     },
 
-    domains: {
+    scales: {
       type: [Object, undefined],
       default: undefined
     },
@@ -41,32 +41,32 @@ export default {
   },
 
   computed: {
-    _domains () {
-      if (this.domains) {
-        let domains = {}
+    _scales () {
+      if (this.scales) {
+        let scales = {}
 
-        if (this.domains.hasOwnProperty('x')) {
-          domains.x = this.domains.x
+        if (this.scales.hasOwnProperty('x')) {
+          scales.x = this.scales.x
         } else {
-          domains.x = this.ranges.x
+          scales.x = this.ranges.x
         }
-        if (this.domains.hasOwnProperty('y')) {
-          domains.y = this.domains.y
+        if (this.scales.hasOwnProperty('y')) {
+          scales.y = this.scales.y
         } else {
-          domains.y = this.ranges.y
+          scales.y = this.ranges.y
         }
-        return domains
+        return scales
       }
 
-      if (!this.domains) { return this.ranges }
+      if (!this.scales) { return this.ranges }
     },
 
-    allowDomains () {
+    allowScales () {
       // Allowed means: 'allowed IF there is NO DATACONTAINER'.
       // So if there is NO DATACONTAINER, BOTH of these have to be TRUE.
       // If this is not the case, we have to return FALSE.
-      let allowedObjX = this.checkAllowedObj(this._domains.x)
-      let allowedObjY = this.checkAllowedObj(this._domains.y)
+      let allowedObjX = this.checkAllowedObj(this._scales.x)
+      let allowedObjY = this.checkAllowedObj(this._scales.y)
 
       if (!this.$$dataContainer) {
         if (allowedObjX && allowedObjY) {
@@ -82,7 +82,7 @@ export default {
 
   watch: {
     type: 'updateCoordinateTreeBranch',
-    domains: 'updateCoordinateTreeBranch',
+    scales: 'updateCoordinateTreeBranch',
     ranges: 'updateCoordinateTreeBranch'
   },
 
@@ -99,7 +99,7 @@ export default {
     setCoordinateTreeBranch () {
       let transformation = new CoordinateTransformation({
         type: this.type,
-        domains: this._domains,
+        scales: this._scales,
         ranges: this.ranges,
         dataContainer: this.$$dataContainer
       })
@@ -114,7 +114,7 @@ export default {
     updateCoordinateTreeBranch () {
       let transformation = new CoordinateTransformation({
         type: this.type,
-        domains: this._domains,
+        scales: this._scales,
         ranges: this.ranges,
         dataContainer: this.$$dataContainer
       })

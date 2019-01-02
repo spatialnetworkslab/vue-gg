@@ -4,7 +4,7 @@
     :x2="ranges.x2"
     :y1="ranges.y1"
     :y2="ranges.y2"
-    :domains="{
+    :scales="{
       x: [0, 1],
       y: [0, 1]
     }"
@@ -21,13 +21,13 @@
 
     <!-- Ticks -->
     <vgg-section
-      v-if="domain !== undefined"
+      v-if="scale !== undefined"
       :x1="0"
       :x2="1"
       :y1="0"
       :y2="1"
-      :domains="{
-        y: domain
+      :scales="{
+        y: scale
       }"
     >
 

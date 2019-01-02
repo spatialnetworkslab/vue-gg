@@ -49,8 +49,7 @@ export default {
 
       let transformation = new CoordinateTransformation({
         type: 'scale',
-        scale: 'linear',
-        domains,
+        scales: domains,
         ranges
       })
 
