@@ -1,28 +1,28 @@
-import getDataType from '../../utils/getDataType.js'
+import getDataType from './getDataType.js'
 
-export default function (domainSpecification, variableDomains) {
+export default function (scaleSpecification, variableDomains) {
   let domain
   let domainType
   let scaleOptions
 
-  if (![Array, String, Object].includes(domainSpecification.constructor)) {
-    throw new Error('Invalid domain specification: only Array, String or Object allowed')
+  if (![Array, String, Object].includes(scaleSpecification.constructor)) {
+    throw new Error('Invalid scale specification: only Array, String or Object allowed')
   }
 
-  if (domainSpecification.constructor === Array) {
-    checkValidDomainArray(domainSpecification)
-    domain = domainSpecification
+  if (scaleSpecification.constructor === Array) {
+    checkValidDomainArray(scaleSpecification)
+    domain = scaleSpecification
     domainType = getDataType(domain[0])
     scaleOptions = {}
   }
 
-  if (domainSpecification.constructor === String) {
+  if (scaleSpecification.constructor === String) {
     if (variableDomains) {
-      if (!variableDomains[domainSpecification]) {
+      if (!variableDomains[scaleSpecification]) {
         throw new Error(`Invalid domain specification: variable does not exist`)
       }
 
-      domain = variableDomains[domainSpecification]
+      domain = variableDomains[scaleSpecification]
       domainType = getDataType(domain[0])
       scaleOptions = {}
     } else {
@@ -32,11 +32,11 @@ export default function (domainSpecification, variableDomains) {
     }
   }
 
-  if (domainSpecification.constructor === Object) {
-    let variable = domainSpecification.variable
+  if (scaleSpecification.constructor === Object) {
+    let variable = scaleSpecification.variable
 
     if (variableDomains) {
-      if (!variable || !domainSpecification.domain) {
+      if (!variable && !scaleSpecification.domain) {
         throw new Error('Invalid domain specification object')
       }
 
@@ -47,14 +47,14 @@ export default function (domainSpecification, variableDomains) {
       if (variable) {
         domain = variableDomains[variable]
         domainType = getDataType(domain[0])
-        scaleOptions = domainSpecification
+        scaleOptions = scaleSpecification
       }
 
       if (!variable) {
-        checkValidDomainArray(domainSpecification.domain)
-        domain = domainSpecification.domain
+        checkValidDomainArray(scaleSpecification.domain)
+        domain = scaleSpecification.domain
         domainType = getDataType(domain[0])
-        scaleOptions = domainSpecification
+        scaleOptions = scaleSpecification
       }
     }
 
@@ -63,16 +63,18 @@ export default function (domainSpecification, variableDomains) {
         domain = [0, 1] // placeholder until real data is available
         domainType = 'quantitative'
         scaleOptions = {}
-      } else if (domainSpecification.domain) {
-        checkValidDomainArray(domainSpecification.domain)
-        domain = domainSpecification.domain
+      } else if (scaleSpecification.domain) {
+        checkValidDomainArray(scaleSpecification.domain)
+        domain = scaleSpecification.domain
         domainType = getDataType(domain[0])
-        scaleOptions = domainSpecification
+        scaleOptions = scaleSpecification
       } else {
         throw new Error('Invalid domain specification object')
       }
     }
   }
+
+  domain = updateDomain(domain, domainType, scaleOptions)
 
   return [domain, domainType, scaleOptions]
 }
@@ -99,4 +101,33 @@ function checkValidDomainArray (array) {
   }
 
   if (invalid) { throw new Error('Invalid domain specification array') }
+}
+
+function updateDomain (domain, domainType, scalingOptions) {
+  if (domainType === 'categorical') {
+    return domain
+  } else {
+    let newDomain = [domain[0], domain[1]]
+
+    if (scalingOptions.absolute) {
+      newDomain = [0, Math.max(...newDomain.map(value => Math.abs(value)))]
+    }
+
+    let updateDomain = scalingOptions.domain
+
+    if (updateDomain) {
+      if (updateDomain.constructor !== Array && updateDomain.length !== 2) {
+        throw new Error('Invalid domain modification')
+      }
+
+      if (is(updateDomain[0])) { newDomain[0] = updateDomain[0] }
+      if (is(updateDomain[1])) { newDomain[1] = updateDomain[1] }
+    }
+
+    return newDomain
+  }
+}
+
+function is (val) {
+  return val !== undefined && val !== null
 }

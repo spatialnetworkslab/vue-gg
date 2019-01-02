@@ -1,5 +1,4 @@
 import checkValidScale from '../../utils/checkValidScale.js'
-import updateDomain from '../../utils/updateDomain.js'
 import updateRange from '../../utils/updateRange.js'
 
 import quantitative from './quantitative.js'
@@ -12,7 +11,7 @@ export default function (prop, variableType, domain, range, scalingOptions) {
     checkValidScale(prop, variableType, scale, quantitative)
 
     let scaleFunc = quantitative[scale](
-      updateDomain(domain, scalingOptions),
+      domain,
       updateRange(range, scalingOptions)
     )
 
@@ -29,7 +28,7 @@ export default function (prop, variableType, domain, range, scalingOptions) {
     checkValidScale(prop, variableType, scale, temporal)
 
     return temporal[scale](
-      updateDomain(domain, scalingOptions),
+      domain,
       updateRange(range, scalingOptions)
     )
   }
@@ -37,10 +36,6 @@ export default function (prop, variableType, domain, range, scalingOptions) {
   if (variableType === 'categorical') {
     let scale = scalingOptions.scale || 'equidistant'
     checkValidScale(prop, variableType, scale, categorical)
-
-    if (scalingOptions.domain) {
-      console.warn('Cannot modify categorical domain')
-    }
 
     return categorical[scale](
       domain,
