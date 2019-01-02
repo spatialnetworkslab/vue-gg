@@ -1,21 +1,34 @@
-import { initDomains, updateDomains } from './calculateDomains.js'
-// const datasetTypes = ['dataFrame', 'geojson']
+import calculateDomains from './calculateDomains.js'
+// const formats = ['row', 'column', 'geojson']
 // const variableTypes = ['quantitative', 'temporal', 'categorical']
 
 export default class {
-  constructor (data, type) {
+  constructor (data, format) {
     this._dataset = []
     this._domains = {}
 
-    if (!type) {
-      // If no type is provided, we will assume it's a dataFrame
-      this.setDataFrame(data)
+    if (!format) {
+      // If no type is provided, we will assume it's a dataFrame.
+      // Now we just have to determine if it's column or row oriented.
+      if (data.constructor === Object) {
+        // Column oriented
+        this.setColDataFrame(data)
+      }
+
+      if (data.constructor === Array) {
+        // Row oriented
+        this.setRowDataFrame(data)
+      }
     }
 
-    if (type) {
-      switch (type) {
-        case 'dataFrame': {
-          this.setDataFrame(data)
+    if (format) {
+      switch (format) {
+        case 'column': {
+          this.setColDataFrame(data)
+          break
+        }
+        case 'row': {
+          this.setRowDataFrame(data)
           break
         }
         case 'geojson': {
@@ -27,23 +40,31 @@ export default class {
     }
   }
 
-  setDataFrame (data) {
-    if (data.constructor !== Array) {
-      throw new Error('Data of type dataFrame must be passed as an array')
-    }
+  setColDataFrame (data) {
+    let length = checkFormat(data)
 
-    // Initialize domain object
-    let firstRow = data[0]
-    let domainPerVariable = initDomains(firstRow)
+    let { domains, types } = calculateDomains(data)
 
-    // Find domains
-    for (let row of data) {
-      checkRowFormat(row, firstRow)
-      domainPerVariable = updateDomains(row, domainPerVariable)
-    }
-
+    this._length = length
     this._dataset = data
-    this._domains = domainPerVariable
+    this._domains = domains
+    this._types = types
+  }
+
+  setRowDataFrame (data) {
+    if (data.constructor !== Array) {
+      throw new Error('Data in row-format must be passed as an array of objects')
+    }
+
+    let columnDataFrame = initColumnDF(data)
+
+    for (let row of data) {
+      for (let key in row) {
+        columnDataFrame[key].push(row[key])
+      }
+    }
+
+    this.setColDataFrame(columnDataFrame)
   }
 
   setGeoJSON (data) {
@@ -58,12 +79,7 @@ export default class {
   }
 
   getVariableData (variable) {
-    let result = []
-    let data = this._dataset
-    for (let row in data) {
-      result.push(data[row][variable])
-    }
-    return result
+    return this._dataset[variable]
   }
 
   hasVariable (variable) {
@@ -79,29 +95,51 @@ export default class {
   }
 
   forEachRow (callback) {
-    this._dataset.forEach((row, index) => {
-      callback(row, index)
-    })
+    for (let i = 0; i < this._length; i++) {
+      let row = {}
+      for (let key in this._dataset) {
+        row[key] = this._dataset[key][i]
+      }
+
+      callback(row, i)
+    }
   }
 }
 
-///           ///
-/// Utilities ///
-//            ///
-function checkRowFormat (row, firstRow) {
-  // Check if it is an array of objects
-  if (row.constructor !== Object) {
-    throw new Error('Data array must contain only objects')
+function checkFormat (data) {
+  if (data.constructor !== Object) {
+    throw new Error('Data in column-format must be passed as an object of arrays')
   }
 
-  // Check if all have the same keys using first row
-  if (!objectsHaveSameKeys(row, firstRow)) {
-    throw new Error('All objects in data array must have same keys')
+  let len = null
+
+  for (let key in data) {
+    let col = data[key]
+    if (col.constructor !== Array) {
+      throw new Error('Data in column-format must be passed as an object of arrays')
+    }
+
+    if (len === null) {
+      len = col.length
+    } else {
+      if (len !== col.length) {
+        throw new Error('Invalid data: columns must be of same length')
+      }
+    }
   }
+
+  return len
 }
 
-function objectsHaveSameKeys (...objects) {
-  const allKeys = objects.reduce((keys, object) => keys.concat(Object.keys(object)), [])
-  const union = new Set(allKeys)
-  return objects.every(object => union.size === Object.keys(object).length)
+function initColumnDF (data) {
+  let firstRow = data[0]
+  let columnKeys = Object.keys(firstRow)
+
+  let columnDataFrame = {}
+
+  for (let key of columnKeys) {
+    columnDataFrame[key] = []
+  }
+
+  return columnDataFrame
 }

@@ -5,7 +5,7 @@ export default function (range, scalingOptions) {
 
   if (updateRange) {
     if (updateRange.constructor !== Array || updateRange.length !== 2) {
-      throw new Error('Invalid domain modification')
+      throw new Error('Invalid range modification')
     }
 
     if (is(updateRange[0])) { newRange[0] = updateRange[0] }
