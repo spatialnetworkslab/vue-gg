@@ -8,14 +8,35 @@ import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 export default function (aesthetics, context) {
   let dataContainer = context.dataContainer
 
+  // First, extract the assigners, scales, getter-funcs and positioners
+  let { assigners, scales, funcs, positioners } = extractMappings(aesthetics)
+
+  // Second, we will parse the scales
+  let parsedScales = parseScales(scales, context)
+
+  // Third, we apply the scales, functions and assigners and calculate props for each mark
+  let aestheticsPerMark = []
+
+  dataContainer.forEachRow((row, i) => {
+    let props = mapRow(row, i, aesthetics, scales, parsedScales, funcs, assigners, context)
+
+    aestheticsPerMark.push(props)
+  })
+
+  // Fourth, we will apply positioning if necessary
+  aestheticsPerMark = applyPositioners(aestheticsPerMark, positioners, context)
+
+  return aestheticsPerMark
+}
+
+function extractMappings (mappings) {
   let assigners = {}
   let scales = {}
   let funcs = {}
   let positioners = {}
 
-  // First, extract the assigners, scales, getter-funcs and positioners
-  for (let aesKey in aesthetics) {
-    let passedProp = aesthetics[aesKey]
+  for (let aesKey in mappings) {
+    let passedProp = mappings[aesKey]
 
     if (passedProp.hasOwnProperty('assign') && is(passedProp.assign)) {
       assigners[aesKey] = passedProp.assign
@@ -31,7 +52,10 @@ export default function (aesthetics, context) {
     }
   }
 
-  // Second, we will parse the scales
+  return { assigners, scales, funcs, positioners }
+}
+
+function parseScales (scales, context) {
   let parsedScales = {}
 
   for (let aesKey in scales) {
@@ -63,61 +87,59 @@ export default function (aesthetics, context) {
       }
     }
   }
+}
 
-  // Third, we apply the scales, functions and assigners and calculate props for each mark
-  let aestheticsPerMark = []
+function mapRow (row, i, aesthetics, scales, parsedScales, funcs, assigners, context) {
+  let props = {}
 
-  dataContainer.forEachRow((row, i) => {
-    let props = {}
-
-    for (let aesKey in aesthetics) {
-      // If a scale has been specified for this aesthetic:
-      if (is(scales[aesKey])) {
-        // If the scale was specified a string, it is assumed to be the
-        // identifier of a variable (see above).
-        if (scales[aesKey].constructor === String) {
-          let variable = scales[aesKey]
-          props[aesKey] = parsedScales[aesKey](row[variable])
-        }
-
-        // If the scale was specified as an object:
-        if (scales[aesKey].constructor === Object) {
-          // If scales[key].variable is specified, it will be used
-          // as the identifier of a variable.
-          if (scales[aesKey].hasOwnProperty('variable')) {
-            let variable = scales[aesKey].variable
-            props[aesKey] = parsedScales[aesKey](row[variable])
-          } else {
-            // If scales[key].variable is not specified, we will pass the
-            // entire row to the mapping function instead of just the value for
-            // that variable in that row.
-            props[aesKey] = parsedScales[aesKey](row)
-          }
-        }
-      } else if (is(funcs[aesKey])) {
-        // If a function was used instead of a scale object:
-        // We pass it the entire row, the row index and the context object
-        let value = funcs[aesKey](row, i, context)
-
-        // If the value is categorical or temporal, and a coord,
-        // we have to convert it to quantitative
-        let dimension = getDimension(aesKey)
-        if (dimension && [String, Date].includes(value.constructor)) {
-          props[aesKey] = convertToQuantitative(value, dimension, context.parentBranch)
-        } else {
-          props[aesKey] = value
-        }
-      } else if (is(assigners[aesKey])) {
-        // Finally, if there were no scales or getter functions specified,
-        // we will assign a constant value if necessary.
-        props[aesKey] = assigners[aesKey]
+  for (let aesKey in aesthetics) {
+    // If a scale has been specified for this aesthetic:
+    if (is(scales[aesKey])) {
+      // If the scale was specified a string, it is assumed to be the
+      // identifier of a variable (see above).
+      if (scales[aesKey].constructor === String) {
+        let variable = scales[aesKey]
+        props[aesKey] = parsedScales[aesKey](row[variable])
       }
+
+      // If the scale was specified as an object:
+      if (scales[aesKey].constructor === Object) {
+        // If scales[key].variable is specified, it will be used
+        // as the identifier of a variable.
+        if (scales[aesKey].hasOwnProperty('variable')) {
+          let variable = scales[aesKey].variable
+          props[aesKey] = parsedScales[aesKey](row[variable])
+        } else {
+          // If scales[key].variable is not specified, we will pass the
+          // entire row to the mapping function instead of just the value for
+          // that variable in that row.
+          props[aesKey] = parsedScales[aesKey](row)
+        }
+      }
+    } else if (is(funcs[aesKey])) {
+      // If a function was used instead of a scale object:
+      // We pass it the entire row, the row index and the context object
+      let value = funcs[aesKey](row, i, context)
+
+      // If the value is categorical or temporal, and a coord,
+      // we have to convert it to quantitative
+      let dimension = getDimension(aesKey)
+      if (dimension && [String, Date].includes(value.constructor)) {
+        props[aesKey] = convertToQuantitative(value, dimension, context.parentBranch)
+      } else {
+        props[aesKey] = value
+      }
+    } else if (is(assigners[aesKey])) {
+      // Finally, if there were no scales or getter functions specified,
+      // we will assign a constant value if necessary.
+      props[aesKey] = assigners[aesKey]
     }
+  }
 
-    aestheticsPerMark.push(props)
-  })
+  return props
+}
 
-  // Fourth, we will apply positioning if necessary
+function applyPositioners (aestheticsPerMark, positioners, context) {
   if (Object.keys(positioners).length > 0) {
     for (let aesKey in positioners) {
       let positioningOptions = positioners[aesKey]
