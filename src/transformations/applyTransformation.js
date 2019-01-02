@@ -16,7 +16,7 @@ export default function (data, instructions) {
 const allowedKeys = [
   'filter', 'arrange', 'select',
   'rename', 'mutate', 'transmute',
-  'summarise', 'sampleN', 'sampleFrac'
+  'summarise'
 ]
 
 function checkKey (obj) {
