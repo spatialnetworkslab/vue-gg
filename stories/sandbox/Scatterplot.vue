@@ -31,7 +31,7 @@
         :x2="500"
         :y1="100"
         :y2="500"
-        :domain="'explanatory'"
+        :scale="'explanatory'"
       />
 
       <vgg-y-grid
@@ -39,7 +39,7 @@
         :x2="500"
         :y1="100"
         :y2="500"
-        :domain="'dependent'"
+        :scale="'dependent'"
       />
 
       <vgg-x-axis
@@ -47,7 +47,7 @@
         :x2="500"
         :y1="50"
         :y2="100"
-        :domain="'explanatory'"
+        :scale="'explanatory'"
       />
 
       <vgg-y-axis
@@ -55,7 +55,7 @@
         :x2="550"
         :y1="100"
         :y2="500"
-        :domain="'dependent'"
+        :scale="'dependent'"
       />
 
     </vgg-graphic>

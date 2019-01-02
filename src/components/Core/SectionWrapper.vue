@@ -12,7 +12,7 @@ export default {
       default: 'scale'
     },
 
-    domains: {
+    scales: {
       type: [Object, undefined],
       default: undefined
     }
@@ -33,7 +33,7 @@ export default {
       return createElement(Section, {
         props: {
           type: this.type,
-          domains: this.domains,
+          scales: this.scales,
           ranges
         }
       }, this.$slots.default)
@@ -46,11 +46,7 @@ export default {
     }
 
     if (this.$$map) {
-      let aestheticsPerSection = mapAesthetics(
-        this.aesthetics,
-        this.context,
-        this.$$dataContainer
-      )
+      let aestheticsPerSection = mapAesthetics(this.aesthetics, this.context)
 
       // Create svg element for each mark from aesthetics
       let sections = []

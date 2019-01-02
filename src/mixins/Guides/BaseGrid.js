@@ -3,14 +3,14 @@ import { scaleTime } from 'd3-scale'
 
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 
-import parseDomain from '../../classes/CoordinateTree/parseDomain.js'
+import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
 
 export default {
   mixins: [Rectangular],
 
   props: {
-    domain: {
-      type: [Array, String, undefined],
+    scale: {
+      type: [Array, String, Object, undefined],
       default: undefined
     },
 
@@ -21,24 +21,24 @@ export default {
   },
 
   computed: {
-    _parsedDomain () {
+    _parsedScalingOptions () {
       let variableDomains
       if (this.$$dataContainer) {
         variableDomains = this.$$dataContainer.getDomains()
       }
-      return parseDomain(this.domain, variableDomains)
+      return parseScaleSpecification(this.scale, variableDomains)
     },
 
     _domain () {
-      return this._parsedDomain[0]
+      return this._parsedScalingOptions[0]
     },
 
     _domainType () {
-      return this._parsedDomain[1]
+      return this._parsedScalingOptions[1]
     },
 
     _scalingOptions () {
-      return this._parsedDomain[2]
+      return this._parsedScalingOptions[2]
     },
 
     ranges () {

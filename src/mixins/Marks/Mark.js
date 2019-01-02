@@ -36,7 +36,8 @@ export default {
       return {
         domains: this.$$dataContainer.getDomains(),
         ranges: this.parentBranch.domains,
-        parentBranch: this.parentBranch
+        parentBranch: this.parentBranch,
+        dataContainer: this.$$dataContainer
       }
     }
   },

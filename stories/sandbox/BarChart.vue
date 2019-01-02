@@ -10,7 +10,7 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :domains="{
+      :scales="{
         x: [0, 100],
         y: [0, 100]
       }"
@@ -38,7 +38,7 @@
           :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
           :y1="0"
           :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
-          :domains="{
+          :scales="{
             x: [-1, 1],
             y: [-1, 1]
           }"
@@ -62,7 +62,7 @@
       :x2="500"
       :y1="50"
       :y2="100"
-      :domain="'fruit'"
+      :scale="'fruit'"
       rotate-label
     />
 
@@ -71,7 +71,7 @@
       :x2="550"
       :y1="100"
       :y2="500"
-      :domain="{ variable: 'quantity', domain: [0, null] }"
+      :scale="{ variable: 'quantity', domain: [0, null] }"
     />
 
   </vgg-graphic>

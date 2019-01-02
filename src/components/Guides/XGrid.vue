@@ -4,8 +4,8 @@
     :x2="ranges.x2"
     :y1="ranges.y1"
     :y2="ranges.y2"
-    :domains="{
-      x: domain,
+    :scales="{
+      x: scale,
       y: [0, 1]
     }"
   >

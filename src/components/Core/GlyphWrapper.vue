@@ -61,11 +61,7 @@ export default {
     }
 
     if (this.$$map) {
-      let aestheticsPerGlyph = mapAesthetics(
-        this.aesthetics,
-        this.context,
-        this.$$dataContainer
-      )
+      let aestheticsPerGlyph = mapAesthetics(this.aesthetics, this.context)
 
       // Create svg element for each mark from aesthetics
       let glyphs = []

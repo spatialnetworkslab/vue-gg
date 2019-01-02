@@ -99,11 +99,7 @@ export default {
 
       if (this.$$map) {
         // Create the aesthetics for each mark
-        let aestheticsPerMark = mapAesthetics(
-          this.aesthetics,
-          this.context,
-          this.$$dataContainer
-        )
+        let aestheticsPerMark = mapAesthetics(this.aesthetics, this.context)
 
         // Create svg element for each mark from aesthetics
         let components = []
