@@ -1,6 +1,7 @@
 import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
 
 import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
+import parseRange from '../../utils/parseRange.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
@@ -38,12 +39,15 @@ export default class CoordinateTransformation {
       this.domains.y = domainY
     }
 
-    this.ranges = ranges
+    this.ranges = {
+      x: parseRange(ranges.x, scaleOptionsX),
+      y: parseRange(ranges.y, scaleOptionsY)
+    }
 
-    this.scaleX = createCoordsScale('x', domainXType, domainX, ranges.x,
+    this.scaleX = createCoordsScale('x', domainXType, domainX, this.ranges.x,
       scaleOptionsX
     )
-    this.scaleY = createCoordsScale('y', domainYType, domainY, ranges.y,
+    this.scaleY = createCoordsScale('y', domainYType, domainY, this.ranges.y,
       scaleOptionsY
     )
 
@@ -78,11 +82,11 @@ export default class CoordinateTransformation {
     }
 
     if (options.type === 'polar') {
-      let toTheta = createCoordsScale('x', 'quantitative', ranges.x, [0, 2 * Math.PI], {})
-      let toRadius = createCoordsScale('y', 'quantitative', ranges.y, [0, 1], {})
+      let toTheta = createCoordsScale('x', 'quantitative', this.ranges.x, [0, 2 * Math.PI], {})
+      let toRadius = createCoordsScale('y', 'quantitative', this.ranges.y, [0, 1], {})
 
-      let toRangeX = createCoordsScale('x', 'quantitative', [-1, 1], ranges.x, {})
-      let toRangeY = createCoordsScale('y', 'quantitative', [-1, 1], ranges.y, {})
+      let toRangeX = createCoordsScale('x', 'quantitative', [-1, 1], this.ranges.x, {})
+      let toRangeY = createCoordsScale('y', 'quantitative', [-1, 1], this.ranges.y, {})
 
       this.transform = ([x, y]) => {
         let scaledX = this.getX(x)
