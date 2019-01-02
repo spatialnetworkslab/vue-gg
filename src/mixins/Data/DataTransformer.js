@@ -1,10 +1,11 @@
 import DataContainer from '../../classes/DataContainer'
+import applyTranformation from '../../transformations/applyTransformation.js'
 
 export default {
   inject: ['$$dataContainerContext'],
 
   props: {
-    _: {
+    trans: {
       type: [Array, Object, undefined],
       default: undefined
     }
@@ -16,9 +17,13 @@ export default {
     },
 
     dataContainer () {
-      if (this._) {
-        let data = this.applyTransformations()
-        return new DataContainer(data)
+      if (this.$$dataContainer) {
+        if (this.trans) {
+          let data = this.applyTransformations()
+          return new DataContainer(data)
+        } else {
+          return this.$$dataContainer
+        }
       }
     }
   },
@@ -27,27 +32,16 @@ export default {
     applyTransformations () {
       let data = this.$$dataContainer.getDataset()
 
-      if (this._.constructor === Array) {
-        for (let transformation of this._) {
-          data = this.applyTranformation(data, transformation)
+      if (this.trans.constructor === Array) {
+        for (let transformation of this.trans) {
+          data = applyTranformation(data, transformation)
         }
       }
 
-      if (this._.constructor === Object) {
-        data = this.applyTranformation(data, this._)
+      if (this.trans.constructor === Object) {
+        data = applyTranformation(data, this.trans)
       }
 
-      return data
-    },
-
-    applyTranformation (data, transformation) {
-      if (transformation.constructor !== Object) {
-        throw new Error('Transformation(s) must be specified as objects')
-      }
-
-      checkKey(transformation)
-
-      // TODO
       return data
     }
   },
@@ -58,23 +52,5 @@ export default {
 
       return { $$dataContainerContext }
     }
-  }
-}
-
-// https://dplyr.tidyverse.org/articles/dplyr.html#single-table-verbs
-const allowedKeys = [
-  'filter', 'arrange', 'select',
-  'rename', 'mutate', 'transmute',
-  'summarise', 'sampleN', 'sampleFrac'
-]
-
-function checkKey (obj) {
-  let keys = Object.keys(obj)
-  if (keys.length !== 1) {
-    throw new Error('Invalid transformation syntax')
-  }
-
-  if (!allowedKeys.includes(keys[0])) {
-    throw new Error(`Unknown transformation ${keys[0]}`)
   }
 }
