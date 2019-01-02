@@ -9,8 +9,8 @@ export default {
       default: undefined
     },
 
-    dataType: {
-      type: [Object, undefined],
+    format: {
+      type: [String, undefined],
       default: undefined
     }
   },
@@ -22,7 +22,7 @@ export default {
 
     dataContainer () {
       if (this.data) {
-        return new DataContainer(this.data, this.dataType)
+        return new DataContainer(this.data, this.format)
       }
     }
   },

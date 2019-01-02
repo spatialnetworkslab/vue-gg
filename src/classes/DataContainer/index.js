@@ -78,10 +78,6 @@ export default class {
     return this._dataset
   }
 
-  getVariableData (variable) {
-    return this._dataset[variable]
-  }
-
   hasVariable (variable) {
     return this._domains.hasOwnProperty(variable)
   }
@@ -92,6 +88,10 @@ export default class {
 
   getDomains () {
     return this._domains
+  }
+
+  getColumn (variable) {
+    return this._dataset[variable]
   }
 
   forEachRow (callback) {

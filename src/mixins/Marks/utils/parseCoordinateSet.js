@@ -22,7 +22,7 @@ export default function (prop, { dimension }) {
         throw new Error(`Variable ${prop} not found`)
       }
 
-      let data = this.$$dataContainer.getVariableData(prop)
+      let data = this.$$dataContainer.getColumn(prop)
       return parseArray(data, parentRangeType, dimension, this.parentBranch)
     }
 
