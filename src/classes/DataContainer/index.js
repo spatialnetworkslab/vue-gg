@@ -94,14 +94,21 @@ export default class {
     return this._dataset[variable]
   }
 
-  forEachRow (callback) {
-    for (let i = 0; i < this._length; i++) {
-      let row = {}
-      for (let key in this._dataset) {
-        row[key] = this._dataset[key][i]
-      }
+  forEachRow (fn) {
+    let i = 0
 
-      callback(row, i)
+    let rowProxy = {}
+    let data = this._dataset
+
+    for (let colName in data) {
+      Object.defineProperty(rowProxy, colName, {
+        get: () => data[colName][i]
+      })
+    }
+
+    while (i < this._length) {
+      fn(rowProxy, i)
+      i++
     }
   }
 }
