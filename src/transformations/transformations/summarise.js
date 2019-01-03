@@ -1,5 +1,6 @@
 import aggregations from './aggregations'
 import checkKeyValuePair from '../utils/checkKeyValuePair.js'
+import { GroupedData } from './groupBy.js'
 
 export default function (data, summariseInstructions) {
   if (summariseInstructions.constructor !== Object) {
@@ -8,14 +9,20 @@ export default function (data, summariseInstructions) {
 
   let newData = {}
 
-  for (let newColName in summariseInstructions) {
-    newData[newColName] = []
+  if (data.constructor === GroupedData) {
+    for (let group of data.groups) {
 
-    let instruction = summariseInstructions[newColName]
-    let column = checkKeyValuePair(instruction, Object.keys(data))
-    let aggregation = instruction[column]
+    }
+  } else {
+    for (let newColName in summariseInstructions) {
+      newData[newColName] = []
 
-    newData[newColName].push(aggregations[aggregation](data[column]))
+      let instruction = summariseInstructions[newColName]
+      let column = checkKeyValuePair(instruction, Object.keys(data))
+      let aggregation = instruction[column]
+
+      newData[newColName].push(aggregations[aggregation](data[column]))
+    }
   }
 
   return newData

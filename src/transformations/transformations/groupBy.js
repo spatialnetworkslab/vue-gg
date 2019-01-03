@@ -2,7 +2,7 @@ export default function (data, groupByInstructions) {
   return new GroupedData(data, groupByInstructions)
 }
 
-class GroupedData {
+export class GroupedData {
   constructor (data, groupByInstructions) {
     this.groupedColumns = getGroupedColumns(data, groupByInstructions)
     this.groups = groupBy(data, this.groupedColumns)
@@ -31,19 +31,30 @@ function getGroupedColumns (data, groupByInstructions) {
 }
 
 // https://codereview.stackexchange.com/a/37132
-// TODO make column-oriented
-function groupBy (array, columns) {
+function groupBy (data, columns) {
   let fn = item => {
     return columns.map(col => item[col])
   }
 
   let groups = {}
 
-  array.forEach(row => {
-    let group = JSON.stringify(fn(row))
+  let i = 0
+  let length = data[Object.keys(data)[0]].length
+
+  let rowProxy = {}
+
+  for (let colName in data) {
+    Object.defineProperty(rowProxy, colName, {
+      get: () => data[colName][i]
+    })
+  }
+
+  while (i < length) {
+    let group = JSON.stringify(fn(rowProxy))
     groups[group] = groups[group] || []
-    groups[group].push(row)
-  })
+    groups[group].push(rowProxy)
+    i++
+  }
 
   return Object.keys(groups).map(group => {
     return groups[group]
