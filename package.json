@@ -12,7 +12,6 @@
     "now-build": "yarn run docs:build && mv docs/.vuepress/dist dist-docs"
   },
   "dependencies": {
-    "@observablehq/array": "^0.0.4",
     "d3-array": "^2.0.2",
     "d3-interpolate": "^1.3.2",
     "d3-scale": "^2.1.2",
