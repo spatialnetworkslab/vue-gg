@@ -11,9 +11,15 @@
         { select: ['apple', 'banana', 'durian'] },
         { filter: ({ durian }) => durian > 25 },
         { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] },
-        { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } }
+        { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } },
+        { summarize: { appleSum: { apple: 'sum' }, bananaMean: { banana: 'mean' } } }
       ]"
     >
+
+      <vgg-point
+        :x="300"
+        :y="300"
+      />
 
     </vgg-transform>
 
