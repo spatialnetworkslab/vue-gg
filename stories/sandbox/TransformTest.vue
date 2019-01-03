@@ -7,9 +7,10 @@
 
     <vgg-transform
       :trans="[
-        { select: ['a', 'b', 'd'] },
-        { filter: ({ d }) => d > 25 },
-        { arrange: [{ b: 'ascending' }, { a: 'descending' }] }
+        { rename: { a: 'apple', b: 'banana', d: 'durian' } },
+        { select: ['apple', 'banana', 'durian'] },
+        { filter: ({ durian }) => durian > 25 },
+        { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] }
       ]"
     >
 
