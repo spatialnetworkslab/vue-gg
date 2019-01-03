@@ -1,4 +1,4 @@
-import transformations from './transformations.js'
+import transformations from './transformations'
 import checkKeyValuePair from './utils/checkKeyValuePair.js'
 
 export default function (data, instructions) {

@@ -10,6 +10,6 @@ export default function (data, selection) {
 
     return data
   } else {
-    throw new Error('Select can only be used with a string or array of strings')
+    throw new Error('select can only be used with a string or array of strings')
   }
 }

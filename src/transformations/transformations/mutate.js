@@ -17,7 +17,7 @@ export function mutate (data, mutateObj) {
   while (i < length) {
     for (let key in mutateObj) {
       let mutateFunc = mutateObj[key]
-      data[key][i] = mutateFunc(rowProxy)
+      data[key][i] = mutateFunc(rowProxy, i)
     }
 
     i++
