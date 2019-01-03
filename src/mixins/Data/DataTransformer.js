@@ -43,6 +43,11 @@ export default {
         data = applyTranformation(data, this.trans)
       }
 
+      console.log('a    ||    b')
+      for (let i = 0; i < 20; i++) {
+        console.log(`${data.a[i]}    ||   ${data.b[i]}`)
+      }
+
       return data
     }
   },

@@ -8,6 +8,7 @@ import PlotLines from './sandbox/PlotLines.vue'
 import TestCategoricalDomain from './sandbox/TestCategoricalDomain.vue'
 import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
 import TestAbsolute from './sandbox/TestAbsolute.vue'
+import TransformTest from './sandbox/TransformTest.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -19,3 +20,4 @@ storiesOf('Sandbox', module)
   .add('Test: categorical domain', () => (TestCategoricalDomain))
   .add('Test: nested coordinate system', () => (NestedCoordinateSystem))
   .add('Test: absolute', () => (TestAbsolute))
+  .add('Test: transform', () => (TransformTest))

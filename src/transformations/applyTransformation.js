@@ -1,13 +1,13 @@
 import transformations from './transformations.js'
 
-export default function (dataContainer, instructions) {
+export default function (data, instructions) {
   if (instructions.constructor !== Object) {
     throw new Error('Transformation(s) must be specified as objects')
   }
 
   let key = checkKey(instructions)
 
-  return transformations[key](dataContainer, instructions[key])
+  return transformations[key](data, instructions[key])
 }
 
 // https://dplyr.tidyverse.org/articles/dplyr.html#single-table-verbs
