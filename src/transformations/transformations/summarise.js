@@ -1,5 +1,5 @@
 import aggregations from './aggregations'
-import checkKeyValuePair from './utils/checkKeyValuePair.js'
+import checkKeyValuePair from '../utils/checkKeyValuePair.js'
 
 export default function (data, summariseInstructions) {
   if (summariseInstructions.constructor !== Object) {
