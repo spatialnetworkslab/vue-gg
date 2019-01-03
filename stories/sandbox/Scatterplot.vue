@@ -8,8 +8,7 @@
 
       <vgg-transform
         :trans="[
-          { filter: explanatory => explanatory > 50 },
-          { filter: dependent => dependent > 50 }
+          { filter: ({ explanatory, dependent }) => explanatory > 50 && dependent > 50 }
         ]"
       >
 

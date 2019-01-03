@@ -1,5 +1,6 @@
 import DataContainer from '../../classes/DataContainer'
 import applyTranformation from '../../transformations/applyTransformation.js'
+import cloneDeep from 'lodash.clonedeep'
 
 export default {
   inject: ['$$dataContainerContext'],
@@ -30,7 +31,7 @@ export default {
 
   methods: {
     applyTransformations () {
-      let data = this.$$dataContainer.getDataset()
+      let data = cloneDeep(this.$$dataContainer.getDataset())
 
       if (this.trans.constructor === Array) {
         for (let transformation of this.trans) {
