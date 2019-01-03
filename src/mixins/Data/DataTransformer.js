@@ -43,6 +43,8 @@ export default {
         data = applyTranformation(data, this.trans)
       }
 
+      console.log(data)
+
       return data
     }
   },

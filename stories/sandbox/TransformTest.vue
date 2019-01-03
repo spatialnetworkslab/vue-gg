@@ -10,7 +10,8 @@
         { rename: { a: 'apple', b: 'banana', d: 'durian' } },
         { select: ['apple', 'banana', 'durian'] },
         { filter: ({ durian }) => durian > 25 },
-        { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] }
+        { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] },
+        { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } }
       ]"
     >
 
