@@ -9,6 +9,23 @@ export class GroupedData {
   }
 }
 
+class Group {
+  constructor (data, groupedValues) {
+    this.data = {}
+    this.groupedValues = groupedValues
+
+    for (let col in data) {
+      this.data[col] = []
+    }
+  }
+
+  addRow (data, i) {
+    for (let col in data) {
+      this.data[col].push(data[col][i])
+    }
+  }
+}
+
 function getGroupedColumns (data, groupByInstructions) {
   let con = groupByInstructions.constructor
   if (![String, Array].includes(con)) {
@@ -30,32 +47,38 @@ function getGroupedColumns (data, groupByInstructions) {
   return groupedColumns
 }
 
-// https://codereview.stackexchange.com/a/37132
-function groupBy (data, columns) {
-  let fn = item => {
-    return columns.map(col => item[col])
+function getGroupedValues (data, i, columns) {
+  let groupedValues = []
+  for (let col of columns) {
+    groupedValues.push(data[col][i])
   }
 
+  return groupedValues
+}
+
+function groupBy (data, groupedColumns) {
   let groups = {}
 
   let i = 0
+
   let length = data[Object.keys(data)[0]].length
 
-  let rowProxy = {}
-
-  for (let colName in data) {
-    Object.defineProperty(rowProxy, colName, {
-      get: () => data[colName][i]
-    })
-  }
-
   while (i < length) {
-    let group = JSON.stringify(fn(rowProxy))
-    groups[group] = groups[group] || []
-    groups[group].push(rowProxy)
+    // Ge grouped values
+    let groupedValues = getGroupedValues(data, i, groupedColumns)
+
+    // Get unique identifier for group
+    let groupID = JSON.stringify(groupedValues)
+
+    // If groups object has no entry for this group yet: create new group object
+    groups[groupID] = groups[groupID] || new Group(data, groupedValues)
+
+    // Add row to group
+    groups[groupID].addRow(data, i)
     i++
   }
 
+  // Convert groups object to array
   return Object.keys(groups).map(group => {
     return groups[group]
   })
