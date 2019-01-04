@@ -7,13 +7,18 @@ export default function (data, summariseInstructions) {
     throw new Error('summarise must be an object')
   }
 
-  let newData = initNewData(summariseInstructions)
+  let newData = initNewData(summariseInstructions, data.groupedColumns)
 
   if (data.constructor === GroupedData) {
     checkSummariseInstructions(summariseInstructions, data.groupedColumns)
 
     for (let group of data.groups) {
       newData = summariseGroup(group.data, summariseInstructions, newData)
+      newData = attachGroupedValues(
+        data.groupedColumns,
+        group.groupedValues,
+        newData
+      )
     }
   } else {
     newData = summariseGroup(data, summariseInstructions, newData)
@@ -22,9 +27,12 @@ export default function (data, summariseInstructions) {
   return newData
 }
 
-function initNewData (summariseInstructions) {
+function initNewData (summariseInstructions, groupedColumns) {
   let newData = {}
   for (let newCol in summariseInstructions) { newData[newCol] = [] }
+  if (groupedColumns) {
+    for (let col of groupedColumns) { newData[col] = [] }
+  }
   return newData
 }
 
@@ -48,4 +56,15 @@ function checkSummariseInstructions (summariseInstructions, groupedColumns) {
       throw new Error(`Cannot summarise the column '${name}': used for grouping`)
     }
   }
+}
+
+function attachGroupedValues (groupedColumns, groupedValues, newData) {
+  for (let i = 0; i < groupedColumns.length; i++) {
+    let col = groupedColumns[i]
+    let val = groupedValues[i]
+
+    newData[col].push(val)
+  }
+
+  return newData
 }
