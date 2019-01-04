@@ -1,3 +1,5 @@
+import getDataType from '../../utils/getDataType.js'
+
 export default function (data, sortInstructions) {
   if (sortInstructions.constructor === Object) {
     return sort(data, sortInstructions)
@@ -12,10 +14,34 @@ export default function (data, sortInstructions) {
   }
 }
 
-// https://beta.observablehq.com/@mbostock/manipulating-flat-arrays
 const sortFuncs = {
-  'ascending': (a, b) => a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN,
-  'descending': (a, b) => b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN
+  quantitative: {
+    // https://beta.observablehq.com/@mbostock/manipulating-flat-arrays
+    ascending: (a, b) => a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN,
+    descending: (a, b) => b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN
+  },
+  categorical: {
+    ascending: (a, b) => {
+      let sorted = [a, b].sort()
+      return sorted[0] === a ? -1 : 1
+    },
+    descending: (a, b) => {
+      let sorted = [a, b].sort()
+      return sorted[0] === a ? 1 : -1
+    }
+  },
+  temporal: {
+    ascending: (c, d) => {
+      let a = c.getTime()
+      let b = c.getTime()
+      return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN
+    },
+    descending: (c, d) => {
+      let a = c.getTime()
+      let b = c.getTime()
+      return b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN
+    }
+  }
 }
 
 function sort (data, sortInstructions) {
@@ -26,9 +52,11 @@ function sort (data, sortInstructions) {
   let variable = Object.keys(sortInstructions)[0]
   let sortMethod = sortInstructions[variable]
 
+  let dataType = getDataType(data[variable][0])
+
   let sortFunc
   if (sortMethod.constructor === String) {
-    sortFunc = sortFuncs[sortMethod]
+    sortFunc = sortFuncs[dataType][sortMethod]
   }
   if (sortMethod.constructor === Function) {
     sortFunc = sortMethod

@@ -45,7 +45,7 @@ export default {
     return {
       data: {
         a: this.generate(100),
-        b: this.generate(10),
+        b: this.generate(10, true),
         c: this.generate(100),
         d: this.generate(100)
       }
@@ -53,11 +53,16 @@ export default {
   },
 
   methods: {
-    generate (spread) {
+    generate (spread, str) {
       const N = 100
       let col = new Array(N)
       for (let i = 0; i < N; i++) {
-        col[i] = Math.floor(Math.random() * spread)
+        let randInt = Math.floor(Math.random() * spread)
+        if (!str) { col[i] = randInt }
+        if (str) {
+          let alphabet = 'abcdefghijklmnopqrstuvwxyz'
+          col[i] = alphabet[randInt]
+        }
       }
       return col
     }
