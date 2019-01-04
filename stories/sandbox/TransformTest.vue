@@ -17,10 +17,22 @@
       ]"
     >
 
-      <vgg-point
-        :x="300"
-        :y="300"
-      />
+      <vgg-section
+        :x1="100"
+        :x2="500"
+        :y1="100"
+        :y2="500">
+
+        <vgg-map>
+
+          <vgg-point
+            :x="{ scale: 'appleSum' }"
+            :y="{ scale: 'maxRatio' }"
+          />
+
+        </vgg-map>
+
+      </vgg-section>
 
     </vgg-transform>
 
