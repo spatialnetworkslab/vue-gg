@@ -4,6 +4,7 @@ import arrange from './arrange.js'
 import rename from './rename.js'
 import { mutate, transmute } from './mutate.js'
 import summarise from './summarise.js'
+import mutarise from './mutarise.js'
 import groupBy from './groupBy.js'
 
 export default {
@@ -15,5 +16,7 @@ export default {
   transmute,
   summarise,
   'summarize': summarise,
+  mutarise,
+  'mutarize': mutarise,
   groupBy
 }

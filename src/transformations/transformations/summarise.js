@@ -27,7 +27,7 @@ export default function (data, summariseInstructions) {
   return newData
 }
 
-function initNewData (summariseInstructions, groupedColumns) {
+export function initNewData (summariseInstructions, groupedColumns) {
   let newData = {}
   for (let newCol in summariseInstructions) { newData[newCol] = [] }
   if (groupedColumns) {
@@ -36,7 +36,7 @@ function initNewData (summariseInstructions, groupedColumns) {
   return newData
 }
 
-function summariseGroup (data, summariseInstructions, newData) {
+export function summariseGroup (data, summariseInstructions, newData) {
   for (let newColName in summariseInstructions) {
     let instruction = summariseInstructions[newColName]
     let column = checkKeyValuePair(instruction, Object.keys(data))
@@ -48,7 +48,7 @@ function summariseGroup (data, summariseInstructions, newData) {
   return newData
 }
 
-function checkSummariseInstructions (summariseInstructions, groupedColumns) {
+export function checkSummariseInstructions (summariseInstructions, groupedColumns) {
   for (let newColName in summariseInstructions) {
     let instruction = summariseInstructions[newColName]
     let name = Object.keys(instruction)[0]
