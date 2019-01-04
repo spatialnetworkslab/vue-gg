@@ -1,6 +1,8 @@
+import dataLength from '../utils/dataLength.js'
+
 export function mutate (data, mutateObj) {
   let i = 0
-  let length = data[Object.keys(data)[0]].length
+  let length = dataLength(data)
 
   let rowProxy = {}
 

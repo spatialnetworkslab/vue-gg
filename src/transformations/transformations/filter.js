@@ -1,10 +1,12 @@
+import dataLength from '../utils/dataLength.js'
+
 export default function (data, filterFunction) {
   if (filterFunction.constructor !== Function) {
     throw new Error('Filter transformation can only be specified as Function')
   }
 
   let i = 0
-  let length = data[Object.keys(data)[0]].length
+  let length = dataLength(data)
 
   let rowProxy = {}
 

@@ -1,3 +1,5 @@
+import dataLength from '../utils/dataLength.js'
+
 export default function (data, groupByInstructions) {
   return new GroupedData(data, groupByInstructions)
 }
@@ -61,7 +63,7 @@ function groupBy (data, groupedColumns) {
 
   let i = 0
 
-  let length = data[Object.keys(data)[0]].length
+  let length = dataLength(data)
 
   while (i < length) {
     // Ge grouped values

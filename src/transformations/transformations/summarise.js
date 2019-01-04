@@ -7,23 +7,45 @@ export default function (data, summariseInstructions) {
     throw new Error('summarise must be an object')
   }
 
-  let newData = {}
+  let newData = initNewData(summariseInstructions)
 
   if (data.constructor === GroupedData) {
-    for (let group of data.groups) {
+    checkSummariseInstructions(summariseInstructions, data.groupedColumns)
 
+    for (let group of data.groups) {
+      newData = summariseGroup(group.data, summariseInstructions, newData)
     }
   } else {
-    for (let newColName in summariseInstructions) {
-      newData[newColName] = []
-
-      let instruction = summariseInstructions[newColName]
-      let column = checkKeyValuePair(instruction, Object.keys(data))
-      let aggregation = instruction[column]
-
-      newData[newColName].push(aggregations[aggregation](data[column]))
-    }
+    newData = summariseGroup(data, summariseInstructions, newData)
   }
 
   return newData
+}
+
+function initNewData (summariseInstructions) {
+  let newData = {}
+  for (let newCol in summariseInstructions) { newData[newCol] = [] }
+  return newData
+}
+
+function summariseGroup (data, summariseInstructions, newData) {
+  for (let newColName in summariseInstructions) {
+    let instruction = summariseInstructions[newColName]
+    let column = checkKeyValuePair(instruction, Object.keys(data))
+    let aggregation = instruction[column]
+
+    newData[newColName].push(aggregations[aggregation](data[column]))
+  }
+
+  return newData
+}
+
+function checkSummariseInstructions (summariseInstructions, groupedColumns) {
+  for (let newColName in summariseInstructions) {
+    let instruction = summariseInstructions[newColName]
+    let name = Object.keys(instruction)[0]
+    if (groupedColumns.includes(name)) {
+      throw new Error(`Cannot summarise the column '${name}': used for grouping`)
+    }
+  }
 }
