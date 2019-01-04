@@ -21,7 +21,6 @@
             :radius="{ scale: { variable: 'dependent' } }"
             :color="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
           />
-
         </vgg-map>
 
       </vgg-section>

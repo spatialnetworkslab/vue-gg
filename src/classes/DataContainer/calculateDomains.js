@@ -1,53 +1,66 @@
 import getDataType from '../../utils/getDataType.js'
 
-export function initDomains (firstRow) {
-  let domainPerVariable = {}
+export default function (data) {
+  let domains = {}
+  let types = {}
 
-  for (let variableKey in firstRow) {
-    let variableType = getDataType(firstRow[variableKey])
+  for (let key in data) {
+    let col = data[key]
+    let type = getDataType(col[0])
+    types[key] = type
 
-    if (variableType === 'quantitative') {
-      domainPerVariable[variableKey] = [Infinity, -Infinity]
+    domains[key] = initDomain(type)
+
+    for (let i = 0; i < col.length; i++) {
+      let value = col[i]
+      if (getDataType(value) !== type) {
+        throw new Error(`Invalid column ${key}: column contains multiple data types`)
+      }
+
+      domains[key] = updateDomain(domains[key], value, type)
     }
-
-    if (variableType === 'categorical') {
-      domainPerVariable[variableKey] = []
-    }
-
-    if (variableType === 'temporal') {
-      // https://en.wikipedia.org/wiki/Unix_time
-      domainPerVariable[variableKey] = [new Date('19 January 2038'), new Date(0)]
-    }
-
-    // if (variableType === 'nested') {} // TODO
   }
-  return domainPerVariable
+
+  return { domains, types }
 }
 
-export function updateDomains (row, currentDomains) {
-  for (let variableKey in row) {
-    let value = row[variableKey]
-    let variableType = getDataType(value)
-    let domain = currentDomains[variableKey]
-
-    if (variableType === 'quantitative') {
-      if (domain[0] >= value) { domain[0] = value }
-      if (domain[1] <= value) { domain[1] = value }
+function initDomain (type) {
+  let domain
+  switch (type) {
+    case 'quantitative': {
+      domain = [Infinity, -Infinity]
+      break
     }
-
-    if (variableType === 'categorical') {
-      if (!domain.includes(value)) { domain.push(value) }
+    case 'categorical': {
+      domain = []
+      break
     }
-
-    if (variableType === 'temporal') {
-      let epoch = value.getTime()
-
-      if (domain[0].getTime() >= epoch) { domain[0] = value }
-      if (domain[1].getTime() <= epoch) { domain[1] = value }
+    case 'temporal': {
+      // https://en.wikipedia.org/wiki/Unix_time
+      domain = [new Date('19 January 2038'), new Date(0)]
+      break
     }
-
-    // if (variableType === 'nested') {} // TODO
   }
 
-  return currentDomains
+  return domain
+}
+
+function updateDomain (domain, value, type) {
+  if (type === 'quantitative') {
+    if (domain[0] >= value) { domain[0] = value }
+    if (domain[1] <= value) { domain[1] = value }
+  }
+
+  if (type === 'categorical') {
+    if (!domain.includes(value)) { domain.push(value) }
+  }
+
+  if (type === 'temporal') {
+    let epoch = value.getTime()
+
+    if (domain[0].getTime() >= epoch) { domain[0] = value }
+    if (domain[1].getTime() <= epoch) { domain[1] = value }
+  }
+
+  return domain
 }
