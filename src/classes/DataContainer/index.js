@@ -4,7 +4,7 @@ import calculateDomains from './calculateDomains.js'
 
 export default class {
   constructor (data, format) {
-    this._dataset = []
+    this._dataset = {}
     this._domains = {}
 
     if (!format) {
@@ -35,7 +35,7 @@ export default class {
           this.setGeoJSON(data)
           break
         }
-        default: throw new Error('Unknown type!')
+        default: throw new Error('Unknown format!')
       }
     }
   }
@@ -43,10 +43,10 @@ export default class {
   setColDataFrame (data) {
     let length = checkFormat(data)
 
-    let { domains, types } = calculateDomains(data)
-
     this._length = length
     this._dataset = data
+
+    let { domains, types } = calculateDomains(data, length)
     this._domains = domains
     this._types = types
   }
@@ -140,6 +140,11 @@ function checkFormat (data) {
 
 function initColumnDF (data) {
   let firstRow = data[0]
+
+  if (firstRow.constructor !== Object) {
+    throw new Error('Empty dataframe (0 rows)')
+  }
+
   let columnKeys = Object.keys(firstRow)
 
   let columnDataFrame = {}

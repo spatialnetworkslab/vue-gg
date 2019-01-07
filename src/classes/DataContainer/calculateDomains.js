@@ -1,23 +1,35 @@
 import getDataType from '../../utils/getDataType.js'
 
-export default function (data) {
+export default function (data, length) {
   let domains = {}
   let types = {}
 
   for (let key in data) {
-    let col = data[key]
-    let type = getDataType(col[0])
-    types[key] = type
+    if (length === 0) {
+      types[key] = 'quantitative'
+      domains[key] = [0, 1]
+      console.warn('Empty dataframe: ')
+      console.warn(JSON.stringify(data))
+    } else {
+      let col = data[key]
+      let firstVal = col[0]
+      let type = getDataType(firstVal)
+      types[key] = type
 
-    domains[key] = initDomain(type)
+      if (length === 1) {
+        domains[key] = initDummyDomain(type, firstVal)
+      } else {
+        domains[key] = initDomain(type)
 
-    for (let i = 0; i < col.length; i++) {
-      let value = col[i]
-      if (getDataType(value) !== type) {
-        throw new Error(`Invalid column ${key}: column contains multiple data types`)
+        for (let i = 0; i < col.length; i++) {
+          let value = col[i]
+          if (getDataType(value) !== type) {
+            throw new Error(`Invalid column ${key}: column contains multiple data types`)
+          }
+
+          domains[key] = updateDomain(domains[key], value, type)
+        }
       }
-
-      domains[key] = updateDomain(domains[key], value, type)
     }
   }
 
@@ -60,6 +72,28 @@ function updateDomain (domain, value, type) {
 
     if (domain[0].getTime() >= epoch) { domain[0] = value }
     if (domain[1].getTime() <= epoch) { domain[1] = value }
+  }
+
+  return domain
+}
+
+function getDay (date, days) {
+  return new Date(new Date().setDate(date.getDate() - days))
+}
+
+function initDummyDomain (type, value) {
+  let domain
+
+  if (type === 'quantitative') {
+    domain = [value - 1, value + 1]
+  }
+
+  if (type === 'categorical') {
+    domain = [value]
+  }
+
+  if (type === 'temporal') {
+    domain = [getDay(value, -1), getDay(value, 1)]
   }
 
   return domain
