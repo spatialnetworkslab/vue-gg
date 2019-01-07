@@ -30,32 +30,38 @@ export default function (data, length) {
 
       console.warn(`Column '${key}' contains no valid values.`)
       console.warn('Using domain [0, 1] as placeholder.')
-    } else if (nValidValues === 1) {
+    } else {
       // Calculate the type based on the only valid value
       let type = getDataType(firstValidValue)
       types[key] = type
 
-      let domain = initDummyDomain(type, firstValidValue)
-      domains[key] = domain
+      let uniqueValues = calculateUniqueValues(col)
 
-      console.warn(`Column '${key}' contains only 1 valid value.`)
-      console.warn(`Using domain ${JSON.stringify(domain)}`)
-    } else {
-      // Calculate the type based on the first encountered valid value
-      let type = getDataType(firstValidValue)
-      types[key] = type
+      if (nValidValues === 1) {
+        let domain = initDummyDomain(type, firstValidValue)
+        domains[key] = domain
 
-      domains[key] = initDomain(type)
+        console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
+        console.warn(`Using domain ${JSON.stringify(domain)}`)
+      } else if (uniqueValues === 1 && type !== 'categorical') {
+        let domain = initDummyDomain(type, firstValidValue)
+        domains[key] = domain
 
-      for (let i = 0; i < col.length; i++) {
-        let value = col[i]
+        console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
+        console.warn(`Using domain ${JSON.stringify(domain)}`)
+      } else {
+        domains[key] = initDomain(type)
 
-        if (!invalid(value)) {
-          if (getDataType(value) !== type) {
-            throw new Error(`Invalid column ${key}: column contains multiple data types`)
+        for (let i = 0; i < col.length; i++) {
+          let value = col[i]
+
+          if (!invalid(value)) {
+            if (getDataType(value) !== type) {
+              throw new Error(`Invalid column ${key}: column contains multiple data types`)
+            }
+
+            domains[key] = updateDomain(domains[key], value, type)
           }
-
-          domains[key] = updateDomain(domains[key], value, type)
         }
       }
     }
@@ -139,4 +145,14 @@ function initDummyDomain (type, value) {
   }
 
   return domain
+}
+
+function calculateUniqueValues (col) {
+  let uniqueVals = {}
+  for (let val of col) {
+    let str = JSON.stringify(val)
+    uniqueVals[str] = 0
+  }
+
+  return Object.keys(uniqueVals).length
 }

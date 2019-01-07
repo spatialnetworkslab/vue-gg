@@ -15,7 +15,7 @@
       <vgg-map>
 
         <vgg-point
-          :x="{ scale: 'a' }"
+          :x="{ scale: 'c' }"
           :y="{ scale: 'b' }"
         />
 
@@ -42,7 +42,14 @@ export default {
           6,
           10,
           NaN
-        ] }
+        ],
+        c: [
+          4,
+          4,
+          4,
+          4
+        ]
+      }
     }
   }
 }
