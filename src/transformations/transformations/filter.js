@@ -8,17 +8,10 @@ export default function (data, filterFunction) {
   let i = 0
   let length = dataLength(data)
 
-  let rowProxy = {}
-
-  for (let colName in data) {
-    Object.defineProperty(rowProxy, colName, {
-      get: () => data[colName][i]
-    })
-  }
-
   while (i < length) {
-    console.log(Object.keys(rowProxy))
-    if (filterFunction(rowProxy, i)) {
+    let row = {}
+    for (let colName in data) { row[colName] = data[colName][i] }
+    if (filterFunction(row, i)) {
       i++
     } else {
       for (let colName in data) {
