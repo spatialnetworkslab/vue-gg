@@ -71,7 +71,40 @@ export default class {
     if (data.constructor !== Object) {
       throw new Error('Data of type geojson must be passed as an object')
     }
-    // TODO
+
+    // initialize column data frame
+    let cols = {}
+    let geometryBBox
+    let firstFeature = data.features[0]
+    let colNames = ['geometry', ...Object.keys(firstFeature.properties)]
+    for (let name of colNames) { cols[name] = [] }
+
+    data.features.forEach(feat => {
+      let geometry = extractGeometry(feat)
+      geometryBBox = getBBox(geometry)
+      let attributes = extractAttributes(feat)
+
+      // create columns
+      cols.geometry.push(geometry)
+      for (let colName in attributes) { cols[colName].push(attributes[colName]) }
+    })
+
+    let length = checkFormat(cols)
+
+    // calculate domain for each column except for the geometry column
+    let attributeCols = Object.assign(...Object.keys(cols)
+      .filter(key => key !== 'geometry')
+      .map(key => ({ [key]: cols[key] })))
+
+    let { domains, types } = calculateDomains(attributeCols)
+
+    domains.geometry = geometryBBox
+    types.geometry = 'geometry'
+
+    this._length = length
+    this._dataset = cols
+    this._domains = domains
+    this._types = types
   }
 
   getDataset () {
@@ -149,4 +182,37 @@ function initColumnDF (data) {
   }
 
   return columnDataFrame
+}
+
+function extractGeometry (feat) {
+  return feat.geometry
+}
+
+function extractAttributes (feat) {
+  return feat.properties
+}
+
+function flattenCoordArr (geometry) {
+  return geometry.type === 'Polygon' ? geometry.coordinates.flat()
+    : geometry.type === 'MultiPolygon' ? geometry.coordinates.flat(2)
+      : 'geometry type is not known'
+}
+
+function getBBox (geometry) {
+  let bounds = {}
+  let lon, lat
+
+  let coords = flattenCoordArr(geometry)
+
+  coords.forEach(coord => {
+    lon = coord[0]
+    lat = coord[1]
+
+    bounds.xMin = bounds.xMin < lon ? bounds.xMin : lon
+    bounds.xMax = bounds.xMax > lon ? bounds.xMax : lon
+    bounds.yMin = bounds.yMin < lat ? bounds.yMin : lat
+    bounds.yMax = bounds.yMax > lat ? bounds.yMax : lat
+  })
+
+  return { x: [bounds.xMin, bounds.xMax], y: [bounds.yMin, bounds.yMax] }
 }
