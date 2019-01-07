@@ -17,6 +17,7 @@ export default function (data, filterFunction) {
   }
 
   while (i < length) {
+    console.log(Object.keys(rowProxy))
     if (filterFunction(rowProxy, i)) {
       i++
     } else {

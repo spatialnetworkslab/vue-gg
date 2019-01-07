@@ -13,15 +13,15 @@ export default function (data, length) {
 
   for (let key in data) {
     // We will try to guess the type from the first VALID value of each column.
-    // If the dataframe has a length of 1, we will set a dummy domain.
+    // If the dataframe has < 2 valid values, we will set a dummy domain.
     let col = data[key]
 
     // Get the first valid value and the total number of valid values
     let { firstValidValue, nValidValues } = getFirstValidValue(col, key, length)
 
     // Warn user if a column contains a lot of invalid values
-    if (nValidValues / length > 0.25) {
-      console.warn(`Column '${key}' contains more than 25% invalid values`)
+    if (nValidValues / length < 0.5) {
+      console.warn(`Column '${key}' contains more than 50% invalid values`)
     }
 
     if (nValidValues === 0) {

@@ -5,19 +5,23 @@
     :data="data"
   >
 
-    <vgg-point
+    <!-- <vgg-point
       :x="300"
       :y="300"
-    />
+    /> -->
 
-    <vgg-map>
+    <vgg-transform :trans="{ dropNA: null }">
 
-      <vgg-point
-        :x="{ scale: 'a' }"
-        :y="{ scale: 'b' }"
-      />
+      <vgg-map>
 
-    </vgg-map>
+        <vgg-point
+          :x="{ scale: 'a' }"
+          :y="{ scale: 'b' }"
+        />
+
+      </vgg-map>
+
+    </vgg-transform>
 
   </vgg-graphic>
 </template>
@@ -26,7 +30,19 @@
 export default {
   data () {
     return {
-      data: { a: ['banana'], b: [5] }
+      data: {
+        a: [
+          'banana',
+          'banana',
+          NaN,
+          'pear'
+        ],
+        b: [
+          5,
+          6,
+          10,
+          NaN
+        ] }
     }
   }
 }
