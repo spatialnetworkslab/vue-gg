@@ -10,6 +10,7 @@ import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
 import TestAbsolute from './sandbox/TestAbsolute.vue'
 import TransformTest from './sandbox/TransformTest.vue'
 import GeoShape from './sandbox/GeoShape.vue'
+import MissingInvalidData from './sandbox/MissingInvalidData.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -23,3 +24,4 @@ storiesOf('Sandbox', module)
   .add('Test: absolute', () => (TestAbsolute))
   .add('Test: transform', () => (TransformTest))
   .add('Test: GeoShape', () => (GeoShape))
+  .add('Test: missing', () => (MissingInvalidData))
