@@ -41,6 +41,11 @@ export default {
     close: {
       type: Boolean,
       default: false
+    },
+
+    interpolate: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -93,6 +98,7 @@ export default {
     },
 
     createPath (points) {
+      console.log(this._interpolate)
       if (this._interpolate) {
         return interpolatePath(points, this.$$transform)
       }
