@@ -10,7 +10,7 @@ export default function (data, sortInstructions) {
     }
     return data
   } else {
-    throw new Error('arrange required a key-value object or array of key-value objects')
+    throw new Error('arrange requires a key-value object or array of key-value objects')
   }
 }
 

@@ -1,7 +1,7 @@
 import Mark from './Mark.js'
-import mapAesthetics from '../../components/Marks/utils/mapAesthetics.js'
 import { createPath, interpolatePath } from '../../components/Marks/utils/createPath.js'
 import checkPoints from '../../components/Marks/utils/checkPoints.js'
+import { invalidPoint } from '../../utils/equals.js'
 
 export default {
   mixins: [Mark],
@@ -42,6 +42,11 @@ export default {
     close: {
       type: Boolean,
       default: false
+    },
+
+    interpolate: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -63,17 +68,32 @@ export default {
 
   methods: {
     generatePoints (aesthetics) {
-      if (aesthetics.points) { return aesthetics.points }
-
-      if (aesthetics.x.length !== aesthetics.y.length) {
+      let points = []
+      if (aesthetics.points) {
+        points = aesthetics.points
+      } else if (aesthetics.x.length !== aesthetics.y.length) {
         throw new Error(`'x' and 'y' coordinate sets have different lengths`)
       } else {
-        let zipped = []
         for (let i = 0; i < aesthetics.x.length; ++i) {
-          zipped.push([aesthetics.x[i], aesthetics.y[i]])
+          points.push([aesthetics.x[i], aesthetics.y[i]])
         }
-        return zipped
       }
+
+      return this.filterInvalid(points)
+    },
+
+    filterInvalid (points) {
+      let filtered = []
+      for (let i = 0; i < points.length; i++) {
+        let point = points[i]
+        if (invalidPoint(point)) {
+          console.warn(`Skipped invalid point ${JSON.stringify(point)} at index ${i}`)
+        } else {
+          filtered.push(point)
+        }
+      }
+
+      return filtered
     },
 
     sort (points) {
@@ -106,47 +126,27 @@ export default {
     renderSVG (createElement, aesthetics) {
       let points = this.generatePoints(aesthetics)
 
-      if (this.sortX) {
-        points = this.sort(points)
-      }
-
-      if (this.close) {
-        points = this.closePoints(points)
-      }
-
-      let path = this.createPath(points)
-
-      return createElement('path', {
-        attrs: {
-          'd': path,
-          'stroke': aesthetics.color,
-          'stroke-width': aesthetics.width,
-          'fill': 'none'
-        }
-      })
-    }
-  },
-
-  render (createElement) {
-    if (this.__update) {
-      if (!this.$$map) {
-        // Create svg element using aesthetics
-        return this.renderSVG(createElement, this.aesthetics)
-      }
-
-      if (this.$$map) {
-        // Create the aesthetics for each mark
-        let aestheticsPerMark = mapAesthetics(this.aesthetics, this.context)
-
-        // Create svg element for each mark from aesthetics
-        let components = []
-        for (let aesthetics of aestheticsPerMark) {
-          components.push(
-            this.renderSVG(createElement, aesthetics)
-          )
+      if (points.length > 1) {
+        if (this.sortX) {
+          points = this.sort(points)
         }
 
-        return createElement('g', components)
+        if (this.close) {
+          points = this.closePoints(points)
+        }
+
+        let path = this.createPath(points)
+
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'stroke': aesthetics.color,
+            'stroke-width': aesthetics.width,
+            'fill': 'none'
+          }
+        })
+      } else {
+        console.warn('Not enough valid points to draw Mark')
       }
     }
   }

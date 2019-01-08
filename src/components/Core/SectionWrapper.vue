@@ -1,7 +1,7 @@
 <script>
 import Section from './Section.vue'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import mapAesthetics from '../../components/Marks/utils/mapAesthetics.js'
+import mapAesthetics from '../../mixins/Marks/utils/mapAesthetics.js'
 
 export default {
   mixins: [Rectangular],
@@ -27,7 +27,7 @@ export default {
       }
     },
 
-    renderSection (createElement, aesthetics) {
+    renderSVG (createElement, aesthetics) {
       let ranges = this.calculateRanges(aesthetics)
 
       return createElement(Section, {
@@ -42,7 +42,7 @@ export default {
 
   render (createElement) {
     if (!this.$$map) {
-      return this.renderSection(createElement, this.aesthetics)
+      return this.renderSVG(createElement, this.aesthetics)
     }
 
     if (this.$$map) {
@@ -52,7 +52,7 @@ export default {
       let sections = []
       for (let aesthetics of aestheticsPerSection) {
         sections.push(
-          this.renderSection(createElement, aesthetics)
+          this.renderSVG(createElement, aesthetics)
         )
       }
 

@@ -1,6 +1,5 @@
 <script>
 import MultiLine from '../../mixins/Marks/MultiLine.js'
-import mapAesthetics from './utils/mapAesthetics.js'
 
 export default {
   mixins: [MultiLine],
@@ -26,47 +25,27 @@ export default {
     renderSVG (createElement, aesthetics) {
       let points = this.generatePoints(aesthetics)
 
-      let path = this.createPath(points)
+      if (points.length > 1) {
+        let path = this.createPath(points)
 
-      if (this.sortX) {
-        points = this.sort(points)
-      }
-
-      if (this.close) {
-        points = this.closePoints(points)
-      }
-
-      return createElement('path', {
-        attrs: {
-          'd': path,
-          'stroke': aesthetics.color,
-          'stroke-width': aesthetics.width,
-          'fill': aesthetics.fill
-        }
-      })
-    }
-  },
-
-  render (createElement) {
-    if (this.__update) {
-      if (!this.$$map) {
-        // Create svg element using aesthetics
-        return this.renderSVG(createElement, this.aesthetics)
-      }
-
-      if (!this.$$map) {
-        // Create the aesthetics for each mark
-        let aestheticsPerMark = mapAesthetics(this.aesthetics, this.context)
-
-        // Create svg element for each mark from aesthetics
-        let components = []
-        for (let aesthetics of aestheticsPerMark) {
-          components.push(
-            this.renderSVG(createElement, aesthetics)
-          )
+        if (this.sortX) {
+          points = this.sort(points)
         }
 
-        return createElement('g', components)
+        if (this.close) {
+          points = this.closePoints(points)
+        }
+
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'stroke': aesthetics.color,
+            'stroke-width': aesthetics.width,
+            'fill': aesthetics.fill
+          }
+        })
+      } else {
+        console.warn('Not enough valid points to draw Mark')
       }
     }
   }
