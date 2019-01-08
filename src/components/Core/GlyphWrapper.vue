@@ -50,28 +50,8 @@ export default {
   },
 
   methods: {
-    renderGlyph (createElement, aesthetics) {
+    renderSVG (createElement, aesthetics) {
       return createElement(Glyph, { props: aesthetics }, this.$slots.default)
-    }
-  },
-
-  render (createElement) {
-    if (!this.$$map) {
-      return this.renderGlyph(createElement, this.aesthetics)
-    }
-
-    if (this.$$map) {
-      let aestheticsPerGlyph = mapAesthetics(this.aesthetics, this.context)
-
-      // Create svg element for each mark from aesthetics
-      let glyphs = []
-      for (let aesthetics of aestheticsPerGlyph) {
-        glyphs.push(
-          this.renderGlyph(createElement, aesthetics)
-        )
-      }
-
-      return createElement('g', glyphs)
     }
   }
 }
