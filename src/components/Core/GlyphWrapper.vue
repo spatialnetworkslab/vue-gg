@@ -1,6 +1,5 @@
 <script>
 import Glyph from './Glyph.vue'
-import mapAesthetics from '../Marks/utils/mapAesthetics.js'
 import Mark from '../../mixins/Marks/Mark.js'
 
 export default {
