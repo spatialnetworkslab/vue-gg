@@ -126,7 +126,7 @@ function updateDomain (domain, value, type) {
 }
 
 function getDay (date, days) {
-  return new Date(new Date().setDate(date.getDate() - days))
+  return new Date(new Date().setDate(date.getDate() + days))
 }
 
 function initDummyDomain (type, value) {
