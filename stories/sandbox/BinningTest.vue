@@ -42,11 +42,29 @@
             :x2="{ scale: { variable: 'max', domain: [0, 100] } }"
             :y1="0"
             :y2="{ scale: { variable: 'n', domain: [0, null]} }"
+            :color="{ scale: { scale: 'blues', variable: 'max', domain: [0, null] } }"
           />
 
         </vgg-map>
 
       </vgg-section>
+
+      <vgg-x-axis
+        :x1="100"
+        :x2="500"
+        :y1="50"
+        :y2="100"
+        :scale="'min'"
+        rotate-label
+      />
+
+      <vgg-y-axis
+        :x1="500"
+        :x2="550"
+        :y1="100"
+        :y2="500"
+        :scale="{ variable: 'n', domain: [0, null] }"
+      />
 
     </vgg-transform>
 
