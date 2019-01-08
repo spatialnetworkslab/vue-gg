@@ -15,3 +15,7 @@ export function invalid (value) {
 
   return false
 }
+
+export function invalidPoint (point) {
+  return invalid(point) || invalid(point[0]) || invalid(point[1])
+}
