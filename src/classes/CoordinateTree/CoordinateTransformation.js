@@ -5,6 +5,18 @@ import parseRange from '../../utils/parseRange.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
+    if (isGeoTransformation(options.scales)) {
+      this.setGeoTransformation(options)
+    } else {
+      this.setTransformation(options)
+    }
+  }
+
+  setGeoTransformation () {
+    // TODO
+  }
+
+  setTransformation (options) {
     let scaleSpecifications = options.scales
     let ranges = options.ranges
 
@@ -101,6 +113,12 @@ export default class CoordinateTransformation {
       }
     }
   }
+}
+
+function isGeoTransformation (scalingOptions) {
+  return scalingOptions && scalingOptions.constructor === Object &&
+    scalingOptions.hasOwnProperty('type') &&
+    scalingOptions.type === 'geo'
 }
 
 function polarToCartesian (theta, r) {
