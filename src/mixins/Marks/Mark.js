@@ -1,7 +1,7 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
 import DataReceiver from '../Data/DataReceiver.js'
 
-import mapAesthetics from '../../components/Marks/utils/mapAesthetics.js'
+import mapAesthetics from './utils/mapAesthetics.js'
 
 import {
   parseAesthetic,

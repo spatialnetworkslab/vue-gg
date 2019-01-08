@@ -7,7 +7,7 @@ export function isnt (value) {
 }
 
 export function invalid (value) {
-  if (value === undefined || value === null){ return true }
+  if (value === undefined || value === null) { return true }
 
   if (value.constructor === Number) {
     return !isFinite(value)

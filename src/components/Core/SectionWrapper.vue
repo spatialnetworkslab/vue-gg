@@ -1,7 +1,7 @@
 <script>
 import Section from './Section.vue'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import mapAesthetics from '../../components/Marks/utils/mapAesthetics.js'
+import mapAesthetics from '../../mixins/Marks/utils/mapAesthetics.js'
 
 export default {
   mixins: [Rectangular],
