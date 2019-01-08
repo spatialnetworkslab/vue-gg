@@ -1,6 +1,5 @@
 <script>
 import MultiLine from '../../mixins/Marks/MultiLine.js'
-import mapAesthetics from './utils/mapAesthetics.js'
 
 export default {
   mixins: [MultiLine],

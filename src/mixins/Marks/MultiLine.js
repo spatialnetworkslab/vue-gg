@@ -1,5 +1,4 @@
 import Mark from './Mark.js'
-import mapAesthetics from '../../components/Marks/utils/mapAesthetics.js'
 import { createPath, interpolatePath } from '../../components/Marks/utils/createPath.js'
 import checkPoints from '../../components/Marks/utils/checkPoints.js'
 

@@ -1,6 +1,5 @@
 <script>
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import mapAesthetics from './utils/mapAesthetics.js'
 import { createPath, interpolatePath } from './utils/createPath.js'
 
 export default {
