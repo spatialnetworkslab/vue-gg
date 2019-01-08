@@ -6,8 +6,12 @@ export default function (value) {
       return 'categorical'
     case Date:
       return 'temporal'
-    case Array:
-      return 'nested'
+    case Object:
+      if (value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')) {
+        return 'geometry'
+      } else {
+        throw new Error('Invalid data') // TODO: allow nested dataframes
+      }
     default: throw new Error('Invalid data')
   }
 }

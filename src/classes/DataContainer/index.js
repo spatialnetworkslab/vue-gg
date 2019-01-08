@@ -1,3 +1,5 @@
+import { geoPath } from 'd3-geo'
+
 import calculateDomains from './calculateDomains.js'
 // const formats = ['row', 'column', 'geojson']
 // const variableTypes = ['quantitative', 'temporal', 'categorical']
@@ -74,14 +76,14 @@ export default class {
 
     // initialize column data frame
     let cols = {}
-    let geometryBBox
     let firstFeature = data.features[0]
+    let bbox = [[Infinity, Infinity], [-Infinity, -Infinity]]
     let colNames = ['geometry', ...Object.keys(firstFeature.properties)]
     for (let name of colNames) { cols[name] = [] }
 
     data.features.forEach(feat => {
       let geometry = extractGeometry(feat)
-      geometryBBox = getBBox(geometry)
+      bbox = updateBBox(bbox, geometry)
       let attributes = extractAttributes(feat)
 
       // create columns
@@ -96,9 +98,12 @@ export default class {
       .filter(key => key !== 'geometry')
       .map(key => ({ [key]: cols[key] })))
 
-    let { domains, types } = calculateDomains(attributeCols)
+    let { domains, types } = calculateDomains(attributeCols, length)
 
-    domains.geometry = geometryBBox
+    domains.geometry = {
+      x: [bbox[0][0], bbox[1][0]],
+      y: [bbox[1][0], bbox[1][1]]
+    }
     types.geometry = 'geometry'
 
     this._length = length
@@ -193,27 +198,15 @@ function extractAttributes (feat) {
   return feat.properties
 }
 
-function flattenCoordArr (geometry) {
-  return geometry.type === 'Polygon' ? geometry.coordinates.flat()
-    : geometry.type === 'MultiPolygon' ? geometry.coordinates.flat(2)
-      : 'geometry type is not known'
-}
+const path = geoPath()
 
-function getBBox (geometry) {
-  let bounds = {}
-  let lon, lat
+function updateBBox (bbox, geometry) {
+  let newBBox = path.bounds(geometry)
 
-  let coords = flattenCoordArr(geometry)
+  bbox[0][0] = bbox[0][0] < newBBox[0][0] ? bbox[0][0] : newBBox[0][0]
+  bbox[0][1] = bbox[0][1] < newBBox[0][1] ? bbox[0][1] : newBBox[0][1]
+  bbox[1][0] = bbox[1][0] > newBBox[1][0] ? bbox[1][0] : newBBox[1][0]
+  bbox[1][1] = bbox[1][1] > newBBox[1][1] ? bbox[1][1] : newBBox[1][1]
 
-  coords.forEach(coord => {
-    lon = coord[0]
-    lat = coord[1]
-
-    bounds.xMin = bounds.xMin < lon ? bounds.xMin : lon
-    bounds.xMax = bounds.xMax > lon ? bounds.xMax : lon
-    bounds.yMin = bounds.yMin < lat ? bounds.yMin : lat
-    bounds.yMax = bounds.yMax > lat ? bounds.yMax : lat
-  })
-
-  return { x: [bounds.xMin, bounds.xMax], y: [bounds.yMin, bounds.yMax] }
+  return bbox
 }

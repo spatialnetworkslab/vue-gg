@@ -12,8 +12,28 @@ export default class CoordinateTransformation {
     }
   }
 
-  setGeoTransformation () {
-    // TODO
+  setGeoTransformation (options) {
+    if (options.dataContainer) {
+      let scalingOptions = options.scales
+      let ranges = options.ranges
+      let variableDomains = options.dataContainer.getDomains()
+
+      this.domainTypes = {
+        x: 'quantitative',
+        y: 'quantitative'
+      }
+
+      this.domains = {
+        x: variableDomains.geometry.x,
+        y: variableDomains.geometry.y
+      }
+
+      this.ranges = ranges
+
+      this.geoTransformation = coords => coords
+
+      // TODO
+    }
   }
 
   setTransformation (options) {
