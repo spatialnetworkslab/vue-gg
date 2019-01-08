@@ -10,18 +10,14 @@
       :y="300"
     /> -->
 
-    <vgg-transform :trans="{ dropNA: null }">
+    <vgg-map>
 
-      <vgg-map>
+      <vgg-point
+        :x="{ scale: 'a' }"
+        :y="{ scale: 'b', NA: 300 }"
+      />
 
-        <vgg-point
-          :x="{ scale: 'c' }"
-          :y="{ scale: 'b' }"
-        />
-
-      </vgg-map>
-
-    </vgg-transform>
+    </vgg-map>
 
   </vgg-graphic>
 </template>
@@ -42,13 +38,13 @@ export default {
           6,
           10,
           NaN
-        ],
-        c: [
-          4,
-          4,
-          4,
-          4
         ]
+        // c: [
+        //   4,
+        //   4,
+        //   4,
+        //   4
+        // ]
       }
     }
   }

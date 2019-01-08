@@ -90,6 +90,10 @@ export default class {
     return this._domains
   }
 
+  getTypes () {
+    return this._types
+  }
+
   getColumn (variable) {
     return this._dataset[variable]
   }
