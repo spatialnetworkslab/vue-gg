@@ -130,29 +130,33 @@ export default {
     },
 
     renderSVG (createElement, aesthetics) {
-      let points = this.generatePoints(aesthetics)
+      if (this.geometry) {
 
-      if (points.length > 1) {
-        if (this.sortX) {
-          points = this.sort(points)
-        }
-
-        if (this.close) {
-          points = this.closePoints(points)
-        }
-
-        let path = this.createPath(points)
-
-        return createElement('path', {
-          attrs: {
-            'd': path,
-            'stroke': aesthetics.color,
-            'stroke-width': aesthetics.width,
-            'fill': 'none'
-          }
-        })
       } else {
-        console.warn('Not enough valid points to draw Mark')
+        let points = this.generatePoints(aesthetics)
+
+        if (points.length > 1) {
+          if (this.sortX) {
+            points = this.sort(points)
+          }
+
+          if (this.close) {
+            points = this.closePoints(points)
+          }
+
+          let path = this.createPath(points)
+
+          return createElement('path', {
+            attrs: {
+              'd': path,
+              'stroke': aesthetics.color,
+              'stroke-width': aesthetics.width,
+              'fill': 'none'
+            }
+          })
+        } else {
+          console.warn('Not enough valid points to draw Mark')
+        }
       }
     }
   }

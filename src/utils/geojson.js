@@ -4,12 +4,11 @@ import { geoPath } from 'd3-geo'
 export function calculateBBox (featuresInput, transformation) {
   let features
   if (transformation) {
-    features = transformFeatures(features, transformation)
+    features = transformFeatures(featuresInput, transformation)
   } else {
     features = featuresInput
   }
   let bbox = bboxFeatures(features)
-
   return bbox
 }
 
@@ -19,7 +18,11 @@ export function transformFeatures (features, transformation) {
 
 export function transform (feature, transformation) {
   let featureClone = JSON.parse(JSON.stringify(feature))
-  coordEach(featureClone, transformation)
+  coordEach(featureClone, coord => {
+    let [x, y] = transformation(coord)
+    coord[0] = x
+    coord[1] = y
+  })
   return featureClone
 }
 
@@ -32,7 +35,7 @@ export function bboxFeatures (features) {
 
   let bboxObj = {
     x: [bbox[0][0], bbox[1][0]],
-    y: [bbox[1][0], bbox[1][1]]
+    y: [bbox[0][1], bbox[1][1]]
   }
 
   return bboxObj
