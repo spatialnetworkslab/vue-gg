@@ -2,10 +2,16 @@ import { is, isnt } from '../../../utils/equals.js'
 import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 import { invalidValueForRangeType } from './parseCoordinateSet.js'
 
-export default function (prop) {
+export default function (prop, options) {
   if (!this.$$map) {
-    if (is(prop) && prop.constructor === Array) {
-      return parseArray(prop, this.parentRangeTypes, this.parentBranch)
+    if (options.geojson) {
+      if (is(prop) && prop.constructor === Object) {
+        return prop
+      }
+    } else {
+      if (is(prop) && prop.constructor === Array) {
+        return parseArray(prop, this.parentRangeTypes, this.parentBranch)
+      }
     }
 
     if (isnt(prop)) {
@@ -14,8 +20,14 @@ export default function (prop) {
   }
 
   if (this.$$map) {
-    if (is(prop) && prop.constructor === Array) {
-      return { assign: parseArray(prop, this.parentRangeTypes, this.parentBranch) }
+    if (options.geojson) {
+      if (is(prop) && prop.constructor === Object) {
+        return { assign: prop }
+      }
+    } else {
+      if (is(prop) && prop.constructor === Array) {
+        return { assign: parseArray(prop, this.parentRangeTypes, this.parentBranch) }
+      }
     }
 
     if (is(prop) && prop.constructor === Function) {
