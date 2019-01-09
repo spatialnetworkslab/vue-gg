@@ -1,6 +1,6 @@
 import Mark from './Mark.js'
 import { createPath, interpolatePath } from '../../components/Marks/utils/createPath.js'
-import checkPoints from '../../components/Marks/utils/checkPoints.js'
+import checkPoints from './utils/checkPoints.js'
 import { invalidPoint } from '../../utils/equals.js'
 
 export default {
@@ -9,7 +9,12 @@ export default {
   props: {
     // Mappable
     points: {
-      type: [Array, Object, Function, undefined],
+      type: [Array, Function, undefined],
+      default: undefined
+    },
+
+    geometry: {
+      type: [Object, Function, undefined],
       default: undefined
     },
 
@@ -52,10 +57,11 @@ export default {
 
   computed: {
     aesthetics () {
-      checkPoints(this.points, this.x, this.y)
+      checkPoints(this.points, this.geometry, this.x, this.y)
 
       return {
         points: this.parseGeometry(this.points, {}),
+        geometry: this.parseGeometry(this.geometry, { geojson: true }),
 
         x: this.parseCoordinateSet(this.x, { dimension: 'x' }),
         y: this.parseCoordinateSet(this.y, { dimension: 'y' }),

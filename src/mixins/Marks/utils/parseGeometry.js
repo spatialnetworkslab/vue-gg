@@ -18,6 +18,10 @@ export default function (prop) {
       return { assign: parseArray(prop, this.parentRangeTypes, this.parentBranch) }
     }
 
+    if (is(prop) && prop.constructor === Function) {
+      return { func: prop }
+    }
+
     if (isnt(prop)) {
       return { assign: undefined }
     }

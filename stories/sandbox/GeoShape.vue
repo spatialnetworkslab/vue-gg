@@ -15,6 +15,14 @@
       type="geo"
     >
 
+      <!-- <vgg-map>
+
+        <vgg-polygon
+          :points="row => row.geometry.coordinates[0]"
+        />
+
+      </vgg-map> -->
+
     </vgg-section>
 
   </vgg-graphic>
