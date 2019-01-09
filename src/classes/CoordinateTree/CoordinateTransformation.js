@@ -1,3 +1,5 @@
+import proj4 from 'proj4'
+
 import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
 
 import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
@@ -5,7 +7,7 @@ import parseRange from '../../utils/parseRange.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
-    if (isGeoTransformation(options.scales)) {
+    if (options.type === 'geo') {
       this.setGeoTransformation(options)
     } else {
       this.setTransformation(options)
@@ -32,7 +34,22 @@ export default class CoordinateTransformation {
 
       this.geoTransformation = coords => coords
 
-      // TODO
+      if (scalingOptions.hasOwnProperty('from')) {
+        this.fromCRS = scalingOptions.from
+      }
+      if ((scalingOptions.hasOwnProperty('to'))) {
+        this.toCRS = scalingOptions.to
+      }
+
+      if (this.fromCRS && this.toCRS) {
+        this.geoTransformation = proj4(this.fromCRS, this.toCRS).forward
+      }
+
+      if (!this.fromCRS && this.toCRS) {
+        this.geoTransformation = proj4('WGS84', this.toCRS).forward
+      }
+
+      // this.bbox = 
     }
   }
 
@@ -133,12 +150,6 @@ export default class CoordinateTransformation {
       }
     }
   }
-}
-
-function isGeoTransformation (scalingOptions) {
-  return scalingOptions && scalingOptions.constructor === Object &&
-    scalingOptions.hasOwnProperty('type') &&
-    scalingOptions.type === 'geo'
 }
 
 function polarToCartesian (theta, r) {
