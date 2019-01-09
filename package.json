@@ -12,6 +12,7 @@
     "now-build": "yarn run docs:build && mv docs/.vuepress/dist dist-docs"
   },
   "dependencies": {
+    "@turf/meta": "^6.0.2",
     "d3-array": "^2.0.2",
     "d3-geo": "^1.11.3",
     "d3-interpolate": "^1.3.2",

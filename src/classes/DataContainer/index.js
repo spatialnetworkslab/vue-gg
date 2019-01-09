@@ -1,8 +1,6 @@
-import { geoPath } from 'd3-geo'
-
 import calculateDomains from './calculateDomains.js'
 // const formats = ['row', 'column', 'geojson']
-// const variableTypes = ['quantitative', 'temporal', 'categorical']
+// const variableTypes = ['quantitative', 'temporal', 'categorical', 'geometry']
 
 export default class {
   constructor (data, format) {
@@ -77,13 +75,11 @@ export default class {
     // initialize column data frame
     let cols = {}
     let firstFeature = data.features[0]
-    let bbox = [[Infinity, Infinity], [-Infinity, -Infinity]]
     let colNames = ['geometry', ...Object.keys(firstFeature.properties)]
     for (let name of colNames) { cols[name] = [] }
 
     data.features.forEach(feat => {
       let geometry = extractGeometry(feat)
-      bbox = updateBBox(bbox, geometry)
       let attributes = extractAttributes(feat)
 
       // create columns
@@ -100,10 +96,6 @@ export default class {
 
     let { domains, types } = calculateDomains(attributeCols, length)
 
-    domains.geometry = {
-      x: [bbox[0][0], bbox[1][0]],
-      y: [bbox[1][0], bbox[1][1]]
-    }
     types.geometry = 'geometry'
 
     this._length = length
@@ -196,17 +188,4 @@ function extractGeometry (feat) {
 
 function extractAttributes (feat) {
   return feat.properties
-}
-
-const path = geoPath()
-
-function updateBBox (bbox, geometry) {
-  let newBBox = path.bounds(geometry)
-
-  bbox[0][0] = bbox[0][0] < newBBox[0][0] ? bbox[0][0] : newBBox[0][0]
-  bbox[0][1] = bbox[0][1] < newBBox[0][1] ? bbox[0][1] : newBBox[0][1]
-  bbox[1][0] = bbox[1][0] > newBBox[1][0] ? bbox[1][0] : newBBox[1][0]
-  bbox[1][1] = bbox[1][1] > newBBox[1][1] ? bbox[1][1] : newBBox[1][1]
-
-  return bbox
 }

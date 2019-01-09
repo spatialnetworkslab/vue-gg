@@ -12,17 +12,8 @@
       :x2="500"
       :y1="100"
       :y2="500"
+      type="geo"
     >
-      <!-- :scales="{
-        x: { variable: 'geometry', get: g => g.x },
-        y: { variable: 'geometry', get: g => g.y }
-      }" -->
-
-      <vgg-polygon
-        v-for="(feat, i) in data.features"
-        :key="i"
-        :points="flattenCoordArr(feat.geometry)"
-      />
 
     </vgg-section>
 

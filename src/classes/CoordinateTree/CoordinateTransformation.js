@@ -4,6 +4,7 @@ import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.
 
 import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
 import parseRange from '../../utils/parseRange.js'
+import  { calculateBBox } from '../../utils/geojson.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
@@ -21,8 +22,6 @@ export default class CoordinateTransformation {
 
       let scalingOptions = options.scales
 
-      this.geoTransformation = coords => coords
-
       if (scalingOptions.hasOwnProperty('from')) {
         this.fromCRS = scalingOptions.from
       }
@@ -38,16 +37,35 @@ export default class CoordinateTransformation {
         this.geoTransformation = proj4('WGS84', this.toCRS).forward
       }
 
-      let bbox
+      let bbox = calculateBBox(
+        options.dataContainer.getColumn('geometry'),
+        this.geoTransformation
+      )
 
-      this.domains = {
-        x: bbox.x,
-        y: bbox.y
-      }
+      this.domains = bbox
 
       this.domainTypes = {
         x: 'quantitative',
         y: 'quantitative'
+      }
+
+      this.scaleX = createCoordsScale('x', 'quantitative', this.domains.x, this.ranges.x,
+        { scale: 'linear' }
+      )
+      this.scaleY = createCoordsScale('y', 'quantitative', this.domains.y, this.ranges.y,
+        { scale: 'linear' }
+      )
+
+      this.getX = this.scaleX
+      this.getY = this.scaleY
+
+      this.transform = coord => {
+        let [x, y] = coord
+        if (this.geoTransformation) {
+          [x, y] = this.geoTransformation(coord)
+        }
+
+        return [this.getX(x), this.getY(y)]
       }
     } else {
       console.warn(`Column 'geometry' not found.`)

@@ -11,8 +11,8 @@ export default {
     },
 
     sortX: {
-      type: Boolean,
-      default: false
+      type: [String, undefined],
+      default: undefined
     },
 
     close: {
