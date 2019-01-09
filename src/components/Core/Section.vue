@@ -12,7 +12,6 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import id from '../../utils/id.js'
-import { is } from '../../utils/equals.js'
 
 export default {
   mixins: [CoordinateTreeUser, DataReceiver],
@@ -70,7 +69,7 @@ export default {
     allowScales () {
       // For geodata, we the dataContainer absolutely has to be present
       if (this.type === 'geo') {
-        return is(this.this.$$dataContainer)
+        return this.$$dataContainer && this.$$dataContainer.hasColumn('geometry')
       }
 
       // Allowed means: 'allowed IF there is NO DATACONTAINER'.

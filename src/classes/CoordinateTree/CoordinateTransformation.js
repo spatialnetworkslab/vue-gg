@@ -15,22 +15,11 @@ export default class CoordinateTransformation {
   }
 
   setGeoTransformation (options) {
-    if (options.dataContainer) {
-      let scalingOptions = options.scales
+    if (options.dataContainer && options.dataContainer.hasColumn('geometry')) {
       let ranges = options.ranges
-      let variableDomains = options.dataContainer.getDomains()
-
-      this.domainTypes = {
-        x: 'quantitative',
-        y: 'quantitative'
-      }
-
-      this.domains = {
-        x: variableDomains.geometry.x,
-        y: variableDomains.geometry.y
-      }
-
       this.ranges = ranges
+
+      let scalingOptions = options.scales
 
       this.geoTransformation = coords => coords
 
@@ -49,7 +38,19 @@ export default class CoordinateTransformation {
         this.geoTransformation = proj4('WGS84', this.toCRS).forward
       }
 
-      // this.bbox = 
+      let bbox
+
+      this.domains = {
+        x: bbox.x,
+        y: bbox.y
+      }
+
+      this.domainTypes = {
+        x: 'quantitative',
+        y: 'quantitative'
+      }
+    } else {
+      console.warn(`Column 'geometry' not found.`)
     }
   }
 

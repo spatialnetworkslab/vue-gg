@@ -116,10 +116,6 @@ export default class {
     return this._dataset
   }
 
-  hasVariable (variable) {
-    return this._domains.hasOwnProperty(variable)
-  }
-
   getDomain (variable) {
     return this._domains[variable]
   }
@@ -130,6 +126,10 @@ export default class {
 
   getTypes () {
     return this._types
+  }
+
+  hasColumn (variable) {
+    return this._dataset.hasOwnProperty(variable)
   }
 
   getColumn (variable) {
