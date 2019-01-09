@@ -6,11 +6,6 @@ export default {
   mixins: [MultiLine],
 
   props: {
-    fill: {
-      type: [String, Object, Function, undefined],
-      default: undefined
-    },
-
     sortX: {
       type: [String, undefined],
       default: undefined

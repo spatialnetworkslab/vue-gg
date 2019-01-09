@@ -1,5 +1,5 @@
 import Mark from './Mark.js'
-import { createPath, interpolatePath } from '../../components/Marks/utils/createPath.js'
+import { createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
 import checkPoints from './utils/checkPoints.js'
 import { invalidPoint } from '../../utils/equals.js'
 
@@ -29,6 +29,11 @@ export default {
     },
 
     color: {
+      type: [String, Object, Function, undefined],
+      default: undefined
+    },
+
+    fill: {
       type: [String, Object, Function, undefined],
       default: undefined
     },
@@ -67,6 +72,7 @@ export default {
         y: this.parseCoordinateSet(this.y, { dimension: 'y' }),
 
         color: this.parseAesthetic(this.color, { default: '#000000' }),
+        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
         width: this.parseAesthetic(this.width, { default: 2 })
       }
     }
@@ -131,7 +137,16 @@ export default {
 
     renderSVG (createElement, aesthetics) {
       if (this.geometry) {
+        let path = createGeoPath(aesthetics.geometry, this.$$transform)
 
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'stroke': aesthetics.color,
+            'stroke-width': aesthetics.width,
+            'fill': 'none'
+          }
+        })
       } else {
         let points = this.generatePoints(aesthetics)
 

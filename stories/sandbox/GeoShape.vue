@@ -23,6 +23,7 @@
 
         <vgg-polygon
           :geometry="row => row.geometry"
+          :fill="{ scale: { scale: 'redYellowGreen', variable: 'value' } }"
         />
 
       </vgg-map>
@@ -70,11 +71,6 @@ export default {
         )
         this.data = Object.freeze(joinedData)
       })
-    },
-    flattenCoordArr (geometry) {
-      return geometry.type === 'Polygon' ? geometry.coordinates.flat()
-        : geometry.type === 'MultiPolygon' ? geometry.coordinates.flat(2)
-        : 'geometry type is not known'
     }
   }
 }
