@@ -1,5 +1,3 @@
-import { GroupedData } from './groupBy.js'
-
 import { initNewData, summariseGroup, checkSummariseInstructions } from './summarise.js'
 import dataLength from '../utils/dataLength.js'
 
@@ -10,14 +8,14 @@ export default function (data, mutariseInstructions) {
 
   let newCols = initNewData(mutariseInstructions)
 
-  if (data.constructor === GroupedData) {
-    checkSummariseInstructions(mutariseInstructions, data.groupedColumns)
+  if (data.hasOwnProperty('grouped')) {
+    checkSummariseInstructions(mutariseInstructions, data)
 
-    for (let group of data.groups) {
+    for (let group of data.grouped) {
       let summarizedData = initNewData(mutariseInstructions)
-      summarizedData = summariseGroup(group.data, mutariseInstructions, summarizedData)
+      summarizedData = summariseGroup(group, mutariseInstructions, summarizedData)
 
-      let length = dataLength(group.data)
+      let length = dataLength(group)
       newCols = addGroupSummaries(newCols, summarizedData, length)
     }
 
@@ -44,11 +42,11 @@ function addGroupSummaries (newCols, summarizedData, length) {
 }
 
 function ungroup (data) {
-  let newData = initNewData(data.groups[0].data)
+  let newData = initNewData(data.grouped[0])
 
-  for (let group of data.groups) {
+  for (let group of data.grouped) {
     for (let col in newData) {
-      newData[col].push(...group.data[col])
+      newData[col].push(...group[col])
     }
   }
 
