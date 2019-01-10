@@ -1,19 +1,14 @@
 <script>
 import MultiLine from '../../mixins/Marks/MultiLine.js'
-import mapAesthetics from './utils/mapAesthetics.js'
+import { createGeoPath } from './utils/createPath.js'
 
 export default {
   mixins: [MultiLine],
 
   props: {
-    fill: {
-      type: [String, Object, Function, undefined],
-      default: undefined
-    },
-
     sortX: {
-      type: Boolean,
-      default: false
+      type: [String, undefined],
+      default: undefined
     },
 
     close: {
@@ -24,49 +19,42 @@ export default {
 
   methods: {
     renderSVG (createElement, aesthetics) {
-      let points = this.generatePoints(aesthetics)
+      if (this.geometry) {
+        let path = createGeoPath(aesthetics.geometry, this.$$transform)
 
-      let path = this.createPath(points)
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'stroke': aesthetics.color,
+            'stroke-width': aesthetics.width,
+            'fill': aesthetics.fill
+          }
+        })
+      } else {
+        let points = this.generatePoints(aesthetics)
 
-      if (this.sortX) {
-        points = this.sort(points)
-      }
+        if (points.length > 1) {
+          let path = this.createPath(points)
 
-      if (this.close) {
-        points = this.closePoints(points)
-      }
+          if (this.sortX) {
+            points = this.sort(points)
+          }
 
-      return createElement('path', {
-        attrs: {
-          'd': path,
-          'stroke': aesthetics.color,
-          'stroke-width': aesthetics.width,
-          'fill': aesthetics.fill
+          if (this.close) {
+            points = this.closePoints(points)
+          }
+
+          return createElement('path', {
+            attrs: {
+              'd': path,
+              'stroke': aesthetics.color,
+              'stroke-width': aesthetics.width,
+              'fill': aesthetics.fill
+            }
+          })
+        } else {
+          console.warn('Not enough valid points to draw Mark')
         }
-      })
-    }
-  },
-
-  render (createElement) {
-    if (this.__update) {
-      if (!this.$$map) {
-        // Create svg element using aesthetics
-        return this.renderSVG(createElement, this.aesthetics)
-      }
-
-      if (!this.$$map) {
-        // Create the aesthetics for each mark
-        let aestheticsPerMark = mapAesthetics(this.aesthetics, this.context)
-
-        // Create svg element for each mark from aesthetics
-        let components = []
-        for (let aesthetics of aestheticsPerMark) {
-          components.push(
-            this.renderSVG(createElement, aesthetics)
-          )
-        }
-
-        return createElement('g', components)
       }
     }
   }

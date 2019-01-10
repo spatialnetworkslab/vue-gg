@@ -1,5 +1,8 @@
 import { interpolate } from 'd3-interpolate'
 import { line } from 'd3-shape'
+import { geoPath } from 'd3-geo'
+
+import { transform } from '../../../utils/geojson.js'
 
 export function interpolatePath (corners, transformer,
   precision = 2, resolution = 100) {
@@ -61,4 +64,11 @@ function inDomain (point, domains) {
   let yMin = Math.min(...domains.y)
   let yMax = Math.max(...domains.y)
   return point[1] > yMin && point[1] < yMax
+}
+
+const path = geoPath(null)
+
+export function createGeoPath (feature, transformer) {
+  let transformedFeature = transform(feature, transformer)
+  return path(transformedFeature)
 }

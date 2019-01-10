@@ -1,15 +1,15 @@
 import createScale from '../../../scales/createScale.js'
 import createPositioner from '../../../positioners/createPositioner.js'
 
-import { is } from '../../../utils/equals.js'
+import { is, invalid } from '../../../utils/equals.js'
 import getDimension from '../../../utils/getDimension.js'
 import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 
 export default function (aesthetics, context) {
   let dataContainer = context.dataContainer
 
-  // First, extract the assigners, scales, getter-funcs and positioners
-  let { assigners, scales, funcs, positioners } = extractMappings(aesthetics)
+  // First, extract the assigners, scales, getter-funcs, positioners and replaceNA's
+  let { assigners, scales, funcs, positioners, replaceNA } = extractMappings(aesthetics)
 
   // Second, we will parse the scales
   let parsedScales = parseScales(scales, context)
@@ -19,8 +19,12 @@ export default function (aesthetics, context) {
 
   dataContainer.forEachRow((row, i) => {
     let props = mapRow(row, i, aesthetics, scales, parsedScales, funcs, assigners, context)
-
-    aestheticsPerMark.push(props)
+    let parsedProps = parseProps(props, replaceNA, context)
+    if (parsedProps) {
+      aestheticsPerMark.push(parsedProps)
+    } else {
+      console.warn(`Skipping row ${i + 1} which contains unhandled invalid values`)
+    }
   })
 
   // Fourth, we will apply positioning if necessary
@@ -34,6 +38,7 @@ function extractMappings (mappings) {
   let scales = {}
   let funcs = {}
   let positioners = {}
+  let replaceNA = {}
 
   for (let aesKey in mappings) {
     let passedProp = mappings[aesKey]
@@ -50,9 +55,12 @@ function extractMappings (mappings) {
     if (passedProp.hasOwnProperty('position')) {
       positioners[aesKey] = passedProp.position
     }
+    if (passedProp.hasOwnProperty('NA')) {
+      replaceNA[aesKey] = passedProp.NA
+    }
   }
 
-  return { assigners, scales, funcs, positioners }
+  return { assigners, scales, funcs, positioners, replaceNA }
 }
 
 function parseScales (scales, context) {
@@ -180,4 +188,28 @@ function applyPositioners (aestheticsPerMark, positioners, context) {
   }
 
   return aestheticsPerMark
+}
+
+function parseProps (props, replaceNA, context) {
+  let newProps = {}
+
+  for (let propKey in props) {
+    if (invalid(props[propKey])) {
+      let replaceValue = replaceNA[propKey]
+      if (invalid(replaceValue)) { return undefined }
+
+      // If the value is categorical or temporal, and a coord,
+      // we have to convert it to quantitative
+      let dimension = getDimension(propKey)
+      if (dimension && [String, Date].includes(replaceValue.constructor)) {
+        newProps[propKey] = convertToQuantitative(replaceValue, dimension, context.parentBranch)
+      } else {
+        newProps[propKey] = replaceValue
+      }
+    } else {
+      newProps[propKey] = props[propKey]
+    }
+  }
+
+  return newProps
 }
