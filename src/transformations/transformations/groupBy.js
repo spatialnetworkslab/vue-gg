@@ -6,8 +6,17 @@ export default function (data, groupByInstructions) {
 
 export class GroupedData {
   constructor (data, groupByInstructions) {
-    this.groupedColumns = getGroupedColumns(data, groupByInstructions)
-    this.groups = groupBy(data, this.groupedColumns)
+    let groupedColumns = getGroupedColumns(data, groupByInstructions)
+    let groups = groupBy(data, this.groupedColumns)
+
+    this.grouped = groups.map(group => group.data)
+    for (let i = 0; i < groupedColumns.length; i++) {
+      let col = groupedColumns[i]
+
+      for (let group of groups) {
+        this[col] = group.groupedValues[i]
+      }
+    }
   }
 }
 
