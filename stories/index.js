@@ -9,6 +9,7 @@ import TestCategoricalDomain from './sandbox/TestCategoricalDomain.vue'
 import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
 import TestAbsolute from './sandbox/TestAbsolute.vue'
 import TransformTest from './sandbox/TransformTest.vue'
+import GeoShape from './sandbox/GeoShape.vue'
 import MissingInvalidData from './sandbox/MissingInvalidData.vue'
 
 storiesOf('Charts', module)
@@ -22,4 +23,5 @@ storiesOf('Sandbox', module)
   .add('Test: nested coordinate system', () => (NestedCoordinateSystem))
   .add('Test: absolute', () => (TestAbsolute))
   .add('Test: transform', () => (TransformTest))
+  .add('Test: GeoShape', () => (GeoShape))
   .add('Test: missing', () => (MissingInvalidData))

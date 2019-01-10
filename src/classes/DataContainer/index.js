@@ -1,6 +1,6 @@
 import calculateDomains from './calculateDomains.js'
 // const formats = ['row', 'column', 'geojson']
-// const variableTypes = ['quantitative', 'temporal', 'categorical']
+// const variableTypes = ['quantitative', 'temporal', 'categorical', 'geometry']
 
 export default class {
   constructor (data, format) {
@@ -71,15 +71,41 @@ export default class {
     if (data.constructor !== Object) {
       throw new Error('Data of type geojson must be passed as an object')
     }
-    // TODO
+
+    // initialize column data frame
+    let cols = {}
+    let firstFeature = data.features[0]
+    let colNames = ['geometry', ...Object.keys(firstFeature.properties)]
+    for (let name of colNames) { cols[name] = [] }
+
+    data.features.forEach(feat => {
+      let geometry = extractGeometry(feat)
+      let attributes = extractAttributes(feat)
+
+      // create columns
+      cols.geometry.push(geometry)
+      for (let colName in attributes) { cols[colName].push(attributes[colName]) }
+    })
+
+    let length = checkFormat(cols)
+
+    // calculate domain for each column except for the geometry column
+    let attributeCols = Object.assign(...Object.keys(cols)
+      .filter(key => key !== 'geometry')
+      .map(key => ({ [key]: cols[key] })))
+
+    let { domains, types } = calculateDomains(attributeCols, length)
+
+    types.geometry = 'geometry'
+
+    this._length = length
+    this._dataset = cols
+    this._domains = domains
+    this._types = types
   }
 
   getDataset () {
     return this._dataset
-  }
-
-  hasVariable (variable) {
-    return this._domains.hasOwnProperty(variable)
   }
 
   getDomain (variable) {
@@ -92,6 +118,10 @@ export default class {
 
   getTypes () {
     return this._types
+  }
+
+  hasColumn (variable) {
+    return this._dataset.hasOwnProperty(variable)
   }
 
   getColumn (variable) {
@@ -150,4 +180,12 @@ function initColumnDF (data) {
   }
 
   return columnDataFrame
+}
+
+function extractGeometry (feat) {
+  return feat.geometry
+}
+
+function extractAttributes (feat) {
+  return feat.properties
 }
