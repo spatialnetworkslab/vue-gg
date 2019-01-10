@@ -10,7 +10,11 @@ export default function (value) {
       if (value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')) {
         return 'geometry'
       } else {
-        throw new Error('Invalid data') // TODO: allow nested dataframes
+        if (Object.values(value).every(val => val.constructor === Array)) {
+          return 'nested'
+        } else {
+          throw new Error('Invalid data')
+        }
       }
     default: throw new Error('Invalid data')
   }
