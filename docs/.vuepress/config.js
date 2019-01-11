@@ -74,7 +74,9 @@ module.exports = {
                 collapsable: true,
                 children: [
                     'scales/color',
-                    'scales/numeric',
+                    'scales/coords',
+                    'scales/opacity',
+                    'scales/radius',
                     ]
             },
             {
