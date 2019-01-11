@@ -108,6 +108,5 @@ module.exports = {
         config: md => {
             md.use(require('markdown-it-multimd-table'), {enableMultilineRows:true})
         }
-    },
-    base:"/docs-vue-graphics-grammar/"
+    }
 }
