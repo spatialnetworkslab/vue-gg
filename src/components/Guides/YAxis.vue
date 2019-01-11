@@ -31,38 +31,42 @@
       }"
     >
 
-      <vgg-map :data="tickData">
+      <vgg-data :data="tickData">
 
-        <!-- Tick lines -->
-        <vgg-line
-          :x1="0.5"
-          :y1="tick => tick.value"
-          :x2="flip ? 0.65 : 0.35"
-          :y2="tick => tick.value"
-          :width="0.5"
-        />
+        <vgg-map>
 
-        <!-- Tick labels -->
-        <vgg-label
-          v-if="!rotateLabel"
-          :x="flip ? 0.45 : 0.59"
-          :y="tick => tick.value"
-          :text="tick => tick.label"
-          :font-size="10"
-          :anchor-point="flip ? 'r' : 'l'"
-        />
+          <!-- Tick lines -->
+          <vgg-line
+            :x1="0.5"
+            :y1="tick => tick.value"
+            :x2="flip ? 0.65 : 0.35"
+            :y2="tick => tick.value"
+            :width="0.5"
+          />
 
-        <vgg-label
-          v-if="rotateLabel"
-          :x="flip ? 0.41 : 0.59"
-          :y="tick => tick.value"
-          :text="tick => tick.label"
-          :font-size="10"
-          :rotation="flip ? -30 : 30"
-          :anchor-point="flip ? 'r' : 'l'"
-        />
+          <!-- Tick labels -->
+          <vgg-label
+            v-if="!rotateLabel"
+            :x="flip ? 0.45 : 0.59"
+            :y="tick => tick.value"
+            :text="tick => tick.label"
+            :font-size="10"
+            :anchor-point="flip ? 'r' : 'l'"
+          />
 
-      </vgg-map>
+          <vgg-label
+            v-if="rotateLabel"
+            :x="flip ? 0.41 : 0.59"
+            :y="tick => tick.value"
+            :text="tick => tick.label"
+            :font-size="10"
+            :rotation="flip ? -30 : 30"
+            :anchor-point="flip ? 'r' : 'l'"
+          />
+
+        </vgg-map>
+
+      </vgg-data>
 
     </vgg-section>
 
