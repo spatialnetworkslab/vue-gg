@@ -11,8 +11,13 @@ export default class {
       // If no type is provided, we will assume it's a dataFrame.
       // Now we just have to determine if it's column or row oriented.
       if (data.constructor === Object) {
-        // Column oriented
-        this.setColDataFrame(data)
+        if (data.hasOwnProperty('type') && data.type === 'FeatureCollection') {
+          // GeoJSON
+          this.setGeoJSON(data)
+        } else {
+          // Column oriented
+          this.setColDataFrame(data)
+        }
       }
 
       if (data.constructor === Array) {
