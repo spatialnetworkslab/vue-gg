@@ -95,6 +95,9 @@ export default {
           'stroke': aesthetics.color,
           'stroke-width': aesthetics.width,
           'fill': 'none'
+        },
+        style: {
+          'transition': '1s',
         }
       })
     }

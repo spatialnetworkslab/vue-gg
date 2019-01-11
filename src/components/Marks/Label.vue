@@ -82,7 +82,7 @@ export default {
           'class': 'vgg-label'
         },
         style: {
-          'font-size': aesthetics.fontSize + 'px'
+          'font-size': aesthetics.fontSize + 'px',
         }
       }, aesthetics.text)
 

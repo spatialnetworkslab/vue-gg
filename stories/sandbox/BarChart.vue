@@ -5,6 +5,12 @@
     :height="600"
     :data="bars">
 
+    <vgg-plot-title
+      :x="300"
+      :y="60"
+      text="Bar Chart"
+    />
+
     <vgg-section
       :x1="100"
       :x2="500"

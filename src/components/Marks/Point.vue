@@ -55,6 +55,9 @@ export default {
           'fill': aesthetics.color,
           'r': aesthetics.radius,
           'stroke-width': aesthetics.strokeWidth
+        },
+        style: {
+          'transition': '1s',
         }
       })
     }

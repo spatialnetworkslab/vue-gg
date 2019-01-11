@@ -6,6 +6,12 @@
       :height="600"
       :data="xy">
 
+      <vgg-plot-title
+        :x="300"
+        :y="60"
+        text="Scatterplot"
+      />
+
       <vgg-section
         :x1="100"
         :x2="500"
