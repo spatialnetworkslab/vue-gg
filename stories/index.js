@@ -12,6 +12,7 @@ import TransformTest from './sandbox/TransformTest.vue'
 import BinningTest from './sandbox/BinningTest.vue'
 import GeoShape from './sandbox/GeoShape.vue'
 import MissingInvalidData from './sandbox/MissingInvalidData.vue'
+import MultiLines from './sandbox/MultiLines.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -27,3 +28,4 @@ storiesOf('Sandbox', module)
   .add('Test: binning', () => (BinningTest))
   .add('Test: GeoShape', () => (GeoShape))
   .add('Test: missing', () => (MissingInvalidData))
+  .add('MultiLines', () => (MultiLines))

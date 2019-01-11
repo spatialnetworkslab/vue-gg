@@ -1,45 +1,25 @@
 import dataLength from '../utils/dataLength.js'
 
 export default function (data, groupByInstructions) {
-  return new GroupedData(data, groupByInstructions)
-}
+  let groupedData = {}
 
-export class GroupedData {
-  constructor (data, groupByInstructions) {
-    let groupedColumns = getGroupedColumns(data, groupByInstructions)
-    let groups = groupBy(data, groupedColumns)
+  let groupedColumns = getGroupedColumns(data, groupByInstructions)
+  let groups = groupBy(data, groupedColumns)
 
-    this.grouped = groups.map(group => group.data)
-
-    for (let col of groupedColumns) {
-      this[col] = []
-    }
-
-    for (let i = 0; i < groupedColumns.length; i++) {
-      let col = groupedColumns[i]
-
-      for (let group of groups) {
-        this[col].push(group.groupedValues[i])
-      }
-    }
+  groupedData.grouped = groups.map(group => group.data)
+  for (let col of groupedColumns) {
+    groupedData[col] = []
   }
-}
 
-class Group {
-  constructor (data, groupedValues) {
-    this.data = {}
-    this.groupedValues = groupedValues
+  for (let i = 0; i < groupedColumns.length; i++) {
+    let col = groupedColumns[i]
 
-    for (let col in data) {
-      this.data[col] = []
+    for (let group of groups) {
+      groupedData[col].push(group.groupedValues[i])
     }
   }
 
-  addRow (data, i) {
-    for (let col in data) {
-      this.data[col].push(data[col][i])
-    }
-  }
+  return groupedData
 }
 
 function getGroupedColumns (data, groupByInstructions) {
@@ -98,4 +78,21 @@ function groupBy (data, groupedColumns) {
   return Object.keys(groups).map(group => {
     return groups[group]
   })
+}
+
+class Group {
+  constructor (data, groupedValues) {
+    this.data = {}
+    this.groupedValues = groupedValues
+
+    for (let col in data) {
+      this.data[col] = []
+    }
+  }
+
+  addRow (data, i) {
+    for (let col in data) {
+      this.data[col].push(data[col][i])
+    }
+  }
 }
