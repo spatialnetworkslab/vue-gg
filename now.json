@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "vuepress",
+    "name": "vue-gg-docs",
     "builds": [
         { "src": "package.json", "use": "@now/static-build", "config": { "distDir": "dist-docs" }}
     ]
