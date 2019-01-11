@@ -12,10 +12,12 @@ export default {
 
     x: {
       type: Number,
+      required: true
     },
 
     y: {
-      type: Number
+      type: Number,
+      required: true
     },
 
     color: {
