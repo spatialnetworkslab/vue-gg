@@ -8,6 +8,7 @@ import mutarise from './mutarise.js'
 import groupBy from './groupBy.js'
 import binning from './binning.js'
 import dropNA from './dropNA.js'
+import reproject from './reproject.js'
 
 export default {
   filter,
@@ -22,5 +23,6 @@ export default {
   'mutarize': mutarise,
   groupBy,
   binning,
-  dropNA
+  dropNA,
+  reproject
 }
