@@ -3,7 +3,7 @@ import Glyph from './Core/GlyphWrapper.vue'
 import Graphic from './Core/Graphic.vue'
 import Map from './Core/Map.vue'
 import Section from './Core/SectionWrapper.vue'
-import Transform from './Core/Transform.vue'
+import Data from './Core/Data.vue'
 
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'
@@ -28,7 +28,7 @@ export default {
   Graphic,
   Map,
   Section,
-  Transform,
+  Data,
 
   Piechart,
 

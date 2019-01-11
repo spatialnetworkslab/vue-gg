@@ -1,4 +1,5 @@
 import DataContainer from '../../classes/DataContainer'
+import applyTransformations from '../../transformations/applyTransformations.js'
 
 export default {
   props: {
@@ -10,13 +11,28 @@ export default {
     format: {
       type: [String, undefined],
       default: undefined
+    },
+
+    transform: {
+      type: [Array, Object, undefined],
+      default: undefined
     }
   },
 
   computed: {
     dataContainer () {
       if (this.data) {
-        return new DataContainer(this.data, this.format)
+        let container = new DataContainer(this.data, this.format)
+        if (this.transform) {
+          let transformedData = applyTransformations(
+            container.getDataset(),
+            this.transform
+          )
+
+          return new DataContainer(transformedData)
+        } else {
+          return container
+        }
       }
     }
   },

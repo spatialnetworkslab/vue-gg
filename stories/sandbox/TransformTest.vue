@@ -5,8 +5,8 @@
     :data="data"
   >
 
-    <vgg-transform
-      :trans="[
+    <vgg-data
+      :transform="[
         { rename: { a: 'apple', b: 'banana', d: 'durian' } },
         { select: ['apple', 'banana', 'durian'] },
         { filter: ({ durian }) => durian > 25 },
@@ -34,7 +34,7 @@
 
       </vgg-section>
 
-    </vgg-transform>
+    </vgg-data>
 
   </vgg-graphic>
 </template>
