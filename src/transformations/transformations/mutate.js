@@ -1,28 +1,19 @@
 import dataLength from '../utils/dataLength.js'
 
 export function mutate (data, mutateObj) {
-  let i = 0
   let length = dataLength(data)
-
-  let rowProxy = {}
-
-  for (let colName in data) {
-    Object.defineProperty(rowProxy, colName, {
-      get: () => data[colName][i]
-    })
-  }
 
   for (let key in mutateObj) {
     data[key] = new Array(length)
   }
 
-  while (i < length) {
+  for (let i = 0; i < length; i++) {
+    let row = {}
+    for (let colName in data) { row[colName] = data[colName][i] }
     for (let key in mutateObj) {
       let mutateFunc = mutateObj[key]
-      data[key][i] = mutateFunc(rowProxy, i)
+      data[key][i] = mutateFunc(row, i)
     }
-
-    i++
   }
 
   return data

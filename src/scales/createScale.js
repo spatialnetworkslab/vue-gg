@@ -20,7 +20,7 @@ export default function (prop, context, scalingOptions) {
   }
 
   // Other aesthetic props
-  if (prop === 'color') {
+  if (['color', 'fill'].includes(prop)) {
     return createColorScale(prop, domainType, domain, scalingOptions)
   }
 

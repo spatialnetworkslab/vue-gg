@@ -18,7 +18,7 @@ export default function (prop, { dimension }) {
     }
 
     if (is(prop) && prop.constructor === String) {
-      if (!this.$$dataContainer.hasVariable(prop)) {
+      if (!this.$$dataContainer.hasColumn(prop)) {
         throw new Error(`Variable ${prop} not found`)
       }
 

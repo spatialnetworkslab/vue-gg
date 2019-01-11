@@ -1,7 +1,7 @@
 import Mark from './Mark.js'
-import mapAesthetics from '../../components/Marks/utils/mapAesthetics.js'
-import { createPath, interpolatePath } from '../../components/Marks/utils/createPath.js'
-import checkPoints from '../../components/Marks/utils/checkPoints.js'
+import { createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
+import checkPoints from './utils/checkPoints.js'
+import { invalidPoint } from '../../utils/equals.js'
 
 export default {
   mixins: [Mark],
@@ -9,7 +9,12 @@ export default {
   props: {
     // Mappable
     points: {
-      type: [Array, Object, Function, undefined],
+      type: [Array, Function, undefined],
+      default: undefined
+    },
+
+    geometry: {
+      type: [Object, Function, undefined],
       default: undefined
     },
 
@@ -28,6 +33,11 @@ export default {
       default: undefined
     },
 
+    fill: {
+      type: [String, Object, Function, undefined],
+      default: undefined
+    },
+
     width: {
       type: [Number, Object, Function, undefined],
       default: undefined
@@ -42,20 +52,27 @@ export default {
     close: {
       type: Boolean,
       default: false
+    },
+
+    interpolate: {
+      type: Boolean,
+      default: false
     }
   },
 
   computed: {
     aesthetics () {
-      checkPoints(this.points, this.x, this.y)
+      checkPoints(this.points, this.geometry, this.x, this.y)
 
       return {
         points: this.parseGeometry(this.points, {}),
+        geometry: this.parseGeometry(this.geometry, { geojson: true }),
 
         x: this.parseCoordinateSet(this.x, { dimension: 'x' }),
         y: this.parseCoordinateSet(this.y, { dimension: 'y' }),
 
         color: this.parseAesthetic(this.color, { default: '#000000' }),
+        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
         width: this.parseAesthetic(this.width, { default: 2 })
       }
     }
@@ -63,17 +80,32 @@ export default {
 
   methods: {
     generatePoints (aesthetics) {
-      if (aesthetics.points) { return aesthetics.points }
-
-      if (aesthetics.x.length !== aesthetics.y.length) {
+      let points = []
+      if (aesthetics.points) {
+        points = aesthetics.points
+      } else if (aesthetics.x.length !== aesthetics.y.length) {
         throw new Error(`'x' and 'y' coordinate sets have different lengths`)
       } else {
-        let zipped = []
         for (let i = 0; i < aesthetics.x.length; ++i) {
-          zipped.push([aesthetics.x[i], aesthetics.y[i]])
+          points.push([aesthetics.x[i], aesthetics.y[i]])
         }
-        return zipped
       }
+
+      return this.filterInvalid(points)
+    },
+
+    filterInvalid (points) {
+      let filtered = []
+      for (let i = 0; i < points.length; i++) {
+        let point = points[i]
+        if (invalidPoint(point)) {
+          console.warn(`Skipped invalid point ${JSON.stringify(point)} at index ${i}`)
+        } else {
+          filtered.push(point)
+        }
+      }
+
+      return filtered
     },
 
     sort (points) {
@@ -104,49 +136,42 @@ export default {
     },
 
     renderSVG (createElement, aesthetics) {
-      let points = this.generatePoints(aesthetics)
+      if (this.geometry) {
+        let path = createGeoPath(aesthetics.geometry, this.$$transform)
 
-      if (this.sortX) {
-        points = this.sort(points)
-      }
+        return createElement('path', {
+          attrs: {
+            'd': path,
+            'stroke': aesthetics.color,
+            'stroke-width': aesthetics.width,
+            'fill': 'none'
+          }
+        })
+      } else {
+        let points = this.generatePoints(aesthetics)
 
-      if (this.close) {
-        points = this.closePoints(points)
-      }
+        if (points.length > 1) {
+          if (this.sortX) {
+            points = this.sort(points)
+          }
 
-      let path = this.createPath(points)
+          if (this.close) {
+            points = this.closePoints(points)
+          }
 
-      return createElement('path', {
-        attrs: {
-          'd': path,
-          'stroke': aesthetics.color,
-          'stroke-width': aesthetics.width,
-          'fill': 'none'
+          let path = this.createPath(points)
+
+          return createElement('path', {
+            attrs: {
+              'd': path,
+              'stroke': aesthetics.color,
+              'stroke-width': aesthetics.width,
+              'fill': 'none'
+            }
+          })
+        } else {
+          console.warn('Not enough valid points to draw Mark')
         }
-      })
-    }
-  },
-
-  render (createElement) {
-    if (this.__update) {
-      if (!this.$$map) {
-        // Create svg element using aesthetics
-        return this.renderSVG(createElement, this.aesthetics)
-      }
-
-      if (this.$$map) {
-        // Create the aesthetics for each mark
-        let aestheticsPerMark = mapAesthetics(this.aesthetics, this.context)
-
-        // Create svg element for each mark from aesthetics
-        let components = []
-        for (let aesthetics of aestheticsPerMark) {
-          components.push(
-            this.renderSVG(createElement, aesthetics)
-          )
-        }
-
-        return createElement('g', components)
       }
     }
   }
