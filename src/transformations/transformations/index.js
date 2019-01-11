@@ -6,6 +6,7 @@ import { mutate, transmute } from './mutate.js'
 import summarise from './summarise.js'
 import mutarise from './mutarise.js'
 import groupBy from './groupBy.js'
+import binning from './binning.js'
 import dropNA from './dropNA.js'
 
 export default {
@@ -20,5 +21,6 @@ export default {
   mutarise,
   'mutarize': mutarise,
   groupBy,
+  binning,
   dropNA
 }

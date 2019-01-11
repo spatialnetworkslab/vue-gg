@@ -5,15 +5,22 @@
     :data="data"
   >
 
-    <vgg-transform
+    <!-- <vgg-transform
       :trans="[
         { rename: { a: 'apple', b: 'banana', d: 'durian' } },
         { select: ['apple', 'banana', 'durian'] },
         { filter: ({ durian }) => durian > 25 },
         { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] },
         { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } },
-        /* { groupBy: 'banana' }, */
-        { summarise: { appleSum: { apple: 'sum' }, maxRatio: { ratioAppleDurian: 'max' } } }
+        { groupBy: 'banana' },
+        { mutarize: { appleSum: { apple: 'sum' }, maxRatio: { ratioAppleDurian: 'max' } } }
+      ]"
+    > -->
+
+    <vgg-transform
+      :trans="[
+        { rename: { a: 'apple', b: 'banana', d: 'durian' } },
+        { binning: { apple: { binCount: 5 } } },
       ]"
     >
 
@@ -21,18 +28,43 @@
         :x1="100"
         :x2="500"
         :y1="100"
-        :y2="500">
+        :y2="500"
+        :scales="{
+          x: [0, 100],
+          y: [0, 100]
+        }"
+      >
 
         <vgg-map>
 
-          <vgg-point
-            :x="{ scale: 'appleSum' }"
-            :y="{ scale: 'maxRatio' }"
+          <vgg-rectangle
+            :x1="{ scale: { variable: 'min', domain: [0, 100] } }"
+            :x2="{ scale: { variable: 'max', domain: [0, 100] } }"
+            :y1="0"
+            :y2="{ scale: { variable: 'n', domain: [0, null]} }"
+            :color="{ scale: { scale: 'blues', variable: 'max', domain: [0, null] } }"
           />
 
         </vgg-map>
 
       </vgg-section>
+
+      <vgg-x-axis
+        :x1="100"
+        :x2="500"
+        :y1="50"
+        :y2="100"
+        :scale="'min'"
+        rotate-label
+      />
+
+      <vgg-y-axis
+        :x1="500"
+        :x2="550"
+        :y1="100"
+        :y2="500"
+        :scale="{ variable: 'n', domain: [0, null] }"
+      />
 
     </vgg-transform>
 

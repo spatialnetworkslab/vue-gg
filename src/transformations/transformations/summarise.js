@@ -1,24 +1,24 @@
 import aggregations from './aggregations'
 import checkKeyValuePair from '../utils/checkKeyValuePair.js'
-import { GroupedData } from './groupBy.js'
 
 export default function (data, summariseInstructions) {
   if (summariseInstructions.constructor !== Object) {
     throw new Error('summarise must be an object')
   }
 
-  let newData = initNewData(summariseInstructions, data.groupedColumns)
+  let newData = initNewData(summariseInstructions, data)
 
-  if (data.constructor === GroupedData) {
-    checkSummariseInstructions(summariseInstructions, data.groupedColumns)
+  if (data.hasOwnProperty('grouped')) {
+    checkSummariseInstructions(summariseInstructions, data)
 
-    for (let group of data.groups) {
-      newData = summariseGroup(group.data, summariseInstructions, newData)
-      newData = attachGroupedValues(
-        data.groupedColumns,
-        group.groupedValues,
-        newData
-      )
+    let dataClone = JSON.parse(JSON.stringify(data))
+    delete dataClone.grouped
+    for (let col in dataClone) {
+      newData[col] = dataClone[col]
+    }
+
+    for (let group of data.grouped) {
+      newData = summariseGroup(group, summariseInstructions, newData)
     }
   } else {
     newData = summariseGroup(data, summariseInstructions, newData)
@@ -27,11 +27,15 @@ export default function (data, summariseInstructions) {
   return newData
 }
 
-export function initNewData (summariseInstructions, groupedColumns) {
+export function initNewData (summariseInstructions, data) {
   let newData = {}
   for (let newCol in summariseInstructions) { newData[newCol] = [] }
-  if (groupedColumns) {
-    for (let col of groupedColumns) { newData[col] = [] }
+  if (data.hasOwnProperty('grouped')) {
+    for (let col in data) {
+      if (col !== 'grouped') {
+        newData[col] = []
+      }
+    }
   }
   return newData
 }
@@ -48,23 +52,17 @@ export function summariseGroup (data, summariseInstructions, newData) {
   return newData
 }
 
-export function checkSummariseInstructions (summariseInstructions, groupedColumns) {
+export function checkSummariseInstructions (summariseInstructions, data) {
   for (let newColName in summariseInstructions) {
     let instruction = summariseInstructions[newColName]
     let name = Object.keys(instruction)[0]
-    if (groupedColumns.includes(name)) {
+
+    if (name === 'grouped') {
+      throw new Error(`Invalid column name 'grouped'`)
+    }
+
+    if (data.hasOwnProperty(name)) {
       throw new Error(`Cannot summarise the column '${name}': used for grouping`)
     }
   }
-}
-
-function attachGroupedValues (groupedColumns, groupedValues, newData) {
-  for (let i = 0; i < groupedColumns.length; i++) {
-    let col = groupedColumns[i]
-    let val = groupedValues[i]
-
-    newData[col].push(val)
-  }
-
-  return newData
 }

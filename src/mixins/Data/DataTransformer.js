@@ -36,21 +36,11 @@ export default {
       if (this.trans.constructor === Array) {
         for (let i = 0; i < this.trans.length; i++) {
           let transformation = this.trans[i]
-          if (transformation.hasOwnProperty('groupBy')) {
-            let next = this.trans[i + 1]
-            if (!nextIsSummarise(next)) {
-              throw new Error('groupBy must always be followed by summarise or mutarise')
-            }
-          }
-
           data = applyTranformation(data, transformation)
         }
       }
 
       if (this.trans.constructor === Object) {
-        if (this.trans.hasOwnProperty('groupBy')) {
-          throw new Error('groupBy must always be followed by summarise or mutarise')
-        }
         data = applyTranformation(data, this.trans)
       }
 
@@ -65,11 +55,4 @@ export default {
       return { $$dataContainerContext }
     }
   }
-}
-
-function nextIsSummarise (next) {
-  return next && (
-    (next.hasOwnProperty('summarise') || next.hasOwnProperty('summarize')) ||
-    (next.hasOwnProperty('mutarise') || next.hasOwnProperty('mutarize'))
-  )
 }
