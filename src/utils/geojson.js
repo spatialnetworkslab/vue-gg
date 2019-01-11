@@ -1,16 +1,6 @@
 import { coordEach } from '@turf/meta'
 import { geoPath } from 'd3-geo'
-
-export function calculateBBox (featuresInput, transformation) {
-  let features
-  if (transformation) {
-    features = transformFeatures(featuresInput, transformation)
-  } else {
-    features = featuresInput
-  }
-  let bbox = bboxFeatures(features)
-  return bbox
-}
+import { invalid } from './equals.js'
 
 export function transformFeatures (features, transformation) {
   return features.map(feature => transform(feature, transformation))
@@ -30,7 +20,9 @@ export function bboxFeatures (features) {
   let bbox = [[Infinity, Infinity], [-Infinity, -Infinity]]
 
   features.forEach(feature => {
-    bbox = updateBBox(bbox, feature)
+    if (!invalid(feature)) {
+      bbox = updateBBox(bbox, feature)
+    }
   })
 
   let bboxObj = {

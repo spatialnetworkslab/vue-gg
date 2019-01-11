@@ -75,6 +75,9 @@ export default class {
     // initialize column data frame
     let cols = {}
     let firstFeature = data.features[0]
+    if (firstFeature.properties.hasOwnProperty('geometry')) {
+      delete firstFeature.properties.geometry
+    }
     let colNames = ['geometry', ...Object.keys(firstFeature.properties)]
     for (let name of colNames) { cols[name] = [] }
 
@@ -89,14 +92,7 @@ export default class {
 
     let length = checkFormat(cols)
 
-    // calculate domain for each column except for the geometry column
-    let attributeCols = Object.assign(...Object.keys(cols)
-      .filter(key => key !== 'geometry')
-      .map(key => ({ [key]: cols[key] })))
-
-    let { domains, types } = calculateDomains(attributeCols, length)
-
-    types.geometry = 'geometry'
+    let { domains, types } = calculateDomains(cols, length)
 
     this._length = length
     this._dataset = cols

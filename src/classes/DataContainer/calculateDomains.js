@@ -1,5 +1,6 @@
 import getDataType from '../../utils/getDataType.js'
 import { invalid } from '../../utils/equals.js'
+import { bboxFeatures } from '../../utils/geojson.js'
 
 export default function (data, length) {
   let domains = {}
@@ -35,32 +36,39 @@ export default function (data, length) {
       let type = getDataType(firstValidValue)
       types[key] = type
 
-      let uniqueValues = calculateUniqueValues(col)
+      if (isGeometry(key, type)) {
+        let bbox = bboxFeatures(col)
 
-      if (nValidValues === 1) {
-        let domain = initDummyDomain(type, firstValidValue)
-        domains[key] = domain
-
-        console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
-        console.warn(`Using domain ${JSON.stringify(domain)}`)
-      } else if (uniqueValues === 1 && type !== 'categorical') {
-        let domain = initDummyDomain(type, firstValidValue)
-        domains[key] = domain
-
-        console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
-        console.warn(`Using domain ${JSON.stringify(domain)}`)
+        domains['geometry.x'] = bbox.x
+        domains['geometry.y'] = bbox.y
       } else {
-        domains[key] = initDomain(type)
+        let uniqueValues = calculateUniqueValues(col)
 
-        for (let i = 0; i < col.length; i++) {
-          let value = col[i]
+        if (nValidValues === 1) {
+          let domain = initDummyDomain(type, firstValidValue)
+          domains[key] = domain
 
-          if (!invalid(value)) {
-            if (getDataType(value) !== type) {
-              throw new Error(`Invalid column ${key}: column contains multiple data types`)
+          console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
+          console.warn(`Using domain ${JSON.stringify(domain)}`)
+        } else if (uniqueValues === 1 && type !== 'categorical') {
+          let domain = initDummyDomain(type, firstValidValue)
+          domains[key] = domain
+
+          console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
+          console.warn(`Using domain ${JSON.stringify(domain)}`)
+        } else {
+          domains[key] = initDomain(type)
+
+          for (let i = 0; i < col.length; i++) {
+            let value = col[i]
+
+            if (!invalid(value)) {
+              if (getDataType(value) !== type) {
+                throw new Error(`Invalid column ${key}: column contains multiple data types`)
+              }
+
+              domains[key] = updateDomain(domains[key], value, type)
             }
-
-            domains[key] = updateDomain(domains[key], value, type)
           }
         }
       }
@@ -155,4 +163,18 @@ function calculateUniqueValues (col) {
   }
 
   return Object.keys(uniqueVals).length
+}
+
+function isGeometry (colName, type) {
+  if (colName === 'geometry' && type === 'geometry') { return true }
+
+  if (colName === 'geometry') {
+    if (type !== 'geometry') {
+      throw new Error(`Data in column 'geometry' must be of type 'geometry'`)
+    }
+  } else {
+    if (type === 'geometry') {
+      throw new Error(`Data of type 'geometry' found in column '${colName}' (not allowed)`)
+    }
+  }
 }
