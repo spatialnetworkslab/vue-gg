@@ -48,7 +48,7 @@ export default {
       default: undefined
     },
 
-    width: {
+    strokeWidth: {
       type: [Number, Object, Function, undefined],
       default: undefined
     },
@@ -85,7 +85,7 @@ export default {
 
         color: this.parseAesthetic(this.color, { default: '#000000' }),
         fill: this.parseAesthetic(this.fill, { default: 'none' }),
-        width: this.parseAesthetic(this.width, { default: 2 })
+        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 })
       }
     }
   },
@@ -168,7 +168,7 @@ export default {
           attrs: {
             'd': path,
             'stroke': aesthetics.color,
-            'stroke-width': aesthetics.width,
+            'stroke-width': aesthetics.strokeWidth,
             'fill': aesthetics.fill
           }
         })
@@ -204,7 +204,7 @@ export default {
             attrs: {
               'd': path,
               'stroke': aesthetics.color,
-              'stroke-width': aesthetics.width,
+              'stroke-width': aesthetics.strokeWidth,
               'fill': aesthetics.fill
             }
           })
