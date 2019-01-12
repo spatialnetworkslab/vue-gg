@@ -3,7 +3,6 @@ import Rectangular from '../../mixins/Marks/Rectangular.js'
 import { createPath, interpolatePath } from './utils/createPath.js'
 import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
-
 export default {
   mixins: [Rectangular],
 
