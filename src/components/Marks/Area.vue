@@ -5,12 +5,12 @@ export default {
   mixins: [MultiLine],
 
   props: {
-    sortX: {
-      type: [String, undefined],
-      default: undefined
+    close: {
+      type: Boolean,
+      default: true
     },
 
-    close: {
+    sortX: {
       type: Boolean,
       default: true
     },
@@ -19,6 +19,7 @@ export default {
       type: [String, Object, Function, undefined],
       default: '#000000'
     }
+
   }
 }
 </script>

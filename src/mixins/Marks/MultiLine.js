@@ -91,30 +91,28 @@ export default {
   },
 
   methods: {
-    generatePoints (aesthetics) {
+    generatePoints (x, y) {
       let points = []
-      if (aesthetics.points) {
-        points = aesthetics.points
-      } else if (aesthetics.x.length !== aesthetics.y.length) {
+      if (x.length !== y.length) {
         // x and y arrays should have equal length
         // if not we throw an error EXCEPT when one of the two arrays
         // has length 1, in which case we reuse that value for all points
-        if (aesthetics.x.length === 1 || aesthetics.y.length === 1) {
-          if (aesthetics.x.length === 1) {
-            for (let i = 0; i < aesthetics.y.length; ++i) {
-              points.push([aesthetics.x[0], aesthetics.y[i]])
+        if (x.length === 1 || y.length === 1) {
+          if (x.length === 1) {
+            for (let i = 0; i < y.length; ++i) {
+              points.push([x[0], y[i]])
             }
-          } else if (aesthetics.y.length === 1) {
-            for (let i = 0; i < aesthetics.x.length; ++i) {
-              points.push([aesthetics.x[i], aesthetics.y[0]])
+          } else if (y.length === 1) {
+            for (let i = 0; i < x.length; ++i) {
+              points.push([x[i], y[0]])
             }
           }
         } else {
           throw new Error(`'x' and 'y' coordinate sets have different lengths`)
         }
       } else {
-        for (let i = 0; i < aesthetics.x.length; ++i) {
-          points.push([aesthetics.x[i], aesthetics.y[i]])
+        for (let i = 0; i < x.length; ++i) {
+          points.push([x[i], y[i]])
         }
       }
 
@@ -175,11 +173,25 @@ export default {
           }
         })
       } else {
-        let points = this.generatePoints(aesthetics)
+        let points = []
+        if (aesthetics.points) {
+          points = aesthetics.points
+        } else {
+          points = this.generatePoints(aesthetics.x, aesthetics.y)
+        }
 
         if (points.length > 1) {
           if (this.sortX) {
             points = this.sort(points)
+          }
+
+          if (aesthetics.y && aesthetics.y2) {
+            let x = aesthetics.x2 ? aesthetics.x2 : aesthetics.x
+            let pointsY2 = this.generatePoints(x, aesthetics.y2)
+            if (this.sortX) {
+              pointsY2 = this.sort(pointsY2)
+            }
+            points = points.concat(pointsY2.reverse())
           }
 
           if (this.close) {
