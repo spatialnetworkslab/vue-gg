@@ -15,17 +15,22 @@ export default {
       default: undefined
     },
 
-    color: {
+    fill: {
       type: [String, Object, Function, undefined],
       default: undefined
     },
 
-    radius: {
-      type: [Number, Object, Function, undefined],
+    stroke: {
+      type: [String, Object, Function, undefined],
       default: undefined
     },
 
     strokeWidth: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    radius: {
       type: [Number, Object, Function, undefined],
       default: undefined
     }
@@ -36,9 +41,10 @@ export default {
       return {
         x: this.parseCoordinate(this.x, { dimension: 'x' }),
         y: this.parseCoordinate(this.y, { dimension: 'y' }),
-        color: this.parseAesthetic(this.color, { default: '#000000' }),
-        radius: this.parseAesthetic(this.radius, { default: 3 }),
-        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 })
+        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
+        stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
+        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 }),
+        radius: this.parseAesthetic(this.radius, { default: 3 })
       }
     }
   },
@@ -51,9 +57,10 @@ export default {
         attrs: {
           'cx': cx,
           'cy': cy,
-          'fill': aesthetics.color,
           'r': aesthetics.radius,
-          'stroke-width': aesthetics.strokeWidth
+          'style': `fill: ${aesthetics.fill};
+                    stroke: ${aesthetics.stroke};
+                    stroke-width: ${aesthetics.strokeWidth};`
         }
       })
     }

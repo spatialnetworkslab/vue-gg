@@ -38,7 +38,7 @@ export default {
       default: undefined
     },
 
-    color: {
+    stroke: {
       type: [String, Object, Function, undefined],
       default: undefined
     },
@@ -83,7 +83,7 @@ export default {
         x2: this.parseCoordinateSet(this.x2, { dimension: 'x2' }),
         y2: this.parseCoordinateSet(this.y2, { dimension: 'y2' }),
 
-        color: this.parseAesthetic(this.color, { default: '#000000' }),
+        stroke: this.parseAesthetic(this.stroke, { default: '#000000' }),
         fill: this.parseAesthetic(this.fill, { default: 'none' }),
         strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 })
       }
@@ -167,9 +167,9 @@ export default {
         return createElement('path', {
           attrs: {
             'd': path,
-            'stroke': aesthetics.color,
-            'stroke-width': aesthetics.strokeWidth,
-            'fill': aesthetics.fill
+            'style': `fill: ${aesthetics.fill};
+                    stroke: ${aesthetics.stroke};
+                    stroke-width: ${aesthetics.strokeWidth};`
           }
         })
       } else {
@@ -203,9 +203,9 @@ export default {
           return createElement('path', {
             attrs: {
               'd': path,
-              'stroke': aesthetics.color,
-              'stroke-width': aesthetics.strokeWidth,
-              'fill': aesthetics.fill
+              'style': `fill: ${aesthetics.fill};
+                    stroke: ${aesthetics.stroke};
+                    stroke-width: ${aesthetics.strokeWidth};`
             }
           })
         } else {

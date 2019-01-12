@@ -2,7 +2,7 @@
   <vgg-graphic
     :width="600"
     :height="600"
-    :data="data">
+    :data="dummyData">
 
     <!-- Axes -->
     <vgg-x-axis
@@ -37,25 +37,13 @@
 
         <vgg-map>
 
-          <!-- <vgg-multi-line
-            :x="row => row.grouped.xValues"
-            :y="(row, i) => Array(row.grouped.xValues.length).fill((i + 1) * 15)"
-            :color="row => row.colors"
-          /> -->
-
           <vgg-area
             :x="row => row.grouped.xValues"
             :y="row => row.grouped.yValues"
-            :color="'none'"
+            :stroke="'none'"
             :y2="(row, i, prevRow) => prevRow ? prevRow.grouped.yValues : [0]"
             :fill="row => row.colors"
           />
-
-          <!-- <vgg-multi-line
-            :x="row => row.grouped.xValues"
-            :y="(row, i) => 15"
-            :color="row => row.colors"
-          /> -->
 
         </vgg-map>
 
@@ -69,7 +57,7 @@
 <script>
 export default {
   computed: {
-    data () {
+    dummyData () {
       let colors = [
         'red', 'red', 'red',
         'green', 'green', 'green',
@@ -84,8 +72,7 @@ export default {
         20, 15, 40,
         35, 40, 65
       ]
-      let data = { colors: colors, xValues: xValues, yValues: yValues }
-      return data
+      return { colors: colors, xValues: xValues, yValues: yValues }
     }
   }
 }

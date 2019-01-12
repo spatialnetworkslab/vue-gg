@@ -29,7 +29,9 @@ export default {
       return createElement('path', {
         attrs: {
           'd': path,
-          'style': `fill: ${aesthetics.color}`
+          'style': `fill: ${aesthetics.fill};
+                    stroke: ${aesthetics.stroke};
+                    stroke-width: ${aesthetics.strokeWidth};`
         }
       })
     }
