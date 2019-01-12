@@ -2,6 +2,7 @@ import Mark from './Mark.js'
 import { createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
 import checkPoints from './utils/checkPoints.js'
 import { invalidPoint } from '../../utils/equals.js'
+import createSVGStyle from './utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -53,6 +54,21 @@ export default {
       default: undefined
     },
 
+    opacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    strokeOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    fillOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
     // Non-mappable
     sortX: {
       type: Boolean,
@@ -85,7 +101,10 @@ export default {
 
         stroke: this.parseAesthetic(this.stroke, { default: '#000000' }),
         fill: this.parseAesthetic(this.fill, { default: 'none' }),
-        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 })
+        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
+        opacity: this.parseAesthetic(this.opacity, { default: undefined }),
+        fillOpacity: this.parseAesthetic(this.fillOpacity, { default: undefined }),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity, { default: undefined })
       }
     }
   },
@@ -163,13 +182,10 @@ export default {
     renderSVG (createElement, aesthetics) {
       if (this.geometry) {
         let path = createGeoPath(aesthetics.geometry, this.$$transform)
-
         return createElement('path', {
           attrs: {
             'd': path,
-            'style': `fill: ${aesthetics.fill};
-                    stroke: ${aesthetics.stroke};
-                    stroke-width: ${aesthetics.strokeWidth};`
+            'style': createSVGStyle(aesthetics)
           }
         })
       } else {
@@ -199,13 +215,10 @@ export default {
           }
 
           let path = this.createPath(points)
-
           return createElement('path', {
             attrs: {
               'd': path,
-              'style': `fill: ${aesthetics.fill};
-                    stroke: ${aesthetics.stroke};
-                    stroke-width: ${aesthetics.strokeWidth};`
+              'style': createSVGStyle(aesthetics)
             }
           })
         } else {

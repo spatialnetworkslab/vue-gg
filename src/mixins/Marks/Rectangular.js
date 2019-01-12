@@ -58,6 +58,21 @@ export default {
     fill: {
       type: [String, Object, Function, undefined],
       default: undefined
+    },
+
+    opacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    strokeOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    fillOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
     }
   },
 
@@ -90,7 +105,10 @@ export default {
         h: this.parseCoordinate(this.h, { dimension: 'y', wh: true }),
         stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
         strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
-        fill: this.parseAesthetic(this.fill, { default: '#000000' })
+        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
+        opacity: this.parseAesthetic(this.opacity, { default: undefined }),
+        fillOpacity: this.parseAesthetic(this.fillOpacity, { default: undefined }),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity, { default: undefined })
       }
     }
   },

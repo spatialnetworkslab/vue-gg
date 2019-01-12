@@ -1,6 +1,8 @@
 <script>
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 import { createPath, interpolatePath } from './utils/createPath.js'
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
+
 
 export default {
   mixins: [Rectangular],
@@ -25,13 +27,10 @@ export default {
       if (!this._interpolate) {
         path = createPath(points, this.$$transform)
       }
-
       return createElement('path', {
         attrs: {
           'd': path,
-          'style': `fill: ${aesthetics.fill};
-                    stroke: ${aesthetics.stroke};
-                    stroke-width: ${aesthetics.strokeWidth};`
+          'style': createSVGStyle(aesthetics)
         }
       })
     }

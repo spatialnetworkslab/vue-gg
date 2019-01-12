@@ -43,6 +43,7 @@
             :stroke="'none'"
             :y2="(row, i, prevRow) => prevRow ? prevRow.grouped.yValues : [0]"
             :fill="row => row.colors"
+            :opacity="0.5"
           />
 
         </vgg-map>

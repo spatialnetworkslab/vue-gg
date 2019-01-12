@@ -1,5 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -33,6 +34,21 @@ export default {
     radius: {
       type: [Number, Object, Function, undefined],
       default: undefined
+    },
+
+    opacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    strokeOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    fillOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
     }
   },
 
@@ -44,7 +60,10 @@ export default {
         fill: this.parseAesthetic(this.fill, { default: '#000000' }),
         stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
         strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 }),
-        radius: this.parseAesthetic(this.radius, { default: 3 })
+        radius: this.parseAesthetic(this.radius, { default: 3 }),
+        opacity: this.parseAesthetic(this.opacity, { default: undefined }),
+        fillOpacity: this.parseAesthetic(this.fillOpacity, { default: undefined }),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity, { default: undefined })
       }
     }
   },
@@ -58,9 +77,7 @@ export default {
           'cx': cx,
           'cy': cy,
           'r': aesthetics.radius,
-          'style': `fill: ${aesthetics.fill};
-                    stroke: ${aesthetics.stroke};
-                    stroke-width: ${aesthetics.strokeWidth};`
+          'style': createSVGStyle(aesthetics)
         }
       })
     }
