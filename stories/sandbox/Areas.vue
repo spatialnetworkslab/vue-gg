@@ -46,9 +46,9 @@
           <vgg-area
             :x="row => row.grouped.xValues"
             :y="row => row.grouped.yValues"
-            :color="row => row.colors"
-            :y2="(row, i) => [(i + 1) * 2]"
-            :fill="'none'"
+            :color="'none'"
+            :y2="(row, i, prevRow) => prevRow ? prevRow.grouped.yValues : [0]"
+            :fill="row => row.colors"
           />
 
           <!-- <vgg-multi-line
