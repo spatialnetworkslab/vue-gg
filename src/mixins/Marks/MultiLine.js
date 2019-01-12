@@ -28,6 +28,16 @@ export default {
       default: undefined
     },
 
+    x2: {
+      type: [Array, Object, String, Function, undefined],
+      default: undefined
+    },
+
+    y2: {
+      type: [Array, Object, String, Function, undefined],
+      default: undefined
+    },
+
     color: {
       type: [String, Object, Function, undefined],
       default: undefined
@@ -70,9 +80,11 @@ export default {
 
         x: this.parseCoordinateSet(this.x, { dimension: 'x' }),
         y: this.parseCoordinateSet(this.y, { dimension: 'y' }),
+        x2: this.parseCoordinateSet(this.x2, { dimension: 'x2' }),
+        y2: this.parseCoordinateSet(this.y2, { dimension: 'y2' }),
 
         color: this.parseAesthetic(this.color, { default: '#000000' }),
-        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
+        fill: this.parseAesthetic(this.fill, { default: 'none' }),
         width: this.parseAesthetic(this.width, { default: 2 })
       }
     }
@@ -84,7 +96,22 @@ export default {
       if (aesthetics.points) {
         points = aesthetics.points
       } else if (aesthetics.x.length !== aesthetics.y.length) {
-        throw new Error(`'x' and 'y' coordinate sets have different lengths`)
+        // x and y arrays should have equal length
+        // if not we throw an error EXCEPT when one of the two arrays
+        // has length 1, in which case we reuse that value for all points
+        if (aesthetics.x.length === 1 || aesthetics.y.length === 1) {
+          if (aesthetics.x.length === 1) {
+            for (let i = 0; i < aesthetics.y.length; ++i) {
+              points.push([aesthetics.x[0], aesthetics.y[i]])
+            }
+          } else if (aesthetics.y.length === 1) {
+            for (let i = 0; i < aesthetics.x.length; ++i) {
+              points.push([aesthetics.x[i], aesthetics.y[0]])
+            }
+          }
+        } else {
+          throw new Error(`'x' and 'y' coordinate sets have different lengths`)
+        }
       } else {
         for (let i = 0; i < aesthetics.x.length; ++i) {
           points.push([aesthetics.x[i], aesthetics.y[i]])
@@ -144,7 +171,7 @@ export default {
             'd': path,
             'stroke': aesthetics.color,
             'stroke-width': aesthetics.width,
-            'fill': 'none'
+            'fill': aesthetics.fill
           }
         })
       } else {
@@ -166,7 +193,7 @@ export default {
               'd': path,
               'stroke': aesthetics.color,
               'stroke-width': aesthetics.width,
-              'fill': 'none'
+              'fill': aesthetics.fill
             }
           })
         } else {
