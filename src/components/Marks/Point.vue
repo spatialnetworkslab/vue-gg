@@ -76,9 +76,9 @@ export default {
         attrs: {
           'cx': cx,
           'cy': cy,
-          'r': aesthetics.radius,
-          'style': createSVGStyle(aesthetics)
-        }
+          'r': aesthetics.radius
+        },
+        style: createSVGStyle(aesthetics)
       })
     }
   }

@@ -184,9 +184,9 @@ export default {
         let path = createGeoPath(aesthetics.geometry, this.$$transform)
         return createElement('path', {
           attrs: {
-            'd': path,
-            'style': createSVGStyle(aesthetics)
-          }
+            'd': path
+          },
+          style: createSVGStyle(aesthetics)
         })
       } else {
         let points = []
@@ -217,9 +217,9 @@ export default {
           let path = this.createPath(points)
           return createElement('path', {
             attrs: {
-              'd': path,
-              'style': createSVGStyle(aesthetics)
-            }
+              'd': path
+            },
+            style: createSVGStyle(aesthetics)
           })
         } else {
           console.warn('Not enough valid points to draw Mark')

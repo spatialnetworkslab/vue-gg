@@ -1,6 +1,7 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
 import { createPath, interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -45,6 +46,21 @@ export default {
     strokeWidth: {
       type: [Number, Object, Function, undefined],
       default: undefined
+    },
+
+    opacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    strokeOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    fillOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
     }
   },
 
@@ -58,7 +74,10 @@ export default {
         func: this.parseAesthetic(this.func, { isFunction: true }),
         stroke: this.parseAesthetic(this.stroke, { default: '#000000' }),
         fill: this.parseAesthetic(this.fill, { default: 'none' }),
-        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 })
+        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
+        opacity: this.parseAesthetic(this.opacity, { default: undefined }),
+        fillOpacity: this.parseAesthetic(this.fillOpacity, { default: undefined }),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity, { default: undefined })
       }
     }
   },
@@ -96,11 +115,9 @@ export default {
 
       return createElement('path', {
         attrs: {
-          'd': path,
-          'style': `fill: ${aesthetics.fill};
-                    stroke: ${aesthetics.stroke};
-                    stroke-width: ${aesthetics.strokeWidth};`
-        }
+          'd': path
+        },
+        style: createSVGStyle(aesthetics)
       })
     }
   }

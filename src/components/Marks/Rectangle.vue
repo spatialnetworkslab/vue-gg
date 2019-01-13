@@ -28,9 +28,9 @@ export default {
       }
       return createElement('path', {
         attrs: {
-          'd': path,
-          'style': createSVGStyle(aesthetics)
-        }
+          'd': path
+        },
+        style: createSVGStyle(aesthetics)
       })
     }
   }
