@@ -88,7 +88,7 @@ These are analogous to the CSS properties of the same names.
 | interpolate | false    | Boolean | false   | Interpolate between points (when using non-cartesian coordinate systems) |
 | sort        | false    | String  | 'x'     | Sort points in ascending order in x or y dimension                       |
 
-The `interpolate` option is switched of by default for Area marks. Only
+The `interpolate` option is switched off by default for Area marks. Only
 turn it on when strictly necessary, otherwise it will slow down performance.
 `sort` is by default `'x'`, because most users will use the `x` dimension for
 variables that must be sorted ascendingly, like points in time, while using the
