@@ -74,16 +74,16 @@ export default {
   computed: {
     aesthetics () {
       return {
-        text: this.parseAesthetic(this.text, {}),
+        text: this.parseAesthetic(this.text),
         x: this.parseCoordinate(this.x, { dimension: 'x' }),
         y: this.parseCoordinate(this.y, { dimension: 'y' }),
         fill: this.parseAesthetic(this.fill, { default: '#000000' }),
         stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
         strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 }),
         radius: this.parseAesthetic(this.radius, { default: 3 }),
-        opacity: this.parseAesthetic(this.opacity, { default: undefined }),
-        fillOpacity: this.parseAesthetic(this.fillOpacity, { default: undefined }),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity, { default: undefined }),
+        opacity: this.parseAesthetic(this.opacity),
+        fillOpacity: this.parseAesthetic(this.fillOpacity),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity),
         fontSize: this.parseAesthetic(this.fontSize, { default: 16 }),
         rotation: this.parseAesthetic(this.rotation, { default: 0 })
       }

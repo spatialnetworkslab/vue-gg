@@ -102,9 +102,9 @@ export default {
         stroke: this.parseAesthetic(this.stroke, { default: '#000000' }),
         fill: this.parseAesthetic(this.fill, { default: 'none' }),
         strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
-        opacity: this.parseAesthetic(this.opacity, { default: undefined }),
-        fillOpacity: this.parseAesthetic(this.fillOpacity, { default: undefined }),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity, { default: undefined })
+        opacity: this.parseAesthetic(this.opacity),
+        fillOpacity: this.parseAesthetic(this.fillOpacity),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
       }
     }
   },

@@ -61,9 +61,9 @@ export default {
         stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
         strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 }),
         radius: this.parseAesthetic(this.radius, { default: 3 }),
-        opacity: this.parseAesthetic(this.opacity, { default: undefined }),
-        fillOpacity: this.parseAesthetic(this.fillOpacity, { default: undefined }),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity, { default: undefined })
+        opacity: this.parseAesthetic(this.opacity),
+        fillOpacity: this.parseAesthetic(this.fillOpacity),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
       }
     }
   },
