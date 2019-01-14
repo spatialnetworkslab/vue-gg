@@ -1,10 +1,10 @@
 import calculateDomains from './calculateDomains.js'
 // const formats = ['row', 'column', 'geojson']
-// const variableTypes = ['quantitative', 'temporal', 'categorical']
+// const variableTypes = ['quantitative', 'temporal', 'categorical', 'geometry']
 
 export default class {
   constructor (data, format) {
-    this._dataset = []
+    this._dataset = {}
     this._domains = {}
 
     if (!format) {
@@ -35,7 +35,7 @@ export default class {
           this.setGeoJSON(data)
           break
         }
-        default: throw new Error('Unknown type!')
+        default: throw new Error('Unknown format!')
       }
     }
   }
@@ -43,10 +43,10 @@ export default class {
   setColDataFrame (data) {
     let length = checkFormat(data)
 
-    let { domains, types } = calculateDomains(data)
-
     this._length = length
     this._dataset = data
+
+    let { domains, types } = calculateDomains(data, length)
     this._domains = domains
     this._types = types
   }
@@ -71,15 +71,41 @@ export default class {
     if (data.constructor !== Object) {
       throw new Error('Data of type geojson must be passed as an object')
     }
-    // TODO
+
+    // initialize column data frame
+    let cols = {}
+    let firstFeature = data.features[0]
+    let colNames = ['geometry', ...Object.keys(firstFeature.properties)]
+    for (let name of colNames) { cols[name] = [] }
+
+    data.features.forEach(feat => {
+      let geometry = extractGeometry(feat)
+      let attributes = extractAttributes(feat)
+
+      // create columns
+      cols.geometry.push(geometry)
+      for (let colName in attributes) { cols[colName].push(attributes[colName]) }
+    })
+
+    let length = checkFormat(cols)
+
+    // calculate domain for each column except for the geometry column
+    let attributeCols = Object.assign(...Object.keys(cols)
+      .filter(key => key !== 'geometry')
+      .map(key => ({ [key]: cols[key] })))
+
+    let { domains, types } = calculateDomains(attributeCols, length)
+
+    types.geometry = 'geometry'
+
+    this._length = length
+    this._dataset = cols
+    this._domains = domains
+    this._types = types
   }
 
   getDataset () {
     return this._dataset
-  }
-
-  hasVariable (variable) {
-    return this._domains.hasOwnProperty(variable)
   }
 
   getDomain (variable) {
@@ -90,25 +116,25 @@ export default class {
     return this._domains
   }
 
+  getTypes () {
+    return this._types
+  }
+
+  hasColumn (variable) {
+    return this._dataset.hasOwnProperty(variable)
+  }
+
   getColumn (variable) {
     return this._dataset[variable]
   }
 
   forEachRow (fn) {
-    let i = 0
-
-    let rowProxy = {}
     let data = this._dataset
 
-    for (let colName in data) {
-      Object.defineProperty(rowProxy, colName, {
-        get: () => data[colName][i]
-      })
-    }
-
-    while (i < this._length) {
-      fn(rowProxy, i)
-      i++
+    for (let i = 0; i < this._length; i++) {
+      let row = {}
+      for (let colName in data) { row[colName] = data[colName][i] }
+      fn(row, i)
     }
   }
 }
@@ -140,6 +166,11 @@ function checkFormat (data) {
 
 function initColumnDF (data) {
   let firstRow = data[0]
+
+  if (firstRow.constructor !== Object) {
+    throw new Error('Empty dataframe (0 rows)')
+  }
+
   let columnKeys = Object.keys(firstRow)
 
   let columnDataFrame = {}
@@ -149,4 +180,12 @@ function initColumnDF (data) {
   }
 
   return columnDataFrame
+}
+
+function extractGeometry (feat) {
+  return feat.geometry
+}
+
+function extractAttributes (feat) {
+  return feat.properties
 }

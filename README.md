@@ -10,6 +10,11 @@ yarn install
 yarn storybook
 ```
 
+### Compile documentation for development
+```
+yarn docs:dev
+```
+
 
 <!-- ### Run your tests
 ```

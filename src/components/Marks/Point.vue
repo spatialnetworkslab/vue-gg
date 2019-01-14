@@ -1,6 +1,5 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import mapAesthetics from './utils/mapAesthetics.js'
 
 export default {
   mixins: [Mark],
@@ -60,30 +59,6 @@ export default {
           'transition': '1s',
         }
       })
-    }
-  },
-
-  render (createElement) {
-    if (this.__update) {
-      if (!this.$$map) {
-        // Create svg element using aesthetics
-        return this.renderSVG(createElement, this.aesthetics)
-      }
-
-      if (this.$$map) {
-        // Create the aesthetics for each mark
-        let aestheticsPerMark = mapAesthetics(this.aesthetics, this.context)
-
-        // Create svg element for each mark from aesthetics
-        let components = []
-        for (let aesthetics of aestheticsPerMark) {
-          components.push(
-            this.renderSVG(createElement, aesthetics)
-          )
-        }
-
-        return createElement('g', components)
-      }
     }
   }
 }
