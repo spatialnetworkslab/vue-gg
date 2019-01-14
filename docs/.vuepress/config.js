@@ -26,6 +26,7 @@ module.exports = {
                 title: 'Template Graphs',
                 collapsable: true,
                 children: [
+                    'graphs/plottitle',
                     'graphs/areaunder',
                     'graphs/boxplot',
                     'graphs/histogram',
