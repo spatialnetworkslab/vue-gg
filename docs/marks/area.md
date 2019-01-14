@@ -71,11 +71,11 @@ useful when mapping a grouped dataframe (see example at the bottom of the page).
 ### Other aesthetics
 
 | Prop           | Required | Regular types | Types when mapping         | Default   | Description    | Unit(s)                    |
-| -------------- | -------- | ------------- | -------------------------- | --------- | -------------- | -------------------------- |
+|----------------|----------|---------------|----------------------------|-----------|----------------|----------------------------|
 | stroke         | false    | String        | [String, Object, Function] | undefined | Stroke color   | Named color, hex, rgb, hsl |
 | stroke-width   | false    | Number        | [Number, Object, Function] | undefined | Stroke width   | Screen pixel               |
 | stroke-opacity | false    | Number        | [Number, Object, Function] | undefined | Stroke opacity | Number between 0 to 1      |
-| fill           | false    | String        | [String, Object, Function] | undefined | Fill color     | Named color, hex, rgb, hsl |
+| fill           | false    | String        | [String, Object, Function] | '#000000' | Fill color     | Named color, hex, rgb, hsl |
 | fill-opacity   | false    | Number        | [Number, Object, Function] | undefined | Fill opacity   | Number between 0 and 1     |
 | opacity        | false    | Number        | [Number, Object, Function] | undefined | Mark opacity   | Number between 0 and 1     |
 

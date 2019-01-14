@@ -21,6 +21,11 @@ export default {
       default: '#000000'
     },
 
+    stroke: {
+      type: [String, Object, Function, undefined],
+      default: undefined
+    },
+
     points: {
       type: undefined,
       default: undefined

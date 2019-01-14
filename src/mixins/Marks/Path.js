@@ -41,17 +41,17 @@ export default {
 
     stroke: {
       type: [String, Object, Function, undefined],
-      default: undefined
+      default: '#000000'
     },
 
     fill: {
       type: [String, Object, Function, undefined],
-      default: undefined
+      default: 'none'
     },
 
     strokeWidth: {
       type: [Number, Object, Function, undefined],
-      default: undefined
+      default: 2
     },
 
     opacity: {
@@ -106,9 +106,9 @@ export default {
         x2: this.parseCoordinateSet(this.x2, { dimension: 'x' }),
         y2: this.parseCoordinateSet(this.y2, { dimension: 'y' }),
 
-        stroke: this.parseAesthetic(this.stroke, { default: '#000000' }),
-        fill: this.parseAesthetic(this.fill, { default: 'none' }),
-        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
+        stroke: this.parseAesthetic(this.stroke),
+        fill: this.parseAesthetic(this.fill),
+        strokeWidth: this.parseAesthetic(this.strokeWidth),
         opacity: this.parseAesthetic(this.opacity),
         fillOpacity: this.parseAesthetic(this.fillOpacity),
         strokeOpacity: this.parseAesthetic(this.strokeOpacity)

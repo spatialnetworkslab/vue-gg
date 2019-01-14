@@ -40,10 +40,9 @@
           <vgg-area
             :x="row => row.grouped.xValues"
             :y="row => row.grouped.yValues"
-            :stroke="'none'"
             :y2="(row, i, prevRow) => prevRow ? prevRow.grouped.yValues : [0]"
-            :fill="row => row.colors"
             :opacity="0.5"
+            :fill="row => row.colors"
           />
 
         </vgg-map>
