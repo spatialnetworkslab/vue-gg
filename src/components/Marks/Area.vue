@@ -1,8 +1,8 @@
 <script>
-import MultiLine from '../../mixins/Marks/MultiLine.js'
+import Path from '../../mixins/Marks/Path.js'
 
 export default {
-  mixins: [MultiLine],
+  mixins: [Path],
 
   props: {
     close: {
