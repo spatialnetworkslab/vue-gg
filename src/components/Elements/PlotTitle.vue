@@ -16,13 +16,17 @@ export default {
     x: {
       type: [Number, String],
       default: 'center',
-      validator: p => ['center', 'l', 'r'].includes(p)
+      validator: function (p) {
+        return (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
+      }
     },
 
     y: {
       type: [Number, String],
       default: 'center',
-      validator: p => ['center', 't', 'b'].includes(p)
+      validator: function (p) {
+        return (p.constructor === Number) || (['center', 't', 'b'].includes(p))
+      }
     },
 
     margin: {
@@ -56,10 +60,10 @@ export default {
     posX () {
       let xRange = this.parentBranch.ranges.x
 
-      if ((typeof this.x) === Number) { 
+      if (this.x.constructor === Number) { 
         return this.x
       } else if (this.x === 'center') {
-        return (xRange[1] - xRange[0]) / 2
+        return (xRange[1] - xRange[0]) / 2 + xRange[0]
       } else if (this.x === 'l') {
         return xRange[0] + this.margin
       } else {
@@ -70,14 +74,17 @@ export default {
     posY () {
       let yRange = this.parentBranch.ranges.y
 
-      if ((typeof this.y) === Number) { 
+      let yMin = Math.min(yRange[0], yRange[1])
+      let yMax = Math.max(yRange[0], yRange[1])
+
+      if (this.y.constructor === Number) { 
         return this.y
       } else if (this.y === 'center') {
-        return (yRange[0] - yRange[1]) / 2
+        return (yMax - yMin / 2) + yMin
       } else if (this.y === 't') {
-        return yRange[1] + this.margin
+        return yMin + this.margin
       } else {
-        return yRange[0] - this.margin
+        return yMax - this.margin
       }
     }
   },

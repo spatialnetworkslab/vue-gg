@@ -21,6 +21,13 @@
       }"
     >
 
+      <vgg-plot-title
+        text="I am a separate section"
+        y="t"
+        :margin="0"
+        anchorPoint="b"
+      />
+
       <vgg-map>
 
         <vgg-rectangle
