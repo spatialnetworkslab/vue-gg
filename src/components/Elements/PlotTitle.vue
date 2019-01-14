@@ -1,8 +1,11 @@
 <script>
 import { textAnchorPoint } from '../../utils/anchorPoint.js'
+import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 
 export default {
   name: 'PlotTitle',
+
+  mixins: [CoordinateTreeUser],
 
   props: {
     text: {
@@ -11,13 +14,20 @@ export default {
     },
 
     x: {
-      type: Number,
-      required: true
+      type: [Number, String],
+      default: 'center',
+      validator: p => ['center', 'l', 'r'].includes(p)
     },
 
     y: {
+      type: [Number, String],
+      default: 'center',
+      validator: p => ['center', 't', 'b'].includes(p)
+    },
+
+    margin: {
       type: Number,
-      required: true
+      default: 50
     },
 
     color: {
@@ -42,10 +52,41 @@ export default {
     }
   },
 
+  computed: {
+    posX () {
+      let xRange = this.parentBranch.ranges.x
+
+      if ((typeof this.x) === Number) { 
+        return this.x
+      } else if (this.x === 'center') {
+        return (xRange[1] - xRange[0]) / 2
+      } else if (this.x === 'l') {
+        return xRange[0] + this.margin
+      } else {
+        return xRange[1] - this.margin
+      }
+    },
+
+    posY () {
+      let yRange = this.parentBranch.ranges.y
+
+      if ((typeof this.y) === Number) { 
+        return this.y
+      } else if (this.y === 'center') {
+        return (yRange[0] - yRange[1]) / 2
+      } else if (this.y === 't') {
+        return yRange[1] + this.margin
+      } else {
+        return yRange[0] - this.margin
+      }
+    }
+  },
+
   methods: {
     renderSVG (createElement) {
-      let x = this.x
-      let y = this.y
+      let x = this.posX
+      let y = this.posY
+
       let color = this.color
       let font = this.fontFamily
       let size = this.fontSize

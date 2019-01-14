@@ -6,9 +6,8 @@
     :data="bars">
 
     <vgg-plot-title
-      :x="300"
-      :y="60"
       text="Bar Chart"
+      y="t"
     />
 
     <vgg-section
