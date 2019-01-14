@@ -29,6 +29,12 @@ export default {
     geometry: {
       type: undefined,
       default: undefined
+    },
+
+    // This is not actually meant to be used, just a flag for the mixin logic
+    _area: {
+      type: Boolean,
+      default: true
     }
   }
 }

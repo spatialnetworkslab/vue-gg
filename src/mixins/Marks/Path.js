@@ -84,12 +84,18 @@ export default {
     interpolate: {
       type: Boolean,
       default: false
+    },
+
+    // This is not actually meant to be used, just a flag for the mixin logic
+    _area: {
+      type: Boolean,
+      default: false
     }
   },
 
   computed: {
     aesthetics () {
-      checkPoints(this.points, this.geometry, this.x, this.y)
+      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
 
       return {
         points: this.parseGeometry(this.points, {}),
@@ -207,13 +213,23 @@ export default {
             points = this.sortPoints(points)
           }
 
-          if (aesthetics.y && aesthetics.y2) {
-            let x = aesthetics.x2 ? aesthetics.x2 : aesthetics.x
-            let pointsY2 = this.generatePoints(x, aesthetics.y2)
-            if (this.sortX) {
-              pointsY2 = this.sort(pointsY2)
+          if (this._area) {
+            let points2
+
+            if (aesthetics.x2 && !aesthetics.y2) {
+              points2 = this.generatePoints(aesthetics.x2, aesthetics.y)
             }
-            points = points.concat(pointsY2.reverse())
+
+            if (!aesthetics.x2 && aesthetics.y2) {
+              points2 = this.generatePoints(aesthetics.x, aesthetics.y2)
+            }
+
+            if (aesthetics.x2 && aesthetics.y2) {
+              points2 = this.generatePoints(aesthetics.x2, aesthetics.y2)
+            }
+
+            if (this.sort) { points2 = this.sortPoints(points2) }
+            points = points.concat(points2.reverse())
           }
 
           if (this.close) {
