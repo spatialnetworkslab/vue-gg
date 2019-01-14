@@ -1,5 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -15,8 +16,18 @@ export default {
       default: undefined
     },
 
-    color: {
+    fill: {
       type: [String, Object, Function, undefined],
+      default: undefined
+    },
+
+    stroke: {
+      type: [String, Object, Function, undefined],
+      default: undefined
+    },
+
+    strokeWidth: {
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
@@ -25,7 +36,17 @@ export default {
       default: undefined
     },
 
-    strokeWidth: {
+    opacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    strokeOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    fillOpacity: {
       type: [Number, Object, Function, undefined],
       default: undefined
     }
@@ -36,9 +57,13 @@ export default {
       return {
         x: this.parseCoordinate(this.x, { dimension: 'x' }),
         y: this.parseCoordinate(this.y, { dimension: 'y' }),
-        color: this.parseAesthetic(this.color, { default: '#000000' }),
+        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
+        stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
+        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 }),
         radius: this.parseAesthetic(this.radius, { default: 3 }),
-        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 })
+        opacity: this.parseAesthetic(this.opacity),
+        fillOpacity: this.parseAesthetic(this.fillOpacity),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
       }
     }
   },
@@ -51,10 +76,9 @@ export default {
         attrs: {
           'cx': cx,
           'cy': cy,
-          'fill': aesthetics.color,
-          'r': aesthetics.radius,
-          'stroke-width': aesthetics.strokeWidth
-        }
+          'r': aesthetics.radius
+        },
+        style: createSVGStyle(aesthetics)
       })
     }
   }

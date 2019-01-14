@@ -30,7 +30,7 @@
             :key="'p' + j"
             :x="p.x"
             :y="p.y"
-            :color="cs.color"
+            :fill="cs.color"
           />
 
           <vgg-rectangle
@@ -38,7 +38,7 @@
             :x2="100"
             :y1="0"
             :y2="100"
-            :color="cs.color"
+            :fill="cs.color"
             style="opacity: 0.2;"
           />
 

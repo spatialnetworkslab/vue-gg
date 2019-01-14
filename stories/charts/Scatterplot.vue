@@ -21,7 +21,7 @@
           :x="row => row.a"
           :y="row => row.b"
           :radius="3"
-          :color="{ scale: { scale: 'viridis', variable: 'a' } }"
+          :fill="{ scale: { scale: 'viridis', variable: 'a' } }"
         />
 
       </vgg-map>

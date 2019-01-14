@@ -5,10 +5,6 @@ export default function (prop, { dimension }) {
   let parentRangeType = this.parentRangeTypes[dimension]
 
   if (!this.$$map) {
-    if (is(prop) && prop.constructor === Object) {
-      throw new Error('Trying to map without vgg-map component.')
-    }
-
     if (is(prop) && prop.constructor === Function) {
       throw new Error('Trying to map without vgg-map component.')
     }
@@ -32,17 +28,7 @@ export default function (prop, { dimension }) {
   }
 
   if (this.$$map) {
-    let isObject = is(prop) && prop.constructor === Object
     let isFunction = is(prop) && prop.constructor === Function
-
-    if (is(prop) && isObject) {
-      // block object mapping syntax if used with categorical or temporal
-      // parent domain
-      if (['categorical', 'temporal'].includes(parentRangeType) && prop.hasOwnProperty('scale')) {
-        throw new Error(`Cannot scale ${prop} to parent Section domain type ${parentRangeType}`)
-      }
-      return prop
-    }
 
     if (is(prop) && isFunction) { return { func: prop } }
 
@@ -51,7 +37,12 @@ export default function (prop, { dimension }) {
     }
 
     if (is(prop) && prop.constructor === String) {
-      throw new Error(`Cannot set Mark coordinates from variable when mapping`)
+      if (!this.$$dataContainer.hasColumn(prop)) {
+        throw new Error(`Variable ${prop} not found`)
+      }
+
+      let data = this.$$dataContainer.getColumn(prop)
+      return { assign: parseArray(data, parentRangeType, dimension, this.parentBranch) }
     }
 
     if (isnt(prop)) {

@@ -22,7 +22,7 @@
           <vgg-multi-line
             :x="row => row.grouped.xValues"
             :y="row => row.grouped.yValues"
-            :color="row => row.colors"
+            :stroke="row => row.colors"
           />
 
         </vgg-map>
