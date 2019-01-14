@@ -20,22 +20,22 @@ export default {
     },
 
     x: {
-      type: [Array, Object, String, Function, undefined],
+      type: [Array, String, Function, undefined],
       default: undefined
     },
 
     y: {
-      type: [Array, Object, String, Function, undefined],
+      type: [Array, String, Function, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Array, Object, String, Function, undefined],
+      type: [Array, String, Function, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Array, Object, String, Function, undefined],
+      type: [Array, String, Function, undefined],
       default: undefined
     },
 
@@ -103,8 +103,8 @@ export default {
 
         x: this.parseCoordinateSet(this.x, { dimension: 'x' }),
         y: this.parseCoordinateSet(this.y, { dimension: 'y' }),
-        x2: this.parseCoordinateSet(this.x2, { dimension: 'x2' }),
-        y2: this.parseCoordinateSet(this.y2, { dimension: 'y2' }),
+        x2: this.parseCoordinateSet(this.x2, { dimension: 'x' }),
+        y2: this.parseCoordinateSet(this.y2, { dimension: 'y' }),
 
         stroke: this.parseAesthetic(this.stroke, { default: '#000000' }),
         fill: this.parseAesthetic(this.fill, { default: 'none' }),
