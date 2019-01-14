@@ -5,10 +5,7 @@
     :height="600"
     :data="bars">
 
-    <vgg-plot-title
-      text="Bar Chart"
-      y="t"
-    />
+    <vgg-plot-title text="Bar Chart" />
 
     <vgg-section
       :x1="100"
@@ -20,13 +17,6 @@
         y: [0, 100]
       }"
     >
-
-      <vgg-plot-title
-        text="I am a separate section"
-        y="t"
-        :margin="0"
-        anchorPoint="b"
-      />
 
       <vgg-map>
 

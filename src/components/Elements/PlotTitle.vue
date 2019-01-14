@@ -13,7 +13,7 @@ export default {
       default: 'Plot Title'
     },
 
-    x: {
+    vjust: {
       type: [Number, String],
       default: 'center',
       validator: function (p) {
@@ -21,9 +21,9 @@ export default {
       }
     },
 
-    y: {
+    hjust: {
       type: [Number, String],
-      default: 'center',
+      default: 't',
       validator: function (p) {
         return (p.constructor === Number) || (['center', 't', 'b'].includes(p))
       }
@@ -60,11 +60,12 @@ export default {
     posX () {
       let xRange = this.parentBranch.ranges.x
 
-      if (this.x.constructor === Number) { 
-        return this.x
-      } else if (this.x === 'center') {
+      if (this.vjust.constructor === Number) { 
+        let scaledVal = (xRange[1] - xRange[0]) * this.vjust + xRange[0]
+        return scaledVal
+      } else if (this.vjust === 'center') {
         return (xRange[1] - xRange[0]) / 2 + xRange[0]
-      } else if (this.x === 'l') {
+      } else if (this.vjust === 'l') {
         return xRange[0] + this.margin
       } else {
         return xRange[1] - this.margin
@@ -77,11 +78,12 @@ export default {
       let yMin = Math.min(yRange[0], yRange[1])
       let yMax = Math.max(yRange[0], yRange[1])
 
-      if (this.y.constructor === Number) { 
-        return this.y
-      } else if (this.y === 'center') {
+      if (this.hjust.constructor === Number) { 
+        let scaledVal = (yMx - yMin) * this.hjust + yMin
+        return scaledVal
+      } else if (this.hjust === 'center') {
         return (yMax - yMin / 2) + yMin
-      } else if (this.y === 't') {
+      } else if (this.hjust === 't') {
         return yMin + this.margin
       } else {
         return yMax - this.margin
