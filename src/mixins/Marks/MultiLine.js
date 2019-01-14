@@ -70,9 +70,10 @@ export default {
     },
 
     // Non-mappable
-    sortX: {
-      type: Boolean,
-      default: true
+    sort: {
+      type: [String, undefined],
+      default: undefined,
+      validator: s => ['x', 'y'].includes(s) || s === undefined
     },
 
     close: {
@@ -152,8 +153,13 @@ export default {
       return filtered
     },
 
-    sort (points) {
-      return points.sort((a, b) => a[0] - b[0])
+    sortPoints (points) {
+      if (this.sort === 'x') {
+        return points.sort((a, b) => a[0] - b[0])
+      }
+      if (this.sort === 'y') {
+        return points.sort((a, b) => a[1] - b[1])
+      }
     },
 
     closePoints (points) {
@@ -197,8 +203,8 @@ export default {
         }
 
         if (points.length > 1) {
-          if (this.sortX) {
-            points = this.sort(points)
+          if (this.sort) {
+            points = this.sortPoints(points)
           }
 
           if (aesthetics.y && aesthetics.y2) {

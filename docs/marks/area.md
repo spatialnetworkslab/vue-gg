@@ -2,9 +2,30 @@
 title: Area Mark
 ---
 
-# Area Mark
+# Component ID
 
-The standard area mark takes the following props:
+`<vgg-area>`
+
+# Description
+
+Like the MultiLine mark, the Area mark is useful for visualizing trends.
+But unlike the MultiLine, the Area is particularly suitable to dissect trends,
+and see what they are composed of, while the MultiLine is better suited to
+compare separate trends.
+
+For example, to analyse how much money you spend monthly on various things, you
+would want to use the Area mark, which each mark representing a different expense.
+On the other hand, if you wanted to compare your monthly spending with that of
+your friends, you might want to use the MultiLine, with each mark representing
+a different person's spending.
+
+# Props
+
+### Coordinates
+
+### Aesthetics
+
+### Other props
 
 Prop | Required | Type                                         | Default   | Mappable | Description
 -----|----------|----------------------------------------------|-----------|----------|------------------------------------
