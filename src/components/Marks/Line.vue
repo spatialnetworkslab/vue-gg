@@ -40,6 +40,11 @@ export default {
     width: {
       type: [Number, Object, Function, undefined],
       default: undefined
+    },
+
+    transition: {
+      type: Number,
+      default: 0
     }
   },
 
@@ -88,6 +93,8 @@ export default {
       ]
       let path = this.createPath(aesthetics.func, coords)
 
+      let t = this.transition
+
       return createElement('path', {
         attrs: {
           'd': path,
@@ -96,7 +103,7 @@ export default {
           'fill': 'none'
         },
         style: {
-          'transition': '1s',
+          'transition': t + 's',
         }
       })
     }

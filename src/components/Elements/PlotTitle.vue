@@ -75,18 +75,21 @@ export default {
     posY () {
       let yRange = this.parentBranch.ranges.y
 
-      let yMin = Math.min(yRange[0], yRange[1])
-      let yMax = Math.max(yRange[0], yRange[1])
+      // let yMin = Math.min(yRange[0], yRange[1])
+      // let yMax = Math.max(yRange[0], yRange[1])
+      // 
 
       if (this.hjust.constructor === Number) { 
-        let scaledVal = (yMx - yMin) * this.hjust + yMin
+        let scaledVal = (yRange[1] - yRange[0]) * this.hjust + yRange[0]
         return scaledVal
       } else if (this.hjust === 'center') {
-        return (yMax - yMin / 2) + yMin
+        return (yRange[1] - yRange[0]) / 2 + yRange[0]
       } else if (this.hjust === 't') {
-        return yMin + this.margin
+        console.log(yRange)
+        console.log(yRange[1] - yRange[0])
+        return (yRange[1] - yRange[0]) + yRange[0] + this.margin
       } else {
-        return yMax - this.margin
+        return yRange[1] - (yRange[1] - yRange[0]) - this.margin
       }
     }
   },
@@ -95,6 +98,8 @@ export default {
     renderSVG (createElement) {
       let x = this.posX
       let y = this.posY
+
+      console.log(x, y)
 
       let color = this.color
       let font = this.fontFamily

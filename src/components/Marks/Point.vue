@@ -28,6 +28,11 @@ export default {
     strokeWidth: {
       type: [Number, Object, Function, undefined],
       default: undefined
+    },
+
+    transition: {
+      type: Number,
+      default: 0
     }
   },
 
@@ -47,6 +52,8 @@ export default {
     renderSVG (createElement, aesthetics) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
+      let t = this.transition
+
       return createElement('circle', {
         attrs: {
           'cx': cx,
@@ -56,7 +63,7 @@ export default {
           'stroke-width': aesthetics.strokeWidth
         },
         style: {
-          'transition': '1s',
+          'transition': t + 's',
         }
       })
     }

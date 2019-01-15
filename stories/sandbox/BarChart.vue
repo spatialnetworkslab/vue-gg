@@ -18,6 +18,8 @@
       }"
     >
 
+      <vgg-plot-title :margin="0" text="Subsection" />
+
       <vgg-map>
 
         <vgg-rectangle
@@ -45,6 +47,8 @@
             y: [-1, 1]
           }"
         >
+
+          <vgg-plot-title :margin="0" text="Subsection" />
 
           <vgg-point
             :x="0"
