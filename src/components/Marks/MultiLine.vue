@@ -1,18 +1,29 @@
 <script>
-import MultiLine from '../../mixins/Marks/MultiLine.js'
+import Path from '../../mixins/Marks/Path.js'
 
 export default {
-  mixins: [MultiLine],
+  mixins: [Path],
 
   props: {
-    sortX: {
-      type: Boolean,
-      default: true
+    sort: {
+      type: String,
+      default: 'x',
+      validator: s => ['x', 'y'].includes(s)
     },
 
     close: {
       type: Boolean,
       default: false
+    },
+
+    x2: {
+      type: undefined,
+      default: undefined
+    },
+
+    y2: {
+      type: undefined,
+      default: undefined
     }
   }
 }

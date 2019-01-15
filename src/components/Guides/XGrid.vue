@@ -17,8 +17,8 @@
       :y1="0"
       :x2="cell.value"
       :y2="1"
-      :width="0.5"
-      color="#808080"
+      :stroke-width="0.5"
+      stroke="#808080"
     />
 
   </vgg-section>

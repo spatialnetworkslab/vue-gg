@@ -16,7 +16,7 @@
         :x="450"
         :y="{ scale: 'name' }"
         :radius="{ scale: { variable: 'balance', absolute: true } }"
-        :color="{ scale: { variable: 'balance', scale: 'redBlue' } }"
+        :fill="{ scale: { variable: 'balance', scale: 'redBlue' } }"
       />
 
     </vgg-map>

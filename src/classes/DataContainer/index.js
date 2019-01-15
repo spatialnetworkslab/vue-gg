@@ -133,8 +133,16 @@ export default class {
 
     for (let i = 0; i < this._length; i++) {
       let row = {}
-      for (let colName in data) { row[colName] = data[colName][i] }
-      fn(row, i)
+      let prevRow = {}
+      let nextRow = {}
+      for (let colName in data) {
+        row[colName] = data[colName][i]
+        prevRow[colName] = data[colName][i - 1]
+        nextRow[colName] = data[colName][i + 1]
+      }
+      if (i === 0) prevRow = undefined
+      if (i === this._length - 1) nextRow = undefined
+      fn(row, i, prevRow, nextRow)
     }
   }
 }

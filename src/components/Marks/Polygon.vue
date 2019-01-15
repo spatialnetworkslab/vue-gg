@@ -1,61 +1,33 @@
 <script>
-import MultiLine from '../../mixins/Marks/MultiLine.js'
-import { createGeoPath } from './utils/createPath.js'
+import Path from '../../mixins/Marks/Path.js'
 
 export default {
-  mixins: [MultiLine],
+  mixins: [Path],
 
   props: {
-    sortX: {
-      type: [String, undefined],
+    sort: {
+      type: undefined,
       default: undefined
     },
 
     close: {
       type: Boolean,
       default: true
-    }
-  },
+    },
 
-  methods: {
-    renderSVG (createElement, aesthetics) {
-      if (this.geometry) {
-        let path = createGeoPath(aesthetics.geometry, this.$$transform)
+    x2: {
+      type: undefined,
+      default: undefined
+    },
 
-        return createElement('path', {
-          attrs: {
-            'd': path,
-            'stroke': aesthetics.color,
-            'stroke-width': aesthetics.width,
-            'fill': aesthetics.fill
-          }
-        })
-      } else {
-        let points = this.generatePoints(aesthetics)
+    y2: {
+      type: undefined,
+      default: undefined
+    },
 
-        if (points.length > 1) {
-          let path = this.createPath(points)
-
-          if (this.sortX) {
-            points = this.sort(points)
-          }
-
-          if (this.close) {
-            points = this.closePoints(points)
-          }
-
-          return createElement('path', {
-            attrs: {
-              'd': path,
-              'stroke': aesthetics.color,
-              'stroke-width': aesthetics.width,
-              'fill': aesthetics.fill
-            }
-          })
-        } else {
-          console.warn('Not enough valid points to draw Mark')
-        }
-      }
+    fill: {
+      type: [String, Object, Function, undefined],
+      default: '#000000'
     }
   }
 }

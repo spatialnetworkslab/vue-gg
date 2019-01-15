@@ -20,11 +20,11 @@ export default function (prop, context, scalingOptions) {
   }
 
   // Other aesthetic props
-  if (['color', 'fill'].includes(prop)) {
+  if (['stroke', 'fill'].includes(prop)) {
     return createColorScale(prop, domainType, domain, scalingOptions)
   }
 
-  if (prop === 'opacity') {
+  if (['opacity', 'strokeOpacity', 'fillOpacity'].includes(prop)) {
     return createOpacityScale(prop, domainType, domain, scalingOptions)
   }
 

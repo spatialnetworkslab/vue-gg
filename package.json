@@ -7,9 +7,10 @@
   "browser": "dist/vue-gg.js",
   "scripts": {
     "storybook": "start-storybook -p 9001 -c .storybook",
+    "storybook:build": "build-storybook -c .storybook -o .storybook/dist",
     "docs:dev": "yarn vuepress dev docs",
     "docs:build": "yarn vuepress build docs",
-    "now-build": "yarn run docs:build && mv docs/.vuepress/dist dist-docs"
+    "now-build": "yarn run docs:build && mv docs/.vuepress/dist dist-docs && yarn run storybook:build && mv .storybook/dist dist-docs/storybook"
   },
   "dependencies": {
     "@turf/meta": "^6.0.2",
