@@ -18,7 +18,7 @@
       }"
     >
 
-      <vgg-plot-title :margin="0" text="Subsection" />
+      <vgg-plot-title :margin="0" text="Subsection" :vMargin="-20" />
 
       <vgg-map>
 
@@ -48,7 +48,7 @@
           }"
         >
 
-          <vgg-plot-title :margin="0" text="Subsection" />
+          <vgg-plot-title :margin="0" text="bar" :vMargin="20" color="white" />
 
           <vgg-point
             :x="0"

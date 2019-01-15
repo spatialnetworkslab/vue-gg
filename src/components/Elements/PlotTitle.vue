@@ -7,13 +7,15 @@ export default {
 
   mixins: [CoordinateTreeUser],
 
+  inject: ['$$transform'],
+
   props: {
     text: {
       type: String,
       default: 'Plot Title'
     },
 
-    vjust: {
+    hjust: {
       type: [Number, String],
       default: 'center',
       validator: function (p) {
@@ -21,7 +23,7 @@ export default {
       }
     },
 
-    hjust: {
+    vjust: {
       type: [Number, String],
       default: 't',
       validator: function (p) {
@@ -29,9 +31,14 @@ export default {
       }
     },
 
-    margin: {
+    vMargin: {
       type: Number,
       default: 50
+    },
+
+    hMargin: {
+      type: Number,
+      default: 0
     },
 
     color: {
@@ -58,48 +65,63 @@ export default {
 
   computed: {
     posX () {
-      let xRange = this.parentBranch.ranges.x
+      let xRange = this.parentBranch.domains.x
 
-      if (this.vjust.constructor === Number) { 
-        let scaledVal = (xRange[1] - xRange[0]) * this.vjust + xRange[0]
+      let xMin = Math.min(xRange[0], xRange[1])
+      let xMax = Math.max(xRange[0], xRange[1])
+
+      if (this.hjust.constructor === Number) { 
+        let scaledVal = (xMax - xMin) * this.vjust
         return scaledVal
-      } else if (this.vjust === 'center') {
-        return (xRange[1] - xRange[0]) / 2 + xRange[0]
-      } else if (this.vjust === 'l') {
-        return xRange[0] + this.margin
+      } else if (this.hjust === 'center') {
+        return (xMax - xMin) / 2 + xRange[0]
+      } else if (this.hjust === 'l') {
+        return xMin
       } else {
-        return xRange[1] - this.margin
+        return xMax
       }
     },
 
     posY () {
-      let yRange = this.parentBranch.ranges.y
+      let yRange = this.parentBranch.domains.y
 
-      // let yMin = Math.min(yRange[0], yRange[1])
-      // let yMax = Math.max(yRange[0], yRange[1])
-      // 
-
-      if (this.hjust.constructor === Number) { 
-        let scaledVal = (yRange[1] - yRange[0]) * this.hjust + yRange[0]
+      let yMin = Math.min(yRange[0], yRange[1])
+      let yMax = Math.max(yRange[0], yRange[1])
+      
+      if (this.vjust.constructor === Number) { 
+        let scaledVal = (yMax - yMin) * this.hjust
         return scaledVal
-      } else if (this.hjust === 'center') {
-        return (yRange[1] - yRange[0]) / 2 + yRange[0]
-      } else if (this.hjust === 't') {
-        console.log(yRange)
-        console.log(yRange[1] - yRange[0])
-        return (yRange[1] - yRange[0]) + yRange[0] + this.margin
+      } else if (this.vjust === 'center') {
+        return (yMax - yMin) / 2 + yMin
+      } else if (this.vjust === 't') {
+        return yMax
       } else {
-        return yRange[1] - (yRange[1] - yRange[0]) - this.margin
+        return yMin
       }
+    },
+
+    screenCoords () {
+      let [x, y] = this.$$transform([this.posX, this.posY])
+
+      if (this.hjust === 'l') {
+        x = x + this.hMargin
+      } else if (this.hjust === 'r') {
+        x = x - this.hMargin
+      }
+
+      if (this.vjust === 't') {
+        y = y + this.vMargin
+      } else if (this.vjust === 'b') {
+        y = y - this.vMargin
+      }
+
+      return [x, y]
     }
   },
 
   methods: {
     renderSVG (createElement) {
-      let x = this.posX
-      let y = this.posY
-
-      console.log(x, y)
+      let [x, y] = this.screenCoords
 
       let color = this.color
       let font = this.fontFamily
