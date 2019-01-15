@@ -68,7 +68,8 @@ export default {
         radius: this.parseAesthetic(this.radius, { default: 3 }),
         opacity: this.parseAesthetic(this.opacity),
         fillOpacity: this.parseAesthetic(this.fillOpacity),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity),
+        transition: this.transition + 's'
       }
     }
   },
@@ -76,8 +77,6 @@ export default {
   methods: {
     renderSVG (createElement, aesthetics) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
-
-      let t = this.transition
 
       return createElement('circle', {
         attrs: {

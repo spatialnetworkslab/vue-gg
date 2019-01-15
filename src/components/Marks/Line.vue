@@ -82,7 +82,8 @@ export default {
         strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
         opacity: this.parseAesthetic(this.opacity),
         fillOpacity: this.parseAesthetic(this.fillOpacity),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity),
+        transition: this.transition + 's'
       }
     }
   },
@@ -117,8 +118,6 @@ export default {
         [aesthetics.x2, aesthetics.y2]
       ]
       let path = this.createPath(aesthetics.func, coords)
-
-      let t = this.transition
 
       return createElement('path', {
         attrs: {
