@@ -16,7 +16,7 @@
       :y1="0"
       :x2="0.5"
       :y2="1"
-      :width="1"
+      :stroke-width="1"
     />
 
     <!-- Ticks -->
@@ -41,7 +41,7 @@
             :y1="tick => tick.value"
             :x2="flip ? 0.65 : 0.35"
             :y2="tick => tick.value"
-            :width="0.5"
+            :stroke-width="0.5"
           />
 
           <!-- Tick labels -->

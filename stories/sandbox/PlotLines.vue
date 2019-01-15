@@ -35,14 +35,14 @@
       <!-- Graphs -->
       <vgg-line
         :func="x => x ** 2"
-        :width="3"
-        color="#8b0000"
+        :stroke-width="3"
+        stroke="#8b0000"
       />
 
       <vgg-line
         :func="x => (-1) * x ** 2"
-        :width="3"
-        color="#ced02d"
+        :stroke-width="3"
+        stroke="#ced02d"
       />
 
       <vgg-line
@@ -50,8 +50,8 @@
         :x2="1"
         :y1="-1"
         :y2="1"
-        :width="5"
-        color="#535347"
+        :stroke-width="5"
+        stroke="#535347"
       />
 
       <vgg-multi-line
@@ -59,14 +59,14 @@
           [-1, -1], [-1, -0.5], [-0.5, -0.5], [0, -0.5], [NaN, 0],
           [0.5, 0], [0.5, 0.5], [1, 0.5], [1, 1]
         ]"
-        :width="5"
-        color="#1336c9"
+        :stroke-width="5"
+        stroke="#1336c9"
       />
 
       <vgg-line
         :func="x => (x ** 3) + (x / 2)"
         :width="3"
-        color="#00919c"
+        stroke="#00919c"
       />
 
     </vgg-section>

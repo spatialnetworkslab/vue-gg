@@ -42,7 +42,7 @@
             :x2="{ scale: { variable: 'max', domain: [0, 100] } }"
             :y1="0"
             :y2="{ scale: { variable: 'n', domain: [0, null]} }"
-            :color="{ scale: { scale: 'blues', variable: 'max', domain: [0, null] } }"
+            :fill="{ scale: { scale: 'blues', variable: 'max', domain: [0, null] } }"
           />
 
         </vgg-map>

@@ -17,8 +17,8 @@ export default function (aesthetics, context) {
   // Third, we apply the scales, functions and assigners and calculate props for each mark
   let aestheticsPerMark = []
 
-  dataContainer.forEachRow((row, i) => {
-    let props = mapRow(row, i, aesthetics, scales, parsedScales, funcs, assigners, context)
+  dataContainer.forEachRow((row, i, prevRow, nextRow) => {
+    let props = mapRow(row, i, prevRow, nextRow, aesthetics, scales, parsedScales, funcs, assigners, context)
     let parsedProps = parseProps(props, replaceNA, context)
     if (parsedProps) {
       aestheticsPerMark.push(parsedProps)
@@ -99,9 +99,8 @@ function parseScales (scales, context) {
   return parsedScales
 }
 
-function mapRow (row, i, aesthetics, scales, parsedScales, funcs, assigners, context) {
+function mapRow (row, i, prevRow, nextRow, aesthetics, scales, parsedScales, funcs, assigners, context) {
   let props = {}
-
   for (let aesKey in aesthetics) {
     // If a scale has been specified for this aesthetic:
     if (is(scales[aesKey])) {
@@ -129,7 +128,7 @@ function mapRow (row, i, aesthetics, scales, parsedScales, funcs, assigners, con
     } else if (is(funcs[aesKey])) {
       // If a function was used instead of a scale object:
       // We pass it the entire row, the row index and the context object
-      let value = funcs[aesKey](row, i, context)
+      let value = funcs[aesKey](row, i, prevRow, nextRow, context)
 
       // If the value is categorical or temporal, and a coord,
       // we have to convert it to quantitative

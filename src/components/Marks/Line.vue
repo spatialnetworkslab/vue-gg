@@ -1,6 +1,7 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
 import { createPath, interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -32,12 +33,32 @@ export default {
       default: undefined
     },
 
-    color: {
+    stroke: {
       type: [String, Object, Function, undefined],
       default: undefined
     },
 
-    width: {
+    fill: {
+      type: [String, Object, Function, undefined],
+      default: undefined
+    },
+
+    strokeWidth: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    opacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    strokeOpacity: {
+      type: [Number, Object, Function, undefined],
+      default: undefined
+    },
+
+    fillOpacity: {
       type: [Number, Object, Function, undefined],
       default: undefined
     }
@@ -51,8 +72,12 @@ export default {
         x2: this.parseCoordinate(this.x2, { dimension: 'x' }),
         y2: this.parseCoordinate(this.y2, { dimension: 'y' }),
         func: this.parseAesthetic(this.func, { isFunction: true }),
-        color: this.parseAesthetic(this.color, { default: '#000000' }),
-        width: this.parseAesthetic(this.width, { default: 2 })
+        stroke: this.parseAesthetic(this.stroke, { default: '#000000' }),
+        fill: this.parseAesthetic(this.fill, { default: 'none' }),
+        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
+        opacity: this.parseAesthetic(this.opacity),
+        fillOpacity: this.parseAesthetic(this.fillOpacity),
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
       }
     }
   },
@@ -90,11 +115,9 @@ export default {
 
       return createElement('path', {
         attrs: {
-          'd': path,
-          'stroke': aesthetics.color,
-          'stroke-width': aesthetics.width,
-          'fill': 'none'
-        }
+          'd': path
+        },
+        style: createSVGStyle(aesthetics)
       })
     }
   }

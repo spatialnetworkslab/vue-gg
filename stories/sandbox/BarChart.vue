@@ -30,7 +30,7 @@
           :x2="{ scale: 'fruit' }"
           :y1="0"
           :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
-          color="#ced02d"
+          stroke="#ced02d"
         />
 
         <vgg-section
@@ -48,7 +48,7 @@
             :x="0"
             :y="0"
             :radius="10"
-            color="#8b0000"
+            fill="#8b0000"
           />
 
         </vgg-section>

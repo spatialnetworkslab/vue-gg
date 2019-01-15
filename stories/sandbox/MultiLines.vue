@@ -22,7 +22,7 @@
           <vgg-multi-line
             :x="row => row.grouped.xValues"
             :y="row => row.grouped.yValues"
-            :color="row => row.colors"
+            :stroke="row => row.colors"
           />
 
         </vgg-map>
@@ -59,7 +59,7 @@
               :x2="1"
               :y1="0"
               :y2="1"
-              color="#f1f1f1"
+              fill="#f1f1f1"
             />
 
             <vgg-map>
@@ -67,7 +67,7 @@
               <vgg-point
                 :x="{ scale: 'xValues' }"
                 :y="{ scale: 'yValues' }"
-                :color="row => row.colors"
+                :fill="row => row.colors"
               />
 
             </vgg-map>

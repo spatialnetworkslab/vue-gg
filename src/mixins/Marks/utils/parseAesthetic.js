@@ -1,6 +1,7 @@
 import { is, isnt } from '../../../utils/equals.js'
 
 export default function (prop, options) {
+  options = options || {}
   if (prop && is(options.isFunction)) {
     for (let key in this.parentRangeTypes) {
       if (['categorical', 'temporal'].includes(this.parentRangeTypes[key])) {
