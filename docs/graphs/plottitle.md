@@ -4,9 +4,9 @@ title: Plot Title
 
 # Plot Title
 
-Titles can be added to graphs using the `vgg-plot-title` component. The components takes the following props:
+Titles can be added to graphs using the `vgg-plot-title` component. The component takes the following props:
 
-Prop      | Required | Type      | Default    |  Description 
+Prop      | Required | Type      | Default    |  Description
 ----------|----------|-----------|------------|----------------------------
 Text      | false    | String    | Plot Title | Text to put in plot title
 vjust     | false    | [String, Number] | center     | Horizontal position of title
