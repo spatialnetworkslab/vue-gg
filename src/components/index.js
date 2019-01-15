@@ -5,6 +5,8 @@ import Map from './Core/Map.vue'
 import Section from './Core/SectionWrapper.vue'
 import Data from './Core/Data.vue'
 
+import PlotTitle from './Elements/PlotTitle.vue'
+
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'
 
@@ -30,6 +32,8 @@ export default {
   Map,
   Section,
   Data,
+
+  PlotTitle,
 
   Piechart,
 
