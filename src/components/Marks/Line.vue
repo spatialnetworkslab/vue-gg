@@ -61,6 +61,11 @@ export default {
     fillOpacity: {
       type: [Number, Object, Function, undefined],
       default: undefined
+    },
+
+    transition: {
+      type: Number,
+      default: 0
     }
   },
 
@@ -77,7 +82,8 @@ export default {
         strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
         opacity: this.parseAesthetic(this.opacity),
         fillOpacity: this.parseAesthetic(this.fillOpacity),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity),
+        transition: this.transition + 's'
       }
     }
   },

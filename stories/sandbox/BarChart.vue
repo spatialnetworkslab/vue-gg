@@ -5,6 +5,8 @@
     :height="600"
     :data="bars">
 
+    <vgg-plot-title text="Bar Chart" />
+
     <vgg-section
       :x1="100"
       :x2="500"
@@ -15,6 +17,8 @@
         y: [0, 100]
       }"
     >
+
+      <vgg-plot-title :margin="0" text="Subsection" :vMargin="-20" />
 
       <vgg-map>
 
@@ -43,6 +47,8 @@
             y: [-1, 1]
           }"
         >
+
+          <vgg-plot-title :margin="0" text="bar" :vMargin="20" color="white" />
 
           <vgg-point
             :x="0"
