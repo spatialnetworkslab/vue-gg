@@ -12,7 +12,7 @@
         { filter: ({ durian }) => durian > 25 },
         { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] },
         { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } },
-        /* { groupBy: 'banana' }, */
+        { groupBy: 'banana' },
         { summarise: { appleSum: { apple: 'sum' }, maxRatio: { ratioAppleDurian: 'max' } } }
       ]"
     >
