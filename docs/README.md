@@ -1,6 +1,6 @@
 ---
 home: true
-description: A Vue-based framework for componentized data visualizations
+description: A Vue-based data visualization framework
 actionText: Get Started →
 actionLink: /guide/intro
 features:

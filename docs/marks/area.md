@@ -29,6 +29,30 @@ a different person's spending.
 | x2   | depends  | [Array, String] | [Array, String, Function] | undefined | x2-coordinates (secondary) of area path | Local coordinates |
 | y2   | depends  | [Array, String] | [Array, String, Function] | undefined | y2-coordinates (secondary) of area path | Local coordinates |
 
+### Other aesthetics
+
+| Prop           | Required | Regular types | Types when mapping         | Default   | Description    | Unit(s)                    |
+|----------------|----------|---------------|----------------------------|-----------|----------------|----------------------------|
+| stroke         | false    | String        | [String, Object, Function] | undefined | Stroke color   | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number        | [Number, Object, Function] | undefined | Stroke width   | Screen pixel               |
+| stroke-opacity | false    | Number        | [Number, Object, Function] | undefined | Stroke opacity | Number between 0 to 1      |
+| fill           | false    | String        | [String, Object, Function] | '#000000' | Fill color     | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number        | [Number, Object, Function] | undefined | Fill opacity   | Number between 0 and 1     |
+| opacity        | false    | Number        | [Number, Object, Function] | undefined | Mark opacity   | Number between 0 and 1     |
+
+These are analogous to the CSS properties of the same names.
+
+### Other props
+
+| Prop        | Required | Types   | Default | Description                                                              |
+| ----------- | -------- | ------- | ------- | ------------------------------------------------------------------------ |
+| interpolate | false    | Boolean | false   | Interpolate between points (when using non-cartesian coordinate systems) |
+| sort        | false    | String  | 'x'     | Sort points in ascending order in x or y dimension                       |
+
+# Usage
+
+### Coordinate aesthetics
+
 To render an Area mark, you will need the `x` prop, `y` prop, and a `x2` and/or `y2`
 prop. So having just `x` and `y` is not allowed. `x`, `y` and `x2` is allowed,
 and `x`, `y`, `x2` and `y2` is allowed too.
@@ -68,25 +92,7 @@ data column (except, again, if `y` is of length 1).
 When mapping, it is also possible to use a getter function. This is especially
 useful when mapping a grouped dataframe (see example at the bottom of the page).
 
-### Other aesthetics
-
-| Prop           | Required | Regular types | Types when mapping         | Default   | Description    | Unit(s)                    |
-|----------------|----------|---------------|----------------------------|-----------|----------------|----------------------------|
-| stroke         | false    | String        | [String, Object, Function] | undefined | Stroke color   | Named color, hex, rgb, hsl |
-| stroke-width   | false    | Number        | [Number, Object, Function] | undefined | Stroke width   | Screen pixel               |
-| stroke-opacity | false    | Number        | [Number, Object, Function] | undefined | Stroke opacity | Number between 0 to 1      |
-| fill           | false    | String        | [String, Object, Function] | '#000000' | Fill color     | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number        | [Number, Object, Function] | undefined | Fill opacity   | Number between 0 and 1     |
-| opacity        | false    | Number        | [Number, Object, Function] | undefined | Mark opacity   | Number between 0 and 1     |
-
-These are analogous to the CSS properties of the same names.
-
 ### Other props
-
-| Prop        | Required | Types   | Default | Description                                                              |
-| ----------- | -------- | ------- | ------- | ------------------------------------------------------------------------ |
-| interpolate | false    | Boolean | false   | Interpolate between points (when using non-cartesian coordinate systems) |
-| sort        | false    | String  | 'x'     | Sort points in ascending order in x or y dimension                       |
 
 The `interpolate` option is switched off by default for Area marks. Only
 turn it on when strictly necessary, otherwise it will slow down performance.

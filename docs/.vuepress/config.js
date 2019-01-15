@@ -35,6 +35,17 @@ module.exports = {
                     ]
             },
             {
+                title: 'Core components',
+                collapsable: true,
+                children: [
+                    'core/graphic',
+                    'core/section',
+                    'core/data',
+                    'core/map',
+                    'core/glyph'
+                    ]
+            },
+            {
                 title: 'Marks',
                 collapsable: true,
                 children: [
@@ -97,7 +108,7 @@ module.exports = {
         ]
     },
     configureWebpack: {
-        resolve: {   
+        resolve: {
             alias:{
             "@": path.resolve(__dirname, '../../src'),
             "@public": path.resolve(__dirname, './public/')

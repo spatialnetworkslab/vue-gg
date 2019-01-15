@@ -1,5 +1,5 @@
 ---
-title: Data component
+title: Data
 ---
 
 # Component tag
@@ -18,6 +18,8 @@ data, or transforming its parent scope.
 | data      | false    | [Array, Object] | undefined | Some supported data structure   |
 | format    | false    | String          | undefined | Format of data structure        |
 | transform | false    | [Array, Object] | undefined | Transformation(s) to be applied |
+
+# Usage
 
 If none of the props are provided, the component will not do anything. If only
 the `data` prop is provided, the component will create a new data scope for its
