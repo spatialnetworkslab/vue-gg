@@ -25,14 +25,14 @@ map data values to aesthetic values- for example, categories to colors.
 ### Mappable components
 
 The Map component can only be used to map _mappable_ components. Mappable components
-are all Marks, all Glyphs, all Guides, and the Section component.
+are all Marks, all Glyphs, all Guides, and the [Section](./section.md) component.
 
-There are two main ways of mapping these mappable components: using the _mapping
-object_ syntax, and using the _getter function_ syntax. Both will be discussed below,
-but make sure to check the documentation of the components in question to see
-which syntaxes are allowed for which props. In the examples below we will use
-the Point mark's `x`, `y` and `fill` props, all of which support both mapping
-objects and getter functions.
+There are two main ways of mapping these mappable components: using the [mapping
+object](#the-mapping-object) syntax, and using the [getter function](#the-getter-function)
+syntax. Both will be discussed below, but make sure to check the documentation
+of the components in question to see which syntaxes are allowed for which props.
+In the examples below we will use the [Point](../marks/point.md) mark's `x`, `y`
+and `fill` props, all of which support both mapping objects and getter functions.
 
 ### The mapping-object
 
@@ -120,7 +120,7 @@ want to use a getter function. To return to the previous example:
 Getter functions are used extensively in combination with the Section component.
 The Section component allows you to specify a local coordinate system. This
 coordinate system can be defined as the domains of the columns in your dataset. See
-the documentation of the Section component for more information on this topic.
+the [documentation of the Section component](./section.md) for more information on this topic.
 To create the same scatterplot again, but using the local Section coordinate
 system:
 
