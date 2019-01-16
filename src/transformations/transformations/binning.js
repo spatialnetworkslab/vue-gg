@@ -51,7 +51,7 @@ export default function (data, binningObj) {
   ranges = pairRange(ranges)
 
   let newData = bin(data, key, ranges)
-  return newData 
+  return newData
 }
 
 // Extract domain of variable of interest
@@ -82,13 +82,13 @@ function rangeFromInterval (domain, interval, binCount) {
   return ranges
 }
 
-function pairRange(ranges) {
+function pairRange (ranges) {
   let l = ranges.length
 
   let newRange = []
 
-  for (let i = 0; i < l - 1; i ++) {
-    newRange.push([ranges[i], ranges[i+1]])
+  for (let i = 0; i < l - 1; i++) {
+    newRange.push([ranges[i], ranges[i + 1]])
   }
 
   return newRange
@@ -123,7 +123,7 @@ function bin (data, variable, ranges) {
     let newRow = bins[binIndex]
 
     // If dataFrame does not exist, create it
-    if (!newRow) {newRow = {}}
+    if (!newRow) { newRow = {} }
 
     for (let col in data) {
       // If data key does not exist, create it
@@ -143,6 +143,7 @@ function bin (data, variable, ranges) {
   // Add new dataFrame column to newData
   newData.grouped = bins
 
+  console.log(newData)
+
   return newData
 }
-

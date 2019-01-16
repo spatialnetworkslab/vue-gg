@@ -5068,6 +5068,11 @@ generic-names@^1.0.2:
   dependencies:
     loader-utils "^0.2.16"
 
+geostats@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/geostats/-/geostats-1.7.0.tgz#a1a8e5aa033cef0588059a03d0cc04c061c8ad33"
+  integrity sha512-+p3yxk7p6wBE7QcJjXKEd/SETVQtM3evEwT8+DV+D2QpqbTB05jT4DTQac46bEXhixXQcJxoLlPpnmZJ8DgJiA==
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
