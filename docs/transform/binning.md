@@ -43,7 +43,7 @@ Key       | Type      |  Description
 numClasses| Number    | Number of bins
 
 ### StandardDeviation, ArithmeticProgression, Geometric Progression, Quantile, Jenks
-
+These classification methods are made available through [geostats](https://github.com/simogeo/geostats) (see geostats docs for details on each method). 
 Key       | Type      |  Description 
 ----------|-----------|----------------------------
 numClasses| Number    | Number of bins
