@@ -2,6 +2,16 @@
 title: Plot Title
 ---
 
+# Component Tag
+
+`<vgg-plot-title>`
+
+# Description
+
+As its name suggests, the plot title component adds a title to the overall graphic. It is also possible to use this component to label separate sections as well.
+
+Although similar to the Label Mark, the plot title component assumes there will only be one title component per section or graphic. As such, the plot title component is not mappable. In situations where a mappable text component is needed, it is recommended that you use the Label Mark instead.
+
 # Plot Title
 
 Titles can be added to graphs using the `vgg-plot-title` component. The component takes the following props:
@@ -22,6 +32,15 @@ anchorPoint| false   | String    | center     | Anchor point of text
 	text="Bar Chart"
 	hjust="l"
 	:vjust="0.25"
-	anchorPoint="lt"
 />
 ```
+
+### Styling props
+
+Prop      | Required | Type      | Default    |  Description               | Unit(s)                    |
+----------|----------|-----------|------------|----------------------------|----------------------------|
+Text      | false    | String    | Plot Title | Text in plot title         | NA                         |
+color     | false    | String    | black      | Font color                 | Named color, hex, rgb, hsl |
+fontSize  | false    | Number    | 16         | Font size                  | Number, font size in px    |
+fontFamily| false    | String    | Helvetica  | Font family                | NA                         |
+anchorPoint| false   | String    | center     | Anchor point of text       | NA                         |
