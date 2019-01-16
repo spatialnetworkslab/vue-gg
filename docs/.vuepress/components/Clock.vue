@@ -122,16 +122,6 @@ export default {
     }
   },
 
-  computed: {
-    now () {
-      let time = new Date()
-      let minute = time.getMinutes()
-      let hour = time.getHours()
-
-      return { minute, hour }
-    }
-  },
-
   mounted () {
     this.updateSeconds()
   },
