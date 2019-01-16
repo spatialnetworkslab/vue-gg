@@ -21,7 +21,8 @@ a different person's spending.
 
 # Props
 
-### Coordinate aesthetics
+### Positioning
+
 | Prop | Required | Regular types   | Types when mapping        | Default   | Description                             | Unit(s)           |
 | ---- | -------- | --------------- | ------------------------- | --------- | --------------------------------------- | ----------------- |
 | x    | true     | [Array, String] | [Array, String, Function] | undefined | x-coordinates of area path              | Local coordinates |
@@ -51,7 +52,7 @@ These are analogous to the CSS properties of the same names.
 
 # Usage
 
-### Coordinate aesthetics
+### Positioning
 
 To render an Area mark, you will need the `x` prop, `y` prop, and a `x2` and/or `y2`
 prop. So having just `x` and `y` is not allowed. `x`, `y` and `x2` is allowed,
