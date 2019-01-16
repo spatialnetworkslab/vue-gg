@@ -12,9 +12,9 @@ The Section is one of the corner stones of `vue-gg`. Sections have many differen
 purposes, such as:
 
 - Defining a local coordinate system
-- Indicating the ranges to which coordinates can be mapped
+- Indicating coordinate ranges to map to
 - Providing an entry point for new data
-- Creating compositions of shapes that can be mapped to data
+- Creating compositions of marks
 
 All of these will be discussed below, under [Usage](#usage)
 
@@ -84,11 +84,15 @@ the Section's local coordinate system, this is as easy as writing:
     }"
   >
 
+    <!-- Line of f(x) = x ** 2 -->
     <vgg-line
       :func="x => x ** 2"
       :stroke-width="3"
       stroke="#8b0000"
     />
+
+    <!-- Point in the center of the Section -->
+    <vgg-point :x="0" :y="0" />
 
 </vgg-section>
 
@@ -106,18 +110,99 @@ The `x` and `y` scaling options can be specified in a number of ways. Besides
 the method discussed above, where an Array of length 2 is used to specify the
 domain of the dimension, it is also possible to use a String that corresponds
 to the name of a column within the current [data scope](../concepts/data.md#data-scope).
-For more complex scaling options, like non-linear scaling, see the
+For more on this, and on advanced scaling options like non-linear scaling, see the
 [scaling](../concepts/scaling.md) documentation.
 
 Besides 'rescaling' cartesian coordinate systems, the Section supports transforming
 cartesian coordinates to a polar representation. This is a simple as setting
 the `type` to `'polar'`. Polar coordinate systems are useful for creating
-piecharts and doughnut charts, or for representing circular data, like on a clock:
+piecharts and doughnut charts, or for representing circular data, like a clock
+(TODO: link to code):
+
+<clock />
+
+### Indicating coordinate ranges to map to
+
+The [Map](./map.md) component can be used to conveniently map data to coordinates.
+To do this, it has to be aware of the target ranges of the coordinates that the data
+will be mapped to. When a Map component is inside of a Section component, it will
+use the extents of the Section.
 
 ::: v-pre
 ```html
 <vgg-graphic
+  :width="500"
+  :height="500">
 
->
+  <vgg-section
+    :x1="100"
+    :x2="400"
+    :y1="100"
+    :y2="250"
+    :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }"
+  >
+
+    <vgg-map>
+
+      <vgg-point :x="{ scale: 'a' }" :y="{ scale: 'b' }" />
+
+    </vgg-map>
+
+    <!-- The result of this mapping would be:
+
+    <vgg-point :x="100" :y="100" />
+    <vgg-point :x="200" :y="150" />
+    <vgg-point :x="300" :y="200" />
+    <vgg-point :x="400" :y="250" />
+
+    -->
+
+  </vgg-section>
+
+</vgg-graphic>
 ```
 :::
+
+It is also possible to map data to marks within a Section that does have
+a `scales` prop. In that case, the data will be mapped to the rescaled local
+coordinate system:
+
+::: v-pre
+```html{10}
+<vgg-graphic
+  :width="500"
+  :height="500">
+
+  <vgg-section
+    :x1="100"
+    :x2="400"
+    :y1="100"
+    :y2="250"
+    :scales="{ x: [2, 8], y: [4, 16] }"
+    :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }"
+  >
+
+    <vgg-map>
+
+      <vgg-point :x="{ scale: 'a' }" :y="{ scale: 'b' }" />
+
+    </vgg-map>
+
+    <!-- The result of this mapping would be:
+
+    <vgg-point :x="2" :y="4" />
+    <vgg-point :x="4" :y="8" />
+    <vgg-point :x="6" :y="12" />
+    <vgg-point :x="8" :y="16" />
+
+    -->
+
+  </vgg-section>
+
+</vgg-graphic>
+```
+:::
+
+### Providing an entry point for new data
+
+### Creating compositions of marks

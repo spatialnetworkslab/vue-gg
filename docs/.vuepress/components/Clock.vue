@@ -38,8 +38,8 @@
 
       <!-- Hand -->
       <vgg-line
-        :x1="now.hour"
-        :x2="now.hour"
+        :x1="hours"
+        :x2="hours"
         :y1="0"
         :y2="0.5"
         :stroke-width="7"
@@ -73,12 +73,37 @@
 
       <!-- Hand -->
       <vgg-line
-        :x1="now.minute"
-        :x2="now.minute"
+        :x1="minutes"
+        :x2="minutes"
         :y1="0"
         :y2="0.75"
         :stroke-width="4"
         stroke="blue"
+      />
+
+    </vgg-section>
+
+    <!-- Seconds -->
+    <vgg-section
+      :type="'polar'"
+      :x1="0"
+      :x2="500"
+      :y1="0"
+      :y2="500"
+      :scales="{
+        x: [0, 60],
+        y: [0, 1]
+      }"
+    >
+
+      <!-- Hand -->
+      <vgg-line
+        :x1="seconds"
+        :x2="seconds"
+        :y1="0"
+        :y2="0.85"
+        :stroke-width="2"
+        stroke="green"
       />
 
     </vgg-section>
@@ -89,6 +114,14 @@
 
 <script>
 export default {
+  data () {
+    return {
+      hours: 0,
+      minutes: 0,
+      seconds: 0
+    }
+  },
+
   computed: {
     now () {
       let time = new Date()
@@ -99,9 +132,23 @@ export default {
     }
   },
 
+  mounted () {
+    this.updateSeconds()
+  },
+
   methods: {
     range (n) {
       return new Array(n).fill(0).map((v, i) => i)
+    },
+
+    updateSeconds () {
+      let date = new Date()
+
+      this.hours  = date.getHours()
+      this.minutes = date.getMinutes()
+      this.seconds = date.getSeconds()
+
+      setTimeout(this.updateSeconds, 1000)
     }
   }
 }
