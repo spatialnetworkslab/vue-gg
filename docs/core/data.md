@@ -9,7 +9,9 @@ title: Data
 # Description
 
 The Data component is used to create a new data scope by either adding new
-data, or transforming its parent scope.
+data, or transforming its parent scope. For more information, check out the
+[data loading](../concepts/data-loading.md) and the
+[data transformation](../concepts/transforming-data.md) documentation.
 
 # Props
 
@@ -22,8 +24,9 @@ data, or transforming its parent scope.
 # Usage
 
 If none of the props are provided, the component will not do anything. If only
-the `data` prop is provided, the component will create a new data scope for its
-child components from the passed data:
+the `data` prop is provided, the component will create a new
+[data scope](../concepts/data-loading.md#data-scope) for its child components
+from the passed data:
 
 ::: v-pre
 ```html

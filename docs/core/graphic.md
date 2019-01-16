@@ -89,7 +89,9 @@ Besides `width`, `height` and `flip`, the Graphic component has three other prop
 formats. In many cases `vue-gg` will be able to detect the format automatically,
 but in some cases the `format` prop must be used to make clear what format the
 data is in. When some data is passed to the `data` prop, the `transform` prop
-can then be used to apply transformations to the passed data.
+can then be used to apply transformations to the passed data. See the documentation
+on [data loading](../concepts/data-loading.md) and
+[transforming data](../concepts/transforming-data.md) for more details.
 
 If you just want to draw some shapes and not use any input data (yet), that's ok.
 The `data`, `format` and `transform` props are not required. It is also possible

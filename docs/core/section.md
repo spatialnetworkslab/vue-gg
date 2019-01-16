@@ -16,7 +16,7 @@ purposes, such as:
 - Providing an entry point for new data
 - Creating compositions of marks
 
-All of these will be discussed below, under [Usage](#usage)
+All of these will be discussed below, under [Usage](#usage).
 
 # Props
 
@@ -84,7 +84,7 @@ the Section's local coordinate system, this is as easy as writing:
     }"
   >
 
-    <!-- Line of f(x) = x ** 2 -->
+    <!-- Plotted line of f(x) = x ** 2 -->
     <vgg-line
       :func="x => x ** 2"
       :stroke-width="3"
@@ -100,16 +100,16 @@ the Section's local coordinate system, this is as easy as writing:
 ```
 :::
 
-The `scales` prop takes an object that has a `x` and a `y` property. These properties
+The `scales` prop takes an object that has a `x` and/or a `y` property. These properties
 are optional- it is allowed to only specify `x`, or leave out the `scales` prop
 altogether. If the `x` scaling is not specified explicitly, it will default to
 whatever values constitute the left and right borders of the section (in this case:
-`[50, 450]`). Same for scaling the `y` dimension.
+`[50, 450]`). The same goes the scaling of the `y` dimension.
 
 The `x` and `y` scaling options can be specified in a number of ways. Besides
 the method discussed above, where an Array of length 2 is used to specify the
 domain of the dimension, it is also possible to use a String that corresponds
-to the name of a column within the current [data scope](../concepts/data.md#data-scope).
+to the name of a column within the current [data scope](../concepts/data-loading.md#data-scope).
 For more on this, and on advanced scaling options like non-linear scaling, see the
 [scaling](../concepts/scaling.md) documentation.
 
@@ -164,7 +164,7 @@ use the extents of the Section.
 :::
 
 It is also possible to map data to marks within a Section that does have
-a `scales` prop. In that case, the data will be mapped to the rescaled local
+a `scales` prop. In that case, the data will be mapped to the scaled local
 coordinate system:
 
 ::: v-pre
@@ -240,8 +240,10 @@ data scope that contains a nested dataframe, the nested data can be mapped to
 the Section's `data` prop:
 
 (TODO: do this when we have figured out how we want to do faceting/deal with
-domains pre/post data transformation etc. Started on this in 
+domains pre/post data transformation etc. Started on this in
 `.vuepress/components/SectionDegroup.vue`)
 
 
 ### Creating compositions of marks
+
+TODO

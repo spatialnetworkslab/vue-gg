@@ -8,9 +8,10 @@ title: 'Map'
 
 # Description
 
-The Map component is used to tap into the local data scope and render one
-of each of its direct child components for each row in the dataset. In this sense,
-it is similar to using `v-for`. But it has some advantages over using `v-for`:
+The Map component is used to tap into the local [data scope](../concepts/data-loading.md#data-scope)
+and render one of each of its direct child components for each row in the dataset.
+In this sense, it is similar to using `v-for`. But it has some advantages over
+using `v-for`:
 
 1. The Map component has access to the domains of the data within the data scope
 in which it is located. It also has access to the extents of the coordinate system
@@ -24,15 +25,17 @@ map data values to aesthetic values- for example, categories to colors.
 
 ### Mappable components
 
-The Map component can only be used to map _mappable_ components. Mappable components
-are all Marks, all Glyphs, all Guides, and the [Section](./section.md) component.
+The Map component can only be used to map [mappable](../concepts/mappability.md)
+components. Mappable components are all Marks, all Glyphs, all Guides, and the
+[Section](./section.md) component.
 
-There are two main ways of mapping these mappable components: using the [mapping
-object](#the-mapping-object) syntax, and using the [getter function](#the-getter-function)
-syntax. Both will be discussed below, but make sure to check the documentation
-of the components in question to see which syntaxes are allowed for which props.
-In the examples below we will use the [Point](../marks/point.md) mark's `x`, `y`
-and `fill` props, all of which support both mapping objects and getter functions.
+There are two main ways of mapping these mappable components: using the
+[mapping object](#the-mapping-object) syntax, and using the
+[getter function](#the-getter-function) syntax. Both will be discussed below,
+but make sure to check the documentation of the components in question to see
+which syntaxes are allowed for which props. In the examples below we will use
+the [Point](../marks/point.md) mark's `x`, `y` and `fill` props, all of which
+support both mapping objects and getter functions.
 
 ### The mapping-object
 
