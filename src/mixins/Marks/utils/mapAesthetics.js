@@ -42,7 +42,6 @@ function extractMappings (mappings) {
 
   for (let aesKey in mappings) {
     let passedProp = mappings[aesKey]
-
     if (passedProp.hasOwnProperty('assign') && is(passedProp.assign)) {
       assigners[aesKey] = passedProp.assign
     }

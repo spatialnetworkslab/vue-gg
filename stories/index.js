@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/vue'
 
 import Scatterplot from './charts/Scatterplot.vue'
+import MultiLine from './charts/MultiLine.vue'
 
 import Scatterplot2 from './sandbox/Scatterplot.vue'
 import BarChart from './sandbox/BarChart.vue'
@@ -14,9 +15,11 @@ import GeoShape from './sandbox/GeoShape.vue'
 import MissingInvalidData from './sandbox/MissingInvalidData.vue'
 import MultiLines from './sandbox/MultiLines.vue'
 import Areas from './sandbox/Areas.vue'
+import Trail from './sandbox/TrailMark.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
+  .add('MultiLine', () => (MultiLine))
 
 storiesOf('Sandbox', module)
   .add('Scatterplot2', () => (Scatterplot2))
@@ -31,3 +34,4 @@ storiesOf('Sandbox', module)
   .add('Test: missing', () => (MissingInvalidData))
   .add('Test: Area Mark', () => (Areas))
   .add('MultiLines', () => (MultiLines))
+  .add('Trail', () => (Trail))

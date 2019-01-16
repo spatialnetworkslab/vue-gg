@@ -23,6 +23,7 @@ import Point from './Marks/Point.vue'
 import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
 import Label from './Marks/Label.vue'
+import Trail from './Marks/Trail.vue'
 
 export default {
   Glyph,
@@ -45,5 +46,6 @@ export default {
   Point,
   Polygon,
   Rectangle,
-  Label
+  Label,
+  Trail
 }

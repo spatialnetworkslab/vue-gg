@@ -19,15 +19,15 @@
 
         <vgg-map>
 
-          <vgg-multi-line
+          <vgg-trail
             :x="row => row.grouped.xValues"
             :y="row => row.grouped.yValues"
             :stroke="row => row.grouped.colors"
             :stroke-width="row => row.grouped.rainfall"
-            stroke-linecap="square"
             :stroke-opacity="row => row.grouped.opacity"
             :sort="'x'"
           />
+
         </vgg-map>
 
       </vgg-transform>
@@ -73,7 +73,7 @@ export default {
   computed: {
     data () {
       let colors = ['red', 'blue', 'green']
-      let opacity =[0.8, 0.8, 0.5]
+      let opacity =[0.1, 0.2, 1]
       let data = { colors: [], opacity: [], rainfall: [], xValues: [], yValues: [] }
       let rainfall = [7, 15, 5, 3, 1, 2, 2, 10, 2, 20, 5, 7]
       for (let i = 0; i < 30; i++) {
@@ -86,25 +86,6 @@ export default {
         data.yValues.push(Math.random() * 100)
         data.opacity.push(alpha)
         data.rainfall.push(rain)
-      }
-      return data
-    },
-    climate () {
-      let data = []
-      let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      let highs = [14, 14, 15, 18, 22, 27, 29, 29, 26, 22, 18, 15]
-      let lows = [10, 10, 11, 13, 16, 20, 23, 23, 20, 17, 14, 11]
-      let rainfall = [7, 7, 5, 3, 1, 0, 0, 0, 0, 2, 5, 7]
-      let range = Math.random() * 1000
-      let instances = 12
-      for (let i = 0; i < instances; i++) {
-        let x = highs[i]
-        let y = lows[i]
-        let a = rainfall[i]
-        let day = Math.floor(Math.random() * 27) + 1
-        let format = d3.timeFormat('%b %d')
-        let date = format(new Date(2000, i, day))
-        data.push({ i, x, y, a, date })
       }
       return data
     }

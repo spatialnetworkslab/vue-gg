@@ -5,7 +5,8 @@ export default function (aesthetics) {
     'strokeWidth',
     'opacity',
     'fillOpacity',
-    'strokeOpacity'
+    'strokeOpacity',
+    'strokeLinecap'
   ]
   let styleDef = {}
   for (let i = 0; i < styles.length; i++) {

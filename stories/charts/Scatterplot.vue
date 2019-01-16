@@ -14,18 +14,16 @@
         y: 'b'
       }"
     >
-
       <vgg-map>
 
-        <vgg-point
-          :x="row => row.a"
-          :y="row => row.b"
-          :radius="3"
-          :fill="{ scale: { scale: 'viridis', variable: 'a' } }"
-        />
+       <vgg-point
+         :x="row => row.a"
+         :y="row => row.b"
+         :radius="3"
+         :fill="{ scale: { scale: 'viridis', variable: 'a' } }"
+       />
 
-      </vgg-map>
-
+     </vgg-map>
     </vgg-section>
 
     <vgg-x-grid

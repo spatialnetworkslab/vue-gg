@@ -86,6 +86,11 @@ export default {
       default: false
     },
 
+    strokeLinecap: {
+      type: String,
+      default: 'square'
+    },
+
     // This is not actually meant to be used, just a flag for the mixin logic
     _area: {
       type: Boolean,
@@ -111,7 +116,8 @@ export default {
         strokeWidth: this.parseAesthetic(this.strokeWidth),
         opacity: this.parseAesthetic(this.opacity),
         fillOpacity: this.parseAesthetic(this.fillOpacity),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
+        strokeOpacity: this.parseAesthetic(this.strokeOpacity),
+        strokeLinecap: this.parseAesthetic(this.strokeLinecap)
       }
     }
   },
@@ -207,7 +213,6 @@ export default {
         } else {
           points = this.generatePoints(aesthetics.x, aesthetics.y)
         }
-
         if (points.length > 1) {
           if (this.sort) {
             points = this.sortPoints(points)
