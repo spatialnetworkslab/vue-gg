@@ -58,5 +58,5 @@ The `Manual` method groups data into user-defined ranges.
 
 Key          | Type      |  Description 
 -------------|-----------|----------------------------
-manualClasses| Array     | An array of [lowerBound, upperBound] ranges
+manualClasses| Array     | An array of bin boundaries
 
