@@ -48,10 +48,6 @@ Key       | Type      |  Description
 ----------|-----------|----------------------------
 numClasses| Number    | Number of bins
 
-### UniqueValues
-
-The `UniqueValues` classification method does not take any additional keys.
-
 ### Manual
 
 The `Manual` method groups data into user-defined ranges.

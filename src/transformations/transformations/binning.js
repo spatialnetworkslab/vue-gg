@@ -42,8 +42,6 @@ export default function (data, binningObj) {
     ranges = geoStat.getClassQuantile(numClasses)
   } else if (method === 'Jenks') {
     ranges = geoStat.getClassJenks(numClasses)
-  } else if (method === 'UniqueValues') {
-    ranges = geoStat.getClassUniqueValues()
   } else if (method === 'Manual') {
     ranges = binningObj.manualClasses
   }
