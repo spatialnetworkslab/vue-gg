@@ -5068,6 +5068,10 @@ generic-names@^1.0.2:
   dependencies:
     loader-utils "^0.2.16"
 
+geostats@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/geostats/-/geostats-1.7.0.tgz#a1a8e5aa033cef0588059a03d0cc04c061c8ad33"
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
@@ -6430,7 +6434,6 @@ linkify-it@^2.0.0:
 linkify-it@~1.2.0:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/linkify-it/-/linkify-it-1.2.4.tgz#0773526c317c8fd13bd534ee1d180ff88abf881a"
-  integrity sha1-B3NSbDF8j9E71TTuHRgP+Iq/iBo=
   dependencies:
     uc.micro "^1.0.1"
 
@@ -6673,7 +6676,6 @@ markdown-it-emoji@^1.4.0:
 markdown-it-multimd-table@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/markdown-it-multimd-table/-/markdown-it-multimd-table-3.1.3.tgz#97926be0df3b59676118464ce43d02d379ca34dc"
-  integrity sha1-l5Jr4N87WWdhGEZM5D0C03nKNNw=
   dependencies:
     markdown-it "^5.0.3"
 
@@ -6684,7 +6686,6 @@ markdown-it-table-of-contents@^0.4.0:
 markdown-it@^5.0.3:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-5.1.0.tgz#25286b8465bac496f3f1b77eed544643e9bd718d"
-  integrity sha1-JShrhGW6xJbz8bd+7VRGQ+m9cY0=
   dependencies:
     argparse "~1.0.3"
     entities "~1.1.1"
