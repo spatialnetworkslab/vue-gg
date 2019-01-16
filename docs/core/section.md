@@ -100,6 +100,24 @@ The `scales` prop takes an object that has a `x` and a `y` property. These prope
 are optional- it is allowed to only specify `x`, or leave out the `scales` prop
 altogether. If the `x` scaling is not specified explicitly, it will default to
 whatever values constitute the left and right borders of the section (in this case:
-`[50, 450]`). Same for the `y` scaling.
+`[50, 450]`). Same for scaling the `y` dimension.
 
-The `x` and `y` scaling options can be specified in a number of ways.
+The `x` and `y` scaling options can be specified in a number of ways. Besides
+the method discussed above, where an Array of length 2 is used to specify the
+domain of the dimension, it is also possible to use a String that corresponds
+to the name of a column within the current [data scope](../concepts/data.md#data-scope).
+For more complex scaling options, like non-linear scaling, see the
+[scaling](../concepts/scaling.md) documentation.
+
+Besides 'rescaling' cartesian coordinate systems, the Section supports transforming
+cartesian coordinates to a polar representation. This is a simple as setting
+the `type` to `'polar'`. Polar coordinate systems are useful for creating
+piecharts and doughnut charts, or for representing circular data, like on a clock:
+
+::: v-pre
+```html
+<vgg-graphic
+
+>
+```
+:::
