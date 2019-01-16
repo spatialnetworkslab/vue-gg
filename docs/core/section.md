@@ -205,4 +205,43 @@ coordinate system:
 
 ### Providing an entry point for new data
 
+Like the [Graphic](./graphic.md) and the [Data](./data.md) components, the Section
+allows you to add a new dataset and create a new data scope for its child components.
+And like the Data component, it is also possible to perform transformations on the
+data in the parent's data scope, and use that as data scope for its children:
+
+::: v-pre
+```html
+<vgg-graphic
+  :width="500"
+  :height="500"
+  :data="{ a: [1, 2, 3, 4] }"
+>
+
+  <vgg-section
+    :x1="100"
+    :x2="400"
+    :y1="100"
+    :y2="400"
+    :transform="{ filter: row => row.a > 2 }"
+  >
+
+    <!-- Data scope: { a: [3, 4] } -->
+
+  </vgg-section>
+
+</vgg-graphic>
+```
+:::
+
+But the Section has another way of creating a new data scope that the Graphic
+and Map components lack: when placed within a [Map](./map.md) component and a
+data scope that contains a nested dataframe, the nested data can be mapped to
+the Section's `data` prop:
+
+(TODO: do this when we have figured out how we want to do faceting/deal with
+domains pre/post data transformation etc. Started on this in 
+`.vuepress/components/SectionDegroup.vue`)
+
+
 ### Creating compositions of marks
