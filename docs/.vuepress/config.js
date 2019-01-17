@@ -15,7 +15,7 @@ module.exports = {
             },
             {
                 title: 'Tutorials',
-                collapsable: false,
+                collapsable: true,
                 children: [
                     'tutorials/templates',
                     'tutorials/custom2',
@@ -33,6 +33,27 @@ module.exports = {
                     'graphs/multiline',
                     'graphs/piechart',
                     'graphs/scatterplot',
+                    ]
+            },
+            {
+              title: 'Concepts',
+              collapsable: true,
+              children: [
+                'concepts/data-loading.md',
+                'concepts/transforming-data.md',
+                'concepts/mappability.md',
+                'concepts/scaling.md'
+              ]
+            },
+            {
+                title: 'Core components',
+                collapsable: true,
+                children: [
+                    'core/graphic',
+                    'core/section',
+                    'core/data',
+                    'core/map',
+                    'core/glyph'
                     ]
             },
             {
@@ -98,7 +119,7 @@ module.exports = {
         ]
     },
     configureWebpack: {
-        resolve: {   
+        resolve: {
             alias:{
             "@": path.resolve(__dirname, '../../src'),
             "@public": path.resolve(__dirname, './public/')

@@ -203,7 +203,7 @@ export default {
       } else {
         let points = []
         if (aesthetics.points) {
-          points = aesthetics.points
+          points = this.filterInvalid(aesthetics.points)
         } else {
           points = this.generatePoints(aesthetics.x, aesthetics.y)
         }

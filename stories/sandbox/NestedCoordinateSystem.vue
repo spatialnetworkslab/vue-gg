@@ -39,7 +39,7 @@
             :y1="0"
             :y2="100"
             :fill="cs.color"
-            style="opacity: 0.2;"
+            :opacity="0.2"
           />
 
         </vgg-section>

@@ -1,75 +1,11 @@
-import proj4 from 'proj4'
-
 import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
 
 import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
 import parseRange from '../../utils/parseRange.js'
-import  { calculateBBox } from '../../utils/geojson.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
-    if (options.type === 'geo') {
-      this.setGeoTransformation(options)
-    } else {
-      this.setTransformation(options)
-    }
-  }
-
-  setGeoTransformation (options) {
-    if (options.dataContainer && options.dataContainer.hasColumn('geometry')) {
-      let ranges = options.ranges
-      this.ranges = ranges
-
-      let scalingOptions = options.scales
-
-      if (scalingOptions.hasOwnProperty('from')) {
-        this.fromCRS = scalingOptions.from
-      }
-      if ((scalingOptions.hasOwnProperty('to'))) {
-        this.toCRS = scalingOptions.to
-      }
-
-      if (this.fromCRS && this.toCRS) {
-        this.geoTransformation = proj4(this.fromCRS, this.toCRS).forward
-      }
-
-      if (!this.fromCRS && this.toCRS) {
-        this.geoTransformation = proj4('WGS84', this.toCRS).forward
-      }
-
-      let bbox = calculateBBox(
-        options.dataContainer.getColumn('geometry'),
-        this.geoTransformation
-      )
-
-      this.domains = bbox
-
-      this.domainTypes = {
-        x: 'quantitative',
-        y: 'quantitative'
-      }
-
-      this.scaleX = createCoordsScale('x', 'quantitative', this.domains.x, this.ranges.x,
-        { scale: 'linear' }
-      )
-      this.scaleY = createCoordsScale('y', 'quantitative', this.domains.y, this.ranges.y,
-        { scale: 'linear' }
-      )
-
-      this.getX = this.scaleX
-      this.getY = this.scaleY
-
-      this.transform = coord => {
-        let [x, y] = coord
-        if (this.geoTransformation) {
-          [x, y] = this.geoTransformation(coord)
-        }
-
-        return [this.getX(x), this.getY(y)]
-      }
-    } else {
-      console.warn(`Column 'geometry' not found.`)
-    }
+    this.setTransformation(options)
   }
 
   setTransformation (options) {

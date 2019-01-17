@@ -1,14 +1,14 @@
 <template>
-  <g v-if="$$dataContainer || dataContainer">
+  <g v-if="$$dataContainer">
     <slot />
   </g>
 </template>
 
 <script>
-import DataValve from '../../mixins/Data/DataValve.js'
+import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 export default {
-  mixins: [DataValve],
+  mixins: [DataReceiver],
 
   provide () {
     return { $$map: true }

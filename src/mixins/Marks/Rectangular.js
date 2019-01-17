@@ -36,12 +36,12 @@ export default {
     },
 
     w: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 
     h: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, Object, Function, undefined],
       default: undefined
     },
 

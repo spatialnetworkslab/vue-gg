@@ -25,7 +25,7 @@
         :x2="rect.x2"
         :y1="rect.y1"
         :y2="rect.y2"
-        :color="rect.color"
+        :fill="rect.color"
       />
 
     </vgg-section>
