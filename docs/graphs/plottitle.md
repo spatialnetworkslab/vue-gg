@@ -14,21 +14,21 @@ Although similar to the Label Mark, the plot title component assumes there will 
 
 # Plot Title
 
-### Coordinate props
+Titles can be added to graphs using the `vgg-plot-title` component. The component takes the following props:
 
-Prop      | Required | Type             | Default    |  Description                 | Unit(s)                |
-----------|----------|------------------|------------|------------------------------|------------------------|
-vjust     | false    | [String, Number] | center     | Horizontal position of title | Number between 0 and 1 |
-hjust     | false    | [String, Number] | t          | Vertical position of title   | Number between 0 and 1 |
-margin    | false    | Number           | 50         | Margin of text               | Screen pixel           |   
+| Prop        | Required | Type             | Default    | Description                  |
+| ----------- | -------- | ---------------- | ---------- | ---------------------------- |
+| Text        | false    | String           | Plot Title | Text to put in plot title    |
+| vjust       | false    | [String, Number] | center     | Horizontal position of title |
+| hjust       | false    | [String, Number] | 't'        | Vertical position of title   |
+| margin      | false    | Number           | 50         | Margin of text               |
+| color       | false    | String           | black      | Font color                   |
+| fontSize    | false    | Number           | 16         | Font size                    |
+| fontFamily  | false    | String           | Helvetica  | Font family                  |
+| anchorPoint | false    | String           | center     | Anchor point of text         |
 
-
-The `vjust` and `hjust` props are used to position the title relative to a section or the overall graphic. It is centered at the top by default.
-
-Both `vjust` and `hjust` accept a `Number` between 0 and 1 that represents the position scaled to the height and width respectively. Alternatively, the following `String` options are also accepted:
-
-- top = 't', middle = 'center', bottom = 'b'
-- left = 'l', middle = 'center', 'right' = 'r'
+ The `vjust` and `hjust` props are used to position the title relative to a
+ section or the overall graphic. It is centered at the top by default.
 
 ```
 <vgg-plot-title

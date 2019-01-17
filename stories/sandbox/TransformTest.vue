@@ -5,14 +5,14 @@
     :data="data"
   >
 
-    <vgg-transform
-      :trans="[
+    <vgg-data
+      :transform="[
         { rename: { a: 'apple', b: 'banana', d: 'durian' } },
         { select: ['apple', 'banana', 'durian'] },
         { filter: ({ durian }) => durian > 25 },
         { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] },
         { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } },
-        /* { groupBy: 'banana' }, */
+        { groupBy: 'banana' },
         { summarise: { appleSum: { apple: 'sum' }, maxRatio: { ratioAppleDurian: 'max' } } }
       ]"
     >
@@ -34,7 +34,7 @@
 
       </vgg-section>
 
-    </vgg-transform>
+    </vgg-data>
 
   </vgg-graphic>
 </template>

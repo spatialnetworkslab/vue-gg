@@ -8,13 +8,13 @@
 
 <script>
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
-import DataReceiver from '../../mixins/Data/DataReceiver.js'
+import DataTransformer from '../../mixins/Data/DataTransformer.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import id from '../../utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataReceiver],
+  mixins: [CoordinateTreeUser, DataTransformer],
 
   props: {
     type: {
@@ -42,36 +42,26 @@ export default {
 
   computed: {
     _scales () {
-      if (this.type === 'geo') {
-        if (this.scales) { return this.scales }
-        if (!this.scales) { return {} }
-      } else {
-        if (this.scales) {
-          let scales = {}
+      if (this.scales) {
+        let scales = {}
 
-          if (this.scales.hasOwnProperty('x')) {
-            scales.x = this.scales.x
-          } else {
-            scales.x = this.ranges.x
-          }
-          if (this.scales.hasOwnProperty('y')) {
-            scales.y = this.scales.y
-          } else {
-            scales.y = this.ranges.y
-          }
-          return scales
+        if (this.scales.hasOwnProperty('x')) {
+          scales.x = this.scales.x
+        } else {
+          scales.x = this.ranges.x
         }
-
-        if (!this.scales) { return this.ranges }
+        if (this.scales.hasOwnProperty('y')) {
+          scales.y = this.scales.y
+        } else {
+          scales.y = this.ranges.y
+        }
+        return scales
       }
+
+      if (!this.scales) { return this.ranges }
     },
 
     allowScales () {
-      // For geodata, we the dataContainer absolutely has to be present
-      if (this.type === 'geo') {
-        return this.$$dataContainer && this.$$dataContainer.hasColumn('geometry')
-      }
-
       // Allowed means: 'allowed IF there is NO DATACONTAINER'.
       // So if there is NO DATACONTAINER, BOTH of these have to be TRUE.
       // If this is not the case, we have to return FALSE.

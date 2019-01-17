@@ -8,7 +8,7 @@
       <option value="Jenks">Jenks</option>
     </select>
 
-    <br />
+    <br>
 
     <vgg-graphic
       :width="600"
@@ -18,8 +18,8 @@
 
       <vgg-plot-title :text="title" />
 
-      <vgg-transform
-        :trans="[
+      <vgg-data
+        :transform="[
           { rename: { a: 'apple', b: 'banana', d: 'durian' } },
           { binning: { groupBy: 'apple', method: selected, numClasses: 5 } },
           { summarise: { binCount: { apple: 'count' } } }
@@ -68,7 +68,7 @@
           :scale="{ variable: 'binCount', domain: [0, null] }"
         />
 
-      </vgg-transform>
+      </vgg-data>
 
     </vgg-graphic>
 
