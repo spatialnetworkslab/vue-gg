@@ -3,14 +3,14 @@
 
     <vgg-graphic
       :width="600"
-      :height="600"
+      :height="500"
       :data="xy">
 
       <vgg-section
         :x1="100"
         :x2="500"
-        :y1="100"
-        :y2="500"
+        :y1="50"
+        :y2="450"
       >
 
         <vgg-map>
@@ -31,32 +31,32 @@
       <vgg-x-grid
         :x1="100"
         :x2="500"
-        :y1="100"
-        :y2="500"
+        :y1="50"
+        :y2="450"
         :scale="'explanatory'"
       />
 
       <vgg-y-grid
         :x1="100"
         :x2="500"
-        :y1="100"
-        :y2="500"
+        :y1="50"
+        :y2="450"
         :scale="'dependent'"
       />
 
       <vgg-x-axis
         :x1="100"
         :x2="500"
-        :y1="50"
-        :y2="100"
+        :y1="0"
+        :y2="50"
         :scale="'explanatory'"
       />
 
       <vgg-y-axis
         :x1="500"
         :x2="550"
-        :y1="100"
-        :y2="500"
+        :y1="50"
+        :y2="450"
         :scale="'dependent'"
       />
 

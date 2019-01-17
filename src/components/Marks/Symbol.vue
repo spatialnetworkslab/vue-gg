@@ -18,7 +18,7 @@ export default {
 
     fill: {
       type: [String, Object, Function, undefined],
-      default: undefined
+      default: 'black'
     },
 
     stroke: {
