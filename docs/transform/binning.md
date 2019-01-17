@@ -14,7 +14,7 @@ title: Binning
 
 Similar to the groupBy transformation, binning groups the data into numeric bins.
 These bins can be determined one of the inbuilt methods/algorithms or provided manually
-as an array of `[lowerBound, upperBound]` ranges.
+as an array of bin boundaries.
 
 The binning transformation takes an object specifying the parameters of the binning method used.
 
