@@ -1,5 +1,6 @@
 <template>
   <vgg-section
+    class="y-axis"
     :x1="ranges.x1"
     :x2="ranges.x2"
     :y1="ranges.y1"
@@ -12,6 +13,7 @@
 
     <!-- Main line -->
     <vgg-line
+      class="y-axis-line"
       :x1="0.5"
       :y1="0"
       :x2="0.5"
@@ -22,6 +24,7 @@
     <!-- Ticks -->
     <vgg-section
       v-if="scale !== undefined"
+      class="y-axis-ticks"
       :x1="0"
       :x2="1"
       :y1="0"
