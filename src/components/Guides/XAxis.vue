@@ -1,5 +1,6 @@
 <template>
   <vgg-section
+    class="x-axis"
     :x1="ranges.x1"
     :x2="ranges.x2"
     :y1="ranges.y1"
@@ -12,6 +13,7 @@
 
     <!-- Main line -->
     <vgg-line
+      class="x-axis-line"
       :x1="0"
       :y1="0.5"
       :x2="1"
@@ -21,6 +23,7 @@
 
     <!-- Ticks -->
     <vgg-section
+      class="x-axis-ticks"
       :x1="0"
       :x2="1"
       :y1="0"
@@ -34,6 +37,7 @@
 
         <!-- Tick lines -->
         <vgg-line
+          class="x-axis-tick-line"
           :x1="tick => tick.value"
           :y1="0.5"
           :x2="tick => tick.value"
@@ -44,6 +48,7 @@
         <!-- Tick labels -->
         <vgg-label
           v-if="!rotateLabel"
+          class="x-axis-tick-label"
           :x="tick => tick.value"
           :y="flip ? 0.59 : 0.45"
           :text="tick => tick.label"
@@ -53,6 +58,7 @@
 
         <vgg-label
           v-if="rotateLabel"
+          class="x-axis-tick-label"
           :x="tick => tick.value"
           :y="flip ? 0.59 : 0.45"
           :text="tick => tick.label"

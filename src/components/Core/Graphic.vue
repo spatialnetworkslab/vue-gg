@@ -1,6 +1,7 @@
 <template>
   <svg
     v-if="ready"
+    class="graphic"
     :width="width"
     :height="height"
   >

@@ -1,5 +1,5 @@
 <template>
-  <g v-if="ready && allowScales">
+  <g class="section" v-if="ready && allowScales">
 
     <slot />
 

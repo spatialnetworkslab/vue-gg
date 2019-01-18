@@ -1,5 +1,5 @@
 <template>
-  <g v-if="$$dataContainer || dataContainer">
+  <g class="map" v-if="$$dataContainer || dataContainer">
     <slot />
   </g>
 </template>

@@ -6,6 +6,12 @@ import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 export default {
   mixins: [Mark],
 
+  data () {
+    return {
+      markType : 'line-mark'
+    }
+  },
+
   props: {
     // Mappable
     x1: {
