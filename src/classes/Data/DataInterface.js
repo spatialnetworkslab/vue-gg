@@ -10,6 +10,12 @@ export default class DataInterface {
     this._scope = id
   }
 
+  ready (id) {
+    let containerID = id || this._scope
+    return this._manager.hasContainer(containerID) &&
+           this._manager.getContainer(containerID) !== undefined
+  }
+
   // Interface functions to DataContainer
   getDataset (id) {
     let containerID = id || this._scope
@@ -41,26 +47,14 @@ export default class DataInterface {
     return this._manager.getContainer(containerID).hasColumn(colName)
   }
 
-  getColumn (variable) {
-    return this._dataset[variable]
+  getColumn (str) {
+    let { containerID, colName } = this._parseGetterString(str)
+    return this._manager.getContainer(containerID).getColumn(colName)
   }
 
-  forEachRow (fn) {
-    let data = this._dataset
-
-    for (let i = 0; i < this._length; i++) {
-      let row = {}
-      let prevRow = {}
-      let nextRow = {}
-      for (let colName in data) {
-        row[colName] = data[colName][i]
-        prevRow[colName] = data[colName][i - 1]
-        nextRow[colName] = data[colName][i + 1]
-      }
-      if (i === 0) prevRow = undefined
-      if (i === this._length - 1) nextRow = undefined
-      fn(row, i, prevRow, nextRow)
-    }
+  forEachRow (fn, id) {
+    let containerID = id || this._scope
+    this._manager.getContainer(containerID).forEachRow(fn)
   }
 
   // Internal helpers

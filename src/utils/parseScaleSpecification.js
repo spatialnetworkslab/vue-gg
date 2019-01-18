@@ -1,6 +1,6 @@
 import getDataType from './getDataType.js'
 
-export default function (scaleSpecification, variableDomains) {
+export default function (scaleSpecification, dataInterface) {
   let domain
   let domainType
   let scaleOptions
@@ -17,13 +17,13 @@ export default function (scaleSpecification, variableDomains) {
   }
 
   if (scaleSpecification.constructor === String) {
-    if (variableDomains) {
-      if (!variableDomains[scaleSpecification]) {
+    if (dataInterface.ready()) {
+      if (!dataInterface.hasColumn(scaleSpecification)) {
         throw new Error(`Invalid domain specification: variable does not exist`)
       }
 
-      domain = variableDomains[scaleSpecification]
-      domainType = getDataType(domain[0])
+      domain = dataInterface.getDomain(scaleSpecification)
+      domainType = dataInterface.getType(scaleSpecification)
       scaleOptions = {}
     } else {
       domain = [0, 1] // placeholder until real data is available
@@ -35,18 +35,18 @@ export default function (scaleSpecification, variableDomains) {
   if (scaleSpecification.constructor === Object) {
     let variable = scaleSpecification.variable
 
-    if (variableDomains) {
+    if (dataInterface.ready()) {
       if (!variable && !scaleSpecification.domain) {
         throw new Error('Invalid domain specification object')
       }
 
-      if (variable && !variableDomains[variable]) {
+      if (variable && !dataInterface.hasColumn(variable)) {
         throw new Error(`Invalid domain specification: variable does not exist`)
       }
 
       if (variable) {
-        domain = variableDomains[variable]
-        domainType = getDataType(domain[0])
+        domain = dataInterface.getColumn(variable)
+        domainType = dataInterface.getType(variable)
         scaleOptions = scaleSpecification
       }
 
@@ -58,7 +58,7 @@ export default function (scaleSpecification, variableDomains) {
       }
     }
 
-    if (!variableDomains) {
+    if (!dataInterface.ready()) {
       if (variable) {
         domain = [0, 1] // placeholder until real data is available
         domainType = 'quantitative'
@@ -95,8 +95,8 @@ function checkValidDomainArray (array) {
       if (array[i].constructor !== String) { invalid = true; break }
     }
   } else if (array[0].constructor === Date) {
-    for (let i = 1; i < array.length; i++) {
-      if (array[i].constructor !== Date) { invalid = true; break }
+    if (array[1].constructor !== Date || array.length !== 2) {
+      invalid = true
     }
   }
 

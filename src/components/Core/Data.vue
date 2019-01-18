@@ -1,13 +1,13 @@
 <template>
-  <g v-if="dataContainer">
+  <g>
     <slot />
   </g>
 </template>
 
 <script>
-import DataTransformer from '../../mixins/Data/DataTransformer.js'
+import DataProvider from '../../mixins/Data/DataProvider.js'
 
 export default {
-  mixins: [DataTransformer]
+  mixins: [DataProvider]
 }
 </script>

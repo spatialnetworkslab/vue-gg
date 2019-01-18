@@ -8,13 +8,13 @@
 
 <script>
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
-import DataTransformer from '../../mixins/Data/DataTransformer.js'
+import DataProvider from '../../mixins/Data/DataProvider.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import id from '../../utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataTransformer],
+  mixins: [CoordinateTreeUser, DataProvider],
 
   props: {
     type: {
@@ -62,13 +62,16 @@ export default {
     },
 
     allowScales () {
-      // Allowed means: 'allowed IF there is NO DATACONTAINER'.
-      // So if there is NO DATACONTAINER, BOTH of these have to be TRUE.
+      // Allowed means: 'allowed IF the data is NOT READY'.
+      // So if the data is NOT READY, BOTH of these have to be TRUE.
       // If this is not the case, we have to return FALSE.
+
+      // This is to avoid getting errors when the user wants to create a scale
+      // using a domain of a variable that is not available yet.
       let allowedObjX = this.checkAllowedObj(this._scales.x)
       let allowedObjY = this.checkAllowedObj(this._scales.y)
 
-      if (!this.$$dataContainer) {
+      if (!this.$$dataInterface.ready()) {
         if (allowedObjX && allowedObjY) {
           return true
         } else {
@@ -101,7 +104,7 @@ export default {
         type: this.type,
         scales: this._scales,
         ranges: this.ranges,
-        dataContainer: this.$$dataContainer
+        dataInterface: this.$$dataInterface
       })
 
       this.$$coordinateTree.addBranch(

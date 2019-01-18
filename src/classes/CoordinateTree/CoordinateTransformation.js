@@ -12,15 +12,11 @@ export default class CoordinateTransformation {
     let scaleSpecifications = options.scales
     let ranges = options.ranges
 
-    let variableDomains
+    let dataInterface = options.dataInterface
 
-    if (options.dataContainer) {
-      variableDomains = options.dataContainer.getDomains()
-    }
-
-    // Check for validity, and fetch variable domains from dataContainer if necessary
-    let [domainX, domainXType, scaleOptionsX] = parseScaleSpecification(scaleSpecifications.x, variableDomains)
-    let [domainY, domainYType, scaleOptionsY] = parseScaleSpecification(scaleSpecifications.y, variableDomains)
+    // Check for validity, and fetch variable domains with dataInterface if necessary
+    let [domainX, domainXType, scaleOptionsX] = parseScaleSpecification(scaleSpecifications.x, dataInterface)
+    let [domainY, domainYType, scaleOptionsY] = parseScaleSpecification(scaleSpecifications.y, dataInterface)
 
     // Store domains and ranges
     this.domainTypes = {
