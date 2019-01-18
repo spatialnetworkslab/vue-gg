@@ -120,13 +120,13 @@ export default {
 
       return createElement('path', {
         attrs: {
-          d: d
+          d: d,
         },
         style: s
       })
     },
 
-    renderSVG (createElement, aesthetics) {
+    getElement (createElement, aesthetics) {
       let path
       if (this.shape === 'circle') {
         return this.createCircle(createElement, aesthetics)
@@ -152,6 +152,18 @@ export default {
 
       return this.createPath(createElement, aesthetics, path)
       
+    },
+
+    renderSVG (createElement, aesthetics) {
+      let element = this.getElement(createElement, aesthetics)
+
+      let tooltip = createElement('title', 'color scale')
+
+      return createElement('a', {
+        attrs: {
+          href: '../scales/color.html',
+        },
+      }, [element, tooltip])
     }
   }
 }
