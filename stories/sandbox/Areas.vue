@@ -33,7 +33,7 @@
       }"
     >
 
-      <vgg-transform :trans="{ groupBy: 'colors' }">
+      <vgg-data :transform="{ groupBy: 'colors' }">
 
         <vgg-map>
 
@@ -47,7 +47,7 @@
 
         </vgg-map>
 
-      </vgg-transform>
+      </vgg-data>
 
     </vgg-section>
 

@@ -35,13 +35,13 @@
       <!-- Graphs -->
       <vgg-line
         :func="x => x ** 2"
-        :width="3"
+        :stroke-width="3"
         stroke="#8b0000"
       />
 
       <vgg-line
         :func="x => (-1) * x ** 2"
-        :width="3"
+        :stroke-width="3"
         stroke="#ced02d"
       />
 
@@ -59,7 +59,7 @@
           [-1, -1], [-1, -0.5], [-0.5, -0.5], [0, -0.5], [NaN, 0],
           [0.5, 0], [0.5, 0.5], [1, 0.5], [1, 1]
         ]"
-        :width="5"
+        :stroke-width="5"
         stroke="#1336c9"
       />
 

@@ -1,74 +1,78 @@
 <template>
-  <vgg-graphic
-    :width="600"
-    :height="600"
-    :data="data"
-  >
+  <div>
+    <select v-model="selected">
+      <option value="EqualInterval">Equal Interval</option>
+      <option value="ArithmeticProgression">Arithmetic Progression</option>
+      <option value="GeometricProgression">Geometric Progression</option>
+      <option value="Quantile">Quantile</option>
+      <option value="Jenks">Jenks</option>
+    </select>
 
-    <!-- <vgg-transform
-      :trans="[
-        { rename: { a: 'apple', b: 'banana', d: 'durian' } },
-        { select: ['apple', 'banana', 'durian'] },
-        { filter: ({ durian }) => durian > 25 },
-        { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] },
-        { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } },
-        { groupBy: 'banana' },
-        { mutarize: { appleSum: { apple: 'sum' }, maxRatio: { ratioAppleDurian: 'max' } } }
-      ]"
-    > -->
+    <br>
 
-    <vgg-transform
-      :trans="[
-        { rename: { a: 'apple', b: 'banana', d: 'durian' } },
-        { binning: { apple: { binCount: 5 } } },
-      ]"
+    <vgg-graphic
+      :width="600"
+      :height="600"
+      :data="data"
     >
 
-      <vgg-section
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scales="{
-          x: [0, 100],
-          y: [0, 100]
-        }"
+      <vgg-plot-title :text="title" />
+
+      <vgg-data
+        :transform="[
+          { rename: { a: 'apple', b: 'banana', d: 'durian' } },
+          { binning: { groupBy: 'apple', method: selected, numClasses: 5 } },
+          { summarise: { binCount: { apple: 'count' } } }
+        ]"
       >
 
-        <vgg-map>
+        <vgg-section
+          :x1="100"
+          :x2="500"
+          :y1="100"
+          :y2="500"
+          :scales="{
+            x: [0, 100],
+            y: [0, 50]
+          }"
+        >
 
-          <vgg-rectangle
-            :x1="{ scale: { variable: 'min', domain: [0, 100] } }"
-            :x2="{ scale: { variable: 'max', domain: [0, 100] } }"
-            :y1="0"
-            :y2="{ scale: { variable: 'n', domain: [0, null]} }"
-            :fill="{ scale: { scale: 'blues', variable: 'max', domain: [0, null] } }"
-          />
+          <vgg-map>
 
-        </vgg-map>
+            <vgg-rectangle
+              :x1="row => row.lowerBound"
+              :x2="row => row.upperBound"
+              :y1="0"
+              :y2="{ scale: { variable: 'binCount', domain: [0, null] } }"
+              :fill="{ scale: { scale: 'blues', variable: 'upperBound', domain: [0, null] } }"
+            />
 
-      </vgg-section>
+          </vgg-map>
 
-      <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="50"
-        :y2="100"
-        :scale="'min'"
-        rotate-label
-      />
+        </vgg-section>
 
-      <vgg-y-axis
-        :x1="500"
-        :x2="550"
-        :y1="100"
-        :y2="500"
-        :scale="{ variable: 'n', domain: [0, null] }"
-      />
+        <vgg-x-axis
+          :x1="100"
+          :x2="500"
+          :y1="50"
+          :y2="100"
+          scale="lowerBound"
+          rotate-label
+        />
 
-    </vgg-transform>
+        <vgg-y-axis
+          :x1="500"
+          :x2="550"
+          :y1="100"
+          :y2="500"
+          :scale="{ variable: 'binCount', domain: [0, null] }"
+        />
 
-  </vgg-graphic>
+      </vgg-data>
+
+    </vgg-graphic>
+
+  </div>
 </template>
 
 <script>
@@ -80,6 +84,21 @@ export default {
         b: this.generate(10, true),
         c: this.generate(100),
         d: this.generate(100)
+      },
+      selected: 'EqualInterval'
+    }
+  },
+
+  computed: {
+    title () {
+      if (this.selected === 'EqualInterval') {
+        return 'Equal Interval Classification'
+      } else if (this.selected === 'ArithmeticProgression') {
+        return 'Arithmetic Progression Classification'
+      } else if (this.selected === 'GeometricProgression') {
+        return 'Geometric Progression Classification'
+      } else {
+        return this.selected + ' Classification'
       }
     }
   },
@@ -90,6 +109,7 @@ export default {
       let col = new Array(N)
       for (let i = 0; i < N; i++) {
         let randInt = Math.floor(Math.random() * spread)
+        if (randInt === 0) { randInt = 1 }
         if (!str) { col[i] = randInt }
         if (str) {
           let alphabet = 'abcdefghijklmnopqrstuvwxyz'

@@ -1,12 +1,21 @@
 import DataContainer from '../../classes/DataContainer'
-import applyTranformation from '../../transformations/applyTransformation.js'
-import cloneDeep from 'lodash.clonedeep'
+import applyTransformations from '../../transformations/applyTransformations.js'
 
 export default {
   inject: ['$$dataContainerContext'],
 
   props: {
-    trans: {
+    data: {
+      type: [Array, Object, undefined],
+      default: undefined
+    },
+
+    format: {
+      type: [String, undefined],
+      default: undefined
+    },
+
+    transform: {
       type: [Array, Object, undefined],
       default: undefined
     }
@@ -18,33 +27,32 @@ export default {
     },
 
     dataContainer () {
+      if (this.data) {
+        let container = new DataContainer(this.data, this.format)
+        if (this.transform) {
+          let transformedData = applyTransformations(
+            container.getDataset(),
+            this.transform
+          )
+
+          return new DataContainer(transformedData)
+        } else {
+          return container
+        }
+      }
+
       if (this.$$dataContainer) {
-        if (this.trans) {
-          let data = this.applyTransformations()
-          return new DataContainer(data)
+        if (this.transform) {
+          let transformedData = applyTransformations(
+            this.$$dataContainer.getDataset(),
+            this.transform
+          )
+
+          return new DataContainer(transformedData)
         } else {
           return this.$$dataContainer
         }
       }
-    }
-  },
-
-  methods: {
-    applyTransformations () {
-      let data = cloneDeep(this.$$dataContainer.getDataset())
-
-      if (this.trans.constructor === Array) {
-        for (let i = 0; i < this.trans.length; i++) {
-          let transformation = this.trans[i]
-          data = applyTranformation(data, transformation)
-        }
-      }
-
-      if (this.trans.constructor === Object) {
-        data = applyTranformation(data, this.trans)
-      }
-
-      return data
     }
   },
 
