@@ -1,9 +1,7 @@
-import DataContainer from '../../classes/DataContainer'
+import DataContainer from '../../classes/Data/DataContainer.js'
 import applyTransformations from '../../transformations/applyTransformations.js'
 
 export default {
-  inject: ['$$dataContainerContext'],
-
   props: {
     data: {
       type: [Array, Object, undefined],
@@ -22,10 +20,6 @@ export default {
   },
 
   computed: {
-    $$dataContainer () {
-      return this.$$dataContainerContext.dataContainer
-    },
-
     dataContainer () {
       if (this.data) {
         let container = new DataContainer(this.data, this.format)
@@ -40,27 +34,12 @@ export default {
           return container
         }
       }
-
-      if (this.$$dataContainer) {
-        if (this.transform) {
-          let transformedData = applyTransformations(
-            this.$$dataContainer.getDataset(),
-            this.transform
-          )
-
-          return new DataContainer(transformedData)
-        } else {
-          return this.$$dataContainer
-        }
-      }
     }
   },
 
   provide () {
-    if (this.dataContainer) {
-      let $$dataContainerContext = this
+    let $$dataContainerContext = this
 
-      return { $$dataContainerContext }
-    }
+    return { $$dataContainerContext }
   }
 }

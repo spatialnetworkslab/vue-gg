@@ -1,8 +1,9 @@
 import DataContainer from '../../classes/Data/DataContainer.js'
 import applyTransformations from '../../transformations/applyTransformations.js'
-import id from '../../utils/id.js'
 
 export default {
+  inject: ['$$dataContainerContext'],
+
   props: {
     data: {
       type: [Array, Object, undefined],
@@ -20,13 +21,11 @@ export default {
     }
   },
 
-  data () {
-    return {
-      randomID: undefined
-    }
-  },
-
   computed: {
+    $$dataContainer () {
+      return this.$$dataContainerContext.dataContainer
+    },
+
     dataContainer () {
       if (this.data) {
         let container = new DataContainer(this.data, this.format)
@@ -41,36 +40,27 @@ export default {
           return container
         }
       }
-    },
 
-    dataScopeID () {
-      return this.$attrs.id || this.randomID
-    }
-  },
+      if (this.$$dataContainer) {
+        if (this.transform) {
+          let transformedData = applyTransformations(
+            this.$$dataContainer.getDataset(),
+            this.transform
+          )
 
-  beforeDestroy () {
-    this.$$dataManager.remove(this.dataScopeID)
-  },
-
-  mounted () {
-    this.randomID = id()
-    this.$$dataManager.register(this.dataScopeID, this.dataContainer)
-  },
-
-  watch: {
-    dataScopeID (newVal, oldVal) {
-      this.$$dataManager.rename(newVal, oldVal)
-    },
-
-    container () {
-      this.$$dataManager.update(this.dataScopeID, this.dataContainer)
+          return new DataContainer(transformedData)
+        } else {
+          return this.$$dataContainer
+        }
+      }
     }
   },
 
   provide () {
     if (this.dataContainer) {
-      let $$dataScope = this.dataScopeID
-      return { $$dataScope }
+      let $$dataContainerContext = this
+
+      return { $$dataContainerContext }
     }
   }
 }

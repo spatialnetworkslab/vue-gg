@@ -109,24 +109,28 @@ export default class {
     return this._dataset
   }
 
-  getDomain (variable) {
-    return this._domains[variable]
+  getDomain (colName) {
+    return this._domains[colName]
   }
 
   getDomains () {
     return this._domains
   }
 
+  getType (colName) {
+    return this._types[colName]
+  }
+
   getTypes () {
     return this._types
   }
 
-  hasColumn (variable) {
-    return this._dataset.hasOwnProperty(variable)
+  hasColumn (colName) {
+    return this._dataset.hasOwnProperty(colName)
   }
 
-  getColumn (variable) {
-    return this._dataset[variable]
+  getColumn (colName) {
+    return this._dataset[colName]
   }
 
   forEachRow (fn) {
