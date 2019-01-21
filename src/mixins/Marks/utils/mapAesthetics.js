@@ -6,7 +6,7 @@ import getDimension from '../../../utils/getDimension.js'
 import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 
 export default function (aesthetics, context) {
-  let dataContainer = context.dataContainer
+  let dataInterface = context.dataInterface
 
   // First, extract the assigners, scales, getter-funcs, positioners and replaceNA's
   let { assigners, scales, funcs, positioners, replaceNA } = extractMappings(aesthetics)
@@ -17,7 +17,7 @@ export default function (aesthetics, context) {
   // Third, we apply the scales, functions and assigners and calculate props for each mark
   let aestheticsPerMark = []
 
-  dataContainer.forEachRow((row, i, prevRow, nextRow) => {
+  dataInterface.forEachRow((row, i, prevRow, nextRow) => {
     let props = mapRow(row, i, prevRow, nextRow, aesthetics, scales, parsedScales, funcs, assigners, context)
     let parsedProps = parseProps(props, replaceNA, context)
     if (parsedProps) {

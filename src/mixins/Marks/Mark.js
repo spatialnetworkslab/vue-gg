@@ -36,10 +36,9 @@ export default {
 
     context () {
       return {
-        domains: this.$$dataContainer.getDomains(),
         ranges: this.parentBranch.domains,
         parentBranch: this.parentBranch,
-        dataContainer: this.$$dataContainer
+        dataInterface: this.$$dataInterface
       }
     }
   },

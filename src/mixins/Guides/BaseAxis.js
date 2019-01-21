@@ -42,11 +42,7 @@ export default {
 
   computed: {
     _parsedScalingOptions () {
-      let variableDomains
-      if (this.$$dataInterface.ready()) {
-        variableDomains = this.$$dataContainer.getDomains()
-      }
-      return parseScaleSpecification(this.scale, variableDomains)
+      return parseScaleSpecification(this.scale, this.$$dataInterface)
     },
 
     _domain () {

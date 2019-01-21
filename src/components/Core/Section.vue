@@ -119,7 +119,7 @@ export default {
         type: this.type,
         scales: this._scales,
         ranges: this.ranges,
-        dataContainer: this.$$dataContainer
+        dataInterface: this.$$dataInterface
       })
 
       this.$$coordinateTree.updateBranch(this.id, transformation)

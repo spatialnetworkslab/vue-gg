@@ -14,11 +14,11 @@ export default function (prop, { dimension }) {
     }
 
     if (is(prop) && prop.constructor === String) {
-      if (!this.$$dataContainer.hasColumn(prop)) {
+      if (!this.$$dataInterface.hasColumn(prop)) {
         throw new Error(`Variable ${prop} not found`)
       }
 
-      let data = this.$$dataContainer.getColumn(prop)
+      let data = this.$$dataInterface.getColumn(prop)
       return parseArray(data, parentRangeType, dimension, this.parentBranch)
     }
 
@@ -37,11 +37,11 @@ export default function (prop, { dimension }) {
     }
 
     if (is(prop) && prop.constructor === String) {
-      if (!this.$$dataContainer.hasColumn(prop)) {
+      if (!this.$$dataInterface.hasColumn(prop)) {
         throw new Error(`Variable ${prop} not found`)
       }
 
-      let data = this.$$dataContainer.getColumn(prop)
+      let data = this.$$dataInterface.getColumn(prop)
       return { assign: parseArray(data, parentRangeType, dimension, this.parentBranch) }
     }
 

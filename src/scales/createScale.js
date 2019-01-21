@@ -8,7 +8,7 @@ import parseScaleSpecification from '../utils/parseScaleSpecification.js'
 import parseRange from '../utils/parseRange.js'
 
 export default function (prop, context, scalingOptions) {
-  let [domain, domainType] = parseScaleSpecification(scalingOptions, context.domains)
+  let [domain, domainType] = parseScaleSpecification(scalingOptions, context.dataInterface)
 
   // Coordinate props
   if (['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(prop)) {
