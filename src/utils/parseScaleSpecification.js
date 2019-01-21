@@ -21,7 +21,6 @@ export default function (scaleSpecification, dataInterface) {
       if (!dataInterface.hasColumn(scaleSpecification)) {
         throw new Error(`Invalid domain specification: variable does not exist`)
       }
-
       domain = dataInterface.getDomain(scaleSpecification)
       domainType = dataInterface.getType(scaleSpecification)
       scaleOptions = {}
@@ -73,7 +72,6 @@ export default function (scaleSpecification, dataInterface) {
       }
     }
   }
-
   domain = updateDomain(domain, domainType, scaleOptions)
 
   return [domain, domainType, scaleOptions]

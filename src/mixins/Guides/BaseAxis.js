@@ -96,7 +96,6 @@ export default {
             return { value: date, label: format(date) }
           })
         }
-
         return ticks
       }
     }

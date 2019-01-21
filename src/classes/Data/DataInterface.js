@@ -62,8 +62,8 @@ export default class DataInterface {
     let containerID
     let colName
 
-    let numberOfSlashes = str.match(slashRegex).length
-
+    let match = str.match(slashRegex)
+    let numberOfSlashes = match ? match.length : 0
     if (numberOfSlashes === 1) {
       [containerID, colName] = str.split('/')
     } else if (numberOfSlashes === 0) {
@@ -77,7 +77,7 @@ export default class DataInterface {
       throw new Error(`Invalid container id '${str}'`)
     }
 
-    if (!this._manager.hasColumn(colName)) {
+    if (!this._manager.getContainer(containerID).hasColumn(colName)) {
       throw new Error(`Invalid column name '${str}'`)
     }
 

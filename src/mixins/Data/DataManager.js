@@ -23,7 +23,7 @@ export default {
 
   data () {
     return {
-      randomID: undefined,
+      randomID: id(),
 
       containers: {}
     }
@@ -52,16 +52,13 @@ export default {
   },
 
   mounted () {
-    this.randomID = id()
-    if (this.container) {
-      this.register(this.dataScopeID, this.container)
-    }
+    this.register(this.dataScopeID, this.dataContainer)
   },
 
   watch: {
     dataScopeID: 'rename',
-    container () {
-      this.update(this.dataScopeID, this.container)
+    dataContainer () {
+      this.update(this.dataScopeID, this.dataContainer)
     }
   },
 
@@ -78,8 +75,8 @@ export default {
       return this.containers.hasOwnProperty(id)
     },
 
-    hasColumn (id, colName) {
-      return this.containers[id].hasColumn(colName)
+    getContainer (id) {
+      return this.containers[id]
     },
 
     rename (newID, oldID) {

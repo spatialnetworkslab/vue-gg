@@ -3,6 +3,8 @@ import applyTransformations from '../../transformations/applyTransformations.js'
 import id from '../../utils/id.js'
 
 export default {
+  inject: ['$$dataManager'],
+
   props: {
     data: {
       type: [Array, Object, undefined],
@@ -22,7 +24,7 @@ export default {
 
   data () {
     return {
-      randomID: undefined
+      randomID: id()
     }
   },
 
@@ -53,7 +55,6 @@ export default {
   },
 
   mounted () {
-    this.randomID = id()
     this.$$dataManager.register(this.dataScopeID, this.dataContainer)
   },
 
@@ -62,7 +63,7 @@ export default {
       this.$$dataManager.rename(newVal, oldVal)
     },
 
-    container () {
+    dataContainer () {
       this.$$dataManager.update(this.dataScopeID, this.dataContainer)
     }
   },

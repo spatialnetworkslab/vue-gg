@@ -9,12 +9,13 @@
 <script>
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataProvider from '../../mixins/Data/DataProvider.js'
+import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import id from '../../utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataProvider],
+  mixins: [CoordinateTreeUser, DataProvider, DataReceiver],
 
   props: {
     type: {
