@@ -23,20 +23,18 @@
           :w="{ position: 'bulge' }"
           :y1="0"
           :y2="250"
-          :scales="{
-            x: 'scaleA',
-            y: { domain: [0, 1] }
-          }"
+          :scale-x="'#scaleX'"
+          :scale-y="'#scaleY'"
           :data="row => row.grouped"
         >
 
           <vgg-map>
 
-              <vgg-point
-                :x="{ get: row => row.a, scale: 'scaleX' }"
-                :y="{ get: row => row.b,  }"
-                :fill=""
-              />
+            <vgg-point
+              :x="{ get: row => row.a }"
+              :y="{ get: row => row.b }"
+              :fill="{ get: row => row.c, scale: '#scaleColor' }"
+            />
 
           </vgg-map>
 

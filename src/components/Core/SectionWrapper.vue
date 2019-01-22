@@ -12,8 +12,13 @@ export default {
       default: 'scale'
     },
 
-    scales: {
-      type: [Object, undefined],
+    scaleX: {
+      type: [Object, String, Array, undefined],
+      default: undefined
+    },
+
+    scaleY: {
+      type: [Object, String, Array, undefined],
       default: undefined
     },
 
@@ -34,6 +39,16 @@ export default {
   },
 
   computed: {
+    scales () {
+      if (this.scaleX || this.scaleY) {
+        let scales = {}
+        if (this.scaleX) { scales.x = this.scaleX }
+        if (this.scaleY) { scales.y = this.scaleY }
+
+        return scales
+      }
+    },
+
     _sectionData () {
       if (!this.$$map) {
         if (this.data && this.data.constructor === Function) {
