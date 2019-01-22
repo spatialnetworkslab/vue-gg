@@ -85,9 +85,21 @@ export default {
   },
 
   watch: {
-    type: 'updateCoordinateTreeBranch',
-    scales: 'updateCoordinateTreeBranch',
-    ranges: 'updateCoordinateTreeBranch'
+    type (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.updateCoordinateTreeBranch()
+      }
+    },
+    scales (newVal, oldVal) {
+      if (!this.same(newVal, oldVal)) {
+        this.updateCoordinateTreeBranch()
+      }
+    },
+    ranges (newVal, oldVal) {
+      if (!this.same(newVal, oldVal)) {
+        this.updateCoordinateTreeBranch()
+      }
+    }
   },
 
   beforeDestroy () {
@@ -134,6 +146,10 @@ export default {
       } else {
         return false
       }
+    },
+
+    same (oldVal, newVal) {
+      return JSON.stringify(oldVal) === JSON.stringify(newVal)
     }
   },
 

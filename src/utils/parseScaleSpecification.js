@@ -73,8 +73,6 @@ export default function (scaleSpecification, dataInterface) {
     }
   }
 
-  console.log(domain)
-
   domain = updateDomain(domain, domainType, scaleOptions)
 
   return [domain, domainType, scaleOptions]
