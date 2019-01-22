@@ -81,25 +81,21 @@ export default {
       } else {
         return true
       }
+    },
+
+    transformation () {
+      let transformation = new CoordinateTransformation({
+        type: this.type,
+        scales: this._scales,
+        ranges: this.ranges,
+        dataInterface: this.$$dataInterface
+      })
+      return transformation
     }
   },
 
   watch: {
-    type (newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.updateCoordinateTreeBranch()
-      }
-    },
-    scales (newVal, oldVal) {
-      if (!this.same(newVal, oldVal)) {
-        this.updateCoordinateTreeBranch()
-      }
-    },
-    ranges (newVal, oldVal) {
-      if (!this.same(newVal, oldVal)) {
-        this.updateCoordinateTreeBranch()
-      }
-    }
+    transformation: 'updateCoordinateTreeBranch'
   },
 
   beforeDestroy () {
@@ -113,29 +109,15 @@ export default {
 
   methods: {
     setCoordinateTreeBranch () {
-      let transformation = new CoordinateTransformation({
-        type: this.type,
-        scales: this._scales,
-        ranges: this.ranges,
-        dataInterface: this.$$dataInterface
-      })
-
       this.$$coordinateTree.addBranch(
         this.id,
         this.$$coordinateTreeParent,
-        transformation
+        this.transformation
       )
     },
 
     updateCoordinateTreeBranch () {
-      let transformation = new CoordinateTransformation({
-        type: this.type,
-        scales: this._scales,
-        ranges: this.ranges,
-        dataInterface: this.$$dataInterface
-      })
-
-      this.$$coordinateTree.updateBranch(this.id, transformation)
+      this.$$coordinateTree.updateBranch(this.id, this.transformation)
     },
 
     checkAllowedObj (domain) {

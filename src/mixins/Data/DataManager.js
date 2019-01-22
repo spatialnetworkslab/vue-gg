@@ -57,9 +57,7 @@ export default {
 
   watch: {
     dataScopeID (newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.rename(newVal, oldVal)
-      }
+      this.rename(newVal, oldVal)
     },
     dataContainer (newVal, oldVal) {
       this.update(this.dataScopeID, this.dataContainer)
