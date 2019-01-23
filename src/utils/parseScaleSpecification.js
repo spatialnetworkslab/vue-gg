@@ -5,6 +5,8 @@ export default function (scaleSpecification, dataInterface) {
   let domainType
   let scaleOptions
 
+  console.log('fired')
+
   if (![Array, String, Object].includes(scaleSpecification.constructor)) {
     throw new Error('Invalid scale specification: only Array, String or Object allowed')
   }
@@ -72,7 +74,6 @@ export default function (scaleSpecification, dataInterface) {
       }
     }
   }
-
   domain = updateDomain(domain, domainType, scaleOptions)
 
   return [domain, domainType, scaleOptions]
@@ -103,31 +104,35 @@ function checkValidDomainArray (array) {
 }
 
 function updateDomain (domain, domainType, scalingOptions) {
-  checkValidScalingOptions(domainType, scalingOptions)
-  let newDomain = [domain[0], domain[1]]
+  if (validScalingOptions(domainType, scalingOptions)) {
+    let newDomain = [domain[0], domain[1]]
 
-  if (scalingOptions.absolute) {
-    newDomain = [0, Math.max(...newDomain.map(value => Math.abs(value)))]
-  }
+    if (scalingOptions.absolute) {
+      newDomain = [0, Math.max(...newDomain.map(value => Math.abs(value)))]
+    }
 
-  if (scalingOptions.domainMin) {
-    newDomain[0] = scalingOptions.domainMin
-  }
+    if (scalingOptions.domainMin) {
+      newDomain[0] = scalingOptions.domainMin
+    }
 
-  if (scalingOptions.domainMax) {
-    newDomain[1] = scalingOptions.domainMax
-  }
+    if (scalingOptions.domainMax) {
+      newDomain[1] = scalingOptions.domainMax
+    }
 
-  return newDomain
+    return newDomain
+  } else { return domain }
 }
 
-function checkValidScalingOptions (domainType, scalingOptions) {
+function validScalingOptions (domainType, scalingOptions) {
   if (domainType === 'categorical') {
     if (hasAnyWrongProperty(scalingOptions)) {
       throw new Error(`Invalid scaling options for categorical domain: ${JSON.stringify(scalingOptions)}`)
     }
+    return false
+  } else {
+    checkTypes(domainType, scalingOptions)
+    return true
   }
-  checkTypes(domainType)
 }
 
 function hasAnyWrongProperty (obj) {
