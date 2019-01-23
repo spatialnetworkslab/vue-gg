@@ -35,17 +35,17 @@
 export default {
   props: {
     x: {
-      type: [Number, Object, Function],
+      type: [Number, Object],
       required: true
     },
 
     y: {
-      type: [Number, Object, Function],
+      type: [Number, Object],
       required: true
     },
 
     radius: {
-      type: Number,
+      type: [Number, Object],
       required: true
     },
 

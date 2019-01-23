@@ -9,10 +9,6 @@ export default function (prop, { dimension, wh }) {
       throw new Error('Trying to map without vgg-map component.')
     }
 
-    if (is(prop) && prop.constructor === Function) {
-      throw new Error('Trying to map without vgg-map component.')
-    }
-
     if (is(prop)) {
       // Here we check whether the passed prop (String, Number, etc)
       // is compatible with the parent domain (categorical, quantitative, etc)
@@ -36,7 +32,6 @@ export default function (prop, { dimension, wh }) {
 
   if (this.$$map) {
     let isObject = is(prop) && prop.constructor === Object
-    let isFunction = is(prop) && prop.constructor === Function
 
     if (is(prop) && isObject) {
       // block object mapping syntax if used with categorical or temporal
@@ -46,8 +41,7 @@ export default function (prop, { dimension, wh }) {
       }
       return prop
     }
-    if (is(prop) && isFunction) { return { func: prop } }
-    if (is(prop) && !isObject && !isFunction) {
+    if (is(prop) && !isObject) {
       // Here we check whether the passed prop (String, Number, etc)
       // is compatible with the parent domain (categorical, quantitative, etc)
       if (invalidValueForRangeType(prop, parentRangeType)) {

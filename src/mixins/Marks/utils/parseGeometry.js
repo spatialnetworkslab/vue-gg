@@ -1,4 +1,5 @@
 import { is, isnt } from '../../../utils/equals.js'
+import getDataType from '../../../utils/getDataType.js'
 import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 import { invalidValueForRangeType } from './parseCoordinateSet.js'
 
@@ -22,16 +23,16 @@ export default function (prop, options) {
   if (this.$$map) {
     if (options.geojson) {
       if (is(prop) && prop.constructor === Object) {
-        return { assign: prop }
+        if (getDataType(prop) === 'geometry') {
+          return { assign: prop }
+        } else {
+          return prop
+        }
       }
     } else {
       if (is(prop) && prop.constructor === Array) {
         return { assign: parseArray(prop, this.parentRangeTypes, this.parentBranch) }
       }
-    }
-
-    if (is(prop) && prop.constructor === Function) {
-      return { func: prop }
     }
 
     if (isnt(prop)) {

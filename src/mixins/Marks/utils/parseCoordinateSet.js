@@ -5,7 +5,7 @@ export default function (prop, { dimension }) {
   let parentRangeType = this.parentRangeTypes[dimension]
 
   if (!this.$$map) {
-    if (is(prop) && prop.constructor === Function) {
+    if (is(prop) && prop.constructor === Object) {
       throw new Error('Trying to map without vgg-map component.')
     }
 
@@ -28,9 +28,7 @@ export default function (prop, { dimension }) {
   }
 
   if (this.$$map) {
-    let isFunction = is(prop) && prop.constructor === Function
-
-    if (is(prop) && isFunction) { return { func: prop } }
+    if (is(prop) && prop.constructor === Object) { return prop }
 
     if (is(prop) && prop.constructor === Array) {
       return { assign: parseArray(prop, parentRangeType, dimension, this.parentBranch) }
