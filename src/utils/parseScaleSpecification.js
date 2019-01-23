@@ -1,11 +1,10 @@
 import getDataType from './getDataType.js'
+import { is } from './equals.js'
 
 export default function (scaleSpecification, dataInterface) {
   let domain
   let domainType
   let scaleOptions
-
-  console.log('fired')
 
   if (![Array, String, Object].includes(scaleSpecification.constructor)) {
     throw new Error('Invalid scale specification: only Array, String or Object allowed')
@@ -111,11 +110,11 @@ function updateDomain (domain, domainType, scalingOptions) {
       newDomain = [0, Math.max(...newDomain.map(value => Math.abs(value)))]
     }
 
-    if (scalingOptions.domainMin) {
+    if (is(scalingOptions.domainMin)) {
       newDomain[0] = scalingOptions.domainMin
     }
 
-    if (scalingOptions.domainMax) {
+    if (is(scalingOptions.domainMax)) {
       newDomain[1] = scalingOptions.domainMax
     }
 
