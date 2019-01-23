@@ -2,6 +2,8 @@ import calculateDomains from './calculateDomains.js'
 // const formats = ['row', 'column', 'geojson']
 // const variableTypes = ['quantitative', 'temporal', 'categorical', 'geometry']
 
+const pointRegex = /\./g
+
 export default class {
   constructor (data, format) {
     this._dataset = {}
@@ -126,6 +128,10 @@ export default class {
   }
 
   hasColumn (colName) {
+    if (colName.match(pointRegex)) {
+      let sliced = colName.split('.')[0]
+      return this._dataset.hasOwnProperty(sliced)
+    }
     return this._dataset.hasOwnProperty(colName)
   }
 
