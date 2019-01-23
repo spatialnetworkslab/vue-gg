@@ -107,7 +107,7 @@ function updateDomain (domain, domainType, scalingOptions) {
     let newDomain = [domain[0], domain[1]]
 
     if (scalingOptions.absolute) {
-      newDomain = [0, Math.max(...newDomain.map(value => Math.abs(value)))]
+      newDomain = absoluteDomain(newDomain)
     }
 
     if (is(scalingOptions.domainMin)) {
@@ -152,4 +152,17 @@ function checkTypes (type, obj) {
       }
     }
   }
+}
+
+function absoluteDomain (arr) {
+  let min = Infinity
+  let max = -Infinity
+
+  for (let val of arr) {
+    let absVal = Math.abs(val)
+    min = absVal < min ? absVal : min
+    max = absVal > max ? absVal : max
+  }
+
+  return [min, max]
 }
