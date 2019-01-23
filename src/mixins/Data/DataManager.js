@@ -39,9 +39,9 @@ export default {
             this.transform
           )
 
-          return new DataContainer(transformedData)
+          return Object.freeze(new DataContainer(transformedData))
         } else {
-          return container
+          return Object.freeze(container)
         }
       }
     },
