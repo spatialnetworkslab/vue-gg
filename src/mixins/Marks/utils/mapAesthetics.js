@@ -8,8 +8,8 @@ import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 export default function (aesthetics, context) {
   let dataInterface = context.dataInterface
 
-  // First, extract the assigners, scales, getter-funcs, positioners and replaceNA's
-  let { assigners, scales, funcs, positioners, replaceNA } = extractMappings(aesthetics)
+  // First, extract the assigners, scales, getters, positioners and replaceNA's
+  let { assigners, scales, getters, positioners, replaceNA } = extractMappings(aesthetics)
 
   // Second, we will parse the scales
   let parsedScales = parseScales(scales, context)
@@ -18,7 +18,7 @@ export default function (aesthetics, context) {
   let aestheticsPerMark = []
 
   dataInterface.forEachRow((row, i, prevRow, nextRow) => {
-    let props = mapRow(row, i, prevRow, nextRow, aesthetics, scales, parsedScales, funcs, assigners, context)
+    let props = mapRow(row, i, prevRow, nextRow, aesthetics, parsedScales, getters, assigners, context)
     let parsedProps = parseProps(props, replaceNA, context)
     if (parsedProps) {
       aestheticsPerMark.push(parsedProps)
@@ -36,7 +36,7 @@ export default function (aesthetics, context) {
 function extractMappings (mappings) {
   let assigners = {}
   let scales = {}
-  let funcs = {}
+  let getters = {}
   let positioners = {}
   let replaceNA = {}
 
@@ -49,8 +49,14 @@ function extractMappings (mappings) {
     if (passedProp.hasOwnProperty('scale')) {
       scales[aesKey] = passedProp.scale
     }
-    if (passedProp.hasOwnProperty('func')) {
-      funcs[aesKey] = passedProp.func
+    if (passedProp.hasOwnProperty('get')) {
+      // Getters can be specified as strings or functions. When specified as a string,
+      // the getter string will be converted to a function here.
+      if (passedProp.get.constructor === String) {
+        getters[aesKey] = row => row[passedProp.get]
+      } else {
+        getters[aesKey] = passedProp.get
+      }
     }
     if (passedProp.hasOwnProperty('position')) {
       positioners[aesKey] = passedProp.position
@@ -60,7 +66,7 @@ function extractMappings (mappings) {
     }
   }
 
-  return { assigners, scales, funcs, positioners, replaceNA }
+  return { assigners, scales, getters, positioners, replaceNA }
 }
 
 function parseScales (scales, context) {
@@ -68,81 +74,34 @@ function parseScales (scales, context) {
 
   for (let aesKey in scales) {
     let scalingOptions = scales[aesKey]
-    // The scale can be specified in three ways:
-    // 1. Set the scale with a shorthand with the default settings
-    // 2. Set the scale with a shorthand with custom settings
-    // 3. Set the scale by constructing your own scale
-
-    // 1. Set the scale with a shorthand with the default settings.
-    // Here we just need the string id of the variable we want to scale
-    if (scalingOptions.constructor === String) {
-      parsedScales[aesKey] = createScale(aesKey, context, {
-        variable: scalingOptions
-      })
-    }
-
-    if (scalingOptions.constructor === Object) {
-      // 2. Set the scale with a shorthand with custom settings
-      // In this case we need an object with options with at least a 'variable' key.
-      if (!scalingOptions.construct) {
-        parsedScales[aesKey] = createScale(aesKey, context, scalingOptions)
-      }
-
-      // 3. Set the scale by constructing your own scale
-      // In this case we need a 'construct' function. 'variable' key is optional.
-      if (scalingOptions.construct) {
-        parsedScales[aesKey] = scalingOptions.construct(context)
-      }
-    }
+    parsedScales[aesKey] = createScale(aesKey, context, scalingOptions)
   }
 
   return parsedScales
 }
 
-function mapRow (row, i, prevRow, nextRow, aesthetics, scales, parsedScales, funcs, assigners, context) {
+function mapRow (row, i, prevRow, nextRow, aesthetics, parsedScales, getters, assigners, context) {
   let props = {}
   for (let aesKey in aesthetics) {
-    // If a scale has been specified for this aesthetic:
-    if (is(scales[aesKey])) {
-      // If the scale was specified a string, it is assumed to be the
-      // identifier of a variable (see above).
-      if (scales[aesKey].constructor === String) {
-        let variable = scales[aesKey]
-        props[aesKey] = parsedScales[aesKey](row[variable])
-      }
+    let value
 
-      // If the scale was specified as an object:
-      if (scales[aesKey].constructor === Object) {
-        // If scales[key].variable is specified, it will be used
-        // as the identifier of a variable.
-        if (scales[aesKey].hasOwnProperty('variable')) {
-          let variable = scales[aesKey].variable
-          props[aesKey] = parsedScales[aesKey](row[variable])
-        } else {
-          // If scales[key].variable is not specified, we will pass the
-          // entire row to the mapping function instead of just the value for
-          // that variable in that row.
-          props[aesKey] = parsedScales[aesKey](row)
-        }
-      }
-    } else if (is(funcs[aesKey])) {
-      // If a function was used instead of a scale object:
-      // We pass it the entire row, the row index and the context object
-      let value = funcs[aesKey](row, i, prevRow, nextRow, context)
+    // If a 'get' option was specified:.
+    if (is(getters[aesKey])) {
+      // Use getter to get the right value
+      value = getters[aesKey](row, i, prevRow, nextRow, context)
 
-      // If the value is categorical or temporal, and a coord,
-      // we have to convert it to quantitative
-      let dimension = getDimension(aesKey)
-      if (dimension && [String, Date].includes(value.constructor)) {
-        props[aesKey] = convertToQuantitative(value, dimension, context.parentBranch)
-      } else {
-        props[aesKey] = value
+      // If a scale has been specified, we will also scale the value
+      if (parsedScales[aesKey]) {
+        value = parsedScales[aesKey](value)
       }
-    } else if (is(assigners[aesKey])) {
-      // Finally, if there were no scales or getter functions specified,
-      // we will assign a constant value if necessary.
-      props[aesKey] = assigners[aesKey]
     }
+
+    // If we are just assigning a constant:
+    if (is(assigners[aesKey])) {
+      value = assigners[aesKey]
+    }
+
+    props[aesKey] = value
   }
 
   return props
