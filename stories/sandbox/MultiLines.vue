@@ -9,10 +9,8 @@
       :x2="600"
       :y1="300"
       :y2="600"
-      :scales="{
-        x: 'xValues',
-        y: 'yValues'
-      }"
+      :scale-x="'xValues'"
+      :scale-y="'yValues'"
     >
 
       <vgg-data :transform="{ groupBy: 'colors' }">
@@ -36,10 +34,8 @@
       :x2="600"
       :y1="5"
       :y2="250"
-      :scales="{
-        x: 'colors',
-        y: [0, 1]
-      }"
+      :scale-x="'colors'"
+      :scale-y="[0, 1]"
     >
 
       <vgg-data :transform="{ groupBy: 'colors' }">
@@ -51,7 +47,8 @@
             :w="{ position: { positioner: 'bulge', padding: 10 } }"
             :y1="0"
             :y2="1"
-            :scales="{ x: [0, 1], y: [0, 1] }"
+            :scale-x="[0, 1]"
+            :scale-y="[0, 1]"
             :data="row => row.grouped">
 
             <vgg-rectangle

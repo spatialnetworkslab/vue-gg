@@ -144,10 +144,8 @@ system:
     :x2="500"
     :y1="0"
     :y2="500"
-    :scales="{
-      x: 'a',
-      y: 'b'
-    }"
+    :scale-x="'a'"
+    :scale-y="'b'"
   >
 
     <vgg-map>

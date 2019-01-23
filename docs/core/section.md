@@ -78,10 +78,8 @@ the Section's local coordinate system, this is as easy as writing:
     :x2="450"
     :y1="50"
     :y2="450"
-    :scales="{
-      x: [-1, 1]
-      y: [-1, 1]
-    }"
+    :scale-x="[-1, 1]"
+    :scale-y="[-1, 1]"
   >
 
     <!-- Plotted line of f(x) = x ** 2 -->
@@ -178,7 +176,8 @@ coordinate system:
     :x2="400"
     :y1="100"
     :y2="250"
-    :scales="{ x: [2, 8], y: [4, 16] }"
+    :scale-x="[2, 8]"
+    :scale-y="[4, 16]"
     :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }"
   >
 

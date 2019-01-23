@@ -78,7 +78,9 @@ export default {
           )
         }
 
-        return createElement('g', components)
+        let mt = this.markType
+
+        return createElement('g', {attrs: { 'class': 'mark ' + mt }}, components)
       }
     }
   }

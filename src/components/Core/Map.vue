@@ -1,5 +1,8 @@
 <template>
-  <g v-if="$$dataInterface.ready()">
+  <g
+    v-if="$$dataInterface.ready()"
+    class="map"
+  >
     <slot />
   </g>
 </template>

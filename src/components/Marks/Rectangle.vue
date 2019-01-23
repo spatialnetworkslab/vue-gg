@@ -6,6 +6,12 @@ import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 export default {
   mixins: [Rectangular],
 
+  data () {
+    return {
+      markType : 'rectangle-mark'
+    }
+  },
+
   methods: {
     renderSVG (createElement, aesthetics) {
       let aes = this.convertCoordinateSpecification(aesthetics)

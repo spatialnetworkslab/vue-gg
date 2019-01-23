@@ -1,5 +1,5 @@
 <template>
-  <g>
+  <g class="transform">
     <slot />
   </g>
 </template>

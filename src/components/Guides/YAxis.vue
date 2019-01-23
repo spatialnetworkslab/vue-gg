@@ -4,10 +4,9 @@
     :x2="ranges.x2"
     :y1="ranges.y1"
     :y2="ranges.y2"
-    :scales="{
-      x: [0, 1],
-      y: [0, 1]
-    }"
+    :scale-x="[0, 1]"
+    :scale-y="[0, 1]"
+    class="y-axis"
   >
 
     <!-- Main line -->
@@ -17,6 +16,7 @@
       :x2="0.5"
       :y2="1"
       :stroke-width="1"
+      class="y-axis-line"
     />
 
     <!-- Ticks -->
@@ -26,9 +26,8 @@
       :x2="1"
       :y1="0"
       :y2="1"
-      :scales="{
-        y: scale
-      }"
+      :scale-y="scale"
+      class="y-axis-ticks"
     >
 
       <vgg-data :data="tickData">

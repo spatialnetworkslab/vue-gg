@@ -27,10 +27,8 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: 'xValues',
-        y: 'yValues'
-      }"
+      :scale-x="'xValues'"
+      :scale-y="'yValues'"
     >
 
       <vgg-data :transform="{ groupBy: 'colors' }">
