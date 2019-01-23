@@ -16,10 +16,10 @@
       <vgg-map>
 
         <vgg-point
-          :x="row => row.a"
-          :y="row => row.b"
+          :x="{ get: row => row.a }"
+          :y="{ get: row => row.b }"
           :radius="3"
-          :fill="{ scale: { scale: 'viridis', variable: 'a' } }"
+          :fill="{ get: 'a', scale: { type: 'viridis', domain: 'a' } }"
         />
 
       </vgg-map>

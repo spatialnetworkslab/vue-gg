@@ -13,8 +13,8 @@
     <vgg-map>
 
       <vgg-point
-        :x="{ scale: 'a' }"
-        :y="{ scale: 'b', NA: 300 }"
+        :x="{ get: 'a', scale: 'a' }"
+        :y="{ get: 'b', scale: 'b', NA: 300 }"
       />
 
     </vgg-map>

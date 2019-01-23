@@ -18,8 +18,8 @@
         <vgg-map>
 
           <vgg-multi-line
-            :x="row => row.grouped.xValues"
-            :y="row => row.grouped.yValues"
+            :x="{ get: row => row.grouped.xValues }"
+            :y="{ get: row => row.grouped.yValues }"
             :stroke="row => row.colors"
           />
 
@@ -43,7 +43,7 @@
         <vgg-map>
 
           <vgg-section
-            :x="row => row.colors"
+            :x="{ get: 'colors' }"
             :w="{ position: { positioner: 'bulge', padding: 10 } }"
             :y1="0"
             :y2="1"
@@ -62,8 +62,8 @@
             <vgg-map>
 
               <vgg-point
-                :x="{ scale: 'xValues' }"
-                :y="{ scale: 'yValues' }"
+                :x="{ get: 'xValues', scale: 'xValues' }"
+                :y="{ get: 'yValues', scale: 'yValues' }"
                 :fill="row => row.colors"
               />
 

@@ -36,11 +36,11 @@
         <vgg-map>
 
           <vgg-area
-            :x="row => row.grouped.xValues"
-            :y="row => row.grouped.yValues"
-            :y2="(row, i, prevRow) => prevRow ? prevRow.grouped.yValues : [0]"
+            :x="{ get: row => row.grouped.xValues }"
+            :y="{ get: row => row.grouped.yValues }"
+            :y2="{ get: (row, i, prevRow) => prevRow ? prevRow.grouped.yValues : [0] }"
             :opacity="0.5"
-            :fill="row => row.colors"
+            :fill="{ get: row => row.colors }"
           />
 
         </vgg-map>

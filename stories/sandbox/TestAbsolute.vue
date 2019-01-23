@@ -8,15 +8,15 @@
 
       <vgg-label
         :x="150"
-        :y="{ scale: 'name' }"
-        :text="row => row.name"
+        :y="{ get: 'name', scale: 'name' }"
+        :text="{ get: row => row.name }"
       />
 
       <vgg-point
         :x="450"
-        :y="{ scale: 'name' }"
-        :radius="{ scale: { variable: 'balance', absolute: true } }"
-        :fill="{ scale: { variable: 'balance', scale: 'redBlue' } }"
+        :y="{ get: 'name', scale: 'name' }"
+        :radius="{ get: 'balance', scale: { domain: 'balance', absolute: true } }"
+        :fill="{ get: 'balance', scale: { domain: 'balance', type: 'redBlue' } }"
       />
 
     </vgg-map>

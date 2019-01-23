@@ -38,11 +38,11 @@
           <vgg-map>
 
             <vgg-rectangle
-              :x1="row => row.lowerBound"
-              :x2="row => row.upperBound"
+              :x1="{ get: 'lowerBound' }"
+              :x2="{ get: 'upperBound' }"
               :y1="0"
-              :y2="{ scale: { variable: 'binCount', domainMin: 0 } }"
-              :fill="{ scale: { scale: 'blues', variable: 'upperBound', domainMin: 0 } }"
+              :y2="{ get: 'binCount', scale: { domain: 'binCount', domainMin: 0 } }"
+              :fill="{ get: 'upperBound', scale: { type: 'blues', domain: 'upperBound', domainMin: 0 } }"
             />
 
           </vgg-map>

@@ -26,8 +26,8 @@
         <vgg-map>
 
           <vgg-point
-            :x="{ scale: 'appleSum' }"
-            :y="{ scale: 'maxRatio' }"
+            :x="{ get: 'appleSum', scale: 'appleSum' }"
+            :y="{ get: 'maxRatio', scale: 'maxRatio' }"
           />
 
         </vgg-map>

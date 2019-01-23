@@ -23,8 +23,8 @@
       <vgg-map>
 
         <vgg-polygon
-          :geometry="row => row.geometry"
-          :fill="{ scale: { scale: 'redYellowGreen', variable: 'value' } }"
+          :geometry="{ get: 'geometry' }"
+          :fill="{ get: 'value', scale: { type: 'redYellowGreen', domain: 'value' } }"
         />
 
       </vgg-map>

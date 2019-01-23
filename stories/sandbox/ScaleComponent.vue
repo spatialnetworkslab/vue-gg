@@ -19,7 +19,7 @@
       <vgg-map>
 
         <vgg-section
-          :x="{ scale: 'c' }"
+          :x="{ get: 'c', scale: 'c' }"
           :w="{ position: 'bulge' }"
           :y1="0"
           :y2="250"
