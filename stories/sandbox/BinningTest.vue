@@ -41,8 +41,8 @@
               :x1="row => row.lowerBound"
               :x2="row => row.upperBound"
               :y1="0"
-              :y2="{ scale: { variable: 'binCount', domain: [0, null] } }"
-              :fill="{ scale: { scale: 'blues', variable: 'upperBound', domain: [0, null] } }"
+              :y2="{ scale: { variable: 'binCount', domainMin: 0 } }"
+              :fill="{ scale: { scale: 'blues', variable: 'upperBound', domainMin: 0 } }"
             />
 
           </vgg-map>
@@ -63,7 +63,7 @@
           :x2="550"
           :y1="100"
           :y2="500"
-          :scale="{ variable: 'binCount', domain: [0, null] }"
+          :scale="{ variable: 'binCount', domainMin: 0 }"
         />
 
       </vgg-data>

@@ -103,30 +103,49 @@ function checkValidDomainArray (array) {
 }
 
 function updateDomain (domain, domainType, scalingOptions) {
-  if (domainType === 'categorical') {
-    return domain
-  } else {
-    let newDomain = [domain[0], domain[1]]
+  checkValidScalingOptions(domainType, scalingOptions)
+  let newDomain = [domain[0], domain[1]]
 
-    if (scalingOptions.absolute) {
-      newDomain = [0, Math.max(...newDomain.map(value => Math.abs(value)))]
-    }
-
-    let updateDomain = scalingOptions.domain
-
-    if (updateDomain) {
-      if (updateDomain.constructor !== Array && updateDomain.length !== 2) {
-        throw new Error('Invalid domain modification')
-      }
-
-      if (is(updateDomain[0])) { newDomain[0] = updateDomain[0] }
-      if (is(updateDomain[1])) { newDomain[1] = updateDomain[1] }
-    }
-
-    return newDomain
+  if (scalingOptions.absolute) {
+    newDomain = [0, Math.max(...newDomain.map(value => Math.abs(value)))]
   }
+
+  if (scalingOptions.domainMin) {
+    newDomain[0] = scalingOptions.domainMin
+  }
+
+  if (scalingOptions.domainMax) {
+    newDomain[1] = scalingOptions.domainMax
+  }
+
+  return newDomain
 }
 
-function is (val) {
-  return val !== undefined && val !== null
+function checkValidScalingOptions (domainType, scalingOptions) {
+  if (domainType === 'categorical') {
+    if (hasAnyWrongProperty(scalingOptions)) {
+      throw new Error(`Invalid scaling options for categorical domain: ${JSON.stringify(scalingOptions)}`)
+    }
+  }
+  checkTypes(domainType)
+}
+
+function hasAnyWrongProperty (obj) {
+  let keys = ['domainMin', 'domainMax', 'domainMid', 'absolute']
+  for (let key of keys) {
+    if (obj.hasOwnProperty(key)) { return true }
+  }
+  return false
+}
+
+function checkTypes (type, obj) {
+  let keys = ['domainMin', 'domainMax', 'domainMid']
+  for (let key of keys) {
+    if (obj.hasOwnProperty(key)) {
+      let propertyType = getDataType(obj[key])
+      if (propertyType !== type) {
+        throw new Error(`Invalid type for ${key}: '${propertyType}'. Expected type '${type}'`)
+      }
+    }
+  }
 }

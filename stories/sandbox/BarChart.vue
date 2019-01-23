@@ -28,14 +28,14 @@
           :x="{ scale: 'fruit' }"
           :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
+          :y2="{ scale: { variable: 'quantity', domainMin: 0 } }"
         />
 
         <vgg-line
           :x1="{ scale: 'fruit' }"
           :x2="{ scale: 'fruit' }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
+          :y2="{ scale: { variable: 'quantity', domainMin: 0 } }"
           stroke="#ced02d"
         />
 
@@ -43,7 +43,7 @@
           :x="{ scale: 'fruit' }"
           :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
+          :y2="{ scale: { variable: 'quantity', domainMin: 0 } }"
           :scale-x="[-1, 1]"
           :scale-y="[-1, 1]"
         >
@@ -82,7 +82,7 @@
       :x2="550"
       :y1="100"
       :y2="500"
-      :scale="{ variable: 'quantity', domain: [0, null] }"
+      :scale="{ variable: 'quantity', domainMin: 0 }"
     />
 
   </vgg-graphic>
