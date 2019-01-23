@@ -10,62 +10,62 @@ export default {
   props: {
     // Mappable
     points: {
-      type: [Array, Function, undefined],
+      type: [Array, Object, undefined],
       default: undefined
     },
 
     geometry: {
-      type: [Object, Function, undefined],
+      type: [Object, undefined],
       default: undefined
     },
 
     x: {
-      type: [Array, String, Function, undefined],
+      type: [Array, String, Object, undefined],
       default: undefined
     },
 
     y: {
-      type: [Array, String, Function, undefined],
+      type: [Array, String, Object, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Array, String, Function, undefined],
+      type: [Array, String, Object, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Array, String, Function, undefined],
+      type: [Array, String, Object, undefined],
       default: undefined
     },
 
     stroke: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: '#000000'
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: 'none'
     },
 
     strokeWidth: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: 2
     },
 
     opacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     strokeOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     fillOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 

@@ -6,66 +6,60 @@ import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 export default {
   mixins: [Mark],
 
-  data () {
-    return {
-      markType : 'label-mark'
-    }
-  },
-
   props: {
     // Mappable
     text: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: undefined
     },
 
     x: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, String, Date, Object, Function, String, undefined],
+      type: [Number, String, Date, Object, String, undefined],
       default: undefined
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: undefined
     },
 
     stroke: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: undefined
     },
 
     strokeWidth: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     opacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     strokeOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     fillOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     fontSize: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     rotation: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
@@ -74,6 +68,12 @@ export default {
       type: String,
       default: 'center',
       validator: p => ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'].includes(p)
+    }
+  },
+
+  data () {
+    return {
+      markType: 'label-mark'
     }
   },
 

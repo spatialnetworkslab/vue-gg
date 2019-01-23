@@ -6,72 +6,72 @@ export default {
 
   props: {
     x1: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     y1: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     x: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     w: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     h: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     stroke: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: undefined
     },
 
     strokeWidth: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: undefined
     },
 
     opacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     strokeOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     fillOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     }
   },
