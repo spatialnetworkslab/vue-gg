@@ -1,8 +1,12 @@
 import DataContainer from '../../classes/Data/DataContainer.js'
+import DataReceiver from './DataReceiver.js'
+
 import applyTransformations from '../../transformations/applyTransformations.js'
 import id from '../../utils/id.js'
 
 export default {
+  mixins: [DataReceiver],
+
   inject: ['$$dataManager'],
 
   props: {
@@ -42,6 +46,16 @@ export default {
         } else {
           return container
         }
+      }
+
+      if (!this.data && this.transform) {
+        let data = this.$$dataInterface.getDataset()
+        let transformedData = applyTransformations(
+          data,
+          this.transform
+        )
+
+        return new DataContainer(transformedData)
       }
     },
 
