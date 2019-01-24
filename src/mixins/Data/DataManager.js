@@ -69,8 +69,9 @@ export default {
       if (this.hasContainer(id)) {
         throw new Error('Duplicate data ID')
       }
-
-      this.$set(this.containers, id, dataContainer)
+      if (dataContainer) {
+        this.$set(this.containers, id, dataContainer)
+      }
     },
 
     hasContainer (id) {
