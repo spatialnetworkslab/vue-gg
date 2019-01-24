@@ -12,7 +12,7 @@
 
     <vgg-map>
 
-      <vgg-point
+      <vgg-symbol
         :x="{ scale: 'a' }"
         :y="{ scale: 'b', NA: 300 }"
       />

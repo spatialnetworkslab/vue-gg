@@ -64,7 +64,7 @@
 
             <vgg-map>
 
-              <vgg-point
+              <vgg-symbol
                 :x="{ scale: 'xValues' }"
                 :y="{ scale: 'yValues' }"
                 :fill="row => row.colors"

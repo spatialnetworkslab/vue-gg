@@ -12,10 +12,10 @@
         :text="row => row.name"
       />
 
-      <vgg-point
+      <vgg-symbol
         :x="450"
         :y="{ scale: 'name' }"
-        :radius="{ scale: { variable: 'balance', absolute: true } }"
+        :size="{ scale: { variable: 'balance', absolute: true } }"
         :fill="{ scale: { variable: 'balance', scale: 'redBlue' } }"
       />
 

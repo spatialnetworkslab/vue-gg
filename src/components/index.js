@@ -21,7 +21,7 @@ import Line from './Marks/Line.vue'
 import MultiLine from './Marks/MultiLine.vue'
 import Area from './Marks/Area.vue'
 import Path from './Marks/Path.vue'
-import Point from './Marks/Point.vue'
+// import Point from './Marks/Point.vue'
 import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
 import Label from './Marks/Label.vue'
@@ -47,7 +47,7 @@ export default {
   MultiLine,
   Area,
   Path,
-  Point,
+  // Point,
   Polygon,
   Rectangle,
   Label,

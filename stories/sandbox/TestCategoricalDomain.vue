@@ -22,10 +22,10 @@
 
       <vgg-map>
 
-        <vgg-point
+        <vgg-symbol
           :x="row => row.date"
           :y="50"
-          :radius="7"
+          :size="14"
         />
 
       </vgg-map>

@@ -29,7 +29,7 @@ export default function (prop, context, scalingOptions) {
   }
 
   // Pixel-value props
-  if (['width', 'height', 'fontSize', 'strokeWidth'].includes(prop)) {
+  if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
     let range
     if (!scalingOptions.range) {
       console.warn(`No range specified for prop ${prop}. Defaulting to [0, 10]`)

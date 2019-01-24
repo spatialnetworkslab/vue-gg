@@ -63,7 +63,6 @@ module.exports = {
                     'marks/label',
                     'marks/line',
                     'marks/path',
-                    'marks/point',
                     'marks/polygon',
                     'marks/area',
                     'marks/rectangle',

@@ -37,7 +37,7 @@ export default {
     },
 
     size: {
-      type: Number,
+      type: [Number, Object, Function, undefined],
       default: 10
     },
 
@@ -73,6 +73,7 @@ export default {
         opacity: this.parseAesthetic(this.opacity),
         fillOpacity: this.parseAesthetic(this.fillOpacity),
         strokeOpacity: this.parseAesthetic(this.strokeOpacity),
+        size: this.parseAesthetic(this.size),
         transition: this.transition + 's'
       }
     }
@@ -81,7 +82,7 @@ export default {
   methods: {
     createCircle (createElement, aesthetics) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
-      let r = this.size / 2
+      let r = aesthetics.size / 2
 
       return createElement('circle', {
         attrs: {
@@ -96,7 +97,7 @@ export default {
     createSquare (createElement, aesthetics) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
-      let l = this.size
+      let l = aesthetics.size
       let x = cx - (l / 2)
       let y = cy - (l / 2)
 
@@ -114,7 +115,7 @@ export default {
     createPath (createElement, aesthetics, d) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
       let s = createSVGStyle(aesthetics)
-      let scale = this.size / 2
+      let scale = aesthetics.size / 2
       s.strokeWidth = s.strokeWidth / scale
       s.transform = 'translateX(' + cx + 'px) translateY(' + cy + 'px) scale(' + scale + ', ' + scale + ') '
 

@@ -20,7 +20,7 @@
           <vgg-symbol
             :x="{ scale: 'explanatory' }"
             :y="{ scale: 'dependent' }"
-            :size="10"
+            :size="{ scale: 'dependent' }"
             shape="triangle-left"
             :stroke="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
             fill="none"

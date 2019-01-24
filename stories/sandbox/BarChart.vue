@@ -50,10 +50,10 @@
 
           <vgg-plot-title :margin="0" text="bar" :vMargin="20" color="white" />
 
-          <vgg-point
+          <vgg-symbol
             :x="0"
             :y="0"
-            :radius="10"
+            :size="20"
             fill="#8b0000"
           />
 
