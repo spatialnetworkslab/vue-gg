@@ -10,7 +10,6 @@
       :y1="300"
       :y2="600"
       :scale-x="'xValues'"
-      :scale-y="'yValues'"
     >
 
       <vgg-data :transform="{ groupBy: 'colors' }">
@@ -19,7 +18,7 @@
 
           <vgg-multi-line
             :x="{ get: row => row.grouped.xValues }"
-            :y="{ get: row => row.grouped.yValues }"
+            :y="{ get: row => row.grouped.yValues, scale: 'yValues' }"
             :stroke="{ get: row => row.colors }"
           />
 
