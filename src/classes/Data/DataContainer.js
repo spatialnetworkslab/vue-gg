@@ -136,6 +136,10 @@ export default class {
   }
 
   getColumn (colName) {
+    if (colName.match(pointRegex)) {
+      let sliced = colName.split('.')[0]
+      return this._dataset[sliced]
+    }
     return this._dataset[colName]
   }
 

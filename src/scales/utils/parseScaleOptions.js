@@ -31,7 +31,12 @@ export default function (passedScaleOptions, dataInterface) {
         throw new Error(`Invalid scale options: domain '${domain}' not found`)
       }
 
-      domain = dataInterface.getDomain(scaleOptions.domain)
+      if (scaleOptions.absolute) {
+        domain = absoluteDomain(dataInterface.getColumn(scaleOptions.domain))
+      } else {
+        domain = dataInterface.getDomain(scaleOptions.domain)
+      }
+
       domainType = dataInterface.getType(scaleOptions.domain)
     } else {
       // If the data is not yet available, we will set a dummy domain
@@ -43,6 +48,11 @@ export default function (passedScaleOptions, dataInterface) {
   if (domainConstructor === Array) {
     checkValidDomainArray(scaleOptions.domain)
     domain = scaleOptions.domain
+
+    if (scaleOptions.absolute) {
+      domain = absoluteDomain(domain)
+    }
+
     domainType = getDataType(domain[0])
   }
 
@@ -75,13 +85,9 @@ function checkValidDomainArray (array) {
   if (invalid) { throw new Error('Invalid domain specification array') }
 }
 
-function updateDomain (domain, domainType, scalingOptions) {
+function updateDomain (domain, domainType, scalingOptions, dataInterface) {
   if (validScalingOptions(domainType, scalingOptions)) {
     let newDomain = [domain[0], domain[1]]
-
-    if (scalingOptions.absolute) {
-      newDomain = absoluteDomain(newDomain)
-    }
 
     if (is(scalingOptions.domainMin)) {
       newDomain[0] = scalingOptions.domainMin

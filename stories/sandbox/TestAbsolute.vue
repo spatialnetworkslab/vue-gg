@@ -15,7 +15,11 @@
       <vgg-point
         :x="450"
         :y="{ get: 'name', scale: 'name' }"
-        :radius="{ get: 'balance', scale: { domain: 'balance', absolute: true } }"
+        :radius="{ get: 'balance', scale: {
+          domain: 'balance',
+          absolute: true,
+          domainMin: 0
+        } }"
         :fill="{ get: 'balance', scale: { domain: 'balance', type: 'redBlue' } }"
       />
 
