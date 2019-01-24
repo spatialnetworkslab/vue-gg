@@ -61,7 +61,7 @@ export default {
 
       if (this.$$map) {
         if (this.data && this.data.constructor === Function) {
-          return { func: this.data }
+          return { get: this.data }
         } else {
           return { assign: this.data }
         }

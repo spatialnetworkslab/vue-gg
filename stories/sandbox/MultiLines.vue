@@ -20,7 +20,7 @@
           <vgg-multi-line
             :x="{ get: row => row.grouped.xValues }"
             :y="{ get: row => row.grouped.yValues }"
-            :stroke="row => row.colors"
+            :stroke="{ get: row => row.colors }"
           />
 
         </vgg-map>
@@ -64,7 +64,7 @@
               <vgg-point
                 :x="{ get: 'xValues', scale: 'xValues' }"
                 :y="{ get: 'yValues', scale: 'yValues' }"
-                :fill="row => row.colors"
+                :fill="{ get: row => row.colors }"
               />
 
             </vgg-map>
