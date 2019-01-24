@@ -12,7 +12,7 @@ export default {
     },
 
     y: {
-      type: [Number, String, Date, Object, String, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 

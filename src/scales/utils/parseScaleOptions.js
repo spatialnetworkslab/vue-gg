@@ -13,10 +13,11 @@ export default function (passedScaleOptions, dataInterface) {
 
   if ([Array, String].includes(passedScaleOptions.constructor)) {
     scaleOptions = { domain: passedScaleOptions }
-  }
-
-  if (!scaleOptions.domain) {
-    throw new Error(`Invalid scale options: missing required option 'domain'`)
+  } else {
+    if (!passedScaleOptions.domain) {
+      throw new Error(`Invalid scale options: missing required option 'domain'`)
+    }
+    scaleOptions = passedScaleOptions
   }
 
   // Time to the right domain!

@@ -20,6 +20,7 @@ export default function (aesthetics, context) {
   dataInterface.forEachRow((row, i, prevRow, nextRow) => {
     let props = mapRow(row, i, prevRow, nextRow, aesthetics, parsedScales, getters, assigners, context)
     let parsedProps = parseProps(props, replaceNA, context)
+
     if (parsedProps) {
       aestheticsPerMark.push(parsedProps)
     } else {
@@ -101,7 +102,7 @@ function mapRow (row, i, prevRow, nextRow, aesthetics, parsedScales, getters, as
       value = assigners[aesKey]
     }
 
-    props[aesKey] = value
+    if (is(value)) { props[aesKey] = value }
   }
 
   return props
