@@ -28,7 +28,10 @@ export default function (prop, { dimension }) {
   }
 
   if (this.$$map) {
-    if (is(prop) && prop.constructor === Object) { return prop }
+    if (is(prop) && prop.constructor === Object) {
+      checkMappingObject(prop)
+      return prop
+    }
 
     if (is(prop) && prop.constructor === Array) {
       return { assign: parseArray(prop, parentRangeType, dimension, this.parentBranch) }
@@ -78,3 +81,15 @@ function parseArray (data, parentRangeType, dimension, parentBranch) {
 
   return parsed
 }
+
+// function checkMappingObject (obj) {
+//   if (!obj.hasOwnProperty('get')) {
+//     throw new Error(`Missing required mapping option 'get'`)
+//   }
+//
+//   const allowed = ['get', 'scale']
+//
+//   for (let key in obj) {
+//     if (!allowed.includes(key)) { throw new Error(`Invalid mapping option '${key}'`) }
+//   }
+// }

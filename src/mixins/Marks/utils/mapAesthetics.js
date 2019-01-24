@@ -182,3 +182,13 @@ function parseProps (props, replaceNA, context) {
 
   return newProps
 }
+
+function applyScale (value, scale) {
+  if (value.constructor === Array) {
+    
+  } else if (value.constructor === Object) {
+
+  } else {
+
+  }
+}
