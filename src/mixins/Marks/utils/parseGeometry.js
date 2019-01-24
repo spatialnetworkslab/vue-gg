@@ -23,7 +23,7 @@ export default function (prop, options) {
   if (this.$$map) {
     if (options.geojson) {
       if (is(prop) && prop.constructor === Object) {
-        if (getDataType(prop) === 'geometry') {
+        if (getDataType(prop, false) === 'geometry') {
           return { assign: prop }
         } else {
           return prop

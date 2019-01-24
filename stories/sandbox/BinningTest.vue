@@ -63,7 +63,7 @@
           :x2="550"
           :y1="100"
           :y2="500"
-          :scale="{ variable: 'binCount', domainMin: 0 }"
+          :scale="{ domain: 'binCount', domainMin: 0 }"
         />
 
       </vgg-data>
