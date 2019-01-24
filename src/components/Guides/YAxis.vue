@@ -37,9 +37,9 @@
           <!-- Tick lines -->
           <vgg-line
             :x1="0.5"
-            :y1="tick => tick.value"
+            :y1="{ get: tick => tick.value }"
             :x2="flip ? 0.65 : 0.35"
-            :y2="tick => tick.value"
+            :y2="{ get: tick => tick.value }"
             :stroke-width="0.5"
           />
 
@@ -47,8 +47,8 @@
           <vgg-label
             v-if="!rotateLabel"
             :x="flip ? 0.45 : 0.59"
-            :y="tick => tick.value"
-            :text="tick => tick.label"
+            :y="{ get: tick => tick.value }"
+            :text="{ get: tick => tick.label }"
             :font-size="10"
             :anchor-point="flip ? 'r' : 'l'"
           />
@@ -56,8 +56,8 @@
           <vgg-label
             v-if="rotateLabel"
             :x="flip ? 0.41 : 0.59"
-            :y="tick => tick.value"
-            :text="tick => tick.label"
+            :y="{ get: tick => tick.value }"
+            :text="{ get: tick => tick.label }"
             :font-size="10"
             :rotation="flip ? -30 : 30"
             :anchor-point="flip ? 'r' : 'l'"

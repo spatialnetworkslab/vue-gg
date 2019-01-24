@@ -2,7 +2,7 @@ import { ticks as arrayTicks } from 'd3-array'
 import { scaleTime } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
-import Rectangular from '../../mixins/Marks/Rectangular.js'
+import Rectangular from '../Marks/Rectangular.js'
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
 export default {
