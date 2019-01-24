@@ -1,78 +1,50 @@
 import getDataType from './getDataType.js'
 import { is } from './equals.js'
 
-export default function (scaleSpecification, dataInterface) {
+export default function (passedScaleOptions, dataInterface) {
   let domain
   let domainType
   let scaleOptions
 
-  if (![Array, String, Object].includes(scaleSpecification.constructor)) {
-    throw new Error('Invalid scale specification: only Array, String or Object allowed')
+  // Check if no invalid options were passed
+  if (![Array, String, Object].includes(passedScaleOptions.constructor)) {
+    throw new Error('Invalid scale options: only Array, String or Object allowed')
   }
 
-  if (scaleSpecification.constructor === Array) {
-    checkValidDomainArray(scaleSpecification)
-    domain = scaleSpecification
-    domainType = getDataType(domain[0])
-    scaleOptions = {}
+  if ([Array, String].includes(passedScaleOptions.constructor)) {
+    scaleOptions = { domain: passedScaleOptions }
   }
 
-  if (scaleSpecification.constructor === String) {
+  if (!scaleOptions.domain) {
+    throw new Error(`Invalid scale options: missing required option 'domain'`)
+  }
+
+  // Time to the right domain!
+  let domainConstructor = scaleOptions.domain.constructor
+
+  if (domainConstructor === String) {
+    // If the domain was specified as a String, we will have to check the
+    // availability of the data
     if (dataInterface.ready()) {
-      if (!dataInterface.hasColumn(scaleSpecification)) {
-        throw new Error(`Invalid domain specification: variable does not exist`)
+      if (!dataInterface.hasColumn(scaleOptions.domain)) {
+        throw new Error(`Invalid scale options: domain '${domain}' not found`)
       }
-      domain = dataInterface.getDomain(scaleSpecification)
-      domainType = dataInterface.getType(scaleSpecification)
-      scaleOptions = {}
+
+      domain = dataInterface.getDomain(scaleOptions.domain)
+      domainType = dataInterface.getType(scaleOptions.domain)
     } else {
-      domain = [0, 1] // placeholder until real data is available
+      // If the data is not yet available, we will set a dummy domain
+      domain = [0, 1]
       domainType = 'quantitative'
-      scaleOptions = {}
     }
   }
 
-  if (scaleSpecification.constructor === Object) {
-    let variable = scaleSpecification.variable
-
-    if (dataInterface.ready()) {
-      if (!variable && !scaleSpecification.domain) {
-        throw new Error('Invalid domain specification object')
-      }
-
-      if (variable && !dataInterface.hasColumn(variable)) {
-        throw new Error(`Invalid domain specification: variable does not exist`)
-      }
-
-      if (variable) {
-        domain = dataInterface.getDomain(variable)
-        domainType = dataInterface.getType(variable)
-        scaleOptions = scaleSpecification
-      }
-
-      if (!variable) {
-        checkValidDomainArray(scaleSpecification.domain)
-        domain = scaleSpecification.domain
-        domainType = getDataType(domain[0])
-        scaleOptions = scaleSpecification
-      }
-    }
-
-    if (!dataInterface.ready()) {
-      if (variable) {
-        domain = [0, 1] // placeholder until real data is available
-        domainType = 'quantitative'
-        scaleOptions = {}
-      } else if (scaleSpecification.domain) {
-        checkValidDomainArray(scaleSpecification.domain)
-        domain = scaleSpecification.domain
-        domainType = getDataType(domain[0])
-        scaleOptions = scaleSpecification
-      } else {
-        throw new Error('Invalid domain specification object')
-      }
-    }
+  if (domainConstructor === Array) {
+    checkValidDomainArray(scaleOptions.domain)
+    domain = scaleOptions.domain
+    domainType = getDataType(domain[0])
   }
+
   domain = updateDomain(domain, domainType, scaleOptions)
 
   return [domain, domainType, scaleOptions]

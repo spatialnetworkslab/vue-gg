@@ -3,7 +3,7 @@ import { scaleTime } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
+import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
 export default {
   mixins: [Rectangular],
@@ -42,7 +42,7 @@ export default {
 
   computed: {
     _parsedScalingOptions () {
-      return parseScaleSpecification(this.scale, this.$$dataInterface)
+      return parseScaleOptions(this.scale, this.$$dataInterface)
     },
 
     _domain () {

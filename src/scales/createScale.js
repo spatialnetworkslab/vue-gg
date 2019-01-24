@@ -3,12 +3,13 @@ import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 import createRadiusScale from './shorthands/radius/createRadiusScale.js'
 
-import getDimension from '../utils/getDimension.js'
-import parseScaleSpecification from '../utils/parseScaleSpecification.js'
-import parseRange from '../utils/parseRange.js'
+import parseScaleOptions from './utils/passedScalingOptions.js'
+import parseRange from './utils/parseRange.js'
 
-export default function (prop, context, scalingOptions) {
-  let [domain, domainType] = parseScaleSpecification(scalingOptions, context.dataInterface)
+import getDimension from '../utils/getDimension.js'
+
+export default function (prop, context, passedScalingOptions) {
+  let [domain, domainType, scalingOptions] = parseScaleOptions(passedScalingOptions, context.dataInterface)
 
   // Coordinate props
   if (['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(prop)) {
