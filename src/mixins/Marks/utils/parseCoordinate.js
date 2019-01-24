@@ -87,7 +87,7 @@ function checkMappingObject (obj) {
     }
   }
 
-  const allowed = ['get', 'scale', 'position']
+  const allowed = ['get', 'scale', 'position', 'NA']
 
   for (let key in obj) {
     if (!allowed.includes(key)) { throw new Error(`Invalid mapping option '${key}'`) }
