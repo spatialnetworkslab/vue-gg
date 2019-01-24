@@ -47,7 +47,18 @@ export default {
     },
 
     dataScopeID () {
-      return this.$attrs.id || this.randomID
+      let id
+      if (this.$attrs.id) {
+        // use id if given
+        id = this.$attrs.id
+      } else if (this.$vnode.data.staticClass) {
+        // fall back on class if no id is given
+        let elClass = this.$vnode.data.staticClass.replace(/\s+/g, '_')
+        id = elClass + '_' + this.randomID
+      } else {
+        id = '_' + this.randomID
+      }
+      return id
     }
   },
 

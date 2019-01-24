@@ -29,7 +29,10 @@
       class="x-axis-ticks"
     >
 
-      <vgg-data :data="tickData">
+      <vgg-data
+        :data="tickData"
+        class="x-axis-data"
+      >
 
         <vgg-map>
 
