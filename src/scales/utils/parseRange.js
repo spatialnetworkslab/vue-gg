@@ -1,4 +1,4 @@
-import { is } from './equals.js'
+import { is } from '../../utils/equals.js'
 
 export default function (range, scalingOptions) {
   let newRange = [range[0], range[1]]

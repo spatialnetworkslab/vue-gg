@@ -1,5 +1,5 @@
-import getDataType from './getDataType.js'
-import { is } from './equals.js'
+import getDataType from '../../utils/getDataType.js'
+import { is } from '../../utils/equals.js'
 
 export default function (passedScaleOptions, dataInterface) {
   let domain

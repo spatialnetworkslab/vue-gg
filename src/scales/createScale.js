@@ -3,7 +3,7 @@ import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 import createRadiusScale from './shorthands/radius/createRadiusScale.js'
 
-import parseScaleOptions from './utils/passedScalingOptions.js'
+import parseScaleOptions from './utils/parseScaleOptions.js'
 import parseRange from './utils/parseRange.js'
 
 import getDimension from '../utils/getDimension.js'
