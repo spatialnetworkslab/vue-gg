@@ -102,7 +102,16 @@ function mapRow (row, i, prevRow, nextRow, aesthetics, parsedScales, getters, as
       value = assigners[aesKey]
     }
 
-    if (is(value)) { props[aesKey] = value }
+    if (is(value)) {
+      // Check if the value is non-quantitative
+      let dimension = getDimension(aesKey)
+      if (dimension && [String, Date].includes(value.constructor)) {
+        // If so, convert to quantitative
+        value = convertToQuantitative(value, dimension, context.parentBranch)
+      }
+
+      props[aesKey] = value
+    }
   }
 
   return props
@@ -157,9 +166,10 @@ function parseProps (props, replaceNA, context) {
       let replaceValue = replaceNA[propKey]
       if (invalid(replaceValue)) { return undefined }
 
-      // If the value is categorical or temporal, and a coord,
+      // If the value is categorical or temporal, and a coord-type prop,
       // we have to convert it to quantitative
       let dimension = getDimension(propKey)
+
       if (dimension && [String, Date].includes(replaceValue.constructor)) {
         newProps[propKey] = convertToQuantitative(replaceValue, dimension, context.parentBranch)
       } else {

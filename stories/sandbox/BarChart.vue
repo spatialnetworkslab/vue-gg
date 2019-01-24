@@ -28,7 +28,7 @@
           :x="{ get: 'fruit', scale: 'fruit' }"
           :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
           :y1="0"
-          :y2="{ scale: { domain: 'quantity', domainMin: 0 } }"
+          :y2="{ get: 'quantity', scale: { domain: 'quantity', domainMin: 0 } }"
         />
 
         <vgg-line
