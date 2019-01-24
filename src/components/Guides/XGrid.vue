@@ -1,5 +1,6 @@
 <template>
   <vgg-section
+    class="x-grid"
     :x1="ranges.x1"
     :x2="ranges.x2"
     :y1="ranges.y1"
@@ -12,6 +13,7 @@
 
     <vgg-line
       v-for="(cell, i) in cells"
+      class="x-grid-line"
       :key="i"
       :x1="cell.value"
       :y1="0"

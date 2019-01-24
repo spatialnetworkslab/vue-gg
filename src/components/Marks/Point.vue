@@ -5,6 +5,12 @@ import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 export default {
   mixins: [Mark],
 
+  data () {
+    return {
+      markType : 'point-mark'
+    }
+  },
+
   props: {
     x: {
       type: [Number, String, Date, Object, Function, undefined],

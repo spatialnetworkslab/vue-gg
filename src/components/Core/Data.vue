@@ -1,5 +1,5 @@
 <template>
-  <g v-if="dataContainer">
+  <g class="transform" v-if="dataContainer">
     <slot />
   </g>
 </template>

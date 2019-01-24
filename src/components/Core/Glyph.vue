@@ -1,6 +1,7 @@
 <template>
   <g
     v-if="ready"
+    class="glyph"
     :transform="translate">
 
     <slot />
