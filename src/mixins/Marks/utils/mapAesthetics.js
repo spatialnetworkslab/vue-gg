@@ -93,7 +93,7 @@ function mapRow (row, i, prevRow, nextRow, aesthetics, parsedScales, getters, as
 
       // If a scale has been specified, we will also scale the value
       if (parsedScales[aesKey]) {
-        value = parsedScales[aesKey](value)
+        value = applyScale(value, parsedScales[aesKey])
       }
     }
 
@@ -185,10 +185,21 @@ function parseProps (props, replaceNA, context) {
 
 function applyScale (value, scale) {
   if (value.constructor === Array) {
-    
+    // points (array of arrays)
+    if (value[0].constructor === Array) {
+      // TODO
+    }
+
+    // coordinateSet (array of x or y coordinates)
+    if (value[0].constructor !== Array) {
+      return value.map(val => scale(val))
+    }
   } else if (value.constructor === Object) {
-
+    // geojson feature
+    if (value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')) {
+      // TODO
+    }
   } else {
-
+    return scale(value)
   }
 }
