@@ -15,7 +15,7 @@ import DataProvider from '../../mixins/Data/DataProvider.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
-import id from '../../utils/id.js'
+import randomID from '../../utils/id.js'
 
 export default {
   mixins: [CoordinateTreeUser, DataProvider, DataReceiver],
@@ -39,8 +39,7 @@ export default {
 
   data () {
     return {
-      ready: false,
-      id: id()
+      ready: false
     }
   },
 
@@ -94,6 +93,21 @@ export default {
         dataInterface: this.$$dataInterface
       })
       return transformation
+    },
+    coordinateTreeBranchID () {
+      let id
+      let parentData = this.$parent.$vnode.data
+      if (parentData.attrs.id) {
+        // use id if given
+        id = parentData.attrs.id + '_' + this.randomID
+      } else if (parentData.staticClass) {
+        // fall back on class if no id is given
+        let elClass = parentData.staticClass.replace(/\s+/g, '_')
+        id = elClass + '_' + this.randomID
+      } else {
+        id = '_' + randomID()
+      }
+      return id
     }
   },
 
@@ -102,7 +116,7 @@ export default {
   },
 
   beforeDestroy () {
-    this.$$coordinateTree.removeBranch(this.id)
+    this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
   },
 
   mounted () {
@@ -113,14 +127,14 @@ export default {
   methods: {
     setCoordinateTreeBranch () {
       this.$$coordinateTree.addBranch(
-        this.id,
+        this.coordinateTreeBranchID,
         this.$$coordinateTreeParent,
         this.transformation
       )
     },
 
     updateCoordinateTreeBranch () {
-      this.$$coordinateTree.updateBranch(this.id, this.transformation)
+      this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
     },
 
     checkAllowedObj (domain) {
@@ -139,8 +153,8 @@ export default {
   },
 
   provide () {
-    let $$transform = this.$$coordinateTree.getTotalTransformation(this.id)
-    let $$coordinateTreeParent = this.id
+    let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
+    let $$coordinateTreeParent = this.coordinateTreeBranchID
 
     return { $$transform, $$coordinateTreeParent, $$map: false }
   }
