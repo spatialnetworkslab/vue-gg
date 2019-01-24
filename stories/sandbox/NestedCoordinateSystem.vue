@@ -25,12 +25,13 @@
           :scales="domains"
         >
 
-          <vgg-point
+          <vgg-symbol
             v-for="(p, j) in points"
             :key="'p' + j"
             :x="p.x"
             :y="p.y"
             :fill="cs.color"
+            :size="8"
           />
 
           <vgg-rectangle
