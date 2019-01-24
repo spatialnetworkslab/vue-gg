@@ -39,6 +39,9 @@ export default function (prop, { dimension, wh }) {
       if (['categorical', 'temporal'].includes(parentRangeType) && prop.hasOwnProperty('scale')) {
         throw new Error(`Cannot scale ${prop} to parent Section domain type ${parentRangeType}`)
       }
+
+      checkMappingObject(prop)
+
       return prop
     }
     if (is(prop) && !isObject) {
@@ -70,5 +73,23 @@ function invalidValueForRangeType (value, rangeType) {
     return value.constructor !== String
   } else if (rangeType === 'temporal') {
     return value.constructor !== Date
+  }
+}
+
+function checkMappingObject (obj) {
+  if (!obj.hasOwnProperty('get')) {
+    if (!obj.hasOwnProperty('position')) {
+      throw new Error(`Missing required mapping option 'get'`)
+    } else {
+      if (obj.hasOwnProperty('scale')) {
+        throw new Error(`Cannot use 'scale' without 'get'`)
+      }
+    }
+  }
+
+  const allowed = ['get', 'scale', 'position']
+
+  for (let key in obj) {
+    if (!allowed.includes(key)) { throw new Error(`Invalid mapping option '${key}'`) }
   }
 }
