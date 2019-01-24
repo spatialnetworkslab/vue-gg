@@ -20,8 +20,11 @@
           <vgg-symbol
             :x="{ scale: 'explanatory' }"
             :y="{ scale: 'dependent' }"
-            :size="{ scale: { variable: 'dependent' } }"
-            :fill="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
+            :size="{ scale: 'dependent' }"
+            shape="triangle-left"
+            :stroke="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
+            fill="none"
+            :strokeWidth="2"
           />
         </vgg-map>
 

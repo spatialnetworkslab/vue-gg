@@ -17,10 +17,10 @@
 
       <vgg-map>
 
-        <vgg-point
+        <vgg-symbol
           :x="row => row.a"
           :y="row => row.b"
-          :radius="3"
+          :size="6"
           :fill="{ scale: { scale: 'viridis', variable: 'a' } }"
         />
 
