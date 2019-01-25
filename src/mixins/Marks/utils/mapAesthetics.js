@@ -6,7 +6,7 @@ import getDimension from '../../../utils/getDimension.js'
 import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 
 export default function (aesthetics, context) {
-  let dataInterface = context.dataInterface
+  let { dataInterface, mappingOptions } = context
 
   // First, extract the assigners, scales, getters, positioners and replaceNA's
   let { assigners, scales, getters, positioners, replaceNA } = extractMappings(aesthetics)
@@ -17,16 +17,26 @@ export default function (aesthetics, context) {
   // Third, we apply the scales, functions and assigners and calculate props for each mark
   let aestheticsPerMark = []
 
-  dataInterface.forEachRow((row, i, prevRow, nextRow) => {
-    let props = mapRow(row, i, prevRow, nextRow, aesthetics, parsedScales, getters, assigners, context)
+  if (mappingOptions.unit === 'row') {
+    dataInterface.forEachRow((row, i, prevRow, nextRow) => {
+      let props = mapRow(row, i, prevRow, nextRow, aesthetics, parsedScales, getters, assigners, context)
+      let parsedProps = parseProps(props, replaceNA, context)
+
+      if (parsedProps) {
+        aestheticsPerMark.push(parsedProps)
+      } else {
+        console.warn(`Skipping row ${i + 1} which contains unhandled invalid values`)
+      }
+    })
+  }
+
+  if (mappingOptions.unit === 'dataframe') {
+    let data = dataInterface.getDataset()
+    let props = mapRow(data, 0, null, null, aesthetics, parsedScales, getters, assigners, context)
     let parsedProps = parseProps(props, replaceNA, context)
 
-    if (parsedProps) {
-      aestheticsPerMark.push(parsedProps)
-    } else {
-      console.warn(`Skipping row ${i + 1} which contains unhandled invalid values`)
-    }
-  })
+    aestheticsPerMark.push(props)
+  }
 
   // Fourth, we will apply positioning if necessary
   aestheticsPerMark = applyPositioners(aestheticsPerMark, positioners, context)
@@ -108,6 +118,10 @@ function mapRow (row, i, prevRow, nextRow, aesthetics, parsedScales, getters, as
       if (dimension && [String, Date].includes(value.constructor)) {
         // If so, convert to quantitative
         value = convertToQuantitative(value, dimension, context.parentBranch)
+      }
+
+      if (value.constructor === Array && [String, Date].includes(value[0].constructor)) {
+        value = value.map(v => convertToQuantitative(v, dimension, context.parentBranch))
       }
 
       props[aesKey] = value

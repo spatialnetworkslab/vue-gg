@@ -38,7 +38,8 @@ export default {
       return {
         ranges: this.parentBranch.domains,
         parentBranch: this.parentBranch,
-        dataInterface: this.$$dataInterface
+        dataInterface: this.$$dataInterface,
+        mappingOptions: this.$$map
       }
     }
   },

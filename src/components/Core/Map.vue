@@ -13,8 +13,16 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 export default {
   mixins: [DataReceiver],
 
+  props: {
+    unit: {
+      type: String,
+      default: 'row',
+      validator: u => ['row', 'dataframe'].includes(u)
+    }
+  },
+
   provide () {
-    return { $$map: true }
+    return { $$map: this.$props }
   }
 }
 </script>
