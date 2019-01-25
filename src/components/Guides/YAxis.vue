@@ -14,11 +14,14 @@
     <!-- Main line -->
     <vgg-line
       class="y-axis-line"
+      v-if="domain"
       :x1="0.5"
       :y1="0"
       :x2="0.5"
       :y2="1"
-      :stroke-width="1"
+      :stroke="domainColor"
+      :strokeOpacity="domainOpacity"
+      :stroke-width="domainWidth"
     />
 
     <!-- Ticks -->
@@ -40,31 +43,42 @@
 
           <!-- Tick lines -->
           <vgg-line
+            v-if="ticks"
             :x1="0.5"
             :y1="tick => tick.value"
             :x2="flip ? 0.65 : 0.35"
             :y2="tick => tick.value"
-            :stroke-width="0.5"
+            :stroke="tickColor"
+            :stroke-opacity="tickOpacity"
+            :stroke-width="tickWidth"
           />
 
           <!-- Tick labels -->
           <vgg-label
-            v-if="!rotateLabel"
+            v-if="(!labelRotate) && labels"
             :x="flip ? 0.45 : 0.59"
             :y="tick => tick.value"
             :text="tick => tick.label"
-            :font-size="10"
+            :font-family="labelFont"
+            :font-size="labelFontSize"
+            :font-weight="labelFontWeight"
             :anchor-point="flip ? 'r' : 'l'"
+            :fill="labelColor"
+            :opacity="labelOpacity"
           />
 
           <vgg-label
-            v-if="rotateLabel"
+            v-if="labelRotate && labels"
             :x="flip ? 0.41 : 0.59"
             :y="tick => tick.value"
             :text="tick => tick.label"
-            :font-size="10"
+            :font-family="labelFont"
+            :font-size="labelFontSize"
+            :font-weight="labelFontWeight"
             :rotation="flip ? -30 : 30"
             :anchor-point="flip ? 'r' : 'l'"
+            :fill="labelColor"
+            :opacity="labelOpacity"
           />
 
         </vgg-map>

@@ -14,6 +14,116 @@ export default {
       default: undefined
     },
 
+    format: {
+      type: [String, Function, undefined],
+      default: undefined
+    },
+
+    flip: {
+      type: Boolean,
+      default: false
+    },
+
+    // If true render axis main line
+    domain: {
+      type: Boolean,
+      default: true
+    },
+
+    domainColor: {
+      type: String,
+      default: 'black'
+    },
+
+    domainOpacity: {
+      type: Number,
+      default: 1
+    },
+
+    domainWidth: {
+      type: Number,
+      default: 1
+    },
+
+    labels: {
+      type: Boolean,
+      default: true
+    },
+
+    // text-anchor **
+    labelAlign: {
+      type: String,
+      default: 'middle'
+    },
+
+    // alignment-baseline **
+    labelBaseline: {
+      type: String,
+      default: 'middle'
+    },
+
+    // hide labels that exceed axis range
+    // labelBound: {
+    //   type: Boolean,
+    //   default: false
+    // },
+
+    labelColor: {
+      type: String,
+      default: 'black'
+    },
+
+    // labelFlush (not sure what this is)
+    
+    labelFont: {
+      type: String,
+      default: 'Helvetica'
+    },
+
+    labelFontSize: {
+      type: Number,
+      default: 10
+    },
+
+    labelFontWeight: {
+      type: [String, Number],
+      default: 'normal'
+    },
+
+    // labelLimit (also not sure what this is)
+    
+    labelOpacity: {
+      type: Number,
+      default: 1
+    },
+
+    // labelOverlap
+    
+    // Distance between tick and label **
+    labelPadding: {
+      type: Number,
+      default: 0
+    },
+
+    // minExtent, maxExtent, offset
+    
+    // POSITION???
+
+    labelRotate: {
+      type: Boolean,
+      default: false
+    },
+
+    ticks: {
+      type: Boolean,
+      default: true
+    },
+
+    tickColor: {
+      type: String,
+      default: 'black'
+    },
+
     tickValues: {
       type: [Array, undefined],
       default: undefined
@@ -24,20 +134,92 @@ export default {
       default: 10
     },
 
-    rotateLabel: {
-      type: Boolean,
-      default: false
+    // tickExtra
+    
+    // What is this?
+    tickOffset: {
+      type: Number,
+      default: 0
     },
 
-    format: {
-      type: [String, Function, undefined],
-      default: undefined
+    tickOpacity: {
+      type: Number,
+      default: 1
     },
 
-    flip: {
-      type: Boolean,
-      default: false
-    }
+    // tickRound
+    
+    // TODO **
+    tickSize: {
+      type: Number,
+      default: 5
+    },
+
+    tickWidth: {
+      type: Number,
+      default: 0.5
+    },
+    
+    // New
+    tickPosition: {
+      type: Number,
+      default: 0.5
+    },
+
+    title: {
+      type: String,
+      default: ''
+    },
+
+    // text-anchor
+    titleAlign: {
+      type: String,
+      default: 'middle'
+    },
+
+    // titleAngle
+    
+    titleBaseline: {
+      type: String,
+      default: 'middle'
+    },
+
+    titleColor: {
+      type: String,
+      default: 'black'
+    },
+
+    titleFont: {
+      type: String,
+      default: 'Helvetica'
+    },
+
+    titleFontSize: {
+      type: Number,
+      default: 12
+    },
+
+    titleFontWeight: {
+      type: Number,
+      default: 500
+    },
+
+    // titleLimit (what is this?)
+    
+    titleOpacity: {
+      type: Number,
+      default: 1
+    },
+
+    titlePadding: {
+      type: Number,
+      default: 0
+    },
+
+    // titleX, titleY
+
+    // zindex
+
   },
 
   computed: {

@@ -59,9 +59,19 @@ export default {
       default: undefined
     },
 
+    fontFamily: {
+      type: String,
+      default: 'Helvetica'
+    },
+
     fontSize: {
       type: [Number, Object, Function, undefined],
       default: undefined
+    },
+
+    fontWeight: {
+      type: String,
+      default: 'normal'
     },
 
     rotation: {
@@ -110,6 +120,8 @@ export default {
 
       let styles = createSVGStyle(aesthetics)
       styles['fontSize'] = aesthetics.fontSize + 'px'
+      styles['font-family'] = this.fontFamily
+      styles['font-weight'] = this.fontWeight
 
       let el = createElement('text', {
         attrs: {
@@ -129,9 +141,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.vgg-label {
-  font-family: sans-serif;
-}
-</style>
