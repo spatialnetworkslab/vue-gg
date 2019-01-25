@@ -1,8 +1,7 @@
-export default function () {
-  return '_' + randomInt(10).toString()
-}
+import generate from 'nanoid/non-secure/generate'
 
-function randomInt (digits) {
-  return Math.floor(Math.pow(10, digits - 1) +
-    Math.random() * (Math.pow(10, digits) - Math.pow(10, digits - 1) - 1))
+const alphabet = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstwxyz' // no lookalikes
+
+export default function () {
+  return generate(alphabet, 8)
 }

@@ -30,7 +30,10 @@
       class="y-axis-ticks"
     >
 
-      <vgg-data :data="tickData">
+      <vgg-data
+        :data="tickData"
+        class="y-axis-data"
+      >
 
         <vgg-map>
 
