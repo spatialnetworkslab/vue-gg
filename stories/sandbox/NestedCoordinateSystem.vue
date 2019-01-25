@@ -33,6 +33,7 @@
             :x="p.x"
             :y="p.y"
             :fill="cs.color"
+            :size="8"
           />
 
           <vgg-rectangle

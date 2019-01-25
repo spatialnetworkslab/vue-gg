@@ -58,7 +58,7 @@
           <vgg-point
             :x="0"
             :y="0"
-            :radius="10"
+            :size="20"
             fill="#8b0000"
           />
 

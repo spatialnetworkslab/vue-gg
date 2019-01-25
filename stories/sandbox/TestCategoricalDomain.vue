@@ -23,7 +23,7 @@
         <vgg-point
           :x="{ get: row => row.date }"
           :y="50"
-          :radius="7"
+          :size="14"
         />
 
       </vgg-map>
