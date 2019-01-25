@@ -20,22 +20,22 @@ export default {
     },
 
     x: {
-      type: [Array, String, Object, undefined],
+      type: [Array, Object, undefined],
       default: undefined
     },
 
     y: {
-      type: [Array, String, Object, undefined],
+      type: [Array, Object, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Array, String, Object, undefined],
+      type: [Array, Object, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Array, String, Object, undefined],
+      type: [Array, Object, undefined],
       default: undefined
     },
 

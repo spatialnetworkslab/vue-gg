@@ -13,15 +13,6 @@ export default function (prop, { dimension }) {
       return parseArray(prop, parentRangeType, dimension, this.parentBranch)
     }
 
-    if (is(prop) && prop.constructor === String) {
-      if (!this.$$dataInterface.hasColumn(prop)) {
-        throw new Error(`Variable ${prop} not found`)
-      }
-
-      let data = this.$$dataInterface.getColumn(prop)
-      return parseArray(data, parentRangeType, dimension, this.parentBranch)
-    }
-
     if (isnt(prop)) {
       return undefined
     }
@@ -29,21 +20,12 @@ export default function (prop, { dimension }) {
 
   if (this.$$map) {
     if (is(prop) && prop.constructor === Object) {
-      // checkMappingObject(prop)
+      checkMappingObject(prop)
       return prop
     }
 
     if (is(prop) && prop.constructor === Array) {
       return { assign: parseArray(prop, parentRangeType, dimension, this.parentBranch) }
-    }
-
-    if (is(prop) && prop.constructor === String) {
-      if (!this.$$dataInterface.hasColumn(prop)) {
-        throw new Error(`Variable ${prop} not found`)
-      }
-
-      let data = this.$$dataInterface.getColumn(prop)
-      return { assign: parseArray(data, parentRangeType, dimension, this.parentBranch) }
     }
 
     if (isnt(prop)) {
@@ -82,14 +64,14 @@ function parseArray (data, parentRangeType, dimension, parentBranch) {
   return parsed
 }
 
-// function checkMappingObject (obj) {
-//   if (!obj.hasOwnProperty('get')) {
-//     throw new Error(`Missing required mapping option 'get'`)
-//   }
-//
-//   const allowed = ['get', 'scale', 'NA']
-//
-//   for (let key in obj) {
-//     if (!allowed.includes(key)) { throw new Error(`Invalid mapping option '${key}'`) }
-//   }
-// }
+function checkMappingObject (obj) {
+  if (!obj.hasOwnProperty('get')) {
+    throw new Error(`Missing required mapping option 'get'`)
+  }
+
+  const allowed = ['get', 'scale', 'NA']
+
+  for (let key in obj) {
+    if (!allowed.includes(key)) { throw new Error(`Invalid mapping option '${key}'`) }
+  }
+}
