@@ -35,6 +35,7 @@
       :font-size="titleFontSize"
       :font-weight="titleFontWeight"
       :opacity="titleOpacity"
+      :rotation="titleAngle"
     />
 
     <!-- Ticks -->
@@ -59,7 +60,7 @@
             :x1="tick => tick.value"
             :y1="0.5"
             :x2="tick => tick.value"
-            :y2="flip ? 0.35 : 0.65"
+            :y2="flip ? tickMin : tickMax"
             :stroke="tickColor"
             :stroke-opacity="tickOpacity"
             :stroke-width="tickWidth"
@@ -110,19 +111,11 @@ export default {
 
   props: {
     titleHjust: {
-      type: [Number, String],
-      default: -0.08,
-      validator: function (p) {
-        return (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
-      }
+      default: -0.08
     },
 
     titleVjust: {
-      type: [Number, String],
-      default: 'center',
-      validator: function (p) {
-        return (p.constructor === Number) || (['center', 't', 'b'].includes(p))
-      }
+      default: 'center'
     }
   },
 

@@ -140,7 +140,7 @@ export default {
     // TODO **
     tickSize: {
       type: Number,
-      default: 5
+      default: 0.15
     },
 
     tickWidth: {
@@ -148,7 +148,6 @@ export default {
       default: 0.5
     },
     
-    // New
     tickPosition: {
       type: Number,
       default: 0.5
@@ -159,14 +158,16 @@ export default {
       default: ''
     },
 
-    // text-anchor **
     titleAnchorPoint: {
       type: String,
       default: 'center',
       validator: p => ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'].includes(p)
     },
 
-    // titleAngle
+    titleAngle: {
+      type: Number,
+      default: 0
+    },
 
     titleColor: {
       type: String,
@@ -195,11 +196,19 @@ export default {
       default: 1
     },
 
-    // TODO **
-    titlePadding: {
-      type: Number,
-      default: 0
+    titleHjust: {
+      type: [Number, String],
+      validator: function (p) {
+        return (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
+      }
     },
+
+    titleVjust: {
+      type: [Number, String],
+      validator: function (p) {
+        return (p.constructor === Number) || (['center', 't', 'b'].includes(p))
+      }
+    }
 
   },
 
@@ -226,6 +235,14 @@ export default {
 
     ranges () {
       return this.convertCoordinateSpecification(this.aesthetics)
+    },
+
+    tickMin () {
+      return 0.5 - this.tickSize
+    },
+
+    tickMax () {
+      return 0.5 + this.tickSize
     },
 
     tickData () {
