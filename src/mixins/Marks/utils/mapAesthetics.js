@@ -1,4 +1,5 @@
 import createScale from '../../../scales/createScale.js'
+import createGeoScale from '../../../scales/createGeoScale.js'
 import createPositioner from '../../../positioners/createPositioner.js'
 
 import { is, invalid } from '../../../utils/equals.js'
@@ -60,6 +61,10 @@ function extractMappings (mappings) {
     if (passedProp.hasOwnProperty('scale')) {
       scales[aesKey] = passedProp.scale
     }
+    if (passedProp.hasOwnProperty('geoScale')) {
+      scales[aesKey] = passedProp.geoScale
+      scales[aesKey].geo = true
+    }
     if (passedProp.hasOwnProperty('get')) {
       // Getters can be specified as strings or functions. When specified as a string,
       // the getter string will be converted to a function here.
@@ -85,7 +90,11 @@ function parseScales (scales, context) {
 
   for (let aesKey in scales) {
     let scalingOptions = scales[aesKey]
-    parsedScales[aesKey] = createScale(aesKey, context, scalingOptions)
+    if (scalingOptions.geo) {
+      // parsedScales[aesKey] = createGeoScale()
+    } else {
+      parsedScales[aesKey] = createScale(aesKey, context, scalingOptions)
+    }
   }
 
   return parsedScales
@@ -226,7 +235,7 @@ function applyScale (value, scale) {
   } else if (value.constructor === Object) {
     // geojson feature
     if (value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')) {
-      // TODO
+
     }
   } else {
     return scale(value)
