@@ -1,4 +1,5 @@
 import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
+import createGeoScale from '../../scales/createGeoScale.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import parseRange from '../../scales/utils/parseRange.js'
@@ -114,34 +115,14 @@ export default class CoordinateTransformation {
     let domainX = dataInterface.getDomain('geometry.x')
     let domainY = dataInterface.getDomain('geometry.y')
 
-    let rangeDeltaX = ranges.x[1] - ranges.x[0]
-    let rangeDeltaY = ranges.y[1] - ranges.y[0]
-    let midX = (ranges.x[0] + ranges.x[1]) / 2
-    let midY = (ranges.y[0] + ranges.y[1]) / 2
-
-    let scalingFactorX = rangeDeltaX / (domainX[1] - domainX[0])
-    let scalingFactorY = rangeDeltaY / (domainY[1] - domainY[0])
-
     this.domains = { x: domainX, y: domainY }
     this.domainTypes = { x: 'quantitative', y: 'quantitative' }
-    this.center = [midX, midY]
     this.ranges = ranges
 
-    if (scalingFactorX < scalingFactorY) {
-      let fromMidX = rangeDeltaX / 2
-      let newRangeY = [midY - fromMidX, midY + fromMidX]
-
-      this.scaleX = createCoordsScale('x', 'quantitative', domainX, ranges.x, {})
-      this.scaleY = createCoordsScale('y', 'quantitative', domainY, newRangeY, {})
-    }
-
-    if (scalingFactorX > scalingFactorY) {
-      let fromMidY = rangeDeltaY / 2
-      let newRangeX = [midX - fromMidY, midX + fromMidY]
-
-      this.scaleX = createCoordsScale('x', 'quantitative', domainX, newRangeX, {})
-      this.scaleY = createCoordsScale('y', 'quantitative', domainY, ranges.y, {})
-    }
+    let { scaleX, scaleY, center } = createGeoScale(this.domains, ranges)
+    this.scaleX = scaleX
+    this.scaleY = scaleY
+    this.center = center
 
     this.getX = this.scaleX
     this.getY = this.scaleY
