@@ -19,7 +19,7 @@
 
         <vgg-multi-line
           :x="{ get: frame => frame.time }"
-          :y="{ get: frame => frame.measurement }"
+          :y="{ get: frame => frame.measurement, NA: 50 }"
         />
 
       </vgg-map>
@@ -36,6 +36,7 @@ export default {
     someTimeData () {
       let time = new Array(12).fill(1).map((v, i) => new Date(2018, i, 1))
       let measurement = new Array(12).fill(1).map((v, i) => Math.floor(i * Math.random() * 30))
+      // let measurement = new Array(12).fill(1).map((v, i) => i % 2 === 0 ? Math.floor(i * Math.random() * 30) : NaN)
 
       return { time, measurement }
     }

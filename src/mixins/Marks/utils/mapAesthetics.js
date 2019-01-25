@@ -35,7 +35,7 @@ export default function (aesthetics, context) {
     let props = mapRow(data, 0, null, null, aesthetics, parsedScales, getters, assigners, context)
     let parsedProps = parseProps(props, replaceNA, context)
 
-    aestheticsPerMark.push(props)
+    aestheticsPerMark.push(parsedProps)
   }
 
   // Fourth, we will apply positioning if necessary
@@ -176,18 +176,33 @@ function parseProps (props, replaceNA, context) {
   let newProps = {}
 
   for (let propKey in props) {
-    if (invalid(props[propKey])) {
-      let replaceValue = replaceNA[propKey]
-      if (invalid(replaceValue)) { return undefined }
+    let propValue = props[propKey]
+    let replaceValue = replaceNA[propKey]
 
+    // If the passed value is undefined, and there is no valid replace value,
+    // we will just skip the row
+    if (invalid(propValue) && invalid(replaceValue)) {
+      return undefined
+    }
+
+    if (!invalid(replaceValue)) {
       // If the value is categorical or temporal, and a coord-type prop,
       // we have to convert it to quantitative
       let dimension = getDimension(propKey)
+      let convertedReplaceValue
 
       if (dimension && [String, Date].includes(replaceValue.constructor)) {
-        newProps[propKey] = convertToQuantitative(replaceValue, dimension, context.parentBranch)
+        convertedReplaceValue = convertToQuantitative(replaceValue, dimension, context.parentBranch)
       } else {
-        newProps[propKey] = replaceValue
+        convertedReplaceValue = replaceValue
+      }
+
+      if (invalid(propValue)) {
+        newProps[propKey] = convertedReplaceValue
+      } else if (propValue.constructor === Array) {
+        newProps[propKey] = propValue.map(value => invalid(value) ? convertedReplaceValue : value)
+      } else {
+        newProps[propKey] = props[propKey]
       }
     } else {
       newProps[propKey] = props[propKey]
