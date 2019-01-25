@@ -50,18 +50,6 @@ export default {
       default: true
     },
 
-    // text-anchor **
-    labelAlign: {
-      type: String,
-      default: 'middle'
-    },
-
-    // alignment-baseline **
-    labelBaseline: {
-      type: String,
-      default: 'middle'
-    },
-
     // hide labels that exceed axis range
     // labelBound: {
     //   type: Boolean,
@@ -171,18 +159,14 @@ export default {
       default: ''
     },
 
-    // text-anchor
-    titleAlign: {
+    // text-anchor **
+    titleAnchorPoint: {
       type: String,
-      default: 'middle'
+      default: 'center',
+      validator: p => ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'].includes(p)
     },
 
     // titleAngle
-    
-    titleBaseline: {
-      type: String,
-      default: 'middle'
-    },
 
     titleColor: {
       type: String,
@@ -211,14 +195,11 @@ export default {
       default: 1
     },
 
+    // TODO **
     titlePadding: {
       type: Number,
       default: 0
     },
-
-    // titleX, titleY
-
-    // zindex
 
   },
 

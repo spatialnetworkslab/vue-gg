@@ -24,6 +24,19 @@
       :stroke-width="domainWidth"
     />
 
+    <!-- Axis title -->
+    <vgg-label
+      :x="titlePosX"
+      :y="titlePosY"
+      text="y axis"
+      :anchor-point="titleAnchorPoint"
+      :fill="titleColor"
+      :font-family="titleFont"
+      :font-size="titleFontSize"
+      :font-weight="titleFontWeight"
+      :opacity="titleOpacity"
+    />
+
     <!-- Ticks -->
     <vgg-section
       v-if="scale !== undefined"
@@ -94,6 +107,50 @@
 import BaseAxis from '../../mixins/Guides/BaseAxis.js'
 
 export default {
-  mixins: [BaseAxis]
+  mixins: [BaseAxis],
+
+  props: {
+    titleHjust: {
+      type: [Number, String],
+      default: 'center',
+      validator: function (p) {
+        return (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
+      }
+    },
+
+    titleVjust: {
+      type: [Number, String],
+      default: 1.05,
+      validator: function (p) {
+        return (p.constructor === Number) || (['center', 't', 'b'].includes(p))
+      }
+    }
+  },
+
+  computed: {
+    titlePosX () {
+      if (this.titleHjust === 'center') {
+        return 0.5
+      } else if (this.titleHjust === 'l') {
+        return 0
+      } else if (this.titleHjust === 'r') {
+        return 1
+      } else {
+        return this.titleHjust
+      }
+    },
+
+    titlePosY () {
+      if (this.titleVjust === 'center') {
+        return 0.5
+      } else if (this.titleVjust === 't') {
+        return 1
+      } else if (this.titleVjust === 'b') {
+        return 0
+      } else {
+        return this.titleVjust
+      }
+    },
+  }
 }
 </script>

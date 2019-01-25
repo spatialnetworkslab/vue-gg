@@ -70,7 +70,7 @@ export default {
     },
 
     fontWeight: {
-      type: String,
+      type: [String, Number],
       default: 'normal'
     },
 
