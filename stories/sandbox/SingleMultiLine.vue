@@ -11,15 +11,13 @@
       :x2="450"
       :y1="50"
       :y2="450"
-      :scale-x="'time'"
-      :scale-y="'measurement'"
     >
 
       <vgg-map unit="dataframe">
 
         <vgg-multi-line
-          :x="{ get: frame => frame.time }"
-          :y="{ get: frame => frame.measurement, NA: 50 }"
+          :x="{ get: 'time', scale: 'time' }"
+          :y="{ get: 'measurement', scale: 'measurement', NA: 50 }"
         />
 
       </vgg-map>

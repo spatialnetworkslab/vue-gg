@@ -16,8 +16,7 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scale-x="'geometry.x'"
-      :scale-y="'geometry.y'"
+      :scale-geo="{}"
     >
 
       <vgg-map>

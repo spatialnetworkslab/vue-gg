@@ -48,12 +48,27 @@ export default {
       if (this.scales) {
         let scales = {}
 
-        if (this.scales.hasOwnProperty('x')) {
+        let hasX = this.scales.hasOwnProperty('x')
+        let hasY = this.scales.hasOwnProperty('y')
+
+        if (this.scales.hasOwnProperty('geo')) {
+          if (hasX || hasY) {
+            throw new Error(`Cannot set 'scale-x' or 'scale-y' when 'scale-geo' is defined`)
+          }
+
+          if (!this.$$dataInterface.hasColumn('geometry')) {
+            throw new Error(`'scale-geo' is only allowed when data has geometry column`)
+          }
+
+          return this.scales
+        }
+
+        if (hasX) {
           scales.x = this.scales.x
         } else {
           scales.x = this.ranges.x
         }
-        if (this.scales.hasOwnProperty('y')) {
+        if (hasY) {
           scales.y = this.scales.y
         } else {
           scales.y = this.ranges.y
@@ -65,23 +80,27 @@ export default {
     },
 
     allowScales () {
-      // Allowed means: 'allowed IF the data is NOT READY'.
-      // So if the data is NOT READY, BOTH of these have to be TRUE.
-      // If this is not the case, we have to return FALSE.
-
-      // This is to avoid getting errors when the user wants to create a scale
-      // using a domain of a variable that is not available yet.
-      let allowedObjX = this.checkAllowedObj(this._scales.x)
-      let allowedObjY = this.checkAllowedObj(this._scales.y)
-
-      if (!this.$$dataInterface.ready()) {
-        if (allowedObjX && allowedObjY) {
-          return true
-        } else {
-          return false
-        }
+      if (this.scales.geo) {
+        return this.$$dataInterface.ready()
       } else {
-        return true
+        // Allowed means: 'allowed IF the data is NOT READY'.
+        // So if the data is NOT READY, BOTH of these have to be TRUE.
+        // If this is not the case, we have to return FALSE.
+
+        // This is to avoid getting errors when the user wants to create a scale
+        // using a domain of a variable that is not available yet.
+        let allowedObjX = this.checkAllowedObj(this._scales.x)
+        let allowedObjY = this.checkAllowedObj(this._scales.y)
+
+        if (!this.$$dataInterface.ready()) {
+          if (allowedObjX && allowedObjY) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return true
+        }
       }
     },
 

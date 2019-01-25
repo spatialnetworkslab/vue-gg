@@ -22,6 +22,11 @@ export default {
       default: undefined
     },
 
+    scaleGeo: {
+      type: [Object, undefined],
+      default: undefined
+    },
+
     data: {
       type: [Function, Array, Object, undefined],
       default: undefined
@@ -40,10 +45,11 @@ export default {
 
   computed: {
     scales () {
-      if (this.scaleX || this.scaleY) {
+      if (this.scaleX || this.scaleY || this.scaleGeo) {
         let scales = {}
         if (this.scaleX) { scales.x = this.scaleX }
         if (this.scaleY) { scales.y = this.scaleY }
+        if (this.scaleGeo) { scales.geo = this.scaleGeo }
 
         return scales
       }
