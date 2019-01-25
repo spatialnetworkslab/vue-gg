@@ -24,7 +24,8 @@ const plugins = [
   babel({
     runtimeHelpers: true,
     extensions: ['.js', '.vue'],
-    sourceMap: true
+    sourceMap: true,
+    exclude: 'node_modules/**'
   }),
   terser(),
   visualizer()
