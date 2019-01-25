@@ -24,6 +24,24 @@ export default {
       default: false
     },
 
+    hjust: {
+      type: [Number, String],
+      default: 'l',
+      validator: function (p) {
+        return (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
+      }
+    },
+
+    vjust: {
+      type: [Number, String],
+      default: 'b',
+      validator: function (p) {
+        return (p.constructor === Number) || (['center', 't', 'b'].includes(p))
+      }
+    },
+
+    // STYLING OPTIONS //
+
     // If true render axis main line
     domain: {
       type: Boolean,
@@ -233,8 +251,12 @@ export default {
       return this._parsedScalingOptions[2]
     },
 
-    ranges () {
-      return this.convertCoordinateSpecification(this.aesthetics)
+    xRange () {
+      return this.parentBranch.domains.x
+    },
+
+    yRange () {
+      return this.parentBranch.domains.y
     },
 
     tickMin () {

@@ -143,6 +143,48 @@ export default {
         return this.titleVjust
       }
     },
+
+    posY () {
+      let yRange = this.yRange
+
+      let yMin = Math.min(yRange[0], yRange[1])
+      let yMax = Math.max(yRange[0], yRange[1])
+      
+      if (this.vjust.constructor === Number) { 
+        let scaledVal = (yMax - yMin) * this.hjust
+        return scaledVal
+      } else if (this.vjust === 'center') {
+        return (yMax - yMin) / 2 + yMin
+      } else if (this.vjust === 't') {
+        return yMax
+      } else {
+        return yMin
+      }
+    },
+
+    ranges () {
+      let newRange = {}
+
+      let aesRange = this.convertCoordinateSpecification(this.aesthetics)
+
+      if (aesRange.x1 && aesRange.x2) {
+        newRange.x1 = aesRange.x1
+        newRange.x2 = aesRange.x2
+      } else {
+        newRange.x1 = this.xRange[0]
+        newRange.x2 = this.xRange[1]
+      }
+
+      if (aesRange.y1 && aesRange.y2) {
+        newRange.y1 = aesRange.y1
+        newRange.y2 = aesRange.y2
+      } else {
+        newRange.y1 = this.posY - 50
+        newRange.y2 = this.posY
+      }
+
+      return newRange
+    },
   }
 }
 </script>
