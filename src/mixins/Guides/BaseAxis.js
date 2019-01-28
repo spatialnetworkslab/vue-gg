@@ -42,7 +42,7 @@ export default {
 
   computed: {
     _parsedScalingOptions () {
-      return parseScaleOptions(this.scale, this.$$dataInterface)
+      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {

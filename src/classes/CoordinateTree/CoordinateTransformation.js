@@ -18,10 +18,15 @@ export default class CoordinateTransformation {
     let ranges = options.ranges
 
     let dataInterface = options.dataInterface
+    let scaleManager = options.scaleManager
 
     // Check for validity, and fetch variable domains with dataInterface if necessary
-    let [domainX, domainXType, scaleOptionsX] = parseScaleOptions(scaleOptions.x, dataInterface)
-    let [domainY, domainYType, scaleOptionsY] = parseScaleOptions(scaleOptions.y, dataInterface)
+    let [domainX, domainXType, scaleOptionsX] = parseScaleOptions(
+      scaleOptions.x, dataInterface, scaleManager
+    )
+    let [domainY, domainYType, scaleOptionsY] = parseScaleOptions(
+      scaleOptions.y, dataInterface, scaleManager
+    )
 
     // Store domains and ranges
     this.domainTypes = {

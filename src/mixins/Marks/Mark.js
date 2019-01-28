@@ -1,5 +1,6 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
 import DataReceiver from '../Data/DataReceiver.js'
+import ScaleReceiver from '../Scales/ScaleReceiver.js'
 
 import mapAesthetics from './utils/mapAesthetics.js'
 
@@ -12,7 +13,7 @@ import {
 } from './utils'
 
 export default {
-  mixins: [CoordinateTreeUser, DataReceiver],
+  mixins: [CoordinateTreeUser, DataReceiver, ScaleReceiver],
 
   inject: ['$$transform', '$$map'],
 
@@ -39,7 +40,8 @@ export default {
         ranges: this.parentBranch.domains,
         parentBranch: this.parentBranch,
         dataInterface: this.$$dataInterface,
-        mappingOptions: this.$$map
+        mappingOptions: this.$$map,
+        scaleManager: this.$$scaleManager
       }
     }
   },

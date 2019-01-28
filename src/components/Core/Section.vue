@@ -13,12 +13,13 @@
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataProvider from '../../mixins/Data/DataProvider.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
+import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import randomID from '../../utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataProvider, DataReceiver],
+  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver],
 
   props: {
     type: {
@@ -109,7 +110,8 @@ export default {
         type: this.type,
         scales: this._scales,
         ranges: this.ranges,
-        dataInterface: this.$$dataInterface
+        dataInterface: this.$$dataInterface,
+        scaleManager: this.$$scaleManager
       })
       return transformation
     },

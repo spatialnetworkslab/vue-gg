@@ -7,10 +7,11 @@ export default {
 
   methods: {
     getScale (name) {
-      if (this.scales.hasOwnProperty(name)) {
-        return this.scales[name]
+      let strippedName = name.split('#')[1]
+      if (this.scales.hasOwnProperty(strippedName)) {
+        return this.scales[strippedName]
       } else {
-        throw new Error(`Unknown scale '${name}'`)
+        throw new Error(`Unknown scale '${strippedName}'`)
       }
     },
 

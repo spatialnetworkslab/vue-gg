@@ -1,7 +1,7 @@
 import getDataType from '../../utils/getDataType.js'
 import { is } from '../../utils/equals.js'
 
-export default function (passedScaleOptions, dataInterface) {
+export default function (passedScaleOptions, dataInterface, scaleManager) {
   let domain
   let domainType
   let scaleOptions
@@ -11,7 +11,13 @@ export default function (passedScaleOptions, dataInterface) {
     throw new Error('Invalid scale options: only Array, String or Object allowed')
   }
 
-  if ([Array, String].includes(passedScaleOptions.constructor)) {
+  if (passedScaleOptions.constructor === String) {
+    if (passedScaleOptions.startsWith('#')) {
+      scaleOptions = scaleManager.getScale(passedScaleOptions)
+    } else {
+      scaleOptions = { domain: passedScaleOptions }
+    }
+  } else if (passedScaleOptions.constructor === Array) {
     scaleOptions = { domain: passedScaleOptions }
   } else {
     if (!passedScaleOptions.domain) {
@@ -20,7 +26,6 @@ export default function (passedScaleOptions, dataInterface) {
     scaleOptions = passedScaleOptions
   }
 
-  // Time to the right domain!
   let domainConstructor = scaleOptions.domain.constructor
 
   if (domainConstructor === String) {
