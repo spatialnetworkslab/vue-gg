@@ -28,7 +28,7 @@ export default {
     },
 
     data: {
-      type: [Function, Array, Object, undefined],
+      type: [Array, Object, undefined],
       default: undefined
     },
 
@@ -57,19 +57,20 @@ export default {
 
     _sectionData () {
       if (!this.$$map) {
-        if (this.data && this.data.constructor === Function) {
-          console.warn('Can only use getter function when mapping')
-          return undefined
-        } else {
-          return this.data
-        }
+        return this.data
       }
 
       if (this.$$map) {
-        if (this.data && this.data.constructor === Function) {
-          return { get: this.data }
-        } else {
-          return { assign: this.data }
+        if (this.data) {
+          if (this.data.constructor !== Object) {
+            throw new Error(`When mapping, it is only allowed to pass a mapping object to section`)
+          }
+
+          if (this.data.hasOwnProperty('get') && Object.keys(this.data).length === 1) {
+            return this.data
+          } else {
+            throw new Error('Invalid mapping object')
+          }
         }
       }
     },

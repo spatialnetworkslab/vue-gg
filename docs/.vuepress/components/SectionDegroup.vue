@@ -13,7 +13,7 @@
         :w="200"
         :y="100"
         :h="200"
-        :data="row => row.grouped"
+        :data="{ get: 'grouped' }"
       >
 
         <!-- <vgg-map>

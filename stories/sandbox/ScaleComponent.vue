@@ -24,7 +24,7 @@
           :y1="25"
           :y2="225"
           :scale-y="'#scaleY'"
-          :data="row => row.grouped"
+          :data="{ get: 'grouped' }"
         >
 
           <vgg-map>
