@@ -41,8 +41,8 @@ module.exports = {
               children: [
                 'concepts/data-loading.md',
                 'concepts/transforming-data.md',
-                'concepts/mapping.md',
                 'concepts/scaling.md'
+                'concepts/positioning.md',
               ]
             },
             {

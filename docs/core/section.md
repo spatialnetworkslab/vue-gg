@@ -22,30 +22,30 @@ All of these will be discussed below, under [Usage](#usage).
 
 ### Positioning
 
-| Prop | Required | Regular types          | Types when mapping                       | Default   | Description          | Unit(s)             |
-| ---- | -------- | ---------------------- | ---------------------------------------- | --------- | -------------------- | ------------------- |
-| x1   | depends  | [Number, String, Date] | [Number, String, Date, Object, Function] | undefined | Left x coordinate    | Local coordinate(s) |
-| x2   | depends  | [Number, String, Date] | [Number, String, Date, Object, Function] | undefined | Right x coordinate   | Local coordinate(s) |
-| y1   | depends  | [Number, String, Date] | [Number, String, Date, Object, Function] | undefined | Bottom y coordinate  | Local coordinate(s) |
-| y2   | depends  | [Number, String, Date] | [Number, String, Date, Object, Function] | undefined | Top y coordinate     | Local coordinate(s) |
-| x    | depends  | [Number, String, Date] | [Number, String, Date, Object, Function] | undefined | Central x coordinate | Local coordinate(s) |
-| y    | depends  | [Number, String, Date] | [Number, String, Date, Object, Function] | undefined | Central y coordinate | Local coordinate(s) |
-| w    | depends  | Number                 | [Number, Object, Function]               | undefined | Width                | Local coordinate(s) |
-| h    | depends  | Number                 | [Number, Object, Function]               | undefined | Height               | Local coordinate(s) |
+| Prop | Required | Regular types          | Types when mapping             | Default   | Description          | Unit(s)             |
+| ---- | -------- | ---------------------- | ------------------------------ | --------- | -------------------- | ------------------- |
+| x1   | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Left x coordinate    | Local coordinate(s) |
+| x2   | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Right x coordinate   | Local coordinate(s) |
+| y1   | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Bottom y coordinate  | Local coordinate(s) |
+| y2   | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Top y coordinate     | Local coordinate(s) |
+| x    | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Central x coordinate | Local coordinate(s) |
+| y    | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Central y coordinate | Local coordinate(s) |
+| w    | depends  | Number                 | [Number, Object]               | undefined | Width                | Local coordinate(s) |
+| h    | depends  | Number                 | [Number, Object]               | undefined | Height               | Local coordinate(s) |
 
 ### Other props
 
-| Prop | Required | Regular types   | Types when mapping        | Default   | Description                   |
-| ---- | -------- | --------------- | ------------------------- | --------- | ----------------------------- |
-| data | false    | [Array, Object] | [Function, Array, Object] | undefined | Some supported data structure |
+| Prop | Required | Regular types   | Types when mapping | Default   | Description                   |
+| ---- | -------- | --------------- | ------------------ | --------- | ----------------------------- |
+| data | false    | [Array, Object] | Object             | undefined | Some supported data structure |
 
-| Prop      | Required | Types                     | Default   | Description                     |
-| --------- | -------- | ------------------------- | --------- | ------------------------------- |
-| type      | false    | String                    | 'scale'   | Type of local coordinate system |
-| scales    | false    | Object                    | undefined | Scaling of x and y dimensions   |
-| data      | false    | [Function, Array, Object] | undefined | Some supported data structure   |
-| format    | false    | String                    | undefined | Format of data structure        |
-| transform | false    | [Array, Object]           | undefined | Transformation(s) to be applied |
+| Prop      | Required | Types                   | Default   | Description                     |
+| --------- | -------- | ----------------------- | --------- | ------------------------------- |
+| type      | false    | String                  | 'scale'   | Type of local coordinate system |
+| scale-x   | false    | [String, Array, Object] | undefined | Scaling of x dimension          |
+| scale-y   | false    | [String, Array, Object] | undefined | Scaling of y dimension          |
+| format    | false    | String                  | undefined | Format of data structure        |
+| transform | false    | [Array, Object]         | undefined | Transformation(s) to be applied |
 
 # Usage
 
@@ -142,7 +142,7 @@ use the extents of the Section.
 
     <vgg-map>
 
-      <vgg-point :x="{ scale: 'a' }" :y="{ scale: 'b' }" />
+      <vgg-point :x="{ get: 'a', scale: 'a' }" :y="{ get: 'b', scale: 'b' }" />
 
     </vgg-map>
 
@@ -183,7 +183,7 @@ coordinate system:
 
     <vgg-map>
 
-      <vgg-point :x="{ scale: 'a' }" :y="{ scale: 'b' }" />
+      <vgg-point :x="{ get: 'a', scale: 'a' }" :y="{ get: 'b', scale: 'b' }" />
 
     </vgg-map>
 
