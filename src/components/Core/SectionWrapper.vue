@@ -119,7 +119,7 @@ export default {
           data: aesthetics.data,
           format: this.format,
           transform: this.transform
-        },
+        }
       }, this.$slots.default)
     }
   },

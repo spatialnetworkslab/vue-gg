@@ -4,6 +4,7 @@ import Graphic from './Core/Graphic.vue'
 import Map from './Core/Map.vue'
 import Section from './Core/SectionWrapper.vue'
 import Data from './Core/Data.vue'
+import Scales from './Core/Scales.vue'
 
 import PlotTitle from './Elements/PlotTitle.vue'
 
@@ -33,6 +34,7 @@ export default {
   Map,
   Section,
   Data,
+  Scales,
 
   PlotTitle,
 
