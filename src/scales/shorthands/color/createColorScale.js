@@ -21,6 +21,6 @@ export default function (prop, variableType, domain, scalingOptions) {
     let scale = scalingOptions.type || 'colors'
     checkValidScale(prop, variableType, scale, categorical)
 
-    return categorical[scale](domain)
+    return categorical[scale](domain, scalingOptions.range)
   }
 }
