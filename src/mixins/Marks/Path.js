@@ -10,7 +10,7 @@ export default {
   props: {
     // Mappable
     points: {
-      type: [Array, Object, undefined],
+      type: [Array, undefined],
       default: undefined
     },
 
