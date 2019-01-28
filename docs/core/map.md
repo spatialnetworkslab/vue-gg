@@ -25,7 +25,7 @@ map data values to aesthetic values- for example, categories to colors.
 
 ### Mappable components
 
-The Map component can only be used to map [mappable](../concepts/mappability.md)
+The Map component can only be used to map [mappable](../concepts/mapping.md)
 components. Mappable components are all Marks, all Glyphs, all Guides, and the
 [Section](./section.md) component.
 
