@@ -26,6 +26,7 @@ export default function (prop, options) {
         if (getDataType(prop, false) === 'geometry') {
           return { assign: prop }
         } else {
+          checkMappingObject(prop)
           return prop
         }
       }
@@ -70,4 +71,16 @@ function parseArray (data, parentRangeTypes, parentBranch) {
   }
 
   return parsed
+}
+
+function checkMappingObject (obj) {
+  if (!obj.hasOwnProperty('get')) {
+    throw new Error(`Missing required mapping option 'get'`)
+  }
+
+  const allowed = ['get', 'scaleGeo']
+
+  for (let key in obj) {
+    if (!allowed.includes(key)) { throw new Error(`Invalid mapping option '${key}'`) }
+  }
 }

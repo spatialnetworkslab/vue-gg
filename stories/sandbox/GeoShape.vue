@@ -16,13 +16,12 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scale-geo="{}"
     >
 
       <vgg-map>
 
         <vgg-polygon
-          :geometry="{ get: 'geometry' }"
+          :geometry="{ get: 'geometry', scaleGeo: {} }"
           :fill="{ get: 'value', scale: { type: 'redYellowGreen', domain: 'value' } }"
         />
 

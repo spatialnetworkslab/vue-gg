@@ -119,7 +119,7 @@ export default class CoordinateTransformation {
     this.domainTypes = { x: 'quantitative', y: 'quantitative' }
     this.ranges = ranges
 
-    let { scaleX, scaleY, center } = createGeoScale(this.domains, ranges)
+    let { scaleX, scaleY, center } = createGeoScale(options)
     this.scaleX = scaleX
     this.scaleY = scaleY
     this.center = center

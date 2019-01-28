@@ -80,7 +80,7 @@ export default {
     },
 
     allowScales () {
-      if (this.scales.geo) {
+      if (this.scales && this.scales.geo) {
         return this.$$dataInterface.ready()
       } else {
         // Allowed means: 'allowed IF the data is NOT READY'.
