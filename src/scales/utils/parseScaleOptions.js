@@ -13,7 +13,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
   if (passedScaleOptions.constructor === String) {
     if (passedScaleOptions.startsWith('#')) {
-      scaleOptions = scaleManager.getScale(passedScaleOptions)
+      return scaleManager.getScale(passedScaleOptions)
     } else {
       scaleOptions = { domain: passedScaleOptions }
     }

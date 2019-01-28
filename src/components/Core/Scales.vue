@@ -1,3 +1,7 @@
+<template>
+  <g />
+</template>
+
 <script>
 import ScaleProvider from '../../mixins/Scales/ScaleProvider.js'
 

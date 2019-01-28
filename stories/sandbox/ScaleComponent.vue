@@ -9,8 +9,7 @@
     <vgg-scales
       :scales="{
         scaleX: { domain: 'a', type: 'squareRoot' },
-        scaleY: 'b',
-        scaleColor: 'c'
+        scaleY: 'b'
       }"
     />
 
@@ -21,9 +20,8 @@
         <vgg-section
           :x="{ get: 'c', scale: 'c' }"
           :w="{ position: 'bulge' }"
-          :y1="0"
-          :y2="250"
-          :scale-x="'#scaleX'"
+          :y1="25"
+          :y2="225"
           :scale-y="'#scaleY'"
           :data="row => row.grouped"
         >
@@ -31,9 +29,8 @@
           <vgg-map>
 
             <vgg-point
-              :x="{ get: row => row.a }"
+              :x="{ get: row => row.a, scale: '#scaleX' }"
               :y="{ get: row => row.b }"
-              :fill="{ get: row => row.c, scale: '#scaleColor' }"
             />
 
           </vgg-map>

@@ -1,10 +1,15 @@
+import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
+import DataReceiver from '../Data/DataReceiver.js'
+
 export default {
+  mixins: [DataReceiver],
+
   inject: ['$$scaleManager'],
 
   props: {
     scales: {
-      type: [Object, undefined],
-      default: undefined
+      type: Object,
+      required: true
     }
   },
 
@@ -14,7 +19,12 @@ export default {
         let newScaleKeys = this.difference(newScales, oldScales)
         for (let scaleName of newScaleKeys) {
           let scale = this.scales[scaleName]
-          this.$$scaleManager.storeScale(name, scale)
+
+          let parsedScale = parseScaleOptions(
+            scale, this.$$dataInterface, this.$$scaleManager
+          )
+
+          this.$$scaleManager.storeScale(name, parsedScale)
         }
 
         let oldScaleKeys = this.difference(oldScales, newScales)
@@ -23,6 +33,18 @@ export default {
         }
       },
       deep: true
+    }
+  },
+
+  created () {
+    for (let scaleName in this.scales) {
+      let scale = this.scales[scaleName]
+
+      let parsedScale = parseScaleOptions(
+        scale, this.$$dataInterface, this.$$scaleManager
+      )
+
+      this.$$scaleManager.storeScale(scaleName, parsedScale)
     }
   },
 
