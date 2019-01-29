@@ -194,10 +194,6 @@ export function checkColName (colName) {
   if (colName.match(forbiddenChars)) {
     throw new Error(`Invalid column name '${colName}': '.', '#', and '/' not allowed'`)
   }
-
-  if (['geometry', 'grouped', 'lowerBound', 'upperBound'].includes(colName)) {
-    throw new Error(`Invalid column name '${colName}': reserved column name`)
-  }
 }
 
 function initColumnDF (data) {
