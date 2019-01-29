@@ -30,10 +30,12 @@
 
         <vgg-x-axis
           :scale="'explanatory'"
+          vjust="t"
         />
 
         <vgg-y-axis
           :scale="'dependent'"
+          hjust="r"
         />
 
       </vgg-section>

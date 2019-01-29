@@ -159,7 +159,7 @@ export default {
       } else if (this.hjust === 'l') {
         return xMin
       } else {
-        return xMax
+        return xMax + 50
       }
     },
 

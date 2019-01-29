@@ -156,7 +156,7 @@ export default {
       } else if (this.vjust === 'center') {
         return (yMax - yMin) / 2 + yMin
       } else if (this.vjust === 't') {
-        return yMax
+        return yMax + 50
       } else {
         return yMin
       }
