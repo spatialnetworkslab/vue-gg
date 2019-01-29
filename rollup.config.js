@@ -2,14 +2,17 @@ import vue from 'rollup-plugin-vue'
 import babel from 'rollup-plugin-babel'
 import bundleSize from 'rollup-plugin-filesize'
 import resolve from 'rollup-plugin-node-resolve'
-import minify from 'rollup-plugin-babel-minify'
-import pkg from './package.json'
+import json from 'rollup-plugin-json'
+import commonjs from 'rollup-plugin-commonjs'
+import { terser } from 'rollup-plugin-terser'
+import visualizer from 'rollup-plugin-visualizer'
 
-const external = Object.keys(pkg.dependencies)
 const isProduction = !process.env.ROLLUP_WATCH
 
 const plugins = [
   resolve(),
+  commonjs(),
+  json(),
   bundleSize(),
   vue({
     template: {
@@ -20,17 +23,17 @@ const plugins = [
   }),
   babel({
     runtimeHelpers: true,
+    extensions: ['.js', '.vue'],
     sourceMap: true,
-    extensions: ['.js', '.vue']
-  })
-  // minify({
-  //   comments: false
-  // })
+    exclude: 'node_modules/**'
+  }),
+  terser(),
+  visualizer()
 ]
 
 export default [
   {
-    external,
+    external: ['vue'],
     plugins,
     input: 'src/index.js',
     output: [
