@@ -131,12 +131,74 @@ Besides loading new data, another way to create a new data scope is using the
 ```
 :::
 
-### Referencing another data scope
+### Referencing domains from another data scope
 
-In some cases, it can be handy to have access to data from a different scope. To
+In some cases, it can be handy to have access to columns from a different scope. To
 access a different data scope, give the component that creates the scope you
 are interested in an ID with the `id` prop. The data scope can then be accessed
-from other data scopes using //// TODO ////
-This is possible as long as the scope you want to access was declared before
-you try to access it. This means that you can never access child data scopes, or
-data scopes that
+from other data scopes using the `id` of the component, followed by `/`, and the
+column name:
+
+::: v-pre
+```html
+<vgg-graphic
+  id="parentData"
+  :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }"
+/>
+
+  <vgg-data
+    :transform="{ filter: row => row.a > 2 }"
+  >
+
+    <vgg-map>
+
+      <vgg-point
+        :x="{ get: 'a', scale: { domain: 'a' } }"
+        :y="{ get: 'b', scale: { domain: 'parentData/b' } }"
+      />
+
+      <!--
+        In the x-direction, the points' scale will use the domain of the filtered data.
+        In the y-direction, the points' scale will use the domain to the unfiltered data.
+      -->
+
+    </vgg-map>
+
+  </vgg-data>
+
+</vgg-graphic>
+```
+:::
+
+Accessing another data scope is possible as long as the scope you want to access
+was declared before you try to access it. This means that you can never access
+child data scopes, and only access sibling data scopes if the sibling was declared
+before the scope in question. For example:
+
+::: v-pre
+```html
+<vgg-data id="before" :data="someData" />
+
+<vgg-data :data="someOtherData" />
+  <vgg-map>
+    <vgg-point :x="{ get: 'a', scale: 'before/a' }" />
+  </vgg-map>
+</vgg-data>
+```
+:::
+
+is allowed, but
+
+::: v-pre
+```html
+<vgg-data :data="someOtherData" />
+  <vgg-map>
+    <vgg-point :x="{ get: 'a', scale: 'after/a' }" />
+  </vgg-map>
+</vgg-data>
+
+<vgg-data id="after" :data="someData" />
+```
+:::
+
+is not.
