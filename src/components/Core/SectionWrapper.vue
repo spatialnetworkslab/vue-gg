@@ -71,6 +71,8 @@ export default {
           } else {
             throw new Error('Invalid mapping object')
           }
+        } else {
+          return { assign: undefined }
         }
       }
     },

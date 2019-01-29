@@ -160,7 +160,7 @@ export default {
 
     checkAllowedObj (domain) {
       if (domain.constructor === Object) {
-        return domain.hasOwnProperty('domain') && !domain.hasOwnProperty('variable')
+        return domain.hasOwnProperty('domain')
       } else if (domain.constructor === Array) {
         return true
       } else {
