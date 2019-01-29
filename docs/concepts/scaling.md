@@ -12,11 +12,16 @@ and inside [mappable](./mapping.md) props of Marks.
 
 ### Defining and reusing
 
-There are three ways to specify a scale:
+```js
+{ scale: ... }
+```
+
+There are four ways to specify a scale:
 
 - By passing an object of options
 - By passing the name of a data column as a String
 - By creating a scale in advance and referencing its String ID.
+- By passing an Array.
 
 The method of passing an object of options will be discussed under [Properties](#options).
 The other two will be discussed under [Usage](#usage).
@@ -105,3 +110,34 @@ which types.
 | radius     | squareRoot   | none yet    | none yet |
 
 # Usage
+
+### Column name shorthand
+
+A nice shorthand that will in many cases suffice is the 'column name' String.
+Instead of passing an entire object, it is possible to just pass the name of the
+column of which you want to use the domain:
+
+::: v-pre
+```html
+<vgg-point :x="{ get: 'a', scale: 'a' }" />
+```
+:::
+
+this will be converted to
+
+::: v-pre
+```html
+<vgg-point :x="{ get: 'a', scale: { domain: 'a' } }" />
+```
+:::
+
+### Referencing scales using `#`
+
+The Scales component is used to create scales in one place,
+which can then be referenced in other places. See the documentation of the
+[Scales](../core/scales.md) for more information.
+
+### Using a domain Array
+
+Setting a custom domain using an Array is commonly used in combination with
+the [Section](../core/section.md) component.

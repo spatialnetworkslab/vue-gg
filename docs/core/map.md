@@ -48,8 +48,7 @@ which syntaxes are allowed for which types of props.
 
 ### The mapping object
 
-::: v-pre
-```
+```js
 {
   get: ...,
   scale: ...,
@@ -57,7 +56,6 @@ which syntaxes are allowed for which types of props.
   scaleGeo: ...
 }
 ```
-:::
 
 | Property | Types                   | Description                                              |
 | -------- | ----------------------- | -------------------------------------------------------- |
