@@ -61,6 +61,7 @@ export default {
 
     dataScopeID () {
       let id
+
       if (this.$attrs.id) {
         // use id if given
         id = this.$attrs.id
@@ -71,6 +72,7 @@ export default {
       } else {
         id = '_' + this.randomID
       }
+
       return id
     }
   },
@@ -79,7 +81,7 @@ export default {
     this.$$dataManager.remove(this.dataScopeID)
   },
 
-  mounted () {
+  created () {
     this.$$dataManager.register(this.dataScopeID, this.dataContainer)
   },
 
