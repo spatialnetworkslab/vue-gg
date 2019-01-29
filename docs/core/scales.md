@@ -56,6 +56,9 @@ domain before it was filtered:
 ```
 :::
 
+Note that the creating of scales with `vgg-scales` must be done before
+referencing the scales! Otherwise `vue-gg` will throw an error.
+
 Another example when using faceting:
 
 TODO
