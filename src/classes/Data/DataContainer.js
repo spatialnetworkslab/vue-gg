@@ -3,6 +3,7 @@ import calculateDomains from './calculateDomains.js'
 // const variableTypes = ['quantitative', 'temporal', 'categorical', 'geometry']
 
 const pointRegex = /\./g
+const forbiddenChars = /[.#\/]/
 
 export default class {
   constructor (data, format) {
@@ -169,8 +170,10 @@ function checkFormat (data) {
 
   let len = null
 
-  for (let key in data) {
-    let col = data[key]
+  for (let colName in data) {
+    checkColName(colName)
+
+    let col = data[colName]
     if (col.constructor !== Array) {
       throw new Error('Data in column-format must be passed as an object of arrays')
     }
@@ -185,6 +188,16 @@ function checkFormat (data) {
   }
 
   return len
+}
+
+export function checkColName (colName) {
+  if (colName.match(forbiddenChars)) {
+    throw new Error(`Invalid column name '${colName}': '.', '#', and '/' not allowed'`)
+  }
+
+  if (['geometry', 'grouped', 'lowerBound', 'upperBound'].includes(colName)) {
+    throw new Error(`Invalid column name '${colName}': reserved column name`)
+  }
 }
 
 function initColumnDF (data) {
