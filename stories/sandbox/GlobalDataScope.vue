@@ -4,7 +4,7 @@
     :height="500"
   >
 
-    <vgg-data
+    <!-- <vgg-data
       id="original"
       :data="testData"
     >
@@ -19,6 +19,21 @@
         </vgg-map>
 
       </vgg-data>
+
+    </vgg-data> -->
+    <vgg-data :data="testData">
+
+      <vgg-data
+        id="transformed"
+        :transform="{ filter: row => row.a > 2 }"
+      />
+
+      <vgg-map>
+        <vgg-point
+          :x="{ get: 'a', scale: 'transformed/a' }"
+          :y="{ get: 'b', scale: 'transformed/b' }"
+        />
+      </vgg-map>
 
     </vgg-data>
 
