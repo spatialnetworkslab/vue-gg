@@ -18,13 +18,13 @@
         <vgg-map>
 
           <vgg-symbol
-            :x="{ scale: 'explanatory' }"
-            :y="{ scale: 'dependent' }"
-            :size="{ scale: 'dependent' }"
+            :x="{ get: 'explanatory', scale: 'explanatory' }"
+            :y="{ get: 'dependent', scale: 'dependent' }"
+            :size="{ get: 'dependent', scale: 'dependent' }"
+            :stroke="{ get: 'explanatory', scale: { type: 'viridis', domain: 'explanatory' } }"
+            :stroke-width="2"
             shape="triangle-left"
-            :stroke="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
             fill="none"
-            :strokeWidth="2"
           />
         </vgg-map>
 

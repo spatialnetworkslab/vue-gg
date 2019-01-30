@@ -9,19 +9,17 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: 'a',
-        y: 'b'
-      }"
+      :scale-x="'a'"
+      :scale-y="'b'"
     >
 
       <vgg-map>
 
-        <vgg-symbol
-          :x="row => row.a"
-          :y="row => row.b"
-          :size="6"
-          :fill="{ scale: { scale: 'viridis', variable: 'a' } }"
+        <vgg-point
+          :x="{ get: row => row.a }"
+          :y="{ get: row => row.b }"
+          :radius="3"
+          :fill="{ get: 'a', scale: { type: 'viridis', domain: 'a' } }"
         />
 
       </vgg-map>

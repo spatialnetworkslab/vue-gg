@@ -21,26 +21,60 @@ coordinates for its child components.
 2. It enables a concice syntax on its child components that can be used to quickly
 map data values to aesthetic values- for example, categories to colors.
 
+# Props
+
+| Prop | Required | Types  | Default | Description                                                              |
+| ---- | -------- | ------ | ------- | ------------------------------------------------------------------------ |
+| unit | false    | String | row     | What to loop over- by default rows, but can also be set to `'dataframe'` |
+
+For more information on how to use the `unit` prop, see
+[Mapping an entire dataframe](#mapping-an-entire-dataframe).
+
 # Usage
 
-### Mappable components
+### Mappable components and props
 
-The Map component can only be used to map [mappable](../concepts/mappability.md)
-components. Mappable components are all Marks, all Glyphs, all Guides, and the
+The Map component can only be used to map mappable components.
+Mappable components are all Marks, all Glyphs, all Guides, and the
 [Section](./section.md) component.
 
-There are two main ways of mapping these mappable components: using the
-[mapping object](#the-mapping-object) syntax, and using the
-[getter function](#the-getter-function) syntax. Both will be discussed below,
-but make sure to check the documentation of the components in question to see
-which syntaxes are allowed for which props. In the examples below we will use
-the [Point](../marks/point.md) mark's `x`, `y` and `fill` props, all of which
-support both mapping objects and getter functions.
+When placed within `vgg-map` tags, the [mapping object](#the-mapping-object)
+syntax will be enabled on all mappable props of the mappable components.
+While many mappable props will work in similar ways, there are some differences
+based on what type of prop is being mapped. For example, some props allow you to
+use `position`ers, others `scale`s, and others just `get`ters. Make sure
+to check the documentation of the components you want to map to, to see
+which syntaxes are allowed for which types of props.
 
-### The mapping-object
+### The mapping object
+
+```js
+{
+  get: ...,
+  scale: ...,
+  position: ...,
+  scaleGeo: ...
+}
+```
+
+| Property | Types                   | Description                                              |
+| -------- | ----------------------- | -------------------------------------------------------- |
+| get      | [String, Function]      | Column name or getter function to access data in row     |
+| scale    | [String, Array, Object] | Column name, domain boundaries or scaling options object |
+| position | [String, Object]        | Name of positioner, or positioner options object         |
+| scaleGeo | Object                  | Options object for scaling geographic coordinates        |
+
+In any case where `scale` or `scaleGeo` is used, `get` must also be specified.
+`get` can also be used alone, as the examples below will illustrate. `position`
+is currently only used alone, but this might change in the future once more
+positioners are implemented. For more information, see the
+[scaling](../concepts/scaling.md) and [positioning](../concepts/positioning.md)
+documentation.
+
+### Basic example using `get` and `scale`
 
 One way to create a scatterplot using some dummy data and the Map component is
-using the mapping object syntax:
+using the mapping object syntax with both `get` and `scale`:
 
 ::: v-pre
 ```html{14-16}
@@ -57,9 +91,9 @@ using the mapping object syntax:
   <vgg-map>
 
     <vgg-point
-      :x="{ scale: 'a' }"
-      :y="{ scale: 'b' }"
-      :fill="{ scale: 'c' }"
+      :x="{ get: 'a', scale: 'a' }"
+      :y="{ get: 'a', scale: 'b' }"
+      :fill="{ get: 'c', scale: 'c' }"
     />
 
   </vgg-map>
@@ -85,14 +119,24 @@ data in column `b` to the coordinates in the y-dimension, and one to map the
 data in column `c` to a set of colors.
 
 4. The values in the columns `a`, `b` and `c` are mapped to the props `x`, `y` and
-`fill` of the `vgg-point` Mark using these scaling functions.
+`fill` of the `vgg-point` Mark in two steps: first, `get` extracts the value
+from the row in the dataset, and then this value will be fed through the scaling
+function generated in step 3.
 
-### The getter function
+### `get`: String vs Function
+
+The `get` property of the mapping object can be specified as either a String or
+a Function. In most cases using a String will suffice, but when working with nested
+data structures, using the Function can be handy. Under the hood, the String
+referencing a column name will be compiled to a function. So
+`{ get: 'something' }` simply becomes `{ get: row => row['something'] }`.
+
+### When to use `scale`
 
 Sometimes, the data in a column will already be in the right format, and scaling
 won't be necessary. This is the case when you have, for example, a column of
 colors, and you just want to use the color directly. In this situation, you will
-want to use a getter function. To return to the previous example:
+want to use `get`, but not `scale`. To return to the previous example:
 
 ::: v-pre
 ```html{7,16}
@@ -109,9 +153,9 @@ want to use a getter function. To return to the previous example:
   <vgg-map>
 
     <vgg-point
-      :x="{ scale: 'a' }"
-      :y="{ scale: 'b' }"
-      :fill="row => row.c"
+      :x="{ get: 'a', scale: 'a' }"
+      :y="{ get: 'b', scale: 'b' }"
+      :fill="{ get: 'x' }"
     />
 
   </vgg-map>
@@ -120,7 +164,7 @@ want to use a getter function. To return to the previous example:
 ```
 :::
 
-Getter functions are used extensively in combination with the Section component.
+Leaving out `scale` is common when working with the Section component.
 The Section component allows you to specify a local coordinate system. This
 coordinate system can be defined as the domains of the columns in your dataset. See
 the [documentation of the Section component](./section.md) for more information on this topic.
@@ -144,18 +188,16 @@ system:
     :x2="500"
     :y1="0"
     :y2="500"
-    :scales="{
-      x: 'a',
-      y: 'b'
-    }"
+    :scale-x="'a'"
+    :scale-y="'b'"
   >
 
     <vgg-map>
 
       <vgg-point
-        :x="row => row.x"
-        :y="row => row.y"
-        :fill="{ scale: 'c' }"
+        :x="{ get: 'a' }"
+        :y="{ get: 'b' }"
+        :fill="{ get: 'c', scale: 'c' }"
       />
 
     </vgg-map>
@@ -163,5 +205,39 @@ system:
   </vgg-section>
 
 </vgg-graphic>
+```
+:::
+
+### Using `position`
+
+TODO
+
+### Using `scaleGeo`
+
+TODO
+
+### Mapping an entire dataframe
+
+In the examples above, `vgg-map` maps one row in the dataframe to one mark:
+the `vgg-point`. But for many other graphics, like line graphs, the 'one mark per
+row' relation does not hold. Where with the `vgg-point` mark you just give one value
+to the `:x` prop, the `vgg-multi-line` expects a whole column of values. So,
+to draw a single `vgg-multi-line` with the data used in the examples above,
+we need to map an entire dataframe to a single mark:
+
+::: v-pre
+```
+<vgg-data :data="{ a: [1, 2, 5, 3, 4], b: [2, 7, 9, 10, 9], }">
+
+  <vgg-map unit="dataframe">
+
+    <vgg-multi-line
+      :x="{ get: frame => frame.a, scale: 'a' }"
+      :y="{ get: frame => frame.b, scale: 'b' }"
+    />
+
+  </vgg-map>
+
+</vgg-data>
 ```
 :::

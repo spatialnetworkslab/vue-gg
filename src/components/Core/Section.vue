@@ -1,5 +1,8 @@
 <template>
-  <g class="section" v-if="ready && allowScales">
+  <g
+    v-if="ready && allowScales"
+    class="section"
+  >
 
     <slot />
 
@@ -8,13 +11,15 @@
 
 <script>
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
-import DataTransformer from '../../mixins/Data/DataTransformer.js'
+import DataProvider from '../../mixins/Data/DataProvider.js'
+import DataReceiver from '../../mixins/Data/DataReceiver.js'
+import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
-import id from '../../utils/id.js'
+import randomID from '../../utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataTransformer],
+  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver],
 
   props: {
     type: {
@@ -35,8 +40,7 @@ export default {
 
   data () {
     return {
-      ready: false,
-      id: id()
+      ready: false
     }
   },
 
@@ -45,12 +49,27 @@ export default {
       if (this.scales) {
         let scales = {}
 
-        if (this.scales.hasOwnProperty('x')) {
+        let hasX = this.scales.hasOwnProperty('x')
+        let hasY = this.scales.hasOwnProperty('y')
+
+        if (this.scales.hasOwnProperty('geo')) {
+          if (hasX || hasY) {
+            throw new Error(`Cannot set 'scale-x' or 'scale-y' when 'scale-geo' is defined`)
+          }
+
+          if (!this.$$dataInterface.hasColumn('geometry')) {
+            throw new Error(`'scale-geo' is only allowed when data has geometry column`)
+          }
+
+          return this.scales
+        }
+
+        if (hasX) {
           scales.x = this.scales.x
         } else {
           scales.x = this.ranges.x
         }
-        if (this.scales.hasOwnProperty('y')) {
+        if (hasY) {
           scales.y = this.scales.y
         } else {
           scales.y = this.ranges.y
@@ -62,32 +81,63 @@ export default {
     },
 
     allowScales () {
-      // Allowed means: 'allowed IF there is NO DATACONTAINER'.
-      // So if there is NO DATACONTAINER, BOTH of these have to be TRUE.
-      // If this is not the case, we have to return FALSE.
-      let allowedObjX = this.checkAllowedObj(this._scales.x)
-      let allowedObjY = this.checkAllowedObj(this._scales.y)
-
-      if (!this.$$dataContainer) {
-        if (allowedObjX && allowedObjY) {
-          return true
-        } else {
-          return false
-        }
+      if (this.scales && this.scales.geo) {
+        return this.$$dataInterface.ready()
       } else {
-        return true
+        // Allowed means: 'allowed IF the data is NOT READY'.
+        // So if the data is NOT READY, BOTH of these have to be TRUE.
+        // If this is not the case, we have to return FALSE.
+
+        // This is to avoid getting errors when the user wants to create a scale
+        // using a domain of a variable that is not available yet.
+        let allowedObjX = this.checkAllowedObj(this._scales.x)
+        let allowedObjY = this.checkAllowedObj(this._scales.y)
+
+        if (!this.$$dataInterface.ready()) {
+          if (allowedObjX && allowedObjY) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return true
+        }
       }
+    },
+
+    transformation () {
+      let transformation = new CoordinateTransformation({
+        type: this.type,
+        scales: this._scales,
+        ranges: this.ranges,
+        dataInterface: this.$$dataInterface,
+        scaleManager: this.$$scaleManager
+      })
+      return transformation
+    },
+    coordinateTreeBranchID () {
+      let id
+      let parentData = this.$parent.$vnode.data
+      if (parentData.attrs.id) {
+        // use id if given
+        id = parentData.attrs.id + '_' + this.randomID
+      } else if (parentData.staticClass) {
+        // fall back on class if no id is given
+        let elClass = parentData.staticClass.replace(/\s+/g, '_')
+        id = elClass + '_' + this.randomID
+      } else {
+        id = '_' + randomID()
+      }
+      return id
     }
   },
 
   watch: {
-    type: 'updateCoordinateTreeBranch',
-    scales: 'updateCoordinateTreeBranch',
-    ranges: 'updateCoordinateTreeBranch'
+    transformation: 'updateCoordinateTreeBranch'
   },
 
   beforeDestroy () {
-    this.$$coordinateTree.removeBranch(this.id)
+    this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
   },
 
   mounted () {
@@ -97,45 +147,35 @@ export default {
 
   methods: {
     setCoordinateTreeBranch () {
-      let transformation = new CoordinateTransformation({
-        type: this.type,
-        scales: this._scales,
-        ranges: this.ranges,
-        dataContainer: this.$$dataContainer
-      })
-
       this.$$coordinateTree.addBranch(
-        this.id,
+        this.coordinateTreeBranchID,
         this.$$coordinateTreeParent,
-        transformation
+        this.transformation
       )
     },
 
     updateCoordinateTreeBranch () {
-      let transformation = new CoordinateTransformation({
-        type: this.type,
-        scales: this._scales,
-        ranges: this.ranges,
-        dataContainer: this.$$dataContainer
-      })
-
-      this.$$coordinateTree.updateBranch(this.id, transformation)
+      this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
     },
 
     checkAllowedObj (domain) {
       if (domain.constructor === Object) {
-        return domain.hasOwnProperty('domain') && !domain.hasOwnProperty('variable')
+        return domain.hasOwnProperty('domain')
       } else if (domain.constructor === Array) {
         return true
       } else {
         return false
       }
+    },
+
+    same (oldVal, newVal) {
+      return JSON.stringify(oldVal) === JSON.stringify(newVal)
     }
   },
 
   provide () {
-    let $$transform = this.$$coordinateTree.getTotalTransformation(this.id)
-    let $$coordinateTreeParent = this.id
+    let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
+    let $$coordinateTreeParent = this.coordinateTreeBranchID
 
     return { $$transform, $$coordinateTreeParent, $$map: false }
   }
