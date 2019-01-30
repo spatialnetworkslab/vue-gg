@@ -28,7 +28,7 @@
     <vgg-label
       :x="titlePosX"
       :y="titlePosY"
-      text="x axis"
+      :text="title"
       :anchor-point="titleAnchorPoint"
       :fill="titleColor"
       :font-family="titleFont"
@@ -46,7 +46,7 @@
       :y1="0"
       :y2="1"
       :scales="{
-        x: scale
+        x: scale,
       }"
     >
 
@@ -60,7 +60,7 @@
             :x1="tick => tick.value"
             :y1="0.5"
             :x2="tick => tick.value"
-            :y2="flip ? tickMin : tickMax"
+            :y2="flip ? tickMax : tickMin"
             :stroke="tickColor"
             :stroke-opacity="tickOpacity"
             :stroke-width="tickWidth"
@@ -70,7 +70,7 @@
           <vgg-label
             v-if="(!labelRotate) && labels"
             :x="tick => tick.value"
-            :y="flip ? 0.59 : 0.45"
+            :y="flip ? (tickMax + 0.03) : (tickMin - 0.03)"
             :text="tick => tick.label"
             :font-family="labelFont"
             :font-size="labelFontSize"
@@ -83,7 +83,7 @@
           <vgg-label
             v-if="labelRotate && labels"
             :x="tick => tick.value"
-            :y="flip ? 0.59 : 0.45"
+            :y="flip ? (tickMax + 0.03) : (tickMin - 0.03)"
             :text="tick => tick.label"
             :font-family="labelFont"
             :font-size="labelFontSize"
@@ -146,42 +146,37 @@ export default {
 
     posY () {
       let yRange = this.yRange
+      let yDomain = this.yDomain
 
       let yMin = Math.min(yRange[0], yRange[1])
       let yMax = Math.max(yRange[0], yRange[1])
+
+      let yDomainMin = Math.min(yDomain[0], yDomain[1])
+      let yDomainMax = Math.max(yDomain[0], yDomain[1])
+
+      let yHeight = (50 / (yMax - yMin)) * (yDomainMax - yDomainMin)
       
       if (this.vjust.constructor === Number) { 
-        let scaledVal = (yMax - yMin) * this.hjust
-        return scaledVal
+        let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
+        return [scaledVal - yHeight, scaledVal + yHeight]
       } else if (this.vjust === 'center') {
-        return (yMax - yMin) / 2 + yMin
+        let centerVal = (yDomainMax - yDomainMin) / 2 + yDomainMin
+        return [centerVal - yHeight, centerVal + yHeight]
       } else if (this.vjust === 't') {
-        return yMax + 50
+        return [yDomainMax - yHeight, yDomainMax + yHeight]
       } else {
-        return yMin
+        return [yDomainMin - yHeight, yDomainMin + yHeight]
       }
     },
 
     ranges () {
       let newRange = {}
 
-      let aesRange = this.convertCoordinateSpecification(this.aesthetics)
+      newRange.x1 = this.xDomain[0]
+      newRange.x2 = this.xDomain[1]
 
-      if (aesRange.x1 && aesRange.x2) {
-        newRange.x1 = aesRange.x1
-        newRange.x2 = aesRange.x2
-      } else {
-        newRange.x1 = this.xRange[0]
-        newRange.x2 = this.xRange[1]
-      }
-
-      if (aesRange.y1 && aesRange.y2) {
-        newRange.y1 = aesRange.y1
-        newRange.y2 = aesRange.y2
-      } else {
-        newRange.y1 = this.posY - 50
-        newRange.y2 = this.posY
-      }
+      newRange.y1 = this.posY[0]
+      newRange.y2 = this.posY[1]
 
       return newRange
     },

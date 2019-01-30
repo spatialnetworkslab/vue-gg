@@ -158,7 +158,7 @@ export default {
     // TODO **
     tickSize: {
       type: Number,
-      default: 0.15
+      default: 7
     },
 
     tickWidth: {
@@ -252,19 +252,27 @@ export default {
     },
 
     xRange () {
-      return this.parentBranch.domains.x
+      return this.parentBranch.ranges.x
     },
 
     yRange () {
+      return this.parentBranch.ranges.y
+    },
+
+    xDomain () {
+      return this.parentBranch.domains.x
+    },
+
+    yDomain () {
       return this.parentBranch.domains.y
     },
 
     tickMin () {
-      return 0.5 - this.tickSize
+      return 0.5 - (this.tickSize / 100)
     },
 
     tickMax () {
-      return 0.5 + this.tickSize
+      return 0.5 + (this.tickSize / 100)
     },
 
     tickData () {

@@ -61,24 +61,20 @@
 
       </vgg-map>
 
+      <vgg-x-axis
+        :scale="'fruit'"
+        :titleHjust="1.1"
+        :vjust="-.05"
+        rotate-label
+      />
+
+      <vgg-y-axis
+        :scale="{ variable: 'quantity', domain: [0, null] }"
+        :hjust="-.05"
+        flip
+      />
+
     </vgg-section>
-
-    <vgg-x-axis
-      :x1="100"
-      :x2="500"
-      :y1="50"
-      :y2="100"
-      :scale="'fruit'"
-      rotate-label
-    />
-
-    <vgg-y-axis
-      :x1="500"
-      :x2="550"
-      :y1="100"
-      :y2="500"
-      :scale="{ variable: 'quantity', domain: [0, null] }"
-    />
 
   </vgg-graphic>
 </template>

@@ -15,6 +15,7 @@ import MissingInvalidData from './sandbox/MissingInvalidData.vue'
 import MultiLines from './sandbox/MultiLines.vue'
 import Areas from './sandbox/Areas.vue'
 import TestSymbol from './sandbox/TestSymbol.vue'
+import idcGraphs from './sandbox/idcGraphs.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -33,3 +34,4 @@ storiesOf('Sandbox', module)
   .add('Test: Area Mark', () => (Areas))
   .add('MultiLines', () => (MultiLines))
   .add('TestSymbol', () => (TestSymbol))
+  .add('idcGraphs', () => (idcGraphs))

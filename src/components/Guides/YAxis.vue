@@ -28,7 +28,7 @@
     <vgg-label
       :x="titlePosX"
       :y="titlePosY"
-      text="y axis"
+      :text="title"
       :anchor-point="titleAnchorPoint"
       :fill="titleColor"
       :font-family="titleFont"
@@ -70,7 +70,7 @@
           <!-- Tick labels -->
           <vgg-label
             v-if="(!labelRotate) && labels"
-            :x="flip ? 0.45 : 0.59"
+            :x="flip ? (tickMin - 0.03) : (tickMax + 0.03)"
             :y="tick => tick.value"
             :text="tick => tick.label"
             :font-family="labelFont"
@@ -83,7 +83,7 @@
 
           <vgg-label
             v-if="labelRotate && labels"
-            :x="flip ? 0.41 : 0.59"
+            :x="flip ? (tickMin - 0.03) : (tickMax + 0.03)"
             :y="tick => tick.value"
             :text="tick => tick.label"
             :font-family="labelFont"
@@ -147,42 +147,37 @@ export default {
 
     posX () {
       let xRange = this.xRange
+      let xDomain = this.xDomain
 
       let xMin = Math.min(xRange[0], xRange[1])
       let xMax = Math.max(xRange[0], xRange[1])
 
+      let xDomainMin = Math.min(xDomain[0], xDomain[1])
+      let xDomainMax = Math.max(xDomain[0], xDomain[1])
+
+      let xWidth = (50 / (xMax - xMin)) * (xDomainMax - xDomainMin)
+
       if (this.hjust.constructor === Number) { 
-        let scaledVal = (xMax - xMin) * this.vjust
-        return scaledVal
+        let scaledVal = (xDomainMax - xDomainMin) * this.hjust + xDomainMin
+        return [scaledVal - xWidth, scaledVal + xWidth]
       } else if (this.hjust === 'center') {
-        return (xMax - xMin) / 2 + xRange[0]
+        let centerVal = (xDomainMax - xDomainMin) / 2 + xDomainMin
+        return [centerVal - xWidth, centerVal + xWidth]
       } else if (this.hjust === 'l') {
-        return xMin
+        return [xDomainMin - xWidth, xDomainMin + xWidth]
       } else {
-        return xMax + 50
+        return [xDomainMax - xWidth, xDomainMax + xWidth]
       }
     },
 
     ranges () {
       let newRange = {}
 
-      let aesRange = this.convertCoordinateSpecification(this.aesthetics)
+      newRange.x1 = this.posX[0]
+      newRange.x2 = this.posX[1]
 
-      if (aesRange.x1 && aesRange.x2) {
-        newRange.x1 = aesRange.x1
-        newRange.x2 = aesRange.x2
-      } else {
-        newRange.x1 = this.posX - 50
-        newRange.x2 = this.posX
-      }
-
-      if (aesRange.y1 && aesRange.y2) {
-        newRange.y1 = aesRange.y1
-        newRange.y2 = aesRange.y2
-      } else {
-        newRange.y1 = this.yRange[0]
-        newRange.y2 = this.yRange[1]
-      }
+      newRange.y1 = this.yDomain[0]
+      newRange.y2 = this.yDomain[1]
 
       return newRange
     },

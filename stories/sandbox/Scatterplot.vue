@@ -25,6 +25,18 @@
           />
         </vgg-map>
 
+        <vgg-x-axis
+          :scale="'explanatory'"
+          :titleHjust="1.1"
+          :vjust="-.05"
+        />
+
+        <vgg-y-axis
+          :scale="'dependent'"
+          :hjust="-.05"
+          flip
+        />
+
       </vgg-section>
 
       <vgg-x-grid
@@ -38,22 +50,6 @@
       <vgg-y-grid
         :x1="100"
         :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'dependent'"
-      />
-
-      <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="50"
-        :y2="100"
-        :scale="'explanatory'"
-      />
-
-      <vgg-y-axis
-        :x1="500"
-        :x2="550"
         :y1="100"
         :y2="500"
         :scale="'dependent'"
