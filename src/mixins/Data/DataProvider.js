@@ -79,7 +79,7 @@ export default {
     this.$$dataManager.remove(this.dataScopeID)
   },
 
-  mounted () {
+  created () {
     this.$$dataManager.register(this.dataScopeID, this.dataContainer)
   },
 

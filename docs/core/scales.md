@@ -13,7 +13,9 @@ with the Scales component can be referenced in any place where you would
 need to create a scale by using `#` followed by the name of the scale. Besides
 leading to more DRY code, the Scales component can be used conveniently for
 faceting, where you want to split up data into categories while keeping the
-original domains of the data before it was split- see [Usage](#usage).
+original domains of the data before it was split- see [Usage](#usage). Note that
+the scales must be declared using the Scales component _before_ referencing
+the scale with `#<scaleName>`.
 
 # Props
 
@@ -22,7 +24,8 @@ original domains of the data before it was split- see [Usage](#usage).
 | scales | true     | Object | Object containing scales |
 
 The values of the object passed to `scales` will be the identifiers of the scales.
-The values must be scaling options objects- see the [scaling](../concepts/scaling.md)
+
+The values must be a scaling options specification- see the [scaling](../concepts/scaling.md)
 documentation for more information.
 
 # Usage
@@ -54,6 +57,6 @@ domain before it was filtered:
 ```
 :::
 
-Another example when using faceting:
 
-TODO
+Note that the creating of scales with `vgg-scales` must be done before
+referencing the scales! Otherwise `vue-gg` will throw an error.

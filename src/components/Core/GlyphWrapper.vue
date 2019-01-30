@@ -43,6 +43,7 @@ export default {
 
         width: this.parseAesthetic(this.width),
         height: this.parseAesthetic(this.height),
+
         anchorPoint: this.parseProperty(this.anchorPoint, { default: 'center' })
       }
     }
