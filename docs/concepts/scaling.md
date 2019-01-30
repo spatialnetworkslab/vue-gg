@@ -75,7 +75,7 @@ zero instead of at the lowest value in the data.
 
 ##### domainMid
 
-`domanMid` will be used as a central point between the upper and lower boundaries
+`domainMid` will be used as a central point between the upper and lower boundaries
 of the domain to create a [diverging](https://github.com/d3/d3-scale#diverging-scales)
 scale.
 
