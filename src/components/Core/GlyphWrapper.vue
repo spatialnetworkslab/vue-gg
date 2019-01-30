@@ -41,7 +41,7 @@ export default {
         x: this.parseCoordinate(this.x, { dimension: 'x' }),
         y: this.parseCoordinate(this.y, { dimension: 'y' }),
 
-        width: this.parseAesthetic(this.width, { default: 10 }),
+        width: this.parseAesthetic(this.width),
         height: this.parseAesthetic(this.height, { default: 10 }),
         anchorPoint: this.parseProperty(this.anchorPoint, { default: 'center' })
       }
