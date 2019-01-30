@@ -6,7 +6,7 @@ title: Scaling
 
 Scaling options are used to quickly create scales in various places, like the
 [Scale](../core/scale.md) component, the [Section](../core/section.md) component
-and inside [mappable](./mapping.md) props of Marks.
+and inside [mappable](../core/map.md) props of Marks.
 
 # Options
 
@@ -75,7 +75,7 @@ zero instead of at the lowest value in the data.
 
 ##### domainMid
 
-`domanMid` will be used as a central point between the upper and lower boundaries
+`domainMid` will be used as a central point between the upper and lower boundaries
 of the domain to create a [diverging](https://github.com/d3/d3-scale#diverging-scales)
 scale.
 

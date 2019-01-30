@@ -24,6 +24,7 @@ the scale with `#<scaleName>`.
 | scales | true     | Object | Object containing scales |
 
 The values of the object passed to `scales` will be the identifiers of the scales.
+
 The values must be a scaling options specification- see the [scaling](../concepts/scaling.md)
 documentation for more information.
 
@@ -56,9 +57,6 @@ domain before it was filtered:
 ```
 :::
 
+
 Note that the creating of scales with `vgg-scales` must be done before
 referencing the scales! Otherwise `vue-gg` will throw an error.
-
-Another example when using faceting:
-
-TODO
