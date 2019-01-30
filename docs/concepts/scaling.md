@@ -6,7 +6,7 @@ title: Scaling
 
 Scaling options are used to quickly create scales in various places, like the
 [Scale](../core/scale.md) component, the [Section](../core/section.md) component
-and inside [mappable](./mapping.md) props of Marks.
+and inside [mappable](../core/map.md) props of Marks.
 
 # Options
 
