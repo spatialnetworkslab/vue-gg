@@ -39,7 +39,7 @@ a column called `'geometry'` must always have only data of the type `geometry`
 ### Tabular data: column-oriented vs row-oriented
 
 Internally, `vue-gg` stores data in a column-oriented format. Or, in JavaScript
-terms, an Object of Arrays:
+terms, an Object where each key is the column name and each value an array of all values for that column:
 
 ```js
 {
