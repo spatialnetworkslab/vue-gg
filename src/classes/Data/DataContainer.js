@@ -158,7 +158,7 @@ export default class {
       }
       if (i === 0) prevRow = undefined
       if (i === this._length - 1) nextRow = undefined
-      fn(row, i, prevRow, nextRow)
+      fn({ row, i, prevRow, nextRow })
     }
   }
 }

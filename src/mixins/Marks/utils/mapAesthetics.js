@@ -20,7 +20,7 @@ export default function (aesthetics, context) {
   let aestheticsPerMark = []
 
   if (mappingOptions.unit === 'row') {
-    dataInterface.forEachRow((row, i, prevRow, nextRow) => {
+    dataInterface.forEachRow(({ row, i, prevRow, nextRow }) => {
       let props = mapRow(row, i, prevRow, nextRow, aesthetics, parsedScales, getters, assigners, context)
       let parsedProps = parseProps(props, replaceNA, context)
 

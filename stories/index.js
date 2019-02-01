@@ -18,6 +18,7 @@ import TestSymbol from './sandbox/TestSymbol.vue'
 import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
+import NewMapTest from './sandbox/NewMapTest.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -39,3 +40,4 @@ storiesOf('Sandbox', module)
   .add('Single MultiLine', () => (SingleMultiLine))
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
+  .add('New map test', () => (NewMapTest))
