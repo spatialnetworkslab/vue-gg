@@ -1,9 +1,4 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
-import DataReceiver from '../Data/DataReceiver.js'
-import ScaleReceiver from '../Scales/ScaleReceiver.js'
-
-import mapAesthetics from './utils/mapAesthetics.js'
-
 import {
   parseAesthetic,
   parseCoordinate,
@@ -13,9 +8,9 @@ import {
 } from './utils'
 
 export default {
-  mixins: [CoordinateTreeUser, DataReceiver, ScaleReceiver],
+  mixins: [CoordinateTreeUser],
 
-  inject: ['$$transform', '$$map'],
+  inject: ['$$transform'],
 
   props: {
     interpolate: {
@@ -33,16 +28,6 @@ export default {
       // TODO check if interpolation is necessary (i.e. if all parent
       // coordinate transformations are linear)
       return this.interpolate
-    },
-
-    context () {
-      return {
-        ranges: this.parentBranch.domains,
-        parentBranch: this.parentBranch,
-        dataInterface: this.$$dataInterface,
-        mappingOptions: this.$$map,
-        scaleManager: this.$$scaleManager
-      }
     }
   },
 
@@ -64,27 +49,7 @@ export default {
 
   render (createElement) {
     if (this.__update) {
-      if (!this.$$map) {
-        // Create svg element using aesthetics
-        return this.renderSVG(createElement, this.aesthetics)
-      }
-
-      if (this.$$map) {
-        // Create the aesthetics for each mark
-        let aestheticsPerMark = mapAesthetics(this.aesthetics, this.context)
-
-        // Create svg element for each mark from aesthetics
-        let components = []
-        for (let aesthetics of aestheticsPerMark) {
-          components.push(
-            this.renderSVG(createElement, aesthetics)
-          )
-        }
-
-        let mt = this.markType
-
-        return createElement('g', { attrs: { 'class': 'mark ' + mt } }, components)
-      }
+      return this.renderSVG(createElement, this.aesthetics)
     }
   }
 }

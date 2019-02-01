@@ -14,10 +14,19 @@ export default {
   },
 
   render (createElement) {
+    // let parsedScales = []
+
     let mappedElements = []
 
     this.$$dataInterface.forEachRow(props => {
       let slotContent = this.$scopedSlots.default(props)
+      slotContent = slotContent.constructor === Array ? slotContent : [slotContent]
+
+      // For every element in our slot, check what kind of element it is
+      for (let element of slotContent) {
+        console.log(element.componentOptions.propsData)
+      }
+
       mappedElements.push(slotContent)
     })
 
