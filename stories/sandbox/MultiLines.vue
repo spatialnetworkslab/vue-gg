@@ -9,10 +9,8 @@
       :x2="600"
       :y1="300"
       :y2="600"
-      :scales="{
-        x: 'xValues',
-        y: 'yValues'
-      }"
+      :scale-x="'xValues'"
+      :scale-y="'yValues'"
     >
 
       <vgg-data :transform="{ groupBy: 'colors' }">
@@ -20,9 +18,9 @@
         <vgg-map>
 
           <vgg-multi-line
-            :x="row => row.grouped.xValues"
-            :y="row => row.grouped.yValues"
-            :stroke="row => row.colors"
+            :x="{ get: row => row.grouped.xValues }"
+            :y="{ get: row => row.grouped.yValues }"
+            :stroke="{ get: row => row.colors }"
           />
 
         </vgg-map>
@@ -36,10 +34,8 @@
       :x2="600"
       :y1="5"
       :y2="250"
-      :scales="{
-        x: 'colors',
-        y: [0, 1]
-      }"
+      :scale-x="'colors'"
+      :scale-y="[0, 1]"
     >
 
       <vgg-data :transform="{ groupBy: 'colors' }">
@@ -47,12 +43,13 @@
         <vgg-map>
 
           <vgg-section
-            :x="row => row.colors"
+            :x="{ get: 'colors' }"
             :w="{ position: { positioner: 'bulge', padding: 10 } }"
             :y1="0"
             :y2="1"
-            :scales="{ x: [0, 1], y: [0, 1] }"
-            :data="row => row.grouped">
+            :scale-x="[0, 1]"
+            :scale-y="[0, 1]"
+            :data="{ get: 'grouped' }">
 
             <vgg-rectangle
               :x1="0"
@@ -64,10 +61,10 @@
 
             <vgg-map>
 
-              <vgg-symbol
-                :x="{ scale: 'xValues' }"
-                :y="{ scale: 'yValues' }"
-                :fill="row => row.colors"
+              <vgg-point
+                :x="{ get: 'xValues', scale: 'xValues' }"
+                :y="{ get: 'yValues', scale: 'yValues' }"
+                :fill="{ get: row => row.colors }"
               />
 
             </vgg-map>

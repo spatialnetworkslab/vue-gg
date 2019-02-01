@@ -1,15 +1,17 @@
 import createScale from '../../../scales/createScale.js'
+import createGeoScale from '../../../scales/createGeoScale.js'
 import createPositioner from '../../../positioners/createPositioner.js'
 
+import { transform } from '../../../utils/geojson.js'
 import { is, invalid } from '../../../utils/equals.js'
 import getDimension from '../../../utils/getDimension.js'
 import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 
 export default function (aesthetics, context) {
-  let dataContainer = context.dataContainer
+  let { dataInterface, mappingOptions } = context
 
-  // First, extract the assigners, scales, getter-funcs, positioners and replaceNA's
-  let { assigners, scales, funcs, positioners, replaceNA } = extractMappings(aesthetics)
+  // First, extract the assigners, scales, getters, positioners and replaceNA's
+  let { assigners, scales, getters, positioners, replaceNA } = extractMappings(aesthetics)
 
   // Second, we will parse the scales
   let parsedScales = parseScales(scales, context)
@@ -17,15 +19,26 @@ export default function (aesthetics, context) {
   // Third, we apply the scales, functions and assigners and calculate props for each mark
   let aestheticsPerMark = []
 
-  dataContainer.forEachRow((row, i, prevRow, nextRow) => {
-    let props = mapRow(row, i, prevRow, nextRow, aesthetics, scales, parsedScales, funcs, assigners, context)
+  if (mappingOptions.unit === 'row') {
+    dataInterface.forEachRow((row, i, prevRow, nextRow) => {
+      let props = mapRow(row, i, prevRow, nextRow, aesthetics, parsedScales, getters, assigners, context)
+      let parsedProps = parseProps(props, replaceNA, context)
+
+      if (parsedProps) {
+        aestheticsPerMark.push(parsedProps)
+      } else {
+        console.warn(`Skipping row ${i + 1} which contains unhandled invalid values`)
+      }
+    })
+  }
+
+  if (mappingOptions.unit === 'dataframe') {
+    let data = dataInterface.getDataset()
+    let props = mapRow(data, 0, null, null, aesthetics, parsedScales, getters, assigners, context)
     let parsedProps = parseProps(props, replaceNA, context)
-    if (parsedProps) {
-      aestheticsPerMark.push(parsedProps)
-    } else {
-      console.warn(`Skipping row ${i + 1} which contains unhandled invalid values`)
-    }
-  })
+
+    aestheticsPerMark.push(parsedProps)
+  }
 
   // Fourth, we will apply positioning if necessary
   aestheticsPerMark = applyPositioners(aestheticsPerMark, positioners, context)
@@ -36,7 +49,7 @@ export default function (aesthetics, context) {
 function extractMappings (mappings) {
   let assigners = {}
   let scales = {}
-  let funcs = {}
+  let getters = {}
   let positioners = {}
   let replaceNA = {}
 
@@ -49,8 +62,18 @@ function extractMappings (mappings) {
     if (passedProp.hasOwnProperty('scale')) {
       scales[aesKey] = passedProp.scale
     }
-    if (passedProp.hasOwnProperty('func')) {
-      funcs[aesKey] = passedProp.func
+    if (passedProp.hasOwnProperty('scaleGeo')) {
+      scales[aesKey] = passedProp.scaleGeo
+      scales[aesKey].geo = true
+    }
+    if (passedProp.hasOwnProperty('get')) {
+      // Getters can be specified as strings or functions. When specified as a string,
+      // the getter string will be converted to a function here.
+      if (passedProp.get.constructor === String) {
+        getters[aesKey] = row => row[passedProp.get]
+      } else {
+        getters[aesKey] = passedProp.get
+      }
     }
     if (passedProp.hasOwnProperty('position')) {
       positioners[aesKey] = passedProp.position
@@ -60,7 +83,7 @@ function extractMappings (mappings) {
     }
   }
 
-  return { assigners, scales, funcs, positioners, replaceNA }
+  return { assigners, scales, getters, positioners, replaceNA }
 }
 
 function parseScales (scales, context) {
@@ -68,84 +91,118 @@ function parseScales (scales, context) {
 
   for (let aesKey in scales) {
     let scalingOptions = scales[aesKey]
-    // The scale can be specified in three ways:
-    // 1. Set the scale with a shorthand with the default settings
-    // 2. Set the scale with a shorthand with custom settings
-    // 3. Set the scale by constructing your own scale
-
-    // 1. Set the scale with a shorthand with the default settings.
-    // Here we just need the string id of the variable we want to scale
-    if (scalingOptions.constructor === String) {
-      parsedScales[aesKey] = createScale(aesKey, context, {
-        variable: scalingOptions
-      })
-    }
-
-    if (scalingOptions.constructor === Object) {
-      // 2. Set the scale with a shorthand with custom settings
-      // In this case we need an object with options with at least a 'variable' key.
-      if (!scalingOptions.construct) {
-        parsedScales[aesKey] = createScale(aesKey, context, scalingOptions)
+    if (scalingOptions.geo) {
+      let { scaleX, scaleY } = createGeoScale(context, scalingOptions)
+      parsedScales[aesKey] = ([x, y]) => {
+        return [scaleX(x), scaleY(y)]
       }
-
-      // 3. Set the scale by constructing your own scale
-      // In this case we need a 'construct' function. 'variable' key is optional.
-      if (scalingOptions.construct) {
-        parsedScales[aesKey] = scalingOptions.construct(context)
-      }
+    } else {
+      parsedScales[aesKey] = createScale(aesKey, context, scalingOptions)
     }
   }
 
   return parsedScales
 }
 
-function mapRow (row, i, prevRow, nextRow, aesthetics, scales, parsedScales, funcs, assigners, context) {
+function mapRow (row, i, prevRow, nextRow, aesthetics, parsedScales, getters, assigners, context) {
   let props = {}
   for (let aesKey in aesthetics) {
-    // If a scale has been specified for this aesthetic:
-    if (is(scales[aesKey])) {
-      // If the scale was specified a string, it is assumed to be the
-      // identifier of a variable (see above).
-      if (scales[aesKey].constructor === String) {
-        let variable = scales[aesKey]
-        props[aesKey] = parsedScales[aesKey](row[variable])
-      }
+    let value
 
-      // If the scale was specified as an object:
-      if (scales[aesKey].constructor === Object) {
-        // If scales[key].variable is specified, it will be used
-        // as the identifier of a variable.
-        if (scales[aesKey].hasOwnProperty('variable')) {
-          let variable = scales[aesKey].variable
-          props[aesKey] = parsedScales[aesKey](row[variable])
-        } else {
-          // If scales[key].variable is not specified, we will pass the
-          // entire row to the mapping function instead of just the value for
-          // that variable in that row.
-          props[aesKey] = parsedScales[aesKey](row)
-        }
-      }
-    } else if (is(funcs[aesKey])) {
-      // If a function was used instead of a scale object:
-      // We pass it the entire row, the row index and the context object
-      let value = funcs[aesKey](row, i, prevRow, nextRow, context)
+    // If a 'get' option was specified:.
+    if (is(getters[aesKey])) {
+      // Use getter to get the right value
+      value = getters[aesKey](row, i, prevRow, nextRow, context)
 
-      // If the value is categorical or temporal, and a coord,
-      // we have to convert it to quantitative
+      // If a scale has been specified, we will also scale the value
+      if (parsedScales[aesKey]) {
+        value = applyScale(value, parsedScales[aesKey])
+      }
+    }
+
+    // If we are just assigning a constant:
+    if (is(assigners[aesKey])) {
+      value = assigners[aesKey]
+    }
+
+    if (is(value)) {
+      // Check if the value is non-quantitative
       let dimension = getDimension(aesKey)
       if (dimension && [String, Date].includes(value.constructor)) {
-        props[aesKey] = convertToQuantitative(value, dimension, context.parentBranch)
-      } else {
-        props[aesKey] = value
+        // If so, convert to quantitative
+        value = convertToQuantitative(value, dimension, context.parentBranch)
       }
-    } else if (is(assigners[aesKey])) {
-      // Finally, if there were no scales or getter functions specified,
-      // we will assign a constant value if necessary.
-      props[aesKey] = assigners[aesKey]
+
+      if (value.constructor === Array && [String, Date].includes(value[0].constructor)) {
+        value = value.map(v => convertToQuantitative(v, dimension, context.parentBranch))
+      }
+
+      props[aesKey] = value
     }
   }
 
   return props
+}
+
+function applyScale (value, scale) {
+  if (value.constructor === Array) {
+    // points (array of arrays)
+    if (value[0].constructor === Array) {
+      // TODO
+    }
+
+    // coordinateSet (array of x or y coordinates)
+    if (value[0].constructor !== Array) {
+      return value.map(val => scale(val))
+    }
+  } else if (value.constructor === Object) {
+    // geojson feature
+    if (value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')) {
+      return transform(value, scale)
+    }
+  } else {
+    return scale(value)
+  }
+}
+
+function parseProps (props, replaceNA, context) {
+  let newProps = {}
+
+  for (let propKey in props) {
+    let propValue = props[propKey]
+    let replaceValue = replaceNA[propKey]
+
+    // If the passed value is undefined, and there is no valid replace value,
+    // we will just skip the row
+    if (invalid(propValue) && invalid(replaceValue)) {
+      return undefined
+    }
+
+    if (!invalid(replaceValue)) {
+      // If the value is categorical or temporal, and a coord-type prop,
+      // we have to convert it to quantitative
+      let dimension = getDimension(propKey)
+      let convertedReplaceValue
+
+      if (dimension && [String, Date].includes(replaceValue.constructor)) {
+        convertedReplaceValue = convertToQuantitative(replaceValue, dimension, context.parentBranch)
+      } else {
+        convertedReplaceValue = replaceValue
+      }
+
+      if (invalid(propValue)) {
+        newProps[propKey] = convertedReplaceValue
+      } else if (propValue.constructor === Array) {
+        newProps[propKey] = propValue.map(value => invalid(value) ? convertedReplaceValue : value)
+      } else {
+        newProps[propKey] = props[propKey]
+      }
+    } else {
+      newProps[propKey] = props[propKey]
+    }
+  }
+
+  return newProps
 }
 
 function applyPositioners (aestheticsPerMark, positioners, context) {
@@ -187,28 +244,4 @@ function applyPositioners (aestheticsPerMark, positioners, context) {
   }
 
   return aestheticsPerMark
-}
-
-function parseProps (props, replaceNA, context) {
-  let newProps = {}
-
-  for (let propKey in props) {
-    if (invalid(props[propKey])) {
-      let replaceValue = replaceNA[propKey]
-      if (invalid(replaceValue)) { return undefined }
-
-      // If the value is categorical or temporal, and a coord,
-      // we have to convert it to quantitative
-      let dimension = getDimension(propKey)
-      if (dimension && [String, Date].includes(replaceValue.constructor)) {
-        newProps[propKey] = convertToQuantitative(replaceValue, dimension, context.parentBranch)
-      } else {
-        newProps[propKey] = replaceValue
-      }
-    } else {
-      newProps[propKey] = props[propKey]
-    }
-  }
-
-  return newProps
 }

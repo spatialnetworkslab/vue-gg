@@ -4,6 +4,7 @@ import Graphic from './Core/Graphic.vue'
 import Map from './Core/Map.vue'
 import Section from './Core/SectionWrapper.vue'
 import Data from './Core/Data.vue'
+import Scales from './Core/Scales.vue'
 
 import PlotTitle from './Elements/PlotTitle.vue'
 
@@ -21,7 +22,7 @@ import Line from './Marks/Line.vue'
 import MultiLine from './Marks/MultiLine.vue'
 import Area from './Marks/Area.vue'
 import Path from './Marks/Path.vue'
-// import Point from './Marks/Point.vue'
+import Point from './Marks/Point.vue'
 import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
 import Label from './Marks/Label.vue'
@@ -33,6 +34,7 @@ export default {
   Map,
   Section,
   Data,
+  Scales,
 
   PlotTitle,
 
@@ -47,7 +49,7 @@ export default {
   MultiLine,
   Area,
   Path,
-  // Point,
+  Point,
   Polygon,
   Rectangle,
   Label,

@@ -1,49 +1,48 @@
 <template>
   <vgg-section
-    class="y-axis"
     :x1="ranges.x1"
     :x2="ranges.x2"
     :y1="ranges.y1"
     :y2="ranges.y2"
-    :scales="{
-      x: [0, 1],
-      y: [0, 1]
-    }"
+    :scale-x="[0, 1]"
+    :scale-y="[0, 1]"
+    class="y-axis"
   >
 
     <!-- Main line -->
     <vgg-line
-      class="y-axis-line"
       :x1="0.5"
       :y1="0"
       :x2="0.5"
       :y2="1"
       :stroke-width="1"
+      class="y-axis-line"
     />
 
     <!-- Ticks -->
     <vgg-section
       v-if="scale !== undefined"
-      class="y-axis-ticks"
       :x1="0"
       :x2="1"
       :y1="0"
       :y2="1"
-      :scales="{
-        y: scale
-      }"
+      :scale-y="scale"
+      class="y-axis-ticks"
     >
 
-      <vgg-data :data="tickData">
+      <vgg-data
+        :data="tickData"
+        class="y-axis-data"
+      >
 
         <vgg-map>
 
           <!-- Tick lines -->
           <vgg-line
             :x1="0.5"
-            :y1="tick => tick.value"
+            :y1="{ get: tick => tick.value }"
             :x2="flip ? 0.65 : 0.35"
-            :y2="tick => tick.value"
+            :y2="{ get: tick => tick.value }"
             :stroke-width="0.5"
           />
 
@@ -51,8 +50,8 @@
           <vgg-label
             v-if="!rotateLabel"
             :x="flip ? 0.45 : 0.59"
-            :y="tick => tick.value"
-            :text="tick => tick.label"
+            :y="{ get: tick => tick.value }"
+            :text="{ get: tick => tick.label }"
             :font-size="10"
             :anchor-point="flip ? 'r' : 'l'"
           />
@@ -60,8 +59,8 @@
           <vgg-label
             v-if="rotateLabel"
             :x="flip ? 0.41 : 0.59"
-            :y="tick => tick.value"
-            :text="tick => tick.label"
+            :y="{ get: tick => tick.value }"
+            :text="{ get: tick => tick.label }"
             :font-size="10"
             :rotation="flip ? -30 : 30"
             :anchor-point="flip ? 'r' : 'l'"

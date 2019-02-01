@@ -12,13 +12,23 @@ export default {
       default: 'scale'
     },
 
-    scales: {
+    scaleX: {
+      type: [Object, String, Array, undefined],
+      default: undefined
+    },
+
+    scaleY: {
+      type: [Object, String, Array, undefined],
+      default: undefined
+    },
+
+    scaleGeo: {
       type: [Object, undefined],
       default: undefined
     },
 
     data: {
-      type: [Function, Array, Object, undefined],
+      type: [Array, Object, undefined],
       default: undefined
     },
 
@@ -34,21 +44,35 @@ export default {
   },
 
   computed: {
+    scales () {
+      if (this.scaleX || this.scaleY || this.scaleGeo) {
+        let scales = {}
+        if (this.scaleX) { scales.x = this.scaleX }
+        if (this.scaleY) { scales.y = this.scaleY }
+        if (this.scaleGeo) { scales.geo = this.scaleGeo }
+
+        return scales
+      }
+    },
+
     _sectionData () {
       if (!this.$$map) {
-        if (this.data && this.data.constructor === Function) {
-          console.warn('Can only use getter function when mapping')
-          return undefined
-        } else {
-          return this.data
-        }
+        return this.data
       }
 
       if (this.$$map) {
-        if (this.data && this.data.constructor === Function) {
-          return { func: this.data }
+        if (this.data) {
+          if (this.data.constructor !== Object) {
+            throw new Error(`When mapping, it is only allowed to pass a mapping object to section`)
+          }
+
+          if (this.data.hasOwnProperty('get') && Object.keys(this.data).length === 1) {
+            return this.data
+          } else {
+            throw new Error('Invalid mapping object')
+          }
         } else {
-          return { assign: this.data }
+          return { assign: undefined }
         }
       }
     },

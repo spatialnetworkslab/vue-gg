@@ -2,8 +2,8 @@ import { ticks as arrayTicks } from 'd3-array'
 import { scaleTime } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
-import Rectangular from '../../mixins/Marks/Rectangular.js'
-import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
+import Rectangular from '../Marks/Rectangular.js'
+import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
 export default {
   mixins: [Rectangular],
@@ -42,11 +42,7 @@ export default {
 
   computed: {
     _parsedScalingOptions () {
-      let variableDomains
-      if (this.$$dataContainer) {
-        variableDomains = this.$$dataContainer.getDomains()
-      }
-      return parseScaleSpecification(this.scale, variableDomains)
+      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {
@@ -100,7 +96,6 @@ export default {
             return { value: date, label: format(date) }
           })
         }
-
         return ticks
       }
     }

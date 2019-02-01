@@ -41,8 +41,8 @@ module.exports = {
               children: [
                 'concepts/data-loading.md',
                 'concepts/transforming-data.md',
-                'concepts/mappability.md',
-                'concepts/scaling.md'
+                'concepts/scaling.md',
+                'concepts/positioning.md'
               ]
             },
             {
@@ -53,6 +53,7 @@ module.exports = {
                     'core/section',
                     'core/data',
                     'core/map',
+                    'core/scales',
                     'core/glyph'
                     ]
             },

@@ -16,13 +16,13 @@
         <vgg-map>
 
           <vgg-symbol
-            :x="{ scale: 'explanatory' }"
-            :y="{ scale: 'dependent' }"
+            :x="{ get: 'explanatory', scale: 'explanatory' }"
+            :y="{ get: 'dependent', scale: 'dependent' }"
             :size="16"
             :shape="shape"
             :stroke="stroke"
             :fill="fill"
-            :strokeWidth="1"
+            :stroke-width="1"
           />
         </vgg-map>
 

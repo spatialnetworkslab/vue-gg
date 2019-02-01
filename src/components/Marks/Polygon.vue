@@ -4,12 +4,6 @@ import Path from '../../mixins/Marks/Path.js'
 export default {
   mixins: [Path],
 
-  data () {
-    return {
-      markType : 'polygon-mark'
-    }
-  },
-
   props: {
     sort: {
       type: undefined,
@@ -32,8 +26,14 @@ export default {
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: '#000000'
+    }
+  },
+
+  data () {
+    return {
+      markType: 'polygon-mark'
     }
   }
 }
