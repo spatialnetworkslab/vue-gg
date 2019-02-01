@@ -78,8 +78,6 @@ export default {
       type: String,
       default: 'black'
     },
-
-    // labelFlush (not sure what this is)
     
     labelFont: {
       type: String,
@@ -95,26 +93,18 @@ export default {
       type: [String, Number],
       default: 'normal'
     },
-
-    // labelLimit (also not sure what this is)
     
     labelOpacity: {
       type: Number,
       default: 1
     },
-
-    // labelOverlap
     
     // Distance between tick and label **
     labelPadding: {
       type: Number,
       default: 0
     },
-
-    // minExtent, maxExtent, offset
     
-    // POSITION???
-
     labelRotate: {
       type: Boolean,
       default: false
@@ -140,33 +130,22 @@ export default {
       default: 10
     },
 
-    // tickExtra
-    
-    // What is this?
-    tickOffset: {
-      type: Number,
-      default: 0
+    tickExtra: {
+      type: Boolean,
+      default: true
     },
 
     tickOpacity: {
       type: Number,
       default: 1
     },
-
-    // tickRound
     
-    // TODO **
     tickSize: {
       type: Number,
       default: 7
     },
 
     tickWidth: {
-      type: Number,
-      default: 0.5
-    },
-    
-    tickPosition: {
       type: Number,
       default: 0.5
     },
@@ -206,8 +185,6 @@ export default {
       type: Number,
       default: 500
     },
-
-    // titleLimit (what is this?)
     
     titleOpacity: {
       type: Number,

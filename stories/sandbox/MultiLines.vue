@@ -72,6 +72,14 @@
 
             </vgg-map>
 
+            <vgg-x-axis
+              :scale="'xValues'"
+            />
+
+            <vgg-y-axis
+              :scale="'yValues'"
+            />
+
           </vgg-section>
 
         </vgg-map>

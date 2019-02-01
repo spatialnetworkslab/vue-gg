@@ -52,6 +52,17 @@
 
       <vgg-data :data="tickData">
 
+        <vgg-line
+          v-if="tickExtra"
+          :x1="_domain[0]"
+          :y1="0.5"
+          :x2="_domain[0]"
+          :y2="flip ? tickMax : tickMin"
+          :stroke="tickColor"
+          :stroke-opacity="tickOpacity"
+          :stroke-width="tickWidth"
+        />
+
         <vgg-map>
 
           <!-- Tick lines -->
