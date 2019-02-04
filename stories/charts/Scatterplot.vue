@@ -27,7 +27,7 @@
 
     </vgg-section>
 
-    <!-- <vgg-x-grid
+    <vgg-x-grid
       :x1="100"
       :x2="500"
       :y1="100"
@@ -58,7 +58,7 @@
       :y2="500"
       :scale="'b'"
       flip
-    /> -->
+    />
 
   </vgg-graphic>
 </template>

@@ -31,7 +31,7 @@ export default {
 
   render (createElement) {
     if (this.__update) {
-      return this.renderSVG(createElement, this.aesthetics)
+      return this.renderSVG(createElement)
     }
   }
 }
