@@ -1,7 +1,6 @@
 <script>
 import Section from './Section.vue'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import mapAesthetics from '../../mixins/Marks/utils/mapAesthetics.js'
 
 export default {
   mixins: [Rectangular],
@@ -53,52 +52,6 @@ export default {
 
         return scales
       }
-    },
-
-    _sectionData () {
-      if (!this.$$map) {
-        return this.data
-      }
-
-      if (this.$$map) {
-        if (this.data) {
-          if (this.data.constructor !== Object) {
-            throw new Error(`When mapping, it is only allowed to pass a mapping object to section`)
-          }
-
-          if (this.data.hasOwnProperty('get') && Object.keys(this.data).length === 1) {
-            return this.data
-          } else {
-            throw new Error('Invalid mapping object')
-          }
-        } else {
-          return { assign: undefined }
-        }
-      }
-    },
-
-    aesthetics () {
-      if (this.invalidX) {
-        throw new Error('Invalid combination of props x1, x2, x and w')
-      }
-
-      if (this.invalidY) {
-        throw new Error('Invalid combination of props y1, y2, y and h')
-      }
-
-      return {
-        x1: this.parseCoordinate(this.x1, { dimension: 'x' }),
-        x2: this.parseCoordinate(this.x2, { dimension: 'x' }),
-        y1: this.parseCoordinate(this.y1, { dimension: 'y' }),
-        y2: this.parseCoordinate(this.y2, { dimension: 'y' }),
-        x: this.parseCoordinate(this.x, { dimension: 'x' }),
-        y: this.parseCoordinate(this.y, { dimension: 'y' }),
-        w: this.parseCoordinate(this.w, { dimension: 'x', wh: true }),
-        h: this.parseCoordinate(this.h, { dimension: 'y', wh: true }),
-        color: this.parseAesthetic(this.color, { default: '#000000' }),
-
-        data: this._sectionData
-      }
     }
   },
 
@@ -111,7 +64,16 @@ export default {
       }
     },
 
-    renderSection (createElement, aesthetics) {
+    renderSection (createElement) {
+      if (this.invalidX) {
+        throw new Error('Invalid combination of props x1, x2, x and w')
+      }
+
+      if (this.invalidY) {
+        throw new Error('Invalid combination of props y1, y2, y and h')
+      }
+
+      let aesthetics = this.$options.propsData
       let ranges = this.calculateRanges(aesthetics)
 
       return createElement(Section, {
@@ -119,7 +81,7 @@ export default {
           type: this.type,
           scales: this.scales,
           ranges,
-          data: aesthetics.data,
+          data: this.data,
           format: this.format,
           transform: this.transform
         }
@@ -128,23 +90,7 @@ export default {
   },
 
   render (createElement) {
-    if (!this.$$map) {
-      return this.renderSection(createElement, this.aesthetics)
-    }
-
-    if (this.$$map) {
-      let aestheticsPerSection = mapAesthetics(this.aesthetics, this.context)
-
-      // Create svg element for each mark from aesthetics
-      let sections = []
-      for (let aesthetics of aestheticsPerSection) {
-        sections.push(
-          this.renderSection(createElement, aesthetics)
-        )
-      }
-
-      return createElement('g', sections)
-    }
+    return this.renderSection(createElement, this.aesthetics)
   }
 }
 </script>
