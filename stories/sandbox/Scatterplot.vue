@@ -17,11 +17,11 @@
 
         <vgg-map>
 
-          <vgg-symbol
-            :x="{ scale: 'explanatory' }"
-            :y="{ scale: 'dependent' }"
-            :size="{ scale: { variable: 'dependent' } }"
-            :fill="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
+          <vgg-point
+            :x="{ get: 'explanatory', scale: 'explanatory' }"
+            :y="{ get: 'dependent', scale: 'dependent' }"
+            :radius="{ get: 'dependent', scale: { domain: 'dependent' } }"
+            :fill="{ get: 'explanatory', scale: { type: 'viridis', domain: 'explanatory' } }"
           />
         </vgg-map>
 

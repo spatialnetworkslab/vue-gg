@@ -8,7 +8,7 @@ export default {
 
   data () {
     return {
-      markType : 'rectangle-mark'
+      markType: 'rectangle-mark'
     }
   },
 

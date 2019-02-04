@@ -2,6 +2,9 @@ import calculateDomains from './calculateDomains.js'
 // const formats = ['row', 'column', 'geojson']
 // const variableTypes = ['quantitative', 'temporal', 'categorical', 'geometry']
 
+const pointRegex = /\./g
+const forbiddenChars = /[.#\/]/
+
 export default class {
   constructor (data, format) {
     this._dataset = {}
@@ -109,24 +112,36 @@ export default class {
     return this._dataset
   }
 
-  getDomain (variable) {
-    return this._domains[variable]
+  getDomain (colName) {
+    return this._domains[colName]
   }
 
   getDomains () {
     return this._domains
   }
 
+  getType (colName) {
+    return this._types[colName]
+  }
+
   getTypes () {
     return this._types
   }
 
-  hasColumn (variable) {
-    return this._dataset.hasOwnProperty(variable)
+  hasColumn (colName) {
+    if (colName.match(pointRegex)) {
+      let sliced = colName.split('.')[0]
+      return this._dataset.hasOwnProperty(sliced)
+    }
+    return this._dataset.hasOwnProperty(colName)
   }
 
-  getColumn (variable) {
-    return this._dataset[variable]
+  getColumn (colName) {
+    if (colName.match(pointRegex)) {
+      let sliced = colName.split('.')[0]
+      return this._dataset[sliced]
+    }
+    return this._dataset[colName]
   }
 
   forEachRow (fn) {
@@ -155,8 +170,10 @@ function checkFormat (data) {
 
   let len = null
 
-  for (let key in data) {
-    let col = data[key]
+  for (let colName in data) {
+    checkColName(colName)
+
+    let col = data[colName]
     if (col.constructor !== Array) {
       throw new Error('Data in column-format must be passed as an object of arrays')
     }
@@ -171,6 +188,12 @@ function checkFormat (data) {
   }
 
   return len
+}
+
+export function checkColName (colName) {
+  if (colName.match(forbiddenChars)) {
+    throw new Error(`Invalid column name '${colName}': '.', '#', and '/' not allowed'`)
+  }
 }
 
 function initColumnDF (data) {

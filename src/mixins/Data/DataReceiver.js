@@ -1,9 +1,9 @@
 export default {
-  inject: ['$$dataContainerContext'],
+  inject: ['$$dataManager', '$$dataScope'],
 
   computed: {
-    $$dataContainer () {
-      return this.$$dataContainerContext.dataContainer
+    $$dataInterface () {
+      return this.$$dataManager.createInterface(this.$$dataScope)
     }
   }
 }

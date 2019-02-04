@@ -5,7 +5,7 @@ import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {
-    let scale = scalingOptions.scale || 'blues'
+    let scale = scalingOptions.type || 'blues'
     checkValidScale(prop, variableType, scale, quantitative)
 
     let scaleFunc = quantitative[scale](domain, scalingOptions.domainMid)
@@ -18,9 +18,9 @@ export default function (prop, variableType, domain, scalingOptions) {
   }
 
   if (variableType === 'categorical') {
-    let scale = scalingOptions.scale || 'colors'
+    let scale = scalingOptions.type || 'colors'
     checkValidScale(prop, variableType, scale, categorical)
 
-    return categorical[scale](domain)
+    return categorical[scale](domain, scalingOptions.range)
   }
 }

@@ -12,7 +12,8 @@
         :x2="400"
         :y1="0"
         :y2="400"
-        :scales="domains">
+        :scale-x="domains.x"
+        :scale-y="domains.y">
 
         <vgg-section
           v-for="(cs, i) in nestedCoordinateSystems"
@@ -22,7 +23,8 @@
           :x2="cs.x2"
           :y1="cs.y"
           :y2="cs.y2"
-          :scales="domains"
+          :scale-x="domains.x"
+          :scale-y="domains.y"
         >
 
           <vgg-point

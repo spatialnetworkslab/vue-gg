@@ -1,5 +1,6 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
 import DataReceiver from '../Data/DataReceiver.js'
+import ScaleReceiver from '../Scales/ScaleReceiver.js'
 
 import mapAesthetics from './utils/mapAesthetics.js'
 
@@ -12,7 +13,7 @@ import {
 } from './utils'
 
 export default {
-  mixins: [CoordinateTreeUser, DataReceiver],
+  mixins: [CoordinateTreeUser, DataReceiver, ScaleReceiver],
 
   inject: ['$$transform', '$$map'],
 
@@ -36,10 +37,11 @@ export default {
 
     context () {
       return {
-        domains: this.$$dataContainer.getDomains(),
         ranges: this.parentBranch.domains,
         parentBranch: this.parentBranch,
-        dataContainer: this.$$dataContainer
+        dataInterface: this.$$dataInterface,
+        mappingOptions: this.$$map,
+        scaleManager: this.$$scaleManager
       }
     }
   },
@@ -81,7 +83,7 @@ export default {
 
         let mt = this.markType
 
-        return createElement('g', {attrs: { 'class': 'mark ' + mt }}, components)
+        return createElement('g', { attrs: { 'class': 'mark ' + mt } }, components)
       }
     }
   }

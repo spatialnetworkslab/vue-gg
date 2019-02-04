@@ -94,9 +94,7 @@ class Branch {
 
   update (coordinateTransformation) {
     for (let key in coordinateTransformation) {
-      if (key !== 'dataContainer') {
-        this[key] = coordinateTransformation[key]
-      }
+      this[key] = coordinateTransformation[key]
     }
   }
 }

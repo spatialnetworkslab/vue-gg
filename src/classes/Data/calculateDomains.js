@@ -41,6 +41,9 @@ export default function (data, length) {
 
         domains['geometry.x'] = bbox.x
         domains['geometry.y'] = bbox.y
+
+        types['geometry.x'] = 'quantitative'
+        types['geometry.y'] = 'quantitative'
       } else {
         let uniqueValues = calculateUniqueValues(col)
 

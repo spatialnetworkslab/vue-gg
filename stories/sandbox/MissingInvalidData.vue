@@ -12,9 +12,9 @@
 
     <vgg-map>
 
-      <vgg-symbol
-        :x="{ scale: 'a' }"
-        :y="{ scale: 'b', NA: 300 }"
+      <vgg-point
+        :x="{ get: 'a', scale: 'a' }"
+        :y="{ get: 'b', scale: 'b', NA: 300 }"
       />
 
     </vgg-map>

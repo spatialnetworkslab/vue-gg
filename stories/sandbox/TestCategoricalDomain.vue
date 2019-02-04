@@ -14,16 +14,14 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: 'date',
-        y: [0, 100]
-      }"
+      :scale-x="'date'"
+      :scale-y="[0, 100]"
     >
 
       <vgg-map>
 
-        <vgg-symbol
-          :x="row => row.date"
+        <vgg-point
+          :x="{ get: row => row.date }"
           :y="50"
           :size="14"
         />

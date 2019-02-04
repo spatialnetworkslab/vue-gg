@@ -1,14 +1,12 @@
 <template>
   <vgg-section
-    class="x-axis"
     :x1="ranges.x1"
     :x2="ranges.x2"
     :y1="ranges.y1"
     :y2="ranges.y2"
-    :scales="{
-      x: [0, 1],
-      y: [0, 1]
-    }"
+    :scale-x="[0, 1]"
+    :scale-y="[0, 1]"
+    class="x-axis"
   >
 
     <!-- Main line -->
@@ -26,6 +24,7 @@
 
     <!-- Axis title -->
     <vgg-label
+      class="x-axis-title"
       :x="titlePosX"
       :y="titlePosY"
       :text="title"
@@ -40,17 +39,19 @@
 
     <!-- Ticks -->
     <vgg-section
-      class="x-axis-ticks"
+      v-if="scale !== undefined"
       :x1="0"
       :x2="1"
       :y1="0"
       :y2="1"
-      :scales="{
-        x: scale,
-      }"
+      :scale-x="scale"
+      class="x-axis-ticks"
     >
 
-      <vgg-data :data="tickData">
+      <vgg-data
+        :data="tickData"
+        class="x-axis-data"
+      >
 
         <vgg-line
           v-if="tickExtra"
@@ -68,9 +69,9 @@
           <!-- Tick lines -->
           <vgg-line
             v-if="ticks"
-            :x1="tick => tick.value"
+            :x1="{ get: tick => tick.value }"
             :y1="0.5"
-            :x2="tick => tick.value"
+            :x2="{ get: tick => tick.value }"
             :y2="flip ? tickMax : tickMin"
             :stroke="tickColor"
             :stroke-opacity="tickOpacity"
@@ -80,9 +81,9 @@
           <!-- Tick labels -->
           <vgg-label
             v-if="(!labelRotate) && labels"
-            :x="tick => tick.value"
+            :x="{ get: tick => tick.value }"
             :y="flip ? (tickMax + 0.03) : (tickMin - 0.03)"
-            :text="tick => tick.label"
+            :text="{ get: tick => tick.label }"
             :font-family="labelFont"
             :font-size="labelFontSize"
             :font-weight="labelFontWeight"
@@ -93,9 +94,9 @@
 
           <vgg-label
             v-if="labelRotate && labels"
-            :x="tick => tick.value"
+            :x="{ get: tick => tick.value }"
             :y="flip ? (tickMax + 0.03) : (tickMin - 0.03)"
-            :text="tick => tick.label"
+            :text="{ get: tick => tick.label }"
             :font-family="labelFont"
             :font-size="labelFontSize"
             :font-weight="labelFontWeight"
@@ -158,8 +159,6 @@ export default {
     posY () {
       let yRange = this.yRange
       let yDomain = this.yDomain
-
-      console.log(yRange, yDomain)
 
       let yMin = Math.min(yRange[0], yRange[1])
       let yMax = Math.max(yRange[0], yRange[1])

@@ -1,26 +1,32 @@
 import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
+import createGeoScale from '../../scales/createGeoScale.js'
 
-import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
-import parseRange from '../../utils/parseRange.js'
+import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
+import parseRange from '../../scales/utils/parseRange.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
-    this.setTransformation(options)
+    if (options.scales.hasOwnProperty('geo')) {
+      this.setGeoTransformation(options)
+    } else {
+      this.setTransformation(options)
+    }
   }
 
   setTransformation (options) {
-    let scaleSpecifications = options.scales
+    let scaleOptions = options.scales
     let ranges = options.ranges
 
-    let variableDomains
+    let dataInterface = options.dataInterface
+    let scaleManager = options.scaleManager
 
-    if (options.dataContainer) {
-      variableDomains = options.dataContainer.getDomains()
-    }
-
-    // Check for validity, and fetch variable domains from dataContainer if necessary
-    let [domainX, domainXType, scaleOptionsX] = parseScaleSpecification(scaleSpecifications.x, variableDomains)
-    let [domainY, domainYType, scaleOptionsY] = parseScaleSpecification(scaleSpecifications.y, variableDomains)
+    // Check for validity, and fetch variable domains with dataInterface if necessary
+    let [domainX, domainXType, scaleOptionsX] = parseScaleOptions(
+      scaleOptions.x, dataInterface, scaleManager
+    )
+    let [domainY, domainYType, scaleOptionsY] = parseScaleOptions(
+      scaleOptions.y, dataInterface, scaleManager
+    )
 
     // Store domains and ranges
     this.domainTypes = {
@@ -103,6 +109,31 @@ export default class CoordinateTransformation {
 
         return [toRangeX(cartesian[0]), toRangeY(cartesian[1])]
       }
+    }
+  }
+
+  setGeoTransformation (options) {
+    // let geoOptions = options.scales.geo TODO
+    let ranges = options.ranges
+    let dataInterface = options.dataInterface
+
+    let domainX = dataInterface.getDomain('geometry.x')
+    let domainY = dataInterface.getDomain('geometry.y')
+
+    this.domains = { x: domainX, y: domainY }
+    this.domainTypes = { x: 'quantitative', y: 'quantitative' }
+    this.ranges = ranges
+
+    let { scaleX, scaleY, center } = createGeoScale(options)
+    this.scaleX = scaleX
+    this.scaleY = scaleY
+    this.center = center
+
+    this.getX = this.scaleX
+    this.getY = this.scaleY
+
+    this.transform = ([x, y]) => {
+      return [this.getX(x), this.getY(y)]
     }
   }
 }

@@ -31,20 +31,18 @@
           :x2="500"
           :y1="100"
           :y2="500"
-          :scales="{
-            x: [0, 100],
-            y: [0, 50]
-          }"
+          :scale-x="[0, 100]"
+          :scale-y="[0, 50]"
         >
 
           <vgg-map>
 
             <vgg-rectangle
-              :x1="row => row.lowerBound"
-              :x2="row => row.upperBound"
+              :x1="{ get: 'lowerBound' }"
+              :x2="{ get: 'upperBound' }"
               :y1="0"
-              :y2="{ scale: { variable: 'binCount', domain: [0, null] } }"
-              :fill="{ scale: { scale: 'blues', variable: 'upperBound', domain: [0, null] } }"
+              :y2="{ get: 'binCount', scale: { domain: 'binCount', domainMin: 0 } }"
+              :fill="{ get: 'upperBound', scale: { type: 'blues', domain: 'upperBound', domainMin: 0 } }"
             />
 
           </vgg-map>
@@ -57,7 +55,7 @@
           />
 
           <vgg-y-axis
-            :scale="{ variable: 'binCount', domain: [0, null] }"
+            :scale="{ domain: 'binCount', domainMin: 0 }"
             :hjust="-.05"
             flip
           />

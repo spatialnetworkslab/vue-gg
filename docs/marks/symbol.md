@@ -4,7 +4,11 @@ title: Symbol Mark
 
 # Component tag
 
+<<<<<<< HEAD
 `<vgg-symbol>`
+=======
+`<vgg-point>`
+>>>>>>> fb380af3d73f710f2d5cebefa401975448ebd89e
 
 # Description
 

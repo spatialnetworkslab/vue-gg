@@ -6,31 +6,25 @@ import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 export default {
   mixins: [Mark],
 
-  data () {
-    return {
-      markType : 'line-mark'
-    }
-  },
-
   props: {
     // Mappable
     x1: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     y1: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
@@ -40,38 +34,44 @@ export default {
     },
 
     stroke: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: undefined
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
+      type: [String, Object, undefined],
       default: undefined
     },
 
     strokeWidth: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     opacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     strokeOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     fillOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, Object, undefined],
       default: undefined
     },
 
     transition: {
       type: Number,
       default: 0
+    }
+  },
+
+  data () {
+    return {
+      markType: 'line-mark'
     }
   },
 

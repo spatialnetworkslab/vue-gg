@@ -12,43 +12,48 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: [0, 100],
-        y: [0, 100]
-      }"
+      :scale-x="[0, 100]"
+      :scale-y="[0, 100]"
     >
 
-      <vgg-plot-title :margin="0" text="Subsection" :vMargin="-20" />
+      <vgg-plot-title
+        :margin="0"
+        :v-margin="-20"
+        text="Subsection"
+      />
 
       <vgg-map>
 
         <vgg-rectangle
-          :x="{ scale: 'fruit' }"
+          :x="{ get: 'fruit', scale: 'fruit' }"
           :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
+          :y2="{ get: 'quantity', scale: { domain: 'quantity', domainMin: 0 } }"
         />
 
         <vgg-line
-          :x1="{ scale: 'fruit' }"
-          :x2="{ scale: 'fruit' }"
+          :x1="{ get: 'fruit', scale: 'fruit' }"
+          :x2="{ get: 'fruit', scale: 'fruit' }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
+          :y2="{ get: 'quantity', scale: { domain: 'quantity', domainMin: 0 } }"
           stroke="#ced02d"
         />
 
         <vgg-section
-          :x="{ scale: 'fruit' }"
+          :x="{ get: 'fruit', scale: 'fruit' }"
           :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
-          :scales="{
-            x: [-1, 1],
-            y: [-1, 1]
-          }"
+          :y2="{ get: 'quantity', scale: { domain: 'quantity', domainMin: 0 } }"
+          :scale-x="[-1, 1]"
+          :scale-y="[-1, 1]"
         >
 
-          <vgg-plot-title :margin="0" text="bar" :vMargin="20" color="white" />
+          <vgg-plot-title
+            :margin="0"
+            :v-margin="20"
+            text="bar"
+            color="white"
+          />
 
           <vgg-symbol
             :x="0"
@@ -69,7 +74,7 @@
       />
 
       <vgg-y-axis
-        :scale="{ variable: 'quantity', domain: [0, null] }"
+        :scale="{ domain: 'quantity', domainMin: 0 }"
         :hjust="-.05"
         flip
       />

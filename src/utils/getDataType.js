@@ -1,4 +1,4 @@
-export default function (value) {
+export default function (value, throwError) {
   switch (value.constructor) {
     case Number:
       return 'quantitative'
@@ -13,9 +13,18 @@ export default function (value) {
         if (Object.values(value).every(val => val.constructor === Array)) {
           return 'nested'
         } else {
-          throw new Error('Invalid data')
+          if (throwError) {
+            throw new Error('Invalid data')
+          } else {
+            return undefined
+          }
         }
       }
-    default: throw new Error('Invalid data')
+    default:
+      if (throwError) {
+        throw new Error('Invalid data')
+      } else {
+        return undefined
+      }
   }
 }

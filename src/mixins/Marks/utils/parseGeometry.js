@@ -1,4 +1,5 @@
 import { is, isnt } from '../../../utils/equals.js'
+import getDataType from '../../../utils/getDataType.js'
 import convertToQuantitative from '../../../utils/convertToQuantitative.js'
 import { invalidValueForRangeType } from './parseCoordinateSet.js'
 
@@ -22,16 +23,17 @@ export default function (prop, options) {
   if (this.$$map) {
     if (options.geojson) {
       if (is(prop) && prop.constructor === Object) {
-        return { assign: prop }
+        if (getDataType(prop, false) === 'geometry') {
+          return { assign: prop }
+        } else {
+          checkMappingObject(prop)
+          return prop
+        }
       }
     } else {
       if (is(prop) && prop.constructor === Array) {
         return { assign: parseArray(prop, this.parentRangeTypes, this.parentBranch) }
       }
-    }
-
-    if (is(prop) && prop.constructor === Function) {
-      return { func: prop }
     }
 
     if (isnt(prop)) {
@@ -69,4 +71,16 @@ function parseArray (data, parentRangeTypes, parentBranch) {
   }
 
   return parsed
+}
+
+function checkMappingObject (obj) {
+  if (!obj.hasOwnProperty('get')) {
+    throw new Error(`Missing required mapping option 'get'`)
+  }
+
+  const allowed = ['get', 'scaleGeo']
+
+  for (let key in obj) {
+    if (!allowed.includes(key)) { throw new Error(`Invalid mapping option '${key}'`) }
+  }
 }
