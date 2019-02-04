@@ -99,7 +99,9 @@ export default {
       return `rotate(${rotation}, ${cx}, ${cy})`
     },
 
-    renderSVG (createElement, aesthetics) {
+    renderSVG (createElement) {
+      let aesthetics = this._props
+
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
       let anchorPoint = textAnchorPoint(this.anchorPoint)

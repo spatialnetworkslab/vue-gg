@@ -58,7 +58,7 @@ export default {
 
   methods: {
     renderSVG (createElement) {
-      let aesthetics = this.$options.propsData
+      let aesthetics = this._props
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
       return createElement('circle', {

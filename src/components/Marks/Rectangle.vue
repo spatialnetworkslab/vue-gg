@@ -7,7 +7,7 @@ export default {
 
   methods: {
     renderSVG (createElement) {
-      let aesthetics = this.$options.propsData
+      let aesthetics = this._props
       let aes = this.convertCoordinateSpecification(aesthetics)
 
       let points = [

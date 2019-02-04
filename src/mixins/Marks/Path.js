@@ -168,7 +168,7 @@ export default {
 
     renderSVG (createElement) {
       checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
-      let aesthetics = this.$options.propsData
+      let aesthetics = this._props
 
       if (this.geometry) {
         let path = createGeoPath(aesthetics.geometry, this.$$transform)
@@ -176,7 +176,7 @@ export default {
           attrs: {
             'd': path
           },
-          style: createSVGStyle(aesthetics)
+          style: this.createSVGStyle(aesthetics)
         })
       } else {
         let points = []

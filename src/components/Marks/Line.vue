@@ -93,7 +93,7 @@ export default {
     },
 
     renderSVG (createElement) {
-      let aesthetics = this.$options.propsData
+      let aesthetics = this._props
       let coords = [
         [aesthetics.x1, aesthetics.y1],
         [aesthetics.x2, aesthetics.y2]
