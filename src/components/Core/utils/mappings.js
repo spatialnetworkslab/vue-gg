@@ -25,7 +25,6 @@ export function extractMappings (props, context) {
 
 export function mapRow (props, { scales, replaceNA }) {
   let newProps = {}
-
   for (let propKey in props) {
     let prop = props[propKey]
     if (prop.constructor === Object && !isFeature(prop)) {
@@ -34,13 +33,15 @@ export function mapRow (props, { scales, replaceNA }) {
         value = prop.val
       }
 
-      if (prop.hasOwnProperty('scale')) {
+      if (scales.hasOwnProperty(propKey)) {
         value = applyScale(value, scales[propKey])
       }
 
-      if (prop.hasOwnProperty('NA')) {
+      if (replaceNA.hasOwnProperty(propKey)) {
         value = replaceMissing(value, replaceNA[propKey])
       }
+
+      newProps[propKey] = value
     } else {
       newProps[propKey] = prop
     }

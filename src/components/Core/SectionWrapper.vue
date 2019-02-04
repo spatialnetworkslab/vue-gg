@@ -73,7 +73,7 @@ export default {
         throw new Error('Invalid combination of props y1, y2, y and h')
       }
 
-      let aesthetics = this.$options.propsData
+      let aesthetics = this._props
       let ranges = this.calculateRanges(aesthetics)
 
       return createElement(Section, {
@@ -90,7 +90,7 @@ export default {
   },
 
   render (createElement) {
-    return this.renderSection(createElement, this.aesthetics)
+    return this.renderSection(createElement)
   }
 }
 </script>

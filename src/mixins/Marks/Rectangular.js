@@ -95,7 +95,7 @@ export default {
       if (this.invalidY) {
         throw new Error('Invalid combination of props y1, y2, y and h')
       }
-
+      // console.log(aes)
       let [x1, x2] = convertSpecification(aes.x1, aes.x2, aes.x, aes.w)
       let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h)
 

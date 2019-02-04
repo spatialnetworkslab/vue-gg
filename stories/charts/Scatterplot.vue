@@ -16,17 +16,18 @@
       <vgg-map>
 
         <vgg-point
-          :x="{ get: row => row.a }"
-          :y="{ get: row => row.b }"
+          slot-scope="{ row }"
+          :x="row.a"
+          :y="row.b"
           :radius="3"
-          :fill="{ get: 'a', scale: { type: 'viridis', domain: 'a' } }"
+          :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
         />
 
       </vgg-map>
 
     </vgg-section>
 
-    <vgg-x-grid
+    <!-- <vgg-x-grid
       :x1="100"
       :x2="500"
       :y1="100"
@@ -57,7 +58,7 @@
       :y2="500"
       :scale="'b'"
       flip
-    />
+    /> -->
 
   </vgg-graphic>
 </template>
