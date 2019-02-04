@@ -26,14 +26,8 @@ export default {
     },
 
     fill: {
-      type: [String, Object, undefined],
+      type: String,
       default: '#000000'
-    }
-  },
-
-  data () {
-    return {
-      markType: 'polygon-mark'
     }
   }
 }
