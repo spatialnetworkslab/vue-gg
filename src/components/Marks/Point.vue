@@ -1,6 +1,5 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -68,7 +67,7 @@ export default {
           'cy': cy,
           'r': aesthetics.radius
         },
-        style: createSVGStyle(aesthetics)
+        style: this.createSVGStyle(aesthetics)
       })
     }
   }

@@ -1,19 +1,13 @@
 <script>
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 import { createPath, interpolatePath } from './utils/createPath.js'
-import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Rectangular],
 
-  data () {
-    return {
-      markType: 'rectangle-mark'
-    }
-  },
-
   methods: {
-    renderSVG (createElement, aesthetics) {
+    renderSVG (createElement) {
+      let aesthetics = this.$options.propsData
       let aes = this.convertCoordinateSpecification(aesthetics)
 
       let points = [
@@ -36,7 +30,7 @@ export default {
         attrs: {
           'd': path
         },
-        style: createSVGStyle(aesthetics)
+        style: this.createSVGStyle(aesthetics)
       })
     }
   }

@@ -1,4 +1,5 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
+import createSVGStyle from './utils/createSVGStyle.js'
 
 export default {
   mixins: [CoordinateTreeUser],
@@ -22,6 +23,10 @@ export default {
       // coordinate transformations are linear)
       return this.interpolate
     }
+  },
+
+  methods: {
+    createSVGStyle
   },
 
   render (createElement) {

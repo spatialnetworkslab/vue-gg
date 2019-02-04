@@ -6,72 +6,72 @@ export default {
 
   props: {
     x1: {
-      type: [Number, String, Date, Object, undefined],
+      type: [Number, String, Date, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Number, String, Date, Object, undefined],
+      type: [Number, String, Date, undefined],
       default: undefined
     },
 
     y1: {
-      type: [Number, String, Date, Object, undefined],
+      type: [Number, String, Date, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Number, String, Date, Object, undefined],
+      type: [Number, String, Date, undefined],
       default: undefined
     },
 
     x: {
-      type: [Number, String, Date, Object, undefined],
+      type: [Number, String, Date, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, String, Date, Object, undefined],
+      type: [Number, String, Date, undefined],
       default: undefined
     },
 
     w: {
-      type: [Number, Object, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     h: {
-      type: [Number, Object, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     stroke: {
-      type: [String, Object, undefined],
-      default: undefined
+      type: String,
+      default: 'none'
     },
 
     strokeWidth: {
-      type: [Number, Object, undefined],
-      default: undefined
+      type: Number,
+      default: 2
     },
 
     fill: {
-      type: [String, Object, undefined],
-      default: undefined
+      type: String,
+      default: '#000000'
     },
 
     opacity: {
-      type: [Number, Object, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     strokeOpacity: {
-      type: [Number, Object, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     fillOpacity: {
-      type: [Number, Object, undefined],
+      type: [Number, undefined],
       default: undefined
     }
   },
@@ -83,9 +83,11 @@ export default {
 
     invalidY () {
       return invalidCombination(this.y1, this.y2, this.y, this.h)
-    },
+    }
+  },
 
-    aesthetics () {
+  methods: {
+    convertCoordinateSpecification (aes) {
       if (this.invalidX) {
         throw new Error('Invalid combination of props x1, x2, x and w')
       }
@@ -94,27 +96,6 @@ export default {
         throw new Error('Invalid combination of props y1, y2, y and h')
       }
 
-      return {
-        x1: this.parseCoordinate(this.x1, { dimension: 'x' }),
-        x2: this.parseCoordinate(this.x2, { dimension: 'x' }),
-        y1: this.parseCoordinate(this.y1, { dimension: 'y' }),
-        y2: this.parseCoordinate(this.y2, { dimension: 'y' }),
-        x: this.parseCoordinate(this.x, { dimension: 'x' }),
-        y: this.parseCoordinate(this.y, { dimension: 'y' }),
-        w: this.parseCoordinate(this.w, { dimension: 'x', wh: true }),
-        h: this.parseCoordinate(this.h, { dimension: 'y', wh: true }),
-        stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
-        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 2 }),
-        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
-        opacity: this.parseAesthetic(this.opacity),
-        fillOpacity: this.parseAesthetic(this.fillOpacity),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
-      }
-    }
-  },
-
-  methods: {
-    convertCoordinateSpecification (aes) {
       let [x1, x2] = convertSpecification(aes.x1, aes.x2, aes.x, aes.w)
       let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h)
 
