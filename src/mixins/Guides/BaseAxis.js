@@ -11,7 +11,8 @@ export default {
   props: {
     scale: {
       type: [Array, String, Object, undefined],
-      default: undefined
+      default: undefined,
+      required: true
     },
 
     format: {
@@ -100,10 +101,10 @@ export default {
     },
     
     // Distance between tick and label **
-    labelPadding: {
-      type: Number,
-      default: 0
-    },
+    // labelPadding: {
+    //   type: Number,
+    //   default: 0
+    // },
     
     labelRotate: {
       type: Boolean,
@@ -161,10 +162,10 @@ export default {
       validator: p => ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'].includes(p)
     },
 
-    titleAngle: {
-      type: Number,
-      default: 0
-    },
+    // titleAngle: {
+    //   type: Number,
+    //   default: 0
+    // },
 
     titleColor: {
       type: String,

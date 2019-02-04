@@ -159,6 +159,8 @@ export default {
       let yRange = this.yRange
       let yDomain = this.yDomain
 
+      console.log(yRange, yDomain)
+
       let yMin = Math.min(yRange[0], yRange[1])
       let yMax = Math.max(yRange[0], yRange[1])
 
@@ -166,6 +168,11 @@ export default {
       let yDomainMax = Math.max(yDomain[0], yDomain[1])
 
       let yHeight = (50 / (yMax - yMin)) * (yDomainMax - yDomainMin)
+
+      if (this.x) {
+        let val = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
+        return [scaledVal - yHeight, scaledVal + yHeight]
+      }
       
       if (this.vjust.constructor === Number) { 
         let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin

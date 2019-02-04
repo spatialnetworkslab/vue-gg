@@ -29,7 +29,7 @@
         </vgg-map>
 
         <vgg-x-axis
-          :scale="'explanatory'"
+          :scale="[0, 150]"
           :vjust="-.05"
         />
 
