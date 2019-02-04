@@ -1,11 +1,4 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
-import {
-  parseAesthetic,
-  parseCoordinate,
-  parseCoordinateSet,
-  parseGeometry,
-  parseProperty
-} from './utils'
 
 export default {
   mixins: [CoordinateTreeUser],
@@ -29,22 +22,6 @@ export default {
       // coordinate transformations are linear)
       return this.interpolate
     }
-  },
-
-  methods: {
-    parseAesthetic,
-    parseCoordinate,
-    parseCoordinateSet,
-    parseGeometry,
-    parseProperty
-  },
-
-  mounted () {
-    this.parseAesthetic.bind(this)
-    this.parseCoordinate.bind(this)
-    this.parseCoordinateSet.bind(this)
-    this.parseGeometry.bind(this)
-    this.parseProperty.bind(this)
   },
 
   render (createElement) {
