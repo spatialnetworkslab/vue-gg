@@ -8,14 +8,14 @@ export default {
   methods: {
     renderSVG (createElement) {
       let aesthetics = this._props
-      let aes = this.convertCoordinateSpecification(aesthetics)
+      let coords = this.coordinateSpecification
 
       let points = [
-        [aes.x1, aes.y1],
-        [aes.x1, aes.y2],
-        [aes.x2, aes.y2],
-        [aes.x2, aes.y1],
-        [aes.x1, aes.y1]
+        [coords.x1, coords.y1],
+        [coords.x1, coords.y2],
+        [coords.x2, coords.y2],
+        [coords.x2, coords.y1],
+        [coords.x1, coords.y1]
       ]
 
       let path

@@ -83,32 +83,16 @@ export default {
 
     invalidY () {
       return invalidCombination(this.y1, this.y2, this.y, this.h)
-    }
-  },
+    },
 
-  methods: {
-    convertCoordinateSpecification (aes) {
-      if (this.invalidX) {
-        throw new Error('Invalid combination of props x1, x2, x and w')
-      }
+    coordinateSpecification () {
+      let aes = this._props
 
-      if (this.invalidY) {
-        throw new Error('Invalid combination of props y1, y2, y and h')
-      }
-      // console.log(aes)
       let [x1, x2] = convertSpecification(aes.x1, aes.x2, aes.x, aes.w)
       let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h)
 
-      for (let aesKey in ['x', 'y', 'w', 'h']) {
-        if (aes[aesKey]) { delete aes[aesKey] }
-      }
-
-      aes.x1 = x1
-      aes.x2 = x2
-      aes.y1 = y1
-      aes.y2 = y2
-
-      return aes
+      let newCoords = { x1, x2, y1, y2 }
+      return newCoords
     }
   }
 }

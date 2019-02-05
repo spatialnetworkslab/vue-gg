@@ -113,15 +113,7 @@ export default {
     },
 
     ranges () {
-      if (this.invalidX) {
-        throw new Error('Invalid combination of props x1, x2, x and w')
-      }
-
-      if (this.invalidY) {
-        throw new Error('Invalid combination of props y1, y2, y and h')
-      }
-
-      let aes = this.convertCoordinateSpecification(this._props)
+      let aes = this.coordinateSpecification
       return {
         x: [aes.x1, aes.x2],
         y: [aes.y1, aes.y2]
@@ -166,7 +158,7 @@ export default {
     coordinateTreeBranchID () {
       let id
       let parentData = this.$parent.$vnode.data
-      if (parentData.attrs.id) {
+      if (parentData.attrs && parentData.attrs.id) {
         // use id if given
         id = parentData.attrs.id + '_' + this.randomID
       } else if (parentData.staticClass) {

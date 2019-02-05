@@ -60,7 +60,7 @@ export default {
     },
 
     ranges () {
-      return this.convertCoordinateSpecification(this._props)
+      return this.coordinateSpecification
     },
 
     tickData () {
