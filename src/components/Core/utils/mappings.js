@@ -13,6 +13,10 @@ export function extractMappings (props, context) {
     let prop = props[propKey]
     if (prop.constructor === Object && !isFeature(prop)) {
       if (prop.hasOwnProperty('scale')) { scales[propKey] = prop.scale }
+      if (prop.hasOwnProperty('scaleGeo')) {
+        scales[propKey] = prop.scaleGeo
+        scales[propKey].geo = true
+      }
       if (prop.hasOwnProperty('position')) { positioners[propKey] = prop.position }
       if (prop.hasOwnProperty('NA')) { replaceNA[propKey] = prop.NA }
     }
@@ -92,8 +96,7 @@ export function applyPositioners (aestheticsPerMark, positioners, context) {
 }
 
 function isFeature (prop) {
-  return prop.hasOwnProperty('type') && prop.type === 'Feature' &&
-    prop.hasOwnProperty('coordinates')
+  return prop.hasOwnProperty('type') && prop.hasOwnProperty('coordinates')
 }
 
 function parseScales (scales, context) {
