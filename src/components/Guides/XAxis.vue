@@ -36,34 +36,38 @@
 
         <vgg-map>
 
-          <!-- Tick lines -->
-          <vgg-line
-            :x1="{ get: tick => tick.value }"
-            :y1="0.5"
-            :x2="{ get: tick => tick.value }"
-            :y2="flip ? 0.35 : 0.65"
-            :stroke-width="0.5"
-          />
+          <template v-slot="{ row }">
 
-          <!-- Tick labels -->
-          <vgg-label
-            v-if="!rotateLabel"
-            :x="{ get: tick => tick.value }"
-            :y="flip ? 0.59 : 0.45"
-            :text="{ get: tick => tick.label }"
-            :font-size="10"
-            :anchor-point="flip ? 'b' : 't'"
-          />
+            <!-- Tick lines -->
+            <vgg-line
+              :x1="row.value"
+              :y1="0.5"
+              :x2="row.value"
+              :y2="flip ? 0.35 : 0.65"
+              :stroke-width="0.5"
+            />
 
-          <vgg-label
-            v-if="rotateLabel"
-            :x="{ get: tick => tick.value }"
-            :y="flip ? 0.59 : 0.45"
-            :text="{ get: tick => tick.label }"
-            :font-size="10"
-            :rotation="flip ? 30 : -30"
-            :anchor-point="flip ? 'rb' : 'rt'"
-          />
+            <!-- Tick labels -->
+            <vgg-label
+              v-if="!rotateLabel"
+              :x="row.value"
+              :y="flip ? 0.59 : 0.45"
+              :text="row.label"
+              :font-size="10"
+              :anchor-point="flip ? 'b' : 't'"
+            />
+
+            <vgg-label
+              v-if="rotateLabel"
+              :x="row.value"
+              :y="flip ? 0.59 : 0.45"
+              :text="row.label"
+              :font-size="10"
+              :rotation="flip ? 30 : -30"
+              :anchor-point="flip ? 'rb' : 'rt'"
+            />
+
+          </template>
 
         </vgg-map>
 

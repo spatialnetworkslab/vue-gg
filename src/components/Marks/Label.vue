@@ -7,7 +7,7 @@ export default {
 
   props: {
     text: {
-      type: [String, undefined],
+      type: [String, Number, undefined],
       default: undefined
     },
 
