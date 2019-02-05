@@ -3,6 +3,7 @@ import createGeoScale from '../../../scales/createGeoScale.js'
 import createPositioner from '../../../positioners/createPositioner.js'
 
 import { transform } from '../../../utils/geojson.js'
+import { invalid } from '../../../utils/equals.js'
 
 export function extractMappings (props, context) {
   let scales = {}
@@ -41,15 +42,13 @@ export function mapRow (props, { scales, replaceNA }) {
         value = applyScale(value, scales[propKey])
       }
 
-      if (replaceNA.hasOwnProperty(propKey)) {
-        value = replaceMissing(value, replaceNA[propKey])
-      }
-
       newProps[propKey] = value
     } else {
       newProps[propKey] = prop
     }
   }
+
+  newProps = replaceMissing(newProps, replaceNA)
 
   return newProps
 }
@@ -138,6 +137,30 @@ function applyScale (value, scale) {
   }
 }
 
-function replaceMissing (value, replaceValue) {
-  // TODO
+function replaceMissing (props, replaceValues) {
+  let newProps = {}
+
+  for (let propKey in props) {
+    let value = props[propKey]
+    let replaceValue = replaceValues[propKey]
+
+    // If both are invalid, we will need to skip this row
+    if (invalid(value) && invalid(replaceValue)) {
+      return undefined
+    }
+
+    if (!invalid(replaceValue)) {
+      if (invalid(value)) {
+        newProps[propKey] = replaceValue
+      } else if (value.constructor === Array) {
+        newProps[propKey] = value.map(v => invalid(v) ? replaceValue : value)
+      } else {
+        newProps[propKey] = value
+      }
+    } else {
+      newProps[propKey] = value
+    }
+  }
+
+  return newProps
 }

@@ -39,8 +39,6 @@ export default {
       let slotContent = this.$scopedSlots.default(scope)
       slotContent = slotContent.filter(component => component.tag !== undefined)
 
-      components.push(slotContent)
-
       // If this is the first row, we will extract the mappings
       if (mappings === null) {
         mappings = []
@@ -51,13 +49,38 @@ export default {
         })
       }
 
-      // With the mappings parsed, we will apply them to each
-      // component in the slot
-      slotContent.forEach((element, i) => {
-        mappedProps[i].push(mapRow(
-          element.componentOptions.propsData, mappings[i]
-        ))
-      })
+      // // With the mappings parsed, we will apply them to each
+      // // component in the slot
+      // slotContent.forEach((element, i) => {
+      //   mappedProps[i].push(mapRow(
+      //     element.componentOptions.propsData, mappings[i]
+      //   )) // THIS CAN BE UNDEFINED. TODO: handle
+      // })
+      let slotProps = []
+      let invalidRow = false
+      for (let i = 0; i < slotContent.length; i++) {
+        let element = slotContent[i]
+        let rowProps = mapRow(element.componentOptions.propsData, mappings[i])
+
+        if (rowProps === undefined) {
+          invalidRow = true
+          break
+        } else {
+          slotProps.push(rowProps)
+        }
+      }
+
+      if (!invalidRow) {
+        for (let i = 0; i < slotProps.length; i++) {
+          let rowProps = slotProps[i]
+          mappedProps[i].push(rowProps)
+        }
+        components.push(slotContent)
+      }
+
+      if (invalidRow) {
+        console.warn(`Skipping row ${scope.i + 1} since it contains unhandled NA values.`)
+      }
     })
 
     // Apply positioners for all components in the slot
@@ -66,14 +89,14 @@ export default {
     })
 
     let mappedComponents = []
-    this.$$dataInterface.forEachRow(({ i }) => {
+    for (let i = 0; i < components.length; i++) {
       let slotComponents = components[i]
       slotComponents.forEach((c, j) => {
         slotComponents[j].componentOptions.propsData = mappedProps[j][i]
       })
 
       mappedComponents.push(...slotComponents)
-    })
+    }
 
     return createElement('g', { class: 'map' }, mappedComponents)
   }
