@@ -14,12 +14,13 @@ import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataProvider from '../../mixins/Data/DataProvider.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
+import Rectangular from '../../mixins/Marks/Rectangular.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import randomID from '../../utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver],
+  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular],
 
   props: {
     type: {
@@ -27,14 +28,34 @@ export default {
       default: 'scale'
     },
 
-    scales: {
+    scaleX: {
+      type: [Object, String, Array, undefined],
+      default: undefined
+    },
+
+    scaleY: {
+      type: [Object, String, Array, undefined],
+      default: undefined
+    },
+
+    scaleGeo: {
       type: [Object, undefined],
       default: undefined
     },
 
-    ranges: {
-      type: Object,
-      required: true
+    data: {
+      type: [Array, Object, undefined],
+      default: undefined
+    },
+
+    format: {
+      type: [String, undefined],
+      default: undefined
+    },
+
+    transform: {
+      type: [Array, Object, undefined],
+      default: undefined
     }
   },
 
@@ -45,6 +66,17 @@ export default {
   },
 
   computed: {
+    scales () {
+      if (this.scaleX || this.scaleY || this.scaleGeo) {
+        let scales = {}
+        if (this.scaleX) { scales.x = this.scaleX }
+        if (this.scaleY) { scales.y = this.scaleY }
+        if (this.scaleGeo) { scales.geo = this.scaleGeo }
+
+        return scales
+      }
+    },
+
     _scales () {
       if (this.scales) {
         let scales = {}
@@ -78,6 +110,22 @@ export default {
       }
 
       if (!this.scales) { return this.ranges }
+    },
+
+    ranges () {
+      if (this.invalidX) {
+        throw new Error('Invalid combination of props x1, x2, x and w')
+      }
+
+      if (this.invalidY) {
+        throw new Error('Invalid combination of props y1, y2, y and h')
+      }
+
+      let aes = this.convertCoordinateSpecification(this._props)
+      return {
+        x: [aes.x1, aes.x2],
+        y: [aes.y1, aes.y2]
+      }
     },
 
     allowScales () {
