@@ -13,10 +13,9 @@
       :scale-y="'b'"
     >
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-point
-          slot-scope="{ row }"
           :x="row.a"
           :y="row.b"
           :radius="3"

@@ -37,7 +37,6 @@ export default {
 
     this.$$dataInterface.forEachRow(scope => {
       let slotContent = this.$scopedSlots.default(scope)
-      slotContent = slotContent.constructor === Array ? slotContent : [slotContent]
       slotContent = slotContent.filter(component => component.tag !== undefined)
 
       components.push(slotContent)
