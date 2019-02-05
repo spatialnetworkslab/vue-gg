@@ -49,19 +49,12 @@ export default {
         })
       }
 
-      // // With the mappings parsed, we will apply them to each
-      // // component in the slot
-      // slotContent.forEach((element, i) => {
-      //   mappedProps[i].push(mapRow(
-      //     element.componentOptions.propsData, mappings[i]
-      //   )) // THIS CAN BE UNDEFINED. TODO: handle
-      // })
       let slotProps = []
       let invalidRow = false
       for (let i = 0; i < slotContent.length; i++) {
         let element = slotContent[i]
         let rowProps = mapRow(element.componentOptions.propsData, mappings[i])
-
+        console.log(rowProps)
         if (rowProps === undefined) {
           invalidRow = true
           break

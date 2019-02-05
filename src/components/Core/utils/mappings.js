@@ -32,17 +32,23 @@ export function mapRow (props, { scales, replaceNA }) {
   let newProps = {}
   for (let propKey in props) {
     let prop = props[propKey]
-    if (prop.constructor === Object && !isFeature(prop)) {
-      let value
-      if (prop.hasOwnProperty('val')) {
-        value = prop.val
-      }
 
-      if (scales.hasOwnProperty(propKey)) {
-        value = applyScale(value, scales[propKey])
-      }
+    if (prop.constructor === Object) {
+      if (isFeature(prop)) {
+        newProps[propKey] = prop
+      } else {
+        if (prop.hasOwnProperty('val')) {
+          let value = prop.val
 
-      newProps[propKey] = value
+          if (scales.hasOwnProperty(propKey)) {
+            value = applyScale(value, scales[propKey])
+          }
+
+          newProps[propKey] = value
+        } else {
+          newProps[propKey] = prop
+        }
+      }
     } else {
       newProps[propKey] = prop
     }
