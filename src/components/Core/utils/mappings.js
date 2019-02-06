@@ -5,58 +5,75 @@ import createPositioner from '../../../positioners/createPositioner.js'
 import { transform } from '../../../utils/geojson.js'
 import { invalid } from '../../../utils/equals.js'
 
-export function extractMappings (props, context) {
-  let scales = {}
-  let positioners = {}
-  let replaceNA = {}
-
-  for (let propKey in props) {
-    let prop = props[propKey]
-    if (prop.constructor === Object && !isFeature(prop)) {
-      if (prop.hasOwnProperty('scale')) { scales[propKey] = prop.scale }
-      if (prop.hasOwnProperty('scaleGeo')) {
-        scales[propKey] = prop.scaleGeo
-        scales[propKey].geo = true
-      }
-      if (prop.hasOwnProperty('position')) { positioners[propKey] = prop.position }
-      if (prop.hasOwnProperty('NA')) { replaceNA[propKey] = prop.NA }
-    }
+export function initMappings (slotContent) {
+  let mappings = []
+  for (let i = 0; i < slotContent.length; i++) {
+    mappings.push({
+      scales: {},
+      NA: {},
+      positioners: {}
+    })
   }
 
-  scales = parseScales(scales, context)
+  return mappings
+}
 
-  return { scales, positioners, replaceNA }
+export function extractMappings (mappings, slotContent, context) {
+  for (let i = 0; i < slotContent.length; i++) {
+    let element = slotContent[i]
+
+    if (element.tag === undefined) { continue }
+
+    let props = element.componentOptions.propsData
+
+    for (let propKey in props) {
+      let prop = props[propKey]
+
+      if (prop.constructor === Object) {
+        if (!isFeature(prop)) {
+          if (!prop.hasOwnProperty('val') && !prop.hasOwnProperty('position')) {
+            throw new Error(`Missing required object keys 'val' or 'position'`)
+          }
+
+          if (prop.hasOwnProperty('scale')) {
+            let scaleOptions = prop.scale
+            let scaleStr = JSON.stringify(scaleOptions)
+
+            if (!mappings[i].scales.hasOwnProperty(scaleStr)) {
+              let compiledScale = createScale(propKey, context, scaleOptions)
+              mappings[i].scales[scaleStr] = compiledScale
+            }
+          }
+
+          if (prop.hasOwnProperty('scaleGeo')) {
+            let scaleOptions = prop.scaleGeo
+            scaleOptions._geo = true
+            let scaleStr = JSON.stringify(scaleOptions)
+
+            if (!mappings[i].scales.hasOwnProperty(scaleStr)) {
+              let compiledScale = createGeoScale(context, scaleOptions)
+              mappings[i].scales[scaleStr] = compiledScale
+            }
+          }
+
+          if (prop.hasOwnProperty('position')) {
+            let positionerOptions = prop.position
+            let posStr = JSON.stringify(positionerOptions)
+
+            if (!mappings[i].positioners.hasOwnProperty(posStr)) {
+              
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 export function mapRow (props, { scales, replaceNA }) {
   let newProps = {}
-  for (let propKey in props) {
-    let prop = props[propKey]
 
-    if (prop.constructor === Object) {
-      if (isFeature(prop)) {
-        newProps[propKey] = prop
-      } else {
-        if (!prop.hasOwnProperty('val') && !prop.hasOwnProperty('position')) {
-          throw new Error(`Invalid mapping object: missing required 'val' or 'position' keys`)
-        }
-
-        if (prop.hasOwnProperty('val')) {
-          let value = prop.val
-
-          if (scales.hasOwnProperty(propKey)) {
-            value = applyScale(value, scales[propKey])
-          }
-
-          newProps[propKey] = value
-        } else {
-          newProps[propKey] = prop
-        }
-      }
-    } else {
-      newProps[propKey] = prop
-    }
-  }
+  // TODO
 
   newProps = replaceMissing(newProps, replaceNA)
 
@@ -108,7 +125,7 @@ function isFeature (prop) {
   return prop.hasOwnProperty('type') && prop.hasOwnProperty('coordinates')
 }
 
-function parseScales (scales, context) {
+function parseScale (scales, context) {
   let parsedScales = {}
 
   for (let aesKey in scales) {

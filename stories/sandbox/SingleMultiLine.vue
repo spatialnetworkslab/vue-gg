@@ -13,7 +13,10 @@
       :y2="450"
     >
 
-      <vgg-map unit="dataframe">
+      <vgg-map
+        unit="dataframe"
+        v-slot=""
+      >
 
         <vgg-multi-line
           :x="{ get: 'time', scale: 'time' }"
