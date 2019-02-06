@@ -54,7 +54,7 @@ export default {
       for (let i = 0; i < slotContent.length; i++) {
         let element = slotContent[i]
         let rowProps = mapRow(element.componentOptions.propsData, mappings[i])
-        console.log(rowProps)
+
         if (rowProps === undefined) {
           invalidRow = true
           break

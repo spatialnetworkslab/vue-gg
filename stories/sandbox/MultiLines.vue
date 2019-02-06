@@ -49,7 +49,8 @@
             :y2="1"
             :scale-x="[0, 1]"
             :scale-y="[0, 1]"
-            :data="row.grouped">
+            :data="{ val: row.grouped }"
+          >
 
             <vgg-rectangle
               :x1="0"

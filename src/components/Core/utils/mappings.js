@@ -37,6 +37,10 @@ export function mapRow (props, { scales, replaceNA }) {
       if (isFeature(prop)) {
         newProps[propKey] = prop
       } else {
+        if (!prop.hasOwnProperty('val') && !prop.hasOwnProperty('position')) {
+          throw new Error(`Invalid mapping object: missing required 'val' or 'position' keys`)
+        }
+
         if (prop.hasOwnProperty('val')) {
           let value = prop.val
 
