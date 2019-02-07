@@ -27,18 +27,24 @@ export default {
   },
 
   methods: {
-    mapRows (createElement) {
+    mapRows () {
       let mappings = null
+      let context = this.context
+
+      let mappedElements = []
 
       this.$$dataInterface.forEachRow(scope => {
         let slotContent = this.$scopedSlots.default(scope)
-        if (mappings === null) { initMappings(slotContent) }
+        if (mappings === null) { mappings = initMappings(slotContent) }
 
         mappings = extractMappings(mappings, slotContent, context)
+        slotContent = mapRow(slotContent, mappings)
+
+        mappedElements.push(...slotContent)
       })
 
-      let context = this.context
-    },
+      return mappedElements
+    }
 
     // mapDataframe (createElement) {
     //   let context = this.context
@@ -59,13 +65,16 @@ export default {
   },
 
   render (createElement) {
+    let elements
     if (this.unit === 'row') {
-      return this.mapRows(createElement)
+      elements = this.mapRows()
     }
 
     // if (this.unit === 'dataframe') {
     //   return this.mapDataframe(createElement)
     // }
+
+    return createElement('g', { class: 'map' }, elements)
   }
 }
 </script>
