@@ -5,6 +5,8 @@ import Map from './Core/Map.vue'
 import Section from './Core/SectionWrapper.vue'
 import Data from './Core/Data.vue'
 
+// Elements
+import GradientLegend from './Elements/GradientLegend.vue'
 import PlotTitle from './Elements/PlotTitle.vue'
 
 // Glyphs
@@ -34,6 +36,7 @@ export default {
   Section,
   Data,
 
+  GradientLegend,
   PlotTitle,
 
   Piechart,

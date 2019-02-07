@@ -15,9 +15,7 @@
       :height="600"
       :data="data"
     >
-
       <vgg-plot-title :text="title" />
-
       <vgg-data
         :transform="[
           { rename: { a: 'apple', b: 'banana', d: 'durian' } },
@@ -36,9 +34,7 @@
             y: [0, 50]
           }"
         >
-
           <vgg-map>
-
             <vgg-rectangle
               :x1="row => row.lowerBound"
               :x2="row => row.upperBound"
@@ -68,8 +64,26 @@
           :scale="{ variable: 'binCount', domain: [0, null] }"
         />
 
-      </vgg-data>
+        <!-- <vgg-gradient-legend
+          :x1="10"
+          :x2="90"
+          :y1="200"
+          :y2="490"
+          labels="upperBound"
+          :numTicks="20"
+          :position="right"
+        /> -->
 
+        <vgg-gradient-legend
+          labels="upperBound"
+          :gradientWidth="0.9"
+          :numTicks="20"
+          position="tl"
+          :orient="'vertical'"
+          :fill="{ scale: 'blues', variable: 'upperBound', domain: [0, null] }"
+          flip
+        />
+      </vgg-data>
     </vgg-graphic>
 
   </div>

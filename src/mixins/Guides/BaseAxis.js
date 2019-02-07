@@ -46,6 +46,7 @@ export default {
       if (this.$$dataContainer) {
         variableDomains = this.$$dataContainer.getDomains()
       }
+
       return parseScaleSpecification(this.scale, variableDomains)
     },
 

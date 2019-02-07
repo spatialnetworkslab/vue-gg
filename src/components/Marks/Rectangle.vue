@@ -32,6 +32,7 @@ export default {
       if (!this._interpolate) {
         path = createPath(points, this.$$transform)
       }
+
       return createElement('path', {
         attrs: {
           'd': path

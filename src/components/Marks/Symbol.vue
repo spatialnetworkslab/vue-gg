@@ -152,7 +152,7 @@ export default {
       }
 
       return this.createPath(createElement, aesthetics, path)
-      
+
     },
   }
 }
