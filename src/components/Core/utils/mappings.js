@@ -184,7 +184,7 @@ function replaceMissing (newProps, props) {
       if (invalid(value)) {
         newProps[propKey] = replaceValue
       } else if (value.constructor === Array) {
-        newProps[propKey] = value.map(v => invalid(v) ? replaceValue : value)
+        newProps[propKey] = value.map(v => invalid(v) ? replaceValue : v)
       } else {
         newProps[propKey] = value
       }

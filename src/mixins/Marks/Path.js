@@ -215,6 +215,7 @@ export default {
           }
 
           let path = this.createPath(points)
+
           return createElement('path', {
             attrs: {
               'd': path

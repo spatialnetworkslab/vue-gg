@@ -70,20 +70,22 @@ export default class CoordinateTransformation {
     // (you cannot interpolate between 'A' and 'B'). So for these components,
     // we already need to know the converted (quantitative) value before the transform
     // function is used.
-    this.getX = x => {
-      if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
-        return x
-      } else {
-        return this.scaleX(x)
-      }
-    }
-    this.getY = y => {
-      if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
-        return y
-      } else {
-        return this.scaleY(y)
-      }
-    }
+    // this.getX = x => {
+    //   if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
+    //     return x
+    //   } else {
+    //     return this.scaleX(x)
+    //   }
+    // }
+    // this.getY = y => {
+    //   if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
+    //     return y
+    //   } else {
+    //     return this.scaleY(y)
+    //   }
+    // }
+    this.getX = x => this.scaleX(x)
+    this.getY = y => this.scaleY(y)
 
     if (options.type === 'scale') {
       this.transform = ([x, y]) => {
