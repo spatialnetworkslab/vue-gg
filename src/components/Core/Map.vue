@@ -2,7 +2,7 @@
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 
-import { initMappings, extractMappings, mapRow, applyPositioners } from './utils/mappings.js'
+import { initMappings, extractMappings, mapRow } from './utils/mappings.js'
 
 export default {
   mixins: [DataReceiver, CoordinateTreeUser],

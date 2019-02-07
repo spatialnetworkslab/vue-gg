@@ -44,7 +44,7 @@
 
           <vgg-section
             :x="row.colors"
-            :w="{ position: { positioner: 'bulge', padding: 10 } }"
+            :w="{ band: { domain: 'colors', padding: 10 } }"
             :y1="0"
             :y2="1"
             :scale-x="[0, 1]"

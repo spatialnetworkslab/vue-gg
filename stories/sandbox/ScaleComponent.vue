@@ -20,7 +20,7 @@
 
         <vgg-section
           :x="{ get: 'c', scale: 'c' }"
-          :w="{ position: { positioner: 'bulge', padding: 25 } }"
+          :w="{ band: { domain: 'c', padding: 25 } }"
           :y1="25"
           :y2="225"
           :scale-y="'#scaleY'"

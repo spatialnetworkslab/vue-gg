@@ -26,7 +26,7 @@
 
         <vgg-rectangle
           :x="{ val: row.fruit, scale: 'fruit' }"
-          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
         />
@@ -41,7 +41,7 @@
 
         <vgg-section
           :x="{ val: row.fruit, scale: 'fruit' }"
-          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           :scale-x="[-1, 1]"

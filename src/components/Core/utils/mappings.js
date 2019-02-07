@@ -1,6 +1,6 @@
 import createScale from '../../../scales/createScale.js'
 import createGeoScale from '../../../scales/createGeoScale.js'
-import createPositioner from '../../../positioners/createPositioner.js'
+import createBand from '../../../scales/createBand.js'
 
 import { transform } from '../../../utils/geojson.js'
 import { invalid } from '../../../utils/equals.js'
@@ -11,7 +11,7 @@ export function initMappings (slotContent) {
     mappings.push({
       scales: {},
       NA: {},
-      positioners: {}
+      bands: {}
     })
   }
 
@@ -31,8 +31,8 @@ export function extractMappings (mappings, slotContent, context) {
 
       if (prop.constructor === Object) {
         if (!isFeature(prop)) {
-          if (!prop.hasOwnProperty('val') && !prop.hasOwnProperty('position')) {
-            throw new Error(`Missing required object keys 'val' or 'position'`)
+          if (!prop.hasOwnProperty('val') && !prop.hasOwnProperty('band')) {
+            throw new Error(`Missing required object keys 'val' or 'band'`)
           }
 
           if (prop.hasOwnProperty('scale')) {
@@ -56,12 +56,13 @@ export function extractMappings (mappings, slotContent, context) {
             }
           }
 
-          if (prop.hasOwnProperty('position')) {
-            let positionerOptions = prop.position
-            let posStr = JSON.stringify(positionerOptions)
+          if (prop.hasOwnProperty('band')) {
+            let bandOptions = prop.band
+            let bandStr = JSON.stringify(bandOptions)
 
-            if (!mappings[i].positioners.hasOwnProperty(posStr)) {
-              
+            if (!mappings[i].bands.hasOwnProperty(bandStr)) {
+              let bandWidth = createBand(propKey, context, bandOptions)
+              mappings[i].bands[bandStr] = bandWidth
             }
           }
         }
@@ -80,67 +81,8 @@ export function mapRow (props, { scales, replaceNA }) {
   return newProps
 }
 
-export function applyPositioners (aestheticsPerMark, positioners, context) {
-  if (Object.keys(positioners).length > 0) {
-    for (let aesKey in positioners) {
-      let positioningOptions = positioners[aesKey]
-
-      if (positioningOptions.constructor !== Array) {
-        let position
-
-        if (positioningOptions.constructor === String) {
-          position = createPositioner(aesKey, context, { positioner: positioningOptions })
-        }
-
-        if (positioningOptions.constructor === Object) {
-          position = createPositioner(aesKey, context, positioningOptions)
-        }
-
-        position(aestheticsPerMark) // Positioners work in-place
-      }
-
-      // Positioners can be chained by passing an array of positioningOptions-objects
-      if (positioningOptions.constructor === Array) {
-        for (let chainedOptions of positioningOptions) {
-          let position
-
-          if (chainedOptions.constructor === String) {
-            position = createPositioner(aesKey, context, { positioner: chainedOptions })
-          }
-
-          if (chainedOptions.constructor === Object) {
-            position = createPositioner(aesKey, context, chainedOptions)
-          }
-
-          position(aestheticsPerMark) // Positioners work in-place
-        }
-      }
-    }
-  }
-
-  return aestheticsPerMark
-}
-
 function isFeature (prop) {
   return prop.hasOwnProperty('type') && prop.hasOwnProperty('coordinates')
-}
-
-function parseScale (scales, context) {
-  let parsedScales = {}
-
-  for (let aesKey in scales) {
-    let scalingOptions = scales[aesKey]
-    if (scalingOptions.geo) {
-      let { scaleX, scaleY } = createGeoScale(context, scalingOptions)
-      parsedScales[aesKey] = ([x, y]) => {
-        return [scaleX(x), scaleY(y)]
-      }
-    } else {
-      parsedScales[aesKey] = createScale(aesKey, context, scalingOptions)
-    }
-  }
-
-  return parsedScales
 }
 
 function applyScale (value, scale) {
