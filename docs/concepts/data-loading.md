@@ -110,7 +110,7 @@ For example:
 :::
 
 Besides loading new data, another way to create a new data scope is using the
-`:transform` prop to apply [transformations](./transformating-data.md) to the data:
+`:transform` prop to apply [transformations](./transforming-data.md) to the data:
 
 ::: v-pre
 ```html

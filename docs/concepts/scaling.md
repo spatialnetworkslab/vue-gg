@@ -5,7 +5,7 @@ title: Scaling
 # Introduction
 
 Scaling options are used to quickly create scales in various places, like the
-[Scale](../core/scale.md) component, the [Section](../core/section.md) component
+[Scale](../core/scales.md) component, the [Section](../core/section.md) component
 and inside [mappable](../core/map.md) props of Marks.
 
 # Options
@@ -99,7 +99,7 @@ overwritten with `domainMin` and `domainMax`.
 
 ### Defaults
 
-See [prop types](./mapping.md#prop-types) to see which props fall under
+See [prop types]() to see which props fall under
 which types.
 
 | Prop type  | quantitative | categorical | temporal |
