@@ -3,7 +3,7 @@ import createGeoScale from '../../../scales/createGeoScale.js'
 import createBand from '../../../scales/createBand.js'
 
 import { transform } from '../../../utils/geojson.js'
-// import { invalid } from '../../../utils/equals.js'
+import { invalid } from '../../../utils/equals.js'
 
 export function initMappings (slotContent) {
   let mappings = []
@@ -12,8 +12,7 @@ export function initMappings (slotContent) {
     mappings.push({
       scales: {},
       geoScales: {},
-      bands: {},
-      NA: {}
+      bands: {}
     })
   }
 
@@ -71,10 +70,6 @@ export function extractMappings (mappings, slotContent, context) {
             mappings[i].bands[propKey][bandStr] = bandWidth
           }
         }
-
-        if (prop.hasOwnProperty('NA')) {
-          // TODO
-        }
       }
     }
   }
@@ -82,12 +77,17 @@ export function extractMappings (mappings, slotContent, context) {
   return mappings
 }
 
-export function mapRow (slotContent, mappings) {
+export function mapRow (slotContent, mappings, rowNumber) {
+  let mappedElements = []
+
   for (let i = 0; i < slotContent.length; i++) {
     let element = slotContent[i]
     let slotMapping = mappings[i]
 
-    if (element.tag === undefined) { continue }
+    if (element.tag === undefined) {
+      mappedElements.push(undefined)
+      continue
+    }
 
     let props = element.componentOptions.propsData
     let newProps = {}
@@ -127,11 +127,17 @@ export function mapRow (slotContent, mappings) {
       }
     }
 
-    // newProps = replaceMissing(newProps, slotMapping.NA)
-    element.componentOptions.propsData = newProps
+    newProps = replaceMissing(newProps, props)
+    if (newProps) {
+      element.componentOptions.propsData = newProps
+      mappedElements.push(element)
+    } else {
+      let tag = element.componentOptions.tag
+      console.warn(`Skipping Mark '${tag}', row ${rowNumber + 1} because of unhandled NA values.`)
+    }
   }
 
-  return slotContent
+  return mappedElements
 }
 
 function isFeature (prop) {
@@ -159,33 +165,34 @@ function applyScale (value, scale) {
   }
 }
 
-// function replaceMissing (props, replaceValues) {
-//   let newProps = {}
-//
-//   for (let propKey in props) {
-//     let value = props[propKey]
-//     let replaceValue = replaceValues[propKey]
-//
-//     // If both are invalid, we will need to skip this row
-//     if (invalid(value) && invalid(replaceValue)) {
-//       return undefined
-//     }
-//
-//     if (!invalid(replaceValue)) {
-//       if (invalid(value)) {
-//         newProps[propKey] = replaceValue
-//       } else if (value.constructor === Array) {
-//         newProps[propKey] = value.map(v => invalid(v) ? replaceValue : value)
-//       } else {
-//         newProps[propKey] = value
-//       }
-//     } else {
-//       newProps[propKey] = value
-//     }
-//   }
-//
-//   return newProps
-// }
+function replaceMissing (newProps, props) {
+  for (let propKey in newProps) {
+    let value = newProps[propKey]
+    let replaceValue
+    if (props[propKey] && props[propKey].constructor === Object) {
+      replaceValue = props[propKey].NA
+    }
+
+    // If both are invalid, we will need to skip this row
+    if (invalid(value) && invalid(replaceValue)) {
+      return undefined
+    }
+
+    if (!invalid(replaceValue)) {
+      if (invalid(value)) {
+        newProps[propKey] = replaceValue
+      } else if (value.constructor === Array) {
+        newProps[propKey] = value.map(v => invalid(v) ? replaceValue : value)
+      } else {
+        newProps[propKey] = value
+      }
+    } else {
+      newProps[propKey] = value
+    }
+  }
+
+  return newProps
+}
 
 function validateMapping (mapping) {
   if (!mapping.hasOwnProperty('val') && !mapping.hasOwnProperty('band')) {

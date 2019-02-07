@@ -38,7 +38,7 @@ export default {
         if (mappings === null) { mappings = initMappings(slotContent) }
 
         mappings = extractMappings(mappings, slotContent, context)
-        slotContent = mapRow(slotContent, mappings)
+        slotContent = mapRow(slotContent, mappings, scope.i)
 
         mappedElements.push(...slotContent)
       })
