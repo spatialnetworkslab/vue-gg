@@ -38,6 +38,10 @@
       :scale-y="[0, 1]"
     >
 
+      <vgg-scales
+        :scales="{ x: 'xValues', y: 'yValues' }"
+      />
+
       <vgg-data :transform="{ groupBy: 'colors' }">
 
         <vgg-map v-slot="{ row }">
@@ -63,8 +67,8 @@
             <vgg-map v-slot="{ row: row2 }">
 
               <vgg-point
-                :x="{ val: row2.xValues, scale: 'xValues' }"
-                :y="{ val: row2.yValues, scale: 'yValues' }"
+                :x="{ val: row2.xValues, scale: '#x' }"
+                :y="{ val: row2.yValues, scale: '#y' }"
                 :fill="row2.colors"
               />
 

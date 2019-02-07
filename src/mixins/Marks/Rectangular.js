@@ -88,8 +88,8 @@ export default {
     coordinateSpecification () {
       let aes = this._props
 
-      let [x1, x2] = convertSpecification(aes.x1, aes.x2, aes.x, aes.w)
-      let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h)
+      let [x1, x2] = convertSpecification(aes.x1, aes.x2, aes.x, aes.w, this.parentBranch, 'x')
+      let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h, this.parentBranch, 'y')
 
       let newCoords = { x1, x2, y1, y2 }
       return newCoords
@@ -113,21 +113,33 @@ function invalidCombination (x1, x2, x, w) {
 }
 
 // Converts any valid combination of x1, x2, x and w to [x1, x2]
-function convertSpecification (x1, x2, x, w) {
+function convertSpecification (x1, x2, x, w, parentBranch, dimension) {
+  console.log(parentBranch)
+  let domainType = parentBranch.domainTypes[dimension]
+  let converter
+  if (domainType === 'quantitative') {
+    converter = x => x
+  } else {
+    converter = parentBranch[dimension === 'x' ? 'getX' : 'getY']
+  }
+
   // If there is nothing, just x1, just x2, or just x1 and x2
   if (isnt(x) && isnt(w)) {
-    return [x1, x2]
+    return [x1, x2].map(converter)
   }
   // If there is just x1 and w
   if (is(x1) && isnt(x2) && isnt(x) && is(w)) {
-    return [x1, x1 + w]
+    let cx1 = converter(x1)
+    return [cx1, cx1 + w]
   }
   // If there is just x2 and w
   if (isnt(x1) && is(x2) && isnt(x) && is(w)) {
-    return [x2 - w, x2]
+    let cx2 = converter(x2)
+    return [cx2 - w, cx2]
   }
   // If there is just x and w
   if (isnt(x1) && isnt(x2) && is(x) && is(w)) {
-    return [x - (w / 2), x + (w / 2)]
+    let cx = converter(x)
+    return [cx - (w / 2), cx + (w / 2)]
   }
 }
