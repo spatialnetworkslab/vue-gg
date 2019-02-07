@@ -114,7 +114,6 @@ function invalidCombination (x1, x2, x, w) {
 
 // Converts any valid combination of x1, x2, x and w to [x1, x2]
 function convertSpecification (x1, x2, x, w, parentBranch, dimension) {
-  console.log(parentBranch)
   let domainType = parentBranch.domainTypes[dimension]
   let converter
   if (domainType === 'quantitative') {
