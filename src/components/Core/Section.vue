@@ -66,6 +66,14 @@ export default {
   },
 
   computed: {
+    ranges () {
+      let aes = this.coordinateSpecification
+      return {
+        x: [aes.x1, aes.x2],
+        y: [aes.y1, aes.y2]
+      }
+    },
+
     scales () {
       if (this.scaleX || this.scaleY || this.scaleGeo) {
         let scales = {}
@@ -73,18 +81,10 @@ export default {
         if (this.scaleY) { scales.y = this.scaleY }
         if (this.scaleGeo) { scales.geo = this.scaleGeo }
 
-        return scales
-      }
-    },
+        let hasX = scales.hasOwnProperty('x')
+        let hasY = scales.hasOwnProperty('y')
 
-    _scales () {
-      if (this.scales) {
-        let scales = {}
-
-        let hasX = this.scales.hasOwnProperty('x')
-        let hasY = this.scales.hasOwnProperty('y')
-
-        if (this.scales.hasOwnProperty('geo')) {
+        if (scales.hasOwnProperty('geo')) {
           if (hasX || hasY) {
             throw new Error(`Cannot set 'scale-x' or 'scale-y' when 'scale-geo' is defined`)
           }
@@ -93,30 +93,19 @@ export default {
             throw new Error(`'scale-geo' is only allowed when data has geometry column`)
           }
 
-          return this.scales
+          return scales
         }
 
-        if (hasX) {
-          scales.x = this.scales.x
-        } else {
+        if (!hasX) {
           scales.x = this.ranges.x
         }
-        if (hasY) {
-          scales.y = this.scales.y
-        } else {
+        if (!hasY) {
           scales.y = this.ranges.y
         }
+
         return scales
-      }
-
-      if (!this.scales) { return this.ranges }
-    },
-
-    ranges () {
-      let aes = this.coordinateSpecification
-      return {
-        x: [aes.x1, aes.x2],
-        y: [aes.y1, aes.y2]
+      } else {
+        return this.ranges
       }
     },
 
@@ -130,8 +119,8 @@ export default {
 
         // This is to avoid getting errors when the user wants to create a scale
         // using a domain of a variable that is not available yet.
-        let allowedObjX = this.checkAllowedObj(this._scales.x)
-        let allowedObjY = this.checkAllowedObj(this._scales.y)
+        let allowedObjX = this.checkAllowedObj(this.scales.x)
+        let allowedObjY = this.checkAllowedObj(this.scales.y)
 
         if (!this.$$dataInterface.ready()) {
           if (allowedObjX && allowedObjY) {
@@ -148,7 +137,7 @@ export default {
     transformation () {
       let transformation = new CoordinateTransformation({
         type: this.type,
-        scales: this._scales,
+        scales: this.scales,
         ranges: this.ranges,
         dataInterface: this.$$dataInterface,
         scaleManager: this.$$scaleManager
