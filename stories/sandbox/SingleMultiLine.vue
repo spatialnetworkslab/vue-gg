@@ -14,13 +14,13 @@
     >
 
       <vgg-map
+        v-slot="{ dataframe }"
         unit="dataframe"
-        v-slot=""
       >
 
         <vgg-multi-line
-          :x="{ get: 'time', scale: 'time' }"
-          :y="{ get: 'measurement', scale: 'measurement', NA: 50 }"
+          :x="{ val: dataframe.time, scale: 'time' }"
+          :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
         />
 
       </vgg-map>

@@ -4,38 +4,43 @@
     :height="500"
   >
 
-    <!-- <vgg-data
+    <vgg-data
       id="original"
       :data="testData"
     >
 
       <vgg-data :transform="{ filter: row => row.a > 2 }">
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
+
           <vgg-point
-            :x="{ get: 'a', scale: 'original/a' }"
-            :y="{ get: 'b', scale: 'original/b' }"
+            :x="{ val: row.a, scale: 'original/a' }"
+            :y="{ val: row.b, scale: 'original/b' }"
           />
+
         </vgg-map>
 
       </vgg-data>
 
-    </vgg-data> -->
-    <vgg-data :data="testData">
+    </vgg-data>
+
+    <!-- <vgg-data :data="testData">
 
       <vgg-data
         id="transformed"
         :transform="{ filter: row => row.a > 2 }"
       />
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
+
         <vgg-point
-          :x="{ get: 'a', scale: 'transformed/a' }"
-          :y="{ get: 'b', scale: 'transformed/b' }"
+          :x="{ val: row.a, scale: 'transformed/a' }"
+          :y="{ val: row.b, scale: 'transformed/b' }"
         />
+
       </vgg-map>
 
-    </vgg-data>
+    </vgg-data> -->
 
   </vgg-graphic>
 </template>

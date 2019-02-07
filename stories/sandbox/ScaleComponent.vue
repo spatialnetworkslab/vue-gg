@@ -16,23 +16,23 @@
 
     <vgg-data :transform="{ groupBy: 'c' }">
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-section
-          :x="{ get: 'c', scale: 'c' }"
+          :x="{ val: row.c, scale: 'c' }"
           :w="{ band: { domain: 'c', padding: 25 } }"
           :y1="25"
           :y2="225"
           :scale-y="'#scaleY'"
-          :data="{ get: 'grouped' }"
+          :data="{ val: row.grouped }"
         >
 
-          <vgg-map>
+          <vgg-map v-slot="{ row: innerRow }">
 
             <vgg-point
-              :x="{ get: row => row.a, scale: '#scaleX' }"
-              :y="{ get: row => row.b }"
-              :fill="{ get: 'c', scale: '#scaleC' }"
+              :x="{ val: innerRow.a, scale: '#scaleX' }"
+              :y="{ val: innerRow.b }"
+              :fill="{ val: row.c, scale: '#scaleC' }"
             />
 
           </vgg-map>

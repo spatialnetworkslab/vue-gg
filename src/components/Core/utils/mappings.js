@@ -90,6 +90,8 @@ export function mapRow (slotContent, mappings, rowNumber) {
     }
 
     let props = element.componentOptions.propsData
+    let tag = element.componentOptions.tag
+
     let newProps = {}
 
     for (let propKey in props) {
@@ -132,7 +134,6 @@ export function mapRow (slotContent, mappings, rowNumber) {
       element.componentOptions.propsData = newProps
       mappedElements.push(element)
     } else {
-      let tag = element.componentOptions.tag
       console.warn(`Skipping Mark '${tag}', row ${rowNumber + 1} because of unhandled NA values.`)
     }
   }
@@ -145,6 +146,7 @@ function isFeature (prop) {
 }
 
 function applyScale (value, scale) {
+  if (invalid(value)) return
   if (value.constructor === Array) {
     // points (array of arrays)
     if (value[0].constructor === Array) {
@@ -196,7 +198,7 @@ function replaceMissing (newProps, props) {
 
 function validateMapping (mapping) {
   if (!mapping.hasOwnProperty('val') && !mapping.hasOwnProperty('band')) {
-    throw new Error(`Missing required object keys 'val' or 'band'`)
+    throw new Error(`Missing required mapping object keys 'val' or 'band'`)
   }
 
   if (mapping.hasOwnProperty('band')) {

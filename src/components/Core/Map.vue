@@ -1,11 +1,12 @@
 <script>
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
+import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
 import { initMappings, extractMappings, mapRow } from './utils/mappings.js'
 
 export default {
-  mixins: [DataReceiver, CoordinateTreeUser],
+  mixins: [DataReceiver, CoordinateTreeUser, ScaleReceiver],
 
   props: {
     unit: {
@@ -35,33 +36,31 @@ export default {
 
       this.$$dataInterface.forEachRow(scope => {
         let slotContent = this.$scopedSlots.default(scope)
+
         if (mappings === null) { mappings = initMappings(slotContent) }
-
         mappings = extractMappings(mappings, slotContent, context)
-        slotContent = mapRow(slotContent, mappings, scope.i)
 
-        mappedElements.push(...slotContent)
+        let mappedContent = mapRow(slotContent, mappings, scope.i)
+        mappedElements.push(...mappedContent)
       })
 
       return mappedElements
-    }
+    },
 
-    // mapDataframe (createElement) {
-    //   let context = this.context
-    //   let dataframe = this.$$dataInterface.getDataset()
-    //   let scope = { dataframe }
-    //
-    //   let slotContent = this.$scopedSlots.default(scope)
-    //   slotContent = slotContent.filter(component => component.tag !== undefined)
-    //
-    //   let mappings = []
-    //   let mappedProps = []
-    //
-    //   slotContent.forEach(element => {
-    //     mappings.push(extractMappings(element.componentOptions.propsData, context))
-    //     mappedProps.push([])
-    //   })
-    // },
+    mapDataframe () {
+      let context = this.context
+
+      let dataframe = this.$$dataInterface.getDataset()
+      let scope = { dataframe }
+
+      let slotContent = this.$scopedSlots.default(scope)
+
+      let mappings = initMappings(slotContent)
+      mappings = extractMappings(mappings, slotContent, context)
+
+      let mappedElements = mapRow(slotContent, mappings, 0)
+      return mappedElements
+    }
   },
 
   render (createElement) {
@@ -70,9 +69,9 @@ export default {
       elements = this.mapRows()
     }
 
-    // if (this.unit === 'dataframe') {
-    //   return this.mapDataframe(createElement)
-    // }
+    if (this.unit === 'dataframe') {
+      elements = this.mapDataframe()
+    }
 
     return createElement('g', { class: 'map' }, elements)
   }
