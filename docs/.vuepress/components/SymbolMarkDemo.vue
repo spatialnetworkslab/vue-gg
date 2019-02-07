@@ -13,11 +13,11 @@
         :y2="450"
       >
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
 
           <vgg-symbol
-            :x="{ get: 'explanatory', scale: 'explanatory' }"
-            :y="{ get: 'dependent', scale: 'dependent' }"
+            :x="{ val: row.explanatory, scale: 'explanatory' }"
+            :y="{ val: row.dependent, scale: 'dependent' }"
             :size="16"
             :shape="shape"
             :stroke="stroke"

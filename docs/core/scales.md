@@ -46,10 +46,12 @@ domain before it was filtered:
 
   <vgg-data :transform="{ filter: row => row.a > 1 }">
 
-    <vgg-point
-      :x="{ get: 'a', scale: '#myScale' }"
-      :y="{ get: 'b', scale: 'b' }"
-    />
+    <vgg-map v-slot="{ row }">
+      <vgg-point
+        :x="{ val: row.a, scale: '#myScale' }"
+        :y="{ val: row.b, scale: 'b' }"
+      />
+    </vgg-map>
 
   </vgg-data>
 

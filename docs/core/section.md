@@ -140,9 +140,9 @@ use the extents of the Section.
     :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }"
   >
 
-    <vgg-map>
+    <vgg-map v-slot="{ row }">
 
-      <vgg-point :x="{ get: 'a', scale: 'a' }" :y="{ get: 'b', scale: 'b' }" />
+      <vgg-point :x="{ val: row.a, scale: 'a' }" :y="{ val: row.b, scale: 'b' }" />
 
     </vgg-map>
 
@@ -181,9 +181,9 @@ coordinate system:
     :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }"
   >
 
-    <vgg-map>
+    <vgg-map v-slot="{ row }">
 
-      <vgg-point :x="{ get: 'a', scale: 'a' }" :y="{ get: 'b', scale: 'b' }" />
+      <vgg-point :x="{ val: row.a, scale: 'a' }" :y="{ val: row.b, scale: 'b' }" />
 
     </vgg-map>
 

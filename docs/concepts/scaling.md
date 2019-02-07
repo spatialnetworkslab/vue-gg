@@ -119,7 +119,7 @@ column of which you want to use the domain:
 
 ::: v-pre
 ```html
-<vgg-point :x="{ get: 'a', scale: 'a' }" />
+<vgg-point :x="{ val: row.a, scale: 'a' }" />
 ```
 :::
 
@@ -127,7 +127,7 @@ this will be converted to
 
 ::: v-pre
 ```html
-<vgg-point :x="{ get: 'a', scale: { domain: 'a' } }" />
+<vgg-point :x="{ val: row.a, scale: { domain: 'a' } }" />
 ```
 :::
 
@@ -135,7 +135,7 @@ this will be converted to
 
 The Scales component is used to create scales in one place,
 which can then be referenced in other places. See the documentation of the
-[Scales](../core/scales.md) for more information.
+[Scales](../core/scales.md) component for more information.
 
 ### Using a domain Array
 
