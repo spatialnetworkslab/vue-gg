@@ -250,8 +250,17 @@ export default {
     },
 
     tickData () {
+      let firstValue = this._domain[0]
+      let newTickValues
+
       if (this.tickValues) {
-        return this.tickValues.map(value => {
+        newTickValues = this.tickValues
+
+        if (this.tickExtra && this.tickValues[0] != firstValue) {
+          newTickValues.unshift(firstValue)
+        }
+
+        return newTickValues.map(value => {
           return { value }
         })
       } else {
@@ -259,7 +268,13 @@ export default {
         let format = this.format && this.format.constructor === Function ? this.format : x => x
 
         if (this._domainType === 'quantitative') {
-          ticks = arrayTicks(...this._domain, this.tickCount).map(value => {
+          newTickValues = arrayTicks(...this._domain, this.tickCount)
+
+          if (this.tickExtra && newTickValues[0] != firstValue) {
+            newTickValues.unshift(firstValue)
+          }
+
+          ticks = newTickValues.map(value => {
             return { value, label: format(value) }
           })
         }
@@ -279,7 +294,13 @@ export default {
 
           let scale = scaleTime().domain(this._domain)
 
-          ticks = scale.ticks(this.tickCount).map(value => {
+          newTickValues = scale.ticks(this.tickCount)
+
+          if (this.tickExtra && newTickValues[0] != firstValue) {
+            newTickValues.unshift(firstValue)
+          }
+
+          ticks = newTickValues.map(value => {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })

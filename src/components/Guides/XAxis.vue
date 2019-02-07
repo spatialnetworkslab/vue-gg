@@ -53,7 +53,7 @@
         class="x-axis-data"
       >
 
-        <vgg-line
+        <!-- <vgg-line
           v-if="tickExtra"
           :x1="_domain[0]"
           :y1="0.5"
@@ -62,7 +62,7 @@
           :stroke="tickColor"
           :stroke-opacity="tickOpacity"
           :stroke-width="tickWidth"
-        />
+        /> -->
 
         <vgg-map>
 
