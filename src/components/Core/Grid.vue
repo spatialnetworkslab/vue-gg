@@ -23,6 +23,8 @@ export default {
   render (createElement) {
     let slotContent = this.$slots.default
     let sections = this.validateChildren(slotContent)
+
+    
   }
 }
 </script>
