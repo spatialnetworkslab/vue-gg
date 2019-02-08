@@ -145,13 +145,40 @@ export default {
       }
     },
 
+    tickMin () {
+      if (this.x1 && this.x2) {
+        return 0.5 - (this.tickSize / (this.x2 - this.x1))
+      } else {
+        return 0.5 - (this.tickSize / 100)
+      }
+    },
+
+    tickMax () {
+      if (this.x1 && this.x2) {
+        return 0.5 + (this.tickSize / (this.x2 - this.x1))
+      } else {
+        return 0.5 + (this.tickSize / 100)
+      }
+    },
+
     posX () {
+      let xWidth = this.getLocalX(50)
+
+      if (this.x) {
+        let scaledX = this.getLocalX(this.x)
+        return [scaledX - xWidth, scaledX + xWidth]
+      }
+
+      if (this.x1 && this.x2) {
+        return [this.getLocalX(this.x1), this.getLocalX(this.x2)]
+      } else if (this.x1 ^ this.x2) {
+        throw new Error ('Please provide both x1 and x2 coordinates. Alternatively use the x prop')
+      }
+
       let xDomain = this.xDomain
 
       let xDomainMin = Math.min(xDomain[0], xDomain[1])
       let xDomainMax = Math.max(xDomain[0], xDomain[1])
-
-      let xWidth = this.getLocalX(50)
 
       if (this.hjust.constructor === Number) { 
         let scaledVal = (xDomainMax - xDomainMin) * this.hjust + xDomainMin
@@ -171,6 +198,16 @@ export default {
 
       newRange.x1 = this.posX[0]
       newRange.x2 = this.posX[1]
+
+      if (this.y1 && this.y2) {
+        newRange.y1 = this.getLocalY(this.y1)
+        newRange.y2 = this.getLocalY(this.y2)
+        return newRange
+      } else if (this.y1 ^ this.y2) {
+        throw new Error ('Please provide both y1 and y2 coordinates')
+      } else if (this.y) {
+        throw new Error('Please provide y1, y2 start and end coordinates')
+      }
 
       if (this._domainType === 'temporal') {
         newRange.y1 = this._domain[0]

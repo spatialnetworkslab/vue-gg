@@ -290,14 +290,6 @@ export default {
       return this.parentBranch.domains.y
     },
 
-    tickMin () {
-      return 0.5 - (this.tickSize / 100)
-    },
-
-    tickMax () {
-      return 0.5 + (this.tickSize / 100)
-    },
-
     tickData () {
       let firstValue = this._domain[0]
       let newTickValues
