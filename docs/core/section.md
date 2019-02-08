@@ -22,25 +22,22 @@ All of these will be discussed below, under [Usage](#usage).
 
 ### Positioning
 
-| Prop | Required | Regular types          | Types when mapping             | Default   | Description          | Unit(s)             |
-| ---- | -------- | ---------------------- | ------------------------------ | --------- | -------------------- | ------------------- |
-| x1   | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Left x coordinate    | Local coordinate(s) |
-| x2   | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Right x coordinate   | Local coordinate(s) |
-| y1   | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Bottom y coordinate  | Local coordinate(s) |
-| y2   | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Top y coordinate     | Local coordinate(s) |
-| x    | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Central x coordinate | Local coordinate(s) |
-| y    | depends  | [Number, String, Date] | [Number, String, Date, Object] | undefined | Central y coordinate | Local coordinate(s) |
-| w    | depends  | Number                 | [Number, Object]               | undefined | Width                | Local coordinate(s) |
-| h    | depends  | Number                 | [Number, Object]               | undefined | Height               | Local coordinate(s) |
+| Prop | Required | Types                  | Default   | Description          | Unit(s)             |
+| ---- | -------- | ---------------------- | --------- | -------------------- | ------------------- |
+| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinate(s) |
+| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinate(s) |
+| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinate(s) |
+| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinate(s) |
+| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinate(s) |
+| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinate(s) |
+| w    | depends  | Number                 | undefined | Width                | Local coordinate(s) |
+| h    | depends  | Number                 | undefined | Height               | Local coordinate(s) |
 
 ### Other props
 
-| Prop | Required | Regular types   | Types when mapping | Default   | Description                   |
-| ---- | -------- | --------------- | ------------------ | --------- | ----------------------------- |
-| data | false    | [Array, Object] | Object             | undefined | Some supported data structure |
-
 | Prop      | Required | Types                   | Default   | Description                     |
 | --------- | -------- | ----------------------- | --------- | ------------------------------- |
+| data      | false    | [Array, Object]         | undefined | Some supported data structure                                |
 | type      | false    | String                  | 'scale'   | Type of local coordinate system |
 | scale-x   | false    | [String, Array, Object] | undefined | Scaling of x dimension          |
 | scale-y   | false    | [String, Array, Object] | undefined | Scaling of y dimension          |
@@ -98,13 +95,14 @@ the Section's local coordinate system, this is as easy as writing:
 ```
 :::
 
-The `scales` prop takes an object that has a `x` and/or a `y` property. These properties
-are optional- it is allowed to only specify `x`, or leave out the `scales` prop
-altogether. If the `x` scaling is not specified explicitly, it will default to
+The `scale-x` and `scale-y` props are optional- it is allowed to only specify
+`scale-x`, or leave out both `scale-x` and `scale-y` altogether.
+If the `scale-x` scaling is not specified explicitly, it will default to
 whatever values constitute the left and right borders of the section (in this case:
-`[50, 450]`). The same goes the scaling of the `y` dimension.
+`[50, 450]`), which means that no transformation will take place.
+The same goes the scaling of the y-dimension with `scale-y`.
 
-The `x` and `y` scaling options can be specified in a number of ways. Besides
+The x and y scaling props can be specified in a number of ways. Besides
 the method discussed above, where an Array of length 2 is used to specify the
 domain of the dimension, it is also possible to use a String that corresponds
 to the name of a column within the current [data scope](../concepts/data-loading.md#data-scope).
@@ -162,8 +160,8 @@ use the extents of the Section.
 :::
 
 It is also possible to map data to marks within a Section that does have
-a `scales` prop. In that case, the data will be mapped to the scaled local
-coordinate system:
+`scale-x` or `scale-y` props. In that case, the data will be mapped to the scaled
+local coordinate system:
 
 ::: v-pre
 ```html{10}
@@ -233,15 +231,7 @@ data in the parent's data scope, and use that as data scope for its children:
 ```
 :::
 
-But the Section has another way of creating a new data scope that the Graphic
-and Map components lack: when placed within a [Map](./map.md) component and a
-data scope that contains a nested dataframe, the nested data can be mapped to
-the Section's `data` prop:
-
-(TODO: do this when we have figured out how we want to do faceting/deal with
-domains pre/post data transformation etc. Started on this in
-`.vuepress/components/SectionDegroup.vue`)
-
+TODO: explain how to combine this with mapping once layout and stuff are worked out
 
 ### Creating compositions of marks
 

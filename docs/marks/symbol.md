@@ -8,27 +8,29 @@ title: Symbol Mark
 
 # Description
 
-The Symbol mark is used for plotting point data, with each data instance being represented as a symbol (or shape). The most common use for the Symbol mark is in a scatterplot with the shape set to `circle`.
+The Symbol mark is used for plotting point data, with each data instance being
+represented as a symbol (or shape). The most common use for the Symbol mark is
+in a scatterplot with the shape set to `circle`.
 
 # Props
 
 ### Positioning
 
-| Prop | Required | Regular types   | Types when mapping                       | Default   | Description                              | Unit(s)           |
-| ---- | -------- | --------------- | ---------------------------------------- | --------- | ---------------------------------------- | ----------------- |
-| x    | true     | [Number, String]| [Number, String, Date, Object, Function] | undefined | x-coordinates of center of each symbol   | Local coordinates |
-| y    | true     | [Number, String]| [Number, String, Date, Object, Function] | undefined | y-coordinates of center of each symbol   | Local coordinates |
+| Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
+| ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
+| x    | true     | [Number, String, Date] | undefined | x-coordinates of center of each symbol | Local coordinates |
+| y    | true     | [Number, String, Date] | undefined | y-coordinates of center of each symbol | Local coordinates |
 
 ### Other aesthetics
 
-| Prop           | Required | Regular types | Types when mapping         | Default   | Description    | Unit(s)                    |
-|----------------|----------|---------------|----------------------------|-----------|----------------|----------------------------|
-| stroke         | false    | String        | [String, Object, Function] | undefined | Stroke color   | Named color, hex, rgb, hsl |
-| stroke-width   | false    | Number        | [Number, Object, Function] | undefined | Stroke width   | Screen pixel               |
-| stroke-opacity | false    | Number        | [Number, Object, Function] | undefined | Stroke opacity | Number between 0 to 1      |
-| fill           | false    | String        | [String, Object, Function] | 'black'   | Fill color     | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number        | [Number, Object, Function] | undefined | Fill opacity   | Number between 0 and 1     |
-| opacity        | false    | Number        | [Number, Object, Function] | undefined | Mark opacity   | Number between 0 and 1     |
+| Prop           | Required | Types  | Default   | Description    | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | -------------- | -------------------------- |
+| stroke         | false    | String | undefined | Stroke color   | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | undefined | Stroke width   | Screen pixel               |
+| stroke-opacity | false    | Number | undefined | Stroke opacity | Number between 0 to 1      |
+| fill           | false    | String | 'black'   | Fill color     | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | undefined | Fill opacity   | Number between 0 and 1     |
+| opacity        | false    | Number | undefined | Mark opacity   | Number between 0 and 1     |
 
 These are analogous to the CSS properties of the same names.
 
@@ -44,17 +46,25 @@ These are analogous to the CSS properties of the same names.
 
 ### Positioning
 
-To render the Symbol mark, you will need the `x` and `y` props. These represent the coordinates of the center point of each shape.
-
-All above props can be passed as an Array of `Numbers` or `Strings` (for categorical variables). They can also be passed as an entire column within the data scope. However, the length of the two variable sets must be the same.
+To render the Symbol mark, you will need to provide the `x` and `y` props.
+These can be of type `Number`, `String` and `Date`, depending what kind of domain type
+the parent Section has.
 
 ### Other props
 
-The `shape` prop sets the shape of the symbol mark. The value defaults to `circle` but can be set to any of the available options: `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-left`, `triangle-right` and `star`. Additionally, it is also possible to provide a custom shape, specified as a SVG path string with coordinates scaled to [-1, 1] both horizontally and vertically.
+The `shape` prop sets the shape of the symbol mark. The value defaults to `circle`
+but can be set to any of the available options: `square`, `cross`, `diamond`, `triangle-up`,
+`triangle-down`, `triangle-left`, `triangle-right` and `star`. Additionally,
+it is possible to provide a custom shape, specified as a SVG path string with
+coordinates scaled to [-1, 1] both horizontally and vertically.
 
-`size` defaults to 10px. This same value refers to both the height and width of the shape. In order to improve the accuracy when reading off the (x, y) values of the center point of each symbol instance, we do not allow height and width of the symbol mark to take on different values.
+`size` defaults to 10px. This same value refers to both the height and width of
+the shape. In order to improve the accuracy when reading off the (x, y) values
+of the center point of each symbol instance, the height and width of the symbol
+mark are not allowed to take on different values.
 
-`transition` is disabled by default. It can be set to take any arbitrary length of time in seconds.
+`transition` is disabled by default. It can be set to take an arbitrary length
+of time in seconds.
 
 # Example
 
