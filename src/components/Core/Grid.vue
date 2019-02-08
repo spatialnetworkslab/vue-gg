@@ -1,5 +1,5 @@
 <script>
-import { calculateGridLayout } from './utils/grid.js'
+import { calculateGridLayout, calculateRowsCols, validateGridOptions } from './utils/grid.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
@@ -25,37 +25,6 @@ export default {
       }
 
       return definedChildren
-    },
-
-    calculateGridLayout (options, numberOfCells) {
-      this.validateGridOptions(options)
-      let ranges = this.parentBranch.domains
-
-      let rows
-      let cols
-
-      if (options.cols) {
-        rows = Math.ceil(numberOfCells / options.cols)
-        cols = options.cols
-      }
-
-      if (options.rows) {
-        rows = options.rows
-        cols = Math.ceil(numberOfCells / options.rows)
-      }
-
-      return calculateGridLayout(rows, cols, options, ranges)
-    },
-
-    validateGridOptions (options) {
-      let hasRows = options.hasOwnProperty('rows')
-      let hasCols = options.hasOwnProperty('cols')
-      if (hasRows && hasCols) { throw new Error('Cannot have both rows and cols') }
-      if (!hasRows && !hasCols) {
-        throw new Error('Layout must have either rows or cols specified')
-      }
-      if (hasCols && options.cols < 1) { throw new Error('Cols must be higher than 0') }
-      if (hasRows && options.rows < 1) { throw new Error('Rows must be higher than 0') }
     },
 
     updateGridSections (createElement, sections, gridLayout) {
@@ -88,11 +57,16 @@ export default {
   },
 
   render (createElement) {
+    let options = this.options
+    validateGridOptions(options)
+
     let slotContent = this.$slots.default
     let sections = this.validateChildren(slotContent)
 
     let numberOfSections = sections.length
-    let layout = this.calculateGridLayout(this.options, numberOfSections)
+    let { rows, cols } = calculateRowsCols(options, numberOfSections)
+    let ranges = this.parentBranch.domains
+    let layout = calculateGridLayout(rows, cols, options, ranges)
 
     let newSections = this.updateGridSections(createElement, sections, layout)
 

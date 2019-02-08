@@ -18,7 +18,8 @@ import TestSymbol from './sandbox/TestSymbol.vue'
 import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
-import GridLayout from './sandbox/GridLayout.vue'
+import SimpleGridLayout from './sandbox/SimpleGridLayout.vue'
+import MappingGridLayout from './sandbox/MappingGridLayout.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -40,4 +41,5 @@ storiesOf('Sandbox', module)
   .add('Single MultiLine', () => (SingleMultiLine))
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
-  .add('Grid layout', () => (GridLayout))
+  .add('Simple Grid layout', () => (SimpleGridLayout))
+  .add('Mapping Grid Layout', () => (MappingGridLayout))

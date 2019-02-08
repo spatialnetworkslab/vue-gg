@@ -1,3 +1,31 @@
+export function validateGridOptions (options) {
+  let hasRows = options.hasOwnProperty('rows')
+  let hasCols = options.hasOwnProperty('cols')
+  if (hasRows && hasCols) { throw new Error('Cannot have both rows and cols') }
+  if (!hasRows && !hasCols) {
+    throw new Error('Layout must have either rows or cols specified')
+  }
+  if (hasCols && options.cols < 1) { throw new Error('Cols must be higher than 0') }
+  if (hasRows && options.rows < 1) { throw new Error('Rows must be higher than 0') }
+}
+
+export function calculateRowsCols (options, numberOfCells) {
+  let rows
+  let cols
+
+  if (options.cols) {
+    rows = Math.ceil(numberOfCells / options.cols)
+    cols = options.cols
+  }
+
+  if (options.rows) {
+    rows = options.rows
+    cols = Math.ceil(numberOfCells / options.rows)
+  }
+
+  return { rows, cols }
+}
+
 export function calculateGridLayout (rows, cols, options, ranges) {
   let lP = getPadding(options.layoutPadding)
   let cP = getPadding(options.cellPadding)
