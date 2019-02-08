@@ -36,6 +36,7 @@ export default {
   Section,
   Data,
   Scales,
+  Grid,
 
   PlotTitle,
 
