@@ -3,7 +3,7 @@ import calculateDomains from './calculateDomains.js'
 // const variableTypes = ['quantitative', 'temporal', 'categorical', 'geometry']
 
 const pointRegex = /\./g
-const forbiddenChars = /[.#\/]/
+const forbiddenChars = /[.#/]/
 
 export default class {
   constructor (data, format) {
