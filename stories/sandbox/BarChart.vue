@@ -22,28 +22,28 @@
         text="Subsection"
       />
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-rectangle
-          :x="{ get: 'fruit', scale: 'fruit' }"
-          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :x="{ val: row.fruit, scale: 'fruit' }"
+          :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
-          :y2="{ get: 'quantity', scale: { domain: 'quantity', domainMin: 0 } }"
+          :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
         />
 
         <vgg-line
-          :x1="{ get: 'fruit', scale: 'fruit' }"
-          :x2="{ get: 'fruit', scale: 'fruit' }"
+          :x1="{ val: row.fruit, scale: 'fruit' }"
+          :x2="{ val: row.fruit, scale: 'fruit' }"
           :y1="0"
-          :y2="{ get: 'quantity', scale: { domain: 'quantity', domainMin: 0 } }"
+          :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           stroke="#ced02d"
         />
 
         <vgg-section
-          :x="{ get: 'fruit', scale: 'fruit' }"
-          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :x="{ val: row.fruit, scale: 'fruit' }"
+          :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
-          :y2="{ get: 'quantity', scale: { domain: 'quantity', domainMin: 0 } }"
+          :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           :scale-x="[-1, 1]"
           :scale-y="[-1, 1]"
         >

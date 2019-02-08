@@ -25,12 +25,6 @@ export default {
       type: undefined,
       default: undefined
     }
-  },
-
-  data () {
-    return {
-      markType: 'multiline-mark'
-    }
   }
 }
 </script>

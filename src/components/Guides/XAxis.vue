@@ -53,14 +53,14 @@
         class="x-axis-data"
       >
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
 
           <!-- Tick lines -->
           <vgg-line
             v-if="ticks"
-            :x1="{ get: tick => tick.value }"
+            :x1="row.value"
             :y1="0.5"
-            :x2="{ get: tick => tick.value }"
+            :x2="row.value"
             :y2="flip ? tickMax : tickMin"
             :stroke="tickColor"
             :stroke-opacity="tickOpacity"
@@ -70,9 +70,9 @@
           <!-- Tick labels -->
           <vgg-label
             v-if="(!labelRotate) && labels"
-            :x="{ get: tick => tick.value }"
+            :x="row.value"
             :y="flip ? (tickMax + 0.03) : (tickMin - 0.03)"
-            :text="{ get: tick => tick.label }"
+            :text="row.label"
             :font-family="labelFont"
             :font-size="labelFontSize"
             :font-weight="labelFontWeight"
@@ -83,9 +83,9 @@
 
           <vgg-label
             v-if="labelRotate && labels"
-            :x="{ get: tick => tick.value }"
+            :x="row.value"
             :y="flip ? (tickMax + 0.03) : (tickMin - 0.03)"
-            :text="{ get: tick => tick.label }"
+            :text="row.label"
             :font-family="labelFont"
             :font-size="labelFontSize"
             :font-weight="labelFontWeight"

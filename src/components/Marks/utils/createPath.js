@@ -50,6 +50,7 @@ export function createPath (points, transformer, precision = 2) {
   let transformedPoints = points.map(p => {
     return transformer(p).map(c => round(c, precision))
   })
+
   const lineGenerator = line()
   let path = lineGenerator(transformedPoints)
 

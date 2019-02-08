@@ -19,12 +19,6 @@ export default {
       type: undefined,
       default: undefined
     }
-  },
-
-  data () {
-    return {
-      markType: 'path-mark'
-    }
   }
 }
 </script>

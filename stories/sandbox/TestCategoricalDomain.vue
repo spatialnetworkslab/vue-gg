@@ -18,10 +18,10 @@
       :scale-y="[0, 100]"
     >
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-point
-          :x="{ get: row => row.date }"
+          :x="{ val: row.date }"
           :y="50"
           :size="14"
         />

@@ -15,14 +15,14 @@
 
       <vgg-data :transform="{ groupBy: 'colors' }">
 
-        <vgg-map>
+        <vgg-map v-slot="{ row, prevRow }">
 
           <vgg-area
-            :x="{ get: row => row.grouped.xValues }"
-            :y="{ get: row => row.grouped.yValues }"
-            :y2="{ get: (row, i, prevRow) => prevRow ? prevRow.grouped.yValues : [0] }"
+            :x="row.grouped.xValues"
+            :y="row.grouped.yValues"
+            :y2="prevRow ? prevRow.grouped.yValues : [0]"
             :opacity="0.5"
-            :fill="{ get: row => row.colors }"
+            :fill="row.colors"
           />
 
         </vgg-map>

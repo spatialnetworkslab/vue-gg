@@ -35,14 +35,14 @@
           :scale-y="[0, 50]"
         >
 
-          <vgg-map>
+          <vgg-map v-slot="{ row }">
 
             <vgg-rectangle
-              :x1="{ get: 'lowerBound' }"
-              :x2="{ get: 'upperBound' }"
+              :x1="{ val: row.lowerBound }"
+              :x2="{ val: row.upperBound }"
               :y1="0"
-              :y2="{ get: 'binCount', scale: { domain: 'binCount', domainMin: 0 } }"
-              :fill="{ get: 'upperBound', scale: { type: 'blues', domain: 'upperBound', domainMin: 0 } }"
+              :y2="{ val: row.binCount, scale: { domain: 'binCount', domainMin: 0 } }"
+              :fill="{ val: row.upperBound, scale: { type: 'blues', domain: 'upperBound', domainMin: 0 } }"
             />
 
           </vgg-map>

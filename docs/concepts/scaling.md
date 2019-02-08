@@ -5,7 +5,7 @@ title: Scaling
 # Introduction
 
 Scaling options are used to quickly create scales in various places, like the
-[Scale](../core/scale.md) component, the [Section](../core/section.md) component
+[Scale](../core/scales.md) component, the [Section](../core/section.md) component
 and inside [mappable](../core/map.md) props of Marks.
 
 # Options
@@ -99,7 +99,7 @@ overwritten with `domainMin` and `domainMax`.
 
 ### Defaults
 
-See [prop types](./mapping.md#prop-types) to see which props fall under
+See [prop types]() to see which props fall under
 which types.
 
 | Prop type  | quantitative | categorical | temporal |
@@ -119,7 +119,7 @@ column of which you want to use the domain:
 
 ::: v-pre
 ```html
-<vgg-point :x="{ get: 'a', scale: 'a' }" />
+<vgg-point :x="{ val: row.a, scale: 'a' }" />
 ```
 :::
 
@@ -127,7 +127,7 @@ this will be converted to
 
 ::: v-pre
 ```html
-<vgg-point :x="{ get: 'a', scale: { domain: 'a' } }" />
+<vgg-point :x="{ val: row.a, scale: { domain: 'a' } }" />
 ```
 :::
 
@@ -135,7 +135,7 @@ this will be converted to
 
 The Scales component is used to create scales in one place,
 which can then be referenced in other places. See the documentation of the
-[Scales](../core/scales.md) for more information.
+[Scales](../core/scales.md) component for more information.
 
 ### Using a domain Array
 

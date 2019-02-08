@@ -1,55 +1,53 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
 import { textAnchorPoint } from '../../utils/anchorPoint.js'
-import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
 
   props: {
-    // Mappable
     text: {
-      type: [String, Object, undefined],
+      type: [String, Number, undefined],
       default: undefined
     },
 
     x: {
-      type: [Number, String, Date, Object, undefined],
-      default: undefined
+      type: [Number, String, Date],
+      required: true
     },
 
     y: {
-      type: [Number, String, Date, Object, String, undefined],
-      default: undefined
+      type: [Number, String, Date],
+      required: true
     },
 
     fill: {
-      type: [String, Object, undefined],
-      default: undefined
+      type: String,
+      default: '#000000'
     },
 
     stroke: {
-      type: [String, Object, undefined],
-      default: undefined
+      type: String,
+      default: 'none'
     },
 
     strokeWidth: {
-      type: [Number, Object, undefined],
-      default: undefined
+      type: Number,
+      default: 0
     },
 
     opacity: {
-      type: [Number, Object, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     strokeOpacity: {
-      type: [Number, Object, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     fillOpacity: {
-      type: [Number, Object, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
@@ -59,8 +57,8 @@ export default {
     },
 
     fontSize: {
-      type: [Number, Object, undefined],
-      default: undefined
+      type: Number,
+      default: 16
     },
 
     fontWeight: {
@@ -69,8 +67,8 @@ export default {
     },
 
     rotation: {
-      type: [Number, Object, undefined],
-      default: undefined
+      type: Number,
+      default: 0
     },
 
     // Unmappable
@@ -111,14 +109,16 @@ export default {
       return `rotate(${rotation}, ${cx}, ${cy})`
     },
 
-    renderSVG (createElement, aesthetics) {
+    renderSVG (createElement) {
+      let aesthetics = this._props
+
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
       let anchorPoint = textAnchorPoint(this.anchorPoint)
 
       let transform = this.calcTransform(aesthetics.rotation, cx, cy)
 
-      let styles = createSVGStyle(aesthetics)
+      let styles = this.createSVGStyle(aesthetics)
       styles['fontSize'] = aesthetics.fontSize + 'px'
       styles['font-family'] = this.fontFamily
       styles['font-weight'] = this.fontWeight
