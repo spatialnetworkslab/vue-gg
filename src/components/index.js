@@ -5,6 +5,7 @@ import Map from './Core/Map.vue'
 import Section from './Core/Section.vue'
 import Data from './Core/Data.vue'
 import Scales from './Core/Scales.vue'
+import Grid from './Core/Grid.vue'
 
 import PlotTitle from './Elements/PlotTitle.vue'
 
