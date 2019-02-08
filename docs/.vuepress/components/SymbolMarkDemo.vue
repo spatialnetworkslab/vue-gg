@@ -16,24 +16,27 @@
         <vgg-map>
 
           <vgg-symbol
-<<<<<<< HEAD
-            :x="{ scale: 'explanatory' }"
-            :y="{ scale: 'dependent' }"
-=======
             :x="{ get: 'explanatory', scale: 'explanatory' }"
             :y="{ get: 'dependent', scale: 'dependent' }"
->>>>>>> fb380af3d73f710f2d5cebefa401975448ebd89e
             :size="16"
             :shape="shape"
             :stroke="stroke"
             :fill="fill"
-<<<<<<< HEAD
-            :strokeWidth="1"
-=======
             :stroke-width="1"
->>>>>>> fb380af3d73f710f2d5cebefa401975448ebd89e
           />
+
         </vgg-map>
+
+        <vgg-x-axis
+          :scale="[0, 150]"
+          :vjust="-.05"
+        />
+
+        <vgg-y-axis
+          :scale="'dependent'"
+          :hjust="-.05"
+          flip
+        />
 
       </vgg-section>
 
@@ -48,22 +51,6 @@
       <vgg-y-grid
         :x1="100"
         :x2="500"
-        :y1="50"
-        :y2="450"
-        :scale="'dependent'"
-      />
-
-      <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="0"
-        :y2="50"
-        :scale="'explanatory'"
-      />
-
-      <vgg-y-axis
-        :x1="500"
-        :x2="550"
         :y1="50"
         :y2="450"
         :scale="'dependent'"
@@ -111,7 +98,7 @@ export default {
   computed : {
     fill () {
       if (this.color === 'both' || this.color === 'fill') {
-        return { scale: { scale: 'viridis', variable: 'explanatory' } }
+        return { get: 'explanatory', scale: { type: 'viridis', domain: 'explanatory' } }
       } else {
         return 'none'
       }
