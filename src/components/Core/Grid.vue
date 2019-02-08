@@ -20,11 +20,23 @@ export default {
       // Filter out undefined components (whitespace, v-if="false")
       let definedChildren = children.filter(c => c.tag !== undefined)
 
-      if (definedChildren.some(c => c.componentOptions.tag !== 'vgg-section')) {
-        throw new Error('Only Sections allowed as direct children in layout')
+      let wrongUseError = new Error(`'vgg-grid' can have in its slot:
+        1. any number of 'vgg-section' components
+        2. a single 'vgg-map' component that only contains other 'vgg-section' components
+      `)
+
+      if (definedChildren[0].componentOptions.tag === 'vgg-map') {
+        if (definedChildren.length > 1) {
+          throw wrongUseError
+        }
+        return [definedChildren, 'map']
       }
 
-      return definedChildren
+      if (definedChildren.some(c => c.componentOptions.tag !== 'vgg-section')) {
+        throw wrongUseError
+      } else {
+        return [definedChildren, 'section']
+      }
     },
 
     updateGridSections (createElement, sections, gridLayout) {
@@ -61,16 +73,24 @@ export default {
     validateGridOptions(options)
 
     let slotContent = this.$slots.default
-    let sections = this.validateChildren(slotContent)
+    let [children, childType] = this.validateChildren(slotContent)
 
-    let numberOfSections = sections.length
-    let { rows, cols } = calculateRowsCols(options, numberOfSections)
-    let ranges = this.parentBranch.domains
-    let layout = calculateGridLayout(rows, cols, options, ranges)
+    if (childType === 'section') {
+      let sections = children
 
-    let newSections = this.updateGridSections(createElement, sections, layout)
+      let numberOfSections = sections.length
+      let { rows, cols } = calculateRowsCols(options, numberOfSections)
+      let ranges = this.parentBranch.domains
+      let layout = calculateGridLayout(rows, cols, options, ranges)
 
-    return createElement('g', { class: 'layout-grid' }, newSections)
+      let newSections = this.updateGridSections(createElement, sections, layout)
+
+      return createElement('g', { class: 'layout-grid' }, newSections)
+    }
+
+    if (childType === 'map') {
+      return createElement('g', { class: 'layout-grid' }, this.$slots.default)
+    }
   }
 }
 </script>
