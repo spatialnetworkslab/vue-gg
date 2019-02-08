@@ -17,12 +17,12 @@ export default {
     },
 
     fill: {
-      type: [String, Object, undefined],
+      type: String,
       default: '#000000'
     },
 
     stroke: {
-      type: [String, Object, undefined],
+      type: [String, undefined],
       default: undefined
     },
 
@@ -40,12 +40,6 @@ export default {
     _area: {
       type: Boolean,
       default: true
-    }
-  },
-
-  data () {
-    return {
-      markType: 'area-mark'
     }
   }
 }

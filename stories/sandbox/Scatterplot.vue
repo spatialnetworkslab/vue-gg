@@ -15,14 +15,15 @@
         :y2="500"
       >
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
 
           <vgg-point
-            :x="{ get: 'explanatory', scale: 'explanatory' }"
-            :y="{ get: 'dependent', scale: 'dependent' }"
-            :radius="{ get: 'dependent', scale: { domain: 'dependent' } }"
-            :fill="{ get: 'explanatory', scale: { type: 'viridis', domain: 'explanatory' } }"
+            :x="{ val: row.explanatory, scale: 'explanatory' }"
+            :y="{ val: row.dependent, scale: 'dependent' }"
+            :radius="{ val: row.dependent, scale: { domain: 'dependent' } }"
+            :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
           />
+
         </vgg-map>
 
       </vgg-section>

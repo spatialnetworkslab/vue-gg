@@ -70,7 +70,7 @@ export default {
       let xMin = Math.min(xRange[0], xRange[1])
       let xMax = Math.max(xRange[0], xRange[1])
 
-      if (this.hjust.constructor === Number) { 
+      if (this.hjust.constructor === Number) {
         let scaledVal = (xMax - xMin) * this.vjust
         return scaledVal
       } else if (this.hjust === 'center') {
@@ -87,8 +87,8 @@ export default {
 
       let yMin = Math.min(yRange[0], yRange[1])
       let yMax = Math.max(yRange[0], yRange[1])
-      
-      if (this.vjust.constructor === Number) { 
+
+      if (this.vjust.constructor === Number) {
         let scaledVal = (yMax - yMin) * this.hjust
         return scaledVal
       } else if (this.vjust === 'center') {
@@ -137,21 +137,20 @@ export default {
           'y': y,
           'fill': color,
           'text-anchor': anchorPoint.textAnchor,
-          'dominant-baseline': anchorPoint.dominantBaseline,
+          'dominant-baseline': anchorPoint.dominantBaseline
         },
         style: {
           'font-size': size + 'px',
-          'font-family': font,
+          'font-family': font
         }
       }, text)
 
       return el
     }
   },
-  
+
   render (createElement) {
-    let el = this.renderSVG(createElement)
     return this.renderSVG(createElement)
   }
-} 
+}
 </script>

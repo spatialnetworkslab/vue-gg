@@ -2,11 +2,12 @@ import { ticks as arrayTicks } from 'd3-array'
 import { scaleTime } from 'd3-scale'
 
 import Rectangular from '../../mixins/Marks/Rectangular.js'
+import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
 export default {
-  mixins: [Rectangular],
+  mixins: [Rectangular, DataReceiver],
 
   props: {
     scale: {
@@ -38,7 +39,7 @@ export default {
     },
 
     ranges () {
-      return this.convertCoordinateSpecification(this.aesthetics)
+      return this.coordinateSpecification
     },
 
     cells () {

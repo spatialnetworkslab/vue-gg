@@ -3,10 +3,12 @@ import { scaleTime } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../Marks/Rectangular.js'
+import DataReceiver from '../../mixins/Data/DataReceiver.js'
+
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
 export default {
-  mixins: [Rectangular],
+  mixins: [Rectangular, DataReceiver],
 
   props: {
     scale: {
@@ -58,7 +60,7 @@ export default {
     },
 
     ranges () {
-      return this.convertCoordinateSpecification(this.aesthetics)
+      return this.coordinateSpecification
     },
 
     tickData () {
@@ -96,6 +98,7 @@ export default {
             return { value: date, label: format(date) }
           })
         }
+
         return ticks
       }
     }

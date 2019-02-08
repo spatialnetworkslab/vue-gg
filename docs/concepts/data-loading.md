@@ -110,7 +110,7 @@ For example:
 :::
 
 Besides loading new data, another way to create a new data scope is using the
-`:transform` prop to apply [transformations](./transformating-data.md) to the data:
+`:transform` prop to apply [transformations](./transforming-data.md) to the data:
 
 ::: v-pre
 ```html
@@ -150,11 +150,11 @@ column name:
     :transform="{ filter: row => row.a > 2 }"
   >
 
-    <vgg-map>
+    <vgg-map v-slot="{ row }">
 
       <vgg-point
-        :x="{ get: 'a', scale: { domain: 'a' } }"
-        :y="{ get: 'b', scale: { domain: 'parentData/b' } }"
+        :x="{ val: row.a, scale: { domain: 'a' } }"
+        :y="{ val: row.b, scale: { domain: 'parentData/b' } }"
       />
 
       <!--
@@ -180,8 +180,8 @@ before the scope in question. For example:
 <vgg-data id="before" :data="someData" />
 
 <vgg-data :data="someOtherData" />
-  <vgg-map>
-    <vgg-point :x="{ get: 'a', scale: 'before/a' }" />
+  <vgg-map v-slot="{ row }">
+    <vgg-point :x="{ val: row.a, scale: 'before/a' }" />
   </vgg-map>
 </vgg-data>
 ```
@@ -192,8 +192,8 @@ is allowed, but
 ::: v-pre
 ```html
 <vgg-data :data="someOtherData" />
-  <vgg-map>
-    <vgg-point :x="{ get: 'a', scale: 'after/a' }" />
+  <vgg-map v-slot="{ row }">
+    <vgg-point :x="{ val: row.a, scale: 'after/a' }" />
   </vgg-map>
 </vgg-data>
 

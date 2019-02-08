@@ -3,7 +3,7 @@ import calculateDomains from './calculateDomains.js'
 // const variableTypes = ['quantitative', 'temporal', 'categorical', 'geometry']
 
 const pointRegex = /\./g
-const forbiddenChars = /[.#\/]/
+const forbiddenChars = /[.#/]/
 
 export default class {
   constructor (data, format) {
@@ -158,7 +158,7 @@ export default class {
       }
       if (i === 0) prevRow = undefined
       if (i === this._length - 1) nextRow = undefined
-      fn(row, i, prevRow, nextRow)
+      fn({ row, i, prevRow, nextRow })
     }
   }
 }

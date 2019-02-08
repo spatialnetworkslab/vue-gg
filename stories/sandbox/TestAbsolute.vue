@@ -4,23 +4,23 @@
     :height="600"
     :data="balance">
 
-    <vgg-map>
+    <vgg-map v-slot="{ row }">
 
       <vgg-label
         :x="150"
-        :y="{ get: 'name', scale: 'name' }"
-        :text="{ get: row => row.name }"
+        :y="{ val: row.name, scale: 'name' }"
+        :text="{ val: row.name }"
       />
 
       <vgg-point
         :x="450"
-        :y="{ get: 'name', scale: 'name' }"
-        :radius="{ get: 'balance', scale: {
+        :y="{ val: row.name, scale: 'name' }"
+        :radius="{ val: row.balance, scale: {
           domain: 'balance',
           absolute: true,
           domainMin: 0
         } }"
-        :fill="{ get: 'balance', scale: { domain: 'balance', type: 'redBlue' } }"
+        :fill="{ val: row.balance, scale: { domain: 'balance', type: 'redBlue' } }"
       />
 
     </vgg-map>

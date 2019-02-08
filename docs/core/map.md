@@ -50,31 +50,29 @@ which syntaxes are allowed for which types of props.
 
 ```js
 {
-  get: ...,
+  val: ...,
+  band: ...,
   scale: ...,
-  position: ...,
   scaleGeo: ...
 }
 ```
 
-| Property | Types                   | Description                                              |
-| -------- | ----------------------- | -------------------------------------------------------- |
-| get      | [String, Function]      | Column name or getter function to access data in row     |
-| scale    | [String, Array, Object] | Column name, domain boundaries or scaling options object |
-| position | [String, Object]        | Name of positioner, or positioner options object         |
-| scaleGeo | Object                  | Options object for scaling geographic coordinates        |
+| Property | Types                                 | Description                                              |
+| -------- | ------------------------------------- | -------------------------------------------------------- |
+| val      | [Number, String, Date, Object, Array] | Anything that could be passed to a prop directly         |
+| band     | [String, Array, Object]               | Column name, domain boundaries or scaling options object |
+| scale    | [String, Array, Object]               | Column name, domain boundaries or scaling options object |
+| scaleGeo | Object                                | Options object for scaling geographic coordinates        |
 
-In any case where `scale` or `scaleGeo` is used, `get` must also be specified.
-`get` can also be used alone, as the examples below will illustrate. `position`
-is currently only used alone, but this might change in the future once more
-positioners are implemented. For more information, see the
-[scaling](../concepts/scaling.md) and [positioning](../concepts/positioning.md)
-documentation.
+In any case where `scale` or `scaleGeo` is used, `val` must also be specified.
+`val` can also be used alone, as the examples below will illustrate. `band`
+is used to calculate widths and heights and can only be used in `w` and `h` props.
+For more information, see the [scaling](../concepts/scaling.md) documentation.
 
-### Basic example using `get` and `scale`
+### Basic example using `val` and `scale`
 
 One way to create a scatterplot using some dummy data and the Map component is
-using the mapping object syntax with both `get` and `scale`:
+using the mapping object syntax with both `val` and `scale`:
 
 ::: v-pre
 ```html{14-16}
@@ -88,12 +86,12 @@ using the mapping object syntax with both `get` and `scale`:
   }"
 >
 
-  <vgg-map>
+  <vgg-map v-slot="{ row }">
 
     <vgg-point
-      :x="{ get: 'a', scale: 'a' }"
-      :y="{ get: 'a', scale: 'b' }"
-      :fill="{ get: 'c', scale: 'c' }"
+      :x="{ val: row.a, scale: 'a' }"
+      :y="{ val: row.b, scale: 'b' }"
+      :fill="{ val: row.c, scale: 'c' }"
     />
 
   </vgg-map>
@@ -119,24 +117,54 @@ data in column `b` to the coordinates in the y-dimension, and one to map the
 data in column `c` to a set of colors.
 
 4. The values in the columns `a`, `b` and `c` are mapped to the props `x`, `y` and
-`fill` of the `vgg-point` Mark in two steps: first, `get` extracts the value
-from the row in the dataset, and then this value will be fed through the scaling
-function generated in step 3.
+`fill` of the `vgg-point` Mark in two steps. First, the destructuring of the scope
+in `v-slot` provides access to each row in the dataset. The data values contained in that
+row are mapped to the props of the `vgg-point` using the `val` key. Second,
+before being passed as a prop, the data values are transformed using the scale
+functions generated in step 3.
 
-### `get`: String vs Function
+### The Map component's scoped slot
 
-The `get` property of the mapping object can be specified as either a String or
-a Function. In most cases using a String will suffice, but when working with nested
-data structures, using the Function can be handy. Under the hood, the String
-referencing a column name will be compiled to a function. So
-`{ get: 'something' }` simply becomes `{ get: row => row['something'] }`.
+The Map component utilises Vue's
+[scoped slots](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots).
+The way `vue-gg` uses scoped slots might seem a bit puzzling at first, but using
+`vgg-map` with `v-slot` actually quite similar to using Vue's native `v-for`:
+
+::: v-pre
+```html
+<!-- Using v-for -->
+<vgg-point
+  v-for="(row, i) in data"
+  :x="row.a"
+  :y="row.b"
+/>
+
+<!-- Using vgg-map -->
+<vgg-map v-slot="{ row, i }">
+
+  <vgg-point
+   :x="row.a"
+   :y="row.b"
+  />
+
+</vgg-map>
+```
+:::
+
+Besides the current `row` and the current row index `i`, the scope also provides
+access to the previous and next rows through `prevRow` and `nextRow`. However,
+when using `prevRow` and `nextRow`, be aware of the fact that `prevRow` will be
+undefined for the first row, and `nextRow` will be undefined for the last row.
+
+When using `unit="dataframe"`, only `dataframe` will be available in the scope-
+see [Mapping an entire dataframe](#mapping-an-entire-dataframe).
 
 ### When to use `scale`
 
 Sometimes, the data in a column will already be in the right format, and scaling
 won't be necessary. This is the case when you have, for example, a column of
 colors, and you just want to use the color directly. In this situation, you will
-want to use `get`, but not `scale`. To return to the previous example:
+want to use `val`, but not `scale`. To return to the previous example:
 
 ::: v-pre
 ```html{7,16}
@@ -150,12 +178,12 @@ want to use `get`, but not `scale`. To return to the previous example:
   }"
 >
 
-  <vgg-map>
+  <vgg-map v-slot="{ row }">
 
     <vgg-point
-      :x="{ get: 'a', scale: 'a' }"
-      :y="{ get: 'b', scale: 'b' }"
-      :fill="{ get: 'x' }"
+      :x="{ val: row.a, scale: 'a' }"
+      :y="{ val: row.b, scale: 'b' }"
+      :fill="{ val: row.c }"
     />
 
   </vgg-map>
@@ -166,8 +194,8 @@ want to use `get`, but not `scale`. To return to the previous example:
 
 Leaving out `scale` is common when working with the Section component.
 The Section component allows you to specify a local coordinate system. This
-coordinate system can be defined as the domains of the columns in your dataset. See
-the [documentation of the Section component](./section.md) for more information on this topic.
+coordinate system can be defined as the domains of the columns in your dataset. 
+See the [documentation of the Section component](./section.md) for more information on this topic.
 To create the same scatterplot again, but using the local Section coordinate
 system:
 
@@ -192,12 +220,12 @@ system:
     :scale-y="'b'"
   >
 
-    <vgg-map>
+    <vgg-map v-slot="{ row }">
 
       <vgg-point
-        :x="{ get: 'a' }"
-        :y="{ get: 'b' }"
-        :fill="{ get: 'c', scale: 'c' }"
+        :x="{ val: row.a }"
+        :y="{ val: row.b }"
+        :fill="{ val: row.c, scale: 'c' }"
       />
 
     </vgg-map>
@@ -208,9 +236,9 @@ system:
 ```
 :::
 
-### Using `position`
+### Using `band`
 
-TODO
+// TODO
 
 ### Using `scaleGeo`
 
@@ -221,7 +249,7 @@ TODO
 In the examples above, `vgg-map` maps one row in the dataframe to one mark:
 the `vgg-point`. But for many other graphics, like line graphs, the 'one mark per
 row' relation does not hold. Where with the `vgg-point` mark you just give one value
-to the `:x` prop, the `vgg-multi-line` expects a whole column of values. So,
+to the `:x` prop, the `vgg-multi-line` expects a whole Array of values. So,
 to draw a single `vgg-multi-line` with the data used in the examples above,
 we need to map an entire dataframe to a single mark:
 
@@ -229,11 +257,14 @@ we need to map an entire dataframe to a single mark:
 ```
 <vgg-data :data="{ a: [1, 2, 5, 3, 4], b: [2, 7, 9, 10, 9], }">
 
-  <vgg-map unit="dataframe">
+  <vgg-map
+    v-slot="{ dataframe }"
+    unit="dataframe"
+  >
 
     <vgg-multi-line
-      :x="{ get: frame => frame.a, scale: 'a' }"
-      :y="{ get: frame => frame.b, scale: 'b' }"
+      :x="{ val: dataframe.a, scale: 'a' }"
+      :y="{ val: dataframe.b, scale: 'b' }"
     />
 
   </vgg-map>
@@ -241,3 +272,5 @@ we need to map an entire dataframe to a single mark:
 </vgg-data>
 ```
 :::
+
+Note that the scope object now only has a `dataframe` key.

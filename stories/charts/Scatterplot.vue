@@ -13,13 +13,13 @@
       :scale-y="'b'"
     >
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-point
-          :x="{ get: row => row.a }"
-          :y="{ get: row => row.b }"
+          :x="row.a"
+          :y="row.b"
           :radius="3"
-          :fill="{ get: 'a', scale: { type: 'viridis', domain: 'a' } }"
+          :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
         />
 
       </vgg-map>

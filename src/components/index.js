@@ -2,7 +2,7 @@
 import Glyph from './Core/GlyphWrapper.vue'
 import Graphic from './Core/Graphic.vue'
 import Map from './Core/Map.vue'
-import Section from './Core/SectionWrapper.vue'
+import Section from './Core/Section.vue'
 import Data from './Core/Data.vue'
 import Scales from './Core/Scales.vue'
 

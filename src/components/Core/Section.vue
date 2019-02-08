@@ -14,12 +14,13 @@ import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataProvider from '../../mixins/Data/DataProvider.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
+import Rectangular from '../../mixins/Marks/Rectangular.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import randomID from '../../utils/id.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver],
+  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular],
 
   props: {
     type: {
@@ -27,14 +28,34 @@ export default {
       default: 'scale'
     },
 
-    scales: {
+    scaleX: {
+      type: [Object, String, Array, undefined],
+      default: undefined
+    },
+
+    scaleY: {
+      type: [Object, String, Array, undefined],
+      default: undefined
+    },
+
+    scaleGeo: {
       type: [Object, undefined],
       default: undefined
     },
 
-    ranges: {
-      type: Object,
-      required: true
+    data: {
+      type: [Array, Object, undefined],
+      default: undefined
+    },
+
+    format: {
+      type: [String, undefined],
+      default: undefined
+    },
+
+    transform: {
+      type: [Array, Object, undefined],
+      default: undefined
     }
   },
 
@@ -45,14 +66,25 @@ export default {
   },
 
   computed: {
-    _scales () {
-      if (this.scales) {
+    ranges () {
+      let aes = this.coordinateSpecification
+      return {
+        x: [aes.x1, aes.x2],
+        y: [aes.y1, aes.y2]
+      }
+    },
+
+    scales () {
+      if (this.scaleX || this.scaleY || this.scaleGeo) {
         let scales = {}
+        if (this.scaleX) { scales.x = this.scaleX }
+        if (this.scaleY) { scales.y = this.scaleY }
+        if (this.scaleGeo) { scales.geo = this.scaleGeo }
 
-        let hasX = this.scales.hasOwnProperty('x')
-        let hasY = this.scales.hasOwnProperty('y')
+        let hasX = scales.hasOwnProperty('x')
+        let hasY = scales.hasOwnProperty('y')
 
-        if (this.scales.hasOwnProperty('geo')) {
+        if (scales.hasOwnProperty('geo')) {
           if (hasX || hasY) {
             throw new Error(`Cannot set 'scale-x' or 'scale-y' when 'scale-geo' is defined`)
           }
@@ -61,23 +93,20 @@ export default {
             throw new Error(`'scale-geo' is only allowed when data has geometry column`)
           }
 
-          return this.scales
+          return scales
         }
 
-        if (hasX) {
-          scales.x = this.scales.x
-        } else {
+        if (!hasX) {
           scales.x = this.ranges.x
         }
-        if (hasY) {
-          scales.y = this.scales.y
-        } else {
+        if (!hasY) {
           scales.y = this.ranges.y
         }
-        return scales
-      }
 
-      if (!this.scales) { return this.ranges }
+        return scales
+      } else {
+        return this.ranges
+      }
     },
 
     allowScales () {
@@ -90,8 +119,8 @@ export default {
 
         // This is to avoid getting errors when the user wants to create a scale
         // using a domain of a variable that is not available yet.
-        let allowedObjX = this.checkAllowedObj(this._scales.x)
-        let allowedObjY = this.checkAllowedObj(this._scales.y)
+        let allowedObjX = this.checkAllowedObj(this.scales.x)
+        let allowedObjY = this.checkAllowedObj(this.scales.y)
 
         if (!this.$$dataInterface.ready()) {
           if (allowedObjX && allowedObjY) {
@@ -108,7 +137,7 @@ export default {
     transformation () {
       let transformation = new CoordinateTransformation({
         type: this.type,
-        scales: this._scales,
+        scales: this.scales,
         ranges: this.ranges,
         dataInterface: this.$$dataInterface,
         scaleManager: this.$$scaleManager
@@ -118,7 +147,7 @@ export default {
     coordinateTreeBranchID () {
       let id
       let parentData = this.$parent.$vnode.data
-      if (parentData.attrs.id) {
+      if (parentData.attrs && parentData.attrs.id) {
         // use id if given
         id = parentData.attrs.id + '_' + this.randomID
       } else if (parentData.staticClass) {

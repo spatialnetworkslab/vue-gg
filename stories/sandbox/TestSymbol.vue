@@ -15,13 +15,13 @@
         :y2="500"
       >
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
 
           <vgg-symbol
-            :x="{ get: 'explanatory', scale: 'explanatory' }"
-            :y="{ get: 'dependent', scale: 'dependent' }"
-            :size="{ get: 'dependent', scale: 'dependent' }"
-            :stroke="{ get: 'explanatory', scale: { type: 'viridis', domain: 'explanatory' } }"
+            :x="{ val: row.explanatory, scale: 'explanatory' }"
+            :y="{ val: row.dependent, scale: 'dependent' }"
+            :size="{ val: row.dependent, scale: 'dependent' }"
+            :stroke="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
             :stroke-width="2"
             shape="triangle-left"
             fill="none"

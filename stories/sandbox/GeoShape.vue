@@ -18,11 +18,11 @@
       :y2="500"
     >
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-polygon
-          :geometry="{ get: 'geometry', scaleGeo: {} }"
-          :fill="{ get: 'value', scale: { type: 'redYellowGreen', domain: 'value' } }"
+          :geometry="{ val: row.geometry, scaleGeo: {} }"
+          :fill="{ val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
         />
 
       </vgg-map>
