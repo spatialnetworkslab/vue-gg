@@ -10409,6 +10409,20 @@ vue-runtime-helpers@^0.2.0:
   resolved "https://registry.yarnpkg.com/vue-runtime-helpers/-/vue-runtime-helpers-0.2.0.tgz#8f8aa9e5ed40be2f3716c3ef8ee5e319290bedde"
   integrity sha512-ZMFavDEqYrWxsWq5kLpvv5rjJbLf47V99t8p0G/ZEltx6PVSCXVvUC1yAOBiwLY3IEkUFRM8WUDlMasbsRhurA==
 
+vue-server-renderer@2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.6.1.tgz#a5076076ea1b1cd517e8556ea5362232d042606f"
+  integrity sha512-fpKjWYYqKceiJIJGigTcXBabbMi6g3KANhf64Gn4AzFo7bS/wzZkqCQYLRMjAjj6LQzfa7sPJBPSpMdpq/UAfg==
+  dependencies:
+    chalk "^1.1.3"
+    hash-sum "^1.0.2"
+    he "^1.1.0"
+    lodash.template "^4.4.0"
+    lodash.uniq "^4.5.0"
+    resolve "^1.2.0"
+    serialize-javascript "^1.3.0"
+    source-map "0.5.6"
+
 vue-server-renderer@^2.5.16:
   version "2.5.22"
   resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.5.22.tgz#f119efef289c865adc22fda0ae7595299bedbdcf"
