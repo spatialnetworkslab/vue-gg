@@ -208,6 +208,59 @@ export default {
 
   },
 
+  methods: {
+    // Get parents
+    getParents (b, result) {
+      if (b.parentID != null) {
+        let parentBranch = this.$$coordinateTree.getBranch(b.parentID)
+        result.unshift(parentBranch)
+        return this.getParents(parentBranch, result)
+      } else {
+        return result
+      }
+    },
+
+    getLocalX (n) {
+      let p = this._parentNodes
+      let result = n
+      for (let i = 0; i < p.length; i++) {
+        let b = p[i]
+        let bRange = b.ranges.x
+        let bDomain = b.domains.x
+
+        let rangeMin = Math.min(bRange[0], bRange[1])
+        let rangeMax = Math.max(bRange[0], bRange[1])
+
+        let domainMin = Math.min(bDomain[0], bDomain[1])
+        let domainMax = Math.max(bDomain[0], bDomain[1])
+
+        result = (result/ (rangeMax - rangeMin)) * (domainMax - domainMin)
+      }
+
+      return result
+    },
+
+    getLocalY (n) {
+      let p = this._parentNodes
+      let result = n
+      for (let i = 0; i < p.length; i++) {
+        let b = p[i]
+        let bRange = b.ranges.y
+        let bDomain = b.domains.y
+
+        let rangeMin = Math.min(bRange[0], bRange[1])
+        let rangeMax = Math.max(bRange[0], bRange[1])
+
+        let domainMin = Math.min(bDomain[0], bDomain[1])
+        let domainMax = Math.max(bDomain[0], bDomain[1])
+
+        result = (result / (rangeMax - rangeMin)) * (domainMax - domainMin)
+      }
+
+      return result
+    }
+  },
+
   computed: {
     _parsedScalingOptions () {
       return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
@@ -225,12 +278,8 @@ export default {
       return this._parsedScalingOptions[2]
     },
 
-    xRange () {
-      return this.parentBranch.ranges.x
-    },
-
-    yRange () {
-      return this.parentBranch.ranges.y
+    _parentNodes () {
+      return this.getParents(this.parentBranch, [this.parentBranch])
     },
 
     xDomain () {

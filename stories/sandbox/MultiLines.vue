@@ -71,10 +71,13 @@
 
             <vgg-x-axis
               :scale="'xValues'"
+              :tickExtra="false"
             />
 
             <vgg-y-axis
               :scale="'yValues'"
+              flip
+              :tickExtra="false"
             />
 
           </vgg-section>

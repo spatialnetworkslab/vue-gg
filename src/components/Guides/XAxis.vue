@@ -53,17 +53,6 @@
         class="x-axis-data"
       >
 
-        <!-- <vgg-line
-          v-if="tickExtra"
-          :x1="_domain[0]"
-          :y1="0.5"
-          :x2="_domain[0]"
-          :y2="flip ? tickMax : tickMin"
-          :stroke="tickColor"
-          :stroke-opacity="tickOpacity"
-          :stroke-width="tickWidth"
-        /> -->
-
         <vgg-map>
 
           <!-- Tick lines -->
@@ -157,21 +146,12 @@ export default {
     },
 
     posY () {
-      let yRange = this.yRange
       let yDomain = this.yDomain
-
-      let yMin = Math.min(yRange[0], yRange[1])
-      let yMax = Math.max(yRange[0], yRange[1])
 
       let yDomainMin = Math.min(yDomain[0], yDomain[1])
       let yDomainMax = Math.max(yDomain[0], yDomain[1])
 
-      let yHeight = (50 / (yMax - yMin)) * (yDomainMax - yDomainMin)
-
-      if (this.x) {
-        let val = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
-        return [scaledVal - yHeight, scaledVal + yHeight]
-      }
+      let yHeight = this.getLocalY(50)
       
       if (this.vjust.constructor === Number) { 
         let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
@@ -189,11 +169,16 @@ export default {
     ranges () {
       let newRange = {}
 
-      newRange.x1 = this.xDomain[0]
-      newRange.x2 = this.xDomain[1]
-
       newRange.y1 = this.posY[0]
       newRange.y2 = this.posY[1]
+
+      if (this._domainType === 'temporal') {
+        newRange.x1 = this._domain[0]
+        newRange.x2 = this._domain[1]
+      } else {
+        newRange.x1 = this.xDomain[0]
+        newRange.x2 = this.xDomain[1]
+      }
 
       return newRange
     },
