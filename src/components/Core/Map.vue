@@ -3,6 +3,12 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
+import {
+  calculateGridLayout,
+  calculateRowsCols,
+  updateGridSections
+} from './utils/grid.js'
+
 import { initMappings, extractMappings, mapRow } from './utils/mappings.js'
 
 export default {
@@ -65,8 +71,14 @@ export default {
     },
 
     validateSections (elements) {
-      console.log(elements)
-      // return elements.every(el => )
+      elements = elements.filter(el => el.tag !== undefined)
+      if (!elements.every(el => el.componentOptions.tag === 'vgg-section')) {
+        throw new Error(`'vgg-grid' can have in its slot:
+          1. any number of 'vgg-section' components
+          2. a single 'vgg-map' component that only contains other 'vgg-section' components
+        `)
+      }
+      return elements
     }
   },
 
@@ -86,7 +98,15 @@ export default {
     }
 
     if (this.$$grid !== false) {
+      let sections = this.validateSections(elements)
+      let options = this.$$grid
 
+      let numberOfSections = sections.length
+      let { rows, cols } = calculateRowsCols(options, numberOfSections)
+      let ranges = this.parentBranch.domains
+      let layout = calculateGridLayout(rows, cols, options, ranges)
+
+      elements = updateGridSections(createElement, sections, layout)
     }
 
     return createElement('g', { class: 'map' }, elements)

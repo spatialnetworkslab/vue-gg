@@ -1,9 +1,12 @@
 <script>
-import { calculateGridLayout, calculateRowsCols, validateGridOptions } from './utils/grid.js'
+import {
+  calculateGridLayout,
+  calculateRowsCols,
+  validateGridOptions,
+  updateGridSections
+} from './utils/grid.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
-
-import Section from './Section.vue'
 
 export default {
   mixins: [CoordinateTreeUser, DataReceiver],
@@ -42,36 +45,6 @@ export default {
     }
   },
 
-  methods: {
-    updateGridSections (createElement, sections, gridLayout) {
-      let newSections = []
-      for (let i = 0; i < sections.length; i++) {
-        let section = sections[i]
-        let layout = gridLayout[i]
-        newSections.push(this.updateSection(createElement, section, layout))
-      }
-
-      return newSections
-    },
-
-    updateSection (createElement, section, layout) {
-      let props = this.mergeProps(layout, section.componentOptions.propsData)
-      let slots = section.componentOptions.children
-      let newSection = createElement(Section, { props }, slots)
-      return newSection
-    },
-
-    mergeProps (coords, other) {
-      for (let key in other) {
-        if (!['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(key)) {
-          coords[key] = other[key]
-        }
-      }
-
-      return coords
-    }
-  },
-
   provide () {
     let [, childType] = this.children
     if (childType === 'map') {
@@ -94,7 +67,7 @@ export default {
       let ranges = this.parentBranch.domains
       let layout = calculateGridLayout(rows, cols, options, ranges)
 
-      let newSections = this.updateGridSections(createElement, sections, layout)
+      let newSections = updateGridSections(createElement, sections, layout)
 
       return createElement('g', { class: 'layout-grid' }, newSections)
     }
