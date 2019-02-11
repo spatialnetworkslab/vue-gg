@@ -62,6 +62,6 @@ export default {
     let $$transform = this.coordinateTree.getTotalTransformation('root')
     let $$coordinateTreeParent = 'root'
 
-    return { $$coordinateTree, $$transform, $$coordinateTreeParent, $$map: false }
+    return { $$coordinateTree, $$transform, $$coordinateTreeParent }
   }
 }

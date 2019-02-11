@@ -206,7 +206,7 @@ export default {
     let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
     let $$coordinateTreeParent = this.coordinateTreeBranchID
 
-    return { $$transform, $$coordinateTreeParent, $$map: false }
+    return { $$transform, $$coordinateTreeParent }
   }
 }
 </script>

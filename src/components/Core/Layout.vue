@@ -237,10 +237,6 @@ export default {
         createElement, this.$scopedSlots.default, this.options, layout
       )
     }
-  },
-
-  provide () {
-    return { $$map: false }
   }
 }
 </script>

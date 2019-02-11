@@ -15,8 +15,10 @@ export default {
     }
   },
 
-  methods: {
-    validateChildren (children) {
+  computed: {
+    children () {
+      let children = this.$slots.default
+
       // Filter out undefined components (whitespace, v-if="false")
       let definedChildren = children.filter(c => c.tag !== undefined)
 
@@ -37,8 +39,10 @@ export default {
       } else {
         return [definedChildren, 'section']
       }
-    },
+    }
+  },
 
+  methods: {
     updateGridSections (createElement, sections, gridLayout) {
       let newSections = []
       for (let i = 0; i < sections.length; i++) {
@@ -68,12 +72,19 @@ export default {
     }
   },
 
+  provide () {
+    let [, childType] = this.children
+    if (childType === 'map') {
+      let $$grid = this.options
+      return { $$grid }
+    }
+  },
+
   render (createElement) {
     let options = this.options
     validateGridOptions(options)
 
-    let slotContent = this.$slots.default
-    let [children, childType] = this.validateChildren(slotContent)
+    let [children, childType] = this.children
 
     if (childType === 'section') {
       let sections = children
@@ -89,7 +100,7 @@ export default {
     }
 
     if (childType === 'map') {
-      return createElement('g', { class: 'layout-grid' }, this.$slots.default)
+      return createElement('g', { class: 'layout-grid' }, children)
     }
   }
 }

@@ -8,6 +8,8 @@ import { initMappings, extractMappings, mapRow } from './utils/mappings.js'
 export default {
   mixins: [DataReceiver, CoordinateTreeUser, ScaleReceiver],
 
+  inject: ['$$grid'],
+
   props: {
     unit: {
       type: String,
@@ -60,17 +62,31 @@ export default {
 
       let mappedElements = mapRow(slotContent, mappings, 0)
       return mappedElements
+    },
+
+    validateSections (elements) {
+      console.log(elements)
+      // return elements.every(el => )
     }
+  },
+
+  provide () {
+    return { $$grid: false }
   },
 
   render (createElement) {
     let elements
+
     if (this.unit === 'row') {
       elements = this.mapRows()
     }
 
     if (this.unit === 'dataframe') {
       elements = this.mapDataframe()
+    }
+
+    if (this.$$grid !== false) {
+
     }
 
     return createElement('g', { class: 'map' }, elements)
