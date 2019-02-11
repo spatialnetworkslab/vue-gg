@@ -1,8 +1,8 @@
 import Section from '../Section.vue'
 
 export function validateGridOptions (options) {
-  let hasRows = options.hasOwnProperty('rows')
-  let hasCols = options.hasOwnProperty('cols')
+  let hasRows = options.rows !== undefined
+  let hasCols = options.cols !== undefined
   if (hasRows && hasCols) { throw new Error('Cannot have both rows and cols') }
   if (!hasRows && !hasCols) {
     throw new Error('Layout must have either rows or cols specified')

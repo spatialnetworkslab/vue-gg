@@ -12,9 +12,21 @@ export default {
   mixins: [CoordinateTreeUser, DataReceiver],
 
   props: {
-    options: {
-      type: Object,
-      required: true
+    rows: {
+      type: [Number, undefined],
+      default: undefined
+    },
+    cols: {
+      type: [Number, undefined],
+      default: undefined
+    },
+    layoutPadding: {
+      type: [Number, Object],
+      default: 0
+    },
+    cellPadding: {
+      type: [Number, Object],
+      default: 0
     }
   },
 
@@ -48,13 +60,13 @@ export default {
   provide () {
     let [, childType] = this.children
     if (childType === 'map') {
-      let $$grid = this.options
+      let $$grid = this._props
       return { $$grid }
     }
   },
 
   render (createElement) {
-    let options = this.options
+    let options = this._props
     validateGridOptions(options)
 
     let [children, childType] = this.children

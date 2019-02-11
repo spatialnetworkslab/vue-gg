@@ -5,15 +5,9 @@
   >
 
     <vgg-grid
-      :options="{
-        cols: 2,
-        layoutPadding: 20,
-        cellPadding: {
-          l: 7,
-          r: 20,
-          b: 4
-        }
-      }"
+      :cols="2"
+      :layout-padding="20"
+      :cell-padding="{ l: 7, r: 20, b: 4 }"
     >
 
       <vgg-section

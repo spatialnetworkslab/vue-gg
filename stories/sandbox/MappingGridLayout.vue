@@ -5,7 +5,7 @@
     :data="{ a: [1, 2, 3], b: [4, 5, 6] }"
   >
 
-    <vgg-grid :options="{ cols: 2 }">
+    <vgg-grid :cols="2">
 
       <vgg-map v-slot="{ row }">
 
