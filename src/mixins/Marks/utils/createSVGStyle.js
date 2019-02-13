@@ -6,6 +6,7 @@ export default function (aesthetics) {
     'opacity',
     'fillOpacity',
     'strokeOpacity',
+    'strokeLinecap',
     'transition'
   ]
   let styleDef = {}
