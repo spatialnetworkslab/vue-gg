@@ -1,40 +1,41 @@
 <template>
     <vgg-graphic
       v-if="data"
-      :width="2500"
-      :height="2500"
+      :width="2000"
+      :height="2000"
       :data="data">
 
         <vgg-section
           v-for="(pair, j) in pairs"
-          :x1="100 + 300 * pair[0]"
-          :x2="350 + 300 * pair[0]"
-          :y1="50 + 300 * pair[1]"
-          :y2="300 + 300 * pair[1]"
-          :scale-x="categories[pair[0]]"
-          :scale-y="categories[pair[1]]"
+          :x1="100 + 400 * pair[0]"
+          :x2="350 + 400 * pair[0]"
+          :y1="50 + 350 * pair[1]"
+          :y2="300 + 350 * pair[1]"
+          :scale-x="categoryX[pair[0]]"
+          :scale-y="categoryY[pair[1]]"
         >
 
           <vgg-map v-slot="{ row }">
 
             <vgg-point
-              :x="row[categories[pair[0]]]"
-              :y="row[categories[pair[1]]]"
+              :x="row[categoryX[pair[0]]]"
+              :y="row[categoryY[pair[1]]]"
               :radius="2"
             />
 
           </vgg-map>
 
           <vgg-x-axis
-            :scale="categories[pair[0]]"
-            :title="categories[pair[0]]"
-            :titleHjust="1.15"
+            :scale="categoryX[pair[0]]"
+            :title="categoryX[pair[0]]"
+            :titleHjust="1.05"
             :vjust="-.05"
+            titleAnchorPoint="l"
           />
 
           <vgg-y-axis
-            :scale="categories[pair[1]]"
-            :title="categories[pair[1]]"
+            :scale="categoryY[pair[1]]"
+            :title="categoryY[pair[1]]"
             :hjust="-.05"
             flip
           />
@@ -55,12 +56,13 @@ export default {
   data () {
     return {
       data: undefined,
-      categories: ['Calories', 'Price', 'Sugars', 'ServingSize', 'Protein'],
-      pairs: [[0, 1], [0, 2], [0, 3], [0, 4],
-              [1, 0], [1, 2], [1, 3], [1, 4],
-              [2, 0], [2, 1], [2, 3], [2, 4],
-              [3, 0], [3, 1], [3, 2], [3, 4],
-              [4, 0], [4, 1], [4, 2], [4, 3]
+      categoryX: ['Price', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
+      categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Price'],
+      pairs: [[1, 4], [2, 4], [3, 4], [4, 4],
+              [0, 3], [2, 3], [3, 3], [4, 3],
+              [0, 2], [1, 2], [3, 2], [4, 2],
+              [0, 1], [1, 1], [2, 1], [4, 1],
+              [0, 0], [1, 0], [2, 0], [3, 0]
             ]
     }
   },
@@ -81,7 +83,6 @@ export default {
             Sugars: parseInt(d.Sugars)
           }
         }))
-        console.log('hello world')
       })
     }
   }

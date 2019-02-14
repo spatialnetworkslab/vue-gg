@@ -194,7 +194,6 @@ export default {
     },
 
     ranges () {
-      console.log('render')
       let newRange = {}
 
       newRange.y1 = this.posY[0]
