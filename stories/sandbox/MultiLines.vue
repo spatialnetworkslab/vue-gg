@@ -76,6 +76,17 @@
 
             </vgg-map>
 
+            <vgg-x-axis
+              :scale="'xValues'"
+              :tickExtra="false"
+            />
+
+            <vgg-y-axis
+              :scale="'yValues'"
+              flip
+              :tickExtra="false"
+            />
+
           </vgg-section>
 
         </vgg-map>
@@ -101,6 +112,8 @@ export default {
         data.xValues.push(Math.random() * 10)
         data.yValues.push(Math.random() * 100)
       }
+
+      console.log(data)
 
       return data
     }

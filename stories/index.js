@@ -20,6 +20,8 @@ import TrailMark from './sandbox/TrailMark.vue'
 import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
+import IDC from './sandbox/idcGraphs.vue'
+// import IDC2 from './sandbox/idcGraphs2.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -42,4 +44,4 @@ storiesOf('Sandbox', module)
   .add('Trail', () => (TrailMark))
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
-  .add('Heatmap', () => (Heatmap))
+  .add('IDC', () => (IDC))
