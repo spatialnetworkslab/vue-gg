@@ -63,6 +63,10 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
   domain = updateDomain(domain, domainType, scaleOptions)
 
+  if (domainType.startsWith('interval')) {
+    domainType = domainType.split(':')[1]
+  }
+
   return [domain, domainType, scaleOptions]
 }
 
@@ -131,8 +135,16 @@ function checkTypes (type, obj) {
   for (let key of keys) {
     if (obj.hasOwnProperty(key)) {
       let propertyType = getDataType(obj[key])
-      if (propertyType !== type) {
-        throw new Error(`Invalid type for ${key}: '${propertyType}'. Expected type '${type}'`)
+
+      if (type.startsWith('interval')) {
+        let intervalType = type.split(':')[1]
+        if (propertyType !== intervalType) {
+          throw new Error(`Invalid type for ${key}: '${propertyType}'. Expected type '${type}'`)
+        }
+      } else {
+        if (propertyType !== type) {
+          throw new Error(`Invalid type for ${key}: '${propertyType}'. Expected type '${type}'`)
+        }
       }
     }
   }

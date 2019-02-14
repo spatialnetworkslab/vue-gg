@@ -15,6 +15,8 @@ export default function (prop, context, passedScalingOptions) {
     context.scaleManager
   )
 
+  console.log(domain, domainType)
+
   // Coordinate props
   if (['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(prop)) {
     let dimension = getDimension(prop)
