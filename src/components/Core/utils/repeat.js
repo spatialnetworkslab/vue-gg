@@ -1,4 +1,4 @@
-import updateSection from './grid.js'
+import { updateSection } from './grid.js'
 
 export function repeatSections (createElement, slot, layout, xValues, yValues) {
   let newSections = []
