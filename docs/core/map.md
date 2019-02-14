@@ -18,7 +18,7 @@ in which it is located. It also has access to the extents of the coordinate syst
 in which it is located. With this information, it can easily calculate appropriate
 coordinates for its child components.
 
-2. It enables a concice syntax on its child components that can be used to quickly
+2. It enables a concise syntax on its child components that can be used to quickly
 map data values to aesthetic values- for example, categories to colors.
 
 # Props
@@ -194,7 +194,7 @@ want to use `val`, but not `scale`. To return to the previous example:
 
 Leaving out `scale` is common when working with the Section component.
 The Section component allows you to specify a local coordinate system. This
-coordinate system can be defined as the domains of the columns in your dataset. 
+coordinate system can be defined as the domains of the columns in your dataset.
 See the [documentation of the Section component](./section.md) for more information on this topic.
 To create the same scatterplot again, but using the local Section coordinate
 system:
