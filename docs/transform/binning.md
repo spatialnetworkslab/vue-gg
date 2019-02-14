@@ -6,8 +6,14 @@ title: Binning
 
 ```
 <vgg-data
-    :transform="{ binning: { groupBy: 'apple', method: selected, numClasses: 5 } }"
->
+  :transform="{
+    binning: {
+      groupBy: ...,
+      method: ...,
+      ...
+     }
+  }"
+/>
 ```
 
 # Binning
@@ -16,7 +22,13 @@ Similar to the groupBy transformation, binning groups the data into numeric bins
 These bins can be determined one of the inbuilt methods/algorithms or provided manually
 as an array of bin boundaries.
 
-The binning transformation takes an object specifying the parameters of the binning method used.
+The binning transformation takes an object specifying the parameters of the binning method used,
+and returns a new dataframe with two columns:
+
+1. a column called `'bins'`, that contains the upper and lower boundaries of the
+bins as [interval](../concepts/data-loading#data-types) data.
+2. a column called `'grouped'`, that contains the data that is inside of each
+bin as [nested](../concepts/data-loading#data-types) data.
 
 # Keys
 
