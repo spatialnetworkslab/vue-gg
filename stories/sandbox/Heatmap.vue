@@ -8,7 +8,8 @@
     >
 
       <vgg-plot-title
-        :text="title"/>
+        :text="title"
+        :hjust="left"/>
 
       <vgg-section
         :x1="baseX"
@@ -92,7 +93,7 @@
 
         <vgg-x-axis
           :scale="'Name'"
-          title="Drink Item"
+          title="Drinks"
           :titleHjust="1.03"
           :vjust="-.05"
           :labelFontSize="8"
