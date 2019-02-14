@@ -90,7 +90,6 @@
           />
         </vgg-map>
       </vgg-data>
-
         <vgg-x-axis
           :scale="'Name'"
           title="Drinks"
@@ -108,7 +107,6 @@
         />
 
       </vgg-section>
-
 
     </vgg-graphic>
 
@@ -199,6 +197,7 @@ export default {
         console.log(this.data)
         console.log(this.segments)
       })
+
     }
   }
 }

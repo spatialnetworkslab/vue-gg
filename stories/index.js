@@ -4,6 +4,7 @@ import Scatterplot from './charts/Scatterplot.vue'
 
 import Scatterplot2 from './sandbox/Scatterplot.vue'
 import BarChart from './sandbox/BarChart.vue'
+import Heatmap from './sandbox/Heatmap.vue'
 import PlotLines from './sandbox/PlotLines.vue'
 import TestCategoricalDomain from './sandbox/TestCategoricalDomain.vue'
 import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
@@ -15,11 +16,11 @@ import MissingInvalidData from './sandbox/MissingInvalidData.vue'
 import MultiLines from './sandbox/MultiLines.vue'
 import Areas from './sandbox/Areas.vue'
 import TestSymbol from './sandbox/TestSymbol.vue'
+import TrailMark from './sandbox/TrailMark.vue'
 import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
 import IDC from './sandbox/idcGraphs.vue'
-import Heatmap from './sandbox/Heatmap.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -39,6 +40,7 @@ storiesOf('Sandbox', module)
   .add('MultiLines', () => (MultiLines))
   .add('TestSymbol', () => (TestSymbol))
   .add('Single MultiLine', () => (SingleMultiLine))
+  .add('Trail', () => (TrailMark))
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
   .add('IDC', () => (IDC))

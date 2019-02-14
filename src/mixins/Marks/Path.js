@@ -48,7 +48,7 @@ export default {
     },
 
     strokeWidth: {
-      type: Number,
+      type: [Number, Array, Object, undefined],
       default: 2
     },
 
@@ -65,6 +65,12 @@ export default {
     fillOpacity: {
       type: [Number, undefined],
       default: undefined
+    },
+
+    strokeLinecap: {
+      type: [String, undefined],
+      default: undefined,
+      validator: s => ['round', 'square', 'butt'].includes(s) || s === undefined
     },
 
     // Non-aesthetics
@@ -215,13 +221,14 @@ export default {
           }
 
           let path = this.createPath(points)
-
-          return createElement('path', {
+          let element = createElement('path', {
             attrs: {
               'd': path
             },
             style: this.createSVGStyle(aesthetics)
           })
+          console.log(element)
+          return element
         } else {
           console.warn('Not enough valid points to draw Mark')
         }

@@ -21,6 +21,8 @@
             :x="row.grouped.xValues"
             :y="row.grouped.yValues"
             :stroke="row.colors"
+            :stroke-width="5"
+            stroke-linecap="round"
           />
 
         </vgg-map>
