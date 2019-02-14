@@ -138,6 +138,11 @@ export default {
       default: true
     },
 
+    tickExtraLabel: {
+      type: Boolean,
+      default: true
+    },
+
     tickOpacity: {
       type: Number,
       default: 1
@@ -308,7 +313,7 @@ export default {
         })
       } else {
         let ticks
-        let format = this.format && this.format.constructor === Function ? this.format : x => x
+        let format = this.format && this.format.constructor === Function ? this.format : x => x.toString()
 
         if (this._domainType === 'quantitative') {
           newTickValues = arrayTicks(...this._domain, this.tickCount)
@@ -317,8 +322,14 @@ export default {
             newTickValues.unshift(firstValue)
           }
 
-          ticks = newTickValues.map(value => {
-            return { value, label: format(value) }
+          ticks = newTickValues.map((value, i) => {
+            if (i === 0 && this.tickExtra && this.tickExtraLabel) {
+              return { value, label: format(value) }
+            } else if (i != 0) {
+              return { value, label: format(value) }
+            } else {
+              return { value, label: '' }
+            }
           })
         }
 
@@ -343,9 +354,16 @@ export default {
             newTickValues.unshift(firstValue)
           }
 
-          ticks = newTickValues.map(value => {
+          ticks = newTickValues.map((value, i) => {
             let date = new Date(value)
-            return { value: date, label: format(date) }
+
+            if (i === 0 && this.tickExtra && this.tickExtraLabel) {
+              return { value: date, label: format(date) }
+            } else if (i != 0) {
+              return { value: date, label: format(date) }
+            } else {
+              return { value, label: '' }
+            }
           })
         }
 

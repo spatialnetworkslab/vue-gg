@@ -74,6 +74,8 @@ By default the y axis spans the entire height of the section. To customize the h
 
 ### Labels
 
+Note that if a `Function` is passed to the `format` prop to format labels before rendering, the function output must be of type `String`
+
 | Prop           | Required | Regular types      | Default     | Description                             | Unit(s)                    |
 | -------------- | -------- | ------------------ | ----------- | --------------------------------------- | -------------------------- |
 | labels         | false    | [Boolean]          | true        | if true render labels                   |                            |
