@@ -19,6 +19,7 @@ import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
 import IDC from './sandbox/idcGraphs.vue'
+import Heatmap from './sandbox/Heatmap.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -41,3 +42,4 @@ storiesOf('Sandbox', module)
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
   .add('IDC', () => (IDC))
+  .add('Heatmap', () => (Heatmap))
