@@ -1,54 +1,23 @@
 <template>
     <vgg-graphic
       v-if="data"
-      :width="1200"
-      :height="1100"
+      :width="2000"
+      :height="2000"
       :data="data">
 
-      <!-- Section Price : Calories -->
+      <!-- ROW 4 -->
+      <!-- ROW 4 -->
+      <!-- ROW 4 -->
+      <!-- ROW 4 -->
+      <!-- ROW 4 -->
+
+      <!-- (0, 1) -->
 
       <vgg-section
-        :x1="750"
-        :x2="1000"
-        :y1="400"
-        :y2="650"
-        :scale-x="'Price'"
-        :scale-y="'Calories'"
-      >
-
-        <vgg-map v-slot="{ row }">
-
-          <vgg-point
-            :x="row.Price"
-            :y="row.Calories"
-            :radius="3"
-          />
-
-        </vgg-map>
-
-        <vgg-x-axis
-          :scale="'Price'"
-          title="Price ($)"
-          :titleHjust="1.15"
-          :vjust="-.05"
-        />
-
-        <vgg-y-axis
-          :scale="'Calories'"
-          title="calories (kcal)"
-          :hjust="-.05"
-          flip
-        />
-
-      </vgg-section>
-
-      <!-- Section Price : Sugars -->
-
-      <vgg-section
-        :x1="750"
-        :x2="1000"
-        :y1="750"
-        :y2="1000"
+        :x1="100 + 400 * 0"
+        :x2="350 + 400 * 0"
+        :y1="50 + 350 * 1"
+        :y2="300 + 350 * 1"
         :scale-x="'Price'"
         :scale-y="'Sugars'"
       >
@@ -58,16 +27,17 @@
           <vgg-point
             :x="row.Price"
             :y="row.Sugars"
-            :radius="3"
+            :radius="2"
           />
 
         </vgg-map>
 
         <vgg-x-axis
           :scale="'Price'"
-          title="Price ($)"
-          :titleHjust="1.15"
+          title="price ($)"
+          :titleHjust="1.05"
           :vjust="-.05"
+          titleAnchorPoint="l"
         />
 
         <vgg-y-axis
@@ -79,50 +49,51 @@
 
       </vgg-section>
 
-      <!-- Section Calories : Price -->
+      <!-- (1, 1) -->
 
       <vgg-section
-        :x1="400"
-        :x2="650"
-        :y1="50"
-        :y2="300"
-        :scale-x="'Calories'"
-        :scale-y="'Price'"
+        :x1="100 + 400 * 1"
+        :x2="350 + 400 * 1"
+        :y1="50 + 350 * 1"
+        :y2="300 + 350 * 1"
+        :scale-x="'ServingSize'"
+        :scale-y="'Sugars'"
       >
 
         <vgg-map v-slot="{ row }">
 
           <vgg-point
-            :x="row.Calories"
-            :y="row.Price"
-            :radius="3"
+            :x="row.ServingSize"
+            :y="row.Sugars"
+            :radius="2"
           />
 
         </vgg-map>
 
         <vgg-x-axis
-          :scale="'Calories'"
-          title="calories (kcal)"
-          :titleHjust="1.15"
+          :scale="'ServingSize'"
+          title="serving size (ml)"
+          :titleHjust="1.05"
           :vjust="-.05"
+          titleAnchorPoint="l"
         />
 
         <vgg-y-axis
-          :scale="'Price'"
-          title="price ($)"
+          :scale="'Sugars'"
+          title="sugars (g)"
           :hjust="-.05"
           flip
         />
 
       </vgg-section>
 
-      <!-- Section Calories : Sugars -->
+      <!-- (2, 1) -->
 
       <vgg-section
-        :x1="400"
-        :x2="650"
-        :y1="750"
-        :y2="1000"
+        :x1="100 + 400 * 2"
+        :x2="350 + 400 * 2"
+        :y1="50 + 350 * 1"
+        :y2="300 + 350 * 1"
         :scale-x="'Calories'"
         :scale-y="'Sugars'"
       >
@@ -132,7 +103,7 @@
           <vgg-point
             :x="row.Calories"
             :y="row.Sugars"
-            :radius="3"
+            :radius="2"
           />
 
         </vgg-map>
@@ -140,8 +111,9 @@
         <vgg-x-axis
           :scale="'Calories'"
           title="calories (kcal)"
-          :titleHjust="1.15"
+          :titleHjust="1.05"
           :vjust="-.05"
+          titleAnchorPoint="l"
         />
 
         <vgg-y-axis
@@ -153,74 +125,196 @@
 
       </vgg-section>
 
-      <!-- Section Sugars : Calories -->
+      <!-- (4, 1) -->
 
       <vgg-section
-        :x1="50"
-        :x2="300"
-        :y1="400"
-        :y2="650"
-        :scale-x="'Sugars'"
-        :scale-y="'Calories'"
+        :x1="100 + 400 * 4"
+        :x2="350 + 400 * 4"
+        :y1="50 + 350 * 1"
+        :y2="300 + 350 * 1"
+        :scale-x="'Protein'"
+        :scale-y="'Sugars'"
       >
 
         <vgg-map v-slot="{ row }">
 
           <vgg-point
-            :x="row.Sugars"
-            :y="row.Calories"
-            :radius="3"
+            :x="row.Protein"
+            :y="row.Sugars"
+            :radius="2"
           />
 
         </vgg-map>
 
         <vgg-x-axis
-          :scale="'Sugars'"
-          title="sugars (g)"
-          :titleHjust="1.15"
+          :scale="'Protein'"
+          title="protein (g)"
+          :titleHjust="1.05"
           :vjust="-.05"
+          titleAnchorPoint="l"
         />
 
         <vgg-y-axis
-          :scale="'Calories'"
-          title="calories (kcal)"
+          :scale="'Sugars'"
+          title="sugars (g)"
           :hjust="-.05"
           flip
         />
 
       </vgg-section>
 
-      <!-- Section Sugars : Price -->
+      <!-- ROW 5 -->
+      <!-- ROW 5 -->
+      <!-- ROW 5 -->
+      <!-- ROW 5 -->
+      <!-- ROW 5 -->
+
+      <!-- (0, 0) -->
 
       <vgg-section
-        :x1="50"
-        :x2="300"
-        :y1="50"
-        :y2="300"
-        :scale-x="'Sugars'"
-        :scale-y="'Price'"
+        :x1="100 + 400 * 0"
+        :x2="350 + 400 * 0"
+        :y1="50 + 350 * 0"
+        :y2="300 + 350 * 0"
+        :scale-x="'Price'"
+        :scale-y="'Protein'"
       >
 
         <vgg-map v-slot="{ row }">
 
           <vgg-point
-            :x="row.Sugars"
-            :y="row.Price"
-            :radius="3"
+            :x="row.Price"
+            :y="row.Protein"
+            :radius="2"
           />
 
         </vgg-map>
 
         <vgg-x-axis
-          :scale="'Sugars'"
-          title="sugars (g)"
-          :titleHjust="1.15"
-          :vjust="-.05"
-        />
-
-        <vgg-y-axis
           :scale="'Price'"
           title="price ($)"
+          :titleHjust="1.05"
+          :vjust="-.05"
+          titleAnchorPoint="l"
+        />
+
+        <vgg-y-axis
+          :scale="'Protein'"
+          title="protein (g)"
+          :hjust="-.05"
+          flip
+        />
+
+      </vgg-section>
+
+      <!-- (1, 0) -->
+
+      <vgg-section
+        :x1="100 + 400 * 1"
+        :x2="350 + 400 * 1"
+        :y1="50 + 350 * 0"
+        :y2="300 + 350 * 0"
+        :scale-x="'ServingSize'"
+        :scale-y="'Protein'"
+      >
+
+        <vgg-map v-slot="{ row }">
+
+          <vgg-point
+            :x="row.ServingSize"
+            :y="row.Protein"
+            :radius="2"
+          />
+
+        </vgg-map>
+
+        <vgg-x-axis
+          :scale="'ServingSize'"
+          title="serving size (ml)"
+          :titleHjust="1.05"
+          :vjust="-.05"
+          titleAnchorPoint="l"
+        />
+
+        <vgg-y-axis
+          :scale="'Protein'"
+          title="protein (g)"
+          :hjust="-.05"
+          flip
+        />
+
+      </vgg-section>
+
+      <!-- (2, 0) -->
+
+      <vgg-section
+        :x1="100 + 400 * 2"
+        :x2="350 + 400 * 2"
+        :y1="50 + 350 * 0"
+        :y2="300 + 350 * 0"
+        :scale-x="'Calories'"
+        :scale-y="'Protein'"
+      >
+
+        <vgg-map v-slot="{ row }">
+
+          <vgg-point
+            :x="row.Calories"
+            :y="row.Protein"
+            :radius="2"
+          />
+
+        </vgg-map>
+
+        <vgg-x-axis
+          :scale="'Calories'"
+          title="calories (kcal)"
+          :titleHjust="1.05"
+          :vjust="-.05"
+          titleAnchorPoint="l"
+        />
+
+        <vgg-y-axis
+          :scale="'Protein'"
+          title="protein (g)"
+          :hjust="-.05"
+          flip
+        />
+
+      </vgg-section>
+
+      <!-- (3, 0) -->
+
+      <vgg-section
+        :x1="100 + 400 * 3"
+        :x2="350 + 400 * 3"
+        :y1="50 + 350 * 0"
+        :y2="300 + 350 * 0"
+        :scale-x="'Sugars'"
+        :scale-y="'Protein'"
+      >
+
+        <vgg-map v-slot="{ row }">
+
+          <vgg-point
+            :x="row.Sugars"
+            :y="row.Protein"
+            :radius="2"
+          />
+
+        </vgg-map>
+
+        <vgg-x-axis
+          :scale="'Sugars'"
+          title="sugars (g)"
+          :titleHjust="1.05"
+          :vjust="-.05"
+          titleAnchorPoint="l"
+        />
+
+        <vgg-y-axis
+          :scale="'Protein'"
+          title="protein (g)"
           :hjust="-.05"
           flip
         />
@@ -238,7 +332,9 @@ export default {
 
   data () {
     return {
-      data: undefined
+      data: undefined,
+      categoryX: ['Price', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
+      categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Price']
     }
   },
 

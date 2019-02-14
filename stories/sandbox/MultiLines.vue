@@ -111,6 +111,8 @@ export default {
         data.yValues.push(Math.random() * 100)
       }
 
+      console.log(data)
+
       return data
     }
   }
