@@ -63,10 +63,6 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
   domain = updateDomain(domain, domainType, scaleOptions)
 
-  if (domainType.startsWith('interval')) {
-    domainType = domainType.split(':')[1]
-  }
-
   return [domain, domainType, scaleOptions]
 }
 

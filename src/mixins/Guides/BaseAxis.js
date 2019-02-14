@@ -7,6 +7,8 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
+import defaultFormat from './defaultFormat.js'
+
 export default {
   mixins: [Rectangular, DataReceiver],
 
@@ -55,10 +57,6 @@ export default {
       return this._parsedScalingOptions[1]
     },
 
-    _scalingOptions () {
-      return this._parsedScalingOptions[2]
-    },
-
     ranges () {
       return this.coordinateSpecification
     },
@@ -70,7 +68,7 @@ export default {
         })
       } else {
         let ticks
-        let format = this.format && this.format.constructor === Function ? this.format : x => x
+        let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
 
         if (this._domainType === 'quantitative') {
           ticks = arrayTicks(...this._domain, this.tickCount).map(value => {
@@ -99,8 +97,40 @@ export default {
           })
         }
 
+        if (this._domainType === 'interval:quantitative') {
+          let intervals = this.$$dataInterface.getColumn(this.scale)
+          ticks = this.ticksFromIntervals(intervals).map(value => {
+            return { value, label: format(value) }
+          })
+        }
+
+        if (this._domainType === 'interval:temporal') {
+          if (this.format) {
+            if (this.format.constructor === String) { format = timeFormat(this.format) }
+          } else {
+            format = timeFormat('%d/%m/%Y')
+          }
+
+          let intervals = this.$$dataInterface.getColumn(this.scale)
+          ticks = this.ticksFromIntervals(intervals).map(value => {
+            let date = new Date(value)
+            return { value: date, label: format(date) }
+          })
+        }
+
         return ticks
       }
+    }
+  },
+
+  methods: {
+    ticksFromIntervals (intervals) {
+      let ticks = new Set()
+      for (let interval of intervals) {
+        ticks.add(interval[0])
+        ticks.add(interval[1])
+      }
+      return Array.from(ticks)
     }
   }
 }

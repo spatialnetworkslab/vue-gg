@@ -41,7 +41,7 @@
               :x1="{ val: row.bins[0] }"
               :x2="{ val: row.bins[1] }"
               :y1="0"
-              :y2="{ val: row.binCount, scale: { domain: 'binCount', domainMin: 0 } }"
+              :y2="{ val: row.binCount }"
               :fill="{ val: row.bins[1], scale: { type: 'blues', domain: 'bins', domainMin: 0 } }"
             />
 
@@ -49,14 +49,14 @@
 
         </vgg-section>
 
-        <!-- <vgg-x-axis
+        <vgg-x-axis
           :x1="100"
           :x2="500"
           :y1="50"
           :y2="100"
           scale="bins"
           rotate-label
-        /> -->
+        />
 
         <vgg-y-axis
           :x1="500"
