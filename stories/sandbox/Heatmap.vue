@@ -90,6 +90,19 @@
           />
         </vgg-map>
       </vgg-data>
+
+      <vgg-data v-if="segments" :data="segments[5]">
+
+        <vgg-map v-slot="{ row }">
+          <vgg-rectangle
+          :x1="row.x1"
+          :x2="row.x2"
+          :y1="row.y1"
+          :y2="row.y2"
+          :fill="{val: row.value, scale: { type: 'greys', domain: 'value'}}"
+          />
+        </vgg-map>
+      </vgg-data>
         <vgg-x-axis
           :scale="'Name'"
           title="Drinks"
@@ -102,7 +115,7 @@
         <vgg-y-axis
           :scale="categories"
           title="Attributes"
-          :hjust="-0.01"
+          :hjust="-0.02"
           flip
         />
 
@@ -122,14 +135,14 @@ export default {
   data () {
     return {
       data: undefined,
-      categories: ['Price','Calories', 'Protein' , 'ServingSize' , 'Sugars'],
-      title: "Heatmap",
-      width: 1500,
+      categories: ['Price','Calories', 'Protein' , 'ServingSize' , 'Sugars', 'Carbohydrates'],
+      title: "Drinks Heatmap",
+      width: 1000,
       height: 1000,
-      sectionWidth: 1100,
-      sectionHeight: 300,
+      sectionWidth: 850,
+      sectionHeight: 200,
       baseX: 100,
-      baseY: 600
+      baseY: 700
     }
   },
 
@@ -191,7 +204,8 @@ export default {
             Protein: parseInt(d.Protein),
             ServingSize: parseInt(d['Serving Size']),
             Sugars: parseInt(d.Sugars),
-            Name: d['Renamed Item']
+            Name: d['Renamed Item'],
+            Carbohydrates: parseInt(d.Carbohydrates),
           }
         }))
         console.log(this.data)
