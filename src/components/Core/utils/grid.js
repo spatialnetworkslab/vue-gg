@@ -91,7 +91,7 @@ function getPadding (padding) {
   return paddings
 }
 
-function updateSection (createElement, section, layout) {
+export function updateSection (createElement, section, layout) {
   let props = mergeProps(layout, section.componentOptions.propsData)
   let slots = section.componentOptions.children
   let newSection = createElement(Section, { props }, slots)

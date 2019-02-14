@@ -1,50 +1,49 @@
 <script>
+import { calculateGridLayout } from './utils/grid.js'
+import { calculateRowsCols, repeatSections } from './utils/repeat.js'
+import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
+
 export default {
+  mixins: [CoordinateTreeUser],
+
   props: {
     x: {
       type: [Array, undefined],
       default: undefined
     },
-
     y: {
       type: [Array, undefined],
       default: undefined
+    },
+    layoutPadding: {
+      type: [Number, Object],
+      default: 0
+    },
+    cellPadding: {
+      type: [Number, Object],
+      default: 0
     }
   },
 
   methods: {
-    validateSlotContent (slotContent) {
-      let definedElements = slotContent.filter(c => c.tag !== undefined)
-      if (definedElements.some(c => c.componentOptions.tag !== 'vgg-section')) {
-        throw new Error(`vgg-repeat can only contain sections`)
-      }
-    },
-
     validateProps () {
-      if (this.x === undefined && this.y === undefined) {
-        return false
-      }
-
-      if (this.x) {
-
-      }
-
-      if (this.y) {
-        
-      }
-
-      return true
+      return !(this.x === undefined && this.y === undefined)
     }
   },
 
   render (createElement) {
-    let slotContent = this.$slots.default
-    this.validateSlotContent(slotContent)
-
     let allowed = this.validateProps()
 
     if (allowed) {
-      return createElement()
+      let { rows, cols } = calculateRowsCols(this.x, this.y)
+      let options = this._props
+      let ranges = this.parentBranch.domains
+      let layout = calculateGridLayout(rows, cols, options, ranges)
+
+      let slot = this.$scopedSlots.default
+      let newSections = repeatSections(createElement, slot, layout, this.x, this.y)
+
+      return createElement('g', { class: 'layout-repeat' }, newSections)
     }
   }
 }
