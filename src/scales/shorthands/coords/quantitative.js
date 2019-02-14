@@ -9,6 +9,9 @@ export default {
 }
 
 function linear (domain, range) {
+  if (domain[0] === range[0] && domain[1] === range[1]) {
+    return input => { return input }
+  }
   return d3.scaleLinear().domain(domain).range(range)
 }
 
