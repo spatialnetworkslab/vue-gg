@@ -34,7 +34,7 @@
           :x2="row.x2"
           :y1="row.y1"
           :y2="row.y2"
-          :fill="{val: row.value, scale: { type: 'reds', domain: 'value'}}"
+          :fill="{val: row.value, scale: { type: 'blues', domain: 'value'}}"
           />
         </vgg-map>
       </vgg-data>
@@ -47,7 +47,7 @@
           :x2="row.x2"
           :y1="row.y1"
           :y2="row.y2"
-          :fill="{val: row.value, scale: { type: 'oranges', domain: 'value'}}"
+          :fill="{val: row.value, scale: { type: 'blues', domain: 'value'}}"
           />
         </vgg-map>
       </vgg-data>
@@ -60,7 +60,7 @@
           :x2="row.x2"
           :y1="row.y1"
           :y2="row.y2"
-          :fill="{val: row.value, scale: { type: 'viridis', domain: 'value'}}"
+          :fill="{val: row.value, scale: { type: 'blues', domain: 'value'}}"
           />
         </vgg-map>
       </vgg-data>
@@ -73,7 +73,7 @@
           :x2="row.x2"
           :y1="row.y1"
           :y2="row.y2"
-          :fill="{val: row.value, scale: { type: 'greens', domain: 'value'}}"
+          :fill="{val: row.value, scale: { type: 'blues', domain: 'value'}}"
           />
         </vgg-map>
       </vgg-data>
@@ -99,7 +99,7 @@
           :x2="row.x2"
           :y1="row.y1"
           :y2="row.y2"
-          :fill="{val: row.value, scale: { type: 'greys', domain: 'value'}}"
+          :fill="{val: row.value, scale: { type: 'blues', domain: 'value'}}"
           />
         </vgg-map>
       </vgg-data>
