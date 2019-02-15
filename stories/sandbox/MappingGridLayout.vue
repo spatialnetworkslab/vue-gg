@@ -2,10 +2,10 @@
   <vgg-graphic
     :width="500"
     :height="500"
-    :data="{ a: [1, 2, 3], b: [4, 5, 6] }"
+    :data="{ fruit: ['apple', 'banana', 'coconut', 'durian', 'eggplant'] }"
   >
 
-    <vgg-grid :cols="2">
+    <vgg-grid :cols="3">
 
       <vgg-map v-slot="{ row }">
 
@@ -19,7 +19,10 @@
             :x2="1"
             :y1="0"
             :y2="1"
-            :fill="randomColor()"
+            :fill="{ val: row.fruit, scale: {
+              domain: 'fruit',
+              range: ['#2A5B84', '#AAC4D1', '#EBC137', '#FEFAE1', '#BD8025']
+            } }"
           />
 
         </vgg-section>
@@ -30,18 +33,3 @@
 
   </vgg-graphic>
 </template>
-
-<script>
-export default {
-  methods: {
-    randomColor () {
-      let r = Math.floor(Math.random() * 255)
-      let g = Math.floor(Math.random() * 255)
-      let b = Math.floor(Math.random() * 255)
-      let a = Math.floor(Math.random() * 50 + 50) / 100
-
-      return `rgba(${r}, ${g}, ${b}, ${a})`
-    }
-  }
-}
-</script>
