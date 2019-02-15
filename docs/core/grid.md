@@ -42,9 +42,22 @@ of the following form:
 
 where `l`, `r`, `b` and `t` are all optional.
 
+There are two main ways of using the Grid component:
+
+1. A number of Sections can be put into the Grid directly, manually or with `v-for`
+2. A number of Sections can be created with the [Map](./map.md) component
+
+Both will be discussed below.
+
 # Usage
 
 ### Positioning Sections
+
+When placing the Section components directly into the Grid component, all the
+Section's coordinate props (`x1`, `y2`, `w`, etc.) must be left out- these
+will automatically be determined by the Grid component. Note that the positioning
+starts from the bottom left, and that rows will be filled out before columns.
+See the example below:
 
 ::: v-pre
 ```html
@@ -52,31 +65,32 @@ where `l`, `r`, `b` and `t` are all optional.
 
   <vgg-grid
     :rows="3"
-    :layout-padding="10"
+    :cell-padding="{
+      t: 10,
+      l: 15,
+      r: 5
+    }"
   >
 
-    <vgg-section />
-    <vgg-section />
-    <vgg-section />
-    <vgg-section />
-    <vgg-section />
+    <vgg-section
+      v-for="color in ['#2A5B84', '#AAC4D1', '#EBC137', '#FEFAE1', '#BD8025']"
+      :key="color"
+      :scale-x="[0, 1]"
+      :scale-y="[0, 1]"
+    >
+
+      <vgg-rectangle :x1="0" :x2="1" :y1="0" :y2="1" :fill="color" />
+
+    </vgg-section>
 
   </vgg-grid>
-
-  <!--
-
-  This would result in:
-
-  <vgg-section :x1="" x2="" :y1="" y2="" />
-  <vgg-section :x1="" x2="" :y1="" y2="" />
-  <vgg-section :x1="" x2="" :y1="" y2="" />
-  <vgg-section :x1="" x2="" :y1="" y2="" />
-  <vgg-section :x1="" x2="" :y1="" y2="" />
-
-  -->
 
 </vgg-graphic>
 ```
 :::
 
-### Position mapped Sections
+<sections-grid />
+
+### Position Sections with the Map component
+
+<mapped-sections-grid />
