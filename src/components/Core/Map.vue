@@ -66,7 +66,7 @@ export default {
       let mappings = initMappingTree(slotContent)
       mappings = extractMappings(mappings, slotContent, context)
 
-      let mappedElements = mapRow(slotContent, mappings, 0)
+      let mappedElements = mapRow(mappings, slotContent, 0)
       return mappedElements
     },
 

@@ -5,19 +5,11 @@ import createBand from '../../../scales/createBand.js'
 import { transform } from '../../../utils/geojson.js'
 import { invalid } from '../../../utils/equals.js'
 
-// export function initMappings (slotContent) {
-//   let mappings = []
-//
-//   for (let i = 0; i < slotContent.length; i++) {
-//     mappings.push({
-//       scales: {},
-//       geoScales: {},
-//       bands: {}
-//     })
-//   }
-//
-//   return mappings
-// }
+function getChildren (element) {
+  if (element.componentOptions) {
+    return element.componentOptions.children
+  }
+}
 
 export function initMappingTree (slotContent) {
   let tree = []
@@ -35,7 +27,7 @@ function createNode (element) {
     children: []
   }
 
-  let children = element.componentOptions.children
+  let children = getChildren(element)
 
   if (children && children.length > 0) {
     element.componentOptions.children.forEach(child => {
@@ -110,7 +102,7 @@ function updateMapping (mapping, element, context) {
     }
   }
 
-  let children = element.componentOptions.children
+  let children = getChildren(element)
 
   if (children && children.length > 0) {
     for (let i = 0; i < children.length; i++) {
@@ -130,7 +122,7 @@ export function mapRow (mappings, slotContent, rowNumber) {
     let mapping = mappings[i]
     let element = slotContent[i]
 
-    element = mapElement(mapping, element, rowNumber)
+    slotContent[i] = mapElement(mapping, element, rowNumber)
   }
 
   return slotContent
@@ -187,7 +179,7 @@ function mapElement (mapping, element, rowNumber) {
     return undefined
   }
 
-  let children = element.componentOptions.children
+  let children = getChildren(element)
   if (children && children.length > 0) {
     children = mapRow(mapping.children, children, rowNumber)
   }
