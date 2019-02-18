@@ -9,7 +9,7 @@ import {
   updateGridSections
 } from './utils/grid.js'
 
-import { initMappings, extractMappings, mapRow } from './utils/mappings.js'
+import { initMappingTree, extractMappings, mapRow } from './utils/mappings.js'
 
 export default {
   mixins: [DataReceiver, CoordinateTreeUser, ScaleReceiver],
@@ -45,10 +45,10 @@ export default {
       this.$$dataInterface.forEachRow(scope => {
         let slotContent = this.$scopedSlots.default(scope)
 
-        if (mappings === null) { mappings = initMappings(slotContent) }
+        if (mappings === null) { mappings = initMappingTree(slotContent) }
         mappings = extractMappings(mappings, slotContent, context)
 
-        let mappedContent = mapRow(slotContent, mappings, scope.i)
+        let mappedContent = mapRow(mappings, slotContent, scope.i)
         mappedElements.push(...mappedContent)
       })
 
@@ -63,7 +63,7 @@ export default {
 
       let slotContent = this.$scopedSlots.default(scope)
 
-      let mappings = initMappings(slotContent)
+      let mappings = initMappingTree(slotContent)
       mappings = extractMappings(mappings, slotContent, context)
 
       let mappedElements = mapRow(slotContent, mappings, 0)
