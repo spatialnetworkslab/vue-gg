@@ -5,7 +5,7 @@
     :data="{ fruit: ['apple', 'banana', 'coconut', 'durian', 'eggplant'] }"
   >
 
-    <vgg-grid :cols="3">
+    <vgg-grid :cols="3" :cell-padding="5">
 
       <vgg-map v-slot="{ row }">
 
