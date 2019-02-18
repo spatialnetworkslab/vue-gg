@@ -27,24 +27,24 @@ export default {
 
   methods: {
     validateProps () {
-      return !(this.x === undefined && this.y === undefined)
+      if (this.x === undefined && this.y === undefined) {
+        throw new Error(`'vgg-repeat' must have at least a 'x' or 'y' prop`)
+      }
     }
   },
 
   render (createElement) {
-    let allowed = this.validateProps()
+    this.validateProps()
 
-    if (allowed) {
-      let { rows, cols } = calculateRowsCols(this.x, this.y)
-      let options = this._props
-      let ranges = this.parentBranch.domains
-      let layout = calculateGridLayout(rows, cols, options, ranges)
+    let { rows, cols } = calculateRowsCols(this.x, this.y)
+    let options = this._props
+    let ranges = this.parentBranch.domains
+    let layout = calculateGridLayout(rows, cols, options, ranges)
 
-      let slot = this.$scopedSlots.default
-      let newSections = repeatSections(createElement, slot, layout, this.x, this.y)
+    let slot = this.$scopedSlots.default
+    let newSections = repeatSections(createElement, slot, layout, this.x, this.y)
 
-      return createElement('g', { class: 'layout-repeat' }, newSections)
-    }
+    return createElement('g', { class: 'layout-repeat' }, newSections)
   }
 }
 </script>

@@ -9,7 +9,7 @@ title: 'Grid'
 # Description
 
 The Grid component is used to quickly position and align [Section](./section.md)
-components.
+components in a grid format.
 
 # Props
 
