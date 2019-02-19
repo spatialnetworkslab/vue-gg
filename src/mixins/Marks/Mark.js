@@ -15,7 +15,6 @@ export default {
 
   computed: {
     __update () {
-      if (this.$$coordinateTree._update) {console.log('update')}
       return this.$$coordinateTree._update
     },
 

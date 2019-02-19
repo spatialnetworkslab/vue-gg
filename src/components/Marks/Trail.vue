@@ -21,7 +21,7 @@
         default: '#000000'
       },
 
-      // Non-mappable
+      // Not mappable
       strokeLinecap: {
         type: String,
         default: 'round'
@@ -31,11 +31,11 @@
         type: String,
         default: 'none'
       },
-      //
-      // strokeWidth: {
-      //   type: [Number, Array],
-      //   default: 0.5
-      // },
+
+      strokeWidth: {
+        type: [Number, Array],
+        default: 0.5
+      },
 
       fill: {
         type: String,
@@ -46,17 +46,63 @@
     computed: {
       // tracks what the functions should look for as mappable
       mappable () {
-        return ['stroke', 'strokeWidth']
+        return ['strokeWidth']
       }
+
     },
 
     methods: {
-      isArray (obj) {
-        if (typeof obj === Object) {
-          return true
-        } else {
-          return false
+      point (p) {
+        let x = p[0]
+        let y = p[1]
+        return { x, y }
+      },
+
+      line (p1, p2) {
+         return { p1, p2 }
+      },
+
+      onLine (line, point) {
+        if(point.x <= Math.max(line.p1.x, line.p2.x) && point.x <= Math.min(line.p1.x, line.p2.x) &&
+           (point.y <= Math.max(line.p1.y, line.p2.y) && point.y <= Math.min(line.p1.y, line.p2.y))) {
+            return true
         }
+        return false
+      },
+
+      direction(a, b, c) {
+       let val = (b.y-a.y) * (c.x-b.x) - (b.x-a.x) * (c.y-b.y)
+       if (val == 0) {
+          return 0     //colinear
+        } else if(val < 0) {
+          return 2    //anti-clockwise direction
+        }
+        return 1    //clockwise direction
+      },
+
+      isIntersect(l1, l2) {
+        //four direction for two lines and points of other line
+        let dir1 = this.direction(l1.p1, l1.p2, l2.p1);
+        let dir2 = this.direction(l1.p1, l1.p2, l2.p2);
+        let dir3 = this.direction(l2.p1, l2.p2, l1.p1);
+        let dir4 = this.direction(l2.p1, l2.p2, l1.p2);
+
+        if(dir1 != dir2 && dir3 != dir4){
+          return true //they are intersecting
+        }
+        if(dir1===0 && this.onLine(l1, l2.p1)) { //when p2 of line2 are on the line1
+          return true
+        }
+         if(dir2===0 && this.onLine(l1, l2.p2)){ //when p1 of line2 are on the line1
+            return true
+        }
+         if(dir3===0 && this.onLine(l2, l1.p1)) { //when p2 of line1 are on the line2
+            return true
+        }
+         if(dir4===0 && this.onLine(l2, l1.p2)){ //when p1 of line1 are on the line2
+            return true
+        }
+        return false
       },
 
       // This function generates the x-y coordinates + corresponding aesthetics that may need tobe sorted
@@ -110,7 +156,7 @@
         return point
       },
 
-       // This function filters invalid points based on the coordinate element in the point object
+      // This function filters invalid points based on the coordinate element in the point object
       filterInvalid (points) {
         let filtered = []
         for (let i = 0; i < points.length; i++) {
@@ -124,9 +170,8 @@
         return filtered
       },
 
-       // This function sorts points according to the x or y coordinate, bringing along with it
-       // the aesthetics attached to the point
-
+      // This function sorts points according to the x or y coordinate, bringing along with it
+      // the aesthetics attached to the point
       sortPoints (points) {
         if (this.sort === 'x') {
           return points.sort((a, b) => a.coord[0] - b.coord[0])
@@ -156,13 +201,15 @@
             let y2 = nextPt.coord[1]
             let w1 = points[ix].strokeWidth/2
             let w2 = points[ix + 1].strokeWidth/2
-            // if (w1 === 0) {
-            //   w1 += 0.05
-            // }
-            //
-            // if (w2 === 0) {
-            //   w2 += 0.05
-            // }
+
+            // to prevent strokes from disappearing completely
+            if (w1 === 0) {
+              w1 += 0.01
+            }
+
+            if (w2 === 0) {
+              w2 += 0.01
+            }
 
             // computes reference line segment - between start and end points
             let vector = [x1 - x2, y1 - y2]
@@ -183,10 +230,6 @@
             // end points
             let coord2 = [x2 + uVectorP[0] * w2, y2 + uVectorP[1] * w2]
             let coord3 = [x2 - uVectorP[0] * w2, y2 - uVectorP[1] * w2]
-            console.log(uVector, uVectorP)
-            console.log('test', this.$$transform(point.coord))
-            console.log('points', points[ix].coord, points[ix+1].coord, console.log(points[ix].strokeWidth))
-            console.log('new points', coord1, coord2, coord3, coord4)
 
             // to produce the curved edges between points
             if (ix > 1) {
@@ -196,8 +239,8 @@
               let bBottom = coord3[1] - mBottom * coord3[0]
 
               // let prevTopPair = [ top[ix - 1], top[ix] ]
-              let prevCoord3 = bottom[ix-1]
-              let prevCoord4 = bottom[ix-2]
+              let prevCoord3 = bottom[ix]
+              let prevCoord4 = bottom[ix-1]
 
               // let vectorTop = [prevTopPair[1][0] - prevTopPair[0][0], prevTopPair[1][1] - prevTopPair[0][1]]
               let prevVecBot = [prevCoord3[0] - prevCoord4[0], prevCoord3[1]- prevCoord4[1]]
@@ -213,6 +256,14 @@
               let xBot = (bBottom - prevBotB) / (prevBotM - mBottom)
               let yBot = prevBotM * xBot + prevBotB
 
+              // determine if two lines do not intersect
+              // if they intersect, do nothing
+              // if they do not intersect, create a transition bezier curve
+              let l1 = this.line(this.point(prevCoord4), this.point(prevCoord3))
+              let l2 = this.line(this.point(coord4), this.point(coord3))
+
+              console.log(this.isIntersect(l1, l2))
+
             }
 
             top.push(coord1)
@@ -226,21 +277,11 @@
           for (let b = bottom.length - 1; b >= 0; b--) {
             segments.push(bottom[b])
           }
+
           segments.push(segments[0])
-          console.log(segments)
+
           return segments
         }
-      },
-
-      cloneObject(obj) {
-        var clone = {};
-        for(var i in obj) {
-            if(obj[i] != null &&  typeof(obj[i])=="object")
-                clone[i] = cloneObject(obj[i]);
-            else
-                clone[i] = obj[i];
-        }
-        return clone
       },
 
       renderSVG (createElement) {
@@ -269,12 +310,13 @@
               points = this.sortPoints(points)
             }
 
+            // obtains polygon corresponding to multiline with stroke widths
             segments = this.enumAesthetics(points)
             const lineGenerator = line()
+            // creates line path
             let path = lineGenerator(segments)
 
             let elements = []
-            let totalPath = []//totalPath = [], topPath = segments.top, bottomPath = segments.bottom
             let totalAesthetics = {'stroke': this.stroke, 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity, 'strokeWidth': 1}
 
             let element = createElement('path', {
