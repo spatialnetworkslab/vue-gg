@@ -204,7 +204,7 @@ export default {
         newRange.x2 = this.getLocalX(this.x2)
         return newRange
       } else if (this.x1 ^ this.x2) {
-        throw new Error ('Please provide both x1 and x2 coordinates')
+        throw new Error('Please provide both x1 and x2 coordinates')
       } else if (this.x) {
         throw new Error('Please provide x1, x2 start and end coordinates')
       }
