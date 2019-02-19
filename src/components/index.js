@@ -28,6 +28,8 @@ import Rectangle from './Marks/Rectangle.vue'
 import Label from './Marks/Label.vue'
 import Symbol from './Marks/Symbol.vue'
 
+import IdcPoint from './Marks/idcPoint.vue'
+
 export default {
   Glyph,
   Graphic,
@@ -53,5 +55,7 @@ export default {
   Polygon,
   Rectangle,
   Label,
-  Symbol
+  Symbol,
+
+  IdcPoint
 }

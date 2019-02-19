@@ -17,10 +17,16 @@
 
           <vgg-map v-slot="{ row }">
 
-            <vgg-point
+            <vgg-idc-point
               :x="row[categoryX[pair[0]]]"
               :y="row[categoryY[pair[1]]]"
-              :radius="2"
+              :radius="5"
+              :index="{val: row.Index}"
+              :selectionIndex="index"
+              :clickHandler="clickHandler"
+              :hoverHandler="hoverHandler"
+              :leaveHandler="leaveHandler"
+              fill="#d6d6d6"
             />
 
           </vgg-map>
@@ -56,6 +62,8 @@ export default {
   data () {
     return {
       data: undefined,
+      index: -1,
+      selected: false,
       categoryX: ['Price', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
       categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Price'],
       pairs: [[1, 4], [2, 4], [3, 4], [4, 4],
@@ -72,10 +80,49 @@ export default {
   },
 
   methods: {
+    clickHandler (self) {
+      return () => {
+        if (!this.selected) {
+          this.index = self.index
+          this.selected = true
+        } else if (this.selected && this.index != self.index) {
+          this.index = self.index
+          this.selected = true
+        } else if (this.selected && this.index === self.index) {
+          this.index = -1
+          this.selected = false
+        } else {
+          throw new Error('Error in click handler')
+        }
+      }
+      
+    },
+
+    hoverHandler (self) {
+      return () => {
+        if (this.selected) {
+          return
+        } else {
+          this.index = self.index
+        }
+      }
+    },
+
+    leaveHandler (self) {
+      return () => {
+        if (this.selected) {
+          return
+        } else {
+          this.index = -1
+        }
+      }
+    },
+
     drinks () {
       csv('../../static/idcDrinksDemo.csv').then((data) => {
-        this.data = Object.freeze(data.map(d => {
+        this.data = Object.freeze(data.map((d, i) => {
           return {
+            Index: i,
             Calories: parseInt(d.Calories),
             Price: parseInt(d.Price),
             Protein: parseInt(d.Protein),
