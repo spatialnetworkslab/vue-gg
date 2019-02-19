@@ -4,6 +4,7 @@
   import checkPoints from '../../mixins/Marks/utils/checkPoints.js'
   import { invalidPoint } from '../../utils/equals.js'
   import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
+  import { line, arc, curve } from 'd3-shape'
 
   export default {
     mixins: [Path],
@@ -38,7 +39,7 @@
 
       fill: {
         type: String,
-        default: 'blue'
+        default: 'none'
       },
     },
 
@@ -138,22 +139,23 @@
       //This function maps line aesthetics to the data and creates the segments.
       enumAesthetics (points) {
         let top = []
-        let bottom = [], segments = []
+        let bottom = [], segments = {}
         if (points.length > 1) {
           /**
            * Calculate the points that make up each line segment.
            */
 
           for (let ix = 0; ix < points.length - 1; ix++) {
-            let total = []
-            let point = points[ix]
+            let total = [], point = {}, nextPt = {}
+            // let point = points[ix]
+            point.coord = this.$$transform(points[ix].coord)
+            nextPt.coord = this.$$transform(points[ix + 1].coord)
             let x1 = point.coord[0]
             let y1 = point.coord[1]
-            let x2 = points[ix+1].coord[0]
-            let y2 = points[ix + 1].coord[1]
-            let w1 = points[ix].strokeWidth
-            let w2 = points[ix + 1].strokeWidth
-
+            let x2 = nextPt.coord[0]
+            let y2 = nextPt.coord[1]
+            let w1 = points[ix].strokeWidth/2
+            let w2 = points[ix + 1].strokeWidth/2
             // if (w1 === 0) {
             //   w1 += 0.05
             // }
@@ -181,6 +183,10 @@
             // end points
             let coord2 = [x2 + uVectorP[0] * w2, y2 + uVectorP[1] * w2]
             let coord3 = [x2 - uVectorP[0] * w2, y2 - uVectorP[1] * w2]
+            console.log(uVector, uVectorP)
+            console.log('test', this.$$transform(point.coord))
+            console.log('points', points[ix].coord, points[ix+1].coord, console.log(points[ix].strokeWidth))
+            console.log('new points', coord1, coord2, coord3, coord4)
 
             // to produce the curved edges between points
             if (ix > 1) {
@@ -213,11 +219,14 @@
             top.push(coord2)
             bottom.push(coord4)
             bottom.push(coord3)
-            console.log(coord1, coord2, coord3)
 
           }
 
-          segments = { top, bottom }
+          segments = top
+          for (let b = bottom.length - 1; b >= 0; b--) {
+            segments.push(bottom[b])
+          }
+          segments.push(segments[0])
           console.log(segments)
           return segments
         }
@@ -259,33 +268,22 @@
             if (this.sort) {
               points = this.sortPoints(points)
             }
-            console.log(points)
+
             segments = this.enumAesthetics(points)
-            let elements = [], totalPath = []
+            const lineGenerator = line()
+            let path = lineGenerator(segments)
 
-
-            for (let item in segments) {
-              if (item === "top"){
-                for (let t = 0; t < segments[item].length; t++){
-                  totalPath.push(segments[item][t])
-                }
-
-              } else if (item === "bottom") {
-                for (let b = segments[item].length - 1; b >= 0; b --) {
-                  totalPath.push(segments[item][b])
-                }
-              }
-            }
-            totalPath.push(totalPath[0])
-
+            let elements = []
+            let totalPath = []//totalPath = [], topPath = segments.top, bottomPath = segments.bottom
             let totalAesthetics = {'stroke': this.stroke, 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity, 'strokeWidth': 1}
-            let element1 = createElement('path', {
+
+            let element = createElement('path', {
               attrs: {
-                'd': this.createPath(totalPath)
+                'd': path
               },
               style: createSVGStyle(totalAesthetics)
             })
-            elements.push(element1)
+            elements.push(element)
 
             return createElement('g', elements)
 
