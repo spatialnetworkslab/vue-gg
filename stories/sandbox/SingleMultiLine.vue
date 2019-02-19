@@ -12,29 +12,20 @@
       :y1="50"
       :y2="450"
     >
-      <vgg-scales :scales="{ myScale: 'width' }" />
+      <vgg-scales :scales="{ widthScale: 'width' }" />
 
       <vgg-map
         v-slot="{ dataframe }"
         unit="dataframe"
       >
 
-
-        <!-- <vgg-multi-line
-          :x="{ val: dataframe.time, scale: 'time' }"
-          :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
-          stroke-linecap="round"
-          :stroke-width="10"
-        /> -->
-
         <vgg-trail
           :x="{ val: dataframe.time, scale: 'time' }"
           :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
-          stroke-linecap="round"
-          :stroke-width="{ val: dataframe.width, scale: '#myScale' }"
-          :sort="'x'"
-          :stroke-opacity="0.5"
-          />
+          :stroke-width="{ val: dataframe.width, scale: '#widthScale'}"
+          :opacity="0.8"
+          fill="green"
+        />
 
       </vgg-map>
 
@@ -48,12 +39,12 @@
 export default {
   computed: {
     someTimeData () {
-      let time = new Array(12).fill(1).map((v, i) => new Date(2018, i, 1))
-      let measurement = new Array(12).fill(1).map((v, i) => Math.floor(i * Math.random() * 30))
-      let width = new Array(12).fill(1).map((v, i) => Math.floor(i * Math.random() * 30))
+      let time = new Array(15).fill(1).map((v, i) => new Date(2018, i, 1))
+      let measurement = new Array(15).fill(1).map((v, i) => Math.floor(i * Math.random() * 50))
+      let width = [7, 11, 5, 2, 3, 5, 2, 10, 10, 11, 5, 7, 8, 10, 3]
       // let measurement = new Array(12).fill(1).map((v, i) => i % 2 === 0 ? Math.floor(i * Math.random() * 30) : NaN)
-      console.log(width)
-      return { time, measurement, width}
+
+      return { time, measurement, width }
     }
   }
 }

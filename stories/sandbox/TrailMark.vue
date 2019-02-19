@@ -19,39 +19,12 @@
 
       <vgg-map v-slot="{ row }">
 
-        <!-- <vgg-trail
-          :x="row.grouped.xValues"
-          :y="row.grouped.yValues"
-          :stroke="row.colors"
-          :sort="'x'"
-          /> -->
-
         <vgg-trail
           :x="row.grouped.xValues"
           :y="row.grouped.yValues"
-          :stroke="row.colors"
-          :stroke-width="{ val: "row.grouped.rainfall", scale: '#rainfall' }"
-          :sort="'x'"
+          :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
+          fill="green"
         />
-          <!-- <vgg-map v-slot="{ row }">
-
-            <vgg-point
-              :x="{ val: row.explanatory, scale: 'explanatory' }"
-              :y="{ val: row.dependent, scale: 'dependent' }"
-              :radius="{ val: row.dependent, scale: { domain: 'dependent' } }"
-              :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
-            />
-
-          </vgg-map> -->
-
-        <!-- <vgg-trail
-          :x="row.grouped.xValues"
-          :y="row.grouped.yValues"
-          :stroke="row.colors }"
-          :stroke-width="{ row.grouped.rainfall, scale: '#rainfallScale' }"
-          :sort="'x'"
-          :stroke-opacity="row.grouped.opacity"
-        /> -->
 
       </vgg-map>
 

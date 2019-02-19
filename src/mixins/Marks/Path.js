@@ -219,7 +219,7 @@ export default {
           if (this.close) {
             points = this.closePoints(points)
           }
-
+          console.log(points)
           let path = this.createPath(points)
           let element = createElement('path', {
             attrs: {

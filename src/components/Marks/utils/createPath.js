@@ -1,5 +1,5 @@
 import { interpolate } from 'd3-interpolate'
-import { line } from 'd3-shape'
+import { line, arc, curve } from 'd3-shape'
 import { geoPath } from 'd3-geo'
 
 import { transform } from '../../../utils/geojson.js'
