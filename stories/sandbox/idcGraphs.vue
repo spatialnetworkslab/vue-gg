@@ -128,7 +128,7 @@ export default {
             Price: parseInt(d.Price),
             Protein: parseInt(d.Protein),
             ServingSize: parseInt(d['Serving Size']),
-            Sugars: parseInt(d.Sugars)
+            Sugars: parseInt(d.Sugars),
           }
         }))
       })
