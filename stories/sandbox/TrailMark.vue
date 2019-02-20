@@ -23,7 +23,8 @@
           :x="row.grouped.xValues"
           :y="row.grouped.yValues"
           :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
-          fill="green"
+          :fill="row.colors"
+          :sort="'x'"
         />
 
       </vgg-map>
@@ -85,6 +86,7 @@ export default {
         data.opacity.push(alpha)
         data.rainfall.push(rain)
       }
+
       return data
     }
   }
