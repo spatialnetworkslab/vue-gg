@@ -17,17 +17,10 @@
 
           <vgg-map v-slot="{ row }">
 
-            <vgg-idc-point
+            <vgg-label
               :x="row[categoryX[pair[0]]]"
               :y="row[categoryY[pair[1]]]"
-              :radius="5"
-              :index="{val: row.Index}"
-              :selectionIndex="index"
-              :clickHandler="clickHandler"
-              :hoverHandler="hoverHandler"
-              :leaveHandler="leaveHandler"
-              :fill="{ val: row.Index, scale: { type: 'viridis', domain: 'Index' } }"
-              :fillOpacity="0.38"
+              :text="{val: row.Label}"
             />
 
           </vgg-map>
@@ -123,12 +116,12 @@ export default {
       csv('../../static/idcDrinksDemo.csv').then((data) => {
         this.data = Object.freeze(data.map((d, i) => {
           return {
-            Index: i,
+            Label: String.fromCharCode(65 + i),
             Calories: parseInt(d.Calories),
             Price: parseInt(d.Price),
             Protein: parseInt(d.Protein),
             ServingSize: parseInt(d['Serving Size']),
-            Sugars: parseInt(d.Sugars),
+            Sugars: parseInt(d.Sugars)
           }
         }))
       })
