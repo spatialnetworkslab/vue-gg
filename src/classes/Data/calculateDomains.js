@@ -50,15 +50,15 @@ export default function (data, length) {
         if (nValidValues === 1) {
           let domain = initDummyDomain(type, firstValidValue)
           domains[key] = domain
-          // come back
-          //console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
-          //console.warn(`Using domain ${JSON.stringify(domain)}`)
+
+          console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
+          console.warn(`Using domain ${JSON.stringify(domain)}`)
         } else if (uniqueValues === 1 && type !== 'categorical') {
           let domain = initDummyDomain(type, firstValidValue)
           domains[key] = domain
 
-          //console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
-          //console.warn(`Using domain ${JSON.stringify(domain)}`)
+          console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
+          console.warn(`Using domain ${JSON.stringify(domain)}`)
         } else {
           domains[key] = initDomain(type)
 

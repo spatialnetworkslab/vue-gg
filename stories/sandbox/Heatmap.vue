@@ -6,139 +6,9 @@
       :height="height"
       :data="data"
     >
-
       <vgg-plot-title
         :text="title"
         :hjust="'center'"/>
-
-      <vgg-section
-        :x1="1800"
-        :x2="2300"
-        :y1="baseY + sectionHeight * 2"
-        :y2="sectionHeight * 2.2 + baseY"
-        :scale-x="[baseX, sectionWidth + baseX]"
-        :scale-y="[baseY, sectionHeight + baseY]"
-      >
-
-        <g v-for="(item, i) in segments(2, 20)">
-          <vgg-data :data="item">
-            <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-              :x1="row.x1"
-              :x2="row.x2"
-              :y1="row.y1"
-              :y2="row.y2"
-              :fill="{val: row.value, scale: { type: 'purples', domain: 'value'}}"
-              />
-            </vgg-map>
-          </vgg-data>
-        </g>
-
-      <vgg-x-axis
-        :scale="'Name'"
-        title="Drinks"
-        :titleHjust="1.05"
-        :vjust="-.05"
-        :labelFontSize="8"
-        labelRotate
-      />
-
-      <vgg-y-axis
-        :scale="categories2"
-        title="Attributes"
-        :hjust="-0.02"
-        :vjust="0.3"
-        :titleVjust="1.2"
-        flip
-      />
-
-      </vgg-section>
-
-      <vgg-section
-        :x1="1100"
-        :x2="1600"
-        :y1="baseY + sectionHeight * 2"
-        :y2="sectionHeight * 2.2 + baseY"
-        :scale-x="[baseX, sectionWidth + baseX]"
-        :scale-y="[baseY, sectionHeight + baseY]"
-      >
-
-        <g v-for="(item, i) in segments(2, 30)">
-          <vgg-data :data="item">
-            <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-              :x1="row.x1"
-              :x2="row.x2"
-              :y1="row.y1"
-              :y2="row.y2"
-              :fill="{val: row.value, scale: { type: 'purples', domain: 'value'}}"
-              />
-            </vgg-map>
-          </vgg-data>
-        </g>
-
-      <vgg-x-axis
-        :scale="'Name'"
-        title="Drinks"
-        :titleHjust="1.05"
-        :vjust="-.05"
-        :labelFontSize="8"
-        labelRotate
-      />
-
-      <vgg-y-axis
-        :scale="categories2"
-        title="Attributes"
-        :hjust="-0.02"
-        :vjust="0.3"
-        :titleVjust="1.2"
-        flip
-      />
-
-      </vgg-section>
-
-      <vgg-section
-        :x1="baseX"
-        :x2="sectionWidth + baseX"
-        :y1="baseY + sectionHeight * 2"
-        :y2="sectionHeight * 2.2 + baseY"
-        :scale-x="[baseX, sectionWidth + baseX]"
-        :scale-y="[baseY, sectionHeight + baseY]"
-      >
-
-        <g v-for="(item, i) in segments(2, 40)">
-          <vgg-data v-if="segments" :data="item">
-            <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-              :x1="row.x1"
-              :x2="row.x2"
-              :y1="row.y1"
-              :y2="row.y2"
-              :fill="{val: row.value, scale: { type: 'purples', domain: 'value'}}"
-              />
-            </vgg-map>
-          </vgg-data>
-        </g>
-
-      <vgg-x-axis
-        :scale="'Name'"
-        title="Drinks"
-        :titleHjust="1.03"
-        :vjust="-.05"
-        :labelFontSize="8"
-        labelRotate
-      />
-
-      <vgg-y-axis
-        :scale="categories2"
-        title="Attributes"
-        :hjust="-0.02"
-        :vjust="0.3"
-        :titleVjust="1.2"
-        flip
-      />
-
-      </vgg-section>
 
       <vgg-section
         :x1="baseX"
@@ -243,12 +113,12 @@ export default {
       categories2: ['Sugars', 'Calories'],
       categories5: ['Calories', 'Protein', 'Sugars', 'Carbohydrates', 'Cholesterol'],
       categories10: ['Calories', 'Protein', 'Sugars', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      width: 3000,
-      height: 1000,
+      width: 1500,
+      height: 600,
       sectionWidth: 800,
       sectionHeight: 300,
       baseX: 100,
-      baseY: 200,
+      baseY: 0,
 
     }
   },
