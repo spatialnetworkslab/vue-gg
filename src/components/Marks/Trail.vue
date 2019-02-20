@@ -4,7 +4,7 @@
   import checkPoints from '../../mixins/Marks/utils/checkPoints.js'
   import { invalidPoint } from '../../utils/equals.js'
   import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
-  import { line, arc, curve } from 'd3-shape'
+  import { line, arc, curve, curveCardinal } from 'd3-shape'
 
   export default {
     mixins: [Path],
@@ -39,7 +39,7 @@
 
       fill: {
         type: String,
-        default: 'none'
+        default: '#000000'
       },
     },
 
@@ -86,7 +86,8 @@
         let dir2 = this.direction(l1.p1, l1.p2, l2.p2);
         let dir3 = this.direction(l2.p1, l2.p2, l1.p1);
         let dir4 = this.direction(l2.p1, l2.p2, l1.p2);
-
+        console.log(dir1, dir2, dir3, dir4)
+        console.log(l1, l2)
         if(dir1 != dir2 && dir3 != dir4){
           return true //they are intersecting
         }
@@ -183,8 +184,7 @@
 
       //This function maps line aesthetics to the data and creates the segments.
       enumAesthetics (points) {
-        let top = []
-        let bottom = [], segments = {}
+        let top = [], bottom = [], segments = {'paths': [], 'arcs': []}
         if (points.length > 1) {
           /**
            * Calculate the points that make up each line segment.
@@ -204,11 +204,11 @@
 
             // to prevent strokes from disappearing completely
             if (w1 === 0) {
-              w1 += 0.01
+              w1 += 0.03
             }
 
             if (w2 === 0) {
-              w2 += 0.01
+              w2 += 0.03
             }
 
             // computes reference line segment - between start and end points
@@ -232,6 +232,8 @@
             let coord3 = [x2 - uVectorP[0] * w2, y2 - uVectorP[1] * w2]
 
             // to produce the curved edges between points
+            // determine if intersecting
+            // if not intersecting, generate arc/bezier curve using d3
             if (ix > 1) {
               //let bTop = coord1[1] - (coord2[1] - coord1[1]) / (coord2[0] - coord1[0])* coord1[0]
               let vBottom = [coord3[0] - coord4[0], coord3[1] -  coord4[1]]
@@ -239,6 +241,8 @@
               let bBottom = coord3[1] - mBottom * coord3[0]
 
               // let prevTopPair = [ top[ix - 1], top[ix] ]
+              let prevCoord1 = top[ix]
+              let prevCoord2 = top[ix-1]
               let prevCoord3 = bottom[ix]
               let prevCoord4 = bottom[ix-1]
 
@@ -259,26 +263,30 @@
               // determine if two lines do not intersect
               // if they intersect, do nothing
               // if they do not intersect, create a transition bezier curve
-              let l1 = this.line(this.point(prevCoord4), this.point(prevCoord3))
-              let l2 = this.line(this.point(coord4), this.point(coord3))
+              let l1 = this.line(this.point(prevCoord1), this.point(prevCoord2))
+              let l2 = this.line(this.point(coord1), this.point(coord2))
+              console.log('top', this.isIntersect(l1, l2))
 
-              console.log(this.isIntersect(l1, l2))
+              l1 = this.line(this.point(prevCoord4), this.point(prevCoord3))
+              l2 = this.line(this.point(coord4), this.point(coord3))
+              console.log('bottom', this.isIntersect(l1, l2))
+              segments.arcs.push([bottom[ix], [(bottom[ix][0] + coord4[0])/2, (bottom[ix][1] + coord4[1])/2], coord4])
 
             }
+            //segments.arcs.push([top[ix], coord1])
 
             top.push(coord1)
             top.push(coord2)
             bottom.push(coord4)
             bottom.push(coord3)
-
           }
 
-          segments = top
+          segments.paths = top
           for (let b = bottom.length - 1; b >= 0; b--) {
-            segments.push(bottom[b])
+            segments['paths'].push(bottom[b])
           }
 
-          segments.push(segments[0])
+          segments['paths'].push(segments.paths[0])
 
           return segments
         }
@@ -312,9 +320,11 @@
 
             // obtains polygon corresponding to multiline with stroke widths
             segments = this.enumAesthetics(points)
+            console.log(segments.arcs)
+
             const lineGenerator = line()
             // creates line path
-            let path = lineGenerator(segments)
+            let path = lineGenerator(segments.paths)
 
             let elements = []
             let totalAesthetics = {'stroke': this.stroke, 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity, 'strokeWidth': 1}
@@ -326,6 +336,28 @@
               style: createSVGStyle(totalAesthetics)
             })
             elements.push(element)
+
+            // curve out transitions between segments
+            const arcGenerator = line().curve(curveCardinal)
+            let pathData =  arcGenerator(segments.arcs[1])
+            element = createElement('path', {
+              attrs: {
+                'd': pathData
+              },
+              style: createSVGStyle(totalAesthetics)
+            })
+            elements.push(element)
+
+            // for (let c = 0; c < segments.arcs.length; c++) {
+            //   let pathData =  arcGenerator(segments.arcs[c])
+            //   element = createElement('path', {
+            //     attrs: {
+            //       'd': pathData
+            //     },
+            //     style: createSVGStyle(totalAesthetics)
+            //   })
+            //   //elements.push(element)
+            // }
 
             return createElement('g', elements)
 
