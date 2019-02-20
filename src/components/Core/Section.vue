@@ -1,14 +1,3 @@
-<template>
-  <g
-    v-if="ready && allowScales"
-    class="section"
-  >
-
-    <slot />
-
-  </g>
-</template>
-
 <script>
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataProvider from '../../mixins/Data/DataProvider.js'
@@ -18,6 +7,10 @@ import Rectangular from '../../mixins/Marks/Rectangular.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import randomID from '../../utils/id.js'
+
+import { createAxisProps, calculateWidths } from './utils/section.js'
+import XAxis from '../Guides/XAxis.vue'
+import YAxis from '../Guides/YAxis.vue'
 
 export default {
   mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular],
@@ -68,10 +61,14 @@ export default {
   computed: {
     ranges () {
       let aes = this.coordinateSpecification
-      return {
+      let ranges = {
         x: [aes.x1, aes.x2],
         y: [aes.y1, aes.y2]
       }
+
+      ranges = this.applySlotsToRanges(ranges)
+
+      return ranges
     },
 
     scales () {
@@ -144,6 +141,7 @@ export default {
       })
       return transformation
     },
+
     coordinateTreeBranchID () {
       let id
       let parentData = this.$parent.$vnode.data
@@ -197,8 +195,44 @@ export default {
       }
     },
 
-    same (oldVal, newVal) {
-      return JSON.stringify(oldVal) === JSON.stringify(newVal)
+    applySlotsToRanges (ranges) {
+      // let slots = this.$scopedSlots
+      // let widths = calculateWidths(slots, this.coordinateSpecification)
+      //
+      // let newRanges = {
+      //   x: [ranges.x[0] + widths.left, ranges.x[1] - widths.right],
+      //   y: [ranges.y[0] + widths.bottom, ranges.y[1] - widths.top]
+      // }
+
+      return ranges
+    },
+
+    createAxesFromSlot (createElement) {
+      let elements = []
+      let slots = this.$scopedSlots
+      let widths = calculateWidths(slots, this.coordinateSpecification)
+
+      for (let slotName in slots) {
+        if (['top', 'bottom'].includes(slotName)) {
+          let props = createAxisProps(
+            slots, slotName, this.coordinateSpecification, widths, this.scales
+          )
+
+          let axis = createElement(XAxis, { props })
+          elements.push(axis)
+        }
+
+        if (['left', 'right'].includes(slotName)) {
+          let props = createAxisProps(
+            slots, slotName, this.coordinateSpecification, widths, this.scales
+          )
+
+          let axis = createElement(YAxis, { props })
+          elements.push(axis)
+        }
+      }
+
+      return elements
     }
   },
 
@@ -207,6 +241,16 @@ export default {
     let $$coordinateTreeParent = this.coordinateTreeBranchID
 
     return { $$transform, $$coordinateTreeParent }
+  },
+
+  render (createElement) {
+    if (this.ready && this.allowScales) {
+      let content = this.$scopedSlots.default()
+      let axes = this.createAxesFromSlot(createElement)
+      content.push(...axes)
+
+      return createElement('g', { class: 'section' }, content)
+    }
   }
 }
 </script>
