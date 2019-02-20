@@ -15,12 +15,7 @@ export default {
 
   computed: {
     __update () {
-<<<<<<< HEAD
-      return this.$$coordinateTree._update
-=======
       return this.parentBranch.updateCount
-      // return this.$$coordinateTree._update
->>>>>>> d13099ddec0cfc1be573c638ee333ec64402b775
     },
 
     _interpolate () {

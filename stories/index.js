@@ -5,6 +5,7 @@ import Scatterplot from './charts/Scatterplot.vue'
 import Scatterplot2 from './sandbox/Scatterplot.vue'
 import BarChart from './sandbox/BarChart.vue'
 import Heatmap from './sandbox/Heatmap.vue'
+import HeatmapCombinatorial from './sandbox/HeatmapCombinatorial.vue'
 import PlotLines from './sandbox/PlotLines.vue'
 import TestCategoricalDomain from './sandbox/TestCategoricalDomain.vue'
 import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
@@ -49,3 +50,4 @@ storiesOf('Sandbox', module)
   .add('Scatterplot Matrix Monochrome', () => (IDC2))
   .add('Scatterplot Labels', () => (IDC3))
   .add('Heatmap', () => (Heatmap))
+  .add('Heatmap Some Combinations', () => (HeatmapCombinatorial))
