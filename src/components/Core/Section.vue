@@ -66,9 +66,14 @@ export default {
         y: [aes.y1, aes.y2]
       }
 
-      ranges = this.applySlotsToRanges(ranges)
-
       return ranges
+    },
+
+    innerRanges () {
+      if (this.ready && this.allowScales) {
+        let ranges = this.calculateInnerRanges()
+        return ranges
+      }
     },
 
     scales () {
@@ -195,37 +200,38 @@ export default {
       }
     },
 
-    applySlotsToRanges (ranges) {
-      // let slots = this.$scopedSlots
-      // let widths = calculateWidths(slots, this.coordinateSpecification)
-      //
-      // let newRanges = {
-      //   x: [ranges.x[0] + widths.left, ranges.x[1] - widths.right],
-      //   y: [ranges.y[0] + widths.bottom, ranges.y[1] - widths.top]
-      // }
+    calculateInnerRanges () {
+      let slots = this.$scopedSlots
+      let domains = this.transformation.domains
 
-      return ranges
+      let widths = calculateWidths(slots, domains)
+
+      let innerRanges = {
+        x: [domains.x[0] + widths.left, domains.x[1] - widths.right],
+        y: [domains.y[0] + widths.bottom, domains.y[1] - widths.top]
+      }
+
+      return innerRanges
     },
 
     createAxesFromSlot (createElement) {
       let elements = []
       let slots = this.$scopedSlots
-      let widths = calculateWidths(slots, this.coordinateSpecification)
+      let domains = this.transformation.domains
+      let scales = this.scales
+
+      let widths = calculateWidths(slots, domains)
 
       for (let slotName in slots) {
         if (['top', 'bottom'].includes(slotName)) {
-          let props = createAxisProps(
-            slots, slotName, this.coordinateSpecification, widths, this.scales
-          )
+          let props = createAxisProps(slots, slotName, domains, widths, scales)
 
           let axis = createElement(XAxis, { props })
           elements.push(axis)
         }
 
         if (['left', 'right'].includes(slotName)) {
-          let props = createAxisProps(
-            slots, slotName, this.coordinateSpecification, widths, this.scales
-          )
+          let props = createAxisProps(slots, slotName, domains, widths, scales)
 
           let axis = createElement(YAxis, { props })
           elements.push(axis)
@@ -247,9 +253,10 @@ export default {
     if (this.ready && this.allowScales) {
       let content = this.$scopedSlots.default()
       let axes = this.createAxesFromSlot(createElement)
-      content.push(...axes)
 
-      return createElement('g', { class: 'section' }, content)
+      let elements = [...content, ...axes]
+
+      return createElement('g', { class: 'section' }, elements)
     }
   }
 }

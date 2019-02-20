@@ -1,8 +1,8 @@
-export function calculateWidths (slots, coordinateSpecification) {
+export function calculateWidths (slots, domains) {
   let widths = { top: 0, bottom: 0, left: 0, right: 0 }
 
-  let xRange = coordinateSpecification.x2 - coordinateSpecification.x1
-  let yRange = coordinateSpecification.y2 - coordinateSpecification.y1
+  let xRange = domains.x[1] - domains.x[0]
+  let yRange = domains.y[1] - domains.y[0]
 
   for (let side in widths) {
     if (slots.hasOwnProperty(side)) {
@@ -29,7 +29,7 @@ export function calculateWidths (slots, coordinateSpecification) {
   return widths
 }
 
-export function createAxisProps (slots, side, coordinateSpecification, widths, scales) {
+export function createAxisProps (slots, side, domains, widths, scales) {
   if (!slots.hasOwnProperty(side)) { return {} }
 
   let slotContent = slots[side]()
@@ -38,34 +38,34 @@ export function createAxisProps (slots, side, coordinateSpecification, widths, s
   let x1, x2, y1, y2, scale
 
   if (side === 'bottom') {
-    x1 = coordinateSpecification.x1 + widths.left
-    x2 = coordinateSpecification.x2 - widths.right
-    y1 = coordinateSpecification.y1
+    x1 = domains.x[0] + widths.left
+    x2 = domains.x[1] - widths.right
+    y1 = domains.y[0]
     y2 = y1 + widths.bottom
     scale = scales.x
   }
 
   if (side === 'top') {
-    x1 = coordinateSpecification.x1 + widths.left
-    x2 = coordinateSpecification.x2 - widths.right
-    y1 = coordinateSpecification.y2 - widths.top
-    y2 = coordinateSpecification.y2
+    x1 = domains.x[0] + widths.left
+    x2 = domains.x[1] - widths.right
+    y1 = domains.y[1] - widths.top
+    y2 = domains.y[1]
     scale = scales.x
   }
 
   if (side === 'left') {
-    x1 = coordinateSpecification.x1
+    x1 = domains.x[0]
     x2 = x1 + widths.left
-    y1 = coordinateSpecification.y1 + widths.bottom
-    y2 = coordinateSpecification.y2 - widths.top
+    y1 = domains.y[0] + widths.bottom
+    y2 = domains.y[1] - widths.top
     scale = scales.y
   }
 
   if (side === 'right') {
-    x1 = coordinateSpecification.x2 - widths.right
-    x2 = coordinateSpecification.x2
-    y1 = coordinateSpecification.y1 + widths.bottom
-    y2 = coordinateSpecification.y2 - widths.top
+    x1 = domains.x[1] - widths.right
+    x2 = domains.x[1]
+    y1 = domains.y[0] + widths.bottom
+    y2 = domains.y[1] - widths.top
     scale = scales.y
   }
 
