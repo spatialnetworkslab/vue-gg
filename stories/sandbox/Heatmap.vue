@@ -113,12 +113,12 @@ export default {
       categories2: ['Sugars', 'Calories'],
       categories5: ['Calories', 'Protein', 'Sugars', 'Carbohydrates', 'Cholesterol'],
       categories10: ['Calories', 'Protein', 'Sugars', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      width: 1500,
-      height: 600,
+      width: 1000,
+      height: 700,
       sectionWidth: 800,
       sectionHeight: 300,
       baseX: 100,
-      baseY: 0,
+      baseY: 70,
 
     }
   },
