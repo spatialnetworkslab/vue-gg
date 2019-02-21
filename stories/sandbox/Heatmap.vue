@@ -35,8 +35,8 @@
 
               <vgg-x-axis
                 :scale="actualOptions(options[j])"
-                title="Drinks"
-                :titleHjust="1.01"
+                title="   Drinks"
+                :titleHjust="1.1"
                 :titleVjust="0.5"
                 :labelFontSize="8"
                 labelRotate
@@ -45,7 +45,7 @@
               <vgg-y-axis
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
-                :vjust="0.3"
+                :vjust="0.1"
                 :titleVjust="1 + 0.025 * (3 - i)"
                 flip
               />
@@ -70,13 +70,14 @@ export default {
       data: undefined,
       names: [],
       title: "Drinks Heatmap",
-      dimensions: [5, 10],
-      options: [100],
+      dimensions: [5, 13],
+      options: [5],
       categories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      height: 1000,
-      width: 5200,
+      height: 1200,
+      width: 1200,
       baseX: 100,
       baseY: 100,
+      index: -1
     }
   },
 
@@ -121,6 +122,44 @@ export default {
     }
   },
   methods: {
+      clickHandler (self) {
+      return () => {
+        if (!this.selected) {
+          this.index = self.index
+          this.selected = true
+        } else if (this.selected && this.index != self.index) {
+          this.index = self.index
+          this.selected = true
+        } else if (this.selected && this.index === self.index) {
+          this.index = -1
+          this.selected = false
+        } else {
+          throw new Error('Error in click handler')
+        }
+      }
+
+    },
+
+    hoverHandler (self) {
+      return () => {
+        if (this.selected) {
+          return
+        } else {
+          this.index = self.index
+        }
+      }
+    },
+
+    leaveHandler (self) {
+      return () => {
+        if (this.selected) {
+          return
+        } else {
+          this.index = -1
+        }
+      }
+    },
+
     actualOptions (options) {
       let names = []
 
@@ -163,10 +202,11 @@ export default {
               macro.value = this.data[j][categories[i]]
               macro.attribute = categories[i]
               macro.name = this.data[j].Name
+              macro.dimension = i
+              macro.option = j
               segments[i].push(macro)
             }
         }
-        console.log(dimensions, options, segments)
         return segments
       }
     },
@@ -174,8 +214,9 @@ export default {
     drinks () {
       // change name of csv
       csv('../../static/idcDemoDrinksDailyInterpolated.csv').then((data) => {
-        this.data = Object.freeze(data.map(d => {
+        this.data = Object.freeze(data.map((d, i) => {
           return {
+            Index: i,
             Calories: parseInt(d.Calories),
             Protein: parseInt(d.Protein),
             ServingSize: parseInt(d['Serving Size']),

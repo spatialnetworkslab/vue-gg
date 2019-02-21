@@ -65,8 +65,8 @@ export default {
       data: undefined,
       index: -1,
       selected: false,
-      categoryX: ['Price', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
-      categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Price'],
+      categoryX: ['Fibre', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
+      categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Fibre'],
       pairs: [[1, 4], [2, 4], [3, 4], [4, 4],
               [0, 3], [2, 3], [3, 3], [4, 3],
               [0, 2], [1, 2], [3, 2], [4, 2],
@@ -96,7 +96,7 @@ export default {
           throw new Error('Error in click handler')
         }
       }
-      
+
     },
 
     hoverHandler (self) {
@@ -125,7 +125,7 @@ export default {
           return {
             Index: i,
             Calories: parseInt(d.Calories),
-            Price: parseInt(d.Price),
+            Fibre: parseInt(d['Dietary Fiber']),
             Protein: parseInt(d.Protein),
             ServingSize: parseInt(d['Serving Size']),
             Sugars: parseInt(d.Sugars),
