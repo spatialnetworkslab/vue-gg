@@ -194,6 +194,7 @@ export default {
     },
 
     ranges () {
+      // console.log(this.coordinateSpecification)
       let newRange = {}
 
       newRange.y1 = this.posY[0]
