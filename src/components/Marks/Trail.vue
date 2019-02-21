@@ -4,6 +4,7 @@
   import checkPoints from '../../mixins/Marks/utils/checkPoints.js'
   import { invalidPoint } from '../../utils/equals.js'
   import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
+  import { line, arc, curve, curveCardinal } from 'd3-shape'
 
   export default {
     mixins: [Path],
@@ -15,32 +16,97 @@
         }
       },
 
-      // Non-mappable
+      fill: {
+        type: String,
+        default: '#000000'
+      },
+
+      // Not mappable
       strokeLinecap: {
         type: String,
         default: 'round'
+      },
+
+      stroke: {
+        type: String,
+        default: 'none'
+      },
+
+      strokeWidth: {
+        type: [Number, Array],
+        default: 0.5
+      },
+
+      fill: {
+        type: String,
+        default: '#000000'
       },
     },
 
     computed: {
       // tracks what the functions should look for as mappable
       mappable () {
-        return ['stroke', 'strokeWidth']
+        return ['strokeWidth']
       }
+
     },
 
     methods: {
-      isArray (obj) {
-        if (typeof obj === Object) {
-          return true
-        } else {
-          return false
-        }
+      point (p) {
+        let x = p[0]
+        let y = p[1]
+        return { x, y }
       },
 
-      /**
-       * This function generates the x-y coordinates + corresponding aesthetics that may need tobe sorted
-       */
+      line (p1, p2) {
+         return { p1, p2 }
+      },
+
+      onLine (line, point) {
+        if(point.x <= Math.max(line.p1.x, line.p2.x) && point.x <= Math.min(line.p1.x, line.p2.x) &&
+           (point.y <= Math.max(line.p1.y, line.p2.y) && point.y <= Math.min(line.p1.y, line.p2.y))) {
+            return true
+        }
+        return false
+      },
+
+      direction(a, b, c) {
+       let val = (b.y-a.y) * (c.x-b.x) - (b.x-a.x) * (c.y-b.y)
+       if (val == 0) {
+          return 0     //colinear
+        } else if(val < 0) {
+          return 2    //anti-clockwise direction
+        }
+        return 1    //clockwise direction
+      },
+
+      isIntersect(l1, l2) {
+        //four direction for two lines and points of other line
+        let dir1 = this.direction(l1.p1, l1.p2, l2.p1);
+        let dir2 = this.direction(l1.p1, l1.p2, l2.p2);
+        let dir3 = this.direction(l2.p1, l2.p2, l1.p1);
+        let dir4 = this.direction(l2.p1, l2.p2, l1.p2);
+        console.log(dir1, dir2, dir3, dir4)
+        console.log(l1, l2)
+        if(dir1 != dir2 && dir3 != dir4){
+          return true //they are intersecting
+        }
+        if(dir1===0 && this.onLine(l1, l2.p1)) { //when p2 of line2 are on the line1
+          return true
+        }
+         if(dir2===0 && this.onLine(l1, l2.p2)){ //when p1 of line2 are on the line1
+            return true
+        }
+         if(dir3===0 && this.onLine(l2, l1.p1)) { //when p2 of line1 are on the line2
+            return true
+        }
+         if(dir4===0 && this.onLine(l2, l1.p2)){ //when p1 of line1 are on the line2
+            return true
+        }
+        return false
+      },
+
+      // This function generates the x-y coordinates + corresponding aesthetics that may need tobe sorted
       generatePoints (x, y, aesthetics) {
         let points = []
         let point = {}
@@ -81,9 +147,7 @@
         return this.filterInvalid(points)
       },
 
-      /**
-       * This function stores the aesthetic or the value corresponding to the index inside the aesthetic
-       */
+      // This function stores the aesthetic or the value corresponding to the index inside the aesthetic
       storeAesthetic(point, aesthetics, aesKey, index) {
         if (Array.isArray(aesthetics[aesKey])) {
           point[aesKey] = aesthetics[aesKey][index]
@@ -93,9 +157,7 @@
         return point
       },
 
-      /**
-       * This function filters invalid points based on the coordinate element in the point object
-       */
+      // This function filters invalid points based on the coordinate element in the point object
       filterInvalid (points) {
         let filtered = []
         for (let i = 0; i < points.length; i++) {
@@ -109,10 +171,8 @@
         return filtered
       },
 
-      /**
-       * This function sorts points according to the x or y coordinate, bringing along with it
-       * the aesthetics attached to the point
-       */
+      // This function sorts points according to the x or y coordinate, bringing along with it
+      // the aesthetics attached to the point
       sortPoints (points) {
         if (this.sort === 'x') {
           return points.sort((a, b) => a.coord[0] - b.coord[0])
@@ -122,99 +182,112 @@
         }
       },
 
-      segmentWidth (points) {
-        /**
-         * Since each segment plots the interval between two data instances
-         * the number of segments is one less than total data instances.
-         */
-        let numberSegments = points.length- 1
-        if (numberSegments > 0) {
-          let width = this.parentBranch.ranges.x[1] - this.parentBranch.ranges.x[0]
-
-          let segmentWidth = width / numberSegments
-
-          return segmentWidth
-        }
-      },
-
-      /**
-       * Smoothens transition between different stroke widths by interpolating the intervening segments
-       */
-      smoothSegment (aesthetics, startX, startY, endX, endY, startWidth, endWidth, fill, prevTop, prevBot) {
-        let r1 = startWidth/2
-        let r2 = endWidth/2
-        let lineSeg = { coords: {} , aesthetics: {}}
-
-        // computes reference line segment - between start and end points
-        let vector = [endX - startX, endY - startY]
-        let magnitude = Math.sqrt(vector[0]**2 + vector[1]**2)
-        let uVector = [vector[0] / magnitude, vector[1] / magnitude]
-        let uVectorP = [-uVector[1], uVector[0]]
-
-        // to calculate corners of 'polygon' composing 'line segment' with interpolated 'width' in any orientation
-        // use the line equation parallel to the line defining the start and end points
-        // and project the widths on the unit vector of these lines
-
-        // end points
-        let coord2 = [endX + uVectorP[0] * r2, endY + uVectorP[1] * r2]
-        let coord3 = [endX - uVectorP[0] * r2, endY - uVectorP[1] * r2]
-
-        // sets up polygon corners
-        if (prevTop && prevBot) {
-          lineSeg.coords.top = [prevTop, coord2]
-          lineSeg.coords.bottom = [prevBot, coord3]
-        } else {
-          // start points
-          let coord1 = [startX + uVectorP[0] * r1, startY + uVectorP[1] * r1]
-          let coord4 = [startX - uVectorP[0] * r1, startY - uVectorP[1] * r1]
-          lineSeg.coords.top = [coord1, coord2]
-          lineSeg.coords.bottom = [coord4, coord3]
-        }
-        // lineSeg.coords.top = [coord1, coord2]
-        // lineSeg.coords.bottom = [coord4, coord3]
-        // lineSeg.coords = [coord1, coord2, coord3, coord4, coord1]
-        lineSeg.aesthetics.strokeLinecap = aesthetics.strokeLinecap
-        lineSeg.aesthetics.opacity = aesthetics.strokeOpacity
-        lineSeg.aesthetics.strokeWidth = 1
-        lineSeg.width = [startWidth, endWidth]
-        lineSeg.prevTop = coord2
-        lineSeg.prevBot = coord3
-        return lineSeg
-      },
-
-      /**
-       * This function maps line aesthetics to the data and creates the segments.
-       */
+      //This function maps line aesthetics to the data and creates the segments.
       enumAesthetics (points) {
-        let segments = points
-        if (segments.length > 1) {
+        let top = [], bottom = [], segments = {'paths': [], 'arcs': []}
+        if (points.length > 1) {
           /**
            * Calculate the points that make up each line segment.
            */
-          let segmentWidth = this.segmentWidth(points), prevTop, prevBot
-          for (let ix = 0; ix < segments.length - 1; ix++) {
-            let line = segments[ix]
-            let x1 = line.coord[0]
-            let y1 = line.coord[1]
-            let x2 = segments[ix+1].coord[0]
-            let y2 = segments[ix + 1].coord[1]
-            let w1 = line.strokeWidth
-            let w2 = segments[ix + 1].strokeWidth
-            if (ix == 0) {
-              line.interpolate = this.smoothSegment(this._props, x1, y1, x2, y2, w1, w2, line.fill)
-            } else {
-              line.interpolate = this.smoothSegment(this._props, x1, y1, x2, y2, w1, w2, line.fill, prevTop, prevBot)
+
+          for (let ix = 0; ix < points.length - 1; ix++) {
+            let total = [], point = {}, nextPt = {}
+            // let point = points[ix]
+            point.coord = this.$$transform(points[ix].coord)
+            nextPt.coord = this.$$transform(points[ix + 1].coord)
+            let x1 = point.coord[0]
+            let y1 = point.coord[1]
+            let x2 = nextPt.coord[0]
+            let y2 = nextPt.coord[1]
+            let w1 = points[ix].strokeWidth/2
+            let w2 = points[ix + 1].strokeWidth/2
+
+            // to prevent strokes from disappearing completely
+            if (w1 === 0) {
+              w1 += 0.03
             }
-            prevTop = line.interpolate.prevTop
-            prevBot = line.interpolate.prevBot
+
+            if (w2 === 0) {
+              w2 += 0.03
+            }
+
+            // computes reference line segment - between start and end points
+            let vector = [x1 - x2, y1 - y2]
+            let magnitude = Math.sqrt(vector[0]**2 + vector[1]**2)
+            let m = vector[1]/vector[0]
+            let b = y2 - m * x2
+            let uVector = [vector[0] / magnitude, vector[1] / magnitude]
+            let uVectorP = [uVector[1], -uVector[0]]
+
+            // to calculate corners of 'polygon' composing 'line segment' with interpolated 'width' in any orientation
+            // use the line equation parallel to the line defining the start and end points
+            // and project the widths on the unit vector of these lines
+
+            // start points
+            let coord1 = [x1 + uVectorP[0] * w1, y1 + uVectorP[1] * w1]
+            let coord4 = [x1 - uVectorP[0] * w1, y1 - uVectorP[1] * w1]
+
+            // end points
+            let coord2 = [x2 + uVectorP[0] * w2, y2 + uVectorP[1] * w2]
+            let coord3 = [x2 - uVectorP[0] * w2, y2 - uVectorP[1] * w2]
+
+            // to produce the curved edges between points
+            // determine if intersecting
+            // if not intersecting, generate arc/bezier curve using d3
+            if (ix > 1) {
+              //let bTop = coord1[1] - (coord2[1] - coord1[1]) / (coord2[0] - coord1[0])* coord1[0]
+              let vBottom = [coord3[0] - coord4[0], coord3[1] -  coord4[1]]
+              let mBottom = vBottom[1]/vBottom[0]
+              let bBottom = coord3[1] - mBottom * coord3[0]
+
+              // let prevTopPair = [ top[ix - 1], top[ix] ]
+              let prevCoord1 = top[ix]
+              let prevCoord2 = top[ix-1]
+              let prevCoord3 = bottom[ix]
+              let prevCoord4 = bottom[ix-1]
+
+              // let vectorTop = [prevTopPair[1][0] - prevTopPair[0][0], prevTopPair[1][1] - prevTopPair[0][1]]
+              let prevVecBot = [prevCoord3[0] - prevCoord4[0], prevCoord3[1]- prevCoord4[1]]
+
+              //let prevTopM = vectorTop[1] / vectorTop[0]
+              let prevBotM = prevVecBot[1] / prevVecBot[0]
+
+              //let prevTopB = prevTopPair[1][1] - prevTopM * prevTopPair[1][0]
+              let prevBotB = prevCoord3[1] - prevBotM * prevCoord3[0]
+
+              //let xTop = (bTop - prevTopB) / (prevTopM - m)
+              //let yTop = prevTopM * prevTopPair[1][0] + prevTopB
+              let xBot = (bBottom - prevBotB) / (prevBotM - mBottom)
+              let yBot = prevBotM * xBot + prevBotB
+
+              // determine if two lines do not intersect
+              // if they intersect, do nothing
+              // if they do not intersect, create a transition bezier curve
+              let l1 = this.line(this.point(prevCoord1), this.point(prevCoord2))
+              let l2 = this.line(this.point(coord1), this.point(coord2))
+              console.log('top', this.isIntersect(l1, l2))
+
+              l1 = this.line(this.point(prevCoord4), this.point(prevCoord3))
+              l2 = this.line(this.point(coord4), this.point(coord3))
+              console.log('bottom', this.isIntersect(l1, l2))
+              segments.arcs.push([bottom[ix], [(bottom[ix][0] + coord4[0])/2, (bottom[ix][1] + coord4[1])/2], coord4])
+
+            }
+            //segments.arcs.push([top[ix], coord1])
+
+            top.push(coord1)
+            top.push(coord2)
+            bottom.push(coord4)
+            bottom.push(coord3)
           }
 
-          /**
-           * Since each segment plots the interval between 2 data instances
-           * the last segment corresponds to the last data instance and can not be
-           * mapped to a line.
-           */
-          segments.pop()
+          segments.paths = top
+          for (let b = bottom.length - 1; b >= 0; b--) {
+            segments['paths'].push(bottom[b])
+          }
+
+          segments['paths'].push(segments.paths[0])
+
           return segments
         }
       },
@@ -245,46 +318,46 @@
               points = this.sortPoints(points)
             }
 
+            // obtains polygon corresponding to multiline with stroke widths
             segments = this.enumAesthetics(points)
+            console.log(segments.arcs)
 
-            let elements = [], path = "", topPath = [], bottomPoints = []
+            const lineGenerator = line()
+            // creates line path
+            let path = lineGenerator(segments.paths)
 
-            for (let s = 0; s < segments.length; s++) {
-              let coordinates = segments[s].interpolate.coords
-              let aesthetics = segments[s].interpolate.aesthetics
-              topPath.push(coordinates.top[0])
-              topPath.push(coordinates.top[1])
-              bottomPoints.push(coordinates.bottom[0])
-              bottomPoints.push(coordinates.bottom[1])
-
-              // let subpath = ""
-              // let section = coordinates[i]
-              // subpath = this.createPath([section, coordinates[i+1]])
-              // path += subpath
-            }
-
-            for (let s = bottomPoints.length - 1; s >= 0; s--) {
-              topPath.push(bottomPoints[s])
-            }
-
-            topPath = this.createPath(topPath)
-            let botPath = this.createPath(bottomPoints)
+            let elements = []
+            let totalAesthetics = {'stroke': this.stroke, 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity, 'strokeWidth': 1}
 
             let element = createElement('path', {
               attrs: {
-                'd': topPath
+                'd': path
               },
-              style: createSVGStyle(aesthetics)
+              style: createSVGStyle(totalAesthetics)
             })
             elements.push(element)
-            aesthetics.stroke = "red"
+
+            // curve out transitions between segments
+            const arcGenerator = line().curve(curveCardinal)
+            let pathData =  arcGenerator(segments.arcs[1])
             element = createElement('path', {
               attrs: {
-                'd': botPath
+                'd': pathData
               },
-              style: createSVGStyle(aesthetics)
+              style: createSVGStyle(totalAesthetics)
             })
             elements.push(element)
+
+            // for (let c = 0; c < segments.arcs.length; c++) {
+            //   let pathData =  arcGenerator(segments.arcs[c])
+            //   element = createElement('path', {
+            //     attrs: {
+            //       'd': pathData
+            //     },
+            //     style: createSVGStyle(totalAesthetics)
+            //   })
+            //   //elements.push(element)
+            // }
 
             return createElement('g', elements)
 

@@ -36,7 +36,7 @@
               <vgg-x-axis
                 :scale="actualOptions(options[j])"
                 title="Drinks"
-                :titleHjust="1.01"
+                :titleHjust="1 + 0.05 * (5 - j)"
                 :titleVjust="0.5"
                 :labelFontSize="8"
                 labelRotate
@@ -70,11 +70,11 @@ export default {
       data: undefined,
       names: [],
       title: "Drinks Heatmap",
-      dimensions: [5, 10],
-      options: [100],
+      dimensions: [2, 5, 10],
+      options: [2, 5, 10, 25, 50],
       categories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      height: 1000,
-      width: 5200,
+      height: 1200,
+      width: 8500,
       baseX: 100,
       baseY: 100,
     }
