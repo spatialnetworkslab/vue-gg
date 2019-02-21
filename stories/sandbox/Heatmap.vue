@@ -23,12 +23,17 @@
             >
               <vgg-data v-for="(item, i) in segments(dimensions[i], options[j])" :data="item">
                 <vgg-map v-slot="{ row }">
-                  <vgg-rectangle
+                  <vgg-idc-rectangle
                   :x1="row.x1"
                   :x2="row.x2"
                   :y1="row.y1"
                   :y2="row.y2"
+                  :index="{val: row.Index}"
+                  :selectionIndex="index"
                   :fill="{val: row.value, scale: { type: 'purples', domain: 'value'}}"
+                  :clickHandler="clickHandler"
+                  :hoverHandler="hoverHandler"
+                  :leaveHandler="leaveHandler"
                   />
                 </vgg-map>
               </vgg-data>
@@ -71,12 +76,14 @@ export default {
       names: [],
       title: "Drinks Heatmap",
       dimensions: [5, 10],
-      options: [100],
+      options: [20],
       categories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
       height: 1000,
       width: 5200,
       baseX: 100,
       baseY: 100,
+      index: -1,
+      selected: false,
     }
   },
 
@@ -121,6 +128,45 @@ export default {
     }
   },
   methods: {
+    clickHandler (self) {
+      return () => {
+        if (!this.selected) {
+          this.index = self.index
+          this.selected = true
+        } else if (this.selected && this.index != self.index) {
+          this.index = self.index
+          this.selected = true
+        } else if (this.selected && this.index === self.index) {
+          this.index = -1
+          this.selected = false
+        } else {
+          throw new Error('Error in click handler')
+        }
+      }
+      
+    },
+
+    hoverHandler (self) {
+      return () => {
+        console.log('hovering...')
+        if (this.selected) {
+          return
+        } else {
+          this.index = self.index
+        }
+      }
+    },
+
+    leaveHandler (self) {
+      return () => {
+        if (this.selected) {
+          return
+        } else {
+          this.index = -1
+        }
+      }
+    },
+
     actualOptions (options) {
       let names = []
 
@@ -163,10 +209,10 @@ export default {
               macro.value = this.data[j][categories[i]]
               macro.attribute = categories[i]
               macro.name = this.data[j].Name
+              macro.Index = this.data[j].Index
               segments[i].push(macro)
             }
         }
-        console.log(dimensions, options, segments)
         return segments
       }
     },
@@ -174,8 +220,9 @@ export default {
     drinks () {
       // change name of csv
       csv('../../static/idcDemoDrinksDailyInterpolated.csv').then((data) => {
-        this.data = Object.freeze(data.map(d => {
+        this.data = Object.freeze(data.map((d, i) => {
           return {
+            Index: i,
             Calories: parseInt(d.Calories),
             Protein: parseInt(d.Protein),
             ServingSize: parseInt(d['Serving Size']),

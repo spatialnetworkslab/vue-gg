@@ -30,6 +30,7 @@ import Symbol from './Marks/Symbol.vue'
 import Trail from './Marks/Trail.vue'
 
 import IdcPoint from './Marks/idcPoint.vue'
+import IdcRectangle from './Marks/idcRectangle.vue'
 
 export default {
   Glyph,
@@ -59,5 +60,6 @@ export default {
   Symbol,
 
   IdcPoint,
+  IdcRectangle,
   Trail,
 }
