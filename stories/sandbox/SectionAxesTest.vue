@@ -86,6 +86,13 @@ export default {
         this.right ? 'right' : null
       ].filter(axis => axis !== null)
     }
+    // axes () {
+    //   return {
+    //     bottom: { h: 30 },
+    //     top: null,
+    //     left: { scale: 'varA' }
+    //   }
+    // }
   }
 }
 </script>

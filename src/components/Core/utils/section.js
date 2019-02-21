@@ -4,19 +4,23 @@ export function calculateWidths (axes, ranges) {
   let xRange = ranges.x[1] - ranges.x[0]
   let yRange = ranges.y[1] - ranges.y[0]
 
-  for (let axis of axes) {
+  for (let axis in axes) {
+    let axisOptions = axes[axis]
+
     if (['bottom', 'top'].includes(axis)) {
-      widths[axis] = Math.abs(yRange) / 8
+      let h = axisOptions && axisOptions.constructor === Object ? axisOptions.h : undefined
+      widths[axis] = h || Math.abs(yRange) / 8
     }
     if (['left', 'right'].includes(axis)) {
-      widths[axis] = Math.abs(xRange) / 8
+      let w = axisOptions && axisOptions.constructor === Object ? axisOptions.w : undefined
+      widths[axis] = w || Math.abs(xRange) / 8
     }
   }
 
   return widths
 }
 
-export function createAxisProps (axis, ranges, widths, scales) {
+export function createAxisProps (axis, axisOptions, ranges, widths, scales) {
   let x1, x2, y1, y2, scale
 
   if (axis === 'bottom') {
@@ -52,5 +56,22 @@ export function createAxisProps (axis, ranges, widths, scales) {
   }
 
   let newProps = { x1, x2, y1, y2, scale }
+  newProps = applyProps(newProps, axisOptions)
+
   return newProps
+}
+
+function applyProps (newProps, oldProps) {
+  let positionProps = ['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h']
+  if (oldProps && oldProps.constructor === Object) {
+    for (let oldProp in oldProps) {
+      if (!positionProps.includes(oldProp)) {
+        newProps[oldProp] = oldProps[oldProp]
+      }
+    }
+
+    return newProps
+  } else {
+    return newProps
+  }
 }

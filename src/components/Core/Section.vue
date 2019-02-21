@@ -53,7 +53,7 @@ export default {
     },
 
     axes: {
-      type: [Array, undefined],
+      type: [Array, Object, undefined],
       default: undefined
     }
   },
@@ -65,6 +65,18 @@ export default {
   },
 
   computed: {
+    _axes () {
+      if (this.axes.constructor === Array) {
+        let axes = {}
+        for (let axis of this.axes) {
+          axes[axis] = null
+        }
+        return axes
+      } else {
+        return this.axes
+      }
+    },
+
     ranges () {
       let aes = this.coordinateSpecification
       let ranges = {
@@ -231,20 +243,22 @@ export default {
 
     createAxes (createElement, widths) {
       let elements = []
-      let axes = this.axes
+      let axes = this._axes
       let ranges = this.ranges
       let scales = this.scales
 
-      for (let axis of axes) {
+      for (let axis in axes) {
+        let axisOptions = axes[axis]
+
         if (['top', 'bottom'].includes(axis)) {
-          let props = createAxisProps(axis, ranges, widths, scales)
+          let props = createAxisProps(axis, axisOptions, ranges, widths, scales)
 
           let axisElement = createElement(XAxis, { props })
           elements.push(axisElement)
         }
 
         if (['left', 'right'].includes(axis)) {
-          let props = createAxisProps(axis, ranges, widths, scales)
+          let props = createAxisProps(axis, axisOptions, ranges, widths, scales)
 
           let axisElement = createElement(YAxis, { props })
           elements.push(axisElement)
@@ -293,7 +307,7 @@ export default {
 
     if (this.axes) {
       if (this.allowScales) {
-        let widths = calculateWidths(this.axes, this.ranges)
+        let widths = calculateWidths(this._axes, this.ranges)
 
         let section = this.createSection(createElement, widths)
         let axes = this.createAxes(createElement, widths)
