@@ -8,7 +8,7 @@ title: 'Repeat'
 
 # Description
 
-The Grid component is used to quickly position and align [Section](./section.md)
+The Repeat component is used to quickly position and align [Section](./section.md)
 components in a 2d matrix format.
 
 # Props
