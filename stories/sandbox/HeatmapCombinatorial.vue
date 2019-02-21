@@ -71,12 +71,12 @@ export default {
       names: [],
       title: "Drinks Heatmap",
       dimensions: [2, 5, 10],
-      options: [2, 5, 10, 25, 40],
+      options: [2, 5, 10, 25, 50],
       categories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
       height: 1200,
-      width: 4200,
+      width: 8500,
       baseX: 100,
-      baseY: 50,
+      baseY: 100,
     }
   },
 
@@ -151,7 +151,7 @@ export default {
         // let heightDelta = (this.dimensionSections[this.dimensions.indexOf(dimensions)][1] - this.dimensionSections[this.dimensions.indexOf(dimensions)][0])/dimensions//options
         let heightDelta = 40, widthDelta = 40
         let y = this.dimensionSections[this.dimensions.indexOf(dimensions)][0], x = this.optionSections[this.options.indexOf(options)][0]
-        console.log(x, y)
+
         for (let i = 0; i < categories.length; i++) {
             segments[i] = []
             for (let j = 0; j < options; j++) {
@@ -173,7 +173,7 @@ export default {
 
     drinks () {
       // change name of csv
-      csv('../../static/idcDemoDrinksDaily.csv').then((data) => {
+      csv('../../static/idcDemoDrinksDailyInterpolated.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
             Calories: parseInt(d.Calories),
