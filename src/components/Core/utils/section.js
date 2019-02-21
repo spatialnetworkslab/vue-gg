@@ -1,4 +1,4 @@
-export function calculateWidths (axes, ranges) {
+export function calculateWidths (axes, ranges, defaultFraction = 8) {
   let widths = { top: 0, bottom: 0, left: 0, right: 0 }
 
   let xRange = ranges.x[1] - ranges.x[0]
@@ -9,11 +9,11 @@ export function calculateWidths (axes, ranges) {
 
     if (['bottom', 'top'].includes(axis)) {
       let h = axisOptions && axisOptions.constructor === Object ? axisOptions.h : undefined
-      widths[axis] = h || Math.abs(yRange) / 8
+      widths[axis] = h || Math.abs(yRange) / defaultFraction
     }
     if (['left', 'right'].includes(axis)) {
       let w = axisOptions && axisOptions.constructor === Object ? axisOptions.w : undefined
-      widths[axis] = w || Math.abs(xRange) / 8
+      widths[axis] = w || Math.abs(xRange) / defaultFraction
     }
   }
 

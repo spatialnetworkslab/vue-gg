@@ -30,6 +30,16 @@ export function calculateRowsCols (x, y) {
   return { rows, cols }
 }
 
+export function createAxesProps (axis, axisOptions, range, repeatVals) {
+  if (['top', 'bottom'].includes(axis)) {
+
+  }
+
+  if (['left', 'right'].includes(axis)) {
+    
+  }
+}
+
 function validateSlotContent (slotContent) {
   let definedElements = slotContent.filter(c => c.tag !== undefined)
   if (definedElements.some(c => c.componentOptions.tag !== 'vgg-section')) {

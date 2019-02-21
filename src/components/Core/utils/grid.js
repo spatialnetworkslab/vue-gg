@@ -1,4 +1,5 @@
 import Section from '../Section.vue'
+import { calculateWidths } from './section.js'
 
 export function validateGridOptions (options) {
   let hasRows = options.rows !== undefined
@@ -28,7 +29,7 @@ export function calculateRowsCols (options, numberOfCells) {
   return { rows, cols }
 }
 
-export function calculateGridLayout (rows, cols, options, ranges) {
+export function calculateGridLayout (rows, cols, options, ranges, axes) {
   let lP = getPadding(options.layoutPadding)
   let cP = getPadding(options.cellPadding)
 
@@ -36,6 +37,14 @@ export function calculateGridLayout (rows, cols, options, ranges) {
   let right = ranges.x[1] - lP.r
   let bottom = ranges.y[0] + lP.b
   let top = ranges.y[1] - lP.t
+
+  if (axes) {
+    let afterAxes = handleAxes(left, right, bottom, top, axes)
+    left = afterAxes.left
+    right = afterAxes.right
+    bottom = afterAxes.bottom
+    top = afterAxes.top
+  }
 
   let width = right - left
   let height = top - bottom
@@ -106,4 +115,20 @@ function mergeProps (coords, other) {
   }
 
   return coords
+}
+
+function handleAxes (left, right, bottom, top, axes) {
+  let ranges = {
+    x: [left, right],
+    y: [bottom, top]
+  }
+
+  let widths = calculateWidths(axes, ranges, 12)
+
+  left += widths.left
+  right -= widths.right
+  bottom += widths.bottom
+  top -= widths.top
+
+  return { left, right, bottom, top }
 }

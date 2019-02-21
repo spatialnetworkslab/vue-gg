@@ -66,7 +66,7 @@ export default {
 
   computed: {
     _axes () {
-      if (this.axes.constructor === Array) {
+      if (this.axes && this.axes.constructor === Array) {
         let axes = {}
         for (let axis of this.axes) {
           axes[axis] = null
