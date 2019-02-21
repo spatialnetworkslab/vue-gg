@@ -8,7 +8,8 @@ import Rectangular from '../../mixins/Marks/Rectangular.js'
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import randomID from '../../utils/id.js'
 
-import { createAxisProps, calculateWidths } from './utils/section.js'
+import { calculateWidths, createAxisProps } from './utils/section.js'
+import Section from './Section.vue'
 import XAxis from '../Guides/XAxis.vue'
 import YAxis from '../Guides/YAxis.vue'
 
@@ -49,6 +50,11 @@ export default {
     transform: {
       type: [Array, Object, undefined],
       default: undefined
+    },
+
+    axes: {
+      type: [Array, undefined],
+      default: undefined
     }
   },
 
@@ -67,13 +73,6 @@ export default {
       }
 
       return ranges
-    },
-
-    innerRanges () {
-      if (this.ready && this.allowScales) {
-        let ranges = this.calculateInnerRanges()
-        return ranges
-      }
     },
 
     scales () {
@@ -165,16 +164,24 @@ export default {
   },
 
   watch: {
-    transformation: 'updateCoordinateTreeBranch'
+    transformation: 'updateCoordinateTreeBranch',
+    axes: {
+      handler: 'handleUpdateAxes',
+      deep: true
+    }
   },
 
   beforeDestroy () {
-    this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
+    if (!this.axes) {
+      this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
+    }
   },
 
   mounted () {
-    this.setCoordinateTreeBranch()
-    this.ready = true
+    if (!this.axes) {
+      this.setCoordinateTreeBranch()
+      this.ready = true
+    }
   },
 
   methods: {
@@ -187,7 +194,9 @@ export default {
     },
 
     updateCoordinateTreeBranch () {
-      this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
+      if (!this.axes) {
+        this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
+      }
     },
 
     checkAllowedObj (domain) {
@@ -200,63 +209,99 @@ export default {
       }
     },
 
-    calculateInnerRanges () {
-      let slots = this.$scopedSlots
-      let domains = this.transformation.domains
-
-      let widths = calculateWidths(slots, domains)
-
-      let innerRanges = {
-        x: [domains.x[0] + widths.left, domains.x[1] - widths.right],
-        y: [domains.y[0] + widths.bottom, domains.y[1] - widths.top]
+    handleUpdateAxes (newVal, oldVal) {
+      // No axes to axes
+      if (!oldVal && newVal) {
+        this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
       }
 
-      return innerRanges
+      // Axes to no axes
+      if (oldVal && !newVal) {
+        this.ready = false
+        this.setCoordinateTreeBranch()
+        this.ready = true
+      }
     },
 
-    createAxesFromSlot (createElement) {
+    createSection (createElement, widths) {
+      let props = this.updatePositionProps(this._props, widths)
+      let slotContent = this.$scopedSlots.default()
+      return createElement(Section, { props }, slotContent)
+    },
+
+    createAxes (createElement, widths) {
       let elements = []
-      let slots = this.$scopedSlots
-      let domains = this.transformation.domains
+      let axes = this.axes
+      let ranges = this.ranges
       let scales = this.scales
 
-      let widths = calculateWidths(slots, domains)
+      for (let axis of axes) {
+        if (['top', 'bottom'].includes(axis)) {
+          let props = createAxisProps(axis, ranges, widths, scales)
 
-      for (let slotName in slots) {
-        if (['top', 'bottom'].includes(slotName)) {
-          let props = createAxisProps(slots, slotName, domains, widths, scales)
-
-          let axis = createElement(XAxis, { props })
-          elements.push(axis)
+          let axisElement = createElement(XAxis, { props })
+          elements.push(axisElement)
         }
 
-        if (['left', 'right'].includes(slotName)) {
-          let props = createAxisProps(slots, slotName, domains, widths, scales)
+        if (['left', 'right'].includes(axis)) {
+          let props = createAxisProps(axis, ranges, widths, scales)
 
-          let axis = createElement(YAxis, { props })
-          elements.push(axis)
+          let axisElement = createElement(YAxis, { props })
+          elements.push(axisElement)
         }
       }
 
       return elements
+    },
+
+    updatePositionProps (props, widths) {
+      let newProps = {}
+      let coordinateSpecification = this.coordinateSpecification
+      let positionProps = ['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h']
+
+      for (let prop in props) {
+        if (!positionProps.includes(prop) && prop !== 'axes') {
+          newProps[prop] = props[prop]
+        }
+      }
+
+      newProps.x1 = coordinateSpecification.x1 + widths.left
+      newProps.x2 = coordinateSpecification.x2 - widths.right
+      newProps.y1 = coordinateSpecification.y1 + widths.bottom
+      newProps.y2 = coordinateSpecification.y2 - widths.top
+
+      return newProps
     }
   },
 
   provide () {
-    let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
-    let $$coordinateTreeParent = this.coordinateTreeBranchID
+    if (!this.axes) {
+      let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
+      let $$coordinateTreeParent = this.coordinateTreeBranchID
 
-    return { $$transform, $$coordinateTreeParent }
+      return { $$transform, $$coordinateTreeParent }
+    }
   },
 
   render (createElement) {
-    if (this.ready && this.allowScales) {
-      let content = this.$scopedSlots.default()
-      let axes = this.createAxesFromSlot(createElement)
+    if (!this.axes) {
+      if (this.ready && this.allowScales) {
+        let content = this.$scopedSlots.default()
+        return createElement('g', { class: 'section' }, content)
+      }
+    }
 
-      let elements = [...content, ...axes]
+    if (this.axes) {
+      if (this.allowScales) {
+        let widths = calculateWidths(this.axes, this.ranges)
 
-      return createElement('g', { class: 'section' }, elements)
+        let section = this.createSection(createElement, widths)
+        let axes = this.createAxes(createElement, widths)
+
+        return createElement('g', { class: 'section-with-axes' }, [
+          section, ...axes
+        ])
+      }
     }
   }
 }

@@ -12,6 +12,7 @@
       :y2="450"
       :scale-x="'varA'"
       :scale-y="'varB'"
+      :axes="['bottom', 'right']"
     >
 
       <vgg-map v-slot="{ row }">
@@ -22,14 +23,6 @@
         />
 
       </vgg-map>
-
-      <template v-slot:bottom>
-        <vgg-x-axis />
-      </template>
-
-      <template v-slot:right>
-        <vgg-y-axis />
-      </template>
 
     </vgg-section>
 
