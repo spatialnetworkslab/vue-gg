@@ -3,6 +3,7 @@ import createGeoScale from '../../scales/createGeoScale.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import parseRange from '../../scales/utils/parseRange.js'
+import getPrimitive from '../../scales/utils/getPrimitive.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
@@ -27,6 +28,8 @@ export default class CoordinateTransformation {
     let [domainY, domainYType, scaleOptionsY] = parseScaleOptions(
       scaleOptions.y, dataInterface, scaleManager
     )
+    domainXType = getPrimitive(domainXType)
+    domainYType = getPrimitive(domainYType)
 
     // Store domains and ranges
     this.domainTypes = {

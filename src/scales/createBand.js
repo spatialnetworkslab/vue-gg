@@ -1,6 +1,7 @@
 import parseScaleOptions from './utils/parseScaleOptions.js'
 import getDimension from '../utils/getDimension.js'
 import parseRange from './utils/parseRange.js'
+import getPrimitive from './utils/getPrimitive.js'
 
 export default function (propKey, context, passedBandOptions) {
   if (!['w', 'h'].includes(propKey)) {
@@ -12,6 +13,8 @@ export default function (propKey, context, passedBandOptions) {
     context.dataInterface,
     context.scaleManager
   )
+
+  domainType = getPrimitive(domainType)
 
   if (domainType !== 'categorical') {
     throw new Error(`Domain ${JSON.stringify(domain)} has invalid type ${domainType}`)

@@ -17,6 +17,10 @@ import DataManager from '../../mixins/Data/DataManager.js'
 import ScaleManager from '../../mixins/Scales/ScaleManager.js'
 
 export default {
-  mixins: [CoordinateSystem, DataManager, ScaleManager]
+  mixins: [CoordinateSystem, DataManager, ScaleManager],
+
+  provide () {
+    return { $$grid: false }
+  }
 }
 </script>

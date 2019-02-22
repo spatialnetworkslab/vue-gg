@@ -53,6 +53,8 @@ module.exports = {
                     'core/data',
                     'core/map',
                     'core/scales',
+                    'core/grid',
+                    'core/repeat',
                     'core/glyph'
                     ]
             },

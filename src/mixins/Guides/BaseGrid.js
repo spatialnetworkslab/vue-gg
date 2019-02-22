@@ -34,10 +34,6 @@ export default {
       return this._parsedScalingOptions[1]
     },
 
-    _scalingOptions () {
-      return this._parsedScalingOptions[2]
-    },
-
     ranges () {
       return this.coordinateSpecification
     },
