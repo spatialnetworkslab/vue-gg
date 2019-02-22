@@ -2,7 +2,6 @@ export default class CoordinateTree {
   constructor () {
     this._coordinateTree = null
     this._branchPaths = {}
-    this._update = 1
   }
 
   setRoot (coordinateTransformation) {
@@ -17,8 +16,6 @@ export default class CoordinateTree {
 
     let parentBranchPath = this._branchPaths[parentID]
     this._branchPaths[id] = [...parentBranchPath, id]
-
-    this._update++
   }
 
   getBranch (id) {
@@ -35,8 +32,6 @@ export default class CoordinateTree {
   updateBranch (id, coordinateTransformation) {
     let branch = this.getBranch(id)
     branch.update(coordinateTransformation)
-
-    this._update++
   }
 
   removeBranch (id) {
@@ -61,8 +56,6 @@ export default class CoordinateTree {
         }
       }
     }
-
-    this._update++
   }
 
   getTotalTransformation (id) {
@@ -86,6 +79,7 @@ class Branch {
   constructor (id, parentID, coordinateTransformation) {
     this.id = id
     this.parentID = parentID
+    this.updateCount = 1
 
     this.update(coordinateTransformation)
 
@@ -96,5 +90,7 @@ class Branch {
     for (let key in coordinateTransformation) {
       this[key] = coordinateTransformation[key]
     }
+
+    this.updateCount += 1
   }
 }
