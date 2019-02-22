@@ -43,6 +43,13 @@ export default {
         return "none"
       }
     },
+    strokeWidth () {
+      if (this.index && this.selectionIndex && (this.index === this.selectionIndex)) {
+        return "5"
+      } else {
+        return "none"
+      }
+    }
   },
 
   methods: {
@@ -56,6 +63,7 @@ export default {
 
       let newAes = JSON.parse(JSON.stringify(aesthetics))
       newAes.stroke = this.strokeColor
+      newAes.strokeWidth = this.strokeWidth
 
       let points = [
         [coords.x1, coords.y1],

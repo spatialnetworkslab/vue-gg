@@ -96,7 +96,7 @@ export default {
           throw new Error('Error in click handler')
         }
       }
-      
+
     },
 
     hoverHandler (self) {

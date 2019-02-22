@@ -40,8 +40,8 @@
 
               <vgg-x-axis
                 :scale="actualOptions(options[j])"
-                title="Drinks"
-                :titleHjust="1.01"
+                title="   Drinks"
+                :titleHjust="1.1"
                 :titleVjust="0.5"
                 :labelFontSize="8"
                 labelRotate
@@ -50,7 +50,7 @@
               <vgg-y-axis
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
-                :vjust="0.3"
+                :vjust="0.1"
                 :titleVjust="1 + 0.025 * (3 - i)"
                 flip
               />
@@ -75,11 +75,11 @@ export default {
       data: undefined,
       names: [],
       title: "Drinks Heatmap",
-      dimensions: [5, 10],
+      dimensions: [2, 10],
       options: [20],
       categories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      height: 1000,
-      width: 5200,
+      height: 1200,
+      width: 1200,
       baseX: 100,
       baseY: 100,
       index: -1,
@@ -143,7 +143,7 @@ export default {
           throw new Error('Error in click handler')
         }
       }
-      
+
     },
 
     hoverHandler (self) {
