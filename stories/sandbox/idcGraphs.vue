@@ -27,7 +27,7 @@
               :hoverHandler="hoverHandler"
               :leaveHandler="leaveHandler"
               :fill="row.Color"
-              :fillOpacity="0.4"
+              :fillOpacity="0.8"
             />
 
           </vgg-map>
@@ -120,7 +120,7 @@ export default {
     },
 
     drinks () {
-      csv('../../static/idcDrinksDemoClean.csv').then((data) => {
+      csv('../../static/idcDrinksDemoSmall.csv').then((data) => {
         this.data = Object.freeze(data.map((d, i) => {
           return {
             Index: i,
@@ -129,7 +129,7 @@ export default {
             Protein: parseInt(d.Protein),
             ServingSize: parseInt(d['Serving Size']),
             Sugars: parseInt(d.Sugars),
-            Color: d.Color
+            Color: d.Color2
           }
         }))
       })
