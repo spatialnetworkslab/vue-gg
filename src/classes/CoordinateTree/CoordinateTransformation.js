@@ -37,6 +37,9 @@ export default class CoordinateTransformation {
       y: domainYType
     }
 
+    // Store type
+    this.type = options.type
+
     // If we have a categorical or temporal domain: set ranges as domains
     this.domains = {}
 
