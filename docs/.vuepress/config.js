@@ -15,7 +15,7 @@ module.exports = {
             },
             {
                 title: 'Tutorials',
-                collapsable: false,
+                collapsable: true,
                 children: [
                     'tutorials/templates',
                     'tutorials/custom2',
@@ -26,6 +26,7 @@ module.exports = {
                 title: 'Template Graphs',
                 collapsable: true,
                 children: [
+                    'graphs/plottitle',
                     'graphs/areaunder',
                     'graphs/boxplot',
                     'graphs/histogram',
@@ -35,16 +36,38 @@ module.exports = {
                     ]
             },
             {
+              title: 'Concepts',
+              collapsable: true,
+              children: [
+                'concepts/data-loading.md',
+                'concepts/transforming-data.md',
+                'concepts/scaling.md'
+              ]
+            },
+            {
+                title: 'Core components',
+                collapsable: true,
+                children: [
+                    'core/graphic',
+                    'core/section',
+                    'core/data',
+                    'core/map',
+                    'core/scales',
+                    'core/glyph'
+                    ]
+            },
+            {
                 title: 'Marks',
                 collapsable: true,
                 children: [
                     'marks/label',
                     'marks/line',
                     'marks/path',
-                    'marks/point',
                     'marks/polygon',
                     'marks/area',
                     'marks/rectangle',
+                    'marks/symbol',
+                    'marks/trail'
                     ]
             },
             {
@@ -97,7 +120,7 @@ module.exports = {
         ]
     },
     configureWebpack: {
-        resolve: {   
+        resolve: {
             alias:{
             "@": path.resolve(__dirname, '../../src'),
             "@public": path.resolve(__dirname, './public/')

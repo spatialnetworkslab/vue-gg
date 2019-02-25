@@ -1,5 +1,5 @@
 import { interpolate } from 'd3-interpolate'
-import { line } from 'd3-shape'
+import { line, arc, curve } from 'd3-shape'
 import { geoPath } from 'd3-geo'
 
 import { transform } from '../../../utils/geojson.js'
@@ -50,6 +50,7 @@ export function createPath (points, transformer, precision = 2) {
   let transformedPoints = points.map(p => {
     return transformer(p).map(c => round(c, precision))
   })
+
   const lineGenerator = line()
   let path = lineGenerator(transformedPoints)
 

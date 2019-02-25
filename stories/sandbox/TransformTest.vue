@@ -5,14 +5,14 @@
     :data="data"
   >
 
-    <vgg-transform
-      :trans="[
+    <vgg-data
+      :transform="[
         { rename: { a: 'apple', b: 'banana', d: 'durian' } },
         { select: ['apple', 'banana', 'durian'] },
         { filter: ({ durian }) => durian > 25 },
         { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] },
         { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } },
-        /* { groupBy: 'banana' }, */
+        { groupBy: 'banana' },
         { summarise: { appleSum: { apple: 'sum' }, maxRatio: { ratioAppleDurian: 'max' } } }
       ]"
     >
@@ -23,18 +23,18 @@
         :y1="100"
         :y2="500">
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
 
           <vgg-point
-            :x="{ scale: 'appleSum' }"
-            :y="{ scale: 'maxRatio' }"
+            :x="{ val: row.appleSum, scale: 'appleSum' }"
+            :y="{ val: row.maxRatio, scale: 'maxRatio' }"
           />
 
         </vgg-map>
 
       </vgg-section>
 
-    </vgg-transform>
+    </vgg-data>
 
   </vgg-graphic>
 </template>

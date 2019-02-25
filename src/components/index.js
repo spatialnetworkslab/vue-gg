@@ -2,8 +2,11 @@
 import Glyph from './Core/GlyphWrapper.vue'
 import Graphic from './Core/Graphic.vue'
 import Map from './Core/Map.vue'
-import Section from './Core/SectionWrapper.vue'
-import Transform from './Core/Transform.vue'
+import Section from './Core/Section.vue'
+import Data from './Core/Data.vue'
+import Scales from './Core/Scales.vue'
+
+import PlotTitle from './Elements/PlotTitle.vue'
 
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'
@@ -23,14 +26,20 @@ import Point from './Marks/Point.vue'
 import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
 import Label from './Marks/Label.vue'
+import Symbol from './Marks/Symbol.vue'
 import Trail from './Marks/Trail.vue'
+
+import IdcPoint from './Marks/idcPoint.vue'
 
 export default {
   Glyph,
   Graphic,
   Map,
   Section,
-  Transform,
+  Data,
+  Scales,
+
+  PlotTitle,
 
   Piechart,
 
@@ -47,5 +56,8 @@ export default {
   Polygon,
   Rectangle,
   Label,
-  Trail
+  Symbol,
+
+  IdcPoint,
+  Trail,
 }

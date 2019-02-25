@@ -8,23 +8,23 @@ export default {
   props: {
     // Mappable
     x: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     y: {
-      type: [Number, String, Date, Object, Function, undefined],
+      type: [Number, String, Date, Object, undefined],
       default: undefined
     },
 
     // Non-mappable
     width: {
-      type: Number,
+      type: [Number, Object],
       default: 10
     },
 
     height: {
-      type: Number,
+      type: [Number, Object],
       default: 10
     },
 
@@ -41,8 +41,9 @@ export default {
         x: this.parseCoordinate(this.x, { dimension: 'x' }),
         y: this.parseCoordinate(this.y, { dimension: 'y' }),
 
-        width: this.parseProperty(this.width, { default: 10 }),
-        height: this.parseProperty(this.height, { default: 10 }),
+        width: this.parseAesthetic(this.width),
+        height: this.parseAesthetic(this.height),
+
         anchorPoint: this.parseProperty(this.anchorPoint, { default: 'center' })
       }
     }

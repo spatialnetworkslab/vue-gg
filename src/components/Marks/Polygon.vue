@@ -26,7 +26,7 @@ export default {
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
+      type: String,
       default: '#000000'
     }
   }

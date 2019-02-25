@@ -3,6 +3,7 @@
     v-if="ready"
     :width="width"
     :height="height"
+    class="graphic"
   >
 
     <slot />
@@ -12,9 +13,10 @@
 
 <script>
 import CoordinateSystem from '../../mixins/CoordinateSystem.js'
-import DataProvider from '../../mixins/Data/DataProvider.js'
+import DataManager from '../../mixins/Data/DataManager.js'
+import ScaleManager from '../../mixins/Scales/ScaleManager.js'
 
 export default {
-  mixins: [CoordinateSystem, DataProvider]
+  mixins: [CoordinateSystem, DataManager, ScaleManager]
 }
 </script>

@@ -4,10 +4,9 @@
     :x2="ranges.x2"
     :y1="ranges.y1"
     :y2="ranges.y2"
-    :scales="{
-      x: scale,
-      y: [0, 1]
-    }"
+    :scale-x="scale"
+    :scale-y="[0, 1]"
+    class="x-grid"
   >
 
     <vgg-line
@@ -18,6 +17,7 @@
       :x2="cell.value"
       :y2="1"
       :stroke-width="0.5"
+      class="x-grid-line"
       stroke="#808080"
     />
 

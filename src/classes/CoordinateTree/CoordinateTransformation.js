@@ -1,90 +1,32 @@
-import proj4 from 'proj4'
-
 import createCoordsScale from '../../scales/shorthands/coords/createCoordsScale.js'
+import createGeoScale from '../../scales/createGeoScale.js'
 
-import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
-import parseRange from '../../utils/parseRange.js'
-import  { calculateBBox } from '../../utils/geojson.js'
+import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
+import parseRange from '../../scales/utils/parseRange.js'
 
 export default class CoordinateTransformation {
   constructor (options) {
-    if (options.type === 'geo') {
+    if (options.scales.hasOwnProperty('geo')) {
       this.setGeoTransformation(options)
     } else {
       this.setTransformation(options)
     }
   }
 
-  setGeoTransformation (options) {
-    if (options.dataContainer && options.dataContainer.hasColumn('geometry')) {
-      let ranges = options.ranges
-      this.ranges = ranges
-
-      let scalingOptions = options.scales
-
-      if (scalingOptions.hasOwnProperty('from')) {
-        this.fromCRS = scalingOptions.from
-      }
-      if ((scalingOptions.hasOwnProperty('to'))) {
-        this.toCRS = scalingOptions.to
-      }
-
-      if (this.fromCRS && this.toCRS) {
-        this.geoTransformation = proj4(this.fromCRS, this.toCRS).forward
-      }
-
-      if (!this.fromCRS && this.toCRS) {
-        this.geoTransformation = proj4('WGS84', this.toCRS).forward
-      }
-
-      let bbox = calculateBBox(
-        options.dataContainer.getColumn('geometry'),
-        this.geoTransformation
-      )
-
-      this.domains = bbox
-
-      this.domainTypes = {
-        x: 'quantitative',
-        y: 'quantitative'
-      }
-
-      this.scaleX = createCoordsScale('x', 'quantitative', this.domains.x, this.ranges.x,
-        { scale: 'linear' }
-      )
-      this.scaleY = createCoordsScale('y', 'quantitative', this.domains.y, this.ranges.y,
-        { scale: 'linear' }
-      )
-
-      this.getX = this.scaleX
-      this.getY = this.scaleY
-
-      this.transform = coord => {
-        let [x, y] = coord
-        if (this.geoTransformation) {
-          [x, y] = this.geoTransformation(coord)
-        }
-
-        return [this.getX(x), this.getY(y)]
-      }
-    } else {
-      console.warn(`Column 'geometry' not found.`)
-    }
-  }
-
   setTransformation (options) {
-    let scaleSpecifications = options.scales
+    let scaleOptions = options.scales
     let ranges = options.ranges
 
-    let variableDomains
+    let dataInterface = options.dataInterface
+    let scaleManager = options.scaleManager
 
-    if (options.dataContainer) {
-      variableDomains = options.dataContainer.getDomains()
-    }
-
-    // Check for validity, and fetch variable domains from dataContainer if necessary
-    let [domainX, domainXType, scaleOptionsX] = parseScaleSpecification(scaleSpecifications.x, variableDomains)
-    let [domainY, domainYType, scaleOptionsY] = parseScaleSpecification(scaleSpecifications.y, variableDomains)
+    // Check for validity, and fetch variable domains with dataInterface if necessary
+    let [domainX, domainXType, scaleOptionsX] = parseScaleOptions(
+      scaleOptions.x, dataInterface, scaleManager
+    )
+    let [domainY, domainYType, scaleOptionsY] = parseScaleOptions(
+      scaleOptions.y, dataInterface, scaleManager
+    )
 
     // Store domains and ranges
     this.domainTypes = {
@@ -120,27 +62,17 @@ export default class CoordinateTransformation {
     )
 
     // We will wrap the scaling functions in this 'get' function.
-    // For categorical and temporal domains, we don't need to apply the scaling,
-    // since we've already done this when the prop was passed (see Mark.js,
-    // parseCoord function). This is because we need to support nested Sections,
-    // where the parent is for example categorical but the child is quantitative. It
-    // is also necessary to properly interpolate in the interpolatePath function
-    // (you cannot interpolate between 'A' and 'B'). So for these components,
-    // we already need to know the converted (quantitative) value before the transform
-    // function is used.
-    this.getX = x => {
-      if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
-        return x
-      } else {
-        return this.scaleX(x)
-      }
+    // This way, we can convert data already from non-quantitative to quantitative
+    // before we actually use $$transform. This is necessary in a few cases.
+    if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
+      this.getX = x => x.constructor === Number ? x : this.scaleX(x)
+    } else {
+      this.getX = this.scaleX
     }
-    this.getY = y => {
-      if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
-        return y
-      } else {
-        return this.scaleY(y)
-      }
+    if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
+      this.getY = y => y.constructor === Number ? y : this.scaleY(y)
+    } else {
+      this.getY = this.scaleY
     }
 
     if (options.type === 'scale') {
@@ -167,6 +99,31 @@ export default class CoordinateTransformation {
 
         return [toRangeX(cartesian[0]), toRangeY(cartesian[1])]
       }
+    }
+  }
+
+  setGeoTransformation (options) {
+    // let geoOptions = options.scales.geo TODO
+    let ranges = options.ranges
+    let dataInterface = options.dataInterface
+
+    let domainX = dataInterface.getDomain('geometry.x')
+    let domainY = dataInterface.getDomain('geometry.y')
+
+    this.domains = { x: domainX, y: domainY }
+    this.domainTypes = { x: 'quantitative', y: 'quantitative' }
+    this.ranges = ranges
+
+    let { scaleX, scaleY, center } = createGeoScale(options)
+    this.scaleX = scaleX
+    this.scaleY = scaleY
+    this.center = center
+
+    this.getX = this.scaleX
+    this.getY = this.scaleY
+
+    this.transform = ([x, y]) => {
+      return [this.getX(x), this.getY(y)]
     }
   }
 }

@@ -5,25 +5,24 @@
     :width="600"
     :height="600"
     :data="data"
-    format="geojson">
+    :transform="{ reproject: {
+      from: '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+      to: 'WGS84'
+    } }"
+  >
 
     <vgg-section
       :x1="100"
       :x2="500"
       :y1="100"
       :y2="500"
-      :type="'geo'"
-      :scales="{
-        from: '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
-        to: 'WGS84'
-      }"
     >
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-polygon
-          :geometry="row => row.geometry"
-          :fill="{ scale: { scale: 'redYellowGreen', variable: 'value' } }"
+          :geometry="{ val: row.geometry, scaleGeo: {} }"
+          :fill="{ val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
         />
 
       </vgg-map>

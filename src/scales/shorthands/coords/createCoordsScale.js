@@ -6,7 +6,7 @@ import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, range, scalingOptions) {
   if (variableType === 'quantitative') {
-    let scale = scalingOptions.scale || 'linear'
+    let scale = scalingOptions.type || 'linear'
     checkValidScale(prop, variableType, scale, quantitative)
 
     let scaleFunc = quantitative[scale](domain, range)
@@ -20,14 +20,14 @@ export default function (prop, variableType, domain, range, scalingOptions) {
   }
 
   if (variableType === 'temporal') {
-    let scale = scalingOptions.scale || 'temporal'
+    let scale = scalingOptions.type || 'temporal'
     checkValidScale(prop, variableType, scale, temporal)
 
     return temporal[scale](domain, range)
   }
 
   if (variableType === 'categorical') {
-    let scale = scalingOptions.scale || 'equidistant'
+    let scale = scalingOptions.type || 'equidistant'
     checkValidScale(prop, variableType, scale, categorical)
 
     return categorical[scale](domain, range)

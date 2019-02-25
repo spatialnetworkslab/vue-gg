@@ -3,12 +3,17 @@ import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 import createRadiusScale from './shorthands/radius/createRadiusScale.js'
 
-import getDimension from '../utils/getDimension.js'
-import parseScaleSpecification from '../utils/parseScaleSpecification.js'
-import parseRange from '../utils/parseRange.js'
+import parseScaleOptions from './utils/parseScaleOptions.js'
+import parseRange from './utils/parseRange.js'
 
-export default function (prop, context, scalingOptions) {
-  let [domain, domainType] = parseScaleSpecification(scalingOptions, context.domains)
+import getDimension from '../utils/getDimension.js'
+
+export default function (prop, context, passedScalingOptions) {
+  let [domain, domainType, scalingOptions] = parseScaleOptions(
+    passedScalingOptions,
+    context.dataInterface,
+    context.scaleManager
+  )
 
   // Coordinate props
   if (['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(prop)) {
@@ -29,7 +34,7 @@ export default function (prop, context, scalingOptions) {
   }
 
   // Pixel-value props
-  if (['width', 'height', 'fontSize', 'strokeWidth'].includes(prop)) {
+  if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
     let range
     if (!scalingOptions.range) {
       console.warn(`No range specified for prop ${prop}. Defaulting to [0, 10]`)

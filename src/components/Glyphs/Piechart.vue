@@ -12,10 +12,8 @@
       :x2="wh"
       :y1="0"
       :y2="wh"
-      :scales="{
-        x: [0, 100],
-        y: [0, 100]
-      }"
+      :scale-x="[0, 100]"
+      :scale-y="[0, 100]"
     >
 
       <vgg-rectangle
@@ -25,7 +23,7 @@
         :x2="rect.x2"
         :y1="rect.y1"
         :y2="rect.y2"
-        :color="rect.color"
+        :fill="rect.color"
       />
 
     </vgg-section>
@@ -37,17 +35,17 @@
 export default {
   props: {
     x: {
-      type: [Number, Object, Function],
+      type: [Number, Object],
       required: true
     },
 
     y: {
-      type: [Number, Object, Function],
+      type: [Number, Object],
       required: true
     },
 
     radius: {
-      type: Number,
+      type: [Number, Object],
       required: true
     },
 

@@ -12,7 +12,8 @@
         :x2="600"
         :y1="0"
         :y2="600"
-        :scales="domains">
+        :scale-x="domains.x"
+        :scale-y="domains.y">
 
         <vgg-section
           v-for="(cs, i) in nestedCoordinateSystems"
@@ -22,7 +23,8 @@
           :x2="cs.x2"
           :y1="cs.y"
           :y2="cs.y2"
-          :scales="domains"
+          :scale-x="domains.x"
+          :scale-y="domains.y"
         >
 
           <vgg-point
@@ -31,6 +33,7 @@
             :x="p.x"
             :y="p.y"
             :fill="cs.color"
+            :radius="4"
           />
 
           <vgg-rectangle
@@ -39,7 +42,7 @@
             :y1="0"
             :y2="100"
             :fill="cs.color"
-            style="opacity: 0.2;"
+            :opacity="0.2"
           />
 
         </vgg-section>
