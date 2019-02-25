@@ -1,23 +1,25 @@
 export function calculateWidths (axes, ranges, defaultFraction = 8) {
   let widths = { top: 0, bottom: 0, left: 0, right: 0 }
 
-  let xRange = ranges.x[1] - ranges.x[0]
-  let yRange = ranges.y[1] - ranges.y[0]
-
   for (let axis in axes) {
     let axisOptions = axes[axis]
-
-    if (['bottom', 'top'].includes(axis)) {
-      let h = axisOptions && axisOptions.constructor === Object ? axisOptions.h : undefined
-      widths[axis] = h || Math.abs(yRange) / defaultFraction
-    }
-    if (['left', 'right'].includes(axis)) {
-      let w = axisOptions && axisOptions.constructor === Object ? axisOptions.w : undefined
-      widths[axis] = w || Math.abs(xRange) / defaultFraction
-    }
+    widths[axis] = calculateWidth(axis, axisOptions, ranges, defaultFraction)
   }
 
   return widths
+}
+
+function calculateWidth (axis, axisOptions, ranges, defaultFraction = 8) {
+  if (['bottom', 'top'].includes(axis)) {
+    let yRange = ranges.y[1] - ranges.y[0]
+    let h = axisOptions && axisOptions.constructor === Object ? axisOptions.h : undefined
+    return h || Math.abs(yRange) / defaultFraction
+  }
+  if (['left', 'right'].includes(axis)) {
+    let xRange = ranges.x[1] - ranges.x[0]
+    let w = axisOptions && axisOptions.constructor === Object ? axisOptions.w : undefined
+    return w || Math.abs(xRange) / defaultFraction
+  }
 }
 
 export function createAxisProps (axis, axisOptions, ranges, widths, scales) {
