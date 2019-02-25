@@ -4,7 +4,7 @@
   import checkPoints from '../../mixins/Marks/utils/checkPoints.js'
   import { invalidPoint } from '../../utils/equals.js'
   import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
-  import { line, arc, curve, curveLinear, curveBasis, curveCatmullRom } from 'd3-shape'
+  import { line, curve, curveLinear, curveCardinal, curveCatmullRom } from 'd3-shape'
 
   export default {
     mixins: [Path],
@@ -40,7 +40,7 @@
       fill: {
         type: String,
         default: '#000000'
-      },
+      }
     },
 
     computed: {
@@ -52,60 +52,6 @@
     },
 
     methods: {
-      point (p) {
-        let x = p[0]
-        let y = p[1]
-        return { x, y }
-      },
-
-      line (p1, p2) {
-         return { p1, p2 }
-      },
-
-      onLine (line, point) {
-        if(point.x <= Math.max(line.p1.x, line.p2.x) && point.x <= Math.min(line.p1.x, line.p2.x) &&
-           (point.y <= Math.max(line.p1.y, line.p2.y) && point.y <= Math.min(line.p1.y, line.p2.y))) {
-            return true
-        }
-        return false
-      },
-
-      direction(a, b, c) {
-       let val = (b.y-a.y) * (c.x-b.x) - (b.x-a.x) * (c.y-b.y)
-       if (val == 0) {
-          return 0     //colinear
-        } else if(val < 0) {
-          return 2    //anti-clockwise direction
-        }
-        return 1    //clockwise direction
-      },
-
-      isIntersect(l1, l2) {
-        //four direction for two lines and points of other line
-        let dir1 = this.direction(l1.p1, l1.p2, l2.p1);
-        let dir2 = this.direction(l1.p1, l1.p2, l2.p2);
-        let dir3 = this.direction(l2.p1, l2.p2, l1.p1);
-        let dir4 = this.direction(l2.p1, l2.p2, l1.p2);
-        console.log(dir1, dir2, dir3, dir4)
-        console.log(l1, l2)
-        if(dir1 != dir2 && dir3 != dir4){
-          return true //they are intersecting
-        }
-        if(dir1===0 && this.onLine(l1, l2.p1)) { //when p2 of line2 are on the line1
-          return true
-        }
-         if(dir2===0 && this.onLine(l1, l2.p2)){ //when p1 of line2 are on the line1
-            return true
-        }
-         if(dir3===0 && this.onLine(l2, l1.p1)) { //when p2 of line1 are on the line2
-            return true
-        }
-         if(dir4===0 && this.onLine(l2, l1.p2)){ //when p1 of line1 are on the line2
-            return true
-        }
-        return false
-      },
-
       // This function generates the x-y coordinates + corresponding aesthetics that may need tobe sorted
       generatePoints (x, y, aesthetics) {
         let points = []
@@ -182,16 +128,13 @@
         }
       },
 
-      //This function maps line aesthetics to the data and creates the segments.
-      enumAesthetics (points) {
-        let top = [], bottom = [], segments = {'paths': [], 'arcs': []}
-        /**
-         * Calculate the points that make up each line segment.
-         */
+      // Maps line aesthetics to the data and creates the segments wrt stroke widths
+      // SIMPLIFY
+      createTrail (points) {
+        let top = [], bottom = []
 
         for (let ix = 0; ix < points.length - 1; ix++) {
           let total = [], point = {}, nextPt = {}
-          // let point = points[ix]
           point.coord = this.$$transform(points[ix].coord)
           nextPt.coord = this.$$transform(points[ix + 1].coord)
           let x1 = point.coord[0]
@@ -203,21 +146,21 @@
 
           // to prevent strokes from disappearing completely
           if (w1 === 0) {
-            w1 += 0.03
+            w1 += 0.1
           }
 
           if (w2 === 0) {
-            w2 += 0.03
+            w2 += 0.1
           }
 
           // computes reference line segment - between start and end points
           let vector = [x1 - x2, y1 - y2]
           let magnitude = Math.sqrt(vector[0]**2 + vector[1]**2)
           let m = vector[1]/vector[0]
-          let b = y2 - m * x2
           let uVector = [vector[0] / magnitude, vector[1] / magnitude]
           let uVectorP = [uVector[1], -uVector[0]]
 
+          // Approach: One mark per two rows (point 1, stroke width 1 -> point 2, stroke width 2)
           // to calculate corners of 'polygon' composing 'line segment' with interpolated 'width' in any orientation
           // use the line equation parallel to the line defining the start and end points
           // and project the widths on the unit vector of these lines
@@ -230,65 +173,19 @@
           let coord2 = [x2 + uVectorP[0] * w2, y2 + uVectorP[1] * w2]
           let coord3 = [x2 - uVectorP[0] * w2, y2 - uVectorP[1] * w2]
 
-          // to produce the curved edges between points
-          // determine if intersecting
-          // if not intersecting, generate arc/bezier curve using d3
-          if (ix > 1) {
-            //let bTop = coord1[1] - (coord2[1] - coord1[1]) / (coord2[0] - coord1[0])* coord1[0]
-            let vBottom = [coord3[0] - coord4[0], coord3[1] -  coord4[1]]
-            let mBottom = vBottom[1]/vBottom[0]
-            let bBottom = coord3[1] - mBottom * coord3[0]
-
-            // let prevTopPair = [ top[ix - 1], top[ix] ]
-            let prevCoord1 = top[ix]
-            let prevCoord2 = top[ix-1]
-            let prevCoord3 = bottom[bottom.length-1]
-            let prevCoord4 = bottom[bottom.length-2]
-
-            // let vectorTop = [prevTopPair[1][0] - prevTopPair[0][0], prevTopPair[1][1] - prevTopPair[0][1]]
-            let prevVecBot = [prevCoord3[0] - prevCoord4[0], prevCoord3[1]- prevCoord4[1]]
-
-            //let prevTopM = vectorTop[1] / vectorTop[0]
-            let prevBotM = prevVecBot[1] / prevVecBot[0]
-
-            //let prevTopB = prevTopPair[1][1] - prevTopM * prevTopPair[1][0]
-            let prevBotB = prevCoord3[1] - prevBotM * prevCoord3[0]
-
-            //let xTop = (bTop - prevTopB) / (prevTopM - m)
-            //let yTop = prevTopM * prevTopPair[1][0] + prevTopB
-            let xBot = (bBottom - prevBotB) / (prevBotM - mBottom)
-            let yBot = prevBotM * xBot + prevBotB
-
-            // determine if two lines do not intersect
-            // if they intersect, do nothing
-            // if they do not intersect, create a transition bezier curve
-            let l1 = this.line(this.point(prevCoord1), this.point(prevCoord2))
-            let l2 = this.line(this.point(coord1), this.point(coord2))
-            console.log('top', this.isIntersect(l1, l2))
-
-            l1 = this.line(this.point(prevCoord4), this.point(prevCoord3))
-            l2 = this.line(this.point(coord4), this.point(coord3))
-            if (this.isIntersect(l1, l2) === false){
-            //segments.arcs.push([bottom[bottom.length-1], [(bottom[ix][0] + coord4[0])/2, (bottom[ix][1] + coord4[1])/2], coord4])
-              segments.arcs.push([bottom[bottom.length-1], [xBot,yBot], coord4])
-              //segments.arcs.push([bottom[bottom.length-1], [this.$$transform(points[ix].coord)[0],this.$$transform(points[ix].coord)[1]], coord4])
-            }
-          }
-          //segments.arcs.push([top[ix], coord1])
-
           top.push(coord1)
           top.push(coord2)
           bottom.push(coord4)
           bottom.push(coord3)
         }
 
-        segments.paths = top
+        let segments = top
         for (let b = bottom.length - 1; b >= 0; b--) {
-          segments['paths'].push(bottom[b])
+          segments.push(bottom[b])
         }
-
-        segments['paths'].push(segments.paths[0])
-
+        // to smooth the first part of the trail
+        segments.push(segments[0])
+        segments.push(segments[1])
         return segments
       },
 
@@ -305,28 +202,27 @@
             style: createSVGStyle(aesthetics)
           })
         } else {
-          let points = [], segments = []
+          let points = [], segments = [], curveType
 
           if (aesthetics.points) {
             points = aesthetics.points
           } else {
             points = this.generatePoints(aesthetics.x, aesthetics.y, aesthetics)
           }
-
+          // sort points while carrying aesthetics
           if (points.length > 1) {
             if (this.sort) {
               points = this.sortPoints(points)
             }
 
             // obtains polygon corresponding to multiline with stroke widths
-            segments = this.enumAesthetics(points)
-            const arcGenerator = line().curve(curveCatmullRom.alpha(0.5))
+            segments = this.createTrail(points)
+
             // creates line path
-            let path = arcGenerator(segments.paths)
-
+            const arcGenerator = line().curve(curveCardinal.tension(0.94))
+            let path = arcGenerator(segments)
             let elements = []
-            let totalAesthetics = {'stroke': this.stroke, 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity, 'strokeWidth': 1}
-
+            let totalAesthetics = {'stroke': this.stroke, 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity}
             let element = createElement('path', {
               attrs: {
                 'd': path
@@ -334,35 +230,7 @@
               style: createSVGStyle(totalAesthetics)
             })
             elements.push(element)
-
-            // curve out transitions between segments
-            // const arcGenerator = line().curve(curveLinear)
-            // for (let c = 0; c < segments.arcs.length; c++) {
-            //   let arc =  arcGenerator(segments.arcs[c])
-            //   let newAesthetics = {'stroke': 'this.stroke', 'fill': 'green', 'fillOpacity': 1, 'opacity': aesthetics.opacity, 'strokeWidth': 1}
-            //   element = createElement('path', {
-            //     attrs: {
-            //       'd': arc
-            //     },
-            //     style: createSVGStyle(newAesthetics)
-            //   })
-            //   elements.push(element)
-            // }
-
-            // for (let c = 0; c < segments.arcs.length; c++) {
-            //   let pathData =  arcGenerator(segments.arcs[c])
-            //   console.log(pathData)
-            //   element = createElement('path', {
-            //     attrs: {
-            //       'd': pathData
-            //     },
-            //     style: createSVGStyle(totalAesthetics)
-            //   })
-            //   elements.push(element)
-            // }
-
             return createElement('g', elements)
-
           } else {
             console.warn('Not enough valid points to draw Mark')
           }

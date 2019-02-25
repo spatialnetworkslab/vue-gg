@@ -25,8 +25,16 @@
           :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
           :fill="row.colors"
           :sort="'x'"
+          :fillOpacity="0.5"
         />
 
+        <!-- <vgg-trail
+          :x="row.grouped.xValues"
+          :y="row.grouped.yValues"
+          :stroke-width="5"
+          :fill="row.colors"
+          :sort="'x'"
+        /> -->
       </vgg-map>
 
     </vgg-data>
@@ -72,18 +80,15 @@ export default {
   computed: {
     data () {
       let colors = ['red', 'blue', 'green']
-      let opacity =[0.5, 0.1, 0.3]
-      let data = { colors: [], opacity: [], rainfall: [], xValues: [], yValues: [] }
-      let rainfall = [7, 12, 5, 3, 1, 2, 2, 10, 2, 12, 5, 7]
+      let data = { colors: [], rainfall: [], xValues: [], yValues: [] }
+      let rainfall = [7, 12, 5, 3, 5, 8, 9, 10, 2, 12, 5, 7]
       for (let i = 0; i < 30; i++) {
         let colorIndex = Math.floor(Math.random() * 3)
         let color = colors[colorIndex]
-        let alpha = opacity[colorIndex]
         let rain = rainfall[i%rainfall.length]
         data.colors.push(color)
         data.xValues.push(Math.random() * 10)
         data.yValues.push(Math.random() * 100)
-        data.opacity.push(alpha)
         data.rainfall.push(rain)
       }
 
