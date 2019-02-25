@@ -6,8 +6,8 @@ import { transform } from '../../../utils/geojson.js'
 import { invalid } from '../../../utils/equals.js'
 
 function getChildren (element) {
-  if (element.componentOptions) {
-    return element.componentOptions.children
+  if (element.componentOptions && element.componentOptions.children) {
+    return element.componentOptions.children.filter(c => c !== undefined)
   }
 }
 
