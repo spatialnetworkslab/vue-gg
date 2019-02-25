@@ -1,10 +1,9 @@
 <script>
   import Path from '../../mixins/Marks/Path.js'
-  import { createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
   import checkPoints from '../../mixins/Marks/utils/checkPoints.js'
   import { invalidPoint } from '../../utils/equals.js'
   import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
-  import { line, curve, curveCardinal } from 'd3-shape'
+  import { line, curve, curveCatmullRom, curveCardinal } from 'd3-shape'
 
   export default {
     mixins: [Path],
@@ -28,11 +27,11 @@
       mappable () {
         return ['strokeWidth']
       }
-
     },
 
     methods: {
-      // This function generates the x-y coordinates + corresponding aesthetics that may need tobe sorted
+      // This function generates the x-y coordinates + corresponding aesthetics
+      // that need to be sorted alongside one another
       generatePoints (x, y, aesthetics) {
         let points = []
         let point = {}
@@ -44,14 +43,14 @@
           if (x.length === 1 || y.length === 1) {
             if (x.length === 1) {
               for (let i = 0; i < y.length; ++i) {
-                point = { coord: [x[i], y[i]]}
+                point = { coord: [x, y[i]]}
                 for (let row in this.mappable){
                   point = this.storeAesthetic(point, aesthetics, this.mappable[row], i)
                 }
               }
             } else if (y.length === 1) {
               for (let i = 0; i < x.length; ++i) {
-                point = { coord: [x[i], y[i]] }
+                point = { coord: [x[i], y] }
                 for (let row in this.mappable){
                   point = this.storeAesthetic(point, aesthetics, this.mappable[row], i)
                 }
@@ -76,7 +75,12 @@
       // This function stores the aesthetic or the value corresponding to the index inside the aesthetic
       storeAesthetic(point, aesthetics, aesKey, index) {
         if (Array.isArray(aesthetics[aesKey])) {
-          point[aesKey] = aesthetics[aesKey][index]
+          if (aesthetics[aesKey][index] != NaN){
+            point[aesKey] = aesthetics[aesKey][index]
+          } else {
+            point[aesKey] = aesthetics[aesKey][aesthetics.length - 1]
+            console.warn(`Undefined value for ${JSON.stringify(point.coord)} at index ${index} for ${aesKey}, using previous value aesthetics ${[aesKey][aesthetics.length - 1]}`)
+          }
         } else {
           point[aesKey] = aesthetics[aesKey]
         }
@@ -88,7 +92,7 @@
         let filtered = []
         for (let i = 0; i < points.length; i++) {
           let point = points[i]
-          if (invalidPoint(point).coord) {
+          if (invalidPoint(point.coord)) {
             console.warn(`Skipped invalid point ${JSON.stringify(point)} at index ${i}`)
           } else {
             filtered.push(point)
@@ -108,8 +112,20 @@
         }
       },
 
+      closePoints (points) {
+        // Check if polygon is closed
+        let lastID = points.length - 1
+
+        if (points[0].coord[0] !== points[lastID].coord[0] ||
+          points[0].coord[1] !== points[lastID].coord[1]) {
+          // If not, close
+          points.push(points[0])
+        }
+
+        return points
+      },
+
       // Maps line aesthetics to the data and creates the segments wrt stroke widths
-      // SIMPLIFY
       createTrail (points) {
         let top = [], bottom = []
 
@@ -125,6 +141,7 @@
           let w2 = points[ix + 1].strokeWidth/2
 
           // to prevent strokes from disappearing completely
+          // when scaling turns width to 0
           if (w1 === 0) {
             w1 += 0.1
           }
@@ -163,7 +180,7 @@
         for (let b = bottom.length - 1; b >= 0; b--) {
           segments.push(bottom[b])
         }
-        // to smooth the first part of the trail
+        // to smooth the first curve of the trail - point 0
         segments.push(segments[0])
         segments.push(segments[1])
         return segments
@@ -182,7 +199,7 @@
             style: createSVGStyle(aesthetics)
           })
         } else {
-          let points = [], segments = [], curveType
+          let points = [], segments = []
 
           if (aesthetics.points) {
             points = aesthetics.points
@@ -190,17 +207,21 @@
             points = this.generatePoints(aesthetics.x, aesthetics.y, aesthetics)
           }
 
-          // sort points while carrying aesthetics
+          // sort points while carrying aesthetics, namely stroke widths
           if (points.length > 1) {
             if (this.sort) {
               points = this.sortPoints(points)
+            }
+
+            if (this.close) {
+              points = this.closePoints(points)
             }
 
             // obtains polygon corresponding to multiline with stroke widths
             segments = this.createTrail(points)
 
             // creates line path
-            // tension value set to minimum value where curlicues don't appear for very thin lines
+            // tension value set to minimum value for smooth transitions between sections
             const arcGenerator = line().curve(curveCardinal.tension(0.96))
             let path = arcGenerator(segments)
             let elements = []

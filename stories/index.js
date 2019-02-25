@@ -5,7 +5,6 @@ import MultiLine from './charts/MultiLine.vue'
 
 import Scatterplot2 from './sandbox/Scatterplot.vue'
 import BarChart from './sandbox/BarChart.vue'
-import Heatmap from './sandbox/Heatmap.vue'
 import PlotLines from './sandbox/PlotLines.vue'
 import TestCategoricalDomain from './sandbox/TestCategoricalDomain.vue'
 import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
@@ -21,9 +20,6 @@ import TrailMark from './sandbox/TrailMark.vue'
 import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
-import IDC from './sandbox/idcGraphs.vue'
-import IDC2 from './sandbox/idcGraphs2.vue'
-import IDC3 from './sandbox/idcGraphs3.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -47,7 +43,3 @@ storiesOf('Sandbox', module)
   .add('Trail', () => (TrailMark))
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
-  .add('Scatterplot Matrix Color', () => (IDC))
-  .add('Scatterplot Matrix Monochrome', () => (IDC2))
-  .add('Scatterplot Labels', () => (IDC3))
-  .add('Heatmap', () => (Heatmap))
