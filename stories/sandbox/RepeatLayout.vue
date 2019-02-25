@@ -10,7 +10,6 @@
       :x="['a', 'b', 'c']"
       :y="['a', 'b', 'c']"
       :cell-padding="20"
-      :axes="['bottom', 'left']"
     >
 
       <vgg-section>
