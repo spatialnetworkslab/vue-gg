@@ -36,7 +36,7 @@ export function createAxesProps (axis, axisOptions, range, repeatVals) {
   }
 
   if (['left', 'right'].includes(axis)) {
-    
+
   }
 }
 
