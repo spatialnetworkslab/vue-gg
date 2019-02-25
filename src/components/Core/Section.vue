@@ -1,14 +1,3 @@
-<template>
-  <g
-    v-if="ready && allowScales"
-    class="section"
-  >
-
-    <slot />
-
-  </g>
-</template>
-
 <script>
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataProvider from '../../mixins/Data/DataProvider.js'
@@ -207,6 +196,12 @@ export default {
     let $$coordinateTreeParent = this.coordinateTreeBranchID
 
     return { $$transform, $$coordinateTreeParent }
+  },
+
+  render (createElement) {
+    if (this.ready && this.allowScales) {
+      return createElement('g', { class: 'section' }, this.$slots.default)
+    }
   }
 }
 </script>

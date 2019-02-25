@@ -97,6 +97,10 @@ export default {
       elements = this.mapDataframe()
     }
 
+    elements = elements.filter(el => {
+      return el !== undefined
+    })
+
     if (this.$$grid !== false) {
       let sections = this.validateSections(elements)
       let options = this.$$grid
