@@ -12,7 +12,13 @@
       :cell-padding="20"
     >
 
-      <vgg-section>
+      <vgg-section
+        :axes="['left']"
+        :grid-lines="{
+          x: { scale: x },
+          y: { scale: y }
+        }"
+      >
 
         <vgg-map v-slot="{ row }">
 
