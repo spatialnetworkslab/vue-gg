@@ -24,17 +24,10 @@
           :y="row.grouped.yValues"
           :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
           :fill="row.colors"
+          :fillOpacity="0.7"
           :sort="'x'"
-          :fillOpacity="0.5"
         />
 
-        <!-- <vgg-trail
-          :x="row.grouped.xValues"
-          :y="row.grouped.yValues"
-          :stroke-width="5"
-          :fill="row.colors"
-          :sort="'x'"
-        /> -->
       </vgg-map>
 
     </vgg-data>
@@ -91,7 +84,6 @@ export default {
         data.yValues.push(Math.random() * 100)
         data.rainfall.push(rain)
       }
-
       return data
     }
   }

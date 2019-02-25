@@ -1,10 +1,10 @@
 <script>
   import Path from '../../mixins/Marks/Path.js'
-  import { createArc, createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
+  import { createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
   import checkPoints from '../../mixins/Marks/utils/checkPoints.js'
   import { invalidPoint } from '../../utils/equals.js'
   import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
-  import { line, curve, curveLinear, curveCardinal, curveCatmullRom } from 'd3-shape'
+  import { line, curve, curveCardinal } from 'd3-shape'
 
   export default {
     mixins: [Path],
@@ -16,35 +16,15 @@
         }
       },
 
-      fill: {
-        type: String,
-        default: '#000000'
-      },
-
-      // Not mappable
-      strokeLinecap: {
-        type: String,
-        default: 'round'
-      },
-
-      stroke: {
-        type: String,
-        default: 'none'
-      },
-
       strokeWidth: {
         type: [Number, Array],
-        default: 0.5
-      },
-
-      fill: {
-        type: String,
-        default: '#000000'
+        default: 1
       }
     },
 
     computed: {
       // tracks what the functions should look for as mappable
+      // might add other properties later on (?) like linear gradients
       mappable () {
         return ['strokeWidth']
       }
@@ -219,10 +199,11 @@
             segments = this.createTrail(points)
 
             // creates line path
-            const arcGenerator = line().curve(curveCardinal.tension(0.94))
+            // tension value set to minimum value where curlicues don't appear for very thin lines
+            const arcGenerator = line().curve(curveCardinal.tension(0.96))
             let path = arcGenerator(segments)
             let elements = []
-            let totalAesthetics = {'stroke': this.stroke, 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity}
+            let totalAesthetics = {'stroke': 'none', 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity}
             let element = createElement('path', {
               attrs: {
                 'd': path
