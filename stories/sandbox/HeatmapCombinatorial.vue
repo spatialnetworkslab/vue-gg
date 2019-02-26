@@ -21,7 +21,7 @@
               :scale-x="[o[0], o[1]]"
               :scale-y="[d[0], d[1]]"
             >
-              <vgg-data v-for="(item, i) in segments(dimensions[i], options[j])" :data="item">
+              <vgg-data v-for="(item, i) in segments(dimensions[i], options[j], bikeCategories)" :data="item">
                 <vgg-map v-slot="{ row }">
                   <vgg-rectangle
                   :x1="row.x1"
@@ -33,24 +33,21 @@
                 </vgg-map>
               </vgg-data>
 
-              <vgg-x-axis
+              <!-- <vgg-x-axis
                 :scale="actualOptions(options[j])"
-                title="   Drinks"
-                titleHjust="r"
-                titleAnchorPoint="l"
-                :titleVjust="0.5"
+                title="Bikes"
                 :labelFontSize="8"
+                :titleHjust="1.2"
                 labelRotate
-              />
+              /> -->
 
               <vgg-y-axis
-                :scale="actualDimensions(dimensions[i])"
+                :scale="actualDimensions(bikeCategories, dimensions[i])"
                 title="Attributes"
-                :vjust="0.5"
+                :vjust="0.1"
                 :titleVjust="1 + 0.025 * (3 - i)"
                 flip
               />
-
             </vgg-section>
         </g>
       </g>
@@ -71,9 +68,10 @@ export default {
       data: undefined,
       names: [],
       title: "Drinks Heatmap",
-      dimensions: [3, 5, 10],
-      options: [5, 10, 25, 50, 75],
-      categories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
+      dimensions: [3, 5],
+      options: [5, 100],
+      drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
+      bikeCategories: ['PowerWeightRt', 'MilesPG', 'Horsepower', 'Weight', 'TopSpeed', 'To60', 'To100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
       height: 1200,
       width: 8700,
       baseX: 100,
@@ -82,7 +80,8 @@ export default {
   },
 
   mounted () {
-    this.drinks()
+    //this.drinks()
+    this.bikes()
   },
   computed: {
     dimensionSections () {
@@ -123,24 +122,23 @@ export default {
   },
   methods: {
     actualOptions (options) {
+      console.log(this.data)
       let names = []
-
       for (let i = 0; i < options; i++ ) {
         names.push(this.data[i].Name)
       }
+      console.log(names)
       return names
     },
 
-    actualDimensions (dimensions) {
-      return this.categories.slice(0, dimensions)
+    actualDimensions (categories, dimensions) {
+      return categories.slice(0, dimensions)
     },
 
-    segments(dimensions, options){
+    segments(dimensions, options, categories){
       if (this.data) {
-        let categories = this.categories
-
         if (!isNaN(dimensions)){
-            categories = this.categories.slice(0, dimensions)
+          categories = categories.slice(0, dimensions)
         }
 
         if (isNaN(options)){
@@ -167,7 +165,6 @@ export default {
               segments[i].push(macro)
             }
         }
-        console.log(dimensions, options, segments)
         return segments
       }
     },
@@ -192,6 +189,29 @@ export default {
             VitaminC: parseInt(d['Vitamin C']),
             Calcium: parseInt(d.Calcium),
             Iron: parseInt(d.Iron),
+          }
+        }))
+      })
+    },
+
+    bikes () {
+      // change name of csv
+      csv('../../static/mcn_performance_index14.csv').then((data) => {
+        this.data = Object.freeze(data.map(d => {
+          return {
+            Name: d.Motorbike,
+            Price: parseInt(d['Base MSRP']),
+            PowerWeightRt: parseInt('d.PowerWeightRt'),
+            MilesPG: parseInt(d['Average MPG']),
+            Horsepower: parseInt(d['Rear-Wheel HP']),
+            //parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
+            Weight: parseInt(d['Wet Weight']),
+            TopSpeed: parseInt(d['Top Speed']),
+            To60: parseInt(d['0–60 mph, sec.']),
+            //To100: parseInt(d['0–100 mph, sec.']),
+            Quartermile: parseInt(d['0–1/4 mile, sec.']),
+            QuartermileMaxSpeed: parseInt(d['0–1/4 mile, mph']),
+            Stop60: parseInt(d['Braking 60–0 mph (feet)'])
           }
         }))
       })
