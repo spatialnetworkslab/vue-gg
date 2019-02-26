@@ -26,7 +26,20 @@
             shape="triangle-left"
             fill="none"
           />
+            
         </vgg-map>
+
+        <vgg-x-axis
+          :scale="[0, 150]"
+          :vjust="-.05"
+        />
+
+        <vgg-y-axis
+          :scale="'dependent'"
+          :hjust="-.05"
+          :tickExtraLabel="false"
+          flip
+        />
 
       </vgg-section>
 
@@ -35,28 +48,12 @@
         :x2="500"
         :y1="100"
         :y2="500"
-        :scale="'explanatory'"
+        :scale="[0, 150]"
       />
 
       <vgg-y-grid
         :x1="100"
         :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'dependent'"
-      />
-
-      <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="50"
-        :y2="100"
-        :scale="'explanatory'"
-      />
-
-      <vgg-y-axis
-        :x1="500"
-        :x2="550"
         :y1="100"
         :y2="500"
         :scale="'dependent'"
