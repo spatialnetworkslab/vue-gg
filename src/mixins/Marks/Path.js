@@ -231,7 +231,7 @@ export default {
             },
             style: this.createSVGStyle(aesthetics)
           })
-          console.log(element)
+
           return element
         } else {
           console.warn('Not enough valid points to draw Mark')
