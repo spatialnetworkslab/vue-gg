@@ -98,7 +98,7 @@ export default {
   computed : {
     fill () {
       if (this.color === 'both' || this.color === 'fill') {
-        return { get: 'explanatory', scale: { type: 'viridis', domain: 'explanatory' } }
+        return { val: 'explanatory', scale: { type: 'viridis', domain: 'explanatory' } }
       } else {
         return 'none'
       }
