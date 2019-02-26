@@ -48,7 +48,7 @@ export default {
     },
 
     strokeWidth: {
-      type: [Number, Array, Object, undefined],
+      type: Number,
       default: 2
     },
 

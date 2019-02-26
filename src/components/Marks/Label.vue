@@ -1,53 +1,66 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
 import { textAnchorPoint } from '../../utils/anchorPoint.js'
+
 export default {
   mixins: [Mark],
+
   props: {
     text: {
       type: [String, Number, undefined],
       default: undefined
     },
+
     x: {
       type: [Number, String, Date],
       required: true
     },
+
     y: {
       type: [Number, String, Date],
       required: true
     },
+
     fill: {
       type: String,
       default: '#000000'
     },
+
     stroke: {
       type: String,
       default: 'none'
     },
+
     strokeWidth: {
       type: Number,
       default: 0
     },
+
     opacity: {
       type: [Number, undefined],
       default: undefined
     },
+
     strokeOpacity: {
       type: [Number, undefined],
       default: undefined
     },
+
     fillOpacity: {
       type: [Number, undefined],
       default: undefined
     },
+
     fontSize: {
       type: Number,
       default: 16
     },
+
     rotation: {
       type: Number,
       default: 0
     },
+
     // Unmappable
     anchorPoint: {
       type: String,
@@ -55,11 +68,13 @@ export default {
       validator: p => ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'].includes(p)
     }
   },
+
   data () {
     return {
       markType: 'label-mark'
     }
   },
+
   computed: {
     aesthetics () {
       return {
@@ -78,17 +93,25 @@ export default {
       }
     }
   },
+
   methods: {
     calcTransform (rotation, cx, cy) {
       return `rotate(${rotation}, ${cx}, ${cy})`
     },
+
     renderSVG (createElement) {
       let aesthetics = this._props
+
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
+
       let anchorPoint = textAnchorPoint(this.anchorPoint)
+
       let transform = this.calcTransform(aesthetics.rotation, cx, cy)
+
       let styles = this.createSVGStyle(aesthetics)
+
       styles['fontSize'] = aesthetics.fontSize + 'px'
+
       let el = createElement('text', {
         attrs: {
           'x': cx,
@@ -101,14 +124,18 @@ export default {
         },
         style: styles
       }, aesthetics.text)
+
       return el
     }
   }
 }
+
 </script>
 
 <style scoped>
+
 .vgg-label {
   font-family: sans-serif;
 }
+
 </style>
