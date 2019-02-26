@@ -79,6 +79,8 @@ export default class CoordinateTree {
       let branchParents = this._branchPaths[id]
       let result = x
 
+      if (branchParents == undefined) {return result}
+
       for (let i = 0; i < branchParents.length; i++) {
         let currentLocation = this.getBranch(branchParents[i])     
         result = currentLocation.invertX(result)
@@ -93,8 +95,9 @@ export default class CoordinateTree {
   getLocalY (id) {
     let transformation = function (y) {
       let branchParents = this._branchPaths[id]
-
       let result = y
+
+      if (branchParents == undefined) {return result}
 
       for (let i = 0; i < branchParents.length; i++) {
         let currentLocation = this.getBranch(branchParents[i]) 

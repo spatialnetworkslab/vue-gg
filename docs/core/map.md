@@ -23,9 +23,9 @@ map data values to aesthetic values- for example, categories to colors.
 
 # Props
 
-| Prop | Required | Types  | Default | Description                                                              |
-| ---- | -------- | ------ | ------- | ------------------------------------------------------------------------ |
-| unit | false    | String | row     | What to loop over- by default rows, but can also be set to `'dataframe'` |
+| Prop | Required | Types  | Default | Description                                                            |
+| ---- | -------- | ------ | ------- | ---------------------------------------------------------------------- |
+| unit | false    | String | 'row'   | What to loop over- by default rows, but can also be set to 'dataframe' | 
 
 For more information on how to use the `unit` prop, see
 [Mapping an entire dataframe](#mapping-an-entire-dataframe).
@@ -194,7 +194,7 @@ want to use `val`, but not `scale`. To return to the previous example:
 
 Leaving out `scale` is common when working with the Section component.
 The Section component allows you to specify a local coordinate system. This
-coordinate system can be defined as the domains of the columns in your dataset. 
+coordinate system can be defined as the domains of the columns in your dataset.
 See the [documentation of the Section component](./section.md) for more information on this topic.
 To create the same scatterplot again, but using the local Section coordinate
 system:

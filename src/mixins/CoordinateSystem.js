@@ -64,6 +64,6 @@ export default {
     let $$getLocalX = this.coordinateTree.getLocalX(this.coordinateTreeBranchID)
     let $$getLocalY = this.coordinateTree.getLocalY(this.coordinateTreeBranchID)
 
-    return { $$coordinateTree, $$transform, $$coordinateTreeParent, $$map: false, $$getLocalX, $$getLocalY }
+    return { $$coordinateTree, $$transform, $$coordinateTreeParent, $$getLocalX, $$getLocalY }
   }
 }

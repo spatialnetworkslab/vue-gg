@@ -2,7 +2,7 @@ export default function (value) {
   if (value.constructor === Number) {
     let stringValue = value.toString()
     let length = stringValue.length
-    if (length < 6) { return value }
+    if (length < 6) { return value.toString() }
 
     let nIntegers = stringValue.split('.')[0].length
 
@@ -24,5 +24,5 @@ export default function (value) {
 
 function round (value, decimals) {
   let z = 10 ** decimals
-  return Math.floor(value * z) / z
+  return (Math.floor(value * z) / z).toString()
 }

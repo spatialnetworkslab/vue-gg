@@ -5,6 +5,7 @@ import createRadiusScale from './shorthands/radius/createRadiusScale.js'
 
 import parseScaleOptions from './utils/parseScaleOptions.js'
 import parseRange from './utils/parseRange.js'
+import getPrimitive from './utils/getPrimitive.js'
 
 import getDimension from '../utils/getDimension.js'
 
@@ -14,6 +15,8 @@ export default function (prop, context, passedScalingOptions) {
     context.dataInterface,
     context.scaleManager
   )
+
+  domainType = getPrimitive(domainType)
 
   // Coordinate props
   if (['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(prop)) {
