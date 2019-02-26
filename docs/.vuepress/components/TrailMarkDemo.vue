@@ -1,90 +1,47 @@
 <template>
+
   <vgg-graphic
-    :width="900"
-    :height="600"
-    :data="data">
+    :width="500"
+    :height="500"
+    :data="someTimeData"
+  >
 
     <vgg-section
-      :x1="100"
-      :x2="500"
-      :y1="100"
-      :y2="500"
-      :scale-x="'xValues'"
-      :scale-y="'yValues'"
+      :x1="50"
+      :x2="450"
+      :y1="50"
+      :y2="450"
     >
-
-    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
-
-    <vgg-data :transform="{ groupBy: 'colors' }">
-
-      <vgg-map v-slot="{ row }">
+      <vgg-map
+        v-slot="{ dataframe }"
+        unit="dataframe"
+      >
 
         <vgg-trail
-          :x="row.grouped.xValues"
-          :y="row.grouped.yValues"
-          :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
-          :fill="row.colors"
-          :fillOpacity="0.7"
-          :sort="'x'"
+          :x="{ val: dataframe.time, scale: 'time' }"
+          :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
+          :stroke-width="{ val: dataframe.width, scale: 'width'}"
+          :fillOpacity="0.4"
+          fill="green"
         />
 
       </vgg-map>
 
-    </vgg-data>
-
     </vgg-section>
-    <vgg-x-grid
-      :x1="100"
-      :x2="500"
-      :y1="100"
-      :y2="500"
-      :scale="'xValues'"
-    />
 
-    <vgg-y-grid
-      :x1="100"
-      :x2="500"
-      :y1="100"
-      :y2="500"
-      :scale="'yValues'"
-    />
-
-    <vgg-x-axis
-      :x1="100"
-      :x2="500"
-      :y1="50"
-      :y2="100"
-      :scale="'xValues'"
-    />
-
-    <vgg-y-axis
-      :x1="50"
-      :x2="100"
-      :y1="100"
-      :y2="500"
-      :scale="'yValues'"
-      flip
-    />
   </vgg-graphic>
+
 </template>
 
 <script>
 export default {
   computed: {
-    data () {
-      let colors = ['red', 'blue', 'green']
-      let data = { colors: [], rainfall: [], xValues: [], yValues: [] }
-      let rainfall = [7, 12, 5, 3, 5, 8, 9, 10, 2, 12, 5, 7]
-      for (let i = 0; i < 30; i++) {
-        let colorIndex = Math.floor(Math.random() * 3)
-        let color = colors[colorIndex]
-        let rain = rainfall[i%rainfall.length]
-        data.colors.push(color)
-        data.xValues.push(Math.random() * 10)
-        data.yValues.push(Math.random() * 100)
-        data.rainfall.push(rain)
-      }
-      return data
+    someTimeData () {
+      let time = new Array(15).fill(1).map((v, i) => new Date(2018, i, 1))
+      let measurement = new Array(15).fill(1).map((v, i) => Math.floor(i * Math.random() * 50))
+      let width = [7, 11, 5, 4, 10, 5, 2, 10, 20, 11, 5, 7, 8, 10, 3]
+      // let measurement = new Array(12).fill(1).map((v, i) => i % 2 === 0 ? Math.floor(i * Math.random() * 30) : NaN)
+      return { time, measurement, width }
     }
   }
 }
