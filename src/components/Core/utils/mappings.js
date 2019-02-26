@@ -134,7 +134,8 @@ export function mapRow (slotContent, mappings, rowNumber) {
       element.componentOptions.propsData = newProps
       mappedElements.push(element)
     } else {
-      console.warn(`Skipping Mark '${tag}', row ${rowNumber + 1} because of unhandled NA values.`)
+      //come back here
+      //console.warn(`Skipping Mark '${tag}', row ${rowNumber + 1} because of unhandled NA values.`)
     }
   }
 

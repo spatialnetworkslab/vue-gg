@@ -22,15 +22,16 @@ export default function (data, length) {
 
     // Warn user if a column contains a lot of invalid values
     if (nValidValues / length < 0.5) {
-      console.warn(`Column '${key}' contains more than 50% invalid values`)
+      // back
+      //console.warn(`Column '${key}' contains more than 50% invalid values`)
     }
 
     if (nValidValues === 0) {
       types[key] = 'quantitative'
       domains[key] = [0, 1]
-
-      console.warn(`Column '${key}' contains no valid values.`)
-      console.warn('Using domain [0, 1] as placeholder.')
+      // back
+      //console.warn(`Column '${key}' contains no valid values.`)
+      //console.warn('Using domain [0, 1] as placeholder.')
     } else {
       // Calculate the type based on the only valid value
       let type = getDataType(firstValidValue)
@@ -50,15 +51,15 @@ export default function (data, length) {
         if (nValidValues === 1) {
           let domain = initDummyDomain(type, firstValidValue)
           domains[key] = domain
-
-          console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
-          console.warn(`Using domain ${JSON.stringify(domain)}`)
+          // back
+          //console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
+          //console.warn(`Using domain ${JSON.stringify(domain)}`)
         } else if (uniqueValues === 1 && type !== 'categorical') {
           let domain = initDummyDomain(type, firstValidValue)
           domains[key] = domain
-
-          console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
-          console.warn(`Using domain ${JSON.stringify(domain)}`)
+          // back
+          //console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
+          //console.warn(`Using domain ${JSON.stringify(domain)}`)
         } else {
           domains[key] = initDomain(type)
 
