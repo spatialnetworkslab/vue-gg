@@ -33,13 +33,13 @@
                 </vgg-map>
               </vgg-data>
 
-              <!-- <vgg-x-axis
+              <vgg-x-axis
                 :scale="actualOptions(options[j])"
                 :title="xAxis"
                 :labelFontSize="10"
-                :titleHjust="1.1"
+                :titleHjust="1 + 0.025 * (3 - j)** (2-j)"
                 labelRotate
-              /> -->
+              />
 
               <vgg-y-axis
                 :scale="actualDimensions(dimensions[i])"
@@ -72,9 +72,9 @@ export default {
       xAxis: '',
       title: "Drinks Heatmap",
       dimensions: [3, 5, 10],
-      options: [5, 20],
+      options: [5, 10, 25, 50, 100],
       drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      bikeCategories: ['RearWheelTQ', 'MilesPG', 'Horsepower', 'Weight', 'TopSpeed', 'To60', 'To100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
+      bikeCategories: ['Price', 'RearWheelTQ', 'MilesPG', 'Horsepower', 'Weight', 'TopSpeed', 'To60', 'To100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
       height: 1200,
       width: 8700,
       baseX: 100,
@@ -137,8 +137,8 @@ export default {
     },
 
     segments(dimensions, options){
-      let categories = this.categories
       console.log(this.data)
+      let categories = this.categories
       if (this.data) {
         if (!isNaN(dimensions)){
           categories = categories.slice(0, dimensions)
@@ -206,9 +206,8 @@ export default {
       csv('../../static/mcn_performance_index14.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
-            console.log(d),
-            Name: d['Issue Tested Name'],
-            Price: d['Base MSRP'],
+            Name: d['Make and Model'],
+            Price: parseInt(d['Base MSRP']),
             Rating: d['Rating Category'],
             MilesPG: parseInt(d['Average MPG']),
             Horsepower: parseInt(d['Rear-Wheel HP']),
@@ -217,8 +216,8 @@ export default {
             Weight: parseInt(d['Wet Weight']),
             TopSpeed: parseInt(d['Top Speed']),
             To60: parseInt(d['0–60 mph, sec.']),
-            Quartermile: parseInt(d['0–1/4 mile, sec.']),
-            QuartermileMaxSpeed: parseInt(d['0–1/4 mile, mph']),
+            Quartermile: parseInt(d['Quartermile, sec']),
+            QuartermileMaxSpeed: parseInt(d['Quartermile, mph']),
             Stop60: parseInt(d['Braking 60–0 mph (feet)'])
           }
         }))
