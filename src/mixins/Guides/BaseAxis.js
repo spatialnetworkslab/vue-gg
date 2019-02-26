@@ -262,7 +262,7 @@ export default {
     },
 
     coords () {
-      if (this.validX && this.validY) {return this.coordinateSpecification}
+      if (this.validX || this.validY) {return this.coordinateSpecification}
     },
 
     xDomain () {
@@ -299,12 +299,10 @@ export default {
           }
 
           ticks = newTickValues.map((value, i) => {
-            if (i === 0 && this.tickExtra && this.tickExtraLabel) {
-              return { value, label: format(value) }
-            } else if (i != 0) {
-              return { value, label: format(value) }
-            } else {
+            if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
               return { value, label: '' }
+            } else {
+              return { value, label: format(value) }
             }
           })
         }
@@ -333,12 +331,10 @@ export default {
           ticks = newTickValues.map((value, i) => {
             let date = new Date(value)
 
-            if (i === 0 && this.tickExtra && this.tickExtraLabel) {
-              return { value: date, label: format(date) }
-            } else if (i != 0) {
-              return { value: date, label: format(date) }
+            if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+              return { value: date, label: '' }
             } else {
-              return { value, label: '' }
+              return { value: date, label: format(date) }
             }
           })
         }

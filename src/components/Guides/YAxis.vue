@@ -116,7 +116,7 @@ export default {
     },
 
     titleVjust: {
-      default: 1.05
+      default: 1.08
     }
   },
 
@@ -158,7 +158,7 @@ export default {
     },
 
     posX () {
-      if (this.coords) {
+      if (this.validX) {
         return [this.getLocalX(this.coords.x1), this.getLocalX(this.coords.x2)]
       }
 
@@ -188,7 +188,7 @@ export default {
       newRange.x1 = this.posX[0]
       newRange.x2 = this.posX[1]
 
-      if (this.coords) {
+      if (this.validY) {
         newRange.y1 = this.getLocalY(this.coords.y1)
         newRange.y2 = this.getLocalY(this.coords.y2)
 

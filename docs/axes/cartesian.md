@@ -21,14 +21,15 @@ Axes are used as reference scales for values in the graph. Each axis is typicall
 
 ### X Axis Positioning
 
-There are three options for positioning the x axis on the graph. The `y` prop takes precedence, followed by `y1` and `y2`, lastly `vjust` encodes default behavior.
+There are three options for positioning the x axis on the graph. The default position of the x-axis is at `vjust = 'b'` (bottom of parent section).
 
-When using `y` or `vjust`, the x axis defaults to a height of 100px.
+When using `vjust`, the x axis defaults to a height of 100px in screen coordinates.
 
 | Prop | Required | Regular types    | Default   | Description                             | Unit(s)                |
 | ---- | -------- | ---------------- | --------- | --------------------------------------- | ---------------------- |
 | vjust| false    | [Number, String] | 'b'       | position of x axis                      | Number between 0 and 1 |
 | y    | false    | [Number]         | undefined | position of x axis                      | Screen pixels          |
+| h    | false    | [Number]         | undefined | height of x axis                        | Screen pixels          |
 | y1   | false    | [Number]         | undefined | starting y coordinate of x axis         | Screen pixels          |
 | y2   | false    | [Number]         | undefined | ending y coordinate of x axis           | Screen pixels          |
 
@@ -43,14 +44,15 @@ By default the x axis spans the entire width of the section. To customize the wi
 
 ### Y Axis Positioning
 
-Similar to the x axis, there are three options for positioning the y axis on the graph. The `x` prop takes precedence, followed by `x1` and `x2`, lastly `hjust` encodes default behavior.
+Similar to the x axis, there are three options for positioning the y axis on the graph. The default position of the y-axis is at `hjust = 'l'` (left of parent section).
 
-When using `x` or `hjust`, the y axis defaults to a width of 100px.
+When using `hjust`, the y axis defaults to a width of 100px in screen coordinates.
 
 | Prop | Required | Regular types    | Default   | Description                             | Unit(s)                |
 | ---- | -------- | ---------------- | --------- | --------------------------------------- | ---------------------- |
 | hjust| false    | [Number, String] | 'l'       | position of y axis                      | Number between 0 and 1 |
 | x    | false    | [Number]         | undefined | position of y axis                      | Screen pixels          |
+| w    | false    | [Number]         | undefined | width of y axis                         | Screen pixels          |
 | x1   | false    | [Number]         | undefined | starting x coordinate of y axis         | Screen pixels          |
 | x2   | false    | [Number]         | undefined | ending x coordinate of y axis           | Screen pixels          |
 
@@ -113,5 +115,3 @@ Note that if a `Function` is passed to the `format` prop to format labels before
 | titleFontSize   | false    | [Number]         | 12          | size of font used for axis title        | Screen pixels              |
 | titleFontWeight | false    | [String, Number] | 'normal'    | weight of font used for axis title      | Any valid css font weight  |
 | titleOpacity    | false    | [Number]         | 1           | opacity of title                        | Number between 0 and 1     |
-
-<cartesian :showAll="true" />

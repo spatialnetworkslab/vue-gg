@@ -4,39 +4,42 @@
     :height="300"
     :data="data">
 
+    <vgg-plot-title v-if="showX" text="x axis positioning" />
+
+    <vgg-plot-title v-if="showY" text="y axis positioning" />
+
     <vgg-section
       v-if="showX"
-      :x1="50"
+      :x1="100"
       :x2="550"
       :y1="25"
-      :y2="275"
+      :y2="200"
       :scale-x="'xValues'"
       :scale-y="'yValues'"
     >
 
       <vgg-x-axis
         :scale="'xValues'"
-        :tickExtra="false"
-        :x1="50"
-        :x2="550"
-        :vjust="0.2"
-      />
-
-      <vgg-x-axis
-        :scale="'xValues'"
-        :tickExtra="false"
-        :x1="50"
-        :x2="450"
-        :vjust="0.5"
-      />
-
-      <vgg-x-axis
-        :scale="'xValues'"
-        :tickExtra="false"
-        :x1="50"
-        :x2="250"
-        :vjust="0.8"
+        :vjust="0"
         :tickCount="5"
+        :tickExtra="false"
+        title="vjust = 0"
+      />
+
+      <vgg-x-axis
+        :scale="'xValues'"
+        :vjust="0.5"
+        :tickCount="5"
+        :tickExtra="false"
+        title="vjust = 0.5"
+      />
+
+      <vgg-x-axis
+        :scale="'xValues'"
+        :vjust="1"
+        :tickCount="5"
+        :tickExtra="false"
+        title="vjust = 1"
       />
 
     </vgg-section>
@@ -46,7 +49,7 @@
       :x1="50"
       :x2="550"
       :y1="25"
-      :y2="275"
+      :y2="200"
       :scale-x="'xValues'"
       :scale-y="'yValues'"
     >
@@ -54,28 +57,25 @@
       <vgg-y-axis
         :scale="'yValues'"
         :tickExtra="false"
-        :y1="25"
-        :y2="250"
-        :hjust="0.2"
+        :hjust="0"
         :tickCount="5"
+        title="hjust = 0"
       />
 
       <vgg-y-axis
         :scale="'yValues'"
         :tickExtra="false"
-        :y1="50"
-        :y2="225"
         :hjust="0.5"
         :tickCount="5"
+        title="hjust = 0.5"
       />
 
       <vgg-y-axis
         :scale="'yValues'"
         :tickExtra="false"
-        :y1="100"
-        :y2="175"
-        :hjust="0.8"
+        :hjust="1"
         :tickCount="5"
+        title="hjust = 1"
       />
 
     </vgg-section>
