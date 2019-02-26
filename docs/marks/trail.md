@@ -50,13 +50,14 @@ The `stroke-width` prop sets the stroke width of the `trail` mark at a given poi
 
 # Example
 
-```
+::: v-pre
+```html
 <vgg-map
   v-slot="{ dataframe }"
   unit="dataframe"
 >
 
-  <vgg-multi-line
+  <vgg-trail
     :x="{ val: dataframe.time, scale: 'time' }"
     :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
     :stroke-width="{ val: dataframe.width, scale: 'width'}"
@@ -65,5 +66,8 @@ The `stroke-width` prop sets the stroke width of the `trail` mark at a given poi
 
 </vgg-map>
 ```
+:::
+TODO - trail mark demo code
+<TrailMarkDemo />
 
 This produces a black trail mark with varying stroke width based on and scaled to `dataframe.width`.

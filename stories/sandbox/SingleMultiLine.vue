@@ -17,11 +17,10 @@
         unit="dataframe"
       >
 
-        <vgg-multi-line
+        <vgg-trail
           :x="{ val: dataframe.time, scale: 'time' }"
           :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
-          :stroke-width="4"
-          :opacity="0.8"
+          :stroke-width="{ val: dataframe.width}"
         />
 
       </vgg-map>
@@ -38,7 +37,9 @@ export default {
     someTimeData () {
       let time = new Array(15).fill(1).map((v, i) => new Date(2018, i, 1))
       let measurement = new Array(15).fill(1).map((v, i) => Math.floor(i * Math.random() * 50))
-      return { time, measurement }
+      let length = 15, max = 10
+      let width = [7, 6, 8, 3, 2, 5, 6, 1, 20, 3, 12, 15, 10, 14, 15]
+      return { time, measurement, width }
     }
   }
 }
