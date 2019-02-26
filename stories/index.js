@@ -20,6 +20,9 @@ import TrailMark from './sandbox/TrailMark.vue'
 import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
+import SimpleGridLayout from './sandbox/SimpleGridLayout.vue'
+import MappingGridLayout from './sandbox/MappingGridLayout.vue'
+import RepeatLayout from './sandbox/RepeatLayout.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -43,3 +46,6 @@ storiesOf('Sandbox', module)
   .add('Trail', () => (TrailMark))
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
+  .add('Simple Grid layout', () => (SimpleGridLayout))
+  .add('Mapping Grid layout', () => (MappingGridLayout))
+  .add('Repeat Grid layout', () => (RepeatLayout))

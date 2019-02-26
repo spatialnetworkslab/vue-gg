@@ -23,9 +23,9 @@ map data values to aesthetic values- for example, categories to colors.
 
 # Props
 
-| Prop | Required | Types  | Default | Description                                                              |
-| ---- | -------- | ------ | ------- | ------------------------------------------------------------------------ |
-| unit | false    | String | row     | What to loop over- by default rows, but can also be set to `'dataframe'` |
+| Prop | Required | Types  | Default | Description                                                            |
+| ---- | -------- | ------ | ------- | ---------------------------------------------------------------------- |
+| unit | false    | String | 'row'   | What to loop over- by default rows, but can also be set to 'dataframe' | 
 
 For more information on how to use the `unit` prop, see
 [Mapping an entire dataframe](#mapping-an-entire-dataframe).

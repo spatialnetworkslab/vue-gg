@@ -11,8 +11,8 @@ for its child components.
 
 # Data types
 
-`vue-gg` supports 5 different data types: quantitative, categorical, temporal,
-geometry and nested. `vue-gg` will decide what data type your data is based on
+`vue-gg` supports 6 different data types: quantitative, categorical, temporal,
+interval, geometry and nested. `vue-gg` will decide what data type your data is based on
 what native JavaScript type it has, and for geometry and nested data, what structure
 it has.
 
@@ -21,6 +21,7 @@ it has.
 | quantitative | Number                                          | Interval, Ratio                      |
 | categorical  | String                                          | Nominal, Ordinal                     |
 | temporal     | Date                                            | Interval                             |
+| interval     | Array (length 2)                                | -                                    |
 | geometry     | Object ((GeoJSON feature)[http://geojson.org/]) | -                                    |
 | nested       | Object (of Arrays)                              | -                                    |
 
