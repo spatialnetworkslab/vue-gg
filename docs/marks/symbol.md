@@ -4,8 +4,6 @@ title: Symbol Mark
 
 # Component tag
 
-`<vgg-symbol>`
-
 `<vgg-point>`
 
 # Description
