@@ -1,11 +1,13 @@
 export default {
   inject: ['$$coordinateTree', '$$coordinateTreeParent'],
 
-  computed: {
-    parentBranch () {
-      return this.$$coordinateTree.getBranch(this.$$coordinateTreeParent)
-    },
+  data () {
+    return {
+      parentBranch: this.$$coordinateTree.getBranch(this.$$coordinateTreeParent)
+    }
+  },
 
+  computed: {
     parentRangeTypes () {
       return this.parentBranch.domainTypes
     }

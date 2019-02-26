@@ -8,25 +8,40 @@ export default {
 
   props: {
     interpolate: {
-      type: Boolean,
-      default: true
+      type: [Boolean, undefined],
+      default: undefined
     }
   },
 
   computed: {
     __update () {
-      return this.$$coordinateTree._update
+      return this.parentBranch.updateCount
+    },
+
+    __interpolationNecessary () {
+      return this.interpolationNecessary(this.$$coordinateTreeParent)
     },
 
     _interpolate () {
-      // TODO check if interpolation is necessary (i.e. if all parent
-      // coordinate transformations are linear)
-      return this.interpolate
+      if (this.interpolate !== undefined) { return this.interpolate }
+      return this.__interpolationNecessary
     }
   },
 
   methods: {
-    createSVGStyle
+    createSVGStyle,
+
+    interpolationNecessary (id) {
+      let currentLocation = this.$$coordinateTree.getBranch(id)
+      if (currentLocation.type !== 'scale') { return true }
+
+      while (currentLocation.parentID) {
+        currentLocation = this.$$coordinateTree.getBranch(currentLocation.parentID)
+        if (currentLocation.type !== 'scale') { return true }
+      }
+
+      return false
+    }
   },
 
   render (createElement) {
