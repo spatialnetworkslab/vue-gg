@@ -21,10 +21,22 @@
             :size="16"
             :shape="shape"
             :stroke="stroke"
-            :fill="fill"
+            :fill="fill(row.explanatory)"
             :stroke-width="1"
           />
+
         </vgg-map>
+
+        <vgg-x-axis
+          :scale="[0, 150]"
+          :vjust="-.05"
+        />
+
+        <vgg-y-axis
+          :scale="'dependent'"
+          :hjust="-.05"
+          flip
+        />
 
       </vgg-section>
 
@@ -39,22 +51,6 @@
       <vgg-y-grid
         :x1="100"
         :x2="500"
-        :y1="50"
-        :y2="450"
-        :scale="'dependent'"
-      />
-
-      <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="0"
-        :y2="50"
-        :scale="'explanatory'"
-      />
-
-      <vgg-y-axis
-        :x1="500"
-        :x2="550"
         :y1="50"
         :y2="450"
         :scale="'dependent'"
@@ -98,13 +94,6 @@ export default {
     }
   },
   computed : {
-    fill () {
-      if (this.color === 'both' || this.color === 'fill') {
-        return { scale: { scale: 'viridis', variable: 'explanatory' } }
-      } else {
-        return 'none'
-      }
-    },
     stroke () {
       if (this.color === 'both' || this.color === 'stroke') {
         return 'black'
@@ -124,7 +113,16 @@ export default {
         newData.push({explanatory: xValues[ix], dependent: yValues[ix]})
       }
       return newData
-    }
+
+    },
+
+    fill (value) {
+      if (this.color === 'both' || this.color === 'fill') {
+        return { val: value, scale: { type: 'viridis', domain: 'explanatory' } }
+      } else {
+        return 'none'
+      }
+    },
   }
 }
 </script>

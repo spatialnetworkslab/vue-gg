@@ -147,11 +147,11 @@ export default {
         id = '_' + randomID()
       }
       return id
-    }
+    },
   },
 
   watch: {
-    transformation: 'updateCoordinateTreeBranch'
+    transformation: 'updateCoordinateTreeBranch',
   },
 
   beforeDestroy () {
@@ -194,8 +194,9 @@ export default {
   provide () {
     let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
     let $$coordinateTreeParent = this.coordinateTreeBranchID
-
-    return { $$transform, $$coordinateTreeParent }
+    let $$getLocalX = this.$$coordinateTree.getLocalX(this.coordinateTreeBranchID)
+    let $$getLocalY = this.$$coordinateTree.getLocalY(this.coordinateTreeBranchID)
+    return { $$transform, $$coordinateTreeParent, $$getLocalX, $$getLocalY }
   },
 
   render (createElement) {

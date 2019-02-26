@@ -51,9 +51,19 @@ export default {
       default: undefined
     },
 
+    fontFamily: {
+      type: String,
+      default: 'Helvetica'
+    },
+
     fontSize: {
       type: Number,
       default: 16
+    },
+
+    fontWeight: {
+      type: [String, Number],
+      default: 'normal'
     },
 
     rotation: {
@@ -75,25 +85,6 @@ export default {
     }
   },
 
-  computed: {
-    aesthetics () {
-      return {
-        text: this.parseAesthetic(this.text),
-        x: this.parseCoordinate(this.x, { dimension: 'x' }),
-        y: this.parseCoordinate(this.y, { dimension: 'y' }),
-        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
-        stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
-        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 }),
-        radius: this.parseAesthetic(this.radius, { default: 3 }),
-        opacity: this.parseAesthetic(this.opacity),
-        fillOpacity: this.parseAesthetic(this.fillOpacity),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity),
-        fontSize: this.parseAesthetic(this.fontSize, { default: 16 }),
-        rotation: this.parseAesthetic(this.rotation, { default: 0 })
-      }
-    }
-  },
-
   methods: {
     calcTransform (rotation, cx, cy) {
       return `rotate(${rotation}, ${cx}, ${cy})`
@@ -111,6 +102,8 @@ export default {
       let styles = this.createSVGStyle(aesthetics)
 
       styles['fontSize'] = aesthetics.fontSize + 'px'
+      styles['font-family'] = this.fontFamily
+      styles['font-weight'] = this.fontWeight
 
       let el = createElement('text', {
         attrs: {
@@ -131,11 +124,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-
-.vgg-label {
-  font-family: sans-serif;
-}
-
-</style>

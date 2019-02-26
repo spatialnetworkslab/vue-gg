@@ -102,6 +102,13 @@ export default {
     }
   },
 
+  computed: {
+    _interpolate () {
+      if (this.interpolate !== undefined) { return this.interpolate }
+      return false
+    }
+  },
+
   methods: {
     generatePoints (x, y) {
       let points = []
