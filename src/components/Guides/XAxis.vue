@@ -159,7 +159,7 @@ export default {
 
     posY () {
       if (this.validY) {
-        return [this.getLocalY(this.coords.y1), this.getLocalY(this.coords.y2)]
+        return [this.coords.y1, this.coords.y2]
       }
 
       let yDomain = this.yDomain
@@ -189,8 +189,8 @@ export default {
       newRange.y2 = this.posY[1]
 
       if (this.validX) {
-        newRange.x1 = this.getLocalX(this.coords.x1)
-        newRange.x2 = this.getLocalX(this.coords.x2)
+        newRange.x1 = this.coords.x1
+        newRange.x2 = this.coords.x2
 
         return newRange
       }

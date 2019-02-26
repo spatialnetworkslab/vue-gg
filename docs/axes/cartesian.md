@@ -28,17 +28,17 @@ When using `vjust`, the x axis defaults to a height of 100px in screen coordinat
 | Prop | Required | Regular types    | Default   | Description                             | Unit(s)                |
 | ---- | -------- | ---------------- | --------- | --------------------------------------- | ---------------------- |
 | vjust| false    | [Number, String] | 'b'       | position of x axis                      | Number between 0 and 1 |
-| y    | false    | [Number]         | undefined | position of x axis                      | Screen pixels          |
-| h    | false    | [Number]         | undefined | height of x axis                        | Screen pixels          |
-| y1   | false    | [Number]         | undefined | starting y coordinate of x axis         | Screen pixels          |
-| y2   | false    | [Number]         | undefined | ending y coordinate of x axis           | Screen pixels          |
+| y    | false    | [Number]         | undefined | position of x axis                      | Local Coordinates      |
+| h    | false    | [Number]         | undefined | height of x axis                        | Local Coordinates      |
+| y1   | false    | [Number]         | undefined | starting y coordinate of x axis         | Local Coordinates      |
+| y2   | false    | [Number]         | undefined | ending y coordinate of x axis           | Local Coordinates      |
 
 By default the x axis spans the entire width of the section. To customize the width of the x axis, it is possible to provide `x1` and `x2` as start and end coordinates.
 
 | Prop | Required | Regular types    | Default   | Description                             | Unit(s)               |
 | ---- | -------- | ---------------- | --------- | --------------------------------------- | --------------------- |
-| x1   | false    | [Number]         | undefined | starting x coordinate of x axis         | Screen pixels         |
-| x2   | false    | [Number]         | undefined | ending x coordinate of x axis           | Screen pixels         |
+| x1   | false    | [Number]         | undefined | starting x coordinate of x axis         | Local Coordinates     |
+| x2   | false    | [Number]         | undefined | ending x coordinate of x axis           | Local Coordinates     |
 
 <cartesian :showX="true" />
 
@@ -51,17 +51,17 @@ When using `hjust`, the y axis defaults to a width of 100px in screen coordinate
 | Prop | Required | Regular types    | Default   | Description                             | Unit(s)                |
 | ---- | -------- | ---------------- | --------- | --------------------------------------- | ---------------------- |
 | hjust| false    | [Number, String] | 'l'       | position of y axis                      | Number between 0 and 1 |
-| x    | false    | [Number]         | undefined | position of y axis                      | Screen pixels          |
-| w    | false    | [Number]         | undefined | width of y axis                         | Screen pixels          |
-| x1   | false    | [Number]         | undefined | starting x coordinate of y axis         | Screen pixels          |
-| x2   | false    | [Number]         | undefined | ending x coordinate of y axis           | Screen pixels          |
+| x    | false    | [Number]         | undefined | position of y axis                      | Local Coordinates      |
+| w    | false    | [Number]         | undefined | width of y axis                         | Local Coordinates      |
+| x1   | false    | [Number]         | undefined | starting x coordinate of y axis         | Local Coordinates      |
+| x2   | false    | [Number]         | undefined | ending x coordinate of y axis           | Local Coordinates      |
 
 By default the y axis spans the entire height of the section. To customize the height of the y axis, it is possible to provide `y1` and `y2` as start and end coordinates.
 
 | Prop | Required | Regular types    | Default   | Description                             | Unit(s)               |
 | ---- | -------- | ---------------- | --------- | --------------------------------------- | --------------------- |
-| y1   | false    | [Number]         | undefined | starting y coordinate of y axis         | Screen pixels         |
-| y2   | false    | [Number]         | undefined | ending y coordinate of y axis           | Screen pixels         |
+| y1   | false    | [Number]         | undefined | starting y coordinate of y axis         | Local Coordinates     |
+| y2   | false    | [Number]         | undefined | ending y coordinate of y axis           | Local Coordinates     |
 
 <cartesian :showY="true" />
 
