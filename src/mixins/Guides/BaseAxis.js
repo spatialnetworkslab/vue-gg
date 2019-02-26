@@ -227,45 +227,9 @@ export default {
       }
     },
 
-    getLocalX (n) {
-      let p = this._parentNodes
-      let result = n
-      for (let i = 0; i < p.length; i++) {
-        let b = p[i]
-        let bRange = b.ranges.x
-        let bDomain = b.domains.x
+    getLocalX (n) { return this.$$getLocalX(n) },
 
-        let rangeMin = Math.min(bRange[0], bRange[1])
-        let rangeMax = Math.max(bRange[0], bRange[1])
-
-        let domainMin = Math.min(bDomain[0], bDomain[1])
-        let domainMax = Math.max(bDomain[0], bDomain[1])
-
-        result = (result/ (rangeMax - rangeMin)) * (domainMax - domainMin)
-      }
-
-      return result
-    },
-
-    getLocalY (n) {
-      let p = this._parentNodes
-      let result = n
-      for (let i = 0; i < p.length; i++) {
-        let b = p[i]
-        let bRange = b.ranges.y
-        let bDomain = b.domains.y
-
-        let rangeMin = Math.min(bRange[0], bRange[1])
-        let rangeMax = Math.max(bRange[0], bRange[1])
-
-        let domainMin = Math.min(bDomain[0], bDomain[1])
-        let domainMax = Math.max(bDomain[0], bDomain[1])
-
-        result = (result / (rangeMax - rangeMin)) * (domainMax - domainMin)
-      }
-
-      return result
-    }
+    getLocalY (n) { return this.$$getLocalY(n) }
   },
 
   computed: {
@@ -287,6 +251,18 @@ export default {
 
     _parentNodes () {
       return this.getParents(this.parentBranch, [this.parentBranch])
+    },
+
+    validX () {
+      return (this.x1 != undefined && this.x2 != undefined) || (this.x != undefined && this.w != undefined)
+    },
+
+    validY () {
+      return (this.y1 != undefined && this.y2 != undefined) || (this.y != undefined && this.h != undefined)
+    },
+
+    coords () {
+      if (this.validX && this.validY) {return this.coordinateSpecification}
     },
 
     xDomain () {

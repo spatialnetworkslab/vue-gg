@@ -4,7 +4,7 @@ import createSVGStyle from './utils/createSVGStyle.js'
 export default {
   mixins: [CoordinateTreeUser],
 
-  inject: ['$$transform'],
+  inject: ['$$transform', '$$getLocalX', '$$getLocalY'],
 
   props: {
     interpolate: {
@@ -16,7 +16,6 @@ export default {
   computed: {
     __update () {
       return this.parentBranch.updateCount
-      // return this.$$coordinateTree._update
     },
 
     _interpolate () {

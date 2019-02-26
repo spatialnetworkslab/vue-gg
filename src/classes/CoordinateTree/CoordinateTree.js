@@ -73,6 +73,39 @@ export default class CoordinateTree {
 
     return transformation.bind(this)
   }
+
+  getLocalX (id) {
+    let transformation = function (x) {
+      let branchParents = this._branchPaths[id]
+      let result = x
+
+      for (let i = 0; i < branchParents.length; i++) {
+        let currentLocation = this.getBranch(branchParents[i])     
+        result = currentLocation.invertX(result)
+      }
+
+      return result
+    }
+
+    return transformation.bind(this)
+  }
+
+  getLocalY (id) {
+    let transformation = function (y) {
+      let branchParents = this._branchPaths[id]
+
+      let result = y
+
+      for (let i = 0; i < branchParents.length; i++) {
+        let currentLocation = this.getBranch(branchParents[i]) 
+        result = currentLocation.invertY(result)
+      }
+
+      return result
+    }
+
+    return transformation.bind(this)
+  }
 }
 
 class Branch {
