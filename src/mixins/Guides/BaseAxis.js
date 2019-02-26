@@ -238,11 +238,11 @@ export default {
     },
 
     validX () {
-      return (this.x1 != undefined && this.x2 != undefined) || (this.x != undefined && this.w != undefined)
+      return (this.x1 !== undefined && this.x2 !== undefined) || (this.x !== undefined && this.w !== undefined)
     },
 
     validY () {
-      return (this.y1 != undefined && this.y2 != undefined) || (this.y != undefined && this.h != undefined)
+      return (this.y1 !== undefined && this.y2 !== undefined) || (this.y !== undefined && this.h !== undefined)
     },
 
     coords () {
@@ -264,7 +264,7 @@ export default {
       if (this.tickValues) {
         newTickValues = this.tickValues
 
-        if (this.tickExtra && this.tickValues[0] != firstValue) {
+        if (this.tickExtra && this.tickValues[0] !== firstValue) {
           newTickValues.unshift(firstValue)
         }
 
@@ -278,7 +278,7 @@ export default {
         if (this._domainType === 'quantitative') {
           newTickValues = arrayTicks(...this._domain, this.tickCount)
 
-          if (this.tickExtra && newTickValues[0] != firstValue) {
+          if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
 
@@ -308,7 +308,7 @@ export default {
 
           newTickValues = scale.ticks(this.tickCount)
 
-          if (this.tickExtra && newTickValues[0] != firstValue) {
+          if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
 
