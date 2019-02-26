@@ -24,6 +24,7 @@
           :y="row.grouped.yValues"
           :stroke-width="5"
           :stroke="row.colors"
+          stroke-linecap="round"
           :fillOpacity="0.7"
           :sort="'x'"
         />
