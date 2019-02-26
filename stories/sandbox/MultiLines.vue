@@ -21,8 +21,6 @@
             :x="row.grouped.xValues"
             :y="row.grouped.yValues"
             :stroke="row.colors"
-            :stroke-width="5"
-            stroke-linecap="round"
           />
 
         </vgg-map>
@@ -76,17 +74,6 @@
 
             </vgg-map>
 
-            <vgg-x-axis
-              :scale="'xValues'"
-              :tickExtra="false"
-            />
-
-            <vgg-y-axis
-              :scale="'yValues'"
-              flip
-              :tickExtra="false"
-            />
-
           </vgg-section>
 
         </vgg-map>
@@ -107,14 +94,10 @@ export default {
       for (let i = 0; i < 30; i++) {
         let colorIndex = Math.floor(Math.random() * 3)
         let color = colors[colorIndex]
-
         data.colors.push(color)
         data.xValues.push(Math.random() * 10)
         data.yValues.push(Math.random() * 100)
       }
-
-      console.log(data)
-
       return data
     }
   }

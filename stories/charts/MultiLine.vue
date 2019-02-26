@@ -9,28 +9,28 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: 'xValues',
-        y: 'yValues'
-      }"
+      :scale-x="'xValues'"
+      :scale-y="'yValues'"
     >
 
-      <vgg-transform :trans="{ groupBy: 'colors' }">
+    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
-        <vgg-map>
+    <vgg-data :transform="{ groupBy: 'colors' }">
 
-          <vgg-multi-line
-            :x="row => row.grouped.xValues"
-            :y="row => row.grouped.yValues"
-            :stroke="row => row.grouped.colors"
-            :stroke-width="row => row.grouped.rainfall"
-            stroke-linecap="square"
-            :stroke-opacity="row => row.grouped.opacity"
-            :sort="'x'"
-          />
-        </vgg-map>
+      <vgg-map v-slot="{ row }">
 
-      </vgg-transform>
+        <vgg-multi-line
+          :x="row.grouped.xValues"
+          :y="row.grouped.yValues"
+          :stroke-width="5"
+          :stroke="row.colors"
+          :fillOpacity="0.7"
+          :sort="'x'"
+        />
+
+      </vgg-map>
+
+    </vgg-data>
 
     </vgg-section>
     <vgg-x-grid
@@ -73,38 +73,16 @@ export default {
   computed: {
     data () {
       let colors = ['red', 'blue', 'green']
-      let opacity =[0.8, 0.8, 0.5]
-      let data = { colors: [], opacity: [], rainfall: [], xValues: [], yValues: [] }
-      let rainfall = [7, 15, 5, 3, 1, 2, 2, 10, 2, 20, 5, 7]
+      let data = { colors: [], rainfall: [], xValues: [], yValues: [] }
+      let rainfall = [7, 12, 5, 3, 5, 8, 9, 10, 2, 12, 5, 7]
       for (let i = 0; i < 30; i++) {
         let colorIndex = Math.floor(Math.random() * 3)
         let color = colors[colorIndex]
-        let alpha = opacity[colorIndex]
         let rain = rainfall[i%rainfall.length]
         data.colors.push(color)
         data.xValues.push(Math.random() * 10)
         data.yValues.push(Math.random() * 100)
-        data.opacity.push(alpha)
         data.rainfall.push(rain)
-      }
-      return data
-    },
-    climate () {
-      let data = []
-      let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      let highs = [14, 14, 15, 18, 22, 27, 29, 29, 26, 22, 18, 15]
-      let lows = [10, 10, 11, 13, 16, 20, 23, 23, 20, 17, 14, 11]
-      let rainfall = [7, 7, 5, 3, 1, 0, 0, 0, 0, 2, 5, 7]
-      let range = Math.random() * 1000
-      let instances = 12
-      for (let i = 0; i < instances; i++) {
-        let x = highs[i]
-        let y = lows[i]
-        let a = rainfall[i]
-        let day = Math.floor(Math.random() * 27) + 1
-        let format = d3.timeFormat('%b %d')
-        let date = format(new Date(2000, i, day))
-        data.push({ i, x, y, a, date })
       }
       return data
     }

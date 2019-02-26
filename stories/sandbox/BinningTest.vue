@@ -47,20 +47,8 @@
 
           </vgg-map>
 
-          <vgg-x-axis
-            scale="lowerBound"
-            :titleHjust="1.1"
-            :vjust="-.05"
-            rotate-label
-          />
-
-          <vgg-y-axis
-            :scale="{ domain: 'binCount', domainMin: 0 }"
-            :hjust="-.05"
-            flip
-          />
-
         </vgg-section>
+
         <vgg-x-axis
           :x1="100"
           :x2="500"
@@ -98,7 +86,6 @@ export default {
       selected: 'EqualInterval'
     }
   },
-
   computed: {
     title () {
       if (this.selected === 'EqualInterval') {
@@ -112,7 +99,6 @@ export default {
       }
     }
   },
-
   methods: {
     generate (spread, str) {
       const N = 100

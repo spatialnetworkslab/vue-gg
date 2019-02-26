@@ -36,21 +36,16 @@
         ]"
       />
 
-      <vgg-x-axis
-        :tick-count="3"
-        scale="date"
-      />
-
     </vgg-section>
 
-    <!-- <vgg-x-axis
+    <vgg-x-axis
       :x1="100"
       :x2="500"
       :y1="50"
       :y2="100"
       :tick-count="3"
       scale="date"
-    /> -->
+    />
 
   </vgg-graphic>
 </template>
