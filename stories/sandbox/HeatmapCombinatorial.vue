@@ -70,12 +70,12 @@ export default {
       names: [],
       categories: [],
       xAxis: '',
-      title: "Drinks Heatmap",
+      title: '',
       dimensions: [3, 5, 10],
-      options: [5, 10, 25, 50, 100],
+      options: [5, 200],
       drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
       bikeCategories: ['Price', 'RearWheelTQ', 'MilesPG', 'Horsepower', 'Weight', 'TopSpeed', 'To60', 'To100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
-      height: 1200,
+      height: 1400,
       width: 8700,
       baseX: 100,
       baseY: 100,
@@ -175,6 +175,7 @@ export default {
     drinks () {
       this.categories = this.drinkCategories
       this.xAxis = 'Drinks'
+      this.title = 'Drinks Data'
       // change name of csv
       csv('../../static/idcDemoDrinksDailyInterpolated.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
@@ -202,6 +203,7 @@ export default {
     bikes () {
       this.categories = this.bikeCategories
       this.xAxis = 'Motorbikes'
+      this.title = 'Motorcycle Performance 2014'
       // change name of csv
       csv('../../static/mcn_performance_index14.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {

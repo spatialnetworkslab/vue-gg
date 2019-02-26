@@ -1,4 +1,4 @@
-﻿Index,Make and Model,Issue Tested,Base MSRP,Price,Engine Type,Transmission,Rear-Wheel HP,Rear-Wheel TQ (lb.-ft.),Wet Weight,Average MPG,Top Speed,"0–60 mph, sec.","0–100 mph, sec.","0–=='=1/4 mile, sec.","0–=='=1/4 mile, mph",Braking 60–0 mph (feet),Power to Weight,Power Weight,PWRatio,Rating Category
+﻿Index,Make and Model,Issue Tested,Base MSRP,Price,Engine Type,Transmission,Rear-Wheel HP,Rear-Wheel TQ (lb.-ft.),Wet Weight,Average MPG,Top Speed,"0–60 mph, sec.","0–100 mph, sec.","Quartermile, sec","Quartermile, mph",Braking 60–0 mph (feet),Power to Weight,Power Weight,PWRatio,Rating Category
 1,Aprilia SXV 5.5,7/08,9499,9499,V-2,5,61.5,34.7,307,37.5,113,4.16,n/.a,12.44,102.73,118.8,5.00,0.20,0.20,Middleweight Supermoto
 2,Dorsoduro,5/10,9499,9499,V-2,6,77.56,46.63,468,36.9,128.3,3.83,10.12,12.00,128.3,115.4,6.27,0.16,0.16,Middleweight Supermoto
 3,Shiver,8/08,8995,8995,V-2,6,75.5,45.4,485,40.9,130,4.04,10.0,12.05,110.59,111.3,6.41,0.16,0.16,Middleweight Standard
