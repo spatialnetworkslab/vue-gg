@@ -9,11 +9,14 @@
       v-slot="{ x, y }"
       :x="['a', 'b', 'c']"
       :y="['a', 'b', 'c']"
-      :cell-padding="20"
-      
+      :cell-padding="5"
     >
 
       <vgg-section
+        :axes="{
+          left: { scale: y },
+          bottom: { scale: x }
+        }"
         :grid-lines="{
           x: { scale: x },
           y: { scale: y }

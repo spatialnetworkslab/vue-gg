@@ -257,8 +257,28 @@ export default {
 
     createSection (createElement, widths) {
       let props = this.updatePositionProps(this._props, widths)
+
       let slotContent = this.$scopedSlots.default()
       return createElement(Section, { props }, slotContent)
+    },
+
+    updatePositionProps (props, widths) {
+      let newProps = {}
+      let coordinateSpecification = this.coordinateSpecification
+      let positionProps = ['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h']
+
+      for (let prop in props) {
+        if (!positionProps.includes(prop) && !['axes', 'gridLines'].includes(prop)) {
+          newProps[prop] = props[prop]
+        }
+      }
+
+      newProps.x1 = coordinateSpecification.x1 + widths.left
+      newProps.x2 = coordinateSpecification.x2 - widths.right
+      newProps.y1 = coordinateSpecification.y1 + widths.bottom
+      newProps.y2 = coordinateSpecification.y2 - widths.top
+
+      return newProps
     },
 
     createAxes (createElement, widths) {
@@ -286,25 +306,6 @@ export default {
       }
 
       return elements
-    },
-
-    updatePositionProps (props, widths) {
-      let newProps = {}
-      let coordinateSpecification = this.coordinateSpecification
-      let positionProps = ['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h']
-
-      for (let prop in props) {
-        if (!positionProps.includes(prop) && prop !== 'axes') {
-          newProps[prop] = props[prop]
-        }
-      }
-
-      newProps.x1 = coordinateSpecification.x1 + widths.left
-      newProps.x2 = coordinateSpecification.x2 - widths.right
-      newProps.y1 = coordinateSpecification.y1 + widths.bottom
-      newProps.y2 = coordinateSpecification.y2 - widths.top
-
-      return newProps
     },
 
     createGridLines (createElement, widths) {
@@ -359,6 +360,7 @@ export default {
   },
 
   render (createElement) {
+    console.log('render section')
     if (!this.axes) {
       if (this.ready && this.allowScales) {
         let content = this.$scopedSlots.default()
