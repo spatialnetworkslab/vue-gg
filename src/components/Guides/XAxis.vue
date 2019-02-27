@@ -106,20 +106,16 @@
 
 <script>
 import BaseAxis from '../../mixins/Guides/BaseAxis.js'
-
 export default {
   mixins: [BaseAxis],
-
   props: {
     titleHjust: {
       default: -0.08
     },
-
     titleVjust: {
       default: 'center'
     }
   },
-
   computed: {
     titlePosX () {
       if (this.titleHjust === 'center') {
@@ -132,7 +128,6 @@ export default {
         return this.titleHjust
       }
     },
-
     titlePosY () {
       if (this.titleVjust === 'center') {
         return 0.5
@@ -144,43 +139,26 @@ export default {
         return this.titleVjust
       }
     },
-
     tickMin () {
-      if (this.y1 && this.y2) {
-        return 0.5 - (this.tickSize / (this.y2 - this.y1))
-      } else {
-        return 0.5 - (this.tickSize / 100)
-      }
+      let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
+      let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
+      return 0.5 - scaledSize
     },
-
     tickMax () {
-      if (this.y1 && this.y2) {
-        return 0.5 + (this.tickSize / (this.y2 - this.y1))
-      } else {
-        return 0.5 + (this.tickSize / 100)
-      }
+      let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
+      let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
+      return 0.5 + scaledSize
     },
-
     posY () {
-      let yHeight = this.getLocalY(50)
-
-      if (this.y) {
-        let scaledY = this.getLocalY(this.y)
-        return [scaledY - yHeight, scaledY + yHeight]
+      if (this.validY) {
+        return [this.coords.y1, this.coords.y2]
       }
-
-      if (this.y1 && this.y2) {
-        return [this.getLocalY(this.y1), this.getLocalY(this.y2)]
-      } else if (this.y1 ^ this.y2) {
-        throw new Error ('Please provide both y1 and y2 coordinates. Alternatively use the y prop')
-      }
-
       let yDomain = this.yDomain
-
       let yDomainMin = Math.min(yDomain[0], yDomain[1])
       let yDomainMax = Math.max(yDomain[0], yDomain[1])
-      
-      if (this.vjust.constructor === Number) { 
+      let yHeight = this.getLocalY(50) - this.getLocalY(0)
+
+      if (this.vjust.constructor === Number) {
         let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
         return [scaledVal - yHeight, scaledVal + yHeight]
       } else if (this.vjust === 'center') {
@@ -192,24 +170,15 @@ export default {
         return [yDomainMin - yHeight, yDomainMin + yHeight]
       }
     },
-
     ranges () {
-      // console.log(this.coordinateSpecification)
       let newRange = {}
-
       newRange.y1 = this.posY[0]
       newRange.y2 = this.posY[1]
-
-      if (this.x1 && this.x2) {
-        newRange.x1 = this.getLocalX(this.x1)
-        newRange.x2 = this.getLocalX(this.x2)
+      if (this.validX) {
+        newRange.x1 = this.coords.x1
+        newRange.x2 = this.coords.x2
         return newRange
-      } else if (this.x1 ^ this.x2) {
-        throw new Error('Please provide both x1 and x2 coordinates')
-      } else if (this.x) {
-        throw new Error('Please provide x1, x2 start and end coordinates')
       }
-
       if (this._domainType === 'temporal') {
         newRange.x1 = this._domain[0]
         newRange.x2 = this._domain[1]
@@ -217,7 +186,6 @@ export default {
         newRange.x1 = this.xDomain[0]
         newRange.x2 = this.xDomain[1]
       }
-
       return newRange
     },
   }

@@ -7,6 +7,8 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
+import defaultFormat from './defaultFormat.js'
+
 export default {
   mixins: [Rectangular, DataReceiver],
 
@@ -81,7 +83,7 @@ export default {
       type: String,
       default: 'black'
     },
-
+    
     labelFont: {
       type: String,
       default: 'Helvetica'
@@ -96,18 +98,18 @@ export default {
       type: [String, Number],
       default: 'normal'
     },
-
+    
     labelOpacity: {
       type: Number,
       default: 1
     },
-
+    
     // Distance between tick and label **
     // labelPadding: {
     //   type: Number,
     //   default: 0
     // },
-
+    
     labelRotate: {
       type: Boolean,
       default: false
@@ -138,11 +140,16 @@ export default {
       default: true
     },
 
+    tickExtraLabel: {
+      type: Boolean,
+      default: true
+    },
+
     tickOpacity: {
       type: Number,
       default: 1
     },
-
+    
     tickSize: {
       type: Number,
       default: 7
@@ -188,7 +195,7 @@ export default {
       type: Number,
       default: 500
     },
-
+    
     titleOpacity: {
       type: Number,
       default: 1
@@ -210,59 +217,6 @@ export default {
 
   },
 
-  methods: {
-    // Get parents
-    getParents (b, result) {
-      if (b.parentID != null) {
-        let parentBranch = this.$$coordinateTree.getBranch(b.parentID)
-        result.unshift(parentBranch)
-        return this.getParents(parentBranch, result)
-      } else {
-        return result
-      }
-    },
-
-    getLocalX (n) {
-      let p = this._parentNodes
-      let result = n
-      for (let i = 0; i < p.length; i++) {
-        let b = p[i]
-        let bRange = b.ranges.x
-        let bDomain = b.domains.x
-
-        let rangeMin = Math.min(bRange[0], bRange[1])
-        let rangeMax = Math.max(bRange[0], bRange[1])
-
-        let domainMin = Math.min(bDomain[0], bDomain[1])
-        let domainMax = Math.max(bDomain[0], bDomain[1])
-
-        result = (result/ (rangeMax - rangeMin)) * (domainMax - domainMin)
-      }
-
-      return result
-    },
-
-    getLocalY (n) {
-      let p = this._parentNodes
-      let result = n
-      for (let i = 0; i < p.length; i++) {
-        let b = p[i]
-        let bRange = b.ranges.y
-        let bDomain = b.domains.y
-
-        let rangeMin = Math.min(bRange[0], bRange[1])
-        let rangeMax = Math.max(bRange[0], bRange[1])
-
-        let domainMin = Math.min(bDomain[0], bDomain[1])
-        let domainMax = Math.max(bDomain[0], bDomain[1])
-
-        result = (result / (rangeMax - rangeMin)) * (domainMax - domainMin)
-      }
-
-      return result
-    }
-  },
-
   computed: {
     _parsedScalingOptions () {
       return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
@@ -275,13 +229,24 @@ export default {
     _domainType () {
       return this._parsedScalingOptions[1]
     },
-
     _scalingOptions () {
       return this._parsedScalingOptions[2]
     },
 
     _parentNodes () {
       return this.getParents(this.parentBranch, [this.parentBranch])
+    },
+
+    validX () {
+      return (this.x1 !== undefined && this.x2 !== undefined) || (this.x !== undefined && this.w !== undefined)
+    },
+
+    validY () {
+      return (this.y1 !== undefined && this.y2 !== undefined) || (this.y !== undefined && this.h !== undefined)
+    },
+
+    coords () {
+      if (this.validX || this.validY) {return this.coordinateSpecification}
     },
 
     xDomain () {
@@ -299,7 +264,7 @@ export default {
       if (this.tickValues) {
         newTickValues = this.tickValues
 
-        if (this.tickExtra && this.tickValues[0] != firstValue) {
+        if (this.tickExtra && this.tickValues[0] !== firstValue) {
           newTickValues.unshift(firstValue)
         }
 
@@ -308,17 +273,21 @@ export default {
         })
       } else {
         let ticks
-        let format = this.format && this.format.constructor === Function ? this.format : x => x
+        let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
 
         if (this._domainType === 'quantitative') {
           newTickValues = arrayTicks(...this._domain, this.tickCount)
 
-          if (this.tickExtra && newTickValues[0] != firstValue) {
+          if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
 
-          ticks = newTickValues.map(value => {
-            return { value, label: format(value) }
+          ticks = newTickValues.map((value, i) => {
+            if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+              return { value, label: '' }
+            } else {
+              return { value, label: format(value) }
+            }
           })
         }
 
@@ -339,11 +308,37 @@ export default {
 
           newTickValues = scale.ticks(this.tickCount)
 
-          if (this.tickExtra && newTickValues[0] != firstValue) {
+          if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
 
-          ticks = newTickValues.map(value => {
+          ticks = newTickValues.map((value, i) => {
+            let date = new Date(value)
+
+            if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+              return { value: date, label: '' }
+            } else {
+              return { value: date, label: format(date) }
+            }
+          })
+        }
+
+        if (this._domainType === 'interval:quantitative') {
+          let intervals = this.$$dataInterface.getColumn(this.scale)
+          ticks = this.ticksFromIntervals(intervals).map(value => {
+            return { value, label: format(value) }
+          })
+        }
+
+        if (this._domainType === 'interval:temporal') {
+          if (this.format) {
+            if (this.format.constructor === String) { format = timeFormat(this.format) }
+          } else {
+            format = timeFormat('%d/%m/%Y')
+          }
+
+          let intervals = this.$$dataInterface.getColumn(this.scale)
+          ticks = this.ticksFromIntervals(intervals).map(value => {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })
@@ -352,5 +347,20 @@ export default {
         return ticks
       }
     }
+  },
+
+  methods: {
+    ticksFromIntervals (intervals) {
+      let ticks = new Set()
+      for (let interval of intervals) {
+        ticks.add(interval[0])
+        ticks.add(interval[1])
+      }
+      return Array.from(ticks)
+    },
+
+    getLocalX (n) { return this.$$getLocalX(n) },
+
+    getLocalY (n) { return this.$$getLocalY(n) }
   }
 }

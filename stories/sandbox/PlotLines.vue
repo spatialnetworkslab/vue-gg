@@ -54,12 +54,12 @@
       <vgg-x-axis
         :scale="[-1, 1]"
         :titleHjust="1.1"
-        :vjust="-.05"
+        :vjust="0.5"
       />
 
       <vgg-y-axis
         :scale="[-1, 1]"
-        :hjust="-.05"
+        :hjust="0.5"
         flip
       />
 

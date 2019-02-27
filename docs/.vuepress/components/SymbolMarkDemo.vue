@@ -21,7 +21,7 @@
             :size="16"
             :shape="shape"
             :stroke="stroke"
-            :fill="fill"
+            :fill="fill(row.explanatory)"
             :stroke-width="1"
           />
 
@@ -96,14 +96,6 @@ export default {
   },
 
   computed : {
-    fill () {
-      if (this.color === 'both' || this.color === 'fill') {
-        return { get: 'explanatory', scale: { type: 'viridis', domain: 'explanatory' } }
-      } else {
-        return 'none'
-      }
-    },
-
     stroke () {
       if (this.color === 'both' || this.color === 'stroke') {
         return 'black'
@@ -129,7 +121,15 @@ export default {
 
       return newData
 
-    }
+    },
+
+    fill (value) {
+      if (this.color === 'both' || this.color === 'fill') {
+        return { val: value, scale: { type: 'viridis', domain: 'explanatory' } }
+      } else {
+        return 'none'
+      }
+    },
   }
 }
 </script>

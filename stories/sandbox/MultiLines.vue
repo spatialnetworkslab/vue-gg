@@ -79,10 +79,6 @@
             <vgg-x-axis
               :scale="'xValues'"
               :tickExtra="false"
-              :x1="50"
-              :x2="150"
-              :y1="50"
-              :y2="100"
             />
 
             <vgg-y-axis
