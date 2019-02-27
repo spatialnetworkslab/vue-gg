@@ -10,6 +10,7 @@
         :text="title"
         :hjust="'center'"
         :fontSize="50"/>
+
       <g v-if="data">
         <g v-for="(d, i) in dimensionSections">
           <g v-for="(o, j) in optionSections">
@@ -46,7 +47,7 @@
                 title="Attributes"
                 :labelFontSize="10"
                 :vjust="0.1"
-                :titleVjust="1 + 0.025 * (3 - i)"
+                :titleVjust="1 + 0.025 * (3 - i)**1.5"
                 flip
               />
             </vgg-section>
@@ -71,11 +72,11 @@ export default {
       categories: [],
       xAxis: '',
       title: '',
-      dimensions: [3, 5, 10],
-      options: [5, 200],
       drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
       bikeCategories: ['Price', 'RearWheelTQ', 'MilesPG', 'Horsepower', 'Weight', 'TopSpeed', 'To60', 'To100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
-      height: 1400,
+      dimensions: [3, 5, 10, 11],
+      options: [5, 100],
+      height: 2000,
       width: 8700,
       baseX: 100,
       baseY: 100,
@@ -137,7 +138,6 @@ export default {
     },
 
     segments(dimensions, options){
-      console.log(this.data)
       let categories = this.categories
       if (this.data) {
         if (!isNaN(dimensions)){
@@ -149,8 +149,6 @@ export default {
         }
 
         let segments = []
-        // let widthDelta = (this.optionSections[this.options.indexOf(options)][1] - this.optionSections[this.options.indexOf(options)][0])/dimensions
-        // let heightDelta = (this.dimensionSections[this.dimensions.indexOf(dimensions)][1] - this.dimensionSections[this.dimensions.indexOf(dimensions)][0])/dimensions//options
         let heightDelta = 40, widthDelta = 40
         let y = this.dimensionSections[this.dimensions.indexOf(dimensions)][0], x = this.optionSections[this.options.indexOf(options)][0]
 
