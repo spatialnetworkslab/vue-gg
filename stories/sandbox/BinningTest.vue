@@ -47,6 +47,19 @@
 
           </vgg-map>
 
+          <!-- <vgg-x-axis
+            scale="bins"
+            :titleHjust="1.1"
+            :vjust="-.05"
+            rotate-label
+          />
+
+          <vgg-y-axis
+            :scale="{ domain: 'binCount', domainMin: 0 }"
+            :hjust="-.05"
+            flip
+          /> -->
+
         </vgg-section>
 
         <vgg-x-axis

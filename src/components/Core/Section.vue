@@ -192,7 +192,7 @@ export default {
         id = '_' + randomID()
       }
       return id
-    }
+    },
   },
 
   watch: {
@@ -351,12 +351,11 @@ export default {
   },
 
   provide () {
-    if (!this.axes) {
-      let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
-      let $$coordinateTreeParent = this.coordinateTreeBranchID
-
-      return { $$transform, $$coordinateTreeParent }
-    }
+    let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
+    let $$coordinateTreeParent = this.coordinateTreeBranchID
+    let $$getLocalX = this.$$coordinateTree.getLocalX(this.coordinateTreeBranchID)
+    let $$getLocalY = this.$$coordinateTree.getLocalY(this.coordinateTreeBranchID)
+    return { $$transform, $$coordinateTreeParent, $$getLocalX, $$getLocalY }
   },
 
   render (createElement) {
