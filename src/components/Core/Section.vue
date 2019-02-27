@@ -192,7 +192,7 @@ export default {
         id = '_' + randomID()
       }
       return id
-    },
+    }
   },
 
   watch: {
