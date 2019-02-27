@@ -146,39 +146,28 @@ export default {
     },
 
     tickMin () {
-      if (this.y1 && this.y2) {
-        return 0.5 - (this.tickSize / (this.y2 - this.y1))
-      } else {
-        return 0.5 - (this.tickSize / 100)
-      }
+      let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
+      let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
+      return 0.5 - scaledSize
     },
 
     tickMax () {
-      if (this.y1 && this.y2) {
-        return 0.5 + (this.tickSize / (this.y2 - this.y1))
-      } else {
-        return 0.5 + (this.tickSize / 100)
-      }
+      let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
+      let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
+      return 0.5 + scaledSize
     },
 
     posY () {
-      let yHeight = this.getLocalY(50)
-
-      if (this.y) {
-        let scaledY = this.getLocalY(this.y)
-        return [scaledY - yHeight, scaledY + yHeight]
-      }
-
-      if (this.y1 && this.y2) {
-        return [this.getLocalY(this.y1), this.getLocalY(this.y2)]
-      } else if (this.y1 ^ this.y2) {
-        throw new Error ('Please provide both y1 and y2 coordinates. Alternatively use the y prop')
+      if (this.validY) {
+        return [this.coords.y1, this.coords.y2]
       }
 
       let yDomain = this.yDomain
 
       let yDomainMin = Math.min(yDomain[0], yDomain[1])
       let yDomainMax = Math.max(yDomain[0], yDomain[1])
+
+      let yHeight = this.getLocalY(50) - this.getLocalY(0)
       
       if (this.vjust.constructor === Number) { 
         let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
@@ -194,24 +183,20 @@ export default {
     },
 
     ranges () {
-      // console.log(this.coordinateSpecification)
       let newRange = {}
 
       newRange.y1 = this.posY[0]
       newRange.y2 = this.posY[1]
 
+<<<<<<< HEAD
       if (this.x1 && this.x2) {
         newRange.x1 = this.getLocalX(this.x1)
         newRange.x2 = this.getLocalX(this.x2)
         return newRange
-      } else if (this.x1 ^ this.x2) {
-        throw new Error('Please provide both x1 and x2 coordinates')
-      } else if (this.x) {
-        throw new Error('Please provide x1, x2 start and end coordinates')
+>>>>>>> master
       }
 
       if (this._domainType === 'temporal') {
-        newRange.x1 = this._domain[0]
         newRange.x2 = this._domain[1]
       } else {
         newRange.x1 = this.xDomain[0]
