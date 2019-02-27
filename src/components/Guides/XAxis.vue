@@ -106,20 +106,16 @@
 
 <script>
 import BaseAxis from '../../mixins/Guides/BaseAxis.js'
-
 export default {
   mixins: [BaseAxis],
-
   props: {
     titleHjust: {
       default: -0.08
     },
-
     titleVjust: {
       default: 'center'
     }
   },
-
   computed: {
     titlePosX () {
       if (this.titleHjust === 'center') {
@@ -132,7 +128,6 @@ export default {
         return this.titleHjust
       }
     },
-
     titlePosY () {
       if (this.titleVjust === 'center') {
         return 0.5
@@ -144,32 +139,26 @@ export default {
         return this.titleVjust
       }
     },
-
     tickMin () {
       let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
       let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
       return 0.5 - scaledSize
     },
-
     tickMax () {
       let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
       let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
       return 0.5 + scaledSize
     },
-
     posY () {
       if (this.validY) {
         return [this.coords.y1, this.coords.y2]
       }
-
       let yDomain = this.yDomain
-
       let yDomainMin = Math.min(yDomain[0], yDomain[1])
       let yDomainMax = Math.max(yDomain[0], yDomain[1])
-
       let yHeight = this.getLocalY(50) - this.getLocalY(0)
-      
-      if (this.vjust.constructor === Number) { 
+
+      if (this.vjust.constructor === Number) {
         let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
         return [scaledVal - yHeight, scaledVal + yHeight]
       } else if (this.vjust === 'center') {
@@ -181,28 +170,22 @@ export default {
         return [yDomainMin - yHeight, yDomainMin + yHeight]
       }
     },
-
     ranges () {
       let newRange = {}
-
       newRange.y1 = this.posY[0]
       newRange.y2 = this.posY[1]
-
-<<<<<<< HEAD
-      if (this.x1 && this.x2) {
-        newRange.x1 = this.getLocalX(this.x1)
-        newRange.x2 = this.getLocalX(this.x2)
+      if (this.validX) {
+        newRange.x1 = this.coords.x1
+        newRange.x2 = this.coords.x2
         return newRange
->>>>>>> master
       }
-
       if (this._domainType === 'temporal') {
+        newRange.x1 = this._domain[0]
         newRange.x2 = this._domain[1]
       } else {
         newRange.x1 = this.xDomain[0]
         newRange.x2 = this.xDomain[1]
       }
-
       return newRange
     },
   }
