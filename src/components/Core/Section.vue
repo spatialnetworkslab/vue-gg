@@ -370,7 +370,6 @@ export default {
 
   render (createElement) {
     if (this.ready && this.allowScales) {
-      console.log('render')
       if (!this.axes) {
         let content = this.getSlotContent()
 
