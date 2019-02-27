@@ -11,7 +11,6 @@
 
     <!-- Main line -->
     <vgg-line
-      class="x-axis-line"
       v-if="domain"
       :x1="0"
       :y1="0.5"
@@ -20,11 +19,11 @@
       :stroke="domainColor"
       :stroke-opacity="domainOpacity"
       :stroke-width="domainWidth"
+      class="x-axis-line"
     />
 
     <!-- Axis title -->
     <vgg-label
-      class="x-axis-title"
       :x="titlePosX"
       :y="titlePosY"
       :text="title"
@@ -35,6 +34,7 @@
       :font-weight="titleFontWeight"
       :opacity="titleOpacity"
       :rotation="titleAngle"
+      class="x-axis-title"
     />
 
     <!-- Ticks -->
@@ -112,10 +112,12 @@ export default {
 
   props: {
     titleHjust: {
+      type: [Number, String],
       default: -0.08
     },
 
     titleVjust: {
+      type: [Number, String],
       default: 'center'
     }
   },
@@ -168,8 +170,8 @@ export default {
       let yDomainMax = Math.max(yDomain[0], yDomain[1])
 
       let yHeight = this.getLocalY(50) - this.getLocalY(0)
-      
-      if (this.vjust.constructor === Number) { 
+
+      if (this.vjust.constructor === Number) {
         let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
         return [scaledVal - yHeight, scaledVal + yHeight]
       } else if (this.vjust === 'center') {
@@ -204,7 +206,7 @@ export default {
       }
 
       return newRange
-    },
+    }
   }
 }
 </script>
