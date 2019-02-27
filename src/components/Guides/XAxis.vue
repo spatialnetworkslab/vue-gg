@@ -32,11 +32,54 @@
     <!-- Ticks -->
     <g
       v-if="ticks"
-      class="x-axis-ticks">
+      class="x-axis-ticks"
+    >
 
-      <vgg-line
-        v-for="tick in generatedTicks"
-      />
+      <g
+        v-for="(tick, i) in generatedTicks"
+        :key="i"
+        class="x-axis-tick"
+      >
+
+        <vgg-line
+          :x1="tick.value"
+          :x2="tick.value"
+          :y1="midY"
+          :y2="flip ? midY + _tickLength : midY - _tickLength"
+          :stroke="tickColor"
+          :stroke-opacity="tickOpacity"
+          :stroke-width="tickWidth"
+        />
+
+        <!-- Tick labels -->
+        <vgg-label
+          v-if="(!labelRotate) && labels"
+          :x="tick.value"
+          :y="flip ? midY + (_tickLength * 1.03) : midY - (_tickLength * 1.03)"
+          :text="tick.label"
+          :font-family="labelFont"
+          :font-size="labelFontSize"
+          :font-weight="labelFontWeight"
+          :anchor-point="flip ? 'b' : 't'"
+          :fill="labelColor"
+          :opacity="labelOpacity"
+        />
+
+        <vgg-label
+          v-if="labelRotate && labels"
+          :x="tick.value"
+          :y="flip ? midY + (_tickLength * 1.03) : midY - (_tickLength * 1.03)"
+          :text="tick.label"
+          :font-family="labelFont"
+          :font-size="labelFontSize"
+          :font-weight="labelFontWeight"
+          :rotation="flip ? 30 : -30"
+          :anchor-point="flip ? 'rb' : 'rt'"
+          :fill="labelColor"
+          :opacity="labelOpacity"
+        />
+
+      </g>
 
     </g>
 
@@ -182,12 +225,11 @@ export default {
       }
 
       return coords
-    }
-  },
+    },
 
-  methods: {
-    getJust (lowerBound, width, just) {
-      return lowerBound + (width * just)
+    _tickLength () {
+      if (this.tickLength) { return this.tickLength }
+      return this.widthX / 3
     }
   }
 }
