@@ -258,7 +258,7 @@ export default {
     createSection (createElement, widths) {
       let props = this.updatePositionProps(this._props, widths)
 
-      let slotContent = this.$scopedSlots.default()
+      let slotContent = this.getSlotContent()
       return createElement(Section, { props }, slotContent)
     },
 
@@ -347,6 +347,16 @@ export default {
       }
 
       return elements
+    },
+
+    getSlotContent () {
+      if (this.$scopedSlots.default) {
+        return this.$scopedSlots.default()
+      } else if (this.$slots.default) {
+        return this.$slots.default
+      } else {
+        return []
+      }
     }
   },
 
@@ -362,7 +372,7 @@ export default {
     if (this.ready && this.allowScales) {
       console.log('render')
       if (!this.axes) {
-        let content = this.$scopedSlots.default()
+        let content = this.getSlotContent()
 
         if (this.gridLines) {
           let gridLines = this.createGridLines(createElement)
