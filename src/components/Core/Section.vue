@@ -360,9 +360,8 @@ export default {
   },
 
   render (createElement) {
-    console.log('render section')
-    if (!this.axes) {
-      if (this.ready && this.allowScales) {
+    if (this.ready && this.allowScales) {
+      if (!this.axes) {
         let content = this.$scopedSlots.default()
 
         if (this.gridLines) {
@@ -372,10 +371,8 @@ export default {
 
         return createElement('g', { class: 'section' }, content)
       }
-    }
 
-    if (this.axes) {
-      if (this.allowScales) {
+      if (this.axes) {
         let widths = calculateWidths(this._axes, this.ranges)
 
         let content = []
