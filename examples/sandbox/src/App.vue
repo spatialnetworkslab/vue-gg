@@ -26,15 +26,12 @@
 
         </vgg-map>
 
-      </vgg-section>
+        <vgg-x-axis
+          :vjust="0"
+          :scale="'a'"
+        />
 
-      <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="25"
-        :y2="75"
-        :scale="'a'"
-      />
+      </vgg-section>
 
       <!-- <vgg-x-grid
         :x1="100"

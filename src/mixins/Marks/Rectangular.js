@@ -106,8 +106,8 @@ export default {
 
 function invalidCombination (x1, x2, x, w) {
   let validCombinations = [
-    // If there is nothing, just x1, just x2, or just x1 and x2
-    isnt(x) && isnt(w),
+    // If there is  just x1 and x2
+    is(x1) && is(x2) && isnt(x) && isnt(w),
     // If there is just x1 and w
     is(x1) && isnt(x2) && isnt(x) && is(w),
     // If there is just x2 and w

@@ -232,9 +232,16 @@ export default {
       return y2 - y1
     },
 
+    ranges () {
+      return {
+        x: [this.axisCoords.x1, this.axisCoords.x2],
+        y: [this.axisCoords.y1, this.axisCoords.y2]
+      }
+    },
+
     context () {
       return {
-        ranges: this.parentBranch.domains,
+        ranges: this.ranges,
         parentBranch: this.parentBranch,
         dataInterface: this.$$dataInterface,
         scaleManager: this.$$scaleManager
@@ -328,7 +335,10 @@ export default {
           })
         }
 
-        return ticks
+        return ticks.map(tick => {
+          let newTick = { label: tick.label, value: this.parsedScale(tick.value) }
+          return newTick
+        })
       }
     }
   },
