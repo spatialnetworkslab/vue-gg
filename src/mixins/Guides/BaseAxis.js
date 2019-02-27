@@ -328,7 +328,7 @@ export default {
           })
         }
 
-        return ticks.map(this.parsedScale)
+        return ticks
       }
     }
   },

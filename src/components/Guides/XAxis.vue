@@ -229,7 +229,7 @@ export default {
 
     _tickLength () {
       if (this.tickLength) { return this.tickLength }
-      return this.widthX / 3
+      return this.widthY / 5
     }
   }
 }
