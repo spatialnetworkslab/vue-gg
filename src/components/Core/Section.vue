@@ -13,8 +13,8 @@ import { calculateWidths, createAxisProps } from './utils/section.js'
 import Section from './Section.vue'
 import XAxis from '../Guides/XAxis.vue'
 import YAxis from '../Guides/YAxis.vue'
-// import XGrid from '../Guides/XGrid.vue'
-// import YGrid from '../Guides/YGrid.vue'
+import XGrid from '../Guides/XGrid.vue'
+import YGrid from '../Guides/YGrid.vue'
 
 export default {
   mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular],
@@ -214,7 +214,7 @@ export default {
       const forbiddenProps = [
         'x1', 'x2', 'x', 'w',
         'y1', 'y2', 'y', 'h',
-        'axes', 'gridLines'
+        'axes'
       ]
 
       for (let prop in this._props) {
@@ -224,19 +224,19 @@ export default {
       }
 
       return props
-    }
+    },
 
-    // _gridLines () {
-    //   if (this.gridLines && this.gridLines.constructor === Array) {
-    //     let gridLines = {}
-    //     for (let gridLine of this.gridLines) {
-    //       gridLines[gridLine] = null
-    //     }
-    //     return gridLines
-    //   } else {
-    //     return this.gridLines
-    //   }
-    // }
+    _gridLines () {
+      if (this.gridLines && this.gridLines.constructor === Array) {
+        let gridLines = {}
+        for (let gridLine of this.gridLines) {
+          gridLines[gridLine] = null
+        }
+        return gridLines
+      } else {
+        return this.gridLines
+      }
+    }
   },
 
   watch: {
@@ -310,6 +310,41 @@ export default {
       return elements
     },
 
+    createGridLines (createElement) {
+      let gridLines = []
+
+      const forbiddenProps = [
+        'x1', 'x2', 'x', 'w',
+        'y1', 'y2', 'y', 'h',
+        'axes'
+      ]
+
+      for (let dim in this._gridLines) {
+        if (dim !== 'x' && dim !== 'y') {
+          throw new Error(`Invalid grid line: '${dim}'. Only 'x' and 'y' allowed`)
+        }
+
+        let gridLineProps = this._gridLines[dim]
+        let props = {}
+
+        for (let propKey in gridLineProps) {
+          if (!forbiddenProps.includes(propKey)) {
+            props[propKey] = gridLineProps[propKey]
+          }
+        }
+
+        if (!props.hasOwnProperty('scale')) {
+          props.scale = this.scales[dim]
+        }
+
+        let element = dim === 'x' ? XGrid : YGrid
+        let gridLine = createElement(element, { props })
+        gridLines.push(gridLine)
+      }
+
+      return gridLines
+    },
+
     getSlotContent () {
       if (this.$scopedSlots.default) {
         return this.$scopedSlots.default()
@@ -331,6 +366,12 @@ export default {
     if (this.ready && this.allowScales) {
       if (!this.axes) {
         let slotContent = this.getSlotContent()
+
+        if (this.gridLines) {
+          let gridLines = this.createGridLines(createElement)
+          slotContent.push(...gridLines)
+        }
+
         return createElement('g', { class: 'section' }, slotContent)
       }
 
