@@ -189,7 +189,7 @@ export default {
       if (this.axes && this.axes.constructor === Array) {
         let axes = {}
         for (let axis of this.axes) {
-          axes[axis] = null
+          axes[axis] = {}
         }
         return axes
       } else {

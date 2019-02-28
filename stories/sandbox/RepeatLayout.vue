@@ -6,7 +6,7 @@
   >
 
     <vgg-repeat
-      v-slot="{ x, y }"
+      v-slot="{ x, y, axes }"
       :x="['a', 'b', 'c']"
       :y="['a', 'b', 'c']"
       :cell-padding="12"
@@ -18,8 +18,8 @@
           y: { scale: y }
         }"
         :axes="{
-          bottom: { scale: x, labelRotate: true },
-          right: { scale: y }
+          bottom: axes.bottom({ scale: x, labelRotate: true }),
+          right: axes.right({ scale: y })
         }"
       >
 

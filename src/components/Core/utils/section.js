@@ -3,7 +3,9 @@ export function calculateWidths (axes, coords, defaultFraction = 8) {
 
   for (let axis in axes) {
     let axisOptions = axes[axis]
-    widths[axis] = calculateWidth(axis, axisOptions, coords, defaultFraction)
+    if (axisOptions) {
+      widths[axis] = calculateWidth(axis, axisOptions, coords, defaultFraction)
+    }
   }
 
   return widths
