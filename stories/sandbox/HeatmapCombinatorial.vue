@@ -10,6 +10,7 @@
         :text="title"
         :hjust="'center'"
         :fontSize="50"/>
+
       <g v-if="data">
         <g v-for="(d, i) in dimensionSections">
           <g v-for="(o, j) in optionSections">
@@ -35,22 +36,18 @@
 
               <vgg-x-axis
                 :scale="actualOptions(options[j])"
-                title="   Drinks"
-                titleHjust="r"
-                titleAnchorPoint="l"
-                :titleVjust="0.5"
-                :labelFontSize="8"
+                :title="xAxis"
+                :labelFontSize="10"
+                :titleHjust="1 + 0.04 * (options.length - j)"
                 labelRotate
               />
 
               <vgg-y-axis
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
-                :vjust="0.5"
-                :titleVjust="1 + 0.025 * (3 - i)"
+                :labelFontSize="10"
                 flip
               />
-
             </vgg-section>
         </g>
       </g>
@@ -70,35 +67,41 @@ export default {
     return {
       data: undefined,
       names: [],
-      title: "Drinks Heatmap",
-      dimensions: [2, 5, 10],
-      options: [2, 5, 10, 25, 50, 100],
-      categories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      height: 1200,
+      categories: [],
+      xAxis: '',
+      title: '',
+      drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
+      bikeCategories: ['Price', 'RearWheelTQ', 'MilesPG', 'Horsepower', 'PWRatio', 'Weight', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
+      dimensions: [3, 5, 10, 12],
+      options: [5, 10, 25, 50, 100],
+      height: 2000,
       width: 8700,
       baseX: 100,
       baseY: 100,
+      padX: 200,
+      padY: 150
     }
   },
 
   mounted () {
-    this.drinks()
+    //this.drinks()
+    this.bikes()
   },
   computed: {
     dimensionSections () {
       let sections = []
       for (let d in this.dimensions){
-        let x1 = this.baseY, x2
+        let y1 = this.baseY, y2
         if (d > 0) {
           for (let prevD in this.dimensions.slice(0, d)){
-            x1 += this.dimensions[prevD] * 40
+            y1 += this.dimensions[prevD] * 40
           }
-          x1 += 100 * d
-          x2 = x1 + this.dimensions[d] * 40
+          y1 += this.padY * d
+          y2 = y1 + this.dimensions[d] * 40
         } else {
-          x2 = this.baseY + this.dimensions[d] * 40
+          y2 = this.baseY + this.dimensions[d] * 40
         }
-        sections.push([x1, x2])
+        sections.push([y1, y2])
       }
       return sections
     },
@@ -111,7 +114,7 @@ export default {
           for (let prevO in this.options.slice(0, o)){
             x1 += this.options[prevO] * 40
           }
-          x1 += 150 * o
+          x1 += this.padX * o
           x2 = x1 + this.options[o] * 40
         } else {
           x2 = this.baseX + this.options[o] * 40
@@ -124,7 +127,6 @@ export default {
   methods: {
     actualOptions (options) {
       let names = []
-
       for (let i = 0; i < options; i++ ) {
         names.push(this.data[i].Name)
       }
@@ -136,11 +138,11 @@ export default {
     },
 
     segments(dimensions, options){
+      console.log(this.data)
+      let categories = this.categories
       if (this.data) {
-        let categories = this.categories
-
         if (!isNaN(dimensions)){
-            categories = this.categories.slice(0, dimensions)
+          categories = categories.slice(0, dimensions)
         }
 
         if (isNaN(options)){
@@ -148,8 +150,6 @@ export default {
         }
 
         let segments = []
-        // let widthDelta = (this.optionSections[this.options.indexOf(options)][1] - this.optionSections[this.options.indexOf(options)][0])/dimensions
-        // let heightDelta = (this.dimensionSections[this.dimensions.indexOf(dimensions)][1] - this.dimensionSections[this.dimensions.indexOf(dimensions)][0])/dimensions//options
         let heightDelta = 40, widthDelta = 40
         let y = this.dimensionSections[this.dimensions.indexOf(dimensions)][0], x = this.optionSections[this.options.indexOf(options)][0]
 
@@ -167,12 +167,14 @@ export default {
               segments[i].push(macro)
             }
         }
-        console.log(dimensions, options, segments)
         return segments
       }
     },
 
     drinks () {
+      this.categories = this.drinkCategories
+      this.xAxis = 'Drinks'
+      this.title = 'Drinks Data'
       // change name of csv
       csv('../../static/idcDemoDrinksDailyInterpolated.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
@@ -192,6 +194,33 @@ export default {
             VitaminC: parseInt(d['Vitamin C']),
             Calcium: parseInt(d.Calcium),
             Iron: parseInt(d.Iron),
+          }
+        }))
+      })
+    },
+
+    bikes () {
+      this.categories = this.bikeCategories
+      this.xAxis = 'Motorbikes'
+      this.title = 'Motorcycle Performance 2014'
+      // change name of csv
+      csv('../../static/mcn_performance_index14.csv').then((data) => {
+        this.data = Object.freeze(data.map(d => {
+          return {
+            Name: d['Make and Model'],
+            Price: parseInt(d['Base MSRP']),
+            Rating: d['Rating Category'],
+            PWRatio: parseInt(d.PWRatio),
+            MilesPG: parseInt(d['Average MPG']),
+            Horsepower: parseInt(d['Rear-Wheel HP']),
+            RearWheelTQ: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
+            ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            Weight: parseInt(d['Wet Weight']),
+            TopSpeed: parseInt(d['Top Speed']),
+            ZeroTo60: parseInt(d['0–60 mph, sec.']),
+            Quartermile: parseInt(d['Quartermile, sec']),
+            QuartermileMaxSpeed: parseInt(d['Quartermile, mph']),
+            Stop60: parseInt(d['Braking 60–0 mph (feet)'])
           }
         }))
       })

@@ -22,15 +22,16 @@ export default function (data, length) {
 
     // Warn user if a column contains a lot of invalid values
     if (nValidValues / length < 0.5) {
-      console.warn(`Column '${key}' contains more than 50% invalid values`)
+      // back
+      //console.warn(`Column '${key}' contains more than 50% invalid values`)
     }
 
     if (nValidValues === 0) {
       types[key] = 'quantitative'
       domains[key] = [0, 1]
-
-      console.warn(`Column '${key}' contains no valid values.`)
-      console.warn('Using domain [0, 1] as placeholder.')
+      // back
+      //console.warn(`Column '${key}' contains no valid values.`)
+      //console.warn('Using domain [0, 1] as placeholder.')
     } else {
       // Calculate the type based on the only valid value
       let type = getDataType(firstValidValue)
@@ -50,15 +51,15 @@ export default function (data, length) {
         if (nValidValues === 1) {
           let domain = initDummyDomain(type, firstValidValue)
           domains[key] = domain
-
-          console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
-          console.warn(`Using domain ${JSON.stringify(domain)}`)
+          // back
+          //console.warn(`Column '${key}' contains only 1 valid value: ${firstValidValue}.`)
+          //console.warn(`Using domain ${JSON.stringify(domain)}`)
         } else if (uniqueValues === 1 && type !== 'categorical') {
           let domain = initDummyDomain(type, firstValidValue)
           domains[key] = domain
-
-          console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
-          console.warn(`Using domain ${JSON.stringify(domain)}`)
+          // back
+          //console.warn(`Column '${key}' contains only 1 unique value: ${firstValidValue}.`)
+          //console.warn(`Using domain ${JSON.stringify(domain)}`)
         } else {
           domains[key] = initDomain(type)
 
@@ -111,6 +112,14 @@ function initDomain (type) {
       domain = [new Date('19 January 2038'), new Date(0)]
       break
     }
+    case 'interval:quantitative': {
+      domain = [Infinity, -Infinity]
+      break
+    }
+    case 'interval:temporal': {
+      domain = [new Date('19 January 2038'), new Date(0)]
+      break
+    }
   }
 
   return domain
@@ -133,6 +142,12 @@ function updateDomain (domain, value, type) {
     if (domain[1].getTime() <= epoch) { domain[1] = value }
   }
 
+  if (type.startsWith('interval')) {
+    let intervalType = type.split(':')[1]
+    domain = updateDomain(domain, value[0], intervalType)
+    domain = updateDomain(domain, value[1], intervalType)
+  }
+
   return domain
 }
 
@@ -153,6 +168,10 @@ function initDummyDomain (type, value) {
 
   if (type === 'temporal') {
     domain = [getDay(value, -1), getDay(value, 1)]
+  }
+
+  if (type.startsWith('interval')) {
+    domain = value
   }
 
   return domain

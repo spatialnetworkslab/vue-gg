@@ -37,6 +37,7 @@
         <vgg-y-axis
           :scale="'dependent'"
           :hjust="-.05"
+          :tickExtraLabel="false"
           flip
         />
 
@@ -47,7 +48,7 @@
         :x2="500"
         :y1="100"
         :y2="500"
-        :scale="'explanatory'"
+        :scale="[0, 150]"
       />
 
       <vgg-y-grid

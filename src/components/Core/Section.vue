@@ -1,14 +1,3 @@
-<template>
-  <g
-    v-if="ready && allowScales"
-    class="section"
-  >
-
-    <slot />
-
-  </g>
-</template>
-
 <script>
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataProvider from '../../mixins/Data/DataProvider.js'
@@ -158,11 +147,11 @@ export default {
         id = '_' + randomID()
       }
       return id
-    }
+    },
   },
 
   watch: {
-    transformation: 'updateCoordinateTreeBranch'
+    transformation: 'updateCoordinateTreeBranch',
   },
 
   beforeDestroy () {
@@ -205,8 +194,15 @@ export default {
   provide () {
     let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
     let $$coordinateTreeParent = this.coordinateTreeBranchID
+    let $$getLocalX = this.$$coordinateTree.getLocalX(this.coordinateTreeBranchID)
+    let $$getLocalY = this.$$coordinateTree.getLocalY(this.coordinateTreeBranchID)
+    return { $$transform, $$coordinateTreeParent, $$getLocalX, $$getLocalY }
+  },
 
-    return { $$transform, $$coordinateTreeParent, $$map: false }
+  render (createElement) {
+    if (this.ready && this.allowScales) {
+      return createElement('g', { class: 'section' }, this.$slots.default)
+    }
   }
 }
 </script>

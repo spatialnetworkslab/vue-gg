@@ -4,8 +4,6 @@ import Scatterplot from './charts/Scatterplot.vue'
 
 import Scatterplot2 from './sandbox/Scatterplot.vue'
 import BarChart from './sandbox/BarChart.vue'
-import Heatmap from './sandbox/Heatmap.vue'
-import HeatmapCombinatorial from './sandbox/HeatmapCombinatorial.vue'
 import PlotLines from './sandbox/PlotLines.vue'
 import TestCategoricalDomain from './sandbox/TestCategoricalDomain.vue'
 import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
@@ -22,6 +20,9 @@ import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
 
+import SimpleGridLayout from './sandbox/SimpleGridLayout.vue'
+import MappingGridLayout from './sandbox/MappingGridLayout.vue'
+import RepeatLayout from './sandbox/RepeatLayout.vue'
 
 // IDC Scatterplot Matrices
 import IDCScatter40 from './idc/idcScatterplotMatrix40.vue'
@@ -30,6 +31,10 @@ import IDCScatter5 from './idc/idcScatterplotMatrix5.vue'
 import IDCScatterMono from './idc/idcScatterplotMono.vue'
 import IDCScatterLabel from './idc/idcScatterplotLabel.vue'
 import IDC100 from './idc/idcGraphs100.vue'
+
+// IDC Graphs
+import Heatmap from './sandbox/Heatmap.vue'
+import HeatmapCombinatorial from './sandbox/HeatmapCombinatorial.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -52,6 +57,9 @@ storiesOf('Sandbox', module)
   .add('Trail', () => (TrailMark))
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
+  .add('Simple Grid layout', () => (SimpleGridLayout))
+  .add('Mapping Grid layout', () => (MappingGridLayout))
+  .add('Repeat Grid layout', () => (RepeatLayout))
 
 storiesOf('idcSandbox', module)
   .add('Scatterplot Matrix 40', () => (IDCScatter40))
@@ -60,5 +68,5 @@ storiesOf('idcSandbox', module)
   .add('Scatterplot Matrix Color 100', () => (IDC100))
   .add('Scatterplot Matrix Monochrome', () => (IDCScatterMono))
   .add('Scatterplot Labels', () => (IDCScatterLabel))
-  .add('Heatmap', () => (Heatmap))
-  .add('Heatmap All Combinations', () => (HeatmapCombinatorial))
+  .add('Single Heatmap', () => (Heatmap))
+  .add('Combinatorial Heatmap', () => (HeatmapCombinatorial))
