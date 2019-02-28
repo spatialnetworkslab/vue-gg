@@ -38,6 +38,9 @@
           title="piet"
         />
 
+        <vgg-x-grid :scale="'a'" />
+        <vgg-y-grid :scale="'b'" />
+
       </vgg-section>
 
       <!-- <vgg-x-grid

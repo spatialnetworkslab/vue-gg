@@ -74,16 +74,19 @@
 
             </vgg-map>
 
-            <vgg-x-axis
-              :scale="'xValues'"
-              :tickExtra="false"
+            <!-- <vgg-x-axis
+              :scale="'#x'"
+              :tick-extra="false"
+              :x1="0"
+              :x2="1"
+              :vjust="'b'"
             />
 
             <vgg-y-axis
-              :scale="'yValues'"
+              :scale="'#y'"
+              :tick-extra="false"
               flip
-              :tickExtra="false"
-            />
+            /> -->
 
           </vgg-section>
 

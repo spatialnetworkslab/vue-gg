@@ -68,9 +68,9 @@
 
       <vgg-x-axis
         :scale="'fruit'"
-        :titleHjust="1.1"
+        :title-hjust="1.1"
         :vjust="-.05"
-        rotate-label
+        label-rotate
       />
 
       <vgg-y-axis

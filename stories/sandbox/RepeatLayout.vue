@@ -13,10 +13,6 @@
     >
 
       <vgg-section
-        :axes="{
-          left: { scale: y },
-          bottom: { scale: x }
-        }"
         :grid-lines="{
           x: { scale: x },
           y: { scale: y }
