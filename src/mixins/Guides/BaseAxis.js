@@ -7,7 +7,8 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
-import defaultFormat from './defaultFormat.js'
+import defaultFormat from './utils/defaultFormat.js'
+import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
 export default {
   mixins: [Rectangular, DataReceiver, ScaleReceiver],
@@ -318,7 +319,7 @@ export default {
 
         if (this.domainType === 'interval:quantitative') {
           let intervals = this.$$dataInterface.getColumn(this.scale)
-          ticks = this.ticksFromIntervals(intervals).map(value => {
+          ticks = ticksFromIntervals(intervals).map(value => {
             return { value, label: format(value) }
           })
         }
@@ -331,7 +332,7 @@ export default {
           }
 
           let intervals = this.$$dataInterface.getColumn(this.scale)
-          ticks = this.ticksFromIntervals(intervals).map(value => {
+          ticks = ticksFromIntervals(intervals).map(value => {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })
@@ -348,15 +349,6 @@ export default {
   methods: {
     getJust (lowerBound, width, just) {
       return lowerBound + (width * just)
-    },
-
-    ticksFromIntervals (intervals) {
-      let ticks = new Set()
-      for (let interval of intervals) {
-        ticks.add(interval[0])
-        ticks.add(interval[1])
-      }
-      return Array.from(ticks)
     }
   }
 }

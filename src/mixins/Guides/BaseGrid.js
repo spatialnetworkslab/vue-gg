@@ -6,6 +6,7 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import { isnt } from '../../utils/equals.js'
+import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
 export default {
   mixins: [Rectangular, DataReceiver],
@@ -116,6 +117,21 @@ export default {
           let scale = scaleTime().domain(this.domain)
 
           cells = scale.ticks(this.tickCount).map(value => {
+            let date = new Date(value)
+            return { value: date }
+          })
+        }
+
+        if (this.domainType === 'interval:quantitative') {
+          let intervals = this.$$dataInterface.getColumn(this.scale)
+          cells = ticksFromIntervals(intervals).map(value => {
+            return { value }
+          })
+        }
+
+        if (this.domainType === 'interval:temporal') {
+          let intervals = this.$$dataInterface.getColumn(this.scale)
+          cells = ticksFromIntervals(intervals).map(value => {
             let date = new Date(value)
             return { value: date }
           })
