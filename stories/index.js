@@ -4,8 +4,6 @@ import Scatterplot from './charts/Scatterplot.vue'
 
 import Scatterplot2 from './sandbox/Scatterplot.vue'
 import BarChart from './sandbox/BarChart.vue'
-import Heatmap from './sandbox/Heatmap.vue'
-import HeatmapCombinatorial from './sandbox/HeatmapCombinatorial.vue'
 import PlotLines from './sandbox/PlotLines.vue'
 import TestCategoricalDomain from './sandbox/TestCategoricalDomain.vue'
 import NestedCoordinateSystem from './sandbox/NestedCoordinateSystem.vue'
@@ -24,6 +22,14 @@ import GlobalDataScope from './sandbox/GlobalDataScope.vue'
 import SimpleGridLayout from './sandbox/SimpleGridLayout.vue'
 import MappingGridLayout from './sandbox/MappingGridLayout.vue'
 import RepeatLayout from './sandbox/RepeatLayout.vue'
+
+// IDC Graphs
+import Heatmap from './sandbox/Heatmap.vue'
+import HeatmapCombinatorial from './sandbox/HeatmapCombinatorial.vue'
+import idcGraphs2 from './sandbox/idcGraphs2.vue'
+import idcGraphs3 from './sandbox/idcGraphs3.vue'
+import idcGraphs100 from './sandbox/idcGraphs100.vue'
+import idcGraphsWOPrice from './sandbox/idcGraphsWOPrice.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -49,3 +55,9 @@ storiesOf('Sandbox', module)
   .add('Simple Grid layout', () => (SimpleGridLayout))
   .add('Mapping Grid layout', () => (MappingGridLayout))
   .add('Repeat Grid layout', () => (RepeatLayout))
+  .add('IDC Scatterplot Monochrome', () => (idcGraphs2))
+  .add('IDC Scatterplot Symbol', () => (idcGraphs3))
+  .add('IDC Scatterplot 100', () => (idcGraphs100))
+  .add('IDC Color Scale', () => (idcGraphsWOPrice))
+  .add('Single Heatmap', () => (Heatmap))
+  .add('Combinatorial Heatmap', () => (HeatmapCombinatorial))

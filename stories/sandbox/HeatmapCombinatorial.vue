@@ -38,7 +38,7 @@
                 :scale="actualOptions(options[j])"
                 :title="xAxis"
                 :labelFontSize="10"
-                :titleHjust="1 + 0.025 * (3 - j)** (2-j)"
+                :titleHjust="1 + 0.04 * (options.length - j)"
                 labelRotate
               />
 
@@ -46,8 +46,6 @@
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
                 :labelFontSize="10"
-                :vjust="0.1"
-                :titleVjust="1 + 0.025 * (3 - i)**1.5"
                 flip
               />
             </vgg-section>
@@ -73,13 +71,15 @@ export default {
       xAxis: '',
       title: '',
       drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      bikeCategories: ['Price', 'RearWheelTQ', 'MilesPG', 'Horsepower', 'Weight', 'TopSpeed', 'To60', 'To100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
-      dimensions: [3, 5, 10, 11],
-      options: [5, 100],
+      bikeCategories: ['Price', 'RearWheelTQ', 'MilesPG', 'Horsepower', 'PWRatio', 'Weight', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
+      dimensions: [3, 5, 10, 12],
+      options: [5, 10, 25, 50, 100],
       height: 2000,
       width: 8700,
       baseX: 100,
       baseY: 100,
+      padX: 200,
+      padY: 150
     }
   },
 
@@ -91,17 +91,17 @@ export default {
     dimensionSections () {
       let sections = []
       for (let d in this.dimensions){
-        let x1 = this.baseY, x2
+        let y1 = this.baseY, y2
         if (d > 0) {
           for (let prevD in this.dimensions.slice(0, d)){
-            x1 += this.dimensions[prevD] * 40
+            y1 += this.dimensions[prevD] * 40
           }
-          x1 += 150 * d
-          x2 = x1 + this.dimensions[d] * 40
+          y1 += this.padY * d
+          y2 = y1 + this.dimensions[d] * 40
         } else {
-          x2 = this.baseY + this.dimensions[d] * 40
+          y2 = this.baseY + this.dimensions[d] * 40
         }
-        sections.push([x1, x2])
+        sections.push([y1, y2])
       }
       return sections
     },
@@ -114,7 +114,7 @@ export default {
           for (let prevO in this.options.slice(0, o)){
             x1 += this.options[prevO] * 40
           }
-          x1 += 150 * o
+          x1 += this.padX * o
           x2 = x1 + this.options[o] * 40
         } else {
           x2 = this.baseX + this.options[o] * 40
@@ -138,6 +138,7 @@ export default {
     },
 
     segments(dimensions, options){
+      console.log(this.data)
       let categories = this.categories
       if (this.data) {
         if (!isNaN(dimensions)){
@@ -209,13 +210,14 @@ export default {
             Name: d['Make and Model'],
             Price: parseInt(d['Base MSRP']),
             Rating: d['Rating Category'],
+            PWRatio: parseInt(d.PWRatio),
             MilesPG: parseInt(d['Average MPG']),
             Horsepower: parseInt(d['Rear-Wheel HP']),
             RearWheelTQ: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
-            To100: parseInt(d['0–100 mph, sec.']),
+            ZeroTo100: parseInt(d['0–100 mph, sec.']),
             Weight: parseInt(d['Wet Weight']),
             TopSpeed: parseInt(d['Top Speed']),
-            To60: parseInt(d['0–60 mph, sec.']),
+            ZeroTo60: parseInt(d['0–60 mph, sec.']),
             Quartermile: parseInt(d['Quartermile, sec']),
             QuartermileMaxSpeed: parseInt(d['Quartermile, mph']),
             Stop60: parseInt(d['Braking 60–0 mph (feet)'])
