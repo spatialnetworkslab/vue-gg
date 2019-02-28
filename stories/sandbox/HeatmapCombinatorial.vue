@@ -29,7 +29,7 @@
                   :x2="row.x2"
                   :y1="row.y1"
                   :y2="row.y2"
-                  :fill="{val: row.value, scale: { type: 'purples', domain: 'value'}}"
+                  :fill="{val: row.value, scale: { type: row.colorScale, domain: 'value'}}"
                   />
                 </vgg-map>
               </vgg-data>
@@ -69,14 +69,15 @@ export default {
       data: undefined,
       names: [],
       categories: [],
-      xAxis: '',
-      title: '',
+      xAxis: undefined,
+      title: undefined,
       drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
       bikeCategories: ['Price', 'RearWheelHorsepower', 'RearWheelTQLbFt', 'WetWeight', 'MilesPG', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'QuartermileSec', 'QuartermileHr','Stop60', 'PWRatio'],
-
-      //Base MSRP	Engine Type	Transmission	Rear-Wheel HP	Rear-Wheel TQ (lb.-ft.)	Wet Weight	Average MPG	Top Speed	0–60 mph, sec.	0–100 mph, sec.	Quartermile, sec	Quartermile, mph	Braking 60–0 mph (feet)	Power to Weight	PWRatio	Rating Category
-      dimensions: [3, 5, 10, 12],
-      options: [5, 10, 25, 50],
+      cameraCategories: ['Name', 'MaxRes', 'LowRes', 'EffectivePix', 'ZoomWide', 'ZoomTele', 'NormFocusRange', 'MacroFocusRange', 'StorageGB', 'Weight', 'Dimensions'],
+      colorScales: ['blues', 'reds', 'purples'],
+      dataSets: ['Drinks', 'Motorbikes', 'Cameras'],
+      dimensions: [3, 5, 10],
+      options: [5, 10],
       height: 2000,
       width: 8700,
       baseX: 150,
@@ -87,8 +88,9 @@ export default {
   },
 
   mounted () {
-    this.drinks()
-    //this.bikes()
+    //this.drinks()
+    this.bikes()
+    //this.cameras()
   },
   computed: {
     dimensionSections () {
@@ -141,7 +143,6 @@ export default {
     },
 
     segments(dimensions, options){
-      console.log(this.data)
       let categories = this.categories
       if (this.data) {
         if (!isNaN(dimensions)){
@@ -167,9 +168,11 @@ export default {
               macro.value = this.data[j][categories[i]]
               macro.attribute = categories[i]
               macro.name = this.data[j].Name
+              macro.colorScale = this.colorScales[this.dataSets.indexOf(this.xAxis)]
               segments[i].push(macro)
             }
         }
+        console.log(segments)
         return segments
       }
     },
@@ -178,6 +181,7 @@ export default {
       this.categories = this.drinkCategories
       this.xAxis = 'Drinks'
       this.title = 'Drinks Data'
+      this.dataset = 'drinks'
       // change name of csv
       csv('../../static/idcDemoDrinksDailyInterpolated.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
@@ -206,6 +210,7 @@ export default {
       this.categories = this.bikeCategories
       this.xAxis = 'Motorbikes'
       this.title = 'Motorcycle Performance 2014'
+      this.colorScale = "reds"
       // change name of csv
       csv('../../static/mcn_performance_index14_alphabetical.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
@@ -224,6 +229,31 @@ export default {
             QuartermileSec: parseInt(d['Quartermile, sec']),
             QuartermileHr: parseInt(d['Quartermile, mph']),
             Stop60: parseInt(d['Braking 60–0 mph (feet)'])
+          }
+        }))
+      })
+    },
+
+    cameras () {
+      this.categories = this.cameraCategories
+      this.xAxis = 'Cameras'
+      this.title = 'Camera Specifications 2007'
+      // change name of csv
+      csv('../../static/cameras_1038.csv').then((data) => {
+        this.data = Object.freeze(data.map(d => {
+          return {
+            Name: d.Model,
+            MaxRes: parseInt(d['Max resolution']),
+            LowRes: parseInt(d['Low resolution']),
+            EffectivePix: parseInt(d['Effective pixels']),
+            ZoomWide: parseInt(d['Zoom wide (W)']),
+            ZoomTele: parseInt(d['Zoom tele (T)']),
+            NormFocusRange: parseInt(d['Normal focus range']),
+            MacroFocusRange: parseInt(d['Macro focus range']),
+            StorageGB: parseInt(d['Storage included']),
+            Weight: parseInt(d['Weight (inc. batteries)']),
+            Dimensions: parseInt(d.Dimensions),
+            Price: parseInt(d.Price)
           }
         }))
       })
