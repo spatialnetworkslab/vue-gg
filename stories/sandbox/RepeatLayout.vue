@@ -1,7 +1,7 @@
 <template>
   <vgg-graphic
-    :width="600"
-    :height="600"
+    :width="800"
+    :height="800"
     :data="data"
   >
 
@@ -9,13 +9,17 @@
       v-slot="{ x, y }"
       :x="['a', 'b', 'c']"
       :y="['a', 'b', 'c']"
-      :cell-padding="5"
+      :cell-padding="12"
     >
 
       <vgg-section
         :grid-lines="{
           x: { scale: x },
           y: { scale: y }
+        }"
+        :axes="{
+          bottom: { scale: x, labelRotate: true },
+          right: { scale: y }
         }"
       >
 
