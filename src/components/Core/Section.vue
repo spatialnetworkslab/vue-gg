@@ -8,7 +8,7 @@ import Rectangular from '../../mixins/Marks/Rectangular.js'
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import randomID from '../../utils/id.js'
 
-import { calculateWidths, createAxisProps, applyProps } from './utils/section.js'
+import { calculateWidths, createAxisProps } from './utils/section.js'
 
 import Section from './Section.vue'
 import XAxis from '../Guides/XAxis.vue'
@@ -155,6 +155,8 @@ export default {
       }
 
       if (this.axes) {
+        // If there are axes, we will just do an identity transformation.
+        // The actual transformation will then take place in the nested child section.
         transformation = new CoordinateTransformation({
           type: 'scale',
           scales: this.ranges,
@@ -200,8 +202,6 @@ export default {
     },
 
     nestedSectionProps () {
-      if (!this.axes) { return this.coordinateSpecification }
-
       let props = {}
       let coordinateSpecification = this.coordinateSpecification
       let axisWidths = this.axisWidths
@@ -286,25 +286,21 @@ export default {
       let elements = []
       let widths = this.axisWidths
       let axes = this._axes
-      let originalCoords = this.coordinateSpecification
+      let coords = this.coordinateSpecification
       let scales = this.scales
 
       for (let axis in axes) {
         let axisOptions = axes[axis]
 
         if (['top', 'bottom'].includes(axis)) {
-          let props = createAxisProps(
-            axis, axisOptions, originalCoords, widths, scales
-          )
+          let props = createAxisProps(axis, axisOptions, coords, widths, scales)
 
           let axisElement = createElement(XAxis, { props })
           elements.push(axisElement)
         }
 
         if (['left', 'right'].includes(axis)) {
-          let props = createAxisProps(
-            axis, axisOptions, originalCoords, widths, scales
-          )
+          let props = createAxisProps(axis, axisOptions, coords, widths, scales)
 
           let axisElement = createElement(YAxis, { props })
           elements.push(axisElement)
