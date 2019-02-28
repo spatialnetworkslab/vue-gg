@@ -89,6 +89,7 @@
 <script>
 import BaseAxis from '../../mixins/Guides/BaseAxis.js'
 import { isnt } from '../../utils/equals.js'
+import createScale from '../../scales/createScale.js'
 
 export default {
   mixins: [BaseAxis],
@@ -110,7 +111,7 @@ export default {
 
     titleVjust: {
       type: [Number, String],
-      default: 0,
+      default: -0.1,
       validator: p => (p.constructor === Number) || (['center', 't', 'b'].includes(p))
     }
   },
@@ -163,7 +164,7 @@ export default {
       // If there is no valid y-coordinate specification, we will use vjust
       if (this.invalidY) {
         if (this.y || this.y1 || this.y2) {
-          throw new Error(`Cannot combine 'vjust' with 'x', 'x1' or 'x2'`)
+          throw new Error('Invalid combination of y-positioning props')
         }
 
         let h
@@ -221,6 +222,10 @@ export default {
     _tickLength () {
       if (this.tickLength) { return this.tickLength }
       return this.widthY / 5
+    },
+
+    parsedScale () {
+      return createScale('x', this.context, this.scalingOptions)
     }
   }
 }

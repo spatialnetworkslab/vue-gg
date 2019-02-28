@@ -7,7 +7,6 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
-import createScale from '../../scales/createScale.js'
 import defaultFormat from './defaultFormat.js'
 
 export default {
@@ -209,12 +208,9 @@ export default {
     domainType () {
       return this.parsedScalingOptions[1]
     },
+
     scalingOptions () {
       return this.parsedScalingOptions[2]
-    },
-
-    parsedScale () {
-      return createScale('x', this.context, this.scalingOptions)
     },
 
     parentDomains () {
