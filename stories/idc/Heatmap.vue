@@ -76,9 +76,9 @@ export default {
       cameraCategories: ['MaxRes', 'LowRes', 'EffectivePix', 'ZoomWide', 'ZoomTele', 'NormFocusRange', 'MacroFocusRange', 'StorageGB', 'Weight', 'Dimensions'],
       carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower' ,'Length' ,'ForwardGears' ,'Torque'],
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
-      dataSets: ['Drinks', 'Motorbikes', 'Cameras', 'Cars'],
-      dimensions: [3, 5, 7],
-      options: [5, 100],
+      dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
+      dimensions: [10],
+      options: [100],
       height: 2000,
       width: 8700,
       baseX: 150,
@@ -90,9 +90,9 @@ export default {
 
   mounted () {
     //this.drinks()
-    //this.bikes()
+    this.bikes()
     //this.cameras()
-    this.cars()
+    //this.cars()
   },
   computed: {
     dimensionSections () {
@@ -209,7 +209,7 @@ export default {
 
     bikes () {
       this.categories = this.bikeCategories
-      this.xAxis = 'Motorbikes'
+      this.xAxis = 'Motorbike Model'
       this.title = 'Motorcycle Performance 2014'
       this.colorScale = "reds"
       // change name of csv
@@ -237,7 +237,7 @@ export default {
 
     cameras () {
       this.categories = this.cameraCategories
-      this.xAxis = 'Cameras'
+      this.xAxis = 'Camera Model'
       this.title = 'Camera Specifications 2007'
       // change name of csv
       csv('../../static/cameras_1038.csv').then((data) => {
@@ -262,7 +262,7 @@ export default {
 
     cars () {
       this.categories = this.carCategories
-      this.xAxis = 'Cars'
+      this.xAxis = 'Car ID'
       this.title = 'Car Specifications 2012'
       // change name of csv
       csv('../../static/cars7xu2012.csv').then((data) => {

@@ -34,9 +34,9 @@ import IDCScatterMono from './idc/idcScatterplotMono.vue'
 import IDCScatterLabel from './idc/idcScatterplotLabel.vue'
 import IDC100 from './idc/idcGraphs100.vue'
 
-// IDC Graphs
-import Heatmap from './sandbox/Heatmap.vue'
-import HeatmapCombinatorial from './sandbox/HeatmapCombinatorial.vue'
+// IDC Heatmaps
+import Heatmap from './idc/Heatmap.vue'
+import HeatmapCombinatorial from './idc//HeatmapCombinatorial.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
