@@ -197,10 +197,7 @@ export default {
 
   watch: {
     transformation: 'updateCoordinateTreeBranch',
-    axes: {
-      handler: 'handleUpdateAxes',
-      deep: true
-    }
+    axes: 'updateCoordinateTreeBranch'
   },
 
   beforeDestroy () {
@@ -210,10 +207,8 @@ export default {
   },
 
   mounted () {
-    if (!this.axes) {
-      this.setCoordinateTreeBranch()
-      this.ready = true
-    }
+    this.setCoordinateTreeBranch()
+    this.ready = true
   },
 
   methods: {
@@ -238,20 +233,6 @@ export default {
         return true
       } else {
         return false
-      }
-    },
-
-    handleUpdateAxes (newVal, oldVal) {
-      // No axes to axes
-      if (!oldVal && newVal) {
-        this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
-      }
-
-      // Axes to no axes
-      if (oldVal && !newVal) {
-        this.ready = false
-        this.setCoordinateTreeBranch()
-        this.ready = true
       }
     },
 
