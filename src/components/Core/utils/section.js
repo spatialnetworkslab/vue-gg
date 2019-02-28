@@ -1,59 +1,59 @@
-export function calculateWidths (axes, ranges, defaultFraction = 8) {
+export function calculateWidths (axes, coords, defaultFraction = 8) {
   let widths = { top: 0, bottom: 0, left: 0, right: 0 }
 
   for (let axis in axes) {
     let axisOptions = axes[axis]
-    widths[axis] = calculateWidth(axis, axisOptions, ranges, defaultFraction)
+    widths[axis] = calculateWidth(axis, axisOptions, coords, defaultFraction)
   }
 
   return widths
 }
 
-function calculateWidth (axis, axisOptions, ranges, defaultFraction = 8) {
+function calculateWidth (axis, axisOptions, coords, defaultFraction = 8) {
   if (['bottom', 'top'].includes(axis)) {
-    let yRange = ranges.y[1] - ranges.y[0]
+    let yRange = coords.y2 - coords.y1
     let h = axisOptions && axisOptions.constructor === Object ? axisOptions.h : undefined
     return h || Math.abs(yRange) / defaultFraction
   }
   if (['left', 'right'].includes(axis)) {
-    let xRange = ranges.x[1] - ranges.x[0]
+    let xRange = coords.x2 - coords.x1
     let w = axisOptions && axisOptions.constructor === Object ? axisOptions.w : undefined
     return w || Math.abs(xRange) / defaultFraction
   }
 }
 
-export function createAxisProps (axis, axisOptions, ranges, widths, scales) {
+export function createAxisProps (axis, axisOptions, originalCoords, widths, scales) {
   let x1, x2, y1, y2, scale
 
   if (axis === 'bottom') {
-    x1 = ranges.x[0] + widths.left
-    x2 = ranges.x[1] - widths.right
-    y1 = ranges.y[0]
+    x1 = originalCoords.x1 + widths.left
+    x2 = originalCoords.x2 - widths.right
+    y1 = originalCoords.y1
     y2 = y1 + widths.bottom
     scale = scales.x
   }
 
   if (axis === 'top') {
-    x1 = ranges.x[0] + widths.left
-    x2 = ranges.x[1] - widths.right
-    y1 = ranges.y[1] - widths.top
-    y2 = ranges.y[1]
+    x1 = originalCoords.x1 + widths.left
+    x2 = originalCoords.x2 - widths.right
+    y1 = originalCoords.y2 - widths.top
+    y2 = originalCoords.y2
     scale = scales.x
   }
 
   if (axis === 'left') {
-    x1 = ranges.x[0]
+    x1 = originalCoords.x1
     x2 = x1 + widths.left
-    y1 = ranges.y[0] + widths.bottom
-    y2 = ranges.y[1] - widths.top
+    y1 = originalCoords.y1 + widths.bottom
+    y2 = originalCoords.y2 - widths.top
     scale = scales.y
   }
 
   if (axis === 'right') {
-    x1 = ranges.x[1] - widths.right
-    x2 = ranges.x[1]
-    y1 = ranges.y[0] + widths.bottom
-    y2 = ranges.y[1] - widths.top
+    x1 = originalCoords.x2 - widths.right
+    x2 = originalCoords.x2
+    y1 = originalCoords.y1 + widths.bottom
+    y2 = originalCoords.y2 - widths.top
     scale = scales.y
   }
 

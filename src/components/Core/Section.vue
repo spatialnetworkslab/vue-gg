@@ -13,8 +13,8 @@ import { calculateWidths, createAxisProps, applyProps } from './utils/section.js
 import Section from './Section.vue'
 import XAxis from '../Guides/XAxis.vue'
 import YAxis from '../Guides/YAxis.vue'
-import XGrid from '../Guides/XGrid.vue'
-import YGrid from '../Guides/YGrid.vue'
+// import XGrid from '../Guides/XGrid.vue'
+// import YGrid from '../Guides/YGrid.vue'
 
 export default {
   mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular],
@@ -73,42 +73,16 @@ export default {
   },
 
   computed: {
-    _axes () {
-      if (this.axes && this.axes.constructor === Array) {
-        let axes = {}
-        for (let axis of this.axes) {
-          axes[axis] = null
-        }
-        return axes
-      } else {
-        return this.axes
-      }
-    },
-
-    _gridLines () {
-      if (this.gridLines && this.gridLines.constructor === Array) {
-        let gridLines = {}
-        for (let gridLine of this.gridLines) {
-          gridLines[gridLine] = null
-        }
-        return gridLines
-      } else {
-        return this.gridLines
-      }
-    },
-
     ranges () {
-      let aes = this.coordinateSpecification
-      let ranges = {
-        x: [aes.x1, aes.x2],
-        y: [aes.y1, aes.y2]
+      let coords = this.coordinateSpecification
+      return {
+        x: [coords.x1, coords.x2],
+        y: [coords.y1, coords.y2]
       }
-
-      return ranges
     },
 
     scales () {
-      if (this.scaleX || this.scaleY || this.scaleGeo) {
+      if ((this.scaleX || this.scaleY || this.scaleGeo)) {
         let scales = {}
         if (this.scaleX) { scales.x = this.scaleX }
         if (this.scaleY) { scales.y = this.scaleY }
@@ -168,13 +142,28 @@ export default {
     },
 
     transformation () {
-      let transformation = new CoordinateTransformation({
-        type: this.type,
-        scales: this.scales,
-        ranges: this.ranges,
-        dataInterface: this.$$dataInterface,
-        scaleManager: this.$$scaleManager
-      })
+      let transformation
+
+      if (!this.axes) {
+        transformation = new CoordinateTransformation({
+          type: this.type,
+          scales: this.scales,
+          ranges: this.ranges,
+          dataInterface: this.$$dataInterface,
+          scaleManager: this.$$scaleManager
+        })
+      }
+
+      if (this.axes) {
+        transformation = new CoordinateTransformation({
+          type: 'scale',
+          scales: this.ranges,
+          ranges: this.ranges,
+          dataInterface: this.$$dataInterface,
+          scaleManager: this.$$scaleManager
+        })
+      }
+
       return transformation
     },
 
@@ -192,18 +181,70 @@ export default {
         id = '_' + randomID()
       }
       return id
+    },
+
+    _axes () {
+      if (this.axes && this.axes.constructor === Array) {
+        let axes = {}
+        for (let axis of this.axes) {
+          axes[axis] = null
+        }
+        return axes
+      } else {
+        return this.axes
+      }
+    },
+
+    axisWidths () {
+      return calculateWidths(this._axes, this.coordinateSpecification)
+    },
+
+    nestedSectionProps () {
+      if (!this.axes) { return this.coordinateSpecification }
+
+      let props = {}
+      let coordinateSpecification = this.coordinateSpecification
+      let axisWidths = this.axisWidths
+
+      props.x1 = coordinateSpecification.x1 + axisWidths.left
+      props.x2 = coordinateSpecification.x2 - axisWidths.right
+      props.y1 = coordinateSpecification.y1 + axisWidths.bottom
+      props.y2 = coordinateSpecification.y2 - axisWidths.top
+
+      const forbiddenProps = [
+        'x1', 'x2', 'x', 'w',
+        'y1', 'y2', 'y', 'h',
+        'axes', 'gridLines'
+      ]
+
+      for (let prop in this._props) {
+        if (!forbiddenProps.includes(prop)) {
+          props[prop] = this._props[prop]
+        }
+      }
+
+      return props
     }
+
+    // _gridLines () {
+    //   if (this.gridLines && this.gridLines.constructor === Array) {
+    //     let gridLines = {}
+    //     for (let gridLine of this.gridLines) {
+    //       gridLines[gridLine] = null
+    //     }
+    //     return gridLines
+    //   } else {
+    //     return this.gridLines
+    //   }
+    // }
   },
 
   watch: {
-    transformation: 'updateCoordinateTreeBranch',
-    axes: 'updateCoordinateTreeBranch'
+    transformation: 'updateCoordinateTreeBranch'
   },
 
   beforeDestroy () {
-    if (!this.axes) {
-      this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
-    }
+    this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
   },
 
   mounted () {
@@ -221,9 +262,7 @@ export default {
     },
 
     updateCoordinateTreeBranch () {
-      if (!this.axes) {
-        this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
-      }
+      this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
     },
 
     checkAllowedObj (domain) {
@@ -236,94 +275,39 @@ export default {
       }
     },
 
-    createSection (createElement, widths) {
-      let props = this.updatePositionProps(this._props, widths)
-
+    createSection (createElement) {
+      let props = this.nestedSectionProps
       let slotContent = this.getSlotContent()
+
       return createElement(Section, { props }, slotContent)
     },
 
-    updatePositionProps (props, widths) {
-      let newProps = {}
-      let coordinateSpecification = this.coordinateSpecification
-      let positionProps = ['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h']
-
-      for (let prop in props) {
-        if (!positionProps.includes(prop) && !['axes', 'gridLines'].includes(prop)) {
-          newProps[prop] = props[prop]
-        }
-      }
-
-      newProps.x1 = coordinateSpecification.x1 + widths.left
-      newProps.x2 = coordinateSpecification.x2 - widths.right
-      newProps.y1 = coordinateSpecification.y1 + widths.bottom
-      newProps.y2 = coordinateSpecification.y2 - widths.top
-
-      return newProps
-    },
-
-    createAxes (createElement, widths) {
+    createAxes (createElement) {
       let elements = []
+      let widths = this.axisWidths
       let axes = this._axes
-      let ranges = this.ranges
+      let originalCoords = this.coordinateSpecification
       let scales = this.scales
 
       for (let axis in axes) {
         let axisOptions = axes[axis]
 
         if (['top', 'bottom'].includes(axis)) {
-          let props = createAxisProps(axis, axisOptions, ranges, widths, scales)
+          let props = createAxisProps(
+            axis, axisOptions, originalCoords, widths, scales
+          )
 
           let axisElement = createElement(XAxis, { props })
           elements.push(axisElement)
         }
 
         if (['left', 'right'].includes(axis)) {
-          let props = createAxisProps(axis, axisOptions, ranges, widths, scales)
+          let props = createAxisProps(
+            axis, axisOptions, originalCoords, widths, scales
+          )
 
           let axisElement = createElement(YAxis, { props })
           elements.push(axisElement)
-        }
-      }
-
-      return elements
-    },
-
-    createGridLines (createElement, widths) {
-      let elements = []
-
-      for (let gridLine in this._gridLines) {
-        let gridLineOptions = this._gridLines[gridLine]
-        let props = {}
-
-        if (widths) {
-          props.x1 = widths.left
-          props.x2 = widths.right
-          props.y1 = widths.bottom
-          props.y2 = widths.top
-        } else {
-          props.x1 = this.ranges.x[0]
-          props.x2 = this.ranges.x[1]
-          props.y1 = this.ranges.y[0]
-          props.y2 = this.ranges.y[1]
-        }
-
-        if (gridLine === 'x') {
-          props.scale = this.scaleX
-          if (gridLineOptions && gridLineOptions.constructor === Object) {
-            props = applyProps(props, gridLineOptions)
-          }
-
-          elements.push(createElement(XGrid, { props }))
-        } else if (gridLine === 'y') {
-          props.scale = this.scaleY
-          if (gridLineOptions && gridLineOptions.constructor === Object) {
-            props = applyProps(props, gridLineOptions)
-          }
-
-          elements.push(createElement(YGrid, { props }))
-        } else {
-          throw new Error(`Invalid grid-line key: '${gridLine}'. Only 'x' and 'y' allowed`)
         }
       }
 
@@ -350,28 +334,14 @@ export default {
   render (createElement) {
     if (this.ready && this.allowScales) {
       if (!this.axes) {
-        let content = this.getSlotContent()
-
-        if (this.gridLines) {
-          let gridLines = this.createGridLines(createElement)
-          content.push(...gridLines)
-        }
-
-        return createElement('g', { class: 'section' }, content)
+        let slotContent = this.getSlotContent()
+        return createElement('g', { class: 'section' }, slotContent)
       }
 
       if (this.axes) {
-        let widths = calculateWidths(this._axes, this.ranges)
-
-        let content = []
-        let section = this.createSection(createElement, widths)
-        let axes = this.createAxes(createElement, widths)
-        content = [section, ...axes]
-
-        if (this.gridLines) {
-          let gridLines = this.createGridLines(createElement, widths)
-          content.push(...gridLines)
-        }
+        let section = this.createSection(createElement)
+        let axes = this.createAxes(createElement)
+        let content = [section, ...axes]
 
         return createElement('g', { class: 'section-with-axes' }, content)
       }
