@@ -27,7 +27,9 @@ import RepeatLayout from './sandbox/RepeatLayout.vue'
 // IDC Scatterplot Matrices
 import IDCScatter40 from './idc/idcScatterplotMatrix40.vue'
 import IDCScatter10 from './idc/idcScatterplotMatrix10.vue'
+import IDCScatter1010 from './idc/idcScatterplotMatrix10-10.vue'
 import IDCScatter5 from './idc/idcScatterplotMatrix5.vue'
+import IDCScatter510 from './idc/idcScatterplotMatrix5-10.vue'
 import IDCScatterMono from './idc/idcScatterplotMono.vue'
 import IDCScatterLabel from './idc/idcScatterplotLabel.vue'
 import IDC100 from './idc/idcGraphs100.vue'
@@ -64,7 +66,9 @@ storiesOf('Sandbox', module)
 storiesOf('idcSandbox', module)
   .add('Scatterplot Matrix 40', () => (IDCScatter40))
   .add('Scatterplot Matrix 10', () => (IDCScatter10))
+  .add('Scatterplot Matrix 10 10', () => (IDCScatter1010))
   .add('Scatterplot Matrix 5', () => (IDCScatter5))
+  .add('Scatterplot Matrix 5 10', () => (IDCScatter510))
   .add('Scatterplot Matrix Color 100', () => (IDC100))
   .add('Scatterplot Matrix Monochrome', () => (IDCScatterMono))
   .add('Scatterplot Labels', () => (IDCScatterLabel))

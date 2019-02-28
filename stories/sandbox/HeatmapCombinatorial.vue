@@ -73,11 +73,12 @@ export default {
       title: undefined,
       drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
       bikeCategories: ['Price', 'RearWheelHorsepower', 'RearWheelTQLbFt', 'WetWeight', 'MilesPG', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'QuartermileSec', 'QuartermileHr','Stop60', 'PWRatio'],
-      cameraCategories: ['Name', 'MaxRes', 'LowRes', 'EffectivePix', 'ZoomWide', 'ZoomTele', 'NormFocusRange', 'MacroFocusRange', 'StorageGB', 'Weight', 'Dimensions'],
-      colorScales: ['blues', 'reds', 'purples'],
-      dataSets: ['Drinks', 'Motorbikes', 'Cameras'],
-      dimensions: [3, 5, 10],
-      options: [5, 10],
+      cameraCategories: ['MaxRes', 'LowRes', 'EffectivePix', 'ZoomWide', 'ZoomTele', 'NormFocusRange', 'MacroFocusRange', 'StorageGB', 'Weight', 'Dimensions'],
+      carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower' ,'Length' ,'ForwardGears' ,'Torque'],
+      colorScales: ['blues', 'reds', 'purples', 'oranges'],
+      dataSets: ['Drinks', 'Motorbikes', 'Cameras', 'Cars'],
+      dimensions: [3, 5, 7],
+      options: [5, 100],
       height: 2000,
       width: 8700,
       baseX: 150,
@@ -89,8 +90,9 @@ export default {
 
   mounted () {
     //this.drinks()
-    this.bikes()
+    //this.bikes()
     //this.cameras()
+    this.cars()
   },
   computed: {
     dimensionSections () {
@@ -156,7 +158,7 @@ export default {
         let segments = []
         let heightDelta = 40, widthDelta = 40
         let y = this.dimensionSections[this.dimensions.indexOf(dimensions)][0], x = this.optionSections[this.options.indexOf(options)][0]
-
+        console.log(this.data)
         for (let i = 0; i < categories.length; i++) {
             segments[i] = []
             for (let j = 0; j < options; j++) {
@@ -172,7 +174,6 @@ export default {
               segments[i].push(macro)
             }
         }
-        console.log(segments)
         return segments
       }
     },
@@ -254,6 +255,27 @@ export default {
             Weight: parseInt(d['Weight (inc. batteries)']),
             Dimensions: parseInt(d.Dimensions),
             Price: parseInt(d.Price)
+          }
+        }))
+      })
+    },
+
+    cars () {
+      this.categories = this.carCategories
+      this.xAxis = 'Cars'
+      this.title = 'Car Specifications 2012'
+      // change name of csv
+      csv('../../static/cars7xu2012.csv').then((data) => {
+        this.data = Object.freeze(data.map(d => {
+          return {
+            Name: d.ID,
+            Length: parseInt(d.Length),
+            CityMPG: parseInt(d['City mpg']),
+            Height: parseInt(d.Height),
+            HighwayMPG: parseInt(d['Highway mpg']),
+            Horsepower: parseInt(d['Horsepower']),
+            ForwardGears: parseInt(d['Number of Forward Gears']),
+            Torque: parseInt(d.Torque)
           }
         }))
       })
