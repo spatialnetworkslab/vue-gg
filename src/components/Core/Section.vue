@@ -363,9 +363,7 @@ export default {
   provide () {
     let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
     let $$coordinateTreeParent = this.coordinateTreeBranchID
-    let $$getLocalX = this.$$coordinateTree.getLocalX(this.coordinateTreeBranchID)
-    let $$getLocalY = this.$$coordinateTree.getLocalY(this.coordinateTreeBranchID)
-    return { $$transform, $$coordinateTreeParent, $$getLocalX, $$getLocalY }
+    return { $$transform, $$coordinateTreeParent }
   },
 
   render (createElement) {
