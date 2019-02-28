@@ -37,15 +37,16 @@
               <vgg-x-axis
                 :scale="actualOptions(options[j])"
                 :title="xAxis"
-                :labelFontSize="10"
-                :titleHjust="1 + 0.04 * (options.length - j)"
+                :labelFontSize="12"
+                :titleHjust="1.05"
+                titleAnchorPoint="l"
                 labelRotate
               />
 
               <vgg-y-axis
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
-                :labelFontSize="10"
+                :labelFontSize="12"
                 flip
               />
             </vgg-section>
@@ -71,21 +72,23 @@ export default {
       xAxis: '',
       title: '',
       drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      bikeCategories: ['Price', 'RearWheelTQ', 'MilesPG', 'Horsepower', 'PWRatio', 'Weight', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'Quartermile', 'QuartermileMaxSpeed','Stop60'],
+      bikeCategories: ['Price', 'RearWheelHorsepower', 'RearWheelTQLbFt', 'WetWeight', 'MilesPG', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'QuartermileSec', 'QuartermileHr','Stop60', 'PWRatio'],
+
+      //Base MSRP	Engine Type	Transmission	Rear-Wheel HP	Rear-Wheel TQ (lb.-ft.)	Wet Weight	Average MPG	Top Speed	0–60 mph, sec.	0–100 mph, sec.	Quartermile, sec	Quartermile, mph	Braking 60–0 mph (feet)	Power to Weight	PWRatio	Rating Category
       dimensions: [3, 5, 10, 12],
-      options: [5, 10, 25, 50, 100],
+      options: [5, 10, 25, 50],
       height: 2000,
       width: 8700,
-      baseX: 100,
+      baseX: 150,
       baseY: 100,
-      padX: 200,
+      padX: 250,
       padY: 150
     }
   },
 
   mounted () {
-    //this.drinks()
-    this.bikes()
+    this.drinks()
+    //this.bikes()
   },
   computed: {
     dimensionSections () {
@@ -204,7 +207,7 @@ export default {
       this.xAxis = 'Motorbikes'
       this.title = 'Motorcycle Performance 2014'
       // change name of csv
-      csv('../../static/mcn_performance_index14.csv').then((data) => {
+      csv('../../static/mcn_performance_index14_alphabetical.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
             Name: d['Make and Model'],
@@ -212,14 +215,14 @@ export default {
             Rating: d['Rating Category'],
             PWRatio: parseInt(d.PWRatio),
             MilesPG: parseInt(d['Average MPG']),
-            Horsepower: parseInt(d['Rear-Wheel HP']),
-            RearWheelTQ: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
+            RearWheelHorsepower: parseInt(d['Rear-Wheel HP']),
+            RearWheelTQLbFt: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
             ZeroTo100: parseInt(d['0–100 mph, sec.']),
-            Weight: parseInt(d['Wet Weight']),
+            WetWeight: parseInt(d['Wet Weight']),
             TopSpeed: parseInt(d['Top Speed']),
             ZeroTo60: parseInt(d['0–60 mph, sec.']),
-            Quartermile: parseInt(d['Quartermile, sec']),
-            QuartermileMaxSpeed: parseInt(d['Quartermile, mph']),
+            QuartermileSec: parseInt(d['Quartermile, sec']),
+            QuartermileHr: parseInt(d['Quartermile, mph']),
             Stop60: parseInt(d['Braking 60–0 mph (feet)'])
           }
         }))
