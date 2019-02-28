@@ -17,10 +17,17 @@
 
           <vgg-map v-slot="{ row }">
 
-            <vgg-label
+            <vgg-idc-point
               :x="row[categoryX[pair[0]]]"
               :y="row[categoryY[pair[1]]]"
-              :text="{val: row.Label}"
+              :radius="5"
+              :index="{val: row.Index}"
+              :selectionIndex="index"
+              :clickHandler="clickHandler"
+              :hoverHandler="hoverHandler"
+              :leaveHandler="leaveHandler"
+              :fill="row.Color"
+              :fillOpacity="0.7"
             />
 
           </vgg-map>
@@ -31,12 +38,14 @@
             :titleHjust="1.05"
             :vjust="-.05"
             titleAnchorPoint="l"
+            :tickCount="5"
           />
 
           <vgg-y-axis
             :scale="categoryY[pair[1]]"
             :title="categoryY[pair[1]]"
             :hjust="-.05"
+            :tickCount="5"
             flip
           />
 
@@ -58,8 +67,8 @@ export default {
       data: undefined,
       index: -1,
       selected: false,
-      categoryX: ['Price', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
-      categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Price'],
+      categoryX: ['Sodium', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
+      categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Sodium'],
       pairs: [[1, 4], [2, 4], [3, 4], [4, 4],
               [0, 3], [2, 3], [3, 3], [4, 3],
               [0, 2], [1, 2], [3, 2], [4, 2],
@@ -89,7 +98,7 @@ export default {
           throw new Error('Error in click handler')
         }
       }
-      
+
     },
 
     hoverHandler (self) {
@@ -113,15 +122,16 @@ export default {
     },
 
     drinks () {
-      csv('../../static/idcDrinksDemo.csv').then((data) => {
+      csv('../../static/idcDrinksDemoMedium.csv').then((data) => {
         this.data = Object.freeze(data.map((d, i) => {
           return {
-            Label: String.fromCharCode(65 + i),
+            Index: i,
             Calories: parseInt(d.Calories),
-            Price: parseInt(d.Price),
+            Sodium: parseInt(d.Sodium),
             Protein: parseInt(d.Protein),
             ServingSize: parseInt(d['Serving Size']),
-            Sugars: parseInt(d.Sugars)
+            Sugars: parseInt(d.Sugars),
+            Color: d.Color2
           }
         }))
       })

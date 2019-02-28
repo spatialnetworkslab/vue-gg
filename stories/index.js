@@ -19,17 +19,22 @@ import TrailMark from './sandbox/TrailMark.vue'
 import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
+
 import SimpleGridLayout from './sandbox/SimpleGridLayout.vue'
 import MappingGridLayout from './sandbox/MappingGridLayout.vue'
 import RepeatLayout from './sandbox/RepeatLayout.vue'
 
+// IDC Scatterplot Matrices
+import IDCScatter40 from './idc/idcScatterplotMatrix40.vue'
+import IDCScatter10 from './idc/idcScatterplotMatrix10.vue'
+import IDCScatter5 from './idc/idcScatterplotMatrix5.vue'
+import IDCScatterMono from './idc/idcScatterplotMono.vue'
+import IDCScatterLabel from './idc/idcScatterplotLabel.vue'
+import IDC100 from './idc/idcGraphs100.vue'
+
 // IDC Graphs
 import Heatmap from './sandbox/Heatmap.vue'
 import HeatmapCombinatorial from './sandbox/HeatmapCombinatorial.vue'
-import idcGraphs2 from './sandbox/idcGraphs2.vue'
-import idcGraphs3 from './sandbox/idcGraphs3.vue'
-import idcGraphs100 from './sandbox/idcGraphs100.vue'
-import idcGraphsWOPrice from './sandbox/idcGraphsWOPrice.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -55,9 +60,13 @@ storiesOf('Sandbox', module)
   .add('Simple Grid layout', () => (SimpleGridLayout))
   .add('Mapping Grid layout', () => (MappingGridLayout))
   .add('Repeat Grid layout', () => (RepeatLayout))
-  .add('IDC Scatterplot Monochrome', () => (idcGraphs2))
-  .add('IDC Scatterplot Symbol', () => (idcGraphs3))
-  .add('IDC Scatterplot 100', () => (idcGraphs100))
-  .add('IDC Color Scale', () => (idcGraphsWOPrice))
+
+storiesOf('idcSandbox', module)
+  .add('Scatterplot Matrix 40', () => (IDCScatter40))
+  .add('Scatterplot Matrix 10', () => (IDCScatter10))
+  .add('Scatterplot Matrix 5', () => (IDCScatter5))
+  .add('Scatterplot Matrix Color 100', () => (IDC100))
+  .add('Scatterplot Matrix Monochrome', () => (IDCScatterMono))
+  .add('Scatterplot Labels', () => (IDCScatterLabel))
   .add('Single Heatmap', () => (Heatmap))
   .add('Combinatorial Heatmap', () => (HeatmapCombinatorial))
