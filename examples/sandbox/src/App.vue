@@ -27,8 +27,10 @@
         </vgg-map>
 
         <vgg-x-axis
-          :vjust="0"
+          :vjust="-0.05"
           :scale="'a'"
+          flip
+          title="henk"
         />
 
       </vgg-section>

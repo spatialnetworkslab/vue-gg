@@ -145,7 +145,7 @@ export default {
           coords.x1 = this.parentDomains.x[0]
           coords.x2 = this.parentDomains.x[1]
         } else {
-          throw new Error('Invalid combination of props')
+          throw new Error('Invalid combination of x-positioning props')
         }
       }
 
@@ -171,26 +171,18 @@ export default {
         if (this.h) { h = this.h }
         if (!this.h) { h = this.parentDomainWidths.y / 8 }
 
+        let just
+
+        if (this.vjust.constructor === Number) { just = this.vjust }
         if (this.vjust.constructor === String) {
-          if (this.vjust === 'b') {
-            coords.y1 = this.parentDomains.y[0]
-            coords.y2 = coords.y1 + h
-          }
-          if (this.vjust === 't') {
-            coords.y2 = this.parentDomains.y[1]
-            coords.y1 = coords.y2 - h
-          }
-          if (this.vjust === 'center') {
-            coords.y1 = this.midY - (h / 2)
-            coords.y2 = this.midY + (h / 2)
-          }
+          just = this.justLookup[this.vjust]
         }
 
-        if (this.vjust.constructor === Number) {
-          let center = this.parentDomains.y[0] + this.parentDomainWidths.y * this.vjust
-          coords.y1 = center - (h / 2)
-          coords.y2 = center + (h / 2)
-        }
+        let center = this.getJust(
+          this.parentDomains.y[0], this.parentDomainWidths.y, just
+        )
+        coords.y1 = center - (h / 2)
+        coords.y2 = center + (h / 2)
       }
 
       return coords
@@ -206,13 +198,12 @@ export default {
 
     titleCoords () {
       let coords = {}
-      let justLookup = { l: 0, b: 0, r: 1, t: 1, center: 0.5 }
 
       if (this.titleHjust.constructor === Number) {
         coords.x = this.getJust(this.axisCoords.x1, this.widthX, this.titleHjust)
       }
       if (this.titleHjust.constructor === String) {
-        let just = justLookup[this.titleHjust]
+        let just = this.justLookup[this.titleHjust]
         coords.x = this.getJust(this.axisCoords.x1, this.widthX, just)
       }
 
@@ -220,7 +211,7 @@ export default {
         coords.y = this.getJust(this.axisCoords.y1, this.widthY, this.titleVjust)
       }
       if (this.titleVjust.constructor === String) {
-        let just = justLookup[this.titleVjust]
+        let just = this.justLookup[this.titleVjust]
         coords.y = this.getJust(this.axisCoords.y1, this.widthY, just)
       }
 

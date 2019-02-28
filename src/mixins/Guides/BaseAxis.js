@@ -191,6 +191,12 @@ export default {
     }
   },
 
+  data () {
+    return {
+      justLookup: { l: 0, b: 0, r: 1, t: 1, center: 0.5 }
+    }
+  },
+
   computed: {
     parsedScalingOptions () {
       return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
@@ -217,8 +223,8 @@ export default {
 
     parentDomainWidths () {
       return {
-        x: this.parentDomains.x2 - this.parentDomains.x1,
-        y: this.parentDomains.y2 - this.parentDomains.y1
+        x: this.parentDomains.x[1] - this.parentDomains.x[0],
+        y: this.parentDomains.y[1] - this.parentDomains.y[0]
       }
     },
 
