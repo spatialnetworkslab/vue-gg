@@ -74,20 +74,6 @@
 
             </vgg-map>
 
-            <!-- <vgg-x-axis
-              :scale="'#x'"
-              :tick-extra="false"
-              :x1="0"
-              :x2="1"
-              :vjust="'b'"
-            />
-
-            <vgg-y-axis
-              :scale="'#y'"
-              :tick-extra="false"
-              flip
-            /> -->
-
           </vgg-section>
 
         </vgg-map>
