@@ -15,6 +15,7 @@
           :scale-x="'varA'"
           :scale-y="'varB'"
           :axes="axes"
+          :grid-lines="['x']"
         >
 
           <vgg-map v-slot="{ row }">
