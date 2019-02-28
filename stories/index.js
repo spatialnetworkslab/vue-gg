@@ -21,10 +21,15 @@ import TrailMark from './sandbox/TrailMark.vue'
 import SingleMultiLine from './sandbox/SingleMultiLine.vue'
 import ScaleComponent from './sandbox/ScaleComponent.vue'
 import GlobalDataScope from './sandbox/GlobalDataScope.vue'
-import IDC from './sandbox/idcGraphsWOPrice.vue'
-import IDC2 from './sandbox/idcGraphs2.vue'
-import IDC3 from './sandbox/idcGraphs3.vue'
-import IDC100 from './sandbox/idcGraphs100.vue'
+
+
+// IDC Scatterplot Matrices
+import IDCScatter40 from './idc/idcScatterplotMatrix40.vue'
+import IDCScatter10 from './idc/idcScatterplotMatrix10.vue'
+import IDCScatter5 from './idc/idcScatterplotMatrix5.vue'
+import IDCScatterMono from './idc/idcScatterplotMono.vue'
+import IDCScatterLabel from './idc/idcScatterplotLabel.vue'
+import IDC100 from './idc/idcGraphs100.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -47,9 +52,13 @@ storiesOf('Sandbox', module)
   .add('Trail', () => (TrailMark))
   .add('Scale component', () => (ScaleComponent))
   .add('Global data scope', () => (GlobalDataScope))
-  .add('Scatterplot Matrix Color', () => (IDC))
+
+storiesOf('idcSandbox', module)
+  .add('Scatterplot Matrix 40', () => (IDCScatter40))
+  .add('Scatterplot Matrix 10', () => (IDCScatter10))
+  .add('Scatterplot Matrix 5', () => (IDCScatter5))
   .add('Scatterplot Matrix Color 100', () => (IDC100))
-  .add('Scatterplot Matrix Monochrome', () => (IDC2))
-  .add('Scatterplot Labels', () => (IDC3))
+  .add('Scatterplot Matrix Monochrome', () => (IDCScatterMono))
+  .add('Scatterplot Labels', () => (IDCScatterLabel))
   .add('Heatmap', () => (Heatmap))
   .add('Heatmap All Combinations', () => (HeatmapCombinatorial))

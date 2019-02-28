@@ -1,0 +1,11 @@
+﻿Category,Renamed Category,Item,Renamed Item,Serving Size,Color,Color2,Color3,Calories,Calories from Fat,Total Fat,Saturated Fat,Trans Fat,Cholesterol,Sodium,Carbohydrates,Dietary Fiber,Sugars,Protein,Vitamin A,Vitamin C,Calcium,Iron
+Beverages,Soda,Coca-Cola Classic (Small),Soda 1 (Regular),473,#5ca4dc,#B3DE69,#40004B,5.6,0,0,0,0,0,0,10.4,0,108.333,0,0,0,0,0
+Beverages,Drinks,Minute Maid Orange Juice (Small),Soda 4 (Regular),354,#64d949,#1F78B4,#8C510A,6,0,0,0,0,0,0,9.067,0,83.333,2.941,0,195,2.5,0
+Coffee & Tea,Coffee & Tea,Latte (Small),Soda 6 (Regular),354,#a0d542,#FED9A6,#D9F0D3,6.8,9.143,13.846,20,0,8.333,4.792,4,3.333,33.333,13.235,9.6,0,37.5,0
+Coffee & Tea,Coffee & Tea,Mocha (Small),Soda 11 (Regular),354,#5c76de,#5c76de,#F7F7F7,13.6,11.429,16.923,28,0,11.667,6.25,13.067,6.667,116.667,14.706,12,0,37.5,0
+Coffee & Tea,Coffee & Tea,Mocha with Nonfat Milk (Small),Soda 12 (Regular),354,#dda73b,#8073AC,#8073AC,10.8,3.429,5.385,8,0,5,6.25,13.067,6.667,119.444,16.176,12,0,43.75,0
+Coffee & Tea,Coffee & Tea,Caramel Mocha (Small),Soda 13 (Regular),354,#33195f,#FCCDE5,#E7D4E8,12.8,11.429,16.923,28,0,11.667,7.083,12,3.333,111.111,14.706,12,0,37.5,0
+Smoothies & Shakes,Milkshakes,Blueberry Pomegranate Smoothie (Small),Soda 15 (Regular),354,#664a96,#BC80BD,#7F3B08,8.8,0.571,0.769,0,0,1.667,1.667,13.333,10,122.222,2.941,0,1.667,7.5,0
+Smoothies & Shakes,Milkshakes,Vanilla Shake (Small),Soda 18 (Regular),354,#dfd185,#542788,#542788,21.2,16,23.077,40,50,20,6.667,22.933,0,175,16.176,24,0,50,0
+Smoothies & Shakes,Milkshakes,Strawberry Shake (Small),Soda 19 (Regular),354,#232a3c,#7FC97F,#2D004B,22,17.143,24.615,40,50,20,6.667,24,0,219.444,17.647,24,0,50,0
+Coffee & Tea,Coffee & Tea,Caramel Latte (Large),Soda 7 (Large),591,#c9a9ea,#984EA3,#B35806,17.2,13.714,21.538,32,0,13.333,7.5,16.533,3.333,163.889,22.059,18,0,62.5,0
