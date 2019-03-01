@@ -21,7 +21,7 @@ Axes are used as reference scales for values in the graph. Each axis is typicall
 
 The prop passed to the `scale` is a [scaling options](../concepts/scaling.md) prop.
 
-### X Axis Positioning
+### X Axis positioning
 
 | Prop  | Required | Types            | Default                      | Description          | Unit(s)                                      |
 | ----- | -------- | ---------------- | ---------------------------- | -------------------- | -------------------------------------------- |
@@ -42,6 +42,8 @@ bottom, 0.5 in the middle, and 1 at the top of the parent Section.
 By default, the height of the axis will be 1/8 of its parent Section's height.
 Using the `'h'` prop, another value can be chosen.
 
+<cartesian :show-x="true" />
+
 The other method to vertically position the x-axis is to use some combination of
 the `y1`, `y2`, `y`, and `h` props. When using these props, the axis behaves in
 the same way as the [Rectangle](../marks/rectangle.md) mark.
@@ -58,9 +60,8 @@ By default the x-axis spans the entire width of the section. To customize the wi
 `x` and `w` as start and end coordinates. These props also behave in the same way
 as the [Rectangle](../marks/rectangle.md) mark.
 
-<cartesian :show-x="true" />
 
-### Y Axis Positioning
+### Y Axis positioning
 
 | Prop  | Required | Types            | Default                     | Description          | Unit(s)                                      |
 | ----- | -------- | ---------------- | --------------------------- | -------------------- | -------------------------------------------- |
@@ -81,25 +82,26 @@ left, 0.5 in the middle, and 1 on the right side of the parent Section.
 By default, the width of the axis will be 1/8 of its parent Section's width.
 Using the `'w'` prop, another value can be chosen.
 
+<cartesian :show-y="true" />
+
 The other method to horizontally position the y-axis is to use some combination of
 the `x1`, `x2`, `x`, and `w` props. When using these props, the axis behaves in
 the same way as the [Rectangle](../marks/rectangle.md) mark.
 
 | Prop | Required | Types                  | Default   | Description          | Unit(s)           |
 | ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
-| y1   | false    | [Number, String, Date] | undefined | Bottom x coordinate  | Local coordinates |
-| y2   | false    | [Number, String, Date] | undefined | Top x coordinate     | Local coordinates |
-| y    | false    | [Number, String, Date] | undefined | Central x coordinate | Local coordinates |
-| h    | false    | Number                 | undefined | Width                | Local coordinates |
+| y1   | false    | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
+| y2   | false    | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
+| y    | false    | [Number, String, Date] | undefined | Central y coordinate | Local coordinates |
+| h    | false    | Number                 | undefined | Height               | Local coordinates |
 
 By default the y-axis spans the entire width of the section. To customize the width
  of the y-axis, it is possible to use `y1`, `y2`,
 `y` and `h` as start and end coordinates. These props also behave in the same way
 as the [Rectangle](../marks/rectangle.md) mark.
 
-<cartesian :show-y="true" />
 
-### Main Line
+### Main line
 
 | Prop           | Required | Types   | Default | Description                   | Unit(s)                    |
 | -------------- | -------- | ------- | ------- | ----------------------------- | -------------------------- |

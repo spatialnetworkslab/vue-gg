@@ -18,7 +18,12 @@ export default {
     },
 
     gridLines: {
-      type: [Array, Number],
+      type: [Array, undefined],
+      default: undefined
+    },
+
+    gridLineCount: {
+      type: Number,
       default: 10
     }
   },
@@ -94,7 +99,7 @@ export default {
     },
 
     cells () {
-      if (this.gridLines.constructor === Array) {
+      if (this.gridLines) {
         return this.gridLines.map(value => {
           return { value }
         })
@@ -102,7 +107,7 @@ export default {
         let cells
 
         if (this.domainType === 'quantitative') {
-          cells = arrayTicks(...this.domain, this.gridLines).map(value => {
+          cells = arrayTicks(...this.domain, this.gridLineCount).map(value => {
             return { value }
           })
         }
@@ -116,7 +121,7 @@ export default {
         if (this.domainType === 'temporal') {
           let scale = scaleTime().domain(this.domain)
 
-          cells = scale.ticks(this.tickCount).map(value => {
+          cells = scale.ticks(this.gridLineCount).map(value => {
             let date = new Date(value)
             return { value: date }
           })

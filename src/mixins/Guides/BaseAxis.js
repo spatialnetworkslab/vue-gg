@@ -19,11 +19,6 @@ export default {
       required: true
     },
 
-    format: {
-      type: [String, Function, undefined],
-      default: undefined
-    },
-
     flip: {
       type: Boolean,
       default: false
@@ -104,11 +99,6 @@ export default {
       default: true
     },
 
-    tickColor: {
-      type: String,
-      default: 'black'
-    },
-
     tickValues: {
       type: [Array, undefined],
       default: undefined
@@ -117,6 +107,11 @@ export default {
     tickCount: {
       type: Number,
       default: 10
+    },
+
+    tickColor: {
+      type: String,
+      default: 'black'
     },
 
     tickExtra: {
@@ -147,6 +142,11 @@ export default {
     tickWidth: {
       type: Number,
       default: 0.5
+    },
+
+    format: {
+      type: [String, Function, undefined],
+      default: undefined
     },
 
     title: {
