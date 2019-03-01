@@ -57,27 +57,27 @@
         <!-- Tick labels -->
         <vgg-label
           v-if="(!labelRotate) && labels"
-          :x="flip ? midX - (_tickLength * 1.03) : midX + (_tickLength * 1.03)"
+          :x="flip ? midX + (_tickLength * 0.3) : midX - (_tickLength * 0.3)"
           :y="tick.value"
           :text="tick.label"
           :font-family="labelFont"
           :font-size="labelFontSize"
           :font-weight="labelFontWeight"
-          :anchor-point="flip ? 'r' : 'l'"
+          :anchor-point="flip ? 'l' : 'r'"
           :fill="labelColor"
           :opacity="labelOpacity"
         />
 
         <vgg-label
           v-if="labelRotate && labels"
-          :x="flip ? midX - (_tickLength * 1.03) : midX + (_tickLength * 1.03)"
+          :x="flip ? midX + (_tickLength * 0.3) : midX - (_tickLength * 0.3)"
           :y="tick.value"
           :text="tick.label"
           :font-family="labelFont"
           :font-size="labelFontSize"
           :font-weight="labelFontWeight"
           :rotation="flip ? -30 : 30"
-          :anchor-point="flip ? 'r' : 'l'"
+          :anchor-point="flip ? 'l' : 'r'"
           :fill="labelColor"
           :opacity="labelOpacity"
         />
