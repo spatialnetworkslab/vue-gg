@@ -48,7 +48,7 @@ export default {
     },
 
     strokeWidth: {
-      type: [Number, Array, Object, undefined],
+      type: Number,
       default: 2
     },
 
@@ -88,6 +88,11 @@ export default {
     interpolate: {
       type: Boolean,
       default: false
+    },
+
+    strokeLinecap: {
+      type: String,
+      default: 'square'
     },
 
     // This is not actually meant to be used, just a flag for the mixin logic
@@ -198,7 +203,6 @@ export default {
         } else {
           points = this.generatePoints(aesthetics.x, aesthetics.y)
         }
-
         if (points.length > 1) {
           if (this.sort) {
             points = this.sortPoints(points)
@@ -226,7 +230,7 @@ export default {
           if (this.close) {
             points = this.closePoints(points)
           }
-          console.log(points)
+
           let path = this.createPath(points)
           let element = createElement('path', {
             attrs: {
@@ -234,7 +238,7 @@ export default {
             },
             style: this.createSVGStyle(aesthetics)
           })
-          console.log(element)
+
           return element
         } else {
           console.warn('Not enough valid points to draw Mark')

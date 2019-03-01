@@ -86,7 +86,6 @@
 
 <script>
 export default {
-
   data () {
     return {
       xy: this.generateNewData(),
@@ -94,7 +93,6 @@ export default {
       color: 'both',
     }
   },
-
   computed : {
     stroke () {
       if (this.color === 'both' || this.color === 'stroke') {
@@ -104,21 +102,16 @@ export default {
       }
     }
   },
-
   methods: {
     generateNewData () {
       let xValues = [78,41, 36, 54,70,31,88,97,76,  60, 100,66,65,34, 11,1,  49,  54,30,39]
       let yValues = [44,43,-37,-17,29,0,-50,15,-34,-47,-24, -2,4,  -10,50,-11,-49,-40,49,39]
-
       // xValues.sort()
       yValues.sort()
-
       let newData =[]
-
       for (let ix = 0; ix < 20; ix ++) {
         newData.push({explanatory: xValues[ix], dependent: yValues[ix]})
       }
-
       return newData
 
     },

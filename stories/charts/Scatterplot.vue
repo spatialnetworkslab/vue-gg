@@ -64,7 +64,6 @@ export default {
       data: this.generateData()
     }
   },
-
   methods: {
     generateData () {
       let data = []
@@ -75,10 +74,8 @@ export default {
         let a = Math.random() * range
         let error = Math.random() * range
         let b = beta0 + a * beta1 + error
-
         data.push({ a, b })
       }
-
       return data
     }
   }

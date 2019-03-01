@@ -99,7 +99,6 @@ export default {
       selected: 'EqualInterval'
     }
   },
-
   computed: {
     title () {
       if (this.selected === 'EqualInterval') {
@@ -113,7 +112,6 @@ export default {
       }
     }
   },
-
   methods: {
     generate (spread, str) {
       const N = 100

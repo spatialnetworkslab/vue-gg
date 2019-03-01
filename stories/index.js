@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/vue'
 
 import Scatterplot from './charts/Scatterplot.vue'
+import MultiLine from './charts/MultiLine.vue'
 
 import Scatterplot2 from './sandbox/Scatterplot.vue'
 import BarChart from './sandbox/BarChart.vue'
@@ -40,6 +41,7 @@ import HeatmapCombinatorial from './idc//HeatmapCombinatorial.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
+  .add('MultiLine', () => (MultiLine))
 
 storiesOf('Sandbox', module)
   .add('Scatterplot2', () => (Scatterplot2))

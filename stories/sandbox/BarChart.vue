@@ -86,10 +86,8 @@
 
 <script>
 import { bars } from './dummyData.js'
-
 export default {
   name: 'Bars',
-
   data () {
     return {
       bars: bars('fruit', 'quantity')
