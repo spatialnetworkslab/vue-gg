@@ -18,7 +18,7 @@ in which it is located. It also has access to the extents of the coordinate syst
 in which it is located. With this information, it can easily calculate appropriate
 coordinates for its child components.
 
-2. It enables a concice syntax on its child components that can be used to quickly
+2. It enables a concise syntax on its child components that can be used to quickly
 map data values to aesthetic values- for example, categories to colors.
 
 # Props

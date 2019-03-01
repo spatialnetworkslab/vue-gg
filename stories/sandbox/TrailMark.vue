@@ -19,12 +19,11 @@
 
       <vgg-map v-slot="{ row }">
 
-        <vgg-multi-line
+        <vgg-trail
           :x="row.grouped.xValues"
           :y="row.grouped.yValues"
-          :stroke-width="5"
-          :stroke="row.colors"
-          stroke-linecap="round"
+          :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
+          :fill="row.colors"
           :fillOpacity="0.7"
           :sort="'x'"
         />
