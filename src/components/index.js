@@ -34,6 +34,7 @@ import Trail from './Marks/Trail.vue'
 import IdcPoint from './Marks/idcPoint.vue'
 import IdcRectangle from './Marks/idcRectangle.vue'
 import IdcLabel from './Marks/idcLabel.vue'
+import IdcXAxis from './Guides/idcXAxis.vue'
 
 export default {
   Glyph,
@@ -67,6 +68,7 @@ export default {
 
   IdcPoint,
   IdcRectangle,
-  IdcLabel
+  IdcLabel,
+  IdcXAxis
 
 }

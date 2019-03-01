@@ -77,8 +77,8 @@ export default {
       carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower' ,'Length' ,'ForwardGears' ,'Torque'],
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
-      dimensions: [10],
-      options: [100],
+      dimensions: [3, 5, 10],
+      options: [40],
       height: 2000,
       width: 8700,
       baseX: 150,
@@ -158,7 +158,6 @@ export default {
         let segments = []
         let heightDelta = 40, widthDelta = 40
         let y = this.dimensionSections[this.dimensions.indexOf(dimensions)][0], x = this.optionSections[this.options.indexOf(options)][0]
-        console.log(this.data)
         for (let i = 0; i < categories.length; i++) {
             segments[i] = []
             for (let j = 0; j < options; j++) {
@@ -184,7 +183,7 @@ export default {
       this.title = 'Drinks Data'
       this.dataset = 'drinks'
       // change name of csv
-      csv('../../static/idcDemoDrinksDailyInterpolated.csv').then((data) => {
+      csv('../../static/idcDrinksDemoClean.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
             Calories: parseInt(d.Calories),
@@ -202,6 +201,7 @@ export default {
             VitaminC: parseInt(d['Vitamin C']),
             Calcium: parseInt(d.Calcium),
             Iron: parseInt(d.Iron),
+            Color: d.Color2
           }
         }))
       })

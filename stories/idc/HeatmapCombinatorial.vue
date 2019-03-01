@@ -34,11 +34,12 @@
                 </vgg-map>
               </vgg-data>
 
-              <vgg-x-axis
-                :scale="actualOptions(options[j])"
+              <vgg-idc-x-axis
+                :scale="actualOptions(options[j]).names"
                 :title="xAxis"
                 :labelFontSize="12"
                 :titleHjust="1.05"
+                :labelColor="actualOptions(options[j]).colors"
                 titleAnchorPoint="l"
                 labelRotate
               />
@@ -71,16 +72,16 @@ export default {
       categories: [],
       xAxis: undefined,
       title: undefined,
-      drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
+      drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'Calcium', 'Iron', 'VitaminA', 'VitaminC'],
       bikeCategories: ['Price', 'RearWheelHorsepower', 'RearWheelTQLbFt', 'WetWeight', 'MilesPG', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'QuartermileSec', 'QuartermileHr','Stop60', 'PWRatio'],
       cameraCategories: ['MaxRes', 'LowRes', 'EffectivePix', 'ZoomWide', 'ZoomTele', 'NormFocusRange', 'MacroFocusRange', 'StorageGB', 'Weight', 'Dimensions'],
       carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower' ,'Length' ,'ForwardGears' ,'Torque'],
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
-      dimensions: [3, 5, 7],
-      options: [5, 100],
+      dimensions: [3, 5, 10],
+      options: [5, 10, 20, 40],
       height: 2000,
-      width: 8700,
+      width: 8900,
       baseX: 150,
       baseY: 100,
       padX: 250,
@@ -89,10 +90,10 @@ export default {
   },
 
   mounted () {
-    //this.drinks()
+    this.drinks()
     //this.bikes()
     //this.cameras()
-    this.cars()
+    //this.cars()
   },
   computed: {
     dimensionSections () {
@@ -133,11 +134,12 @@ export default {
   },
   methods: {
     actualOptions (options) {
-      let names = []
+      let names = [], colors = []
       for (let i = 0; i < options; i++ ) {
         names.push(this.data[i].Name)
+        colors.push(this.data[i].Color)
       }
-      return names
+      return { names, colors }
     },
 
     actualDimensions (dimensions) {
@@ -158,20 +160,24 @@ export default {
         let segments = []
         let heightDelta = 40, widthDelta = 40
         let y = this.dimensionSections[this.dimensions.indexOf(dimensions)][0], x = this.optionSections[this.options.indexOf(options)][0]
-        console.log(this.data)
+
         for (let i = 0; i < categories.length; i++) {
             segments[i] = []
             for (let j = 0; j < options; j++) {
-              let macro = {}
-              macro.x1 = x + widthDelta * j
-              macro.x2 = x + widthDelta * (j+1)
-              macro.y1 = y + heightDelta * i
-              macro.y2 = y + heightDelta * (i+1)
-              macro.value = this.data[j][categories[i]]
-              macro.attribute = categories[i]
-              macro.name = this.data[j].Name
-              macro.colorScale = this.colorScales[this.dataSets.indexOf(this.xAxis)]
-              segments[i].push(macro)
+              if (this.data[j]) {
+                let macro = {}
+                macro.x1 = x + widthDelta * j
+                macro.x2 = x + widthDelta * (j+1)
+                macro.y1 = y + heightDelta * i
+                macro.y2 = y + heightDelta * (i+1)
+                macro.value = this.data[j][categories[i]]
+                macro.attribute = categories[i]
+                macro.name = this.data[j].Name
+                macro.colorScale = this.colorScales[this.dataSets.indexOf(this.xAxis)]
+                segments[i].push(macro)
+              } else {
+                console.log("Skipping index ", i, " as it is undefined")
+              }
             }
         }
         return segments
@@ -184,7 +190,7 @@ export default {
       this.title = 'Drinks Data'
       this.dataset = 'drinks'
       // change name of csv
-      csv('../../static/idcDemoDrinksDailyInterpolated.csv').then((data) => {
+      csv('../../static/idcDrinksDemoClean.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
             Calories: parseInt(d.Calories),
@@ -202,6 +208,7 @@ export default {
             VitaminC: parseInt(d['Vitamin C']),
             Calcium: parseInt(d.Calcium),
             Iron: parseInt(d.Iron),
+            Color: d.Color2
           }
         }))
       })
