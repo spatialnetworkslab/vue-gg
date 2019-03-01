@@ -29,9 +29,44 @@ All of these will be discussed below, under [Usage](#usage).
 | y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
 | y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
 | x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinates |
-| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates | 
+| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates |
 | w    | depends  | Number                 | undefined | Width                | Local coordinates |
 | h    | depends  | Number                 | undefined | Height               | Local coordinates |
+
+Positioning the Section component works exactly the same way as positioning the
+Rectangle mark. See the [documentation for the Rectangle mark](../marks/rectangle.md)
+for an in-depth explanation.
+
+### Axes and gridlines
+
+| Prop       | Required | Types           | Default   | Description                           |
+| ---------- | -------- | --------------- | --------- | ------------------------------------- |
+| axes       | false    | [Array, Object] | undefined | Which axes to add to the Section      |
+| grid-lines | false    | [Array, Object] | undefined | Which gridlines to add to the Section |
+
+Besides using the [axes](../axes/cartesian.md) and [gridline](../axes/gridlines.md)
+components, it is also convenient to add axes and gridlines by just providing
+a prop to the Section component:
+
+::: v-pre
+```html
+<vgg-section
+  :x1="50"
+  :x2="450"
+  :y1="50"
+  :y2="450"
+  :axes="{
+    bottom: { scale: [0, 5] },
+    left: { scale: [20, 40], flip: true, 'tick-color': 'blue' }
+  }"
+  :grid-lines="['x', 'y']"
+>
+
+</vgg-section>
+```
+:::
+
+<section-axes-test />
 
 ### Other props
 
@@ -47,12 +82,6 @@ All of these will be discussed below, under [Usage](#usage).
 The props passed to the `scale-x` and `scale-y` are [scaling options](../concepts/scaling.md) props.
 
 # Usage
-
-### Positioning
-
-Positioning the Section component works exactly the same way as positioning the
-Rectangle mark. See the [documentation for the Rectangle mark](../marks/rectangle.md)
-for an in-depth explanation.
 
 ### Defining a local coordinate system
 
