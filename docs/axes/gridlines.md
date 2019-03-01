@@ -65,4 +65,5 @@ the same way as the [Rectangle](../marks/rectangle.md) mark.
 
 # Using the Section's gridLines prop
 
-TODO
+Gridlines can also be specified by using a prop on the Section component-
+see the Section [props documentation](../core/section.md#axes-and-gridlines).

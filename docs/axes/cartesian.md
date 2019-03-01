@@ -154,4 +154,5 @@ Note that if a `Function` is passed to the `format` prop to format labels before
 
 # Using the Section's axes prop
 
-TODO
+Axes can also be specified by using a prop on the Section component-
+see the Section [props documentation](../core/section.md#axes-and-gridlines).
