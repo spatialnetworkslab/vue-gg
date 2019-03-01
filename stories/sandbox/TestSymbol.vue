@@ -70,16 +70,13 @@
 
 <script>
 import { xy } from './dummyData.js'
-
 export default {
   name: 'Scatterplot',
-
   data () {
     return {
       xy: xy('explanatory', 'dependent')
     }
   },
-
   methods: {
     generateNewData () {
       let newData = xy('explanatory', 'dependent')

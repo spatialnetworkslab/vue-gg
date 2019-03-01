@@ -100,6 +100,7 @@ export default {
       let transform = this.calcTransform(aesthetics.rotation, cx, cy)
 
       let styles = this.createSVGStyle(aesthetics)
+
       styles['fontSize'] = aesthetics.fontSize + 'px'
       styles['font-family'] = this.fontFamily
       styles['font-weight'] = this.fontWeight
@@ -121,4 +122,5 @@ export default {
     }
   }
 }
+
 </script>
