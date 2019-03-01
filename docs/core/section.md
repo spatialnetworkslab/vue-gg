@@ -22,27 +22,29 @@ All of these will be discussed below, under [Usage](#usage).
 
 ### Positioning
 
-| Prop | Required | Types                  | Default   | Description          | Unit(s)             |
-| ---- | -------- | ---------------------- | --------- | -------------------- | ------------------- |
-| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinate(s) |
-| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinate(s) |
-| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinate(s) |
-| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinate(s) |
-| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinate(s) |
-| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinate(s) |
-| w    | depends  | Number                 | undefined | Width                | Local coordinate(s) |
-| h    | depends  | Number                 | undefined | Height               | Local coordinate(s) |
+| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
+| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
+| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinates |
+| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinates |
+| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
+| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
+| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinates |
+| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates | 
+| w    | depends  | Number                 | undefined | Width                | Local coordinates |
+| h    | depends  | Number                 | undefined | Height               | Local coordinates |
 
 ### Other props
 
 | Prop      | Required | Types                   | Default   | Description                     |
 | --------- | -------- | ----------------------- | --------- | ------------------------------- |
-| data      | false    | [Array, Object]         | undefined | Some supported data structure                                |
+| data      | false    | [Array, Object]         | undefined | Some supported data structure   |
 | type      | false    | String                  | 'scale'   | Type of local coordinate system |
 | scale-x   | false    | [String, Array, Object] | undefined | Scaling of x dimension          |
 | scale-y   | false    | [String, Array, Object] | undefined | Scaling of y dimension          |
 | format    | false    | String                  | undefined | Format of data structure        |
 | transform | false    | [Array, Object]         | undefined | Transformation(s) to be applied |
+
+The props passed to the `scale-x` and `scale-y` are [scaling options](../concepts/scaling.md) props.
 
 # Usage
 
