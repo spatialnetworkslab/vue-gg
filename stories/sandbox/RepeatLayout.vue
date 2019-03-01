@@ -6,10 +6,11 @@
   >
 
     <vgg-repeat
-      v-slot="{ x, y, axes }"
+      v-slot="{ x, y, sides }"
       :x="['a', 'b', 'c']"
       :y="['a', 'b', 'c']"
       :cell-padding="12"
+      :sides="['bottom', 'right']"
     >
 
       <vgg-section
@@ -18,8 +19,8 @@
           y: { scale: y }
         }"
         :axes="{
-          bottom: axes.bottom({ scale: x, labelRotate: true }),
-          right: axes.right({ scale: y })
+          bottom: { scale: x, labelRotate: true },
+          right: { scale: y }
         }"
       >
 

@@ -188,6 +188,11 @@ export default {
     titleOpacity: {
       type: Number,
       default: 1
+    },
+
+    hide: {
+      type: Boolean,
+      default: false
     }
   },
 

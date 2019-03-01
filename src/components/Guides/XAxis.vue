@@ -1,5 +1,8 @@
 <template>
-  <g class="x-axis">
+  <g
+    v-if="!hide"
+    class="x-axis"
+  >
 
     <!-- Main line -->
     <vgg-line
