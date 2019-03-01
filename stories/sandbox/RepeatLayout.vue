@@ -20,7 +20,7 @@
         }"
         :axes="{
           bottom: { scale: x, labelRotate: true },
-          right: { scale: y }
+          right: { scale: y, flip: true }
         }"
       >
 
