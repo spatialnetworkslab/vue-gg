@@ -223,6 +223,8 @@ export default {
         }
       }
 
+      props = this.replaceScales(props)
+
       return props
     },
 
@@ -353,6 +355,19 @@ export default {
       } else {
         return []
       }
+    },
+
+    replaceScales (props) {
+      let coords = this.coordinateSpecification
+      if (!props.scaleX) {
+        props.scaleX = [coords.x1, coords.x2]
+      }
+
+      if (!props.scaleY) {
+        props.scaleY = [coords.y1, coords.y2]
+      }
+
+      return props
     }
   },
 
