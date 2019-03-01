@@ -28,16 +28,16 @@ The other two will be discussed under [Usage](#usage).
 
 ### Properties
 
-| Property  | Required | Types           | Default   | Description                                                           |
-| --------- | -------- | --------------- | --------- | --------------------------------------------------------------------- |
-| domain    | true     | [Array, String] | undefined | Array containing domain boundaries, or a String referencing a column. |
-| type      | false    | String          | depends   | Type of scale.                                                        |
-| domainMin | false    | Number          | undefined | Lower domain boundary. Used to overwrite `domain`.                    |
-| domainMax | false    | Number          | undefined | Upper domain boundary. Used to overwrite `domain`.                    |
-| domainMid | false    | Number          | undefined | Mid-point of domain. Useful for creating diverging scales.            |
-| rangeMin  | false    | Number          | undefined | Lower range boundary. Used to overwrite chosen range.                 |
-| rangeMax  | false    | Number          | undefined | Upper range boundary. Used to overwrite chosen range.                 |
-| absolute  | false    | Boolean         | false     | Will treat negative values as positive.                               |
+| Property   | Required | Types           | Default   | Description                                                           |
+| ---------- | -------- | --------------- | --------- | --------------------------------------------------------------------- |
+| domain     | true     | [Array, String] | undefined | Array containing domain boundaries, or a String referencing a column. |
+| type       | false    | String          | depends   | Type of scale.                                                        |
+| domain-min | false    | Number          | undefined | Lower domain boundary. Used to overwrite `domain`.                    |
+| domain-max | false    | Number          | undefined | Upper domain boundary. Used to overwrite `domain`.                    |
+| domain-mid | false    | Number          | undefined | Mid-point of domain. Useful for creating diverging scales.            |
+| range-min  | false    | Number          | undefined | Lower range boundary. Used to overwrite chosen range.                 |
+| range-max  | false    | Number          | undefined | Upper range boundary. Used to overwrite chosen range.                 |
+| absolute   | false    | Boolean         | false     | Will treat negative values as positive.                               |
 
 ##### domain
 
@@ -75,19 +75,19 @@ zero instead of at the lowest value in the data.
 
 ##### domainMid
 
-`domainMid` will be used as a central point between the upper and lower boundaries
+`domain-mid` will be used as a central point between the upper and lower boundaries
 of the domain to create a [diverging](https://github.com/d3/d3-scale#diverging-scales)
 scale.
 
 ##### rangeMin and rangeMax
 
-When the `rangeMin` and `rangeMax` properties are not specified, `vue-gg` will
+When the `range-min` and `range-max` properties are not specified, `vue-gg` will
 pick a range depending on the context where the scale is being created. When
-the scale is used within the `scaleX` or `scaleY` props of a
+the scale is used within the `scale-x` or `scale-y` props of a
 [Section](../core/section.md), the range will be the dimensions of the Section
-(for example, for `scaleX`, the values of the `[x1, x2]` props). The lower and
+(for example, for `scale-x`, the values of the `[x1, x2]` props). The lower and
 upper boundaries of this automatically determined range can then be manually
-overwritten with respectively `rangeMin` and `rangeMax`.
+overwritten with respectively `range-min` and `range-max`.
 
 ##### absolute
 
@@ -95,7 +95,7 @@ This will treat all negative values that are passed through the scales as positi
 values. Using `absolute` will also have effect on the domain. For example,
 the column `[-5, -2, 1, 3, 4]`, which has domain `[-5, 4]`, will be treated as
 `[5, 2, 1, 3, 4]`, with the domain `[1, 5]`. This domain can then again be
-overwritten with `domainMin` and `domainMax`.
+overwritten with `domain-min` and `domain-max`.
 
 ### Defaults
 
