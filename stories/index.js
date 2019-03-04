@@ -42,6 +42,9 @@ import IDCScatterMotorbikes from './idc/idcScatterplotMatrixMotorbikes.vue'
 import Heatmap from './idc/Heatmap.vue'
 import HeatmapCombinatorial from './idc//HeatmapCombinatorial.vue'
 
+// Fun graphs
+import Minard from './funGraphs/Minard.vue'
+
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
   .add('MultiLine', () => (MultiLine))
@@ -82,3 +85,6 @@ storiesOf('idcSandbox', module)
   .add('Scatterplot Matrix General Motorbikes', () => (IDCScatterMotorbikes))
   .add('Single Heatmap', () => (Heatmap))
   .add('Combinatorial Heatmap', () => (HeatmapCombinatorial))
+
+storiesOf('Fun Graphs', module)
+  .add('Minard', () => (Minard))

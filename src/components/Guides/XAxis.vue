@@ -93,7 +93,6 @@
 import BaseAxis from '../../mixins/Guides/BaseAxis.js'
 import { isnt } from '../../utils/equals.js'
 import createScale from '../../scales/createScale.js'
-
 export default {
   mixins: [BaseAxis],
   props: {
@@ -104,7 +103,6 @@ export default {
         ? ['b', 't', 'center'].includes(v)
         : true
     },
-
     titleHjust: {
       type: [Number, String],
       default: 0.5,
@@ -124,54 +122,8 @@ export default {
       if (!this.invalidX && !this.invalidY) {
         return this.coordinateSpecification
       }
-<<<<<<< HEAD
-    },
-    titlePosY () {
-      if (this.titleVjust === 'center') {
-        return 0.5
-      } else if (this.titleVjust === 't') {
-        return 1
-      } else if (this.titleVjust === 'b') {
-        return 0
-      } else {
-        return this.titleVjust
-      }
-    },
-    tickMin () {
-      let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
-      let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
-      return 0.5 - scaledSize
-    },
-    tickMax () {
-      let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
-      let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
-      return 0.5 + scaledSize
-    },
-    posY () {
-      if (this.validY) {
-        return [this.coords.y1, this.coords.y2]
-      }
-      let yDomain = this.yDomain
-      let yDomainMin = Math.min(yDomain[0], yDomain[1])
-      let yDomainMax = Math.max(yDomain[0], yDomain[1])
-      let yHeight = this.getLocalY(50) - this.getLocalY(0)
-
-      if (this.vjust.constructor === Number) {
-        let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
-        return [scaledVal - yHeight, scaledVal + yHeight]
-      } else if (this.vjust === 'center') {
-        let centerVal = (yDomainMax - yDomainMin) / 2 + yDomainMin
-        return [centerVal - yHeight, centerVal + yHeight]
-      } else if (this.vjust === 't') {
-        return [yDomainMax - yHeight, yDomainMax + yHeight]
-      } else {
-        return [yDomainMin - yHeight, yDomainMin + yHeight]
-=======
-
       let coords = {}
-
       // X coords
-
       // If there is a valid x-coordinate specification, we will use it
       if (!this.invalidX) {
         let [x1, x2] = this.convertSpecification(
@@ -180,7 +132,6 @@ export default {
         coords.x1 = x1
         coords.x2 = x2
       }
-
       // If there is no valid x-coordinate specification, we have to make sure
       // that there are NO x-coordinates specified. In that case, we will take
       // the parent section domain. Otherwise we throw an error.
@@ -192,9 +143,7 @@ export default {
           throw new Error('Invalid combination of x-positioning props')
         }
       }
-
       // Y coords
-
       // If there is a valid y-coordinate specification, we will use it
       if (!this.invalidY) {
         let [y1, y2] = this.convertSpecification(
@@ -203,66 +152,35 @@ export default {
         coords.y1 = y1
         coords.y2 = y2
       }
-
       // If there is no valid y-coordinate specification, we will use vjust
       if (this.invalidY) {
         if (this.y || this.y1 || this.y2) {
           throw new Error('Invalid combination of y-positioning props')
         }
-
         let h
-
         if (this.h) { h = this.h }
         if (!this.h) { h = this.parentDomainWidths.y / 8 }
-
         let just
-
         if (this.vjust.constructor === Number) { just = this.vjust }
         if (this.vjust.constructor === String) {
           just = this.justLookup[this.vjust]
         }
-
         let center = this.getJust(
           this.parentDomains.y[0], this.parentDomainWidths.y, just
         )
         coords.y1 = center - (h / 2)
         coords.y2 = center + (h / 2)
->>>>>>> 6afd2586d01d705245598da2edd5fa697761e4ea
       }
-
       return coords
     },
-<<<<<<< HEAD
-    ranges () {
-      let newRange = {}
-      newRange.y1 = this.posY[0]
-      newRange.y2 = this.posY[1]
-      if (this.validX) {
-        newRange.x1 = this.coords.x1
-        newRange.x2 = this.coords.x2
-        return newRange
-      }
-      if (this._domainType === 'temporal') {
-        newRange.x1 = this._domain[0]
-        newRange.x2 = this._domain[1]
-      } else {
-        newRange.x1 = this.xDomain[0]
-        newRange.x2 = this.xDomain[1]
-      }
-      return newRange
-=======
-
     noX () {
       return isnt(this.x1) && isnt(this.x2) && isnt(this.x) && isnt(this.w)
     },
-
     midY () {
       return this.axisCoords.y1 + (this.widthY / 2)
     },
-
     titleCoords () {
       let coords = {}
-
       if (this.titleHjust.constructor === Number) {
         coords.x = this.getJust(this.axisCoords.x1, this.widthX, this.titleHjust)
       }
@@ -270,7 +188,6 @@ export default {
         let just = this.justLookup[this.titleHjust]
         coords.x = this.getJust(this.axisCoords.x1, this.widthX, just)
       }
-
       if (this.titleVjust.constructor === Number) {
         coords.y = this.getJust(this.axisCoords.y1, this.widthY, this.titleVjust)
       }
@@ -278,16 +195,12 @@ export default {
         let just = this.justLookup[this.titleVjust]
         coords.y = this.getJust(this.axisCoords.y1, this.widthY, just)
       }
-
       return coords
->>>>>>> 6afd2586d01d705245598da2edd5fa697761e4ea
     },
-
     _tickLength () {
       if (this.tickLength) { return this.tickLength }
       return this.widthY / 5
     },
-
     parsedScale () {
       return createScale('x', this.context, this.scalingOptions)
     }

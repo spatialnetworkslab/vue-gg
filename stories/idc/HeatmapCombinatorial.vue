@@ -57,6 +57,7 @@
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
                 :labelFontSize="12"
+                :totalVjust="1"
                 flip
               />
             </vgg-section>

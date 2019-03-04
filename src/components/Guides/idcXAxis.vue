@@ -1,32 +1,26 @@
 <template>
-  <vgg-section
-    :x1="ranges.x1"
-    :x2="ranges.x2"
-    :y1="ranges.y1"
-    :y2="ranges.y2"
-    :scale-x="[0, 1]"
-    :scale-y="[0, 1]"
+  <g
+    v-if="!hide"
     class="x-axis"
   >
 
     <!-- Main line -->
     <vgg-line
-      class="x-axis-line"
       v-if="domain"
-      :x1="0"
-      :y1="0.5"
-      :x2="1"
-      :y2="0.5"
+      :x1="axisCoords.x1"
+      :x2="axisCoords.x2"
+      :y1="midY"
+      :y2="midY"
       :stroke="domainColor"
       :stroke-opacity="domainOpacity"
       :stroke-width="domainWidth"
+      class="x-axis-line"
     />
 
     <!-- Axis title -->
     <vgg-label
-      class="x-axis-title"
-      :x="titlePosX"
-      :y="titlePosY"
+      :x="titleCoords.x"
+      :y="titleCoords.y"
       :text="title"
       :anchor-point="titleAnchorPoint"
       :fill="titleColor"
@@ -35,180 +29,202 @@
       :font-weight="titleFontWeight"
       :opacity="titleOpacity"
       :rotation="titleAngle"
+      class="x-axis-title"
     />
 
     <!-- Ticks -->
-    <vgg-section
-      v-if="scale !== undefined"
-      :x1="0"
-      :x2="1"
-      :y1="0"
-      :y2="1"
-      :scale-x="scale"
+    <g
+      v-if="ticks"
       class="x-axis-ticks"
     >
 
-      <vgg-data
-        :data="tickData"
-        class="x-axis-data"
+      <g
+        v-for="(tick, i) in generatedTicks"
+        :key="i"
+        class="x-axis-tick"
       >
-        <vgg-map v-slot="{ row }">
 
-          <!-- Tick lines -->
-          <vgg-line
-            v-if="ticks"
-            :x1="row.value"
-            :y1="0.5"
-            :x2="row.value"
-            :y2="flip ? tickMax : tickMin"
-            :stroke="tickColor"
-            :stroke-opacity="tickOpacity"
-            :stroke-width="tickWidth"
-          />
+        <vgg-line
+          :x1="tick.value"
+          :x2="tick.value"
+          :y1="midY"
+          :y2="flip ? midY + _tickLength : midY - _tickLength"
+          :stroke="tickColor"
+          :stroke-opacity="tickOpacity"
+          :stroke-width="tickWidth"
+        />
 
-          <vgg-symbol
-            :x="row.value"
-            :y="flip ? (tickMax + 0.1) : (tickMin - 0.1)"
-            :fill="row.color"
-            :size="15"
-            :fillOpacity="1"
-          />
+        <vgg-symbol
+          :x="tick.value"
+          :y="flip ? midY + (_tickLength * 1.01) : midY - (_tickLength * 1.01)"
+          :fill="tick.color"
+          :size="15"
+          :fillOpacity="1"
+        />
 
-          <!-- Tick labels -->
-          <vgg-label
-            v-if="(!labelRotate) && labels"
-            :x="row.value"
-            :y="flip ? (tickMax + 0.07) : (tickMin - 0.07)"
-            :text="row.label"
-            :font-family="labelFont"
-            :font-size="labelFontSize"
-            :font-weight="labelFontWeight"
-            :anchor-point="flip ? 'b' : 't'"
-            :opacity="labelOpacity"
-          />
+        <!-- Tick labels -->
+        <vgg-label
+          v-if="(!labelRotate) && labels"
+          :x="tick.value"
+          :y="flip ? midY + (_tickLength * 1.001) : midY - (_tickLength * 1.001)"
+          :text="tick.label"
+          :font-family="labelFont"
+          :font-size="labelFontSize"
+          :font-weight="labelFontWeight"
+          :anchor-point="flip ? 'b' : 't'"
+          :opacity="labelOpacity"
+        />
 
-          <vgg-label
-            v-if="labelRotate && labels"
-            :x="row.value"
-            :y="flip ? (tickMax + 0.19) : (tickMin - 0.19)"
-            :text="row.label"
-            :font-family="labelFont"
-            :font-size="labelFontSize"
-            :font-weight="labelFontWeight"
-            :rotation="flip ? 30 : -30"
-            :anchor-point="flip ? 'rb' : 'rt'"
-            :opacity="labelOpacity"
-          />
+        <vgg-label
+          v-if="labelRotate && labels"
+          :x="tick.value"
+          :y="flip ? midY + (_tickLength * 1.009) : midY - (_tickLength * 1.009)"
+          :text="tick.label"
+          :font-family="labelFont"
+          :font-size="labelFontSize"
+          :font-weight="labelFontWeight"
+          :rotation="flip ? 30 : -30"
+          :anchor-point="flip ? 'rb' : 'rt'"
+          :opacity="labelOpacity"
+        />
 
-        </vgg-map>
+      </g>
 
-      </vgg-data>
+    </g>
 
-    </vgg-section>
-
-  </vgg-section>
+  </g>
 </template>
 
 <script>
 import BaseAxis from '../../mixins/Guides/BaseAxis.js'
+import { isnt } from '../../utils/equals.js'
+import createScale from '../../scales/createScale.js'
 export default {
   mixins: [BaseAxis],
   props: {
+    vjust: {
+      type: [Number, String, undefined],
+      default: 'b',
+      validator: v => v.constructor === String
+        ? ['b', 't', 'center'].includes(v)
+        : true
+    },
     titleHjust: {
-      default: -0.08
+      type: [Number, String],
+      default: 0.5,
+      validator: p => (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
     },
     titleVjust: {
-      default: 'center'
+      type: [Number, String],
+      default: -0.1,
+      validator: p => (p.constructor === Number) || (['center', 't', 'b'].includes(p))
     },
     labelColor:{
       type: [String, Array],
       default: 'blue'
     }
   },
-
   mounted() {
     this.colorData
   },
 
   computed: {
     colorData () {
-      for (let i in this.tickData) {
-        this.tickData[i].color = this.labelColor[i]
+      for (let i in this.generatedTicks) {
+        this.generatedTicks[i].color = this.labelColor[i]
       }
+      console.log(this.generatedTicks)
     },
 
-    titlePosX () {
-      if (this.titleHjust === 'center') {
-        return 0.5
-      } else if (this.titleHjust === 'l') {
-        return 0
-      } else if (this.titleHjust === 'r') {
-        return 1
-      } else {
-        return this.titleHjust
+    // like the coordinateSpecification in Rectangular.js, but more complicated
+    axisCoords () {
+      // If coordinates were specified in the oldschool way, we can just return
+      // the regular coordinate specification (defined in Rectangular.js)
+      if (!this.invalidX && !this.invalidY) {
+        return this.coordinateSpecification
       }
-    },
-    titlePosY () {
-      if (this.titleVjust === 'center') {
-        return 0.5
-      } else if (this.titleVjust === 't') {
-        return 1
-      } else if (this.titleVjust === 'b') {
-        return 0
-      } else {
-        return this.titleVjust
+      let coords = {}
+      // X coords
+      // If there is a valid x-coordinate specification, we will use it
+      if (!this.invalidX) {
+        let [x1, x2] = this.convertSpecification(
+          this.x1, this.x2, this.x, this.w, this.parentBranch, 'x'
+        )
+        coords.x1 = x1
+        coords.x2 = x2
       }
-    },
-    tickMin () {
-      let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
-      let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
-      return 0.5 - scaledSize
-    },
-    tickMax () {
-      let localTickSize = this.getLocalY(this.tickSize) - this.getLocalY(0)
-      let scaledSize = localTickSize / (this.ranges.y2 - this.ranges.y1)
-      return 0.5 + scaledSize
-    },
-    posY () {
-      if (this.validY) {
-        return [this.coords.y1, this.coords.y2]
+      // If there is no valid x-coordinate specification, we have to make sure
+      // that there are NO x-coordinates specified. In that case, we will take
+      // the parent section domain. Otherwise we throw an error.
+      if (this.invalidX) {
+        if (this.noX) {
+          coords.x1 = this.parentDomains.x[0]
+          coords.x2 = this.parentDomains.x[1]
+        } else {
+          throw new Error('Invalid combination of x-positioning props')
+        }
       }
-      let yDomain = this.yDomain
-      let yDomainMin = Math.min(yDomain[0], yDomain[1])
-      let yDomainMax = Math.max(yDomain[0], yDomain[1])
-      let yHeight = this.getLocalY(50) - this.getLocalY(0)
-
-      if (this.vjust.constructor === Number) {
-        let scaledVal = (yDomainMax - yDomainMin) * this.vjust + yDomainMin
-        return [scaledVal - yHeight, scaledVal + yHeight]
-      } else if (this.vjust === 'center') {
-        let centerVal = (yDomainMax - yDomainMin) / 2 + yDomainMin
-        return [centerVal - yHeight, centerVal + yHeight]
-      } else if (this.vjust === 't') {
-        return [yDomainMax - yHeight, yDomainMax + yHeight]
-      } else {
-        return [yDomainMin - yHeight, yDomainMin + yHeight]
+      // Y coords
+      // If there is a valid y-coordinate specification, we will use it
+      if (!this.invalidY) {
+        let [y1, y2] = this.convertSpecification(
+          this.y1, this.y2, this.y, this.h, this.parentBranch, 'y'
+        )
+        coords.y1 = y1
+        coords.y2 = y2
       }
+      // If there is no valid y-coordinate specification, we will use vjust
+      if (this.invalidY) {
+        if (this.y || this.y1 || this.y2) {
+          throw new Error('Invalid combination of y-positioning props')
+        }
+        let h
+        if (this.h) { h = this.h }
+        if (!this.h) { h = this.parentDomainWidths.y / 8 }
+        let just
+        if (this.vjust.constructor === Number) { just = this.vjust }
+        if (this.vjust.constructor === String) {
+          just = this.justLookup[this.vjust]
+        }
+        let center = this.getJust(
+          this.parentDomains.y[0], this.parentDomainWidths.y, just
+        )
+        coords.y1 = center - (h / 2)
+        coords.y2 = center + (h / 2)
+      }
+      return coords
     },
-    ranges () {
-      let newRange = {}
-
-      newRange.y1 = this.posY[0]
-      newRange.y2 = this.posY[1]
-      if (this.validX) {
-        newRange.x1 = this.coords.x1
-        newRange.x2 = this.coords.x2
-        return newRange
-      }
-      if (this._domainType === 'temporal') {
-        newRange.x1 = this._domain[0]
-        newRange.x2 = this._domain[1]
-      } else {
-        newRange.x1 = this.xDomain[0]
-        newRange.x2 = this.xDomain[1]
-      }
-      return newRange
+    noX () {
+      return isnt(this.x1) && isnt(this.x2) && isnt(this.x) && isnt(this.w)
     },
+    midY () {
+      return this.axisCoords.y1 + (this.widthY / 2)
+    },
+    titleCoords () {
+      let coords = {}
+      if (this.titleHjust.constructor === Number) {
+        coords.x = this.getJust(this.axisCoords.x1, this.widthX, this.titleHjust)
+      }
+      if (this.titleHjust.constructor === String) {
+        let just = this.justLookup[this.titleHjust]
+        coords.x = this.getJust(this.axisCoords.x1, this.widthX, just)
+      }
+      if (this.titleVjust.constructor === Number) {
+        coords.y = this.getJust(this.axisCoords.y1, this.widthY, this.titleVjust)
+      }
+      if (this.titleVjust.constructor === String) {
+        let just = this.justLookup[this.titleVjust]
+        coords.y = this.getJust(this.axisCoords.y1, this.widthY, just)
+      }
+      return coords
+    },
+    _tickLength () {
+      if (this.tickLength) { return this.tickLength }
+      return this.widthY / 5
+    },
+    parsedScale () {
+      return createScale('x', this.context, this.scalingOptions)
+    }
   }
 }
 </script>
