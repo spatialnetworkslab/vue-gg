@@ -61,6 +61,12 @@ export default {
       let aesthetics = this._props
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
+      let listeners = this.getListeners()
+
+      if (listeners.length > 0) {
+        this.addToSpatialIndex([cx, cy], aesthetics.radius, listeners)
+      }
+
       return createElement('circle', {
         attrs: {
           'cx': cx,
@@ -69,6 +75,30 @@ export default {
         },
         style: this.createSVGStyle(aesthetics)
       })
+    },
+
+    getListeners () {
+      let listeners = []
+      const allowedListeners = ['click'] // TODO more
+
+      for (let listener of allowedListeners) {
+        if (this.$options._parentListeners.hasOwnProperty(listener)) {
+          listeners.push(listener)
+        }
+      }
+
+      return listeners
+    },
+
+    addToSpatialIndex (coordinates, radius, listeners) {
+      let bbox = {
+        minX: coordinates[0] - radius,
+        maxX: coordinates[0] + radius,
+        minY: coordinates[1] - radius,
+        maxY: coordinates[1] + radius
+      }
+
+      this.$$interactionManager.addElement('point', bbox, this, listeners)
     }
   }
 }
