@@ -34,7 +34,7 @@
                 </vgg-map>
               </vgg-data>
 
-              <vgg-idc-x-axis
+              <vgg-idc-x-axis v-if="actualOptions(options[j]).colors"
                 :scale="actualOptions(options[j]).names"
                 :title="xAxis"
                 :labelFontSize="12"
@@ -43,6 +43,15 @@
                 titleAnchorPoint="l"
                 labelRotate
               />
+
+              <!-- <vgg-x-axis
+                :scale="actualOptions(options[j])"
+                :title="xAxis"
+                :labelFontSize="12"
+                :titleHjust="1.05"
+                titleAnchorPoint="l"
+                labelRotate
+              /> -->
 
               <vgg-y-axis
                 :scale="actualDimensions(dimensions[i])"
@@ -73,13 +82,13 @@ export default {
       xAxis: undefined,
       title: undefined,
       drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'Calcium', 'Iron', 'VitaminA', 'VitaminC'],
-      bikeCategories: ['Price', 'RearWheelHorsepower', 'RearWheelTQLbFt', 'WetWeight', 'MilesPG', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'QuartermileSec', 'QuartermileHr','Stop60', 'PWRatio'],
+      bikeCategories: ['Price', 'RearWheelHorsepower', 'WetWeight', 'MilesPG', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'PWRatio', 'QuartermileSec', 'QuartermileHr','Stop60', 'RearWheelTQLbFt'],
       cameraCategories: ['MaxRes', 'LowRes', 'EffectivePix', 'ZoomWide', 'ZoomTele', 'NormFocusRange', 'MacroFocusRange', 'StorageGB', 'Weight', 'Dimensions'],
       carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower' ,'Length' ,'ForwardGears' ,'Torque'],
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
       dimensions: [3, 5, 10],
-      options: [5, 10, 20, 40],
+      options: [5, 10, 25, 40],
       height: 2000,
       width: 8900,
       baseX: 150,
@@ -90,8 +99,8 @@ export default {
   },
 
   mounted () {
-    this.drinks()
-    //this.bikes()
+    //this.drinks()
+    this.bikes()
     //this.cameras()
     //this.cars()
   },
@@ -236,7 +245,8 @@ export default {
             ZeroTo60: parseInt(d['0–60 mph, sec.']),
             QuartermileSec: parseInt(d['Quartermile, sec']),
             QuartermileHr: parseInt(d['Quartermile, mph']),
-            Stop60: parseInt(d['Braking 60–0 mph (feet)'])
+            Stop60: parseInt(d['Braking 60–0 mph (feet)']),
+            Color: d.Color
           }
         }))
       })

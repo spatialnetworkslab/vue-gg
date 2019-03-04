@@ -16,8 +16,8 @@
         >
 
           <vgg-map v-slot="{ row }">
-
-            <vgg-idc-point
+            <div v-if="test()"/>
+            <!-- <vgg-idc-point
               :x="row[categoryX[pair[0]]]"
               :y="row[categoryY[pair[1]]]"
               :radius="5"
@@ -28,6 +28,14 @@
               :leaveHandler="leaveHandler"
               :fill="row.Color"
               :fillOpacity="0.7"
+            /> -->
+
+            <vgg-point
+              :x="row[categoryX[pair[0]]]"
+              :y="row[categoryY[pair[1]]]"
+              :radius="5"
+              :fill="row.Color"
+              :fillOpacity="1"
             />
 
           </vgg-map>
@@ -58,15 +66,19 @@
 
 <script>
 import {csv} from 'd3-fetch'
+
 export default {
   name: 'idc',
+
   data () {
     return {
       data: undefined,
       index: -1,
       selected: false,
-      categoryX: ['Sodium', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
-      categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Sodium'],
+      // categoryX: ['Sodium', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
+      // categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Sodium'],
+      categoryX: ['Price', 'MilesPG' , 'RearWheelHP', 'TopSpeed', 'Stop60'],
+      categoryY: ['Stop60', 'TopSpeed' , 'RearWheelHP', 'MilesPG', 'Price'],
       pairs: [[1, 4], [2, 4], [3, 4], [4, 4],
               [0, 3], [2, 3], [3, 3], [4, 3],
               [0, 2], [1, 2], [3, 2], [4, 2],
@@ -75,10 +87,20 @@ export default {
             ]
     }
   },
+
   mounted () {
-    this.drinks()
+    //this.drinks()
+    //this.bikes5()
+    //this.bikes10()
+    this.bikes25()
+    //this.bikes40()
   },
+
   methods: {
+    test () {
+      console.log(this.data)
+    },
+
     clickHandler (self) {
       return () => {
         if (!this.selected) {
@@ -94,7 +116,9 @@ export default {
           throw new Error('Error in click handler')
         }
       }
+
     },
+
     hoverHandler (self) {
       return () => {
         if (this.selected) {
@@ -104,6 +128,7 @@ export default {
         }
       }
     },
+
     leaveHandler (self) {
       return () => {
         if (this.selected) {
@@ -113,6 +138,7 @@ export default {
         }
       }
     },
+
     drinks () {
       csv('../../static/idcDrinksDemoClean.csv').then((data) => {
         this.data = Object.freeze(data.map((d, i) => {
@@ -127,7 +153,71 @@ export default {
           }
         }))
       })
-    }
+    },
+
+    bikes40 () {
+      csv('../../static/mcn_performance_index14_40.csv').then((data) => {
+        this.data = Object.freeze(data.map(d => {
+          return {
+            Price: parseInt(d['Base MSRP']),
+            MilesPG: parseInt(d['Average MPG']),
+            RearWheelHP: parseInt(d['Rear-Wheel HP']),
+            ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            TopSpeed: parseInt(d['Top Speed']),
+            Stop60: parseInt(d['Braking 60–0 mph (feet)']),
+            Color: d.Color
+          }
+        }))
+      })
+    },
+
+    bikes5 () {
+      csv('../../static/mcn_performance_index14_5.csv').then((data) => {
+        this.data = Object.freeze(data.map(d => {
+          return {
+            Price: parseInt(d['Base MSRP']),
+            MilesPG: parseInt(d['Average MPG']),
+            RearWheelHP: parseInt(d['Rear-Wheel HP']),
+            ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            TopSpeed: parseInt(d['Top Speed']),
+            Stop60: parseInt(d['Braking 60–0 mph (feet)']),
+            Color: d.Color
+          }
+        }))
+      })
+    },
+
+    bikes10 () {
+      csv('../../static/mcn_performance_index14_10.csv').then((data) => {
+        this.data = Object.freeze(data.map(d => {
+          return {
+            Price: parseInt(d['Base MSRP']),
+            MilesPG: parseInt(d['Average MPG']),
+            RearWheelHP: parseInt(d['Rear-Wheel HP']),
+            ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            TopSpeed: parseInt(d['Top Speed']),
+            Stop60: parseInt(d['Braking 60–0 mph (feet)']),
+            Color: d.Color
+          }
+        }))
+      })
+    },
+
+    bikes25 () {
+      csv('../../static/mcn_performance_index14_25.csv').then((data) => {
+        this.data = Object.freeze(data.map(d => {
+          return {
+            Price: parseInt(d['Base MSRP']),
+            MilesPG: parseInt(d['Average MPG']),
+            RearWheelHP: parseInt(d['Rear-Wheel HP']),
+            ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            TopSpeed: parseInt(d['Top Speed']),
+            Stop60: parseInt(d['Braking 60–0 mph (feet)']),
+            Color: d.Color
+          }
+        }))
+      })
+    },
   }
 }
 </script>

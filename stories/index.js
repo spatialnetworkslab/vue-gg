@@ -31,9 +31,11 @@ import IDCScatter10 from './idc/idcScatterplotMatrix10.vue'
 import IDCScatter1010 from './idc/idcScatterplotMatrix10-10.vue'
 import IDCScatter5 from './idc/idcScatterplotMatrix5.vue'
 import IDCScatter510 from './idc/idcScatterplotMatrix5-10.vue'
+import IDCScatter510motorbikes from './idc/idcScatterplotMatrix5-10_motorbikes.vue'
 import IDCScatterMono from './idc/idcScatterplotMono.vue'
 import IDCScatterLabel from './idc/idcScatterplotLabel.vue'
 import IDC100 from './idc/idcGraphs100.vue'
+import IDCScatterMotorbikes from './idc/idcScatterplotMatrixMotorbikes.vue'
 
 // IDC Heatmaps
 import Heatmap from './idc/Heatmap.vue'
@@ -74,5 +76,7 @@ storiesOf('idcSandbox', module)
   .add('Scatterplot Matrix Color 100', () => (IDC100))
   .add('Scatterplot Matrix Monochrome', () => (IDCScatterMono))
   .add('Scatterplot Labels', () => (IDCScatterLabel))
+  .add('Scatterplot Matrix 5 10 Motorbikes', () => (IDCScatter510motorbikes))
+  .add('Scatterplot Matrix General Motorbikes', () => (IDCScatterMotorbikes))
   .add('Single Heatmap', () => (Heatmap))
   .add('Combinatorial Heatmap', () => (HeatmapCombinatorial))

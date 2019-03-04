@@ -68,10 +68,10 @@
 
           <vgg-symbol
             :x="row.value"
-            :y="flip ? (tickMax + 0.06) : (tickMin - 0.06)"
+            :y="flip ? (tickMax + 0.1) : (tickMin - 0.1)"
             :fill="row.color"
             :size="15"
-            :fillOpacity="0.6"
+            :fillOpacity="1"
           />
 
           <!-- Tick labels -->
@@ -90,7 +90,7 @@
           <vgg-label
             v-if="labelRotate && labels"
             :x="row.value"
-            :y="flip ? (tickMax + 0.11) : (tickMin - 0.11)"
+            :y="flip ? (tickMax + 0.19) : (tickMin - 0.19)"
             :text="row.label"
             :font-family="labelFont"
             :font-size="labelFontSize"

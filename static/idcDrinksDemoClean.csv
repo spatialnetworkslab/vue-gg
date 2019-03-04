@@ -1,41 +1,41 @@
-﻿Category,Renamed Category,Item,Renamed Item,Serving Size,Color,Color2,Color3,Calories,Calories from Fat,Total Fat,Saturated Fat,Trans Fat,Cholesterol,Sodium,Carbohydrates,Dietary Fiber,Sugars,Protein,Vitamin A,Vitamin C,Calcium,Iron
-Beverages,Soda,Coca-Cola Classic (Small),Soda 1 (Regular),473,#5ca4dc,#B3DE69,#40004B,5.600,0.000,0.000,0.000,0.000,0.000,0.000,10.400,0.000,108.333,0.000,0.000,0.000,0.000,0.000
-Beverages,Soda,Dr Pepper (Small),Soda 2 (Regular),473,#dcda3f,#CBD5E8,#003C30,5.600,0.000,0.000,0.000,0.000,0.000,1.875,9.867,0.000,97.222,0.000,0.000,0.000,0.000,0.000
-Beverages,Soda,Sprite (Small),Soda 3 (Regular),473,#5e42d1,#E78AC3,#4D9221,5.600,0.000,0.000,0.000,0.000,0.000,1.250,9.867,0.000,102.778,0.000,0.000,0.000,0.000,0.000
-Beverages,Drinks,Minute Maid Orange Juice (Small),Soda 4 (Regular),354,#64d949,#1F78B4,#8C510A,6.000,0.000,0.000,0.000,0.000,0.000,0.000,9.067,0.000,83.333,2.941,0.000,195.000,2.500,0.000
-Coffee & Tea,Coffee & Tea,Sweet Tea (Small),Soda 5 (Regular),473,#b045dc,#8DD3C7,#F7F7F7,6.000,0.000,0.000,0.000,0.000,0.000,0.417,9.600,0.000,100.000,1.471,0.000,0.000,0.000,0.000
-Coffee & Tea,Coffee & Tea,Latte (Small),Soda 6 (Regular),354,#a0d542,#FED9A6,#D9F0D3,6.800,9.143,13.846,20.000,0.000,8.333,4.792,4.000,3.333,33.333,13.235,9.600,0.000,37.500,0.000
-Coffee & Tea,Coffee & Tea,Caramel Latte (Small),Soda 7 (Regular),354,#532893,#FFFF99,#DFC27D,10.800,9.143,13.846,20.000,0.000,8.333,4.792,10.667,3.333,105.556,13.235,9.600,0.000,37.500,0.000
-Coffee & Tea,Coffee & Tea,Hazelnut Latte (Small),Soda 8 (Regular),354,#63d77c,#8DA0CB,#00441B,10.800,9.143,13.846,20.000,0.000,8.333,4.792,10.667,3.333,105.556,13.235,9.600,0.000,37.500,0.000
-Coffee & Tea,Coffee & Tea,French Vanilla Latte (Small),Soda 9 (Regular),354,#ac6bd4,#B3CDE3,#E6F5D0,10.400,9.143,13.846,20.000,0.000,8.333,4.792,10.133,3.333,100.000,13.235,9.600,0.000,37.500,0.000
-Coffee & Tea,Coffee & Tea,Latte with Sugar Free French Vanilla Syrup (Small),Soda 10 (Regular),354,#468e32,#FDDAEC,#8E0152,8.400,9.143,13.846,20.000,0.000,8.333,6.250,6.400,3.333,33.333,13.235,9.600,0.000,37.500,0.000
-Coffee & Tea,Coffee & Tea,Mocha (Small),Soda 11 (Regular),354,#5c76de,#CCEBC5,#F7F7F7,13.600,11.429,16.923,28.000,0.000,11.667,6.250,13.067,6.667,116.667,14.706,12.000,0.000,37.500,0.000
-Coffee & Tea,Coffee & Tea,Mocha with Nonfat Milk (Small),Soda 12 (Regular),354,#dda73b,#33A02C,#8073AC,10.800,3.429,5.385,8.000,0.000,5.000,6.250,13.067,6.667,119.444,16.176,12.000,0.000,43.750,0.000
-Coffee & Tea,Coffee & Tea,Caramel Mocha (Small),Soda 13 (Regular),354,#33195f,#FCCDE5,#E7D4E8,12.800,11.429,16.923,28.000,0.000,11.667,7.083,12.000,3.333,111.111,14.706,12.000,0.000,37.500,0.000
-Coffee & Tea,Coffee & Tea,Hot Chocolate (Small),Soda 14 (Regular),354,#bde590,#7FC97F,#F6E8C3,14.400,13.714,20.000,32.000,0.000,13.333,7.500,13.333,3.333,125.000,16.176,12.000,0.000,50.000,0.000
-Smoothies & Shakes,Milkshakes,Blueberry Pomegranate Smoothie (Small),Soda 15 (Regular),354,#664a96,#CCEBC5,#7F3B08,8.800,0.571,0.769,0.000,0.000,1.667,1.667,13.333,10.000,122.222,2.941,0.000,1.667,7.500,0.000
-Smoothies & Shakes,Milkshakes,Strawberry Banana Smoothie (Small),Soda 16 (Regular),354,#5be3ab,#D95F02,#FEE0B6,8.400,0.571,0.769,0.000,0.000,1.667,2.083,12.533,10.000,122.222,4.412,0.000,45.000,10.000,0.000
-Smoothies & Shakes,Milkshakes,Mango Pineapple Smoothie (Small),Soda 17 (Regular),354,#36305d,#FB9A99,#543005,8.400,0.571,0.769,0.000,0.000,1.667,1.667,13.333,3.333,127.778,2.941,36.000,30.000,10.000,0.000
-Smoothies & Shakes,Milkshakes,Vanilla Shake (Small),Soda 18 (Regular),354,#dfd185,#A6D854,#542788,21.200,16.000,23.077,40.000,50.000,20.000,6.667,22.933,0.000,175.000,16.176,24.000,0.000,50.000,0.000
-Smoothies & Shakes,Milkshakes,Strawberry Shake (Small),Soda 19 (Regular),354,#232a3c,#FFFFCC,#2D004B,22.000,17.143,24.615,40.000,50.000,20.000,6.667,24.000,0.000,219.444,17.647,24.000,0.000,50.000,0.000
-Smoothies & Shakes,Milkshakes,Chocolate Shake (Small),Soda 20 (Regular),354,#cf6f27,#BEBADA,#35978F,22.400,17.143,24.615,40.000,50.000,20.000,10.000,24.267,3.333,213.889,17.647,24.000,0.000,50.000,16.667
-Beverages,Soda,Coca-Cola Classic (Large),Soda 1 (Large),887,#6de1ca,#CCCCCC,#C51B7D,11.200,0.000,0.000,0.000,0.000,0.000,0.208,20.267,0.000,211.111,0.000,0.000,0.000,0.000,0.000
-Beverages,Soda,Dr Pepper (Large),Soda 2 (Large),887,#6f481d,#FF7F00,#7FBC41,10.800,0.000,0.000,0.000,0.000,0.000,3.750,19.200,0.000,194.444,0.000,0.000,0.000,0.000,0.000
-Beverages,Soda,Sprite (Large),Soda 3 (Large),887,#89dde9,#BC80BD,#B2ABD2,11.200,0.000,0.000,0.000,0.000,0.000,2.500,19.733,0.000,205.556,0.000,0.000,0.000,0.000,0.000
-Beverages,Drinks,Minute Maid Orange Juice (Large),Soda 4 (Large),650,#948729,#FC8D62,#FDE0EF,11.200,0.000,0.000,0.000,0.000,0.000,0.208,17.333,0.000,161.111,5.882,0.000,360.000,5.000,0.000
-Coffee & Tea,Coffee & Tea,Sweet Tea (Large),Soda 5 (Large),887,#8d81c5,#FB8072,#01665E,8.800,0.000,0.000,0.000,0.000,0.000,0.417,14.400,0.000,150.000,1.471,0.000,0.000,0.000,0.000
-Coffee & Tea,Coffee & Tea,Latte (Large),Soda 6 (Large),591,#90a85a,#FFFF33,#D8DAEB,11.200,13.714,21.538,32.000,0.000,13.333,7.500,6.400,3.333,55.556,22.059,18.000,0.000,62.500,0.000
-Coffee & Tea,Coffee & Tea,Caramel Latte (Large),Soda 7 (Large),591,#c9a9ea,#984EA3,#B35806,17.200,13.714,21.538,32.000,0.000,13.333,7.500,16.533,3.333,163.889,22.059,18.000,0.000,62.500,0.000
-Coffee & Tea,Coffee & Tea,Hazelnut Latte (Large),Soda 8 (Large),591,#425d25,#E31A1C,#B8E186,17.200,13.714,21.538,32.000,0.000,13.333,7.500,16.533,3.333,161.111,22.059,18.000,0.000,62.500,0.000
-Coffee & Tea,Coffee & Tea,French Vanilla Latte (Large),Soda 9 (Large),591,#b0b2ce,#377EB8,#5AAE61,16.800,13.714,21.538,32.000,0.000,13.333,7.917,16.000,3.333,155.556,22.059,18.000,0.000,62.500,0.000
-Coffee & Tea,Coffee & Tea,Latte with Sugar Free French Vanilla Syrup (Large),Soda 10 (Large),591,#2d341f,#BEAED4,#F1B6DA,13.200,13.714,21.538,32.000,0.000,13.333,10.000,9.867,6.667,55.556,22.059,18.000,0.000,62.500,0.000
-Coffee & Tea,Coffee & Tea,Mocha (Large),Soda 11 (Large),591,#c6d4b6,#E7298A,#C2A5CF,20.000,17.143,26.154,40.000,25.000,16.667,10.000,19.200,6.667,175.000,23.529,18.000,0.000,62.500,16.667
-Coffee & Tea,Coffee & Tea,Mocha with Nonfat Milk (Large),Soda 12 (Large),591,#55608b,#FFFF99,#F5F5F5,15.600,4.000,6.154,10.000,0.000,6.667,10.000,19.467,6.667,177.778,25.000,24.000,0.000,62.500,16.667
-Coffee & Tea,Coffee & Tea,Caramel Mocha (Large),Soda 13 (Large),591,#e3ac7c,#E6AB02,#DE77AE,19.200,17.143,26.154,40.000,25.000,16.667,11.250,17.600,3.333,166.667,23.529,18.000,0.000,62.500,0.000
-Coffee & Tea,Coffee & Tea,Hot Chocolate (Large),Soda 14 (Large),591,#496f84,#80B1D3,#276419,21.600,20.571,30.769,48.000,25.000,20.000,11.667,19.467,3.333,188.889,25.000,24.000,0.000,75.000,16.667
-Smoothies & Shakes,Milkshakes,Blueberry Pomegranate Smoothie (Large),Soda 15 (Large),650,#a47b4e,#BF5B17,#C7EAE5,13.600,1.143,1.538,2.000,0.000,1.667,2.708,21.067,16.667,194.444,5.882,0.000,5.000,12.500,0.000
-Smoothies & Shakes,Milkshakes,Strawberry Banana Smoothie (Large),Soda 16 (Large),650,#459f9e,#66C2A5,#BF812D,13.200,1.143,1.538,2.000,0.000,1.667,3.333,19.733,13.333,194.444,7.353,0.000,66.667,12.500,0.000
-Smoothies & Shakes,Milkshakes,Mango Pineapple Smoothie (Large),Soda 17 (Large),650,#7f8567,#B15928,#E08214,13.600,1.143,1.538,2.000,0.000,1.667,2.500,20.800,6.667,200.000,5.882,60.000,45.000,12.500,0.000
-Smoothies & Shakes,Milkshakes,Vanilla Shake (Large),Soda 18 (Large),650,#80b0ba,#F2F2F2,#80CDC1,32.800,24.000,35.385,60.000,50.000,30.000,10.833,36.000,0.000,280.556,26.471,36.000,0.000,75.000,0.000
-Smoothies & Shakes,Milkshakes,Strawberry Shake (Large),Soda 19 (Large),650,#4fa171,#F1E2CC,#FDB863,34.000,24.000,36.923,60.000,50.000,30.000,10.833,37.333,0.000,341.667,26.471,36.000,0.000,87.500,0.000
-Smoothies & Shakes,Milkshakes,Chocolate Shake (Large),Soda 20 (Large),650,#396456,#1B9E77,#A6DBA0,34.000,24.000,35.385,60.000,50.000,28.333,15.833,37.600,6.667,333.333,27.941,36.000,0.000,75.000,33.333
+﻿Category,Renamed Category,Item,Renamed Item,Serving Size,Color,Color2,Color3,Calories,Calories from Fat,Total Fat,Saturated Fat,Trans Fat,Cholesterol,Sodium,Carbohydrates,Dietary Fiber,Sugars,Protein,Vitamin A,Vitamin C,Calcium,Iron,Color2
+Beverages,Soda,Coca-Cola Classic (Small),Soda 1 (Regular),473,#5ca4dc,#B3DE69,#40004B,5.6,0,0,0,0,0,0,10.4,0,108.333,0,0,0,0,0,#B3DE69
+Beverages,Soda,Dr Pepper (Small),Soda 2 (Regular),473,#dcda3f,#CBD5E8,#003C30,5.6,0,0,0,0,0,1.875,9.867,0,97.222,0,0,0,0,0,#CBD5E8
+Beverages,Soda,Sprite (Small),Soda 3 (Regular),473,#5e42d1,#E78AC3,#4D9221,5.6,0,0,0,0,0,1.25,9.867,0,102.778,0,0,0,0,0,#E78AC3
+Beverages,Drinks,Minute Maid Orange Juice (Small),Soda 4 (Regular),354,#64d949,#1F78B4,#8C510A,6,0,0,0,0,0,0,9.067,0,83.333,2.941,0,195,2.5,0,#1F78B4
+Coffee & Tea,Coffee & Tea,Sweet Tea (Small),Soda 5 (Regular),473,#b045dc,#8DD3C7,#F7F7F7,6,0,0,0,0,0,0.417,9.6,0,100,1.471,0,0,0,0,#8DD3C7
+Coffee & Tea,Coffee & Tea,Latte (Small),Soda 6 (Regular),354,#a0d542,#FED9A6,#D9F0D3,6.8,9.143,13.846,20,0,8.333,4.792,4,3.333,33.333,13.235,9.6,0,37.5,0,#FED9A6
+Coffee & Tea,Coffee & Tea,Caramel Latte (Small),Soda 7 (Regular),354,#532893,#FFFF99,#DFC27D,10.8,9.143,13.846,20,0,8.333,4.792,10.667,3.333,105.556,13.235,9.6,0,37.5,0,#FFFF99
+Coffee & Tea,Coffee & Tea,Hazelnut Latte (Small),Soda 8 (Regular),354,#63d77c,#8DA0CB,#00441B,10.8,9.143,13.846,20,0,8.333,4.792,10.667,3.333,105.556,13.235,9.6,0,37.5,0,#8DA0CB
+Coffee & Tea,Coffee & Tea,French Vanilla Latte (Small),Soda 9 (Regular),354,#ac6bd4,#B3CDE3,#E6F5D0,10.4,9.143,13.846,20,0,8.333,4.792,10.133,3.333,100,13.235,9.6,0,37.5,0,#B3CDE3
+Coffee & Tea,Coffee & Tea,Latte with Sugar Free French Vanilla Syrup (Small),Soda 10 (Regular),354,#468e32,#FDDAEC,#8E0152,8.4,9.143,13.846,20,0,8.333,6.25,6.4,3.333,33.333,13.235,9.6,0,37.5,0,#FDDAEC
+Coffee & Tea,Coffee & Tea,Mocha (Small),Soda 11 (Regular),354,#5c76de,#CCEBC5,#F7F7F7,13.6,11.429,16.923,28,0,11.667,6.25,13.067,6.667,116.667,14.706,12,0,37.5,0,#CCEBC5
+Coffee & Tea,Coffee & Tea,Mocha with Nonfat Milk (Small),Soda 12 (Regular),354,#dda73b,#33A02C,#8073AC,10.8,3.429,5.385,8,0,5,6.25,13.067,6.667,119.444,16.176,12,0,43.75,0,#33A02C
+Coffee & Tea,Coffee & Tea,Caramel Mocha (Small),Soda 13 (Regular),354,#33195f,#FCCDE5,#E7D4E8,12.8,11.429,16.923,28,0,11.667,7.083,12,3.333,111.111,14.706,12,0,37.5,0,#FCCDE5
+Coffee & Tea,Coffee & Tea,Hot Chocolate (Small),Soda 14 (Regular),354,#bde590,#7FC97F,#F6E8C3,14.4,13.714,20,32,0,13.333,7.5,13.333,3.333,125,16.176,12,0,50,0,#7FC97F
+Smoothies & Shakes,Milkshakes,Blueberry Pomegranate Smoothie (Small),Soda 15 (Regular),354,#664a96,#CCEBC5,#7F3B08,8.8,0.571,0.769,0,0,1.667,1.667,13.333,10,122.222,2.941,0,1.667,7.5,0,#CCEBC5
+Smoothies & Shakes,Milkshakes,Strawberry Banana Smoothie (Small),Soda 16 (Regular),354,#5be3ab,#D95F02,#FEE0B6,8.4,0.571,0.769,0,0,1.667,2.083,12.533,10,122.222,4.412,0,45,10,0,#D95F02
+Smoothies & Shakes,Milkshakes,Mango Pineapple Smoothie (Small),Soda 17 (Regular),354,#36305d,#FB9A99,#543005,8.4,0.571,0.769,0,0,1.667,1.667,13.333,3.333,127.778,2.941,36,30,10,0,#FB9A99
+Smoothies & Shakes,Milkshakes,Vanilla Shake (Small),Soda 18 (Regular),354,#dfd185,#A6D854,#542788,21.2,16,23.077,40,50,20,6.667,22.933,0,175,16.176,24,0,50,0,#A6D854
+Smoothies & Shakes,Milkshakes,Strawberry Shake (Small),Soda 19 (Regular),354,#232a3c,#FFFFCC,#2D004B,22,17.143,24.615,40,50,20,6.667,24,0,219.444,17.647,24,0,50,0,#FFFFCC
+Smoothies & Shakes,Milkshakes,Chocolate Shake (Small),Soda 20 (Regular),354,#cf6f27,#BEBADA,#35978F,22.4,17.143,24.615,40,50,20,10,24.267,3.333,213.889,17.647,24,0,50,16.667,#BEBADA
+Beverages,Soda,Coca-Cola Classic (Large),Soda 1 (Large),887,#6de1ca,#CCCCCC,#C51B7D,11.2,0,0,0,0,0,0.208,20.267,0,211.111,0,0,0,0,0,#CCCCCC
+Beverages,Soda,Dr Pepper (Large),Soda 2 (Large),887,#6f481d,#FF7F00,#7FBC41,10.8,0,0,0,0,0,3.75,19.2,0,194.444,0,0,0,0,0,#FF7F00
+Beverages,Soda,Sprite (Large),Soda 3 (Large),887,#89dde9,#BC80BD,#B2ABD2,11.2,0,0,0,0,0,2.5,19.733,0,205.556,0,0,0,0,0,#BC80BD
+Beverages,Drinks,Minute Maid Orange Juice (Large),Soda 4 (Large),650,#948729,#FC8D62,#FDE0EF,11.2,0,0,0,0,0,0.208,17.333,0,161.111,5.882,0,360,5,0,#FC8D62
+Coffee & Tea,Coffee & Tea,Sweet Tea (Large),Soda 5 (Large),887,#8d81c5,#FB8072,#01665E,8.8,0,0,0,0,0,0.417,14.4,0,150,1.471,0,0,0,0,#FB8072
+Coffee & Tea,Coffee & Tea,Latte (Large),Soda 6 (Large),591,#90a85a,#FFFF33,#D8DAEB,11.2,13.714,21.538,32,0,13.333,7.5,6.4,3.333,55.556,22.059,18,0,62.5,0,#FFFF33
+Coffee & Tea,Coffee & Tea,Caramel Latte (Large),Soda 7 (Large),591,#c9a9ea,#984EA3,#B35806,17.2,13.714,21.538,32,0,13.333,7.5,16.533,3.333,163.889,22.059,18,0,62.5,0,#984EA3
+Coffee & Tea,Coffee & Tea,Hazelnut Latte (Large),Soda 8 (Large),591,#425d25,#E31A1C,#B8E186,17.2,13.714,21.538,32,0,13.333,7.5,16.533,3.333,161.111,22.059,18,0,62.5,0,#E31A1C
+Coffee & Tea,Coffee & Tea,French Vanilla Latte (Large),Soda 9 (Large),591,#b0b2ce,#377EB8,#5AAE61,16.8,13.714,21.538,32,0,13.333,7.917,16,3.333,155.556,22.059,18,0,62.5,0,#377EB8
+Coffee & Tea,Coffee & Tea,Latte with Sugar Free French Vanilla Syrup (Large),Soda 10 (Large),591,#2d341f,#BEAED4,#F1B6DA,13.2,13.714,21.538,32,0,13.333,10,9.867,6.667,55.556,22.059,18,0,62.5,0,#BEAED4
+Coffee & Tea,Coffee & Tea,Mocha (Large),Soda 11 (Large),591,#c6d4b6,#E7298A,#C2A5CF,20,17.143,26.154,40,25,16.667,10,19.2,6.667,175,23.529,18,0,62.5,16.667,#E7298A
+Coffee & Tea,Coffee & Tea,Mocha with Nonfat Milk (Large),Soda 12 (Large),591,#55608b,#FFFF99,#F5F5F5,15.6,4,6.154,10,0,6.667,10,19.467,6.667,177.778,25,24,0,62.5,16.667,#FFFF99
+Coffee & Tea,Coffee & Tea,Caramel Mocha (Large),Soda 13 (Large),591,#e3ac7c,#E6AB02,#DE77AE,19.2,17.143,26.154,40,25,16.667,11.25,17.6,3.333,166.667,23.529,18,0,62.5,0,#E6AB02
+Coffee & Tea,Coffee & Tea,Hot Chocolate (Large),Soda 14 (Large),591,#496f84,#80B1D3,#276419,21.6,20.571,30.769,48,25,20,11.667,19.467,3.333,188.889,25,24,0,75,16.667,#80B1D3
+Smoothies & Shakes,Milkshakes,Blueberry Pomegranate Smoothie (Large),Soda 15 (Large),650,#a47b4e,#BF5B17,#C7EAE5,13.6,1.143,1.538,2,0,1.667,2.708,21.067,16.667,194.444,5.882,0,5,12.5,0,#BF5B17
+Smoothies & Shakes,Milkshakes,Strawberry Banana Smoothie (Large),Soda 16 (Large),650,#459f9e,#66C2A5,#BF812D,13.2,1.143,1.538,2,0,1.667,3.333,19.733,13.333,194.444,7.353,0,66.667,12.5,0,#66C2A5
+Smoothies & Shakes,Milkshakes,Mango Pineapple Smoothie (Large),Soda 17 (Large),650,#7f8567,#B15928,#E08214,13.6,1.143,1.538,2,0,1.667,2.5,20.8,6.667,200,5.882,60,45,12.5,0,#B15928
+Smoothies & Shakes,Milkshakes,Vanilla Shake (Large),Soda 18 (Large),650,#80b0ba,#F2F2F2,#80CDC1,32.8,24,35.385,60,50,30,10.833,36,0,280.556,26.471,36,0,75,0,#F2F2F2
+Smoothies & Shakes,Milkshakes,Strawberry Shake (Large),Soda 19 (Large),650,#4fa171,#F1E2CC,#FDB863,34,24,36.923,60,50,30,10.833,37.333,0,341.667,26.471,36,0,87.5,0,#F1E2CC
+Smoothies & Shakes,Milkshakes,Chocolate Shake (Large),Soda 20 (Large),650,#396456,#1B9E77,#A6DBA0,34,24,35.385,60,50,28.333,15.833,37.6,6.667,333.333,27.941,36,0,75,33.333,#1B9E77

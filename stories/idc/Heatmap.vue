@@ -38,7 +38,7 @@
                 :scale="actualOptions(options[j])"
                 :title="xAxis"
                 :labelFontSize="12"
-                :titleHjust="1.05"
+                :titleHjust="1.01"
                 titleAnchorPoint="l"
                 labelRotate
               />
@@ -78,7 +78,7 @@ export default {
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
       dimensions: [3, 5, 10],
-      options: [40],
+      options: [50, 100],
       height: 2000,
       width: 8700,
       baseX: 150,

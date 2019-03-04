@@ -58,10 +58,8 @@
 
 <script>
 import {csv} from 'd3-fetch'
-
 export default {
   name: 'idc',
-
   data () {
     return {
       data: undefined,
@@ -82,11 +80,9 @@ export default {
             ]
     }
   },
-
   mounted () {
     this.drinks()
   },
-
   methods: {
     clickHandler (self) {
       return () => {
@@ -103,9 +99,7 @@ export default {
           throw new Error('Error in click handler')
         }
       }
-
     },
-
     hoverHandler (self) {
       return () => {
         if (this.selected) {
@@ -115,7 +109,6 @@ export default {
         }
       }
     },
-
     leaveHandler (self) {
       return () => {
         if (this.selected) {
@@ -125,7 +118,6 @@ export default {
         }
       }
     },
-
     drinks () {
       csv('../../static/idcDrinksDemoSmall.csv').then((data) => {
         this.data = Object.freeze(data.map((d, i) => {
