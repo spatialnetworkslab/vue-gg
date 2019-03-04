@@ -26,19 +26,19 @@
 
         </vgg-map>
 
-        <!-- <vgg-x-axis
+        <vgg-x-axis
           :scale="'explanatory'"
-          :titleHjust="1.1"
+          :title-hjust="1.1"
           :vjust="-.05"
-        /> -->
+        />
 
-        <!-- <vgg-y-axis
+        <vgg-y-axis
           :scale="'dependent'"
           :hjust="-.05"
           flip
-        /> -->
+        />
 
-        <vgg-y-axis
+        <!-- <vgg-y-axis
           :x1="500"
           :x2="550"
           :y1="100"
@@ -50,9 +50,9 @@
           :x1="100"
           :x2="500"
           :y="75"
-          :h="100"
+          :h="30"
           :scale="'explanatory'"
-        />
+        /> -->
 
       </vgg-section>
 

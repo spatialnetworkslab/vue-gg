@@ -1,18 +1,28 @@
 <template>
   <vgg-graphic
-    :width="600"
-    :height="600"
+    :width="800"
+    :height="800"
     :data="data"
   >
 
     <vgg-repeat
-      v-slot="{ x, y }"
+      v-slot="{ x, y, sides }"
       :x="['a', 'b', 'c']"
       :y="['a', 'b', 'c']"
-      :cell-padding="20"
+      :cell-padding="12"
+      :sides="['bottom', 'right']"
     >
 
-      <vgg-section>
+      <vgg-section
+        :grid-lines="{
+          x: { scale: x },
+          y: { scale: y }
+        }"
+        :axes="{
+          bottom: { scale: x, labelRotate: true },
+          right: { scale: y, flip: true }
+        }"
+      >
 
         <vgg-map v-slot="{ row }">
 

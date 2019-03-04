@@ -18,14 +18,26 @@
 
     <vgg-section
       v-if="showX"
-      :x1="100"
-      :x2="550"
+      :x1="150"
+      :x2="450"
       :y1="25"
       :y2="200"
+<<<<<<< HEAD
 >>>>>>> master
       :scale-x="'xValues'"
       :scale-y="'yValues'"
+=======
+>>>>>>> 6afd2586d01d705245598da2edd5fa697761e4ea
     >
+
+      <vgg-rectangle
+        :x1="150"
+        :x2="450"
+        :y1="25"
+        :y2="200"
+        :opacity="0.2"
+        fill="blue"
+      />
 
       <vgg-x-axis
         :scale="'xValues'"
@@ -36,8 +48,9 @@
         :vjust="0.2"
 =======
         :vjust="0"
-        :tickCount="5"
-        :tickExtra="false"
+        :tick-count="5"
+        :tick-extra="false"
+        :title-vjust="1"
         title="vjust = 0"
 >>>>>>> master
       />
@@ -51,8 +64,9 @@
         :vjust="0.5"
 =======
         :vjust="0.5"
-        :tickCount="5"
-        :tickExtra="false"
+        :tick-count="5"
+        :tick-extra="false"
+        :title-vjust="1"
         title="vjust = 0.5"
 >>>>>>> master
       />
@@ -67,8 +81,9 @@
         :tickCount="5"
 =======
         :vjust="1"
-        :tickCount="5"
-        :tickExtra="false"
+        :tick-count="5"
+        :tick-extra="false"
+        :title-vjust="1"
         title="vjust = 1"
 >>>>>>> master
       />
@@ -77,20 +92,33 @@
 
     <vgg-section
       v-if="showY"
-      :x1="50"
-      :x2="550"
+      :x1="150"
+      :x2="450"
       :y1="25"
 <<<<<<< HEAD
       :y2="275"
 =======
       :y2="200"
+<<<<<<< HEAD
 >>>>>>> master
       :scale-x="'xValues'"
       :scale-y="'yValues'"
+=======
+>>>>>>> 6afd2586d01d705245598da2edd5fa697761e4ea
     >
+
+      <vgg-rectangle
+        :x1="150"
+        :x2="450"
+        :y1="25"
+        :y2="200"
+        :opacity="0.2"
+        fill="blue"
+      />
 
       <vgg-y-axis
         :scale="'yValues'"
+<<<<<<< HEAD
         :tickExtra="false"
 <<<<<<< HEAD
         :y1="25"
@@ -98,14 +126,19 @@
         :hjust="0.2"
         :tickCount="5"
 =======
+=======
+        :tick-extra="false"
+>>>>>>> 6afd2586d01d705245598da2edd5fa697761e4ea
         :hjust="0"
-        :tickCount="5"
+        :tick-count="5"
+        :title-hjust="-0.7"
         title="hjust = 0"
 >>>>>>> master
       />
 
       <vgg-y-axis
         :scale="'yValues'"
+<<<<<<< HEAD
         :tickExtra="false"
 <<<<<<< HEAD
         :y1="50"
@@ -113,14 +146,19 @@
         :hjust="0.5"
         :tickCount="5"
 =======
+=======
+        :tick-extra="false"
+>>>>>>> 6afd2586d01d705245598da2edd5fa697761e4ea
         :hjust="0.5"
-        :tickCount="5"
+        :tick-count="5"
+        :title-hjust="-0.7"
         title="hjust = 0.5"
 >>>>>>> master
       />
 
       <vgg-y-axis
         :scale="'yValues'"
+<<<<<<< HEAD
         :tickExtra="false"
 <<<<<<< HEAD
         :y1="100"
@@ -128,8 +166,12 @@
         :hjust="0.8"
         :tickCount="5"
 =======
+=======
+        :tick-extra="false"
+>>>>>>> 6afd2586d01d705245598da2edd5fa697761e4ea
         :hjust="1"
-        :tickCount="5"
+        :tick-count="5"
+        :title-hjust="-0.7"
         title="hjust = 1"
 >>>>>>> master
       />
@@ -138,8 +180,8 @@
 
     <vgg-section
       v-if="showAll"
-      :x1="50"
-      :x2="550"
+      :x1="150"
+      :x2="450"
       :y1="25"
       :y2="250"
       :scale-x="'xValues'"
@@ -149,14 +191,14 @@
       <vgg-x-axis
         :scale="'xValues'"
         title="x axis"
-        :tickExtra="false"
-        :titleHjust="1.05"
+        :tick-extra="false"
+        :title-hjust="1.05"
       />
 
       <vgg-y-axis
         :scale="'yValues'"
-        :tickExtra="false"
-        :tickCount="5"
+        :tick-extra="false"
+        :tick-count="5"
         title="y axis"
       />
 

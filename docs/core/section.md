@@ -22,35 +22,80 @@ All of these will be discussed below, under [Usage](#usage).
 
 ### Positioning
 
-| Prop | Required | Types                  | Default   | Description          | Unit(s)             |
-| ---- | -------- | ---------------------- | --------- | -------------------- | ------------------- |
-| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinate(s) |
-| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinate(s) |
-| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinate(s) |
-| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinate(s) |
-| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinate(s) |
-| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinate(s) |
-| w    | depends  | Number                 | undefined | Width                | Local coordinate(s) |
-| h    | depends  | Number                 | undefined | Height               | Local coordinate(s) |
+| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
+| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
+| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinates |
+| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinates |
+| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
+| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
+| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinates |
+| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates |
+| w    | depends  | Number                 | undefined | Width                | Local coordinates |
+| h    | depends  | Number                 | undefined | Height               | Local coordinates |
+
+Positioning the Section component works exactly the same way as positioning the
+Rectangle mark. See the [documentation for the Rectangle mark](../marks/rectangle.md)
+for an in-depth explanation.
 
 ### Other props
 
 | Prop      | Required | Types                   | Default   | Description                     |
 | --------- | -------- | ----------------------- | --------- | ------------------------------- |
-| data      | false    | [Array, Object]         | undefined | Some supported data structure                                |
+| data      | false    | [Array, Object]         | undefined | Some supported data structure   |
 | type      | false    | String                  | 'scale'   | Type of local coordinate system |
 | scale-x   | false    | [String, Array, Object] | undefined | Scaling of x dimension          |
 | scale-y   | false    | [String, Array, Object] | undefined | Scaling of y dimension          |
 | format    | false    | String                  | undefined | Format of data structure        |
 | transform | false    | [Array, Object]         | undefined | Transformation(s) to be applied |
 
+The props passed to the `scale-x` and `scale-y` are [scaling options](../concepts/scaling.md) props.
+
+### Axes and gridlines
+
+| Prop       | Required | Types           | Default   | Description                           |
+| ---------- | -------- | --------------- | --------- | ------------------------------------- |
+| axes       | false    | [Array, Object] | undefined | Which axes to add to the Section      |
+| grid-lines | false    | [Array, Object] | undefined | Which gridlines to add to the Section |
+
+Besides using the [axes](../axes/cartesian.md) and [gridline](../axes/gridlines.md)
+components, it is also possible to add axes and gridlines by just providing
+a prop to the Section component. The axes and gridlines can be specified as an
+Array or as an Object. When using an Array, the Array can only contain the values
+`['left', 'right', 'top', 'bottom']` for the `axes` prop, and `['x', 'y']` for the
+`grid-lines` prop. When using the Object, the Object can only have the keys `left`,
+`right` etc. for the axes, and `x` and `y` for the gridlines, while the values
+corresponding to those keys are the props that you would usually pass to the
+axes or gridline components- see the following example:
+
+::: v-pre
+```html
+<vgg-section
+  :x1="50"
+  :x2="450"
+  :y1="50"
+  :y2="450"
+  :scale-x="[0, 10]"
+  :scale-y="[50, 80]"
+  :axes="{
+    bottom: { h: 50 },
+    left: { 'tick-color': 'blue' }
+  }"
+  :grid-lines="['x', 'y']"
+>
+
+</vgg-section>
+```
+:::
+
+<section-axes-test />
+
+One of the advantages using the `axes` and `grid-lines` props over the components
+is that the axes and gridlines will automatically inherit the Section's `scale-x`
+and `scale-y` values. Like with the components, the axes will by default be 1/8 of
+the Section, unless you specify a `h` prop for the x-axes or a `w` prop for the
+y-axes.
+
 # Usage
-
-### Positioning
-
-Positioning the Section component works exactly the same way as positioning the
-Rectangle mark. See the [documentation for the Rectangle mark](../marks/rectangle.md)
-for an in-depth explanation.
 
 ### Defining a local coordinate system
 

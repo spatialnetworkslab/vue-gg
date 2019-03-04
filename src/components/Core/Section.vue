@@ -8,6 +8,14 @@ import Rectangular from '../../mixins/Marks/Rectangular.js'
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import randomID from '../../utils/id.js'
 
+import { calculateWidths, createAxisProps } from './utils/section.js'
+
+import Section from './Section.vue'
+import XAxis from '../Guides/XAxis.vue'
+import YAxis from '../Guides/YAxis.vue'
+import XGrid from '../Guides/XGrid.vue'
+import YGrid from '../Guides/YGrid.vue'
+
 export default {
   mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular],
 
@@ -45,6 +53,16 @@ export default {
     transform: {
       type: [Array, Object, undefined],
       default: undefined
+    },
+
+    axes: {
+      type: [Array, Object, undefined],
+      default: undefined
+    },
+
+    gridLines: {
+      type: [Array, Object, undefined],
+      default: undefined
     }
   },
 
@@ -56,15 +74,15 @@ export default {
 
   computed: {
     ranges () {
-      let aes = this.coordinateSpecification
+      let coords = this.coordinateSpecification
       return {
-        x: [aes.x1, aes.x2],
-        y: [aes.y1, aes.y2]
+        x: [coords.x1, coords.x2],
+        y: [coords.y1, coords.y2]
       }
     },
 
     scales () {
-      if (this.scaleX || this.scaleY || this.scaleGeo) {
+      if ((this.scaleX || this.scaleY || this.scaleGeo)) {
         let scales = {}
         if (this.scaleX) { scales.x = this.scaleX }
         if (this.scaleY) { scales.y = this.scaleY }
@@ -124,15 +142,33 @@ export default {
     },
 
     transformation () {
-      let transformation = new CoordinateTransformation({
-        type: this.type,
-        scales: this.scales,
-        ranges: this.ranges,
-        dataInterface: this.$$dataInterface,
-        scaleManager: this.$$scaleManager
-      })
+      let transformation
+
+      if (!this.axes) {
+        transformation = new CoordinateTransformation({
+          type: this.type,
+          scales: this.scales,
+          ranges: this.ranges,
+          dataInterface: this.$$dataInterface,
+          scaleManager: this.$$scaleManager
+        })
+      }
+
+      if (this.axes) {
+        // If there are axes, we will just do an identity transformation.
+        // The actual transformation will then take place in the nested child section.
+        transformation = new CoordinateTransformation({
+          type: 'scale',
+          scales: this.ranges,
+          ranges: this.ranges,
+          dataInterface: this.$$dataInterface,
+          scaleManager: this.$$scaleManager
+        })
+      }
+
       return transformation
     },
+
     coordinateTreeBranchID () {
       let id
       let parentData = this.$parent.$vnode.data
@@ -148,10 +184,65 @@ export default {
       }
       return id
     },
+
+    _axes () {
+      if (this.axes && this.axes.constructor === Array) {
+        let axes = {}
+        for (let axis of this.axes) {
+          axes[axis] = {}
+        }
+        return axes
+      } else {
+        return this.axes
+      }
+    },
+
+    axisWidths () {
+      return calculateWidths(this._axes, this.coordinateSpecification)
+    },
+
+    nestedSectionProps () {
+      let props = {}
+      let coordinateSpecification = this.coordinateSpecification
+      let axisWidths = this.axisWidths
+
+      props.x1 = coordinateSpecification.x1 + axisWidths.left
+      props.x2 = coordinateSpecification.x2 - axisWidths.right
+      props.y1 = coordinateSpecification.y1 + axisWidths.bottom
+      props.y2 = coordinateSpecification.y2 - axisWidths.top
+
+      const forbiddenProps = [
+        'x1', 'x2', 'x', 'w',
+        'y1', 'y2', 'y', 'h',
+        'axes'
+      ]
+
+      for (let prop in this._props) {
+        if (!forbiddenProps.includes(prop)) {
+          props[prop] = this._props[prop]
+        }
+      }
+
+      props = this.replaceScales(props)
+
+      return props
+    },
+
+    _gridLines () {
+      if (this.gridLines && this.gridLines.constructor === Array) {
+        let gridLines = {}
+        for (let gridLine of this.gridLines) {
+          gridLines[gridLine] = null
+        }
+        return gridLines
+      } else {
+        return this.gridLines
+      }
+    }
   },
 
   watch: {
-    transformation: 'updateCoordinateTreeBranch',
+    transformation: 'updateCoordinateTreeBranch'
   },
 
   beforeDestroy () {
@@ -186,22 +277,126 @@ export default {
       }
     },
 
-    same (oldVal, newVal) {
-      return JSON.stringify(oldVal) === JSON.stringify(newVal)
+    createSection (createElement) {
+      let props = this.nestedSectionProps
+      let slotContent = this.getSlotContent()
+
+      return createElement(Section, { props }, slotContent)
+    },
+
+    createAxes (createElement) {
+      let elements = []
+      let widths = this.axisWidths
+      let axes = this._axes
+      let coords = this.coordinateSpecification
+      let scales = this.scales
+
+      for (let axis in axes) {
+        let axisOptions = axes[axis]
+
+        if (['top', 'bottom'].includes(axis)) {
+          let props = createAxisProps(axis, axisOptions, coords, widths, scales)
+
+          let axisElement = createElement(XAxis, { props })
+          elements.push(axisElement)
+        }
+
+        if (['left', 'right'].includes(axis)) {
+          let props = createAxisProps(axis, axisOptions, coords, widths, scales)
+
+          let axisElement = createElement(YAxis, { props })
+          elements.push(axisElement)
+        }
+      }
+
+      return elements
+    },
+
+    createGridLines (createElement) {
+      let gridLines = []
+
+      const forbiddenProps = [
+        'x1', 'x2', 'x', 'w',
+        'y1', 'y2', 'y', 'h',
+        'axes'
+      ]
+
+      for (let dim in this._gridLines) {
+        if (dim !== 'x' && dim !== 'y') {
+          throw new Error(`Invalid grid line: '${dim}'. Only 'x' and 'y' allowed`)
+        }
+
+        let gridLineProps = this._gridLines[dim]
+        let props = {}
+
+        for (let propKey in gridLineProps) {
+          if (!forbiddenProps.includes(propKey)) {
+            props[propKey] = gridLineProps[propKey]
+          }
+        }
+
+        if (!props.hasOwnProperty('scale')) {
+          props.scale = this.scales[dim]
+        }
+
+        let element = dim === 'x' ? XGrid : YGrid
+        let gridLine = createElement(element, { props })
+        gridLines.push(gridLine)
+      }
+
+      return gridLines
+    },
+
+    getSlotContent () {
+      if (this.$scopedSlots.default) {
+        return this.$scopedSlots.default()
+      } else if (this.$slots.default) {
+        return this.$slots.default
+      } else {
+        return []
+      }
+    },
+
+    replaceScales (props) {
+      let coords = this.coordinateSpecification
+      if (!props.scaleX) {
+        props.scaleX = [coords.x1, coords.x2]
+      }
+
+      if (!props.scaleY) {
+        props.scaleY = [coords.y1, coords.y2]
+      }
+
+      return props
     }
   },
 
   provide () {
     let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
     let $$coordinateTreeParent = this.coordinateTreeBranchID
-    let $$getLocalX = this.$$coordinateTree.getLocalX(this.coordinateTreeBranchID)
-    let $$getLocalY = this.$$coordinateTree.getLocalY(this.coordinateTreeBranchID)
-    return { $$transform, $$coordinateTreeParent, $$getLocalX, $$getLocalY }
+    return { $$transform, $$coordinateTreeParent }
   },
 
   render (createElement) {
     if (this.ready && this.allowScales) {
-      return createElement('g', { class: 'section' }, this.$slots.default)
+      if (!this.axes) {
+        let slotContent = this.getSlotContent()
+
+        if (this.gridLines) {
+          let gridLines = this.createGridLines(createElement)
+          slotContent.push(...gridLines)
+        }
+
+        return createElement('g', { class: 'section' }, slotContent)
+      }
+
+      if (this.axes) {
+        let section = this.createSection(createElement)
+        let axes = this.createAxes(createElement)
+        let content = [section, ...axes]
+
+        return createElement('g', { class: 'section-with-axes' }, content)
+      }
     }
   }
 }

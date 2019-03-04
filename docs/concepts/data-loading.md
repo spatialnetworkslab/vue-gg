@@ -22,7 +22,7 @@ it has.
 | categorical  | String                                          | Nominal, Ordinal                     |
 | temporal     | Date                                            | Interval                             |
 | interval     | Array (length 2)                                | -                                    |
-| geometry     | Object ((GeoJSON feature)[http://geojson.org/]) | -                                    |
+| geometry     | Object [(GeoJSON feature)](http://geojson.org/) | -                                    |
 | nested       | Object (of Arrays)                              | -                                    |
 
 # Data formats
