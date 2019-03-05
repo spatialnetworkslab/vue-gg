@@ -1,4 +1,4 @@
-# scatterplot-and-matrix
+# scatterplot-matrix
 
 ## Project setup
 ```
