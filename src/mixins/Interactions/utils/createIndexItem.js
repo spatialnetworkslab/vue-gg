@@ -1,5 +1,5 @@
 import findBoundingBox from './geometry/findBoundingBox.js'
-import findBoundingBoxPolygon from './geometry/findBoundingBoxPolygon.js'
+import findBoundingBoxPath from './geometry/findBoundingBoxPath.js'
 
 export default function (type, coordinates, instance) {
   if (type === 'point') {
@@ -14,8 +14,8 @@ export default function (type, coordinates, instance) {
     return createLineItem(type, coordinates, instance)
   }
 
-  if (type === 'polygon') {
-    return createPolygonItem(type, coordinates, instance)
+  if (['polygon', 'multiline'].includes(type)) {
+    return createPathItem(type, coordinates, instance)
   }
 }
 
@@ -50,28 +50,40 @@ function createLineItem (type, coordinates, instance) {
     type,
     coordinates,
     strokeWidth: instance.strokeWidth,
-    lineType: 'LineString'
+    pathType: 'LineString'
   }
 
   return { geometry, instance, minX, maxX, minY, maxY }
 }
 
-function createPolygonItem (type, coords, instance) {
+function createPathItem (type, coords, instance) {
   let coordinates
-  let polygonType
+  let pathType
 
   if (coords.constructor === Object && coords.hasOwnProperty('type')) {
     // If we are dealing with a GeoJSON geometry
     coordinates = coords.coordinates
-    polygonType = coords.type
+    pathType = coords.type
   } else {
     // If we are dealing with our own, simple polygon coordinates
     coordinates = coords
-    polygonType = 'SimplePolygon'
+
+    if (type === 'multiline') {
+      pathType = 'LineString'
+    }
+
+    if (type === 'polygon') {
+      pathType = 'SimplePolygon'
+    }
   }
 
-  let { minX, minY, maxX, maxY } = findBoundingBoxPolygon(coordinates, polygonType)
-  let geometry = { type, coordinates, polygonType }
+  let { minX, minY, maxX, maxY } = findBoundingBoxPath(coordinates, pathType)
+  let geometry = {
+    type,
+    coordinates,
+    strokeWidth: instance.strokeWidth,
+    pathType
+  }
 
   return { geometry, instance, minX, minY, maxX, maxY }
 }

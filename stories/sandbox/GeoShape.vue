@@ -23,6 +23,7 @@
         <vgg-polygon
           :geometry="{ val: row.geometry, scaleGeo: {} }"
           :fill="{ val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
+          @click="log(row)"
         />
 
       </vgg-map>
@@ -70,7 +71,9 @@ export default {
         )
         this.data = Object.freeze(joinedData)
       })
-    }
+    },
+
+    log (row) { console.log(row) }
   }
 }
 </script>

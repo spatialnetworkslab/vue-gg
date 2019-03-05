@@ -25,6 +25,10 @@ export default function ({ x, y }, spatialIndex) {
     if (candidate.geometry.type === 'polygon') {
       if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
     }
+
+    if (candidate.geometry.type === 'multiline') {
+      if (collisionTestLine(x, y, candidate)) { hits.push(candidate) }
+    }
   }
 
   return hits
@@ -43,13 +47,36 @@ function collisionTestPoint (x, y, candidate) {
 
 function collisionTestLine (x, y, candidate) {
   let geometry = candidate.geometry
-  if (geometry.lineType === 'LineString') {
+
+  // Polygon types
+  if (geometry.pathType === 'SimplePolygon') {
     if (lineIntersection([x, y], geometry.strokeWidth, geometry.coordinates)) {
       return true
     }
   }
 
-  if (geometry.lineType === 'MultiLineString') {
+  if (geometry.pathType === 'Polygon') {
+    if (lineIntersection([x, y], geometry.strokeWidth, geometry.coordinates[0])) {
+      return true
+    }
+  }
+
+  if (geometry.pathType === 'MultiPolygon') {
+    for (let polygon of geometry.coordinates) {
+      if (lineIntersection([x, y], geometry.strokeWidth, polygon[0])) {
+        return true
+      }
+    }
+  }
+
+  // MultiLine types
+  if (geometry.pathType === 'LineString') {
+    if (lineIntersection([x, y], geometry.strokeWidth, geometry.coordinates)) {
+      return true
+    }
+  }
+
+  if (geometry.pathType === 'MultiLineString') {
     for (let line of geometry.coordinates) {
       if (lineIntersection([x, y], geometry.strokeWidth, line)) {
         return true
@@ -68,21 +95,37 @@ function collisionTestRectangle (x, y, candidate) {
 function collisionTestPolygon (x, y, candidate) {
   let geometry = candidate.geometry
 
-  if (geometry.polygonType === 'SimplePolygon') {
+  // Polygon types
+  if (geometry.pathType === 'SimplePolygon') {
     if (pointInPolygon([x, y], geometry.coordinates)) {
       return true
     }
   }
 
-  if (geometry.polygonType === 'Polygon') {
+  if (geometry.pathType === 'Polygon') {
     if (pointInPolygon([x, y], geometry.coordinates[0])) {
       return true
     }
   }
 
-  if (geometry.polygonType === 'MultiPolygon') {
+  if (geometry.pathType === 'MultiPolygon') {
     for (let polygon of geometry.coordinates) {
       if (pointInPolygon([x, y], polygon[0])) {
+        return true
+      }
+    }
+  }
+
+  // MultiLine types
+  if (geometry.pathType === 'LineString') {
+    if (pointInPolygon([x, y], geometry.coordinates)) {
+      return true
+    }
+  }
+
+  if (geometry.pathType === 'MultiLineString') {
+    for (let polygon of geometry.coordinates) {
+      if (pointInPolygon([x, y], polygon)) {
         return true
       }
     }
