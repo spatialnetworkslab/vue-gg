@@ -39,15 +39,16 @@ function collisionTestPoint (x, y, candidate) {
 }
 
 function collisionTestLine (x, y, candidate) {
-  if (candidate.lineType === 'LineString') {
-    if (lineIntersection([x, y], candidate.strokeWidth, candidate.coordinates)) {
+  let geometry = candidate.geometry
+  if (geometry.lineType === 'LineString') {
+    if (lineIntersection([x, y], geometry.strokeWidth, geometry.coordinates)) {
       return true
     }
   }
 
-  if (candidate.lineType === 'MultiLineString') {
-    for (let line of candidate.coordinates) {
-      if (lineIntersection([x, y], candidate.strokeWidth, line)) {
+  if (geometry.lineType === 'MultiLineString') {
+    for (let line of geometry.coordinates) {
+      if (lineIntersection([x, y], geometry.strokeWidth, line)) {
         return true
       }
     }
@@ -57,14 +58,22 @@ function collisionTestLine (x, y, candidate) {
 }
 
 function collisionTestPolygon (x, y, candidate) {
-  if (candidate.polygonType === 'Polygon') {
-    if (pointInPolygon([x, y], candidate.coordinates[0])) {
+  let geometry = candidate.geometry
+
+  if (geometry.polygonType === 'SimplePolygon') {
+    if (pointInPolygon([x, y], geometry.coordinates)) {
       return true
     }
   }
 
-  if (candidate.polygonType === 'MultiPolygon') {
-    let biggestPolygon = biggestArea(candidate.coordinates)
+  if (geometry.polygonType === 'Polygon') {
+    if (pointInPolygon([x, y], geometry.coordinates[0])) {
+      return true
+    }
+  }
+
+  if (geometry.polygonType === 'MultiPolygon') {
+    let biggestPolygon = biggestArea(geometry.coordinates)
     if (pointInPolygon([x, y], biggestPolygon[0])) {
       return true
     }

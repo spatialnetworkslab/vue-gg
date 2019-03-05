@@ -41,6 +41,21 @@ export default {
       }
 
       return false
+    },
+
+    getListeners () {
+      let listeners = []
+      if (!this.$options._parentListeners) { return listeners }
+
+      const allowedListeners = ['click'] // TODO more
+
+      for (let listener of allowedListeners) {
+        if (this.$options._parentListeners.hasOwnProperty(listener)) {
+          listeners.push(listener)
+        }
+      }
+
+      return listeners
     }
   },
 
