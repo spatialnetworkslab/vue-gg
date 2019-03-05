@@ -29,6 +29,7 @@
           :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
+          @click="log(row)"
         />
 
         <vgg-line
@@ -88,9 +89,16 @@
 import { bars } from './dummyData.js'
 export default {
   name: 'Bars',
+
   data () {
     return {
       bars: bars('fruit', 'quantity')
+    }
+  },
+
+  methods: {
+    log (row) {
+      console.log(row)
     }
   }
 }

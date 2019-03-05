@@ -1,5 +1,6 @@
 import rbush from 'rbush'
 import collisionTest from './utils/collisionTest.js'
+import createIndexItem from './utils/createIndexItem.js'
 
 export default {
   data () {
@@ -31,34 +32,7 @@ export default {
     },
 
     indexElement (type, coordinates, instance) {
-      let item
-
-      if (type === 'point') {
-        let radius = instance.radius
-
-        let minX = coordinates[0] - radius
-        let maxX = coordinates[0] + radius
-        let minY = coordinates[1] - radius
-        let maxY = coordinates[1] + radius
-
-        let geometry = {
-          x: coordinates[0],
-          y: coordinates[1],
-          radius,
-          type
-        }
-
-        item = { geometry, instance, minX, maxX, minY, maxY }
-      }
-
-      if (type === 'line') {
-        // TODO
-      }
-
-      if (type === 'polygon') {
-        // TODO
-      }
-
+      let item = createIndexItem(type, coordinates, instance)
       this.interactionManager.spatialIndex.insert(item)
     },
 

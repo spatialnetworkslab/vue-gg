@@ -54,17 +54,24 @@ export default {
         [coords.x1, coords.y1]
       ]
 
+      let transformedPoints
       let path
 
       if (this._interpolate) {
         let interpolatedPoints = interpolatePoints(points)
-        let transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
+        transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
         path = createPath(transformedPoints)
       }
 
       if (!this._interpolate) {
-        let transformedPoints = transformPoints(points, this.$$transform)
+        transformedPoints = transformPoints(points, this.$$transform)
         path = createPath(transformedPoints)
+      }
+
+      let listeners = this.getListeners()
+
+      if (listeners.length > 0) {
+        this.addToSpatialIndex(transformedPoints, listeners)
       }
 
       return createElement('path', {
@@ -73,6 +80,10 @@ export default {
         },
         style: this.createSVGStyle(aesthetics)
       })
+    },
+
+    addToSpatialIndex (coordinates, listeners) {
+      this.$$interactionManager.addElement('rectangle', coordinates, this, listeners)
     }
   }
 }

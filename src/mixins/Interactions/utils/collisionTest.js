@@ -15,6 +15,10 @@ export default function ({ x, y }, spatialIndex) {
       if (collisionTestPoint(x, y, candidate)) { hits.push(candidate) }
     }
 
+    if (candidate.geometry.type === 'rectangle') {
+      if (collisionTestRectangle(x, y, candidate)) { hits.push(candidate) }
+    }
+
     if (candidate.geometry.type === 'line') {
       if (collisionTestLine(x, y, candidate)) { hits.push(candidate) }
     }
@@ -55,6 +59,11 @@ function collisionTestLine (x, y, candidate) {
   }
 
   return false
+}
+
+function collisionTestRectangle (x, y, candidate) {
+  let geometry = candidate.geometry
+  return pointInPolygon([x, y], geometry.coordinates)
 }
 
 function collisionTestPolygon (x, y, candidate) {
