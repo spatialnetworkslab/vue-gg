@@ -20,7 +20,6 @@
           :y="row.b"
           :radius="3"
           :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
-          @click="nothing(row)"
         />
 
       </vgg-map>
@@ -78,10 +77,6 @@ export default {
         data.push({ a, b })
       }
       return data
-    },
-
-    nothing (row) {
-      console.log(row)
     }
   }
 }

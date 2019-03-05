@@ -1,12 +1,12 @@
 import rbush from 'rbush'
+import collisionTest from './utils/collisionTest.js'
 
 export default {
   data () {
     return {
       interactionManager: Object.freeze({
-        nativeListeners: {},
-        spatialIndex: rbush(),
-        collisionTests: {}
+        nativeListeners: {}, // keys: native listeners (click, mouseover, etc)
+        spatialIndex: rbush()
       })
     }
   },
@@ -22,25 +22,44 @@ export default {
   },
 
   methods: {
-    addElement (type, bbox, instance, listeners) {
-      this.indexElement(type, bbox, instance)
+    addElement (type, coordinates, instance, listeners) {
+      this.indexElement(type, coordinates, instance)
 
       for (let listener of listeners) {
         this.startListener(listener)
       }
     },
 
-    indexElement (type, bbox, instance) {
-      let item = { instance, ...bbox }
+    indexElement (type, coordinates, instance) {
+      let item
 
-      switch (type) {
-        case 'point':
-          this.interactionManager.spatialIndex.insert(item)
-          break
-        case 'line':
-          // TODO
-          break
+      if (type === 'point') {
+        let radius = instance.radius
+
+        let minX = coordinates[0] - radius
+        let maxX = coordinates[0] + radius
+        let minY = coordinates[1] - radius
+        let maxY = coordinates[1] + radius
+
+        let geometry = {
+          x: coordinates[0],
+          y: coordinates[1],
+          radius,
+          type
+        }
+
+        item = { geometry, instance, minX, maxX, minY, maxY }
       }
+
+      if (type === 'line') {
+        // TODO
+      }
+
+      if (type === 'polygon') {
+        // TODO
+      }
+
+      this.interactionManager.spatialIndex.insert(item)
     },
 
     startListener (customListener) {
@@ -50,27 +69,19 @@ export default {
     },
 
     startClickListener (customListener) {
-      if (!this.interactionManager.nativeListeners.hasOwnProperty('click')) {
+      if (!this.interactionManager.nativeListeners.click) {
         this.interactionManager.nativeListeners.click = true
-        this.interactionManager.collisionTests.click = {}
-
-        this.$el.addEventListener('click', e => this.handleListener(customListener, e))
+        this.svg.addEventListener('click', e => this.handleListener(customListener, e))
       }
     },
 
     handleListener (customListener, e) {
-      let { x, y } = getCoords(this.svg, this.svgPoint, e)
-      let hits = this.interactionManager.spatialIndex.search({
-        minX: x, minY: y, maxX: x, maxY: y
-      })
+      let coords = getCoords(this.svg, this.svgPoint, e)
+      let hits = collisionTest(coords, this.interactionManager.spatialIndex)
 
       for (let hit of hits) {
         hit.instance.$emit(customListener, e)
       }
-      // let collisionTests = this.interactionManager.collisionTests[listener]
-      // for (let test in collisionTests) {
-      //
-      // }
     }
   },
 

@@ -64,7 +64,7 @@ export default {
       let listeners = this.getListeners()
 
       if (listeners.length > 0) {
-        this.addToSpatialIndex([cx, cy], aesthetics.radius, listeners)
+        this.addToSpatialIndex([cx, cy], listeners)
       }
 
       return createElement('circle', {
@@ -79,6 +79,8 @@ export default {
 
     getListeners () {
       let listeners = []
+      if (!this.$options._parentListeners) { return listeners }
+
       const allowedListeners = ['click'] // TODO more
 
       for (let listener of allowedListeners) {
@@ -90,15 +92,8 @@ export default {
       return listeners
     },
 
-    addToSpatialIndex (coordinates, radius, listeners) {
-      let bbox = {
-        minX: coordinates[0] - radius,
-        maxX: coordinates[0] + radius,
-        minY: coordinates[1] - radius,
-        maxY: coordinates[1] + radius
-      }
-
-      this.$$interactionManager.addElement('point', bbox, this, listeners)
+    addToSpatialIndex (coordinates, listeners) {
+      this.$$interactionManager.addElement('point', coordinates, this, listeners)
     }
   }
 }
