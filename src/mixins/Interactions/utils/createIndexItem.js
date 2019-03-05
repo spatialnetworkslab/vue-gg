@@ -10,7 +10,7 @@ export default function (type, coordinates, instance) {
   }
 
   if (type === 'line') {
-    // TODO
+    return createLineItem(type, coordinates, instance)
   }
 
   if (type === 'polygon') {
@@ -39,6 +39,18 @@ function createPointItem (type, coordinates, instance) {
 function createRectangleItem (type, coordinates, instance) {
   let { minX, minY, maxX, maxY } = findBoundingBox(coordinates)
   let geometry = { type, coordinates }
+
+  return { geometry, instance, minX, maxX, minY, maxY }
+}
+
+function createLineItem (type, coordinates, instance) {
+  let { minX, minY, maxX, maxY } = findBoundingBox(coordinates)
+  let geometry = {
+    type,
+    coordinates,
+    strokeWidth: instance.strokeWidth,
+    lineType: 'LineString'
+  }
 
   return { geometry, instance, minX, maxX, minY, maxY }
 }
