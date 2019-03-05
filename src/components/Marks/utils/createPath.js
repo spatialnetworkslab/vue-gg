@@ -1,11 +1,11 @@
 import { interpolate } from 'd3-interpolate'
-import { line } from 'd3-shape'
+import { line, curveCardinal } from 'd3-shape'
 import { geoPath } from 'd3-geo'
 
 import { transform } from '../../../utils/geojson.js'
 
-export function interpolatePath (corners, transformer,
-  precision = 2, resolution = 100) {
+// Step 1: interpolation
+export function interpolatePoints (corners, resolution = 100) {
   let points = []
   points.push(corners[0])
 
@@ -21,13 +21,10 @@ export function interpolatePath (corners, transformer,
     }
   }
 
-  let path = createPath(points, transformer, precision)
-
-  return path
+  return points
 }
 
-export function interpolatePathFromFunc (func, transformer, domains,
-  precision = 2, resolution = 300) {
+export function interpolatePointsFromFunc (func, domains, resolution = 300) {
   let points = []
 
   let interpolator = interpolate(...domains.x)
@@ -41,22 +38,28 @@ export function interpolatePathFromFunc (func, transformer, domains,
     }
   }
 
-  let path = createPath(points, transformer, precision)
-
-  return path
+  return points
 }
 
-export function createPath (points, transformer, precision = 2) {
-  let transformedPoints = points.map(p => {
+// Step 2: Transformation
+export function transformPoints (points, transformer, precision = 2) {
+  return points.map(p => {
     return transformer(p).map(c => round(c, precision))
   })
-
-  const lineGenerator = line()
-  let path = lineGenerator(transformedPoints)
-
-  return path
 }
 
+export const transformFeature = transform
+
+// Step 3: Path creation
+const lineGenerator = line()
+export const createPath = lineGenerator
+
+const path = geoPath(null)
+export const createGeoPath = path
+
+export const arcGenerator = line().curve(curveCardinal.tension(0.96))
+
+// Helpers
 function round (input, precision) {
   return Math.round(input * 10 ** precision) / 10 ** precision
 }
@@ -65,11 +68,4 @@ function inDomain (point, domains) {
   let yMin = Math.min(...domains.y)
   let yMax = Math.max(...domains.y)
   return point[1] > yMin && point[1] < yMax
-}
-
-const path = geoPath(null)
-
-export function createGeoPath (feature, transformer) {
-  let transformedFeature = transform(feature, transformer)
-  return path(transformedFeature)
 }

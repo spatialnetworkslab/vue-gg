@@ -1,6 +1,10 @@
 <script>
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import { createPath, interpolatePath } from './utils/createPath.js'
+import {
+  interpolatePoints,
+  transformPoints,
+  createPath
+} from './utils/createPath.js'
 
 export default {
   mixins: [Rectangular],
@@ -51,13 +55,18 @@ export default {
       ]
 
       let path
+
       if (this._interpolate) {
-        path = interpolatePath(points, this.$$transform)
+        let interpolatedPoints = interpolatePoints(points)
+        let transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
+        path = createPath(transformedPoints)
       }
 
       if (!this._interpolate) {
-        path = createPath(points, this.$$transform)
+        let transformedPoints = transformPoints(points, this.$$transform)
+        path = createPath(transformedPoints)
       }
+
       return createElement('path', {
         attrs: {
           'd': path

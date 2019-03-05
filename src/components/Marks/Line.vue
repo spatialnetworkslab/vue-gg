@@ -1,6 +1,11 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import { createPath, interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
+import {
+  interpolatePoints,
+  interpolatePointsFromFunc,
+  transformPoints,
+  createPath
+} from './utils/createPath.js'
 
 export default {
   mixins: [Mark],
@@ -76,16 +81,21 @@ export default {
         let parentId = this.$$coordinateTreeParent
         let domains = this.$$coordinateTree.getBranch(parentId).domains
 
-        path = interpolatePathFromFunc(this.func, this.$$transform, domains)
+        let points = interpolatePointsFromFunc(this.func, domains)
+        let transformedPoints = transformPoints(points, this.$$transform)
+        path = createPath(transformedPoints)
       }
 
       if (!func) {
         if (this._interpolate) {
-          path = interpolatePath(coords, this.$$transform)
+          let points = interpolatePoints(coords)
+          let transformedPoints = transformPoints(points, this.$$transform)
+          path = createPath(transformedPoints)
         }
 
         if (!this._interpolate) {
-          path = createPath(coords, this.$$transform)
+          let points = transformPoints(coords, this.$$transform)
+          path = createPath(points)
         }
       }
 
