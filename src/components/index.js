@@ -2,8 +2,11 @@
 import Glyph from './Core/GlyphWrapper.vue'
 import Graphic from './Core/Graphic.vue'
 import Map from './Core/Map.vue'
-import Section from './Core/SectionWrapper.vue'
+import Section from './Core/Section.vue'
 import Data from './Core/Data.vue'
+import Scales from './Core/Scales.vue'
+import Grid from './Core/Grid.vue'
+import Repeat from './Core/Repeat.vue'
 
 // Elements
 import GradientLegend from './Elements/GradientLegend.vue'
@@ -23,11 +26,12 @@ import Line from './Marks/Line.vue'
 import MultiLine from './Marks/MultiLine.vue'
 import Area from './Marks/Area.vue'
 import Path from './Marks/Path.vue'
-// import Point from './Marks/Point.vue'
+import Point from './Marks/Point.vue'
 import Polygon from './Marks/Polygon.vue'
 import Rectangle from './Marks/Rectangle.vue'
 import Label from './Marks/Label.vue'
 import Symbol from './Marks/Symbol.vue'
+import Trail from './Marks/Trail.vue'
 
 export default {
   Glyph,
@@ -35,6 +39,9 @@ export default {
   Map,
   Section,
   Data,
+  Scales,
+  Grid,
+  Repeat,
 
   GradientLegend,
   PlotTitle,
@@ -50,9 +57,10 @@ export default {
   MultiLine,
   Area,
   Path,
-  // Point,
+  Point,
   Polygon,
   Rectangle,
   Label,
-  Symbol
+  Symbol,
+  Trail
 }

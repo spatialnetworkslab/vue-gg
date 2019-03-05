@@ -9,22 +9,32 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: 'a',
-        y: 'b'
-      }"
+      :scale-x="'a'"
+      :scale-y="'b'"
     >
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
-        <vgg-symbol
-          :x="row => row.a"
-          :y="row => row.b"
-          :size="6"
-          :fill="{ scale: { scale: 'viridis', variable: 'a' } }"
+        <vgg-point
+          :x="row.a"
+          :y="row.b"
+          :radius="3"
+          :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
         />
 
       </vgg-map>
+
+      <vgg-x-axis
+        :scale="'a'"
+        :titleHjust="1.1"
+        :vjust="-.05"
+      />
+
+      <vgg-y-axis
+        :scale="'b'"
+        :hjust="-.05"
+        flip
+      />
 
     </vgg-section>
 
@@ -44,23 +54,6 @@
       :scale="'b'"
     />
 
-    <vgg-x-axis
-      :x1="100"
-      :x2="500"
-      :y1="50"
-      :y2="100"
-      :scale="'a'"
-    />
-
-    <vgg-y-axis
-      :x1="50"
-      :x2="100"
-      :y1="100"
-      :y2="500"
-      :scale="'b'"
-      flip
-    />
-
   </vgg-graphic>
 </template>
 
@@ -71,7 +64,6 @@ export default {
       data: this.generateData()
     }
   },
-
   methods: {
     generateData () {
       let data = []
@@ -82,10 +74,8 @@ export default {
         let a = Math.random() * range
         let error = Math.random() * range
         let b = beta0 + a * beta1 + error
-
         data.push({ a, b })
       }
-
       return data
     }
   }

@@ -1,59 +1,52 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
 
-  data () {
-    return {
-      markType : 'point-mark'
-    }
-  },
-
   props: {
     x: {
-      type: [Number, String, Date, Object, Function, undefined],
-      default: undefined
+      type: [Number, String, Date],
+      required: true
     },
 
     y: {
-      type: [Number, String, Date, Object, Function, String, undefined],
-      default: undefined
+      type: [Number, String, Date],
+      required: true
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
-      default: undefined
+      type: String,
+      default: '#000000'
     },
 
     stroke: {
-      type: [String, Object, Function, undefined],
-      default: undefined
+      type: String,
+      default: 'none'
     },
 
     strokeWidth: {
-      type: [Number, Object, Function, undefined],
-      default: undefined
+      type: Number,
+      default: 0
     },
 
     radius: {
-      type: [Number, Object, Function, undefined],
-      default: undefined
+      type: Number,
+      default: 3
     },
 
     opacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     strokeOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     fillOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
@@ -63,25 +56,9 @@ export default {
     }
   },
 
-  computed: {
-    aesthetics () {
-      return {
-        x: this.parseCoordinate(this.x, { dimension: 'x' }),
-        y: this.parseCoordinate(this.y, { dimension: 'y' }),
-        fill: this.parseAesthetic(this.fill, { default: '#000000' }),
-        stroke: this.parseAesthetic(this.stroke, { default: 'none' }),
-        strokeWidth: this.parseAesthetic(this.strokeWidth, { default: 0 }),
-        radius: this.parseAesthetic(this.radius, { default: 3 }),
-        opacity: this.parseAesthetic(this.opacity),
-        fillOpacity: this.parseAesthetic(this.fillOpacity),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity),
-        transition: this.transition + 's'
-      }
-    }
-  },
-
   methods: {
-    renderSVG (createElement, aesthetics) {
+    renderSVG (createElement) {
+      let aesthetics = this._props
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
       return createElement('circle', {
@@ -90,7 +67,7 @@ export default {
           'cy': cy,
           'r': aesthetics.radius
         },
-        style: createSVGStyle(aesthetics)
+        style: this.createSVGStyle(aesthetics)
       })
     }
   }

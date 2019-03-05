@@ -4,12 +4,6 @@ import Path from '../../mixins/Marks/Path.js'
 export default {
   mixins: [Path],
 
-  data () {
-    return {
-      markType : 'area-mark'
-    }
-  },
-
   props: {
     close: {
       type: Boolean,
@@ -23,12 +17,12 @@ export default {
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
+      type: String,
       default: '#000000'
     },
 
     stroke: {
-      type: [String, Object, Function, undefined],
+      type: [String, undefined],
       default: undefined
     },
 

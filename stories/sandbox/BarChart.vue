@@ -12,48 +12,53 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: [0, 100],
-        y: [0, 100]
-      }"
+      :scale-x="[0, 100]"
+      :scale-y="[0, 100]"
     >
 
-      <vgg-plot-title :margin="0" text="Subsection" :vMargin="-20" />
+      <vgg-plot-title
+        :margin="0"
+        :v-margin="-20"
+        text="Subsection"
+      />
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-rectangle
-          :x="{ scale: 'fruit' }"
-          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :x="{ val: row.fruit, scale: 'fruit' }"
+          :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
+          :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
         />
 
         <vgg-line
-          :x1="{ scale: 'fruit' }"
-          :x2="{ scale: 'fruit' }"
+          :x1="{ val: row.fruit, scale: 'fruit' }"
+          :x2="{ val: row.fruit, scale: 'fruit' }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
+          :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           stroke="#ced02d"
         />
 
         <vgg-section
-          :x="{ scale: 'fruit' }"
-          :w="{ position: { positioner: 'bulge', padding: 0.2 } }"
+          :x="{ val: row.fruit, scale: 'fruit' }"
+          :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
-          :y2="{ scale: { variable: 'quantity', domain: [0, null] } }"
-          :scales="{
-            x: [-1, 1],
-            y: [-1, 1]
-          }"
+          :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
+          :scale-x="[-1, 1]"
+          :scale-y="[-1, 1]"
         >
 
-          <vgg-plot-title :margin="0" text="bar" :vMargin="20" color="white" />
+          <vgg-plot-title
+            :margin="0"
+            :v-margin="20"
+            text="bar"
+            color="white"
+          />
 
-          <vgg-symbol
+          <vgg-point
             :x="0"
             :y="0"
-            :size="20"
+            :radius="10"
             fill="#8b0000"
           />
 
@@ -61,34 +66,28 @@
 
       </vgg-map>
 
+      <vgg-x-axis
+        :scale="'fruit'"
+        :titleHjust="1.1"
+        :vjust="-.05"
+        rotate-label
+      />
+
+      <vgg-y-axis
+        :scale="{ domain: 'quantity', domainMin: 0 }"
+        :hjust="-.05"
+        flip
+      />
+
     </vgg-section>
-
-    <vgg-x-axis
-      :x1="100"
-      :x2="500"
-      :y1="50"
-      :y2="100"
-      :scale="'fruit'"
-      rotate-label
-    />
-
-    <vgg-y-axis
-      :x1="500"
-      :x2="550"
-      :y1="100"
-      :y2="500"
-      :scale="{ variable: 'quantity', domain: [0, null] }"
-    />
 
   </vgg-graphic>
 </template>
 
 <script>
 import { bars } from './dummyData.js'
-
 export default {
   name: 'Bars',
-
   data () {
     return {
       bars: bars('fruit', 'quantity')

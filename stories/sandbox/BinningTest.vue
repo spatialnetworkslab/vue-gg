@@ -29,21 +29,34 @@
           :x2="500"
           :y1="100"
           :y2="500"
-          :scales="{
-            x: [0, 100],
-            y: [0, 50]
-          }"
+          :scale-x="'bins'"
+          :scale-y="{ domain: 'binCount', domainMin: 0 }"
         >
-          <vgg-map>
+
+          <vgg-map v-slot="{ row }">
+
             <vgg-rectangle
-              :x1="row => row.lowerBound"
-              :x2="row => row.upperBound"
+              :x1="{ val: row.bins[0] }"
+              :x2="{ val: row.bins[1] }"
               :y1="0"
-              :y2="{ scale: { variable: 'binCount', domain: [0, null] } }"
-              :fill="{ scale: { scale: 'blues', variable: 'upperBound', domain: [0, null] } }"
+              :y2="{ val: row.binCount }"
+              :fill="{ val: row.bins[1], scale: { type: 'blues', domain: 'bins', domainMin: 0 } }"
             />
 
           </vgg-map>
+
+          <!-- <vgg-x-axis
+            scale="bins"
+            :titleHjust="1.1"
+            :vjust="-.05"
+            rotate-label
+          />
+
+          <vgg-y-axis
+            :scale="{ domain: 'binCount', domainMin: 0 }"
+            :hjust="-.05"
+            flip
+          /> -->
 
         </vgg-section>
 
@@ -52,7 +65,7 @@
           :x2="500"
           :y1="50"
           :y2="100"
-          scale="lowerBound"
+          scale="bins"
           rotate-label
         />
 
@@ -61,7 +74,7 @@
           :x2="550"
           :y1="100"
           :y2="500"
-          :scale="{ variable: 'binCount', domain: [0, null] }"
+          :scale="{ domain: 'binCount', domainMin: 0 }"
         />
 
         <!-- <vgg-gradient-legend
@@ -102,7 +115,6 @@ export default {
       selected: 'EqualInterval'
     }
   },
-
   computed: {
     title () {
       if (this.selected === 'EqualInterval') {
@@ -116,7 +128,6 @@ export default {
       }
     }
   },
-
   methods: {
     generate (spread, str) {
       const N = 100

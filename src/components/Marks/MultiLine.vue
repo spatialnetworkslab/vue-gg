@@ -4,12 +4,6 @@ import Path from '../../mixins/Marks/Path.js'
 export default {
   mixins: [Path],
 
-  data () {
-    return {
-      markType : 'multiline-mark'
-    }
-  },
-
   props: {
     sort: {
       type: String,

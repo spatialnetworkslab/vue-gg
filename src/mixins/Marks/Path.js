@@ -2,74 +2,78 @@ import Mark from './Mark.js'
 import { createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
 import checkPoints from './utils/checkPoints.js'
 import { invalidPoint } from '../../utils/equals.js'
-import createSVGStyle from './utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
 
   props: {
-    // Mappable
     points: {
-      type: [Array, Function, undefined],
+      type: [Array, undefined],
       default: undefined
     },
 
     geometry: {
-      type: [Object, Function, undefined],
+      type: [Object, undefined],
       default: undefined
     },
 
     x: {
-      type: [Array, String, Function, undefined],
+      type: [Array, undefined],
       default: undefined
     },
 
     y: {
-      type: [Array, String, Function, undefined],
+      type: [Array, undefined],
       default: undefined
     },
 
     x2: {
-      type: [Array, String, Function, undefined],
+      type: [Array, undefined],
       default: undefined
     },
 
     y2: {
-      type: [Array, String, Function, undefined],
+      type: [Array, undefined],
       default: undefined
     },
 
     stroke: {
-      type: [String, Object, Function, undefined],
+      type: String,
       default: '#000000'
     },
 
     fill: {
-      type: [String, Object, Function, undefined],
+      type: String,
       default: 'none'
     },
 
     strokeWidth: {
-      type: [Number, Object, Function, undefined],
+      type: Number,
       default: 2
     },
 
     opacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     strokeOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
     fillOpacity: {
-      type: [Number, Object, Function, undefined],
+      type: [Number, undefined],
       default: undefined
     },
 
-    // Non-mappable
+    strokeLinecap: {
+      type: [String, undefined],
+      default: undefined,
+      validator: s => ['round', 'square', 'butt'].includes(s) || s === undefined
+    },
+
+    // Non-aesthetics
     sort: {
       type: [String, undefined],
       default: undefined,
@@ -86,6 +90,11 @@ export default {
       default: false
     },
 
+    strokeLinecap: {
+      type: String,
+      default: 'square'
+    },
+
     // This is not actually meant to be used, just a flag for the mixin logic
     _area: {
       type: Boolean,
@@ -94,25 +103,9 @@ export default {
   },
 
   computed: {
-    aesthetics () {
-      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
-
-      return {
-        points: this.parseGeometry(this.points, {}),
-        geometry: this.parseGeometry(this.geometry, { geojson: true }),
-
-        x: this.parseCoordinateSet(this.x, { dimension: 'x' }),
-        y: this.parseCoordinateSet(this.y, { dimension: 'y' }),
-        x2: this.parseCoordinateSet(this.x2, { dimension: 'x' }),
-        y2: this.parseCoordinateSet(this.y2, { dimension: 'y' }),
-
-        stroke: this.parseAesthetic(this.stroke),
-        fill: this.parseAesthetic(this.fill),
-        strokeWidth: this.parseAesthetic(this.strokeWidth),
-        opacity: this.parseAesthetic(this.opacity),
-        fillOpacity: this.parseAesthetic(this.fillOpacity),
-        strokeOpacity: this.parseAesthetic(this.strokeOpacity)
-      }
+    _interpolate () {
+      if (this.interpolate !== undefined) { return this.interpolate }
+      return false
     }
   },
 
@@ -191,14 +184,17 @@ export default {
       }
     },
 
-    renderSVG (createElement, aesthetics) {
+    renderSVG (createElement) {
+      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
+      let aesthetics = this._props
+
       if (this.geometry) {
         let path = createGeoPath(aesthetics.geometry, this.$$transform)
         return createElement('path', {
           attrs: {
             'd': path
           },
-          style: createSVGStyle(aesthetics)
+          style: this.createSVGStyle(aesthetics)
         })
       } else {
         let points = []
@@ -207,7 +203,6 @@ export default {
         } else {
           points = this.generatePoints(aesthetics.x, aesthetics.y)
         }
-
         if (points.length > 1) {
           if (this.sort) {
             points = this.sortPoints(points)
@@ -237,12 +232,14 @@ export default {
           }
 
           let path = this.createPath(points)
-          return createElement('path', {
+          let element = createElement('path', {
             attrs: {
               'd': path
             },
-            style: createSVGStyle(aesthetics)
+            style: this.createSVGStyle(aesthetics)
           })
+
+          return element
         } else {
           console.warn('Not enough valid points to draw Mark')
         }

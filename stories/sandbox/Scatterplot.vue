@@ -15,15 +15,44 @@
         :y2="500"
       >
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
 
-          <vgg-symbol
-            :x="{ scale: 'explanatory' }"
-            :y="{ scale: 'dependent' }"
-            :size="{ scale: { variable: 'dependent' } }"
-            :fill="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
+          <vgg-point
+            :x="{ val: row.explanatory, scale: 'explanatory' }"
+            :y="{ val: row.dependent, scale: 'dependent' }"
+            :radius="{ val: row.dependent, scale: { domain: 'dependent' } }"
+            :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
           />
+
         </vgg-map>
+
+        <!-- <vgg-x-axis
+          :scale="'explanatory'"
+          :titleHjust="1.1"
+          :vjust="-.05"
+        /> -->
+
+        <!-- <vgg-y-axis
+          :scale="'dependent'"
+          :hjust="-.05"
+          flip
+        /> -->
+
+        <vgg-y-axis
+          :x1="500"
+          :x2="550"
+          :y1="100"
+          :y2="500"
+          :scale="'dependent'"
+        />
+
+        <vgg-x-axis
+          :x1="100"
+          :x2="500"
+          :y="75"
+          :h="100"
+          :scale="'explanatory'"
+        />
 
       </vgg-section>
 
@@ -43,22 +72,6 @@
         :scale="'dependent'"
       />
 
-      <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="50"
-        :y2="100"
-        :scale="'explanatory'"
-      />
-
-      <vgg-y-axis
-        :x1="500"
-        :x2="550"
-        :y1="100"
-        :y2="500"
-        :scale="'dependent'"
-      />
-
     </vgg-graphic>
 
     <div style="margin-top: 10px;">
@@ -70,16 +83,13 @@
 
 <script>
 import { xy } from './dummyData.js'
-
 export default {
   name: 'Scatterplot',
-
   data () {
     return {
       xy: xy('explanatory', 'dependent')
     }
   },
-
   methods: {
     generateNewData () {
       let newData = xy('explanatory', 'dependent')

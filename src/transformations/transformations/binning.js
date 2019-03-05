@@ -93,16 +93,7 @@ function pairRange (ranges) {
 }
 
 function bin (data, variable, ranges) {
-  let newData = {}
-
-  newData.lowerBound = []
-  newData.upperBound = []
-
-  // Create lowerBound and upperBound columns to track bin ranges
-  for (let i = 0; i < ranges.length; i++) {
-    newData.lowerBound.push(ranges[i][0])
-    newData.upperBound.push(ranges[i][1])
-  }
+  let newData = { bins: ranges }
 
   let ix = 0
 

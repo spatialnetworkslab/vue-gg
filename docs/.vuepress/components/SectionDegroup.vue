@@ -6,14 +6,14 @@
     :transform="{ groupBy: 'item' }"
   >
 
-    <vgg-map>
+    <vgg-map v-slot="{ row }">
 
       <vgg-section
         :x="{ scale: 'item' }"
         :w="200"
         :y="100"
         :h="200"
-        :data="row => row.grouped"
+        :data="{ val: row.grouped }"
       >
 
         <!-- <vgg-map>

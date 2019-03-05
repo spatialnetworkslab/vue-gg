@@ -5,16 +5,11 @@
     :data="data"
   >
 
-    <!-- <vgg-point
-      :x="300"
-      :y="300"
-    /> -->
+    <vgg-map v-slot="{ row }">
 
-    <vgg-map>
-
-      <vgg-symbol
-        :x="{ scale: 'a' }"
-        :y="{ scale: 'b', NA: 300 }"
+      <vgg-point
+        :x="{ val: row.a, scale: 'a' }"
+        :y="{ val: row.b, scale: 'b', NA: 300 }"
       />
 
     </vgg-map>

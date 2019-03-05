@@ -16,17 +16,13 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: 'geometry.x',
-        y: 'geometry.y'
-      }"
     >
 
-      <vgg-map>
+      <vgg-map v-slot="{ row }">
 
         <vgg-polygon
-          :geometry="row => row.geometry"
-          :fill="{ scale: { scale: 'redYellowGreen', variable: 'value' } }"
+          :geometry="{ val: row.geometry, scaleGeo: {} }"
+          :fill="{ val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
         />
 
       </vgg-map>

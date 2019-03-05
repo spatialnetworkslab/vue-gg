@@ -2,7 +2,6 @@ export default class CoordinateTree {
   constructor () {
     this._coordinateTree = null
     this._branchPaths = {}
-    this._update = 1
   }
 
   setRoot (coordinateTransformation) {
@@ -17,8 +16,6 @@ export default class CoordinateTree {
 
     let parentBranchPath = this._branchPaths[parentID]
     this._branchPaths[id] = [...parentBranchPath, id]
-
-    this._update++
   }
 
   getBranch (id) {
@@ -35,8 +32,6 @@ export default class CoordinateTree {
   updateBranch (id, coordinateTransformation) {
     let branch = this.getBranch(id)
     branch.update(coordinateTransformation)
-
-    this._update++
   }
 
   removeBranch (id) {
@@ -61,8 +56,6 @@ export default class CoordinateTree {
         }
       }
     }
-
-    this._update++
   }
 
   getTotalTransformation (id) {
@@ -80,12 +73,49 @@ export default class CoordinateTree {
 
     return transformation.bind(this)
   }
+
+  getLocalX (id) {
+    let transformation = function (x) {
+      let branchParents = this._branchPaths[id]
+      let result = x
+
+      if (branchParents == undefined) {return result}
+
+      for (let i = 0; i < branchParents.length; i++) {
+        let currentLocation = this.getBranch(branchParents[i])     
+        result = currentLocation.invertX(result)
+      }
+
+      return result
+    }
+
+    return transformation.bind(this)
+  }
+
+  getLocalY (id) {
+    let transformation = function (y) {
+      let branchParents = this._branchPaths[id]
+      let result = y
+
+      if (branchParents == undefined) {return result}
+
+      for (let i = 0; i < branchParents.length; i++) {
+        let currentLocation = this.getBranch(branchParents[i]) 
+        result = currentLocation.invertY(result)
+      }
+
+      return result
+    }
+
+    return transformation.bind(this)
+  }
 }
 
 class Branch {
   constructor (id, parentID, coordinateTransformation) {
     this.id = id
     this.parentID = parentID
+    this.updateCount = 1
 
     this.update(coordinateTransformation)
 
@@ -94,9 +124,9 @@ class Branch {
 
   update (coordinateTransformation) {
     for (let key in coordinateTransformation) {
-      if (key !== 'dataContainer') {
-        this[key] = coordinateTransformation[key]
-      }
+      this[key] = coordinateTransformation[key]
     }
+
+    this.updateCount += 1
   }
 }

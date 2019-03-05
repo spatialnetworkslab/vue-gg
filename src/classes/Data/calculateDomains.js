@@ -41,6 +41,9 @@ export default function (data, length) {
 
         domains['geometry.x'] = bbox.x
         domains['geometry.y'] = bbox.y
+
+        types['geometry.x'] = 'quantitative'
+        types['geometry.y'] = 'quantitative'
       } else {
         let uniqueValues = calculateUniqueValues(col)
 
@@ -108,6 +111,14 @@ function initDomain (type) {
       domain = [new Date('19 January 2038'), new Date(0)]
       break
     }
+    case 'interval:quantitative': {
+      domain = [Infinity, -Infinity]
+      break
+    }
+    case 'interval:temporal': {
+      domain = [new Date('19 January 2038'), new Date(0)]
+      break
+    }
   }
 
   return domain
@@ -130,6 +141,12 @@ function updateDomain (domain, value, type) {
     if (domain[1].getTime() <= epoch) { domain[1] = value }
   }
 
+  if (type.startsWith('interval')) {
+    let intervalType = type.split(':')[1]
+    domain = updateDomain(domain, value[0], intervalType)
+    domain = updateDomain(domain, value[1], intervalType)
+  }
+
   return domain
 }
 
@@ -150,6 +167,10 @@ function initDummyDomain (type, value) {
 
   if (type === 'temporal') {
     domain = [getDay(value, -1), getDay(value, 1)]
+  }
+
+  if (type.startsWith('interval')) {
+    domain = value
   }
 
   return domain

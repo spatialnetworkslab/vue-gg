@@ -4,32 +4,13 @@
     :height="600"
   >
 
-    <!-- Axes -->
-    <vgg-x-axis
-      :x1="100"
-      :x2="500"
-      :y1="275"
-      :y2="325"
-      :scale="[-1, 1]"
-    />
-
-    <vgg-y-axis
-      :x1="275"
-      :x2="325"
-      :y1="100"
-      :y2="500"
-      :scale="[-1, 1]"
-    />
-
     <vgg-section
       :x1="100"
       :x2="500"
       :y1="100"
       :y2="500"
-      :scales="{
-        x: [-1, 1],
-        y: [-1, 1]
-      }"
+      :scale-x="[-1, 1]"
+      :scale-y="[-1, 1]"
     >
 
       <!-- Graphs -->
@@ -67,6 +48,19 @@
         :func="x => (x ** 3) + (x / 2)"
         :width="3"
         stroke="#00919c"
+      />
+
+      <!-- Axes -->
+      <vgg-x-axis
+        :scale="[-1, 1]"
+        :titleHjust="1.1"
+        :vjust="0.5"
+      />
+
+      <vgg-y-axis
+        :scale="[-1, 1]"
+        :hjust="0.5"
+        flip
       />
 
     </vgg-section>

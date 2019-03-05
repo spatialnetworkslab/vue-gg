@@ -23,11 +23,11 @@
         :y1="100"
         :y2="500">
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
 
-          <vgg-symbol
-            :x="{ scale: 'appleSum' }"
-            :y="{ scale: 'maxRatio' }"
+          <vgg-point
+            :x="{ val: row.appleSum, scale: 'appleSum' }"
+            :y="{ val: row.maxRatio, scale: 'maxRatio' }"
           />
 
         </vgg-map>

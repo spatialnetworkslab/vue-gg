@@ -1,88 +1,52 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
-import DataReceiver from '../Data/DataReceiver.js'
-
-import mapAesthetics from './utils/mapAesthetics.js'
-
-import {
-  parseAesthetic,
-  parseCoordinate,
-  parseCoordinateSet,
-  parseGeometry,
-  parseProperty
-} from './utils'
+import createSVGStyle from './utils/createSVGStyle.js'
 
 export default {
-  mixins: [CoordinateTreeUser, DataReceiver],
+  mixins: [CoordinateTreeUser],
 
-  inject: ['$$transform', '$$map'],
+  inject: ['$$transform', '$$getLocalX', '$$getLocalY'],
 
   props: {
     interpolate: {
-      type: Boolean,
-      default: true
+      type: [Boolean, undefined],
+      default: undefined
     }
   },
 
   computed: {
     __update () {
-      return this.$$coordinateTree._update
+      return this.parentBranch.updateCount
+    },
+
+    __interpolationNecessary () {
+      return this.interpolationNecessary(this.$$coordinateTreeParent)
     },
 
     _interpolate () {
-      // TODO check if interpolation is necessary (i.e. if all parent
-      // coordinate transformations are linear)
-      return this.interpolate
-    },
-
-    context () {
-      return {
-        domains: this.$$dataContainer.getDomains(),
-        ranges: this.parentBranch.domains,
-        parentBranch: this.parentBranch,
-        dataContainer: this.$$dataContainer
-      }
+      if (this.interpolate !== undefined) { return this.interpolate }
+      return this.__interpolationNecessary
     }
   },
 
   methods: {
-    parseAesthetic,
-    parseCoordinate,
-    parseCoordinateSet,
-    parseGeometry,
-    parseProperty
-  },
+    createSVGStyle,
 
-  mounted () {
-    this.parseAesthetic.bind(this)
-    this.parseCoordinate.bind(this)
-    this.parseCoordinateSet.bind(this)
-    this.parseGeometry.bind(this)
-    this.parseProperty.bind(this)
+    interpolationNecessary (id) {
+      let currentLocation = this.$$coordinateTree.getBranch(id)
+      if (currentLocation.type !== 'scale') { return true }
+
+      while (currentLocation.parentID) {
+        currentLocation = this.$$coordinateTree.getBranch(currentLocation.parentID)
+        if (currentLocation.type !== 'scale') { return true }
+      }
+
+      return false
+    }
   },
 
   render (createElement) {
     if (this.__update) {
-      if (!this.$$map) {
-        // Create svg element using aesthetics
-        return this.renderSVG(createElement, this.aesthetics)
-      }
-
-      if (this.$$map) {
-        // Create the aesthetics for each mark
-        let aestheticsPerMark = mapAesthetics(this.aesthetics, this.context)
-
-        // Create svg element for each mark from aesthetics
-        let components = []
-        for (let aesthetics of aestheticsPerMark) {
-          components.push(
-            this.renderSVG(createElement, aesthetics)
-          )
-        }
-
-        let mt = this.markType
-
-        return createElement('g', {attrs: { 'class': 'mark ' + mt }}, components)
-      }
+      return this.renderSVG(createElement)
     }
   }
 }

@@ -23,23 +23,23 @@ a different person's spending.
 
 ### Positioning
 
-| Prop | Required | Regular types   | Types when mapping        | Default   | Description                             | Unit(s)           |
-| ---- | -------- | --------------- | ------------------------- | --------- | --------------------------------------- | ----------------- |
-| x    | true     | [Array, String] | [Array, String, Function] | undefined | x-coordinates of area path              | Local coordinates |
-| y    | true     | [Array, String] | [Array, String, Function] | undefined | y-coordinates of area path              | Local coordinates |
-| x2   | depends  | [Array, String] | [Array, String, Function] | undefined | x2-coordinates (secondary) of area path | Local coordinates |
-| y2   | depends  | [Array, String] | [Array, String, Function] | undefined | y2-coordinates (secondary) of area path | Local coordinates |
+| Prop | Required | Types | Default   | Description                             | Unit(s)           |
+| ---- | -------- | ----- | --------- | --------------------------------------- | ----------------- |
+| x    | true     | Array | undefined | x-coordinates of area path              | Local coordinates |
+| y    | true     | Array | undefined | y-coordinates of area path              | Local coordinates |
+| x2   | depends  | Array | undefined | x2-coordinates (secondary) of area path | Local coordinates |
+| y2   | depends  | Array | undefined | y2-coordinates (secondary) of area path | Local coordinates |
 
 ### Other aesthetics
 
-| Prop           | Required | Regular types | Types when mapping         | Default   | Description    | Unit(s)                    |
-|----------------|----------|---------------|----------------------------|-----------|----------------|----------------------------|
-| stroke         | false    | String        | [String, Object, Function] | undefined | Stroke color   | Named color, hex, rgb, hsl |
-| stroke-width   | false    | Number        | [Number, Object, Function] | undefined | Stroke width   | Screen pixel               |
-| stroke-opacity | false    | Number        | [Number, Object, Function] | undefined | Stroke opacity | Number between 0 to 1      |
-| fill           | false    | String        | [String, Object, Function] | '#000000' | Fill color     | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number        | [Number, Object, Function] | undefined | Fill opacity   | Number between 0 and 1     |
-| opacity        | false    | Number        | [Number, Object, Function] | undefined | Mark opacity   | Number between 0 and 1     |
+| Prop           | Required | Types  | Default   | Description    | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | -------------- | -------------------------- |
+| stroke         | false    | String | undefined | Stroke color   | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | undefined | Stroke width   | Screen pixel               |
+| stroke-opacity | false    | Number | undefined | Stroke opacity | Number between 0 to 1      |
+| fill           | false    | String | '#000000' | Fill color     | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | undefined | Fill opacity   | Number between 0 and 1     |
+| opacity        | false    | Number | undefined | Mark opacity   | Number between 0 and 1     |
 
 These are analogous to the CSS properties of the same names.
 
@@ -85,13 +85,11 @@ will be treated as
 ```
 :::
 
-It is also possible to use an entire column within the data scope as coordinates.
-But the rule of equal lengths still holds: if `x` is given the name of a data
+It is also possible to use an entire column within the data scope as coordinates
+using `vgg-map` with `unit="dataframe"` (see [Map](../core/map.md) documenation).
+But the rule of equal lengths still holds: if `x` is passed a dataframe
 column, and `y` is passed an array, the array has to be of the same length as the
 data column (except, again, if `y` is of length 1).
-
-When mapping, it is also possible to use a getter function. This is especially
-useful when mapping a grouped dataframe (see example at the bottom of the page).
 
 ### Other props
 
@@ -117,20 +115,18 @@ set `sort` to `'y'`.
     :x2="500"
     :y1="100"
     :y2="500"
-    :scales="{
-      x: 'xValues',
-      y: 'yValues'
-    }"
+    :scale-x="'xValues'"
+    :scale-y="'yValues'"
   >
     <vgg-data :transform="{ groupBy: 'colors' }">
 
-      <vgg-map>
+      <vgg-map v-slot="{ row, i, prevRow }">
 
         <vgg-area
-          :x="row => row.grouped.xValues"
-          :y="row => row.grouped.yValues"
-          :y2="(row, i, prevRow) => prevRow ? prevRow.grouped.yValues : [0]"
-          :fill="row => row.colors"
+          :x="row.grouped.xValues"
+          :y="row.grouped.yValues"
+          :y2="prevRow ? prevRow.grouped.yValues : [0]"
+          :fill="row.colors"
           :opacity="0.5"
         />
 

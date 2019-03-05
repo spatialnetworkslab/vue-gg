@@ -12,7 +12,8 @@
         :x2="600"
         :y1="0"
         :y2="600"
-        :scales="domains">
+        :scale-x="domains.x"
+        :scale-y="domains.y">
 
         <vgg-section
           v-for="(cs, i) in nestedCoordinateSystems"
@@ -22,16 +23,17 @@
           :x2="cs.x2"
           :y1="cs.y"
           :y2="cs.y2"
-          :scales="domains"
+          :scale-x="domains.x"
+          :scale-y="domains.y"
         >
 
-          <vgg-symbol
+          <vgg-point
             v-for="(p, j) in points"
             :key="'p' + j"
             :x="p.x"
             :y="p.y"
             :fill="cs.color"
-            :size="8"
+            :radius="4"
           />
 
           <vgg-rectangle

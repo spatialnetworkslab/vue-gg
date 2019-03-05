@@ -15,18 +15,31 @@
         :y2="500"
       >
 
-        <vgg-map>
+        <vgg-map v-slot="{ row }">
 
           <vgg-symbol
-            :x="{ scale: 'explanatory' }"
-            :y="{ scale: 'dependent' }"
-            :size="{ scale: 'dependent' }"
+            :x="{ val: row.explanatory, scale: 'explanatory' }"
+            :y="{ val: row.dependent, scale: 'dependent' }"
+            :size="{ val: row.dependent, scale: 'dependent' }"
+            :stroke="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
+            :stroke-width="2"
             shape="triangle-left"
-            :stroke="{ scale: { scale: 'viridis', variable: 'explanatory' } }"
             fill="none"
-            :strokeWidth="2"
           />
+            
         </vgg-map>
+
+        <vgg-x-axis
+          :scale="[0, 150]"
+          :vjust="-.05"
+        />
+
+        <vgg-y-axis
+          :scale="'dependent'"
+          :hjust="-.05"
+          :tickExtraLabel="false"
+          flip
+        />
 
       </vgg-section>
 
@@ -35,28 +48,12 @@
         :x2="500"
         :y1="100"
         :y2="500"
-        :scale="'explanatory'"
+        :scale="[0, 150]"
       />
 
       <vgg-y-grid
         :x1="100"
         :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'dependent'"
-      />
-
-      <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="50"
-        :y2="100"
-        :scale="'explanatory'"
-      />
-
-      <vgg-y-axis
-        :x1="500"
-        :x2="550"
         :y1="100"
         :y2="500"
         :scale="'dependent'"
@@ -73,16 +70,13 @@
 
 <script>
 import { xy } from './dummyData.js'
-
 export default {
   name: 'Scatterplot',
-
   data () {
     return {
       xy: xy('explanatory', 'dependent')
     }
   },
-
   methods: {
     generateNewData () {
       let newData = xy('explanatory', 'dependent')
