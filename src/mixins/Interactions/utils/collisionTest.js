@@ -1,5 +1,4 @@
 import pointInPolygon from './geometry/pointInPolygon.js'
-import biggestArea from './geometry/biggestArea.js'
 import pointDistance from './geometry/pointDistance.js'
 import lineIntersection from './geometry/lineIntersection.js'
 
@@ -82,9 +81,10 @@ function collisionTestPolygon (x, y, candidate) {
   }
 
   if (geometry.polygonType === 'MultiPolygon') {
-    let biggestPolygon = biggestArea(geometry.coordinates)
-    if (pointInPolygon([x, y], biggestPolygon[0])) {
-      return true
+    for (let polygon of geometry.coordinates) {
+      if (pointInPolygon([x, y], polygon[0])) {
+        return true
+      }
     }
   }
 

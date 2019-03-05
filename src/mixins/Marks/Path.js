@@ -177,16 +177,26 @@ export default {
     },
 
     createPath (points) {
+      let transformedPoints
+      let path
+
       if (this._interpolate) {
         let interpolatedPoints = interpolatePoints(points)
-        let transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
-        return createPath(transformedPoints)
+        transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
+        path = createPath(transformedPoints)
       }
 
       if (!this._interpolate) {
-        let transformedPoints = transformPoints(points, this.$$transform)
-        return createPath(transformedPoints)
+        transformedPoints = transformPoints(points, this.$$transform)
+        path = createPath(transformedPoints)
       }
+
+      let listeners = this.getListeners()
+      if (listeners.length > 0) {
+        this.addToSpatialIndex(transformedPoints, listeners)
+      }
+
+      return path
     },
 
     renderSVG (createElement) {
@@ -195,6 +205,12 @@ export default {
 
       if (this.geometry) {
         let tranformedFeature = transformFeature(aesthetics.geometry, this.$$transform)
+
+        let listeners = this.getListeners()
+        if (listeners.length > 0) {
+          this.addToSpatialIndex(tranformedFeature, listeners)
+        }
+
         let path = createGeoPath(tranformedFeature)
         return createElement('path', {
           attrs: {
@@ -250,6 +266,10 @@ export default {
           console.warn('Not enough valid points to draw Mark')
         }
       }
+    },
+
+    addToSpatialIndex (coordinates, listeners) {
+      this.$$interactionManager.addElement(this.pathType, coordinates, this, listeners)
     }
   }
 }
