@@ -14,7 +14,7 @@ export default function (type, coordinates, instance) {
     return createLineItem(type, coordinates, instance)
   }
 
-  if (['polygon', 'multiline'].includes(type)) {
+  if (['polygon', 'multiline', 'area'].includes(type)) {
     return createPathItem(type, coordinates, instance)
   }
 }
@@ -73,6 +73,10 @@ function createPathItem (type, coords, instance) {
     }
 
     if (type === 'polygon') {
+      pathType = 'SimplePolygon'
+    }
+
+    if (type === 'area') {
       pathType = 'SimplePolygon'
     }
   }

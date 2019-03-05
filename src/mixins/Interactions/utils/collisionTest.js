@@ -29,6 +29,10 @@ export default function ({ x, y }, spatialIndex) {
     if (candidate.geometry.type === 'multiline') {
       if (collisionTestLine(x, y, candidate)) { hits.push(candidate) }
     }
+
+    if (candidate.geometry.type === 'area') {
+      if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
+    }
   }
 
   return hits

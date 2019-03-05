@@ -23,6 +23,7 @@
             :y2="prevRow ? prevRow.grouped.yValues : [0]"
             :opacity="0.5"
             :fill="row.colors"
+            @click="log(row)"
           />
 
         </vgg-map>
@@ -32,7 +33,7 @@
       <!-- Axes -->
       <vgg-x-axis
         :scale="'xValues'"
-        :titleHjust="1.1"
+        :title-hjust="1.1"
         :vjust="-.05"
       />
 
@@ -67,6 +68,10 @@ export default {
       ]
       return { colors: colors, xValues: xValues, yValues: yValues }
     }
+  },
+
+  methods: {
+    log: console.log
   }
 }
 </script>

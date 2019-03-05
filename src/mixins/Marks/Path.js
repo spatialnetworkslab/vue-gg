@@ -200,7 +200,8 @@ export default {
     },
 
     renderSVG (createElement) {
-      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
+      let area = this.pathType === 'area'
+      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, area)
       let aesthetics = this._props
 
       if (this.geometry) {
@@ -230,7 +231,7 @@ export default {
             points = this.sortPoints(points)
           }
 
-          if (this._area) {
+          if (area) {
             let points2
 
             if (aesthetics.x2 && !aesthetics.y2) {
