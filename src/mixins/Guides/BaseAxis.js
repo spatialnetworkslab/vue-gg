@@ -83,7 +83,7 @@ export default {
       type: String,
       default: 'black'
     },
-    
+
     labelFont: {
       type: String,
       default: 'Helvetica'
@@ -98,18 +98,18 @@ export default {
       type: [String, Number],
       default: 'normal'
     },
-    
+
     labelOpacity: {
       type: Number,
       default: 1
     },
-    
+
     // Distance between tick and label **
     // labelPadding: {
     //   type: Number,
     //   default: 0
     // },
-    
+
     labelRotate: {
       type: Boolean,
       default: false
@@ -149,7 +149,7 @@ export default {
       type: Number,
       default: 1
     },
-    
+
     tickSize: {
       type: Number,
       default: 7
@@ -195,7 +195,7 @@ export default {
       type: Number,
       default: 500
     },
-    
+
     titleOpacity: {
       type: Number,
       default: 1

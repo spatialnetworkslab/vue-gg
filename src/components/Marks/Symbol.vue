@@ -111,6 +111,7 @@ export default {
 
     renderSVG (createElement) {
       let aesthetics = this._props
+
       let path
 
       if (this.shape === 'circle') {

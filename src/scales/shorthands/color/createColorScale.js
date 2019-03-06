@@ -7,7 +7,7 @@ export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {
     let scale = scalingOptions.type || 'blues'
     checkValidScale(prop, variableType, scale, quantitative)
-
+    console.log('***', prop, variableType, domain, scalingOptions, scale)
     let scaleFunc = quantitative[scale](domain, scalingOptions.domainMid)
     if (scalingOptions.absolute) {
       return x => scaleFunc(Math.abs(x))

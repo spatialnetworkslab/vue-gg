@@ -1,13 +1,32 @@
-import Rectangular from '../../mixins/Marks/Rectangular.js'
-import parseScaleSpecification from '../../utils/parseScaleSpecification.js'
+import { ticks as arrayTicks } from 'd3-array'
+import { scaleTime } from 'd3-scale'
+import { timeFormat } from 'd3-time-format'
+
+import Rectangular from '../Marks/Rectangular.js'
+import DataReceiver from '../../mixins/Data/DataReceiver.js'
+
+import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
+
+import defaultFormat from './defaultFormat.js'
 
 export default {
-  mixins: [Rectangular],
+  mixins: [Rectangular, DataReceiver],
 
   props: {
     name: {
       type: String,
       default: 'Legend'
+    },
+
+    scale: {
+      type: [Array, String, Object, undefined],
+      default: undefined,
+      //required: true
+    },
+
+    flip: {
+      type: Boolean,
+      default: false
     },
 
     type: {
@@ -41,22 +60,17 @@ export default {
 
     width: {
       type: Number,
-      default: 80
+      default: 60
     },
 
     height:{
       type: Number,
-      default: 250
+      default: 260
     },
 
     numTicks: {
       type: Number,
       default: 6
-    },
-
-    flip: {
-      type: Boolean,
-      default: false
     },
 
     //direction: {},
@@ -71,12 +85,7 @@ export default {
   },
   computed: {
     _parsedScalingOptions () {
-      let variableDomains
-      if (this.$$dataContainer) {
-        variableDomains = this.$$dataContainer.getDomains()
-      }
-
-      return parseScaleSpecification(this.scale, variableDomains)
+      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {
@@ -89,6 +98,10 @@ export default {
 
     _scalingOptions () {
       return this._parsedScalingOptions[2]
+    },
+
+    _parentNodes () {
+      return this.getParents(this.parentBranch, [this.parentBranch])
     },
 
     ranges () {
@@ -108,7 +121,6 @@ export default {
     },
 
     legendLeft () {
-      console.log(this.legendTop, this.plotWidth - this.width, this.plotWidth, this.width)
       let p = this.position
       if (p === 'right' || p === "tr" || p === "br" ) {
         return this.plotWidth - this.width
@@ -131,7 +143,6 @@ export default {
     },
 
     legendTop () {
-      console.log(this.position, this.plotHeight, this.height)
       let p = this.position
       if (p === 'top' || p === "tl" || p === "tr") {
         return this.height - this.plotHeight + this.plotMargin
@@ -148,12 +159,12 @@ export default {
         if (labels.constructor === Array) {
           return labels
         } else {
-          let variableData = this.$$dataContainer._dataset[labels]
-          let variableType = this.$$dataContainer._types[labels]
+          let variableType = this._domainType
+          let variableData = this._domain
           if (variableType === 'nominal') {
             return variableData
           } else {
-            return this.getNumericLabels()
+            return this.getNumericLabels(variableData, variableType)
           }
         }
       }
@@ -167,9 +178,7 @@ export default {
       return Math.floor(value/n) * n
     },
 
-    getNumericLabels () {
-      let dataDomain = this.$$dataContainer._domains[this.labels]
-      let variableType = this.$$dataContainer._types[this.labels]
+    getNumericLabels (dataDomain, variableType) {
       if (variableType === 'count') { dataDomain[0] = 0 }
 
       let interval = (dataDomain[1] - dataDomain[0]) / (this.numTicks - 1)

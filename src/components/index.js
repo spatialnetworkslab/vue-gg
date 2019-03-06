@@ -9,7 +9,7 @@ import Grid from './Core/Grid.vue'
 import Repeat from './Core/Repeat.vue'
 
 // Elements
-import GradientLegend from './Elements/GradientLegend.vue'
+import DiscreteLegend from './Elements/DiscreteLegend.vue'
 import PlotTitle from './Elements/PlotTitle.vue'
 
 // Glyphs
@@ -43,7 +43,7 @@ export default {
   Grid,
   Repeat,
 
-  GradientLegend,
+  DiscreteLegend,
   PlotTitle,
 
   Piechart,

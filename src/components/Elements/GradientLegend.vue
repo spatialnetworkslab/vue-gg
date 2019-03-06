@@ -1,6 +1,41 @@
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
     {{ colors }}
+    <vgg-rectangle
+      :x1="0"
+      :x2="width"
+      :y1="0"
+      :y2="height"
+      fill="orange"
+      :fillOpacity="0.6"
+    />
+
+    <vgg-section
+      v-if="orient==='vertical'"
+      :x1="0"
+      :x2="width"
+      :y1="0"
+      :y2="height"
+      :scale-x="[0, 100]"
+      :scale-y="[0, 100]"
+    >
+    <vgg-label
+      class="legend-title"
+      :text="name"
+      :x="0"
+      :y="0"
+      :font-size="12"
+    />
+    <vgg-rectangle
+      :x1="0"
+      :x2="60"
+      :y1="0"
+      :y2="100"
+      fill="blue"
+      :fillOpacity="0.6"
+    />
+
+    </vgg-section>
     <!-- Calculate gradient -->
     <!-- <defs>
       <linearGradient v-if="orient === 'vertical'"
@@ -33,13 +68,7 @@
       }"
     > -->
 
-      <vgg-symbol
-        :x="0"
-        :y="0"
-        :size="10"
-        fill="black"
-      />
-      <vgg-section
+      <!-- <vgg-section
         v-if="orient==='vertical'"
         :x1="0"
         :x2="width"
@@ -56,9 +85,9 @@
         :x="width/2"
         :y="height"
         :font-size="12"
-      />
+      /> -->
       <!-- Render labels -->
-      <vgg-data :data="texts">
+      <!-- <vgg-data :data="texts">
         <vgg-map>
           <vgg-label
             :x="gradientWidth + 15"
@@ -68,8 +97,8 @@
             :anchor-point="'center'"
           />
         </vgg-map>
-      </vgg-data>
-        <vgg-rectangle
+      </vgg-data> -->
+        <!-- <vgg-rectangle
           :x1="0"
           :x2="width"
           :y1="0"
@@ -87,9 +116,9 @@
           :fillOpacity="0.7"
         />
       </vgg-map>
-      </vgg-section>
+      </vgg-section> -->
 
-      <vgg-section
+      <!-- <vgg-section
         v-if="orient==='horizontal'"
         :x1="0"
         :x2="height"
@@ -107,7 +136,7 @@
         :y="width"
       />
         <!-- Render labels -->
-        <vgg-data :data="texts">
+        <!-- <vgg-data :data="texts">
           <vgg-map>
             <vgg-label
               :x="tick => tick.h"
@@ -134,7 +163,7 @@
           :fill="color"
           :fillOpacity="0.7"
         />
-      </vgg-section>
+      </vgg-section> -->
 
       <!-- <g v-if="orient === 'vertical'" >
         <g v-for="(c,i) in colors">
@@ -192,6 +221,11 @@ export default {
     y: {
       type: [Number, Object, Array],
       default: 0,
+    },
+
+    scale: {
+      type: [Number, Object, Array],
+      default: undefined,
     }
   },
 
@@ -247,19 +281,19 @@ export default {
       }
     },
 
-    texts () {
-      let texts = []
-      let ticks = this.numTicks
-      let l = this.legendLabels
-
-      for (let i = 0; i < ticks - 1; i++) {
-        let h = this.segmentHeight * i + 5
-        texts.push({h: h, label: l[i]})
-      }
-      console.log(texts)
-      console.log(texts)
-      return texts
-    }
+    // texts () {
+    //   let texts = []
+    //   let ticks = this.numTicks
+    //   let l = this.legendLabels
+    //
+    //   for (let i = 0; i < ticks - 1; i++) {
+    //     let h = this.segmentHeight * i + 5
+    //     texts.push({h: h, label: l[i]})
+    //   }
+    //   console.log(texts)
+    //   console.log(texts)
+    //   return texts
+    // }
   },
 
   methods: {

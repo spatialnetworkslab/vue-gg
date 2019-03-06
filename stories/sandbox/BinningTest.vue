@@ -86,14 +86,14 @@
           :numTicks="20"
           :position="right"
         /> -->
-
-        <vgg-gradient-legend
-          labels="upperBound"
-          :gradientWidth="0.9"
-          :numTicks="20"
-          position="tl"
+        <!-- fix l and r, center -->
+        <vgg-discrete-legend
+          name="Bins"
+          :scale="{ domain: 'bins', domainMin: 0 }"
+          :labels="'bins'"
           :orient="'vertical'"
-          :fill="{ scale: 'blues', variable: 'upperBound', domain: [0, null] }"
+          :color="{ scale: { type: 'blues', domain: 'bins', domainMin: 0 } } "
+          position="tl"
           flip
         />
       </vgg-data>
