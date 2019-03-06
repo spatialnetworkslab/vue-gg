@@ -28,6 +28,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this._uid
+    if (this.$$interactionManager.cacheHasElement(uid)) {
+      this.$$interactionManager.unIndexElement(uid)
+    }
+  },
+
   methods: {
     createSVGStyle,
 

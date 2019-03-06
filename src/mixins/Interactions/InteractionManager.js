@@ -40,8 +40,7 @@ export default {
 
       if (cache.hasOwnProperty(strUid)) {
         if (elementChanged(cache[strUid], item)) {
-          this.interactionManager.spatialIndex.remove(cache[strUid])
-          delete cache[strUid]
+          this.unIndexElement(uid)
           cache[strUid] = item
           this.interactionManager.spatialIndex.insert(cache[strUid])
         }
@@ -49,6 +48,20 @@ export default {
         cache[strUid] = item
         this.interactionManager.spatialIndex.insert(cache[strUid])
       }
+    },
+
+    unIndexElement (uid) {
+      let strUid = uid.toString()
+      let cache = this.interactionManager.indexCache
+      this.interactionManager.spatialIndex.remove(cache[strUid])
+      delete cache[strUid]
+      console.log(cache)
+    },
+
+    cacheHasElement (uid) {
+      let strUid = uid.toString()
+      let cache = this.interactionManager.indexCache
+      return cache.hasOwnProperty(strUid)
     },
 
     startListener (customListener) {
