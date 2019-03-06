@@ -78,7 +78,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, listeners) {
-      this.$$interactionManager.addElement('point', coordinates, this, listeners)
+      this.$$interactionManager.addElement(this._uid, 'point', coordinates, this, listeners)
     }
   }
 }

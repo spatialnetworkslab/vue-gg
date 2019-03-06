@@ -1,13 +1,15 @@
 import rbush from 'rbush'
 import collisionTest from './utils/collisionTest.js'
 import createIndexItem from './utils/createIndexItem.js'
+import elementChanged from './utils/elementChanged.js'
 
 export default {
   data () {
     return {
       interactionManager: Object.freeze({
         nativeListeners: {}, // keys: native listeners (click, mouseover, etc)
-        spatialIndex: rbush()
+        spatialIndex: rbush(),
+        indexCache: {}
       })
     }
   },
@@ -23,17 +25,30 @@ export default {
   },
 
   methods: {
-    addElement (type, coordinates, instance, listeners) {
-      this.indexElement(type, coordinates, instance)
+    addElement (uid, type, coordinates, instance, listeners) {
+      this.indexElement(uid, type, coordinates, instance)
 
       for (let listener of listeners) {
         this.startListener(listener)
       }
     },
 
-    indexElement (type, coordinates, instance) {
+    indexElement (uid, type, coordinates, instance) {
+      let strUid = uid.toString()
       let item = createIndexItem(type, coordinates, instance)
-      this.interactionManager.spatialIndex.insert(item)
+      let cache = this.interactionManager.indexCache
+
+      if (cache.hasOwnProperty(strUid)) {
+        if (elementChanged(cache[strUid], item)) {
+          this.interactionManager.spatialIndex.remove(cache[strUid])
+          delete cache[strUid]
+          cache[strUid] = item
+          this.interactionManager.spatialIndex.insert(cache[strUid])
+        }
+      } else {
+        cache[strUid] = item
+        this.interactionManager.spatialIndex.insert(cache[strUid])
+      }
     },
 
     startListener (customListener) {

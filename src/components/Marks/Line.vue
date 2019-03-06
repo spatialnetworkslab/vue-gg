@@ -125,7 +125,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, listeners) {
-      this.$$interactionManager.addElement('line', coordinates, this, listeners)
+      this.$$interactionManager.addElement(this._uid, 'line', coordinates, this, listeners)
     }
   }
 }
