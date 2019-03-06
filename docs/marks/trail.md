@@ -14,7 +14,7 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 
 # Path Mark
 
-The standard trail mark takes the following props. Note that only when input for `x` and `y` are given, `points` does not need to have input, and vice versa.
+The standard trail mark takes the following props. Note that `x` and `y`, and `points` cannot be inputted simultaneously.
 
 ### Positioning
 | Prop | Required | Types                  | Default   | Description                            | Unit(s)           |

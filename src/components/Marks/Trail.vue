@@ -190,7 +190,6 @@
         checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
         let aesthetics = this._props
 
-
         if (aesthetics.points || (aesthetics.x && aesthetics.y)) {
           let points = [], segments = []
           if (aesthetics.points && aesthetics.points.length > 1) {
@@ -241,6 +240,8 @@
           } else {
             console.warn('Not enough valid points to draw Mark')
           }
+        } else {
+          console.warn('Not enough valid points to draw Mark')
         }
       }
     }
