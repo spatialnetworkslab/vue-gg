@@ -17,6 +17,10 @@ export default function (type, coordinates, instance) {
   if (['polygon', 'multiline', 'area'].includes(type)) {
     return createPathItem(type, coordinates, instance)
   }
+
+  if (type === 'trail') {
+    return createTrailItem(type, coordinates, instance)
+  }
 }
 
 function createPointItem (type, coordinates, instance) {
@@ -91,3 +95,7 @@ function createPathItem (type, coords, instance) {
 
   return { geometry, instance, minX, minY, maxX, maxY }
 }
+
+// function createTrailItem (type, coordinates, instance) {
+//
+// }

@@ -13,6 +13,12 @@ export default {
     strokeWidth: {
       type: [Number, Array],
       default: 1
+    },
+
+    geometry: {
+      type: undefined,
+      default: undefined,
+      validator: () => { throw new Error('Cannot use geometry on Trail') }
     }
   },
 
@@ -193,61 +199,49 @@ export default {
       checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, area)
       let aesthetics = this._props
 
-      if (this.geometry) {
-        let transformedFeature = transformFeature(aesthetics.geometry, this.$$transform)
-        let path = createGeoPath(transformedFeature)
+      let points = []
+      let segments = []
 
-        return createElement('path', {
+      if (aesthetics.points) {
+        points = aesthetics.points
+      } else {
+        points = this.generatePoints(aesthetics.x, aesthetics.y, aesthetics)
+      }
+
+      // sort points while carrying aesthetics, namely stroke widths
+      if (points.length > 1) {
+        if (this.sort) {
+          points = this.sortPoints(points)
+        }
+
+        if (this.close) {
+          points = this.closePoints(points)
+        }
+
+        // obtains polygon corresponding to multiline with stroke widths
+        segments = this.createTrail(points)
+
+        let path = arcGenerator(segments)
+        let elements = []
+
+        let totalAesthetics = {
+          'stroke': 'none',
+          'fill': aesthetics.fill,
+          'fillOpacity': aesthetics.fillOpacity,
+          'opacity': aesthetics.opacity
+        }
+
+        let element = createElement('path', {
           attrs: {
             'd': path
           },
-          style: createSVGStyle(aesthetics)
+          style: createSVGStyle(totalAesthetics)
         })
+        elements.push(element)
+
+        return createElement('g', elements)
       } else {
-        let points = []
-        let segments = []
-
-        if (aesthetics.points) {
-          points = aesthetics.points
-        } else {
-          points = this.generatePoints(aesthetics.x, aesthetics.y, aesthetics)
-        }
-
-        // sort points while carrying aesthetics, namely stroke widths
-        if (points.length > 1) {
-          if (this.sort) {
-            points = this.sortPoints(points)
-          }
-
-          if (this.close) {
-            points = this.closePoints(points)
-          }
-
-          // obtains polygon corresponding to multiline with stroke widths
-          segments = this.createTrail(points)
-
-          let path = arcGenerator(segments)
-          let elements = []
-
-          let totalAesthetics = {
-            'stroke': 'none',
-            'fill': aesthetics.fill,
-            'fillOpacity': aesthetics.fillOpacity,
-            'opacity': aesthetics.opacity
-          }
-
-          let element = createElement('path', {
-            attrs: {
-              'd': path
-            },
-            style: createSVGStyle(totalAesthetics)
-          })
-          elements.push(element)
-
-          return createElement('g', elements)
-        } else {
-          console.warn('Not enough valid points to draw Mark')
-        }
+        console.warn('Not enough valid points to draw Mark')
       }
     }
   }

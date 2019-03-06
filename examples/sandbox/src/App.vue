@@ -11,70 +11,15 @@
         :x2="500"
         :y1="100"
         :y2="500"
-        :scale-x="'a'"
-        :scale-y="'b'"
+        :scale-x="[0, 10]"
+        :scale-y="[0, 10]"
       >
 
-        <vgg-map v-slot="{ row }">
-
-          <vgg-point
-            :x="row.a"
-            :y="row.b"
-            :radius="3"
-            :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
-          />
-
-        </vgg-map>
-
-        <vgg-x-axis
-          :vjust="0"
-          :scale="'a'"
-          title="henk"
+        <vgg-trail
+          :points="[[0, 1], [1, 2], [3, 4], [7, 9], [3, 6], [9, 9]]"
         />
-
-        <vgg-y-axis
-          :hjust="'r'"
-          :scale="'b'"
-          title="piet"
-        />
-
-        <vgg-x-grid :scale="'a'" />
-        <vgg-y-grid :scale="'b'" />
 
       </vgg-section>
-
-      <!-- <vgg-x-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'a'"
-      />
-
-      <vgg-y-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'b'"
-      /> -->
-
-      <!-- <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="50"
-        :y2="100"
-        :scale="'a'"
-      /> -->
-
-      <!-- <vgg-y-axis
-        :x1="50"
-        :x2="100"
-        :y1="100"
-        :y2="500"
-        :scale="'b'"
-        flip
-      /> -->
 
     </vgg-graphic>
 
