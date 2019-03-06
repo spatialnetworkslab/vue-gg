@@ -38,7 +38,7 @@
               :x="90"
               :y="row.labelPost"
               :text="row.label"
-              :font-size="10"
+              :font-size="fontSize"
               :anchor-point="'center'"
             />
           </vgg-map>
@@ -139,7 +139,7 @@ export default {
   computed: {
     colorScale () {
       let color = this.color
-      console.log(color)
+
       if (color.constructor === String) {
         return () => {return color}
       } else if (color.constructor === Array) {
@@ -152,8 +152,8 @@ export default {
           scaleArgs: [[0, this.numTicks]],
           type: this.color.type
         }
+
         let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
-        console.log('+++', scalingFunction)
         return scalingFunction
       }
     },
@@ -189,15 +189,25 @@ export default {
       let boxes = []
       let ticks = this.numTicks
       let l = this.legendLabels, start = 0, end = 0, labelPost
-      for (let i = 0; i < ticks; i++) {
-        if (i === 0) {
-          end += this.segmentHeight
-        } else {
+      console.log(this.flip)
+      if (!this.flip) {
+         for (let i = 0; i < ticks; i++) {
+          if (i === 0) {
+            end += this.segmentHeight
+          } else {
+            start = end
+            end += this.segmentHeight
+          }
+          labelPost = (start + end)/2
+          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+        }
+      } else {
+        for (let i = ticks - 1; i >=0; i--) {
           start = end
           end += this.segmentHeight
-        }
-        labelPost = (start + end)/2
-        boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          labelPost = (start + end)/2
+          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+       }
       }
       console.log(boxes)
       return boxes

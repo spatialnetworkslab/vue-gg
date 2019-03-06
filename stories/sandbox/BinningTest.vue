@@ -86,15 +86,15 @@
           :numTicks="20"
           :position="right"
         /> -->
-        <!-- fix l and r, center -->
+        <!-- fix horizontal orientation  -->
         <vgg-discrete-legend
           name="Bins"
           :scale="{ domain: 'bins', domainMin: 0 }"
           :labels="'bins'"
+          position="tl"
           :orient="'vertical'"
           :color="{type: 'blues'}"
-          position="tl"
-          :fontSize="4"
+          :fontSize="10"
           :numTicks="10"
           flip
         />

@@ -54,7 +54,7 @@ export default {
       type: String,
       default: 'right',
       validator: function (value) {
-        return ['left', 'right', 'top', 'bottom', 'tl', 'tr', 'bl', 'br'].indexOf(value) !== -1
+        return ['left', 'right', 'top', 'bottom', 'tl', 'tr', 'bl', 'br', 'cr', 'cl'].indexOf(value) !== -1
       }
     },
 
@@ -132,23 +132,12 @@ export default {
 
     legendLeft () {
       let p = this.position
-      if (p === 'right' || p === "tr" || p === "br" ) {
+      if (p === 'right' || p === "tr" || p === "br" || p === "cr") {
         return this.plotWidth - this.width
-      } else if (p === 'left' || p === "tl" || p === "bl" || p === "top") {
+      } else if (p === 'left' || p === "tl" || p === "bl" || p === "top" || p === "bottom" || p === "cl") {
         return 0
       } else {
-        return this.plotMargin
-      }
-    },
-
-    legendRight () {
-      let p = this.position
-      if (p === 'right') {
-        return this.plotWidth - this.plotMargin
-      } else if (p === 'left') {
-        return this.width
-      } else {
-        return this.plotMargin + this.width
+        return this.plotWidth/100
       }
     },
 
@@ -157,9 +146,10 @@ export default {
       if (p === 'top' || p === "tl" || p === "tr") {
         return this.height - this.plotHeight + this.plotMargin
       } else if (p === 'bottom' || p === "bl" || p === "br") {
-        return 0
+        return this.plotHeight * 0.01
       } else {
-        return this.plotMargin
+        console.log('+++', this.plotHeight, this.height, this.plotMargin)
+        return -this.plotHeight * 0.45
       }
     },
 
