@@ -10,22 +10,14 @@ export default function ({ x, y }, spatialIndex) {
   let hits = []
 
   for (let candidate of hitCandidates) {
-    if (candidate.geometry.type === 'point') {
+    if (['point', 'symbol'].includes(candidate.geometry.type)) {
       if (collisionTestPoint(x, y, candidate)) { hits.push(candidate) }
     } else if (candidate.geometry.type === 'rectangle') {
       if (collisionTestRectangle(x, y, candidate)) { hits.push(candidate) }
-    } else if (candidate.geometry.type === 'line') {
+    } else if (['line', 'multiline', 'path'].includes(candidate.geometry.type)) {
       if (collisionTestLine(x, y, candidate)) { hits.push(candidate) }
-    } else if (candidate.geometry.type === 'polygon') {
+    } else if (['polygon', 'area', 'trail'].includes(candidate.geometry.type)) {
       if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
-    } else if (candidate.geometry.type === 'multiline') {
-      if (collisionTestLine(x, y, candidate)) { hits.push(candidate) }
-    } else if (candidate.geometry.type === 'area') {
-      if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
-    } else if (candidate.geometry.type === 'trail') {
-      if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
-    } else if (candidate.geometry.type === 'symbol') {
-      if (collisionTestPoint(x, y, candidate)) { hits.push(candidate) }
     }
   }
 
