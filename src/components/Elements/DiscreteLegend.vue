@@ -92,7 +92,7 @@
               :x="row.labelPost"
               :y="7"
               :text="row.label"
-              :font-size="10"
+              :font-size="fontSize"
               :anchor-point="'center'"
             />
 
@@ -118,11 +118,6 @@ export default {
   mixins: [BaseLegend, Rectangular],
 
   props: {
-    titleFontSize: {
-      type: Number,
-      default: 16
-    },
-
     color: {
       type: [String, Object, Array],
       default: '#8FD8D8',
@@ -144,7 +139,7 @@ export default {
   computed: {
     colorScale () {
       let color = this.color
-
+      console.log(color)
       if (color.constructor === String) {
         return () => {return color}
       } else if (color.constructor === Array) {
@@ -153,8 +148,9 @@ export default {
         let scaleOptions = {
           aestheticType: 'color',
           domain: this._parsedScalingOptions[0],
-          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2, 
-          scaleArgs: [[0, this.numTicks]]
+          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
+          scaleArgs: [[0, this.numTicks]],
+          type: this.color.type
         }
         let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
         console.log('+++', scalingFunction)
@@ -201,7 +197,7 @@ export default {
           end += this.segmentHeight
         }
         labelPost = (start + end)/2
-        boxes.push({color: this.colorScale(i), start: start, end: end, labelPost: labelPost, label: l[i]})
+        boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
       }
       console.log(boxes)
       return boxes

@@ -73,6 +73,16 @@ export default {
       default: 6
     },
 
+    fontSize: {
+      type: Number,
+      default: 12
+    },
+
+    titleFontSize: {
+      type: Number,
+      default: 16
+    },
+
     //direction: {},
     //fill: {},
     //offset: {},
