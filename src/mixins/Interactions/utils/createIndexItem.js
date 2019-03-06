@@ -70,19 +70,11 @@ function createPathItem (type, coords, instance) {
     // If we are dealing with our own, simple polygon coordinates
     coordinates = coords
 
-    if (type === 'multiline' || type === 'path') {
+    if (['multiline', 'path'].includes(type)) {
       pathType = 'LineString'
     }
 
-    if (type === 'polygon') {
-      pathType = 'SimplePolygon'
-    }
-
-    if (type === 'area') {
-      pathType = 'SimplePolygon'
-    }
-
-    if (type === 'trail') {
+    if (['polygon', 'area', 'trail'].includes(type)) {
       pathType = 'SimplePolygon'
     }
   }

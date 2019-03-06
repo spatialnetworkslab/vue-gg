@@ -7,9 +7,17 @@ export default {
   data () {
     return {
       interactionManager: Object.freeze({
-        nativeListeners: {}, // keys: native listeners (click, mouseover, etc)
+
+        nativeListeners: {},
+        // keys: native listeners (click, mouseover, etc),
+        // values: whether they're active
+        // TODO: is this obsolete? can/should we do listenerCache and nativeListeners in 1?
+
         spatialIndex: rbush(),
-        indexCache: {}
+
+        itemCache: {}, // keys: component uids, values: index items
+
+        listenerCache: {} // keys: component uids, values: listeners
       })
     }
   },
@@ -36,7 +44,7 @@ export default {
     indexElement (uid, type, coordinates, instance) {
       let strUid = uid.toString()
       let item = createIndexItem(type, coordinates, instance)
-      let cache = this.interactionManager.indexCache
+      let cache = this.interactionManager.itemCache
 
       if (cache.hasOwnProperty(strUid)) {
         if (elementChanged(cache[strUid], item)) {
@@ -52,14 +60,14 @@ export default {
 
     unIndexElement (uid) {
       let strUid = uid.toString()
-      let cache = this.interactionManager.indexCache
+      let cache = this.interactionManager.itemCache
       this.interactionManager.spatialIndex.remove(cache[strUid])
       delete cache[strUid]
     },
 
     cacheHasElement (uid) {
       let strUid = uid.toString()
-      let cache = this.interactionManager.indexCache
+      let cache = this.interactionManager.itemCache
       return cache.hasOwnProperty(strUid)
     },
 
