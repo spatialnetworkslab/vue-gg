@@ -79,7 +79,7 @@ class Branch {
   constructor (id, parentID, coordinateTransformation) {
     this.id = id
     this.parentID = parentID
-    this.updateCount = 1
+    this.updateCount = 0
 
     this.update(coordinateTransformation)
 

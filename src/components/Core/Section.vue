@@ -263,8 +263,10 @@ export default {
       )
     },
 
-    updateCoordinateTreeBranch () {
-      this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
+    updateCoordinateTreeBranch (newVal, oldVal) {
+      if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+        this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
+      }
     },
 
     checkAllowedObj (domain) {

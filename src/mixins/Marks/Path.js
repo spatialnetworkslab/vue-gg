@@ -95,12 +95,6 @@ export default {
     interpolate: {
       type: Boolean,
       default: false
-    },
-
-    // This is not actually meant to be used, just a flag for the mixin logic
-    _area: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -255,6 +249,7 @@ export default {
           }
 
           let path = this.createPath(points)
+
           let element = createElement('path', {
             attrs: {
               'd': path

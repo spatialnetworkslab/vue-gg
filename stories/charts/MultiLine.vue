@@ -13,25 +13,25 @@
       :scale-y="'yValues'"
     >
 
-    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
+      <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
-    <vgg-data :transform="{ groupBy: 'colors' }">
+      <vgg-data :transform="{ groupBy: 'colors' }">
 
-      <vgg-map v-slot="{ row }">
+        <vgg-map v-slot="{ row }">
 
-        <vgg-multi-line
-          :x="row.grouped.xValues"
-          :y="row.grouped.yValues"
-          :stroke-width="5"
-          :stroke="row.colors"
-          stroke-linecap="round"
-          :fillOpacity="0.7"
-          :sort="'x'"
-        />
+          <vgg-multi-line
+            :x="row.grouped.xValues"
+            :y="row.grouped.yValues"
+            :stroke-width="5"
+            :stroke="row.colors"
+            :fill-opacity="0.7"
+            :sort="'x'"
+            stroke-linecap="round"
+          />
 
-      </vgg-map>
+        </vgg-map>
 
-    </vgg-data>
+      </vgg-data>
 
     </vgg-section>
     <vgg-x-grid
