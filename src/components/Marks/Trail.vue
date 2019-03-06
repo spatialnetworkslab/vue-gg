@@ -1,6 +1,6 @@
 <script>
 import Path from '../../mixins/Marks/Path.js'
-import { transformFeature, createGeoPath, arcGenerator } from './utils/createPath.js'
+import { arcGenerator } from './utils/createPath.js'
 
 import checkPoints from '../../mixins/Marks/utils/checkPoints.js'
 import { invalidPoint } from '../../utils/equals.js'
@@ -191,6 +191,12 @@ export default {
       // to smooth the first curve of the trail - point 0
       segments.push(segments[0])
       segments.push(segments[1])
+
+      let listeners = this.getListeners()
+      if (listeners.length > 0) {
+        this.addToSpatialIndex(segments, listeners)
+      }
+
       return segments
     },
 
@@ -218,8 +224,6 @@ export default {
           points = this.closePoints(points)
         }
 
-        console.log(points)
-
         // obtains polygon corresponding to multiline with stroke widths
         segments = this.createTrail(points)
 
@@ -245,6 +249,10 @@ export default {
       } else {
         console.warn('Not enough valid points to draw Mark')
       }
+    },
+
+    addToSpatialIndex (points, listeners) {
+      this.$$interactionManager.addElement(this._uid, 'trail', points, this, listeners)
     }
   }
 }

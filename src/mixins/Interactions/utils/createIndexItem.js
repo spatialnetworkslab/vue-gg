@@ -1,6 +1,5 @@
 import findBoundingBox from './geometry/findBoundingBox.js'
 import findBoundingBoxPath from './geometry/findBoundingBoxPath.js'
-import findBoundingBoxTrail from './geometry/findBoundingBoxTrail.js'
 
 export default function (type, coordinates, instance) {
   if (type === 'point') {
@@ -98,9 +97,14 @@ function createPathItem (type, coords, instance) {
 }
 
 function createTrailItem (type, points, instance) {
-  let { minX, minY, maxX, maxY } = findBoundingBoxTrail(points)
+  let pathType = 'SimplePolygon'
+  let { minX, minY, maxX, maxY } = findBoundingBoxPath(points, pathType)
 
-  let geometry
+  let geometry = {
+    type,
+    pathType,
+    coordinates: points
+  }
 
   return { geometry, instance, minX, minY, maxX, maxY }
 }

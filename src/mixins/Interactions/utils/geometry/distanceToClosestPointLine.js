@@ -1,5 +1,11 @@
+export default function ([x, y], lineSegment) {
+  let closestPoint = closestPointOnLine([x, y], lineSegment)
+  return distance([x, y], closestPoint)
+}
+
 // https://stackoverflow.com/a/6853926/7237112
-export default function ([x, y], [i, j]) {
+export function closestPointOnLine ([x, y], [i, j]) {
+  // Line segment coordinates
   let x1 = i[0]
   let y1 = i[1]
   let x2 = j[0]
@@ -30,7 +36,12 @@ export default function ([x, y], [i, j]) {
     yy = y1 + param * D
   }
 
-  let dx = x - xx
-  let dy = y - yy
+  return [xx, yy]
+}
+
+export function distance (from, to) {
+  let dx = from[0] - to[0]
+  let dy = from[1] - to[1]
+
   return Math.sqrt(dx * dx + dy * dy)
 }
