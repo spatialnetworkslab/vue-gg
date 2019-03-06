@@ -14,13 +14,14 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 
 # Path Mark
 
-The standard trail mark takes the following props.
+The standard trail mark takes the following props. Note that only when input for `x` and `y` are given, `points` does not need to have input, and vice versa.
 
 ### Positioning
 | Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
 | ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
 | x    | true     | [Number, String, Date] | undefined | x-coordinates of center of each symbol | Local coordinates |
 | y    | true     | [Number, String, Date] | undefined | y-coordinates of center of each symbol | Local coordinates |
+| points    | true     | [Number, String, Date] | undefined | Array of coordinate pairs [x, y] referring to each point |
 
 ### Aesthetics
 

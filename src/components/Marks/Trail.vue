@@ -93,7 +93,7 @@
         for (let i = 0; i < points.length; i++) {
           let point = points[i]
           if (invalidPoint(point.coord)) {
-            console.warn(`Skipped invalid point ${JSON.stringify(point)} at index ${i}`)
+            console.warn(`Skipped invalid point ${JSON.stringify(point.coord)} at index ${i}`)
           } else {
             filtered.push(point)
           }
@@ -190,19 +190,22 @@
         checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
         let aesthetics = this._props
 
-        if (this.geometry) {
-          let path = createGeoPath(aesthetics.geometry, this.$$transform)
-          return createElement('path', {
-            attrs: {
-              'd': path
-            },
-            style: createSVGStyle(aesthetics)
-          })
-        } else {
-          let points = [], segments = []
 
-          if (aesthetics.points) {
-            points = aesthetics.points
+        if (aesthetics.points || (aesthetics.x && aesthetics.y)) {
+          let points = [], segments = []
+          if (aesthetics.points && aesthetics.points.length > 1) {
+            let x = [], y = []
+            for (let i = 0; i < aesthetics.points.length; i++) {
+              if (aesthetics.points[i]) {
+                if (aesthetics.points[i][0] && aesthetics.points[i][1]) {
+                  x.push(aesthetics.points[i][0])
+                  y.push(aesthetics.points[i][1])
+                } else {
+                  console.warn("Skipped invalid point " + aesthetics.points[i] +" at index " + i)
+                }
+              }
+            }
+            points = this.generatePoints(x, y, aesthetics)
           } else {
             points = this.generatePoints(aesthetics.x, aesthetics.y, aesthetics)
           }
