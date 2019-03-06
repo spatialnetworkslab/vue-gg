@@ -55,7 +55,6 @@ export default {
       let cache = this.interactionManager.indexCache
       this.interactionManager.spatialIndex.remove(cache[strUid])
       delete cache[strUid]
-      console.log(cache)
     },
 
     cacheHasElement (uid) {

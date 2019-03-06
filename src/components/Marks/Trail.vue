@@ -218,6 +218,8 @@ export default {
           points = this.closePoints(points)
         }
 
+        console.log(points)
+
         // obtains polygon corresponding to multiline with stroke widths
         segments = this.createTrail(points)
 
