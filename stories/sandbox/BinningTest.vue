@@ -92,7 +92,7 @@
           :scale="{ domain: 'bins', domainMin: 0 }"
           :labels="'bins'"
           :orient="'vertical'"
-          :color="{ type: 'blues', domain: 'binCount', domainMin: 0 } "
+          :color="{type: 'blues'}"
           position="tl"
           :fontSize="4"
           :numTicks="10"
