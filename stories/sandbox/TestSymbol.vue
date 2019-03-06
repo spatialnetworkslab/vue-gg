@@ -25,39 +25,32 @@
             :stroke-width="2"
             shape="triangle-left"
             fill="none"
+            @click="log(row)"
           />
-            
+
         </vgg-map>
 
         <vgg-x-axis
-          :scale="[0, 150]"
+          :scale="'explanatory'"
           :vjust="-.05"
         />
 
         <vgg-y-axis
           :scale="'dependent'"
           :hjust="-.05"
-          :tickExtraLabel="false"
+          :tick-extra-label="false"
           flip
         />
 
+        <vgg-x-grid
+          :scale="'explanatory'"
+        />
+
+        <vgg-y-grid
+          :scale="'dependent'"
+        />
+
       </vgg-section>
-
-      <vgg-x-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="[0, 150]"
-      />
-
-      <vgg-y-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'dependent'"
-      />
 
     </vgg-graphic>
 
@@ -81,7 +74,9 @@ export default {
     generateNewData () {
       let newData = xy('explanatory', 'dependent')
       this.xy = newData
-    }
+    },
+
+    log: console.log
   }
 }
 </script>

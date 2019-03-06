@@ -2,7 +2,7 @@ import findBoundingBox from './geometry/findBoundingBox.js'
 import findBoundingBoxPath from './geometry/findBoundingBoxPath.js'
 
 export default function (type, coordinates, instance) {
-  if (type === 'point') {
+  if (['point', 'symbol'].includes(type)) {
     return createPointItem(type, coordinates, instance)
   }
 
@@ -14,17 +14,15 @@ export default function (type, coordinates, instance) {
     return createLineItem(type, coordinates, instance)
   }
 
-  if (['polygon', 'multiline', 'area'].includes(type)) {
+  if (['polygon', 'multiline', 'area', 'trail'].includes(type)) {
     return createPathItem(type, coordinates, instance)
-  }
-
-  if (type === 'trail') {
-    return createTrailItem(type, coordinates, instance)
   }
 }
 
 function createPointItem (type, coordinates, instance) {
-  let radius = instance.radius
+  let radius
+  if (type === 'point') { radius = instance.radius }
+  if (type === 'symbol') { radius = instance.size / 2 }
 
   let minX = coordinates[0] - radius
   let maxX = coordinates[0] + radius
@@ -83,6 +81,10 @@ function createPathItem (type, coords, instance) {
     if (type === 'area') {
       pathType = 'SimplePolygon'
     }
+
+    if (type === 'trail') {
+      pathType = 'SimplePolygon'
+    }
   }
 
   let { minX, minY, maxX, maxY } = findBoundingBoxPath(coordinates, pathType)
@@ -91,19 +93,6 @@ function createPathItem (type, coords, instance) {
     coordinates,
     strokeWidth: instance.strokeWidth,
     pathType
-  }
-
-  return { geometry, instance, minX, minY, maxX, maxY }
-}
-
-function createTrailItem (type, points, instance) {
-  let pathType = 'SimplePolygon'
-  let { minX, minY, maxX, maxY } = findBoundingBoxPath(points, pathType)
-
-  let geometry = {
-    type,
-    pathType,
-    coordinates: points
   }
 
   return { geometry, instance, minX, minY, maxX, maxY }

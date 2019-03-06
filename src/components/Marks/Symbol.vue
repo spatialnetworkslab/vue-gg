@@ -96,6 +96,12 @@ export default {
 
     createPath (createElement, aesthetics, d) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
+
+      let listeners = this.getListeners()
+      if (listeners.length > 0) {
+        this.addToSpatialIndex([cx, cy], listeners)
+      }
+
       let s = this.createSVGStyle(aesthetics)
       let scale = aesthetics.size / 2
       s.strokeWidth = s.strokeWidth / scale
@@ -136,6 +142,10 @@ export default {
       }
 
       return this.createPath(createElement, aesthetics, path)
+    },
+
+    addToSpatialIndex (coordinates, listeners) {
+      this.$$interactionManager.addElement(this._uid, 'symbol', coordinates, this, listeners)
     }
   }
 }

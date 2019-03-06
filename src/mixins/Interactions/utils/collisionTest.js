@@ -12,30 +12,20 @@ export default function ({ x, y }, spatialIndex) {
   for (let candidate of hitCandidates) {
     if (candidate.geometry.type === 'point') {
       if (collisionTestPoint(x, y, candidate)) { hits.push(candidate) }
-    }
-
-    if (candidate.geometry.type === 'rectangle') {
+    } else if (candidate.geometry.type === 'rectangle') {
       if (collisionTestRectangle(x, y, candidate)) { hits.push(candidate) }
-    }
-
-    if (candidate.geometry.type === 'line') {
+    } else if (candidate.geometry.type === 'line') {
       if (collisionTestLine(x, y, candidate)) { hits.push(candidate) }
-    }
-
-    if (candidate.geometry.type === 'polygon') {
+    } else if (candidate.geometry.type === 'polygon') {
       if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
-    }
-
-    if (candidate.geometry.type === 'multiline') {
+    } else if (candidate.geometry.type === 'multiline') {
       if (collisionTestLine(x, y, candidate)) { hits.push(candidate) }
-    }
-
-    if (candidate.geometry.type === 'area') {
+    } else if (candidate.geometry.type === 'area') {
       if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
-    }
-
-    if (candidate.geometry.type === 'trail') {
+    } else if (candidate.geometry.type === 'trail') {
       if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
+    } else if (candidate.geometry.type === 'symbol') {
+      if (collisionTestPoint(x, y, candidate)) { hits.push(candidate) }
     }
   }
 
