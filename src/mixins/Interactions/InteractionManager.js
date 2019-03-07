@@ -1,6 +1,6 @@
 import rbush from 'rbush'
-import ItemCache from './utils/ItemCache.js'
-import cacheItem from './utils/cacheItem.js'
+import ItemCache from './utils/ItemCache/ItemCache.js'
+import cacheItem from './utils/ItemCache/cacheFuncs/cacheItem.js'
 import collisionTest from './utils/collisionTest.js'
 
 export default {
@@ -15,7 +15,7 @@ export default {
 
         // This object keeps track of which native listeners are active,
         // and how many items they are tracking
-        listeners: {
+        nativeListeners: {
           click: {
             active: false,
             trackedItems: 0
@@ -27,7 +27,7 @@ export default {
           }
         },
 
-        // This object keeps track of all indexed items
+        // This object caches and keeps track of all indexed items
         itemCache: new ItemCache()
       })
     }
@@ -44,33 +44,15 @@ export default {
   },
 
   methods: {
-    // These three functions are exposed to the component
-    addItem (uid, type, coordinates, instance, listeners) {
-      let strUid = uid.toString()
-      this._cacheItem(strUid, type, coordinates, instance, listeners)
-
-      // let cache = this.interactionManager.itemCache
-      // if (cache.hasOwnProperty(strUid)) {
-      //   // If it is, see if it has changed
-      //   let oldItem = cache[strUid]
-      //   if (elementChanged(oldItem, item)) {
-      //     // If it has, we remove the old item from the indices and cache
-      //     this._unIndexItem(oldItem, listeners)
-      //     delete cache[strUid]
-      //
-      //     // And then we add the new item back to the cache and indices
-      //     cache[strUid] = item
-      //     this._indexItem(item, strUid, listeners)
-      //   }
-      // } else {
-      //   // If the item was not yet in the cache: add it
-      //   cache[strUid] = item
-      //   this._indexItem(strUid, listeners, item)
-      // }
+    // These two functions are exposed to the component
+    addItem (_uid, type, coordinates, instance, listeners) {
+      let uid = _uid.toString()
+      this._cacheItem(uid, type, coordinates, instance, listeners)
     },
 
-    removeItem (uid, listeners) {
-
+    removeItem (_uid) {
+      let uid = _uid.toString()
+      this._removeItem(uid)
     },
 
     // These functions are all for internal use only
@@ -81,28 +63,8 @@ export default {
       cacheItem(uid, type, coordinates, instance, itemCache, listeners, spatialIndices)
     },
 
-    _indexItem (item, uid, listeners) {
-      for (let customListener of listeners) {
-        if (customListener === 'click') {
-          this.interactionManager.spatialIndex.click.insert(item)
-        }
-
-        if (customListener === 'hover') {
-          this.interactionManager.spatialIndex.mousemove.insert(item)
-        }
-      }
-    },
-
-    _unIndexItem (uid) {
-      // let strUid = uid.toString()
-      // let cache = this.interactionManager.itemCache
-      // this.interactionManager.spatialIndex.remove(cache[strUid])
-    },
-
-    _updateListener (customListener) {
-      if (customListener === 'click') {
-        this.updateClickListener(customListener)
-      }
+    _removeItem (uid) {
+      // TODO
     },
 
     _updateClickListener (customListener) {

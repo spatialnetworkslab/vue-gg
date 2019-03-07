@@ -18,21 +18,29 @@ export default class ItemCache {
     return true
   }
 
-  addItem (uid, args, item) {
+  addItem (uid, args, item, listeners) {
     let strArgs = args.map(arg => JSON.stringify(arg))
-    this.cache[uid] = { args: strArgs, item }
+    this.cache[uid] = { args: strArgs, item, listeners }
   }
 
   getItem (uid) {
     return this.cache[uid].item
   }
 
+  getListeners (uid) {
+    return this.cache[uid].listeners
+  }
+
   deleteItem (uid) {
     delete this.cache[uid]
   }
 
-  updateItem (uid, args, item) {
+  updateItem (uid, args, item, listeners) {
     this.removeItem(uid)
-    this.addItem(uid, args, item)
+    this.addItem(uid, args, item, listeners)
+  }
+
+  updateListeners (uid, listeners) {
+    this.cache[uid].listeners = listeners
   }
 }

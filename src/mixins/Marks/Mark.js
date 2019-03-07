@@ -29,11 +29,8 @@ export default {
   },
 
   beforeDestroy () {
-    let listeners = this.getListeners()
-    if (listeners.length > 0) {
-      let uid = this._uid
-      this.$$interactionManager.removeElement(uid, listeners)
-    }
+    let uid = this._uid
+    this.$$interactionManager.removeItem(uid)
   },
 
   methods: {
