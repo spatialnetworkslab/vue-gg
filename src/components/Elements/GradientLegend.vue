@@ -1,15 +1,12 @@
+<!-- fix positioning x and y -->
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
-    {{ colors }}
-    <vgg-rectangle
-      :x1="0"
-      :x2="width"
-      :y1="0"
-      :y2="height"
-      fill="orange"
-      :fillOpacity="0.6"
-    />
-
+    <!-- <vgg-point
+      :x="legendLeft"
+      :y="legendTop"
+      :radius="10"
+    /> -->
+    <!-- Vertical orientation -->
     <vgg-section
       v-if="orient==='vertical'"
       :x1="0"
@@ -19,189 +16,144 @@
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
-    <vgg-label
-      class="legend-title"
-      :text="name"
-      :x="0"
-      :y="0"
-      :font-size="12"
-    />
-    <vgg-rectangle
-      :x1="0"
-      :x2="60"
-      :y1="0"
-      :y2="100"
-      fill="blue"
-      :fillOpacity="0.6"
-    />
-
-    </vgg-section>
-    <!-- Calculate gradient -->
-    <!-- <defs>
-      <linearGradient v-if="orient === 'vertical'"
-      id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop
-          v-for="(c, i) in colors"
-          :key="i"
-          :offset="`${i * offset + '%'}`"
-          :style="`stop-color:${c}`" />
-      </linearGradient>
-      <linearGradient v-if="orient === 'horizontal'"
-      id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop
-          v-for="(c, i) in colors"
-          :key="i"
-          :offset="`${i * offset + '%'}`"
-          :style="`stop-color:${c}`" />
-      </linearGradient>
-    </defs> -->
-
-    <!-- <vgg-section
-      class="gradient-legend"
-      :x1="ranges.x1"
-      :x2="ranges.x2"
-      :y1="ranges.y1"
-      :y2="ranges.y2"
-      :scales="{
-        x: [0, ranges.x2],
-        y: [0, ranges.y2]
-      }"
-    > -->
-
-      <!-- <vgg-section
-        v-if="orient==='vertical'"
-        :x1="0"
-        :x2="width"
-        :y1="0"
-        :y2="height"
-        :scales="{
-          x: [0, width],
-          y: [0, height]
-        }"
-      >
       <vgg-label
-        class="legend-title"
         :text="name"
-        :x="width/2"
-        :y="height"
-        :font-size="12"
-      /> -->
-      <!-- Render labels -->
-      <!-- <vgg-data :data="texts">
-        <vgg-map>
-          <vgg-label
-            :x="gradientWidth + 15"
-            :y="tick => tick.h"
-            :text="tick => tick.label"
-            :font-size="10"
-            :anchor-point="'center'"
-          />
-        </vgg-map>
-      </vgg-data> -->
-        <!-- <vgg-rectangle
-          :x1="0"
-          :x2="width"
-          :y1="0"
-          :y2="height"
-          fill="blue"
-          :fillOpacity="0.1"
-        />
-        <vgg-map>
-        <vgg-rectangle
-          :x1="0"
-          :x2="gradientWidth"
-          :y1="0"
-          :y2="gradientHeight"
-          :fill="fill"
-          :fillOpacity="0.7"
-        />
-      </vgg-map>
-      </vgg-section> -->
-
-      <!-- <vgg-section
-        v-if="orient==='horizontal'"
-        :x1="0"
-        :x2="height"
-        :y1="0"
-        :y2="width"
-        :scales="{
-          x: [0, height],
-          y: [0, width]
-        }"
-      >
-      <vgg-label
-        class="legend-title"
-        :text="name"
-        :x="height/2"
-        :y="width"
+        :x="50"
+        :y="100"
+        :font-size="titleFontSize"
+        font-weight="bold"
       />
-        <!-- Render labels -->
-        <!-- <vgg-data :data="texts">
-          <vgg-map>
-            <vgg-label
-              :x="tick => tick.h"
-              :y="gradientWidth"
-              :text="tick => tick.label"
-              :font-size="10"
-              :anchor-point="'center'"
-            />
-          </vgg-map>
-        </vgg-data>
-        <vgg-rectangle
-          :x1="0"
-          :x2="height"
-          :y1="0"
-          :y2="width"
-          fill="blue"
-          :fillOpacity="0.3"
-        />
-        <vgg-rectangle
-          :x1="0"
-          :x2="height"
-          :y1="0"
-          :y2="gradientWidth - 10"
-          :fill="color"
-          :fillOpacity="0.7"
-        />
-      </vgg-section> -->
-
-      <!-- <g v-if="orient === 'vertical'" >
-        <g v-for="(c,i) in colors">
-          <g v-if="i < colors.length">
+      <vgg-section
+        :x1="0"
+        :x2="100"
+        :y1="0"
+        :y2="95"
+        :scale-x="[0, 100]"
+        :scale-y="[0, 100]"
+      >
+      <!-- <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+    </linearGradient>
+  </defs> -->
+        <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+        </linearGradient>
+        </defs>
+        <vgg-data :data="boxes">
+          <g v-if="!flipNumbers">
             <vgg-rectangle
               :x1="0"
-              :x2="ranges.x2/2"
-              :y1="segmentHeight * i"
-              :y2="segmentHeight * (i+1)"
-              :fill="c"
+              :x2="75"
+              :y1="0"
+              :y2="100"
+              :fill="'url(#grad1)'"
             />
+            <vgg-map v-slot="{ row }">
+              <vgg-label
+                :x="90"
+                :y="row.labelPost"
+                :text="row.label"
+                :font-size="fontSize"
+                :anchor-point="'center'"
+              />
+            </vgg-map>
           </g>
-        </g>
-
-        <vgg-data :data="texts">
-          <vgg-map>
-            <vgg-label
-              :x="ranges.x2/1.5"
-              :y="tick => tick.h"
-              :text="tick => tick.label"
-              :font-size="10"
-              :anchor-point="'center'"
-            />
-          </vgg-map>
+          <g v-else>
+            <vgg-map v-slot="{ row }">
+              <vgg-label
+                :x="10"
+                :y="row.labelPost"
+                :text="row.label"
+                :font-size="fontSize"
+                :anchor-point="'center'"
+              />
+            </vgg-map>
+          </g>
         </vgg-data>
-      </g>-->
-    <!-- </vgg-section> -->
+      </vgg-section>
+    </vgg-section>
+
+    <!-- Horizontal gradient -->
+    <vgg-section
+      v-if="orient==='horizontal'"
+      :x1="0"
+      :x2="height"
+      :y1="0"
+      :y2="width"
+      :scale-x="[0, 100]"
+      :scale-y="[0, 100]"
+    >
+      <vgg-label
+        :text="name"
+        :x="50"
+        :y="105"
+        :font-size="titleFontSize"
+        font-weight="bold"
+      />
+      <vgg-section
+        :x1="0"
+        :x2="100"
+        :y1="0"
+        :y2="95"
+        :scale-x="[0, 100]"
+        :scale-y="[0, 100]"
+      >
+        <vgg-data :data="boxes">
+          <g v-if="!flipNumbers">
+            <vgg-map v-slot="{ row }">
+              <vgg-rectangle
+                :x1="row.start"
+                :x2="row.end"
+                :y1="20"
+                :y2="95"
+                :fill="row.color"
+              />
+              <vgg-label
+                :x="row.labelPost"
+                :y="7"
+                :text="row.label"
+                :font-size="fontSize"
+                :anchor-point="'center'"
+              />
+            </vgg-map>
+          </g><g v-else>
+            <vgg-map v-slot="{ row }">
+              <vgg-rectangle
+                :x1="row.start"
+                :x2="row.end"
+                :y1="0"
+                :y2="75"
+                :fill="row.color"
+              />
+              <vgg-label
+                :x="row.labelPost"
+                :y="85"
+                :text="row.label"
+                :font-size="fontSize"
+                :anchor-point="'center'"
+              />
+            </vgg-map>
+          </g>
+        </vgg-data>
+
+      </vgg-section>
+
+    </vgg-section>
+
   </g>
 </template>
 
 <script>
 import BaseLegend from '@/mixins/Guides/BaseLegend.js'
-//import Rectangle from '@/components/Marks/Rectangle.vue'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 import createScale from '@/scales/createScale.js'
 
 export default {
-  name: 'GradientLegend',
+  name: 'DiscreteLegend',
 
   mixins: [BaseLegend, Rectangular],
 
@@ -221,100 +173,87 @@ export default {
     y: {
       type: [Number, Object, Array],
       default: 0,
-    },
-
-    scale: {
-      type: [Number, Object, Array],
-      default: undefined,
     }
   },
 
   computed: {
-    gradientWidth () {
-      return this.width * 0.7
-      },
-
-    gradientHeight () {
-      return this.height * 0.9
-      },
-
     colorScale () {
-      console.log(this.fill)
       let color = this.color
-      console.log(color, color.constructor, color.fromZero)
-      if (color.constructor === String) {
-        return () => {return color}
-      } else if (color.constructor === Array) {
+
+      if (color.constructor === Array) {
         return (index) => {return color[index]}
       } else {
         let scaleOptions = {
           aestheticType: 'color',
-          scaleArgs: [[0, this.numTicks], color.fromZero]
+          domain: this._parsedScalingOptions[0],
+          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
+          scaleArgs: [[0, this.tickCount]],
+          type: this.color.scale
         }
 
-        let scalingFunction = createScale(color.scale, scaleOptions)
+        let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
         return scalingFunction
       }
     },
 
-    offset () {
-      return 100 / (this.numTicks - 1)
+    // offset () {
+    //   return 100 / (this.tickCount - 1)
+    // },
+
+    segmentHeight () {
+      return 100 / this.tickCount
     },
 
     colors () {
-      let ticks = this.numTicks
+      let ticks = this.tickCount
       let colors = []
-
-      for (let i = 0; i < ticks; i++) {
+      for (let i = 0; i < ticks - 1; i++) {
         let color = this.colorScale(i)
-
         colors.push(color)
       }
+
       return colors
     },
 
-    segmentHeight () {
-      if (this.orient === 'vertical') {
-        return this.gradientHeight / (this.numTicks - 1)
-      } else if (this.orient === 'horizontal') {
-        return this.height / (this.numTicks - 1)
+    rgbToHex (rgb) {
+      let hex = Number(rgb).toString(16);
+      if (hex.length < 2) {
+           hex = "0" + hex;
       }
+      return hex
     },
 
-    // texts () {
-    //   let texts = []
-    //   let ticks = this.numTicks
-    //   let l = this.legendLabels
-    //
-    //   for (let i = 0; i < ticks - 1; i++) {
-    //     let h = this.segmentHeight * i + 5
-    //     texts.push({h: h, label: l[i]})
-    //   }
-    //   console.log(texts)
-    //   console.log(texts)
-    //   return texts
-    // }
+    boxes () {
+      let boxes = []
+      let ticks = this.tickCount
+      let l = this.legendLabels, start = 0, end = 0, labelPost
+
+      if (!this.flip) {
+         for (let i = 0; i < ticks; i++) {
+          if (i === 0) {
+            end += this.segmentHeight
+          } else {
+            start = end
+            end += this.segmentHeight
+          }
+          labelPost = (start + end)/2
+          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+        }
+      } else {
+        for (let i = ticks - 1; i >=0; i--) {
+          start = end
+          end += this.segmentHeight
+          labelPost = (start + end)/2
+          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+       }
+      }
+      console.log(boxes)
+      return boxes
+    }
   },
 
   methods: {
-    setHeight () {
-      this.height = this.gradientHeight
-    }
   }
 
 }
 </script>
-
-<style scoped>
-.legend-title {
-  font-family: Helvetica;
-  fill: black;
-  font-size: 14px;
-}
-
-.legend-text {
-  font-family: Helvetica;
-  fill: black;
-  font-size: 11px;
-}
-</style>

@@ -29,7 +29,6 @@ export default function (prop, context, passedScalingOptions) {
 
   // Other aesthetic props
   if (['stroke', 'fill', 'color'].includes(prop)) {
-    console.log(prop, domainType, domain, scalingOptions)
     return createColorScale(prop, domainType, domain, scalingOptions)
   }
 

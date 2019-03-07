@@ -9,7 +9,7 @@ export default {
     renderSVG (createElement) {
       let aesthetics = this._props
       let coords = this.coordinateSpecification
-
+      console.log('@@@', aesthetics)
       let points = [
         [coords.x1, coords.y1],
         [coords.x1, coords.y2],
@@ -27,12 +27,14 @@ export default {
         path = createPath(points, this.$$transform)
       }
 
-      return createElement('path', {
+      let element = createElement('path', {
         attrs: {
           'd': path
         },
         style: this.createSVGStyle(aesthetics)
       })
+      console.log(element)
+      return element
     }
   }
 }

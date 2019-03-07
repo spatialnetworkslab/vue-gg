@@ -30,7 +30,6 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
   if (domainConstructor === String) {
     // If the domain was specified as a String, we will have to check the
     // availability of the data
-    console.log('@@@', dataInterface, dataInterface.ready)
     if (dataInterface.ready()) {
       if (!dataInterface.hasColumn(scaleOptions.domain)) {
         throw new Error(`Invalid scale options: domain '${domain}' not found`)
@@ -43,7 +42,6 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
       }
 
       domainType = dataInterface.getType(scaleOptions.domain)
-      console.log("$$$", domainType)
     } else {
       // If the data is not yet available, we will set a dummy domain
       domain = [0, 1]

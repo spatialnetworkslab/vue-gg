@@ -21,10 +21,15 @@ export default {
     scale: {
       type: [Array, String, Object, undefined],
       default: undefined,
-      //required: true
+      required: true
     },
 
     flip: {
+      type: Boolean,
+      default: false
+    },
+
+    flipNumbers: {
       type: Boolean,
       default: false
     },
@@ -52,7 +57,7 @@ export default {
 
     position: {
       type: String,
-      default: 'right',
+      default: 'left',
       validator: function (value) {
         return ['left', 'right', 'top', 'bottom', 'tl', 'tr', 'bl', 'br', 'cr', 'cl'].indexOf(value) !== -1
       }
@@ -68,7 +73,7 @@ export default {
       default: 260
     },
 
-    numTicks: {
+    tickCount: {
       type: Number,
       default: 6
     },
@@ -131,25 +136,40 @@ export default {
     },
 
     legendLeft () {
-      let p = this.position
-      if (p === 'right' || p === "tr" || p === "br" || p === "cr") {
-        return this.plotWidth - this.width
-      } else if (p === 'left' || p === "tl" || p === "bl" || p === "top" || p === "bottom" || p === "cl") {
-        return 0
+      if (!this.x && !this.y) {
+        let p = this.position
+        if (p === 'right' || p === "tr" || p === "br" || p === "cr") {
+          if (this.orient === "vertical") {
+            return this.plotWidth - this.width
+          } else {
+            return this.plotWidth - this.height
+          }
+        } else if (p === 'left' || p === "tl" || p === "bl" || p === "top" || p === "bottom" || p === "cl") {
+          return 0
+        } else {
+          return this.plotWidth/100
+        }
       } else {
-        return this.plotWidth/100
+        return this.x
       }
     },
 
     legendTop () {
-      let p = this.position
-      if (p === 'top' || p === "tl" || p === "tr") {
-        return this.height - this.plotHeight + this.plotMargin
-      } else if (p === 'bottom' || p === "bl" || p === "br") {
-        return this.plotHeight * 0.01
+      if (!this.x && !this.y) {
+        let p = this.position
+        if (p === 'top' || p === "tl" || p === "tr") {
+          if (this.orient === "vertical"){
+            return this.height - this.plotHeight * 0.95
+          } else {
+                      return this.width - this.plotHeight + this.plotMargin
+          }
+        } else if (p === 'bottom' || p === "bl" || p === "br") {
+          return this.plotHeight * 0.01
+        } else {
+          return -this.plotHeight * 0.45
+        }
       } else {
-        console.log('+++', this.plotHeight, this.height, this.plotMargin)
-        return -this.plotHeight * 0.45
+        return this.y
       }
     },
 
@@ -181,11 +201,11 @@ export default {
     getNumericLabels (dataDomain, variableType) {
       if (variableType === 'count') { dataDomain[0] = 0 }
 
-      let interval = (dataDomain[1] - dataDomain[0]) / (this.numTicks - 1)
+      let interval = (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1)
 
       let ticks = []
 
-      for (let i = 0; i < this.numTicks; i++) {
+      for (let i = 0; i < this.tickCount; i++) {
         let value = Math.floor(dataDomain[0] + i * interval)
 
         if (interval <= 10) {

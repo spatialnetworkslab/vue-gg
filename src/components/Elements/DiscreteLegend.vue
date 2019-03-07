@@ -1,6 +1,12 @@
+<!-- fix positioning x and y -->
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
-    <!-- Vertical gradient -->
+    <!-- <vgg-point
+      :x="legendLeft"
+      :y="legendTop"
+      :radius="10"
+    /> -->
+    <!-- Vertical orientation -->
     <vgg-section
       v-if="orient==='vertical'"
       :x1="0"
@@ -25,23 +31,44 @@
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
+
         <vgg-data :data="boxes">
-          <vgg-map v-slot="{ row }">
-            <vgg-rectangle
-              :x1="0"
-              :x2="75"
-              :y1="row.start"
-              :y2="row.end"
-              :fill="row.color"
-            />
-            <vgg-label
-              :x="90"
-              :y="row.labelPost"
-              :text="row.label"
-              :font-size="fontSize"
-              :anchor-point="'center'"
-            />
-          </vgg-map>
+          <g v-if="!flipNumbers">
+            <vgg-map v-slot="{ row }">
+              <vgg-rectangle
+                :x1="0"
+                :x2="75"
+                :y1="row.start"
+                :y2="row.end"
+                :fill="row.color"
+              />
+              <vgg-label
+                :x="90"
+                :y="row.labelPost"
+                :text="row.label"
+                :font-size="fontSize"
+                :anchor-point="'center'"
+              />
+            </vgg-map>
+          </g>
+          <g v-else>
+            <vgg-map v-slot="{ row }">
+              <vgg-rectangle
+                :x1="25"
+                :x2="100"
+                :y1="row.start"
+                :y2="row.end"
+                :fill="row.color"
+              />
+              <vgg-label
+                :x="10"
+                :y="row.labelPost"
+                :text="row.label"
+                :font-size="fontSize"
+                :anchor-point="'center'"
+              />
+            </vgg-map>
+          </g>
         </vgg-data>
       </vgg-section>
     </vgg-section>
@@ -59,7 +86,7 @@
       <vgg-label
         :text="name"
         :x="50"
-        :y="100"
+        :y="105"
         :font-size="titleFontSize"
         font-weight="bold"
       />
@@ -71,33 +98,42 @@
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
-        <!-- <vgg-rectangle
-          :x1="0"
-          :x2="100"
-          :y1="0"
-          :y2="100"
-          fill="green"
-          :fillOpacity="0.2"
-        /> -->
         <vgg-data :data="boxes">
-          <vgg-map v-slot="{ row }">
-            <vgg-rectangle
-              :x1="row.start"
-              :x2="row.end"
-              :y1="20"
-              :y2="95"
-              :fill="row.color"
-            />
-            <vgg-label
-              :x="row.labelPost"
-              :y="7"
-              :text="row.label"
-              :font-size="fontSize"
-              :anchor-point="'center'"
-            />
-
-          </vgg-map>
-
+          <g v-if="!flipNumbers">
+            <vgg-map v-slot="{ row }">
+              <vgg-rectangle
+                :x1="row.start"
+                :x2="row.end"
+                :y1="20"
+                :y2="95"
+                :fill="row.color"
+              />
+              <vgg-label
+                :x="row.labelPost"
+                :y="7"
+                :text="row.label"
+                :font-size="fontSize"
+                :anchor-point="'center'"
+              />
+            </vgg-map>
+          </g><g v-else>
+            <vgg-map v-slot="{ row }">
+              <vgg-rectangle
+                :x1="row.start"
+                :x2="row.end"
+                :y1="0"
+                :y2="75"
+                :fill="row.color"
+              />
+              <vgg-label
+                :x="row.labelPost"
+                :y="85"
+                :text="row.label"
+                :font-size="fontSize"
+                :anchor-point="'center'"
+              />
+            </vgg-map>
+          </g>
         </vgg-data>
 
       </vgg-section>
@@ -140,17 +176,15 @@ export default {
     colorScale () {
       let color = this.color
 
-      if (color.constructor === String) {
-        return () => {return color}
-      } else if (color.constructor === Array) {
+      if (color.constructor === Array) {
         return (index) => {return color[index]}
       } else {
         let scaleOptions = {
           aestheticType: 'color',
           domain: this._parsedScalingOptions[0],
           domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
-          scaleArgs: [[0, this.numTicks]],
-          type: this.color.type
+          scaleArgs: [[0, this.tickCount]],
+          type: this.color.scale
         }
 
         let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
@@ -159,15 +193,15 @@ export default {
     },
 
     // offset () {
-    //   return 100 / (this.numTicks - 1)
+    //   return 100 / (this.tickCount - 1)
     // },
 
     segmentHeight () {
-      return 100 / this.numTicks
+      return 100 / this.tickCount
     },
 
     colors () {
-      let ticks = this.numTicks
+      let ticks = this.tickCount
       let colors = []
       for (let i = 0; i < ticks - 1; i++) {
         let color = this.colorScale(i)
@@ -187,9 +221,9 @@ export default {
 
     boxes () {
       let boxes = []
-      let ticks = this.numTicks
+      let ticks = this.tickCount
       let l = this.legendLabels, start = 0, end = 0, labelPost
-      console.log(this.flip)
+
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
           if (i === 0) {
@@ -209,15 +243,13 @@ export default {
           boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
        }
       }
+      console.log(this.flipNumbers)
       console.log(boxes)
       return boxes
     }
   },
 
   methods: {
-    setHeight () {
-      this.height = this.gradientHeight
-    }
   }
 
 }

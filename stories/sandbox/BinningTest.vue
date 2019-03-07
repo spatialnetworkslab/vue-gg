@@ -86,18 +86,32 @@
           :numTicks="20"
           :position="right"
         /> -->
-        <!-- fix horizontal orientation  -->
-        <vgg-discrete-legend
+        <!-- fix manual positioning x, y -->
+
+        <!-- <vgg-discrete-legend
           name="Bins"
           :scale="{ domain: 'bins', domainMin: 0 }"
           :labels="'bins'"
-          position="tl"
-          :orient="'vertical'"
-          :color="{type: 'blues'}"
+          :orient="'horizontal'"
+          position="top"
+          :color="{scale: 'blues'}"
           :fontSize="10"
-          :numTicks="10"
+          :tickCount="10"
           flip
+        /> -->
+
+        <vgg-gradient-legend
+          name="Bins"
+          :scale="{ domain: 'bins', domainMin: 0 }"
+          :labels="'bins'"
+          :orient="'vertical'"
+          position="top"
+          :color="{ scale: 'blues' }"
+          :fontSize="10"
+          :tickCount="10"
+
         />
+
       </vgg-data>
     </vgg-graphic>
 
