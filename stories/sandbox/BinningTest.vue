@@ -99,17 +99,17 @@
           :tickCount="10"
           flip
         /> -->
-
+        <!-- work on positioning, custom color scales-->
         <vgg-gradient-legend
           name="Bins"
           :scale="{ domain: 'bins', domainMin: 0 }"
           :labels="'bins'"
           :orient="'vertical'"
-          position="top"
           :color="{ scale: 'blues' }"
           :fontSize="10"
+          :titleFontSize="16"
           :tickCount="10"
-
+          position="tl"
         />
 
       </vgg-data>

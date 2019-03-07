@@ -6,6 +6,14 @@
       :y="legendTop"
       :radius="10"
     /> -->
+    <!-- Gradient definition -->
+    <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" :x2="composeGradient.endX" :y2="composeGradient.endY">
+      <stop offset="0%" :style="composeGradient.start" />
+      <stop offset="100%" :style="composeGradient.end" />
+    </linearGradient>
+    </defs>
+
     <!-- Vertical orientation -->
     <vgg-section
       v-if="orient==='vertical'"
@@ -31,18 +39,6 @@
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
-      <!-- <defs>
-    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
-      <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
-    </linearGradient>
-  </defs> -->
-        <defs>
-        <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
-          <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
-        </linearGradient>
-        </defs>
         <vgg-data :data="boxes">
           <g v-if="!flipNumbers">
             <vgg-rectangle
@@ -64,6 +60,13 @@
           </g>
           <g v-else>
             <vgg-map v-slot="{ row }">
+              <vgg-rectangle
+                :x1="25"
+                :x2="100"
+                :y1="0"
+                :y2="100"
+                :fill="'url(#grad1)'"
+              />
               <vgg-label
                 :x="10"
                 :y="row.labelPost"
@@ -104,14 +107,15 @@
       >
         <vgg-data :data="boxes">
           <g v-if="!flipNumbers">
+            <vgg-rectangle
+              :x1="0"
+              :x2="100"
+              :y1="20"
+              :y2="90"
+              :fill="'url(#grad1)'"
+            />
             <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-                :x1="row.start"
-                :x2="row.end"
-                :y1="20"
-                :y2="95"
-                :fill="row.color"
-              />
+
               <vgg-label
                 :x="row.labelPost"
                 :y="7"
@@ -121,17 +125,17 @@
               />
             </vgg-map>
           </g><g v-else>
+            <vgg-rectangle
+              :x1="0"
+              :x2="100"
+              :y1="20"
+              :y2="80"
+              :fill="'url(#grad1)'"
+            />
             <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-                :x1="row.start"
-                :x2="row.end"
-                :y1="0"
-                :y2="75"
-                :fill="row.color"
-              />
               <vgg-label
                 :x="row.labelPost"
-                :y="85"
+                :y="90"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -176,6 +180,10 @@ export default {
     }
   },
 
+  mounted () {
+    this.composeGradient
+  },
+
   computed: {
     colorScale () {
       let color = this.color
@@ -205,22 +213,44 @@ export default {
     },
 
     colors () {
-      let ticks = this.tickCount
+      let l = this.legendLabels
       let colors = []
-      for (let i = 0; i < ticks - 1; i++) {
-        let color = this.colorScale(i)
+      for (let i = 0; i < l.length - 1; i++) {
+        let color = this.colorScale(l[i])
         colors.push(color)
       }
 
       return colors
     },
 
-    rgbToHex (rgb) {
-      let hex = Number(rgb).toString(16);
-      if (hex.length < 2) {
-           hex = "0" + hex;
+    composeGradient() {
+      let specs = {}
+      if (this.orient === "vertical" ) {
+        specs.endX = "0%"
+        specs.endY = "100%"
+      } else {
+        specs.endX = "100%"
+        specs.endY = "0%"
       }
-      return hex
+
+      if (!this.flip) {
+        if (this.orient === "vertical") {
+          specs.start = "stop-color:" + this.colors[this.colors.length - 1]+ ";stop-opacity:1"
+          specs.end = "stop-color:" + this.colors[0] + ";stop-opacity:1"
+        } else {
+          specs.start = "stop-color:" + this.colors[0]+ ";stop-opacity:1"
+          specs.end = "stop-color:" + this.colors[this.colors.length - 1] + ";stop-opacity:1"
+        }
+      } else {
+        if (this.orient === "vertical") {
+          specs.start = "stop-color:" + this.colors[0] + ";stop-opacity:1"
+          specs.end = "stop-color:" + this.colors[this.colors.length - 1] + ";stop-opacity:1"
+        } else {
+          specs.start = "stop-color:" + this.colors[this.colors.length - 1] + ";stop-opacity:1"
+          specs.end = "stop-color:" + this.colors[0] + ";stop-opacity:1"
+        }
+      }
+      return specs
     },
 
     boxes () {
@@ -237,17 +267,16 @@ export default {
             end += this.segmentHeight
           }
           labelPost = (start + end)/2
-          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          boxes.push({start: start, end: end, labelPost: labelPost, label: l[i]})
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
           start = end
           end += this.segmentHeight
           labelPost = (start + end)/2
-          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          boxes.push({start: start, end: end, labelPost: labelPost, label: l[i]})
        }
       }
-      console.log(boxes)
       return boxes
     }
   },
