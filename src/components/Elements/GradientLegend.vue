@@ -1,16 +1,15 @@
 <!-- fix positioning x and y -->
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
-    <!-- <vgg-point
-      :x="legendLeft"
-      :y="legendTop"
-      :radius="10"
-    /> -->
+
     <!-- Gradient definition -->
     <defs>
     <linearGradient id="grad1" x1="0%" y1="0%" :x2="composeGradient.endX" :y2="composeGradient.endY">
-      <stop offset="0%" :style="composeGradient.start" />
-      <stop offset="100%" :style="composeGradient.end" />
+      <stop
+        v-for="(c, i) in colors"
+        :key="i"
+        :offset="`${i * offset + '%'}`"
+        :style="`stop-color:${c}`" />
     </linearGradient>
     </defs>
 
@@ -51,7 +50,7 @@
             <vgg-map v-slot="{ row }">
               <vgg-label
                 :x="90"
-                :y="row.labelPost"
+                :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -69,7 +68,7 @@
               />
               <vgg-label
                 :x="10"
-                :y="row.labelPost"
+                :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -110,14 +109,14 @@
             <vgg-rectangle
               :x1="0"
               :x2="100"
-              :y1="20"
-              :y2="90"
+              :y1="25"
+              :y2="95"
               :fill="'url(#grad1)'"
             />
             <vgg-map v-slot="{ row }">
 
               <vgg-label
-                :x="row.labelPost"
+                :x="row.location"
                 :y="7"
                 :text="row.label"
                 :font-size="fontSize"
@@ -128,14 +127,14 @@
             <vgg-rectangle
               :x1="0"
               :x2="100"
-              :y1="20"
-              :y2="80"
+              :y1="0"
+              :y2="70"
               :fill="'url(#grad1)'"
             />
             <vgg-map v-slot="{ row }">
               <vgg-label
-                :x="row.labelPost"
-                :y="90"
+                :x="row.location"
+                :y="80"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -196,7 +195,7 @@ export default {
           domain: this._parsedScalingOptions[0],
           domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
           scaleArgs: [[0, this.tickCount]],
-          type: this.color.scale
+          type: this.color.type
         }
 
         let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
@@ -204,9 +203,9 @@ export default {
       }
     },
 
-    // offset () {
-    //   return 100 / (this.tickCount - 1)
-    // },
+    offset () {
+      return 100 / (this.tickCount - 1)
+    },
 
     segmentHeight () {
       return 100 / this.tickCount
@@ -215,11 +214,19 @@ export default {
     colors () {
       let l = this.legendLabels
       let colors = []
-      for (let i = 0; i < l.length - 1; i++) {
-        let color = this.colorScale(l[i])
-        colors.push(color)
+      if (!this.flip) {
+        if (this.orient === "vertical"){
+          for (let i = l.length - 1; i >=0; i--) {
+            let color = this.colorScale(l[i])
+            colors.push(color)
+          }
+        } else {
+          for (let i = 0; i < l.length; i++) {
+            let color = this.colorScale(l[i])
+            colors.push(color)
+          }
+        }
       }
-
       return colors
     },
 
@@ -232,49 +239,21 @@ export default {
         specs.endX = "100%"
         specs.endY = "0%"
       }
-
-      if (!this.flip) {
-        if (this.orient === "vertical") {
-          specs.start = "stop-color:" + this.colors[this.colors.length - 1]+ ";stop-opacity:1"
-          specs.end = "stop-color:" + this.colors[0] + ";stop-opacity:1"
-        } else {
-          specs.start = "stop-color:" + this.colors[0]+ ";stop-opacity:1"
-          specs.end = "stop-color:" + this.colors[this.colors.length - 1] + ";stop-opacity:1"
-        }
-      } else {
-        if (this.orient === "vertical") {
-          specs.start = "stop-color:" + this.colors[0] + ";stop-opacity:1"
-          specs.end = "stop-color:" + this.colors[this.colors.length - 1] + ";stop-opacity:1"
-        } else {
-          specs.start = "stop-color:" + this.colors[this.colors.length - 1] + ";stop-opacity:1"
-          specs.end = "stop-color:" + this.colors[0] + ";stop-opacity:1"
-        }
-      }
       return specs
     },
 
     boxes () {
       let boxes = []
       let ticks = this.tickCount
-      let l = this.legendLabels, start = 0, end = 0, labelPost
+      let l = this.legendLabels, location
 
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
-          if (i === 0) {
-            end += this.segmentHeight
-          } else {
-            start = end
-            end += this.segmentHeight
-          }
-          labelPost = (start + end)/2
-          boxes.push({start: start, end: end, labelPost: labelPost, label: l[i]})
+          boxes.push({ location: this.segmentHeight * i, label: l[i]})
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
-          start = end
-          end += this.segmentHeight
-          labelPost = (start + end)/2
-          boxes.push({start: start, end: end, labelPost: labelPost, label: l[i]})
+          boxes.push({ location: this.segmentHeight * i, label: l[i]})
        }
       }
       return boxes

@@ -11,8 +11,8 @@
     <br>
 
     <vgg-graphic
-      :width="600"
-      :height="600"
+      :width="650"
+      :height="650"
       :data="data"
     >
       <vgg-plot-title :text="title" />
@@ -77,17 +77,6 @@
           :scale="{ domain: 'binCount', domainMin: 0 }"
         />
 
-        <!-- <vgg-gradient-legend
-          :x1="10"
-          :x2="90"
-          :y1="200"
-          :y2="490"
-          labels="upperBound"
-          :numTicks="20"
-          :position="right"
-        /> -->
-        <!-- fix manual positioning x, y -->
-
         <!-- <vgg-discrete-legend
           name="Bins"
           :scale="{ domain: 'bins', domainMin: 0 }"
@@ -99,17 +88,17 @@
           :tickCount="10"
           flip
         /> -->
-        <!-- work on positioning, custom color scales-->
+        <!-- work on edge labels, custom color scales -->
         <vgg-gradient-legend
-          name="Bins"
           :scale="{ domain: 'bins', domainMin: 0 }"
           :labels="'bins'"
           :orient="'vertical'"
-          :color="{ scale: 'blues' }"
+          :color="{type: 'blues'}"
           :fontSize="10"
           :titleFontSize="16"
+          :x="10"
+          :y="100"
           :tickCount="10"
-          position="tl"
         />
 
       </vgg-data>

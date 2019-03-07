@@ -1,11 +1,5 @@
-<!-- fix positioning x and y -->
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
-    <!-- <vgg-point
-      :x="legendLeft"
-      :y="legendTop"
-      :radius="10"
-    /> -->
     <!-- Vertical orientation -->
     <vgg-section
       v-if="orient==='vertical'"
@@ -31,7 +25,6 @@
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
-
         <vgg-data :data="boxes">
           <g v-if="!flipNumbers">
             <vgg-map v-slot="{ row }">
@@ -104,7 +97,7 @@
               <vgg-rectangle
                 :x1="row.start"
                 :x2="row.end"
-                :y1="20"
+                :y1="25"
                 :y2="95"
                 :fill="row.color"
               />
@@ -184,7 +177,7 @@ export default {
           domain: this._parsedScalingOptions[0],
           domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
           scaleArgs: [[0, this.tickCount]],
-          type: this.color.scale
+          type: this.color.type
         }
 
         let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)

@@ -4,8 +4,9 @@ import quantitative from './quantitative.js'
 import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
+  console.log("@@@", domain, scalingOptions)
   if (variableType === 'quantitative') {
-    
+    console.log(prop, variableType, scale, quantitative)
     let scale = scalingOptions.type || 'blues'
     checkValidScale(prop, variableType, scale, quantitative)
 

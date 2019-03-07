@@ -147,7 +147,7 @@ export default {
         } else if (p === 'left' || p === "tl" || p === "bl" || p === "top" || p === "bottom" || p === "cl") {
           return 0
         } else {
-          return this.plotWidth/100
+          return 0
         }
       } else {
         return this.x
@@ -161,15 +161,15 @@ export default {
           if (this.orient === "vertical"){
             return this.height - this.plotHeight * 0.95
           } else {
-                      return this.width - this.plotHeight + this.plotMargin
+            return this.width - this.plotHeight + this.plotMargin
           }
         } else if (p === 'bottom' || p === "bl" || p === "br") {
-          return this.plotHeight * 0.01
+          return 0
         } else {
-          return -this.plotHeight * 0.45
+          return -this.plotHeight * 0.5
         }
       } else {
-        return this.y
+        return this.y * -1
       }
     },
 
@@ -198,6 +198,7 @@ export default {
       return Math.floor(value/n) * n
     },
 
+    // expand this for categorical, time data too
     getNumericLabels (dataDomain, variableType) {
       if (variableType === 'count') { dataDomain[0] = 0 }
 
