@@ -83,7 +83,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, listeners) {
-      this.$$interactionManager.addElement(this._uid, 'rectangle', coordinates, this, listeners)
+      this.$interactionManager.addItem(this._uid, 'rectangle', coordinates, this, listeners)
     }
   }
 }

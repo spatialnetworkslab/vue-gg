@@ -29,9 +29,10 @@ export default {
   },
 
   beforeDestroy () {
-    let uid = this._uid
-    if (this.$$interactionManager.cacheHasElement(uid)) {
-      this.$$interactionManager.unIndexElement(uid)
+    let listeners = this.getListeners()
+    if (listeners.length > 0) {
+      let uid = this._uid
+      this.$$interactionManager.removeElement(uid, listeners)
     }
   },
 

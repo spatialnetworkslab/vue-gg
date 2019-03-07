@@ -252,7 +252,7 @@ export default {
     },
 
     addToSpatialIndex (points, listeners) {
-      this.$$interactionManager.addElement(this._uid, 'trail', points, this, listeners)
+      this.$interactionManager.addItem(this._uid, 'trail', points, this, listeners)
     }
   }
 }
