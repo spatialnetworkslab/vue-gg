@@ -73,6 +73,22 @@ export default class CoordinateTree {
 
     return transformation.bind(this)
   }
+
+  getInverseTransformation (id) {
+    let transformation = function ([x, y]) {
+      let branchPath = this._branchPaths[id]
+      let result = [x, y]
+
+      for (let branchID of branchPath) {
+        let branch = this.getBranch(branchID)
+        result = branch.inverseTransform(result)
+      }
+
+      return result
+    }
+
+    return transformation.bind(this)
+  }
 }
 
 class Branch {

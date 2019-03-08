@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce'
 import ItemCache from './utils/ItemCache/ItemCache.js'
 import cacheItem from './utils/ItemCache/cacheFuncs/cacheItem.js'
 import collisionTest from './utils/collisionTest.js'
+import getCoords from './utils/getCoords.js'
 
 export default {
   data () {
@@ -178,12 +179,4 @@ export default {
     let $$interactionManager = this
     return { $$interactionManager }
   }
-}
-
-// https://stackoverflow.com/a/42711775/10573487
-function getCoords (svg, svgPoint, { clientX, clientY }) {
-  svgPoint.x = clientX
-  svgPoint.y = clientY
-
-  return svgPoint.matrixTransform(svg.getScreenCTM().inverse())
 }

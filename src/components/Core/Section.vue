@@ -4,6 +4,7 @@ import DataProvider from '../../mixins/Data/DataProvider.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
+import Brushable from '../../mixins/Interactions/Brushable.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 import randomID from '../../utils/id.js'
@@ -17,7 +18,7 @@ import XGrid from '../Guides/XGrid.vue'
 import YGrid from '../Guides/YGrid.vue'
 
 export default {
-  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular],
+  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular, Brushable],
 
   props: {
     type: {
@@ -389,7 +390,9 @@ export default {
           slotContent.push(...gridLines)
         }
 
-        return createElement('g', { class: 'section' }, slotContent)
+        let on = this.generateEventListeners()
+
+        return createElement('g', { class: 'section', on }, slotContent)
       }
 
       if (this.axes) {

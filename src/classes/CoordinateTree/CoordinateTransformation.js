@@ -89,6 +89,10 @@ export default class CoordinateTransformation {
       this.transform = ([x, y]) => {
         return [this.getX(x), this.getY(y)]
       }
+
+      this.inverseTransform = ([x, y]) => {
+        return [this.invertX(x), this.invertY(y)]
+      }
     }
 
     if (options.type === 'polar') {
@@ -109,6 +113,8 @@ export default class CoordinateTransformation {
 
         return [toRangeX(cartesian[0]), toRangeY(cartesian[1])]
       }
+
+      // this.inverseTransform // TODO
     }
   }
 
@@ -122,6 +128,9 @@ export default class CoordinateTransformation {
 
     this.domains = { x: domainX, y: domainY }
     this.domainTypes = { x: 'quantitative', y: 'quantitative' }
+
+    this.type = 'scale' // Polar is not supported in combination with geo scales
+
     this.ranges = ranges
 
     let { scaleX, scaleY, center } = createGeoScale(options)
@@ -137,6 +146,10 @@ export default class CoordinateTransformation {
 
     this.transform = ([x, y]) => {
       return [this.getX(x), this.getY(y)]
+    }
+
+    this.inverseTransform = ([x, y]) => {
+      return [this.invertX(x), this.invertY(y)]
     }
   }
 }
