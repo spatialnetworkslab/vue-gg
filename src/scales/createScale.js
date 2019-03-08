@@ -26,7 +26,7 @@ export default function (prop, context, passedScalingOptions) {
 
     return createCoordsScale(prop, domainType, domain, range, scalingOptions)
   }
-  console.log(prop, domainType, domain, scalingOptions)
+
   // Other aesthetic props
   if (['stroke', 'fill', 'color'].includes(prop)) {
     return createColorScale(prop, domainType, domain, scalingOptions)

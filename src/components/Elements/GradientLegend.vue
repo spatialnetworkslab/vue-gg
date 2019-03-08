@@ -153,7 +153,6 @@
 <script>
 import BaseLegend from '@/mixins/Guides/BaseLegend.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import createScale from '@/scales/createScale.js'
 
 export default {
   name: 'DiscreteLegend',
@@ -161,22 +160,7 @@ export default {
   mixins: [BaseLegend, Rectangular],
 
   props: {
-    color: {
-      type: [String, Object, Array],
-      default: '#8FD8D8',
-    },
-    labelPadding: {
-      type: Number,
-      default: 5
-    },
-    x: {
-      type: [Number, Object, Array],
-      default: 0,
-    },
-    y: {
-      type: [Number, Object, Array],
-      default: 0,
-    }
+    
   },
 
   mounted () {
@@ -184,25 +168,6 @@ export default {
   },
 
   computed: {
-    colorScale () {
-      let color = this.color
-
-      if (color.constructor === Array) {
-        return (index) => {return color[index]}
-      } else {
-        let scaleOptions = {
-          aestheticType: 'color',
-          domain: this._parsedScalingOptions[0],
-          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
-          scaleArgs: [[0, this.tickCount]],
-          type: this.color.type
-        }
-
-        let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
-        return scalingFunction
-      }
-    },
-
     offset () {
       return 100 / (this.tickCount - 1)
     },
@@ -226,6 +191,19 @@ export default {
             colors.push(color)
           }
         }
+      } else {
+        if (this.orient === "vertical"){
+          for (let i = 0; i < l.length; i++) {
+            let color = this.colorScale(l[i])
+            colors.push(color)
+          }
+
+        } else {
+          for (let i = l.length - 1; i >=0; i--) {
+            let color = this.colorScale(l[i])
+            colors.push(color)
+          }
+        }
       }
       return colors
     },
@@ -245,17 +223,28 @@ export default {
     boxes () {
       let boxes = []
       let ticks = this.tickCount
-      let l = this.legendLabels, location
+      let l = this.legendLabels, start = 0, end = 0, location
 
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
-          boxes.push({ location: this.segmentHeight * i, label: l[i]})
+          if (i === 0) {
+            end += this.segmentHeight
+          } else {
+            start = end
+            end += this.segmentHeight
+          }
+          location = (start + end)/2
+          boxes.push({location: location, label: l[i]})
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
-          boxes.push({ location: this.segmentHeight * i, label: l[i]})
+          start = end
+          end += this.segmentHeight
+          location = (start + end)/2
+          boxes.push({location: location, label: l[i]})
        }
       }
+
       return boxes
     }
   },

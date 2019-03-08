@@ -5,7 +5,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
   let domain
   let domainType
   let scaleOptions
-  console.log(passedScaleOptions, dataInterface, scaleManager)
+  //console.log(passedScaleOptions, dataInterface, scaleManager)
   // Check if no invalid options were passed
   if (![Array, String, Object].includes(passedScaleOptions.constructor)) {
     throw new Error('Invalid scale options: only Array, String or Object allowed')

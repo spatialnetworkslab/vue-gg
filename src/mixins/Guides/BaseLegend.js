@@ -6,7 +6,7 @@ import Rectangular from '../Marks/Rectangular.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
-
+import createScale from '@/scales/createScale.js'
 import defaultFormat from './defaultFormat.js'
 
 export default {
@@ -88,6 +88,23 @@ export default {
       default: 16
     },
 
+    color: {
+      type: [String, Object, Array],
+      default: '#8FD8D8',
+    },
+    labelPadding: {
+      type: Number,
+      default: 5
+    },
+    x: {
+      type: [Number, Object, Array],
+      default: undefined,
+    },
+    y: {
+      type: [Number, Object, Array],
+      default: undefined,
+    }
+
     //direction: {},
     //fill: {},
     //offset: {},
@@ -144,8 +161,6 @@ export default {
           } else {
             return this.plotWidth - this.height
           }
-        } else if (p === 'left' || p === "tl" || p === "bl" || p === "top" || p === "bottom" || p === "cl") {
-          return 0
         } else {
           return 0
         }
@@ -166,9 +181,12 @@ export default {
         } else if (p === 'bottom' || p === "bl" || p === "br") {
           return 0
         } else {
-          return -this.plotHeight * 0.5
+          return -this.plotHeight * 0.4
         }
       } else {
+        if (this.position && this.position != 'left'){
+          console.warn("Ignoring position value ``" + this.position + "` because of `x` and `y` inputs")
+        }
         return this.y * -1
       }
     },
@@ -188,7 +206,42 @@ export default {
           }
         }
       }
+    },
+
+    colorScale () {
+      let color = this.color
+
+      if (color.constructor === Array) {
+        return (index) => {return color[index]}
+      } else {
+        let scaleOptions = {
+          aestheticType: 'color',
+          domain: this._parsedScalingOptions[0],
+          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
+          scaleArgs: [[0, this.tickCount]],
+          type: this.color.type
+        }
+
+        let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
+        return scalingFunction
+      }
+    },
+
+    segmentHeight () {
+      return 100 / this.tickCount
+    },
+
+    colors () {
+      let ticks = this.tickCount
+      let colors = []
+      for (let i = 0; i < ticks - 1; i++) {
+        let color = this.colorScale(i)
+        colors.push(color)
+      }
+
+      return colors
     }
+
   },
 
   beforeDestroy () {},

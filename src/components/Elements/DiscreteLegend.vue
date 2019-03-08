@@ -37,7 +37,7 @@
               />
               <vgg-label
                 :x="90"
-                :y="row.labelPost"
+                :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -55,7 +55,7 @@
               />
               <vgg-label
                 :x="10"
-                :y="row.labelPost"
+                :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -102,7 +102,7 @@
                 :fill="row.color"
               />
               <vgg-label
-                :x="row.labelPost"
+                :x="row.location"
                 :y="7"
                 :text="row.label"
                 :font-size="fontSize"
@@ -119,7 +119,7 @@
                 :fill="row.color"
               />
               <vgg-label
-                :x="row.labelPost"
+                :x="row.location"
                 :y="85"
                 :text="row.label"
                 :font-size="fontSize"
@@ -147,75 +147,30 @@ export default {
   mixins: [BaseLegend, Rectangular],
 
   props: {
-    color: {
-      type: [String, Object, Array],
-      default: '#8FD8D8',
-    },
-    labelPadding: {
-      type: Number,
-      default: 5
-    },
-    x: {
-      type: [Number, Object, Array],
-      default: 0,
-    },
-    y: {
-      type: [Number, Object, Array],
-      default: 0,
-    }
+
   },
 
   computed: {
-    colorScale () {
-      let color = this.color
+    specs () {
+      if (this.orient === 'vertical') {
+        if (this.flipNumbers) {
 
-      if (color.constructor === Array) {
-        return (index) => {return color[index]}
-      } else {
-        let scaleOptions = {
-          aestheticType: 'color',
-          domain: this._parsedScalingOptions[0],
-          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
-          scaleArgs: [[0, this.tickCount]],
-          type: this.color.type
+        } else {
+
         }
+      } else {
+        if (this.flipNumbers) {
 
-        let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
-        return scalingFunction
+        } else {
+
+        }
       }
     },
-
-    // offset () {
-    //   return 100 / (this.tickCount - 1)
-    // },
-
-    segmentHeight () {
-      return 100 / this.tickCount
-    },
-
-    colors () {
-      let ticks = this.tickCount
-      let colors = []
-      for (let i = 0; i < ticks - 1; i++) {
-        let color = this.colorScale(i)
-        colors.push(color)
-      }
-
-      return colors
-    },
-
-    rgbToHex (rgb) {
-      let hex = Number(rgb).toString(16);
-      if (hex.length < 2) {
-           hex = "0" + hex;
-      }
-      return hex
-    },
-
+    
     boxes () {
       let boxes = []
       let ticks = this.tickCount
-      let l = this.legendLabels, start = 0, end = 0, labelPost
+      let l = this.legendLabels, start = 0, end = 0, location
 
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
@@ -225,19 +180,18 @@ export default {
             start = end
             end += this.segmentHeight
           }
-          labelPost = (start + end)/2
-          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          location = (start + end)/2
+          boxes.push({color: this.colorScale(l[i]), start: start, end: end, location: location, label: l[i]})
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
           start = end
           end += this.segmentHeight
-          labelPost = (start + end)/2
-          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          location = (start + end)/2
+          boxes.push({color: this.colorScale(l[i]), start: start, end: end, location: location, label: l[i]})
        }
       }
-      console.log(this.flipNumbers)
-      console.log(boxes)
+
       return boxes
     }
   },

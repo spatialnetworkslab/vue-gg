@@ -89,15 +89,13 @@
           flip
         /> -->
         <!-- work on edge labels, custom color scales -->
-        <vgg-gradient-legend
+        <vgg-discrete-legend
           :scale="{ domain: 'bins', domainMin: 0 }"
           :labels="'bins'"
           :orient="'vertical'"
           :color="{type: 'blues'}"
           :fontSize="10"
           :titleFontSize="16"
-          :x="10"
-          :y="100"
           :tickCount="10"
         />
 
