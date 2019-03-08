@@ -1,4 +1,6 @@
 import rbush from 'rbush'
+import debounce from 'lodash.debounce'
+
 import ItemCache from './utils/ItemCache/ItemCache.js'
 import cacheItem from './utils/ItemCache/cacheFuncs/cacheItem.js'
 import collisionTest from './utils/collisionTest.js'
@@ -19,7 +21,7 @@ export default {
             bush: rbush(),
             active: false,
             trackedItems: 0,
-            handler (e) { this._handleMouseMoveListener(e) },
+            handler (e) { debounce(this._handleMouseMoveListener, 25)(e) },
             hovering: {}
           }
         },
@@ -124,7 +126,7 @@ export default {
 
       let newHits = {}
 
-      // First we check if we have new hits (mouseover)
+      // First we check if we have new hits (hover, mouseover)
       for (let hit of hits) {
         let uid = hit.uid
         newHits[uid] = true
@@ -152,12 +154,15 @@ export default {
           let instance = cache.getItem(uid).instance
 
           for (let event of events) {
-            if (event === 'hover') {
-              instance.$emit('hover', null)
-            }
             if (event === 'mouseout') {
               instance.$emit('mouseout', e)
             }
+          }
+
+          // If this is the last one, and it is just about to be deleted:
+          // emit 'null'
+          if (Object.keys(spatialIndex.hovering).length === 1) {
+            instance.$emit('hover', null)
           }
 
           delete spatialIndex.hovering[uid]

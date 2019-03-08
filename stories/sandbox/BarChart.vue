@@ -22,13 +22,15 @@
         text="Subsection"
       />
 
-      <vgg-map v-slot="{ row }">
+      <vgg-map v-slot="{ row, i }">
 
         <vgg-rectangle
           :x="{ val: row.fruit, scale: 'fruit' }"
           :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
+          :fill="hoverI === i ? 'green' : 'black'"
+          @hover="handleHover($event, i)"
         />
 
         <vgg-line
@@ -91,7 +93,14 @@ export default {
 
   data () {
     return {
-      bars: bars('fruit', 'quantity')
+      bars: bars('fruit', 'quantity'),
+      hoverI: null
+    }
+  },
+
+  methods: {
+    handleHover (e, i) {
+      this.hoverI = e ? i : null
     }
   }
 }
