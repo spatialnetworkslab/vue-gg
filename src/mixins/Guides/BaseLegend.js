@@ -44,7 +44,7 @@ export default {
 
     labels: {
       type: [Object, Array, String],
-      required: true,
+      default: undefined
     },
 
     orient: {
@@ -65,7 +65,7 @@ export default {
 
     width: {
       type: Number,
-      default: 60
+      default: 50
     },
 
     height:{
@@ -95,7 +95,7 @@ export default {
 
     labelPadding: {
       type: Number,
-      default: 5
+      default: 10
     },
 
     x: {
@@ -200,6 +200,7 @@ export default {
         if (labels.constructor === Array) {
           return labels
         } else {
+          console.warn('Ignoring labels value ' + labels + ' as it is a string input. Using domain ' + this._domain + ' given in scale input')
           let variableType = this._domainType
           let variableData = this._domain
           if (variableType === 'nominal') {
@@ -245,6 +246,10 @@ export default {
       return colors
     }
 
+  },
+
+  mounted () {
+    this.legendLabels
   },
 
   beforeDestroy () {},

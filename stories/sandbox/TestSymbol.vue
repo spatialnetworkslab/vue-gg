@@ -59,16 +59,21 @@
         :scale="'dependent'"
       />
       <vgg-symbol-legend
-        title="Explanatory"
         :scale="{ domain: 'explanatory'}"
-        :labels="'bins'"
-        :color="{type: 'viridis'}"
+        :labels="'explanatory'"
         :fontSize="10"
         :titleFontSize="16"
-        :tickCount="15"
-        :height="300"
+        :tickCount="6"
+
+        shape="triangle-left"
+        :color="{type: 'viridis'}"
+        :size="15"
+        :stroke-width="3"
+        :height="200"
+
+        orient="vertical"
         :x="50"
-        :y="y2*0.5"
+        :y="y2*0.01"
       />
     </vgg-graphic>
 

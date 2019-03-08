@@ -74,7 +74,7 @@
 
       <vgg-discrete-legend
         :scale="{ domain: 'explanatory' }"
-        :labels="'bins'"
+        :labels="'explanatory'"
         :color="{ type: 'viridis'}"
         :fontSize="10"
         :titleFontSize="16"

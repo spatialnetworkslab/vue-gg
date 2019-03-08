@@ -36,7 +36,7 @@
                 :fill="row.color"
               />
               <vgg-label
-                :x="95"
+                :x="80 + labelPadding"
                 :y="row.labelPost"
                 :text="row.label"
                 :font-size="fontSize"
@@ -54,7 +54,7 @@
                 :fill="row.color"
               />
               <vgg-label
-                :x="5"
+                :x="labelPadding"
                 :y="row.labelPost"
                 :text="row.label"
                 :font-size="fontSize"
@@ -103,7 +103,7 @@
               />
               <vgg-label
                 :x="row.labelPost"
-                :y="7"
+                :y="labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -120,7 +120,7 @@
               />
               <vgg-label
                 :x="row.labelPost"
-                :y="85"
+                :y="75 + labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"

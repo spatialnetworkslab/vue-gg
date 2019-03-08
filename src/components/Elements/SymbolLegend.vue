@@ -28,6 +28,15 @@
         <vgg-data :data="symbols">
           <g v-if="!flipNumbers">
             <vgg-map v-slot="{ row }">
+              <vgg-symbol
+                :x="0"
+                :y="row.labelPost"
+                :stroke="row.color"
+                :stroke-width="strokeWidth"
+                :size="size"
+                :shape="shape"
+                fill="none"
+              />
               <vgg-label
                 :x="95"
                 :y="row.labelPost"
@@ -39,7 +48,15 @@
           </g>
           <g v-else>
             <vgg-map v-slot="{ row }">
-
+              <vgg-symbol
+                :x="100"
+                :y="row.labelPost"
+                :stroke="row.color"
+                :stroke-width="strokeWidth"
+                :size="size"
+                :shape="shape"
+                fill="none"
+              />
               <vgg-label
                 :x="5"
                 :y="row.labelPost"
@@ -81,10 +98,18 @@
         <vgg-data :data="symbols">
           <g v-if="!flipNumbers">
             <vgg-map v-slot="{ row }">
-
+              <vgg-symbol
+                :x="row.labelPost"
+                :y="labelPadding"
+                :stroke="row.color"
+                :stroke-width="strokeWidth"
+                :size="size"
+                :shape="shape"
+                fill="none"
+              />
               <vgg-label
                 :x="row.labelPost"
-                :y="7"
+                :y="50 + labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -92,10 +117,18 @@
             </vgg-map>
           </g><g v-else>
             <vgg-map v-slot="{ row }">
-              
+              <vgg-symbol
+                :x="row.labelPost"
+                :y="60"
+                :stroke="row.color"
+                :stroke-width="strokeWidth"
+                :size="size"
+                :shape="shape"
+                fill="none"
+              />
               <vgg-label
                 :x="row.labelPost"
-                :y="85"
+                :y="labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -103,9 +136,7 @@
             </vgg-map>
           </g>
         </vgg-data>
-
       </vgg-section>
-
     </vgg-section>
 
   </g>
@@ -117,22 +148,19 @@ import Rectangular from '../../mixins/Marks/Rectangular.js'
 import createScale from '@/scales/createScale.js'
 
 export default {
-  name: 'DiscreteLegend',
+  name: 'SymbolLegend',
 
   mixins: [BaseLegend, Rectangular],
 
   props: {
-    symbolWidth: {
-      type: [Number, Object, Array],
-      default: 20,
+    shape: {
+      type: String,
+      default: 'circle',
+      validator: function (value) {
+        return ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-left', 'triangle-right' ,'triangle-down' ,'star'].indexOf(value) !== -1
+      },
     },
 
-    symbolHeight: {
-      type: [Number, Object, Array],
-      default: 20,
-    },
-
-    // TODO
     symbolOpacity: {
       type: [Number, Object, Array],
       default: 20,
@@ -143,10 +171,14 @@ export default {
       default: '#8FD8D8',
     },
 
-    colorScale: {
-      type: [String, Array],
-      default: undefined
+    size: {
+      type: Number,
+      default: 10,
     },
+    // colorScale: {
+    //   type: [String, Array],
+    //   default: undefined
+    // },
 
     symbolShape: {
       type: [String, Array],
@@ -161,7 +193,37 @@ export default {
     labelPadding: {
       type: Number,
       default: 10
-    }
+    },
+
+    strokeColor: {
+      type: String,
+      default: '#8FD8D8',
+    },
+
+    strokeWidth: {
+      type: [Number, Object, Array],
+      default: 20,
+    },
+
+    strokeOpacity: {
+      type: [Number, Object, Array],
+      default: 1,
+    },
+
+    fill: {
+      type: String,
+      default: '#8FD8D8',
+    },
+
+    fillOpacity: {
+      type: [Number, Object, Array],
+      default: 1,
+    },
+
+    opacity: {
+      type: [Number, Object, Array],
+      default: 1,
+    },
   },
 
   computed: {
@@ -239,7 +301,6 @@ export default {
       let symbols = []
       let ticks = this.tickCount
       let l = this.legendLabels, start = 0, end = 0, labelPost
-
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
           if (i === 0) {

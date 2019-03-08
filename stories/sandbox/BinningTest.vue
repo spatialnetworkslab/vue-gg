@@ -78,7 +78,7 @@
         />
 
         <!-- work on edge labels, custom color scales -->
-        <vgg-discrete-legend
+        <vgg-gradient-legend
           :scale="{ domain: 'bins', domainMin: 0 }"
           :labels="'bins'"
           :color="{type: 'blues'}"

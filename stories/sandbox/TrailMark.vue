@@ -65,6 +65,24 @@
       :scale="'yValues'"
       flip
     />
+
+    <vgg-symbol-legend
+      :scale="{ domain: 'rainfall'}"
+      :labels="'rainfall'"
+      :fontSize="10"
+      :titleFontSize="16"
+      :tickCount="6"
+
+      shape="triangle-left"
+      :color="colors"
+      :size="15"
+      :stroke-width="3"
+      :height="200"
+
+      orient="vertical"
+      :x="50"
+      :y="y2*0.01"
+    />
   </vgg-graphic>
 </template>
 
