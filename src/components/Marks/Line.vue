@@ -73,6 +73,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
+    }
+  },
+
   methods: {
     createPath (func, coords) {
       let transformedPoints
@@ -100,7 +107,7 @@ export default {
         }
       }
 
-      let events = this.getEvents()
+      let events = this.events
       if (events.length > 0) {
         this.addToSpatialIndex(transformedPoints, events)
       }
@@ -125,7 +132,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, events) {
-      this.$interactionManager.addItem(this._uid, 'line', coordinates, this, events)
+      this.$$interactionManager.addItem(this.uuid, 'line', coordinates, this, events)
     }
   }
 }

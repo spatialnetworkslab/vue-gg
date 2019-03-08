@@ -22,6 +22,7 @@
             :y="{ val: row.dependent, scale: 'dependent' }"
             :radius="{ val: row.dependent, scale: { domain: 'dependent' } }"
             :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
+            @click="log(row)"
           />
 
         </vgg-map>
@@ -96,8 +97,8 @@ export default {
       this.xy = newData
     },
 
-    log (row) {
-      console.log(row)
+    log (x) {
+      console.log(x)
     }
   }
 }

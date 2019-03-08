@@ -36,6 +36,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
+    }
+  },
+
   methods: {
     // This function generates the x-y coordinates + corresponding aesthetics
     // that need to be sorted alongside one another
@@ -192,7 +199,7 @@ export default {
       segments.push(segments[0])
       segments.push(segments[1])
 
-      let events = this.getEvents()
+      let events = this.events
       if (events.length > 0) {
         this.addToSpatialIndex(segments, events)
       }
@@ -252,7 +259,7 @@ export default {
     },
 
     addToSpatialIndex (points, events) {
-      this.$interactionManager.addItem(this._uid, 'trail', points, this, events)
+      this.$$interactionManager.addItem(this.uuid, 'trail', points, this, events)
     }
   }
 }

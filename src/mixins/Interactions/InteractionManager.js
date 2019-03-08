@@ -39,15 +39,20 @@ export default {
     }
   },
 
+  mounted () {
+    let spatialIndices = this.interactionManager.spatialIndices
+    for (let listener in spatialIndices) {
+      spatialIndices[listener].handler.bind(this)
+    }
+  },
+
   methods: {
     // These two functions are exposed to the component
-    addItem (_uid, type, coordinates, instance, events) {
-      let uid = _uid.toString()
+    addItem (uid, type, coordinates, instance, events) {
       this._cacheItem(uid, type, coordinates, instance, events)
     },
 
-    removeItem (_uid) {
-      let uid = _uid.toString()
+    removeItem (uid) {
       this._removeItem(uid)
     },
 
@@ -67,7 +72,7 @@ export default {
       let listeners = cache.getListeners(uid)
 
       for (let listener in listeners) {
-        let spatialIndex = this.spatialIndices[listener]
+        let spatialIndex = this.interactionManager.spatialIndices[listener]
         spatialIndex.bush.remove(item)
         spatialIndex.trackedItems--
       }
@@ -82,12 +87,14 @@ export default {
         let spatialIndex = this.interactionManager.spatialIndices[listener]
 
         if (spatialIndex.trackedItems === 0) {
-          this.active = false
-          this.svg.removeEventListener(listener, spatialIndex.handler)
+          let handler = spatialIndex.handler.bind(this)
+          spatialIndex.active = false
+          this.svg.removeEventListener(listener, handler)
         } else {
-          if (this.active === false) {
-            this.active = true
-            this.svg.addEventListener(listener, spatialIndex.handler)
+          if (spatialIndex.active === false) {
+            let handler = spatialIndex.handler.bind(this)
+            spatialIndex.active = true
+            this.svg.addEventListener(listener, handler)
           }
         }
       }

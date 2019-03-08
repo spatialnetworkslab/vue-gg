@@ -3,7 +3,7 @@ export default function (uid, type, coordinates, instance, itemCache, listeners,
   // So we will just always update the point
   if (itemCache.hasItem(uid)) {
     let item = itemCache.getItem(uid)
-    let oldListeners = itemCache.getListeners(item)
+    let oldListeners = itemCache.getListeners(uid)
 
     for (let listener in oldListeners) {
       let spatialIndex = spatialIndices[listener]

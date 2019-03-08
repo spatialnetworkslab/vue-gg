@@ -8,6 +8,8 @@ export default class ItemCache {
   }
 
   itemIsIdentical (uid, newArgs) {
+    if (!this.cache[uid]) { return false }
+
     let oldArgs = this.cache[uid].args
     for (let i = 0; i < oldArgs.length; i++) {
       if (oldArgs[i] !== JSON.stringify(newArgs[i])) {

@@ -25,12 +25,22 @@ export default {
     _interpolate () {
       if (this.interpolate !== undefined) { return this.interpolate }
       return this.__interpolationNecessary
-    }
-  },
+    },
 
-  beforeDestroy () {
-    let uid = this._uid
-    this.$$interactionManager.removeItem(uid)
+    events () {
+      let events = []
+      if (!this.$options._parentListeners) { return events }
+
+      const allowedEvents = ['click', 'hover'] // TODO more
+
+      for (let event of allowedEvents) {
+        if (this.$options._parentListeners.hasOwnProperty(event)) {
+          events.push(event)
+        }
+      }
+
+      return events
+    }
   },
 
   methods: {
@@ -46,21 +56,6 @@ export default {
       }
 
       return false
-    },
-
-    getEvents () {
-      let events = []
-      if (!this.$options._parentListeners) { return events }
-
-      const allowedEvents = ['click', 'hover'] // TODO more
-
-      for (let event of allowedEvents) {
-        if (this.$options._parentListeners.hasOwnProperty(event)) {
-          events.push(event)
-        }
-      }
-
-      return events
     }
   },
 

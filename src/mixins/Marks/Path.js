@@ -105,6 +105,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
+    }
+  },
+
   methods: {
     generatePoints (x, y) {
       let points = []
@@ -185,7 +192,7 @@ export default {
         path = createPath(transformedPoints)
       }
 
-      let events = this.getEvents()
+      let events = this.events
       if (events.length > 0) {
         this.addToSpatialIndex(transformedPoints, events)
       }
@@ -201,7 +208,7 @@ export default {
       if (this.geometry) {
         let tranformedFeature = transformFeature(aesthetics.geometry, this.$$transform)
 
-        let events = this.getEvents()
+        let events = this.events
         if (events.length > 0) {
           this.addToSpatialIndex(tranformedFeature, events)
         }
@@ -265,7 +272,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, events) {
-      this.$interactionManager.addItem(this._uid, this.pathType, coordinates, this, events)
+      this.$$interactionManager.addItem(this.uuid, this.pathType, coordinates, this, events)
     }
   }
 }

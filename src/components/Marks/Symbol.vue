@@ -61,6 +61,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
+    }
+  },
+
   methods: {
     createCircle (createElement, aesthetics) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
@@ -97,7 +104,7 @@ export default {
     createPath (createElement, aesthetics, d) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
-      let events = this.getEvents()
+      let events = this.events
       if (events.length > 0) {
         this.addToSpatialIndex([cx, cy], events)
       }
@@ -145,7 +152,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, events) {
-      this.$interactionManager.addItem(this._uid, 'symbol', coordinates, this, events)
+      this.$$interactionManager.addItem(this.uuid, 'symbol', coordinates, this, events)
     }
   }
 }
