@@ -24,7 +24,7 @@
       :scale-y="[0, 100]"
     >
       <vgg-label
-        :text="name"
+        :text="title"
         :x="50"
         :y="100"
         :font-size="titleFontSize"
@@ -49,7 +49,7 @@
             />
             <vgg-map v-slot="{ row }">
               <vgg-label
-                :x="90"
+                :x="95"
                 :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
@@ -67,7 +67,7 @@
                 :fill="'url(#grad1)'"
               />
               <vgg-label
-                :x="10"
+                :x="5"
                 :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
@@ -90,7 +90,7 @@
       :scale-y="[0, 100]"
     >
       <vgg-label
-        :text="name"
+        :text="title"
         :x="50"
         :y="105"
         :font-size="titleFontSize"
@@ -158,10 +158,6 @@ export default {
   name: 'DiscreteLegend',
 
   mixins: [BaseLegend, Rectangular],
-
-  props: {
-    
-  },
 
   mounted () {
     this.composeGradient

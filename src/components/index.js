@@ -11,6 +11,7 @@ import Repeat from './Core/Repeat.vue'
 // Elements
 import DiscreteLegend from './Elements/DiscreteLegend.vue'
 import GradientLegend from './Elements/GradientLegend.vue'
+import SymbolLegend from './Elements/SymbolLegend.vue'
 import PlotTitle from './Elements/PlotTitle.vue'
 
 // Glyphs
@@ -46,6 +47,7 @@ export default {
 
   DiscreteLegend,
   GradientLegend,
+  SymbolLegend,
   PlotTitle,
 
   Piechart,

@@ -2,17 +2,17 @@
   <div>
 
     <vgg-graphic
-      :width="600"
+      :width="700"
       :height="600"
       :data="xy">
 
       <vgg-plot-title text="Scatterplot" />
 
       <vgg-section
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
+        :x1="x1"
+        :x2="x2"
+        :y1="y1"
+        :y2="y2"
       >
 
         <vgg-map v-slot="{ row }">
@@ -26,7 +26,7 @@
             shape="triangle-left"
             fill="none"
           />
-            
+
         </vgg-map>
 
         <vgg-x-axis
@@ -44,21 +44,32 @@
       </vgg-section>
 
       <vgg-x-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
+        :x1="x1"
+        :x2="x2"
+        :y1="y1"
+        :y2="y2"
         :scale="[0, 150]"
       />
 
       <vgg-y-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
+        :x1="x1"
+        :x2="x2"
+        :y1="y1"
+        :y2="y2"
         :scale="'dependent'"
       />
-
+      <vgg-symbol-legend
+        title="Explanatory"
+        :scale="{ domain: 'explanatory'}"
+        :labels="'bins'"
+        :color="{type: 'viridis'}"
+        :fontSize="10"
+        :titleFontSize="16"
+        :tickCount="15"
+        :height="300"
+        :x="50"
+        :y="y2*0.5"
+      />
     </vgg-graphic>
 
     <div style="margin-top: 10px;">
@@ -74,6 +85,10 @@ export default {
   name: 'Scatterplot',
   data () {
     return {
+      x1: 200,
+      x2: 600,
+      y1: 100,
+      y2: 500,
       xy: xy('explanatory', 'dependent')
     }
   },

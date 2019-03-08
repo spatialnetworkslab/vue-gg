@@ -77,26 +77,16 @@
           :scale="{ domain: 'binCount', domainMin: 0 }"
         />
 
-        <!-- <vgg-discrete-legend
-          name="Bins"
-          :scale="{ domain: 'bins', domainMin: 0 }"
-          :labels="'bins'"
-          :orient="'horizontal'"
-          position="top"
-          :color="{scale: 'blues'}"
-          :fontSize="10"
-          :tickCount="10"
-          flip
-        /> -->
         <!-- work on edge labels, custom color scales -->
         <vgg-discrete-legend
           :scale="{ domain: 'bins', domainMin: 0 }"
           :labels="'bins'"
-          :orient="'vertical'"
           :color="{type: 'blues'}"
           :fontSize="10"
           :titleFontSize="16"
           :tickCount="10"
+          :width="70"
+          :height="300"
         />
 
       </vgg-data>

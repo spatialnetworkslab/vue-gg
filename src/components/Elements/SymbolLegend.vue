@@ -25,16 +25,9 @@
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
-        <vgg-data :data="boxes">
+        <vgg-data :data="symbols">
           <g v-if="!flipNumbers">
             <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-                :x1="0"
-                :x2="75"
-                :y1="row.start"
-                :y2="row.end"
-                :fill="row.color"
-              />
               <vgg-label
                 :x="95"
                 :y="row.labelPost"
@@ -46,13 +39,7 @@
           </g>
           <g v-else>
             <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-                :x1="25"
-                :x2="100"
-                :y1="row.start"
-                :y2="row.end"
-                :fill="row.color"
-              />
+
               <vgg-label
                 :x="5"
                 :y="row.labelPost"
@@ -91,16 +78,10 @@
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
-        <vgg-data :data="boxes">
+        <vgg-data :data="symbols">
           <g v-if="!flipNumbers">
             <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-                :x1="row.start"
-                :x2="row.end"
-                :y1="25"
-                :y2="95"
-                :fill="row.color"
-              />
+
               <vgg-label
                 :x="row.labelPost"
                 :y="7"
@@ -111,13 +92,7 @@
             </vgg-map>
           </g><g v-else>
             <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-                :x1="row.start"
-                :x2="row.end"
-                :y1="0"
-                :y2="75"
-                :fill="row.color"
-              />
+              
               <vgg-label
                 :x="row.labelPost"
                 :y="85"
@@ -146,10 +121,122 @@ export default {
 
   mixins: [BaseLegend, Rectangular],
 
-  computed: {
+  props: {
+    symbolWidth: {
+      type: [Number, Object, Array],
+      default: 20,
+    },
 
-    boxes () {
-      let boxes = []
+    symbolHeight: {
+      type: [Number, Object, Array],
+      default: 20,
+    },
+
+    // TODO
+    symbolOpacity: {
+      type: [Number, Object, Array],
+      default: 20,
+    },
+
+    color: {
+      type: String,
+      default: '#8FD8D8',
+    },
+
+    colorScale: {
+      type: [String, Array],
+      default: undefined
+    },
+
+    symbolShape: {
+      type: [String, Array],
+      default: 'rect'
+    },
+
+    symbolPadding: {
+      type: Number,
+      default: 5
+    },
+
+    labelPadding: {
+      type: Number,
+      default: 10
+    }
+  },
+
+  computed: {
+    symbolWidthScale () {
+      let size = this.symbolWidth
+      if (size.constructor === Number) {
+        return () => {return size}
+      } else if (size.constructor === Array) {
+        return (index) => {return size[index]}
+      } else {
+        let scaleOptions = {
+          aestheticType: 'xy',
+          scaleArgs: [this.domain, size.range]
+        }
+        let scalingFunction = createScale(size.scale, scaleOptions)
+        return scalingFunction
+      }
+    },
+
+    symbolHeightScale () {
+      let size = this.symbolHeight
+      if (size.constructor === Number) {
+        return () => {return size}
+      } else if (size.constructor === Array) {
+        return (index) => {return size[index]}
+      } else {
+        let scaleOptions = {
+          aestheticType: 'xy',
+          scaleArgs: [this.domain, size.range]
+        }
+        let scalingFunction = createScale(size.scale, scaleOptions)
+        return scalingFunction
+      }
+    },
+
+    colorScaleFunc () {
+      let color = this.color
+      let colorScale = this.colorScale
+      if (!colorScale) {
+        return () => {return color}
+      }
+      if (colorScale.constructor === Array) {
+        return (index) => {return colorScale[index]}
+      } else {
+        let scaleOptions = {
+          aestheticType: 'color',
+          scaleArgs: [this.domain, 0]
+        }
+        let scalingFunction = createScale(colorScale, scaleOptions)
+        return scalingFunction
+      }
+    },
+
+    symbols () {
+      let symbols = []
+      let l = this.legendLabels
+      for (let i = 0; i < l.length; i++) {
+        let w = this.symbolWidthScale(i)
+        let h = this.symbolHeightScale(i)
+        let c = this.colorScaleFunc(i)
+        symbols.push({w: w, h: h, color: c, label: l[i]})
+      }
+      return symbols
+    },
+
+    maxSymbolHeight () {
+      return this.symbols[this.symbols.length - 1].h
+    },
+
+    maxSymbolWidth () {
+      return this.symbols[this.symbols.length - 1].w
+    },
+
+    symbols () {
+      let symbols = []
       let ticks = this.tickCount
       let l = this.legendLabels, start = 0, end = 0, labelPost
 
@@ -162,18 +249,18 @@ export default {
             end += this.segmentHeight
           }
           labelPost = (start + end)/2
-          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          symbols.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
           start = end
           end += this.segmentHeight
           labelPost = (start + end)/2
-          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          symbols.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
        }
       }
 
-      return boxes
+      return symbols
     }
   },
 

@@ -13,7 +13,7 @@ export default {
   mixins: [Rectangular, DataReceiver],
 
   props: {
-    name: {
+    title: {
       type: String,
       default: 'Legend'
     },
@@ -92,14 +92,17 @@ export default {
       type: [String, Object, Array],
       default: '#8FD8D8',
     },
+
     labelPadding: {
       type: Number,
       default: 5
     },
+
     x: {
       type: [Number, Object, Array],
       default: undefined,
     },
+
     y: {
       type: [Number, Object, Array],
       default: undefined,

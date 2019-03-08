@@ -72,6 +72,18 @@
         :scale="'dependent'"
       />
 
+      <vgg-discrete-legend
+        :scale="{ domain: 'explanatory' }"
+        :labels="'bins'"
+        :color="{ type: 'viridis'}"
+        :fontSize="10"
+        :titleFontSize="16"
+        :tickCount="10"
+        :width="70"
+        :height="300"
+        flipNumbers
+      />
+
     </vgg-graphic>
 
     <div style="margin-top: 10px;">
