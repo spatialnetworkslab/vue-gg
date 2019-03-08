@@ -22,7 +22,8 @@
             :y="{ val: row.dependent, scale: 'dependent' }"
             :radius="{ val: row.dependent, scale: { domain: 'dependent' } }"
             :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
-            @click="log(row)"
+            @click="log($event)"
+            @hover="log(row)"
           />
 
         </vgg-map>

@@ -28,7 +28,9 @@ export default function (uid, type, coordinates, instance, itemCache, events, sp
 
 const listenerLookup = {
   click: 'click',
-  hover: 'mousemove'
+  hover: 'mousemove',
+  mouseover: 'mousemove',
+  mouseout: 'mousemove'
 }
 
 // Creates an object with listeners (click, mousemove) as keys, and arrays of

@@ -31,7 +31,7 @@ export default {
       let events = []
       if (!this.$options._parentListeners) { return events }
 
-      const allowedEvents = ['click', 'hover'] // TODO more
+      const allowedEvents = ['click', 'hover', 'mouseover', 'mouseout'] // TODO more
 
       for (let event of allowedEvents) {
         if (this.$options._parentListeners.hasOwnProperty(event)) {
