@@ -7,23 +7,19 @@ export default {
   data () {
     return {
       interactionManager: Object.freeze({
-        // This object contains one spatial index per native event listener
+        // This object contains one spatial index per listener
         spatialIndices: {
-          click: rbush(),
-          mousemove: rbush()
-        },
-
-        // This object keeps track of which native listeners are active,
-        // and how many items they are tracking
-        nativeListeners: {
           click: {
-            active: false,
-            trackedItems: 0
-          },
-          mousemove: {
+            bush: rbush(),
             active: false,
             trackedItems: 0,
-            last: null
+            handler (e) { this._handleListener('click', e) }
+          },
+          mousemove: {
+            bush: rbush(),
+            active: false,
+            trackedItems: 0,
+            handler (e) { this._handleListener('mousemove', e) }
           }
         },
 
@@ -45,9 +41,9 @@ export default {
 
   methods: {
     // These two functions are exposed to the component
-    addItem (_uid, type, coordinates, instance, listeners) {
+    addItem (_uid, type, coordinates, instance, events) {
       let uid = _uid.toString()
-      this._cacheItem(uid, type, coordinates, instance, listeners)
+      this._cacheItem(uid, type, coordinates, instance, events)
     },
 
     removeItem (_uid) {
@@ -56,31 +52,58 @@ export default {
     },
 
     // These functions are all for internal use only
-    _cacheItem (uid, type, coordinates, instance, listeners) {
+    _cacheItem (uid, type, coordinates, instance, events) {
       let itemCache = this.interactionManager.itemCache
-      let spatialIndices = this.spatialIndices
+      let spatialIndices = this.interactionManager.spatialIndices
 
-      cacheItem(uid, type, coordinates, instance, itemCache, listeners, spatialIndices)
+      cacheItem(uid, type, coordinates, instance, itemCache, events, spatialIndices)
+
+      this._updateListeners()
     },
 
     _removeItem (uid) {
-      // TODO
+      let cache = this.interactionManager.itemCache
+      let item = cache.getItem(uid)
+      let listeners = cache.getListeners(uid)
+
+      for (let listener in listeners) {
+        let spatialIndex = this.spatialIndices[listener]
+        spatialIndex.bush.remove(item)
+        spatialIndex.trackedItems--
+      }
+
+      cache.deleteItem(uid)
+
+      this._updateListeners()
     },
 
-    _updateClickListener (customListener) {
-      let clickListener = this.interactionManager.listeners.click
-      if (!clickListener.active) {
-        clickListener.active = true
-        this.svg.addEventListener('click', e => this.handleListener(customListener, e))
+    _updateListeners () {
+      for (let listener in this.interactionManager.spatialIndices) {
+        let spatialIndex = this.interactionManager.spatialIndices[listener]
+
+        if (spatialIndex.trackedItems === 0) {
+          this.active = false
+          this.svg.removeEventListener(listener, spatialIndex.handler)
+        } else {
+          if (this.active === false) {
+            this.active = true
+            this.svg.addEventListener(listener, spatialIndex.handler)
+          }
+        }
       }
     },
 
-    _handleListener (customListener, e) {
+    _handleListener (listener, e) {
       let coords = getCoords(this.svg, this.svgPoint, e)
-      let hits = collisionTest(coords, this.interactionManager.spatialIndex)
+      let hits = collisionTest(coords, this.interactionManager.spatialIndices[listener])
 
       for (let hit of hits) {
-        hit.instance.$emit(customListener, e)
+        let uid = hit.uid
+        let events = this.interactionManager.itemCache.getListeners(uid)[listener]
+
+        for (let event of events) {
+          hit.instance.$emit(event, e)
+        }
       }
     }
   },

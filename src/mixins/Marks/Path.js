@@ -185,9 +185,9 @@ export default {
         path = createPath(transformedPoints)
       }
 
-      let listeners = this.getListeners()
-      if (listeners.length > 0) {
-        this.addToSpatialIndex(transformedPoints, listeners)
+      let events = this.getEvents()
+      if (events.length > 0) {
+        this.addToSpatialIndex(transformedPoints, events)
       }
 
       return path
@@ -201,9 +201,9 @@ export default {
       if (this.geometry) {
         let tranformedFeature = transformFeature(aesthetics.geometry, this.$$transform)
 
-        let listeners = this.getListeners()
-        if (listeners.length > 0) {
-          this.addToSpatialIndex(tranformedFeature, listeners)
+        let events = this.getEvents()
+        if (events.length > 0) {
+          this.addToSpatialIndex(tranformedFeature, events)
         }
 
         let path = createGeoPath(tranformedFeature)
@@ -264,8 +264,8 @@ export default {
       }
     },
 
-    addToSpatialIndex (coordinates, listeners) {
-      this.$interactionManager.addItem(this._uid, this.pathType, coordinates, this, listeners)
+    addToSpatialIndex (coordinates, events) {
+      this.$interactionManager.addItem(this._uid, this.pathType, coordinates, this, events)
     }
   }
 }

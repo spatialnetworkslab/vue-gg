@@ -61,10 +61,9 @@ export default {
       let aesthetics = this._props
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 
-      let listeners = this.getListeners()
-
-      if (listeners.length > 0) {
-        this.addToSpatialIndex([cx, cy], listeners)
+      let events = this.getEvents()
+      if (events.length > 0) {
+        this.addToSpatialIndex([cx, cy], events)
       }
 
       return createElement('circle', {
@@ -77,8 +76,8 @@ export default {
       })
     },
 
-    addToSpatialIndex (coordinates, listeners) {
-      this.$interactionManager.addItem(this._uid, 'point', coordinates, this, listeners)
+    addToSpatialIndex (coordinates, events) {
+      this.$interactionManager.addItem(this._uid, 'point', coordinates, this, events)
     }
   }
 }

@@ -68,10 +68,9 @@ export default {
         path = createPath(transformedPoints)
       }
 
-      let listeners = this.getListeners()
-
-      if (listeners.length > 0) {
-        this.addToSpatialIndex(transformedPoints, listeners)
+      let events = this.getEvents()
+      if (events.length > 0) {
+        this.addToSpatialIndex(transformedPoints, events)
       }
 
       return createElement('path', {
@@ -82,8 +81,8 @@ export default {
       })
     },
 
-    addToSpatialIndex (coordinates, listeners) {
-      this.$interactionManager.addItem(this._uid, 'rectangle', coordinates, this, listeners)
+    addToSpatialIndex (coordinates, events) {
+      this.$interactionManager.addItem(this._uid, 'rectangle', coordinates, this, events)
     }
   }
 }

@@ -48,19 +48,19 @@ export default {
       return false
     },
 
-    getListeners () {
-      let listeners = []
-      if (!this.$options._parentListeners) { return listeners }
+    getEvents () {
+      let events = []
+      if (!this.$options._parentListeners) { return events }
 
-      const allowedListeners = ['click'] // TODO more
+      const allowedEvents = ['click', 'hover'] // TODO more
 
-      for (let listener of allowedListeners) {
-        if (this.$options._parentListeners.hasOwnProperty(listener)) {
-          listeners.push(listener)
+      for (let event of allowedEvents) {
+        if (this.$options._parentListeners.hasOwnProperty(event)) {
+          events.push(event)
         }
       }
 
-      return listeners
+      return events
     }
   },
 

@@ -100,9 +100,9 @@ export default {
         }
       }
 
-      let listeners = this.getListeners()
-      if (listeners.length > 0) {
-        this.addToSpatialIndex(transformedPoints, listeners)
+      let events = this.getEvents()
+      if (events.length > 0) {
+        this.addToSpatialIndex(transformedPoints, events)
       }
 
       return path
@@ -124,8 +124,8 @@ export default {
       })
     },
 
-    addToSpatialIndex (coordinates, listeners) {
-      this.$interactionManager.addItem(this._uid, 'line', coordinates, this, listeners)
+    addToSpatialIndex (coordinates, events) {
+      this.$interactionManager.addItem(this._uid, 'line', coordinates, this, events)
     }
   }
 }

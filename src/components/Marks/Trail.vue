@@ -192,9 +192,9 @@ export default {
       segments.push(segments[0])
       segments.push(segments[1])
 
-      let listeners = this.getListeners()
-      if (listeners.length > 0) {
-        this.addToSpatialIndex(segments, listeners)
+      let events = this.getEvents()
+      if (events.length > 0) {
+        this.addToSpatialIndex(segments, events)
       }
 
       return segments
@@ -251,8 +251,8 @@ export default {
       }
     },
 
-    addToSpatialIndex (points, listeners) {
-      this.$interactionManager.addItem(this._uid, 'trail', points, this, listeners)
+    addToSpatialIndex (points, events) {
+      this.$interactionManager.addItem(this._uid, 'trail', points, this, events)
     }
   }
 }

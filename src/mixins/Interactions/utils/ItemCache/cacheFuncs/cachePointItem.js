@@ -6,7 +6,9 @@ export default function (uid, type, coordinates, instance, itemCache, listeners,
     let oldListeners = itemCache.getListeners(item)
 
     for (let listener in oldListeners) {
-      spatialIndices[listener].remove(item)
+      let spatialIndex = spatialIndices[listener]
+      spatialIndex.bush.remove(item)
+      spatialIndex.trackedItems--
     }
 
     itemCache.deleteItem(uid)
@@ -31,7 +33,10 @@ export default function (uid, type, coordinates, instance, itemCache, listeners,
   let item = { uid, geometry, instance, minX, maxX, minY, maxY }
 
   itemCache.addItem(uid, [], item, listeners)
+
   for (let listener in listeners) {
-    spatialIndices[listener].insert(item)
+    let spatialIndex = spatialIndices[listener]
+    spatialIndex.bush.insert(item)
+    spatialIndex.trackedItems++
   }
 }

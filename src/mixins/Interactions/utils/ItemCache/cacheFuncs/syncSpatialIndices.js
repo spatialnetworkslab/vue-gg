@@ -1,11 +1,15 @@
 // This one is used if the item has been updated
 export function updateIndices (spatialIndices, oldListeners, newListeners, oldItem, newItem) {
   for (let listener in oldListeners) {
-    spatialIndices[listener].remove(oldItem)
+    let spatialIndex = spatialIndices[listener]
+    spatialIndex.bush.remove(oldItem)
+    spatialIndex.trackedItems--
   }
 
   for (let listener in newListeners) {
-    spatialIndices[listener].insert(newItem)
+    let spatialIndex = spatialIndices[listener]
+    spatialIndex.bush.insert(newItem)
+    spatialIndex.trackedItems++
   }
 }
 
@@ -16,11 +20,15 @@ export function syncListeners (spatialIndices, oldListeners, newListeners, item)
 
   // If the listeners have changed, we will remove the old ones and add the new ones
   for (let listener in oldListeners) {
-    spatialIndices[listener].remove(item)
+    let spatialIndex = spatialIndices[listener]
+    spatialIndex.bush.remove(item)
+    spatialIndex.trackedItems--
   }
 
   for (let listener in newListeners) {
-    spatialIndices[listener].insert(item)
+    let spatialIndex = spatialIndices[listener]
+    spatialIndex.bush.insert(item)
+    spatialIndex.trackedItems++
   }
 }
 
