@@ -77,10 +77,11 @@ export default class CoordinateTree {
   getInverseTransformation (id) {
     let transformation = function ([x, y]) {
       let branchPath = this._branchPaths[id]
-      let result = [x, y]
+      let branch = this.getBranch('root')
+      let result = branch.inverseTransform([x, y])
 
       for (let branchID of branchPath) {
-        let branch = this.getBranch(branchID)
+        branch = this.getBranch(branchID)
         result = branch.inverseTransform(result)
       }
 
