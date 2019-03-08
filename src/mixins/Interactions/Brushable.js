@@ -1,4 +1,3 @@
-import debounce from 'lodash.debounce'
 import getCoords from './utils/getCoords.js'
 
 export default {
