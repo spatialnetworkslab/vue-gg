@@ -22,7 +22,8 @@ export default {
             active: false,
             trackedItems: 0,
             handler (e) { debounce(this._handleMouseMoveListener, 25)(e) },
-            hovering: {}
+            hovering: {},
+            hoverItems: 0
           }
         },
 
@@ -134,6 +135,7 @@ export default {
         // If this was already a hit, we do nothing
         if (!spatialIndex.hovering[uid]) {
           spatialIndex.hovering[uid] = true
+          spatialIndex.hoverItems++
 
           let events = this.interactionManager.itemCache.getListeners(uid)['mousemove']
 
@@ -161,11 +163,12 @@ export default {
 
           // If this is the last one, and it is just about to be deleted:
           // emit 'null'
-          if (Object.keys(spatialIndex.hovering).length === 1) {
+          if (spatialIndex.hoverItems === 1) {
             instance.$emit('hover', null)
           }
 
           delete spatialIndex.hovering[uid]
+          spatialIndex.hoverItems--
         }
       }
     }
