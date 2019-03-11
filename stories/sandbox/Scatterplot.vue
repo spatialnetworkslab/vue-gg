@@ -73,14 +73,11 @@
       />
 
       <vgg-symbol-legend
-        :scale="{ domain: 'dependent', domainMin: 5}"
+        :scale="{ domain: 'dependent'}"
         position="br"
         :size="{ domain: 'dependent'}"
-        :tickCount="10"
-        :rowPadding="2"
+        :tickCount="8"
         :tickMinStep="12"
-        :height="300"
-        :columnPadding="25"
       />
 
       <!-- <vgg-symbol-legend
@@ -94,12 +91,13 @@
 
 
       <vgg-symbol-legend
-        :scale="{ domain: 'explanatory', domainMin: 5}"
-        :tickCount="10"
+        :scale="{ domain: 'dependent'}"
+        :tickCount="7"
         :stroke="{ type: 'viridis' }"
-        :size="{ domain: 'explanatory'}"
+        :size="{ domain: 'dependent'}"
         :fill="{ type: 'viridis'}"
-        :columnPadding="30"
+        direction="horizontal"
+        flipNumbers
       />
 
       <!-- <vgg-gradient-legend

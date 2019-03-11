@@ -55,6 +55,14 @@ export default {
       }
     },
 
+    titlePosition: {
+      type: String,
+      default: 'center',
+      validator: function (value) {
+        return ['left', 'right', 'top', 'bottom', 'tl', 'tr', 'bl', 'br', 'center'].indexOf(value) !== -1
+      }
+    },
+
     position: {
       type: String,
       default: 'left',
@@ -65,12 +73,12 @@ export default {
 
     width: {
       type: Number,
-      default: 50
+      default: function (value) { if (this.direction === "vertical") { return 50 } else { return 280 }}
     },
 
     height:{
       type: Number,
-      default: 300
+      default: function (value) { if (this.direction === "vertical") { return 280 } else { return 50 }}
     },
 
     tickCount: {
@@ -89,28 +97,33 @@ export default {
     },
 
     fill: {
-      type: [String, Object, Array],
+      type: [Array, Object, String],
       default: '#8FD8D8'
     },
 
     labelPadding: {
       type: Number,
-      default: 10
+      default: 0
     },
 
-    titlePadding: {
+    symbolPadding: {
       type: Number,
       default: 0
     },
 
+    titlePadding: {
+      type: Number,
+      default: 2
+    },
+
     columnPadding: {
       type: Number,
-      default: 20
+      default: 0
     },
 
     rowPadding: {
       type: Number,
-      default: 1
+      default: 0
     },
 
     x: {
@@ -187,17 +200,35 @@ export default {
       return 40
     },
 
+    titleX () {
+      let p = this.legendPosition
+      if (p === 'right' || p === "tr" || p === "br") {
+        return 100
+      } else if (p === 'left' || p === "tl" || p === "bl") {
+        return 0
+      } else {
+        return 50
+      }
+    },
+
+    titleY () {
+      let p = this.legendPosition
+      if (p === 'tr' || p === "tl" || p === "right" || p === "left") {
+        return 105
+      } else if (p === "bl" || p === "br") {
+        return 0
+      } else {
+        return 105
+      }
+    },
+
     legendLeft () {
       if (!this.x && !this.y) {
         let p = this.position
         if (p === 'right' || p === "tr" || p === "br" || p === "cr") {
-          if (this.direction === "vertical") {
-            return (this.plotWidth - this.width) * 0.98
-          } else {
-            return this.plotWidth - this.height
-          }
+          return (this.plotWidth - this.width)
         } else {
-          return this.plotWidth * 0.02
+          return this.plotWidth * 0.01
         }
       } else {
         return this.x
@@ -208,15 +239,11 @@ export default {
       if (!this.x && !this.y) {
         let p = this.position
         if (p === 'top' || p === "tl" || p === "tr") {
-          if (this.direction === "vertical"){
-            return this.height - this.plotHeight * 0.95
-          } else {
-            return this.width - this.plotHeight + this.plotMargin
-          }
+          return (this.height - this.plotHeight) * 0.9
         } else if (p === 'bottom' || p === "bl" || p === "br") {
           return 0
         } else {
-          return -this.plotHeight * 0.4
+          return -this.plotHeight * 0.45
         }
       } else {
         if (this.position && this.position != 'left'){

@@ -91,7 +91,7 @@
     >
       <vgg-label
         :text="title"
-        :x="50"
+        :x="55"
         :y="105"
         :font-size="titleFontSize"
         font-weight="bold"

@@ -60,27 +60,25 @@
       />
       <!-- work on padding between symbols -->
       <vgg-symbol-legend
-        :scale="{ domain: 'explanatory', domainMin: 0}"
+        :scale="{ domain: 'dependent'}"
         :fontSize="10"
-        :titleFontSize="16"
-        :tickCount="10"
-        :x="50"
-        :y="y2 * 0.6"
+        :tickCount="8"
         shape="triangle-down"
         stroke="green"
-        :size="{ domain: 'explanatory'}"
+        :size="{ domain: 'dependent'}"
+        :height="250"
+        position="tl"
       />
 
       <vgg-symbol-legend
         :scale="{ domain: 'dependent', domainMin: 0}"
         :fontSize="10"
-        :titleFontSize="16"
-        :tickCount="10"
+        :tickCount="6"
         shape="triangle-down"
         :stroke="{ type: 'viridis'}"
         :size="10"
-        :x="50"
-        :y="30"
+        :height="250"
+        position="bl"
       />
     </vgg-graphic>
 

@@ -12,8 +12,8 @@
     >
       <vgg-label
         :text="title"
-        :x="50"
-        :y="100 + titlePadding"
+        :x="titleX"
+        :y="titleY + titlePadding"
         :font-size="titleFontSize"
         font-weight="bold"
       />
@@ -27,7 +27,7 @@
       >
         <vgg-data :data="symbols">
           <g v-if="!flipNumbers">
-            <vgg-map v-slot="{ row, prevRow, i }">
+            <vgg-map v-slot="{ row, i }">
               <vgg-path
                 v-if="shape==='line'"
                 :points="[[0, row.location], [70, row.location]]"
@@ -35,8 +35,8 @@
               />
               <vgg-symbol
                 v-else
-                :x="40 - columnPadding/2"
-                :y="row.location + rowPadding"
+                :x="20"
+                :y="row.location + symbolPadding * i/10"
                 :stroke="row.stroke"
                 :stroke-width="row.strokeWidth"
                 :size="row.size"
@@ -44,18 +44,18 @@
                 :fill="row.fill"
               />
               <vgg-label
-                :x="60 + columnPadding/2"
-                :y="row.location + rowPadding"
+                :x="70"
+                :y="row.location + labelPadding * i/10"
                 :text="row.label"
                 :font-size="fontSize"
               />
             </vgg-map>
           </g>
           <g v-else>
-            <vgg-map v-slot="{ row }">
+            <vgg-map v-slot="{ row, i }">
               <vgg-symbol
-                :x="100"
-                :y="row.location"
+                :x="80"
+                :y="row.location + symbolPadding * i/10"
                 :stroke="row.stroke"
                 :stroke-width="row.strokeWidth"
                 :size="row.size"
@@ -63,8 +63,8 @@
                 :fill="row.fill"
               />
               <vgg-label
-                :x="5"
-                :y="row.location"
+                :x="30 - labelPadding"
+                :y="row.location + labelPadding * i/10"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -79,16 +79,16 @@
     <vgg-section
       v-if="direction==='horizontal'"
       :x1="0"
-      :x2="height"
+      :x2="width"
       :y1="0"
-      :y2="width"
+      :y2="height"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
       <vgg-label
         :text="title"
-        :x="50"
-        :y="105"
+        :x="titleX + 10"
+        :y="titleY + titlePadding"
         :font-size="titleFontSize"
         font-weight="bold"
       />
@@ -100,47 +100,53 @@
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
-        <vgg-data :data="symbols">
-          <g v-if="!flipNumbers">
-            <vgg-map v-slot="{ row }">
-              <vgg-symbol
-                :x="row.location"
-                :y="labelPadding"
-                :stroke="row.stroke"
-                :stroke-width="row.strokeWidth"
-                :size="size"
-                :shape="shape"
-                fill="none"
-              />
-              <vgg-label
-                :x="row.location"
-                :y="50 + labelPadding"
-                :text="row.label"
-                :font-size="fontSize"
-                :anchor-point="'center'"
-              />
-            </vgg-map>
-          </g><g v-else>
-            <vgg-map v-slot="{ row }">
-              <vgg-symbol
-                :x="row.location"
-                y="60"
-                :stroke="row.stroke"
-                :stroke-width="row.strokeWidth"
-                :size="size"
-                :shape="shape"
-                fill="none"
-              />
-              <vgg-label
-                :x="row.location"
-                :y="labelPadding"
-                :text="row.label"
-                :font-size="fontSize"
-                :anchor-point="'center'"
-              />
-            </vgg-map>
-          </g>
-        </vgg-data>
+      <vgg-data :data="symbols">
+        <g v-if="!flipNumbers">
+          <vgg-map v-slot="{ row, i }">
+            <vgg-path
+              v-if="shape==='line'"
+              :points="[[0, row.location], [70, row.location]]"
+              :strokeWidth="row.strokeWidth"
+            />
+            <vgg-symbol
+              v-else
+              :x="row.location + symbolPadding * i"
+              :y="70"
+              :stroke="row.stroke"
+              :stroke-width="row.strokeWidth"
+              :size="row.size"
+              :shape="shape"
+              :fill="row.fill"
+            />
+            <vgg-label
+              :x="row.location + symbolPadding * i"
+              :y="30"
+              :text="row.label"
+              :font-size="fontSize"
+            />
+          </vgg-map>
+        </g>
+        <g v-else>
+          <vgg-map v-slot="{ row, i }">
+            <vgg-symbol
+              :x="row.location + symbolPadding * i"
+              :y="30"
+              :stroke="row.stroke"
+              :stroke-width="row.strokeWidth"
+              :size="row.size"
+              :shape="shape"
+              :fill="row.fill"
+            />
+            <vgg-label
+              :x="row.location + labelPadding * i"
+              :y="70"
+              :text="row.label"
+              :font-size="fontSize"
+              :anchor-point="'center'"
+            />
+          </vgg-map>
+        </g>
+      </vgg-data>
       </vgg-section>
     </vgg-section>
 
@@ -272,7 +278,6 @@ export default {
     // covers size/radius, strokeWidth
     generateSizeScale (prop, sizeBasis) {
       let size = sizeBasis
-
       if (size.constructor === Number) {
         return () => {return size}
       } else if (size.constructor === Array) {
@@ -313,7 +318,7 @@ export default {
       if (this.size) {
         let sizeScale = this.generateSizeScale('size', this.size)
         if (sizeScale(value) < 0){
-          symbol.size = Math.abs(sizeScale(value))
+          symbol.size = Math.abs(sizeScale(value))/2
         } else {
           symbol.size = sizeScale(value)
         }
@@ -324,7 +329,9 @@ export default {
       if (this.strokeWidth) {
         let strokeWidthScale = this.generateSizeScale('strokeWidth', this.strokeWidth)
         if (strokeWidthScale(value) < 0){
-          symbol.strokeWidth = Math.abs(strokeWidthScale(value))
+          symbol.strokeWidth = Math.abs(strokeWidthScale(value))/2
+        } else if (strokeWidthScale(value) === 0){
+          symbol.strokeWidth = 0.0001
         } else {
           symbol.strokeWidth = strokeWidthScale(value)
         }
