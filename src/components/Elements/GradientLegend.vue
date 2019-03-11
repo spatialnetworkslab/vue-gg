@@ -175,15 +175,16 @@ export default {
     colors () {
       let l = this.legendLabels
       let colors = []
+      let colorScale = this.generateColorScale('fill', this.fill)
       if (!this.flip) {
         if (this.direction === "vertical"){
           for (let i = l.length - 1; i >=0; i--) {
-            let color = this.colorScale(l[i])
+            let color = colorScale(l[i])
             colors.push(color)
           }
         } else {
           for (let i = 0; i < l.length; i++) {
-            let color = this.colorScale(l[i])
+            let color = colorScale(l[i])
             colors.push(color)
           }
         }

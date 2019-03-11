@@ -13,7 +13,7 @@
       <vgg-label
         :text="title"
         :x="50"
-        :y="100"
+        :y="100 + titlePadding"
         :font-size="titleFontSize"
         font-weight="bold"
       />
@@ -27,28 +27,27 @@
       >
         <vgg-data :data="symbols">
           <g v-if="!flipNumbers">
-            <vgg-map v-slot="{ row }">
+            <vgg-map v-slot="{ row, prevRow, i }">
               <vgg-path
                 v-if="shape==='line'"
                 :points="[[0, row.location], [70, row.location]]"
-                :strokeWidth="strokeWidth"
+                :strokeWidth="row.strokeWidth"
               />
               <vgg-symbol
                 v-else
-                :x="0"
-                :y="row.location"
+                :x="40 - columnPadding/2"
+                :y="row.location + rowPadding"
                 :stroke="row.stroke"
-                :stroke-width="5"
+                :stroke-width="row.strokeWidth"
                 :size="row.size"
                 :shape="shape"
                 :fill="row.fill"
               />
               <vgg-label
-                :x="80"
-                :y="row.location"
+                :x="60 + columnPadding/2"
+                :y="row.location + rowPadding"
                 :text="row.label"
                 :font-size="fontSize"
-                :anchor-point="'center'"
               />
             </vgg-map>
           </g>
@@ -58,10 +57,10 @@
                 :x="100"
                 :y="row.location"
                 :stroke="row.stroke"
-                :stroke-width="strokeWidth"
-                :size="size"
+                :stroke-width="row.strokeWidth"
+                :size="row.size"
                 :shape="shape"
-                fill="none"
+                :fill="row.fill"
               />
               <vgg-label
                 :x="5"
@@ -108,7 +107,7 @@
                 :x="row.location"
                 :y="labelPadding"
                 :stroke="row.stroke"
-                :stroke-width="strokeWidth"
+                :stroke-width="row.strokeWidth"
                 :size="size"
                 :shape="shape"
                 fill="none"
@@ -127,7 +126,7 @@
                 :x="row.location"
                 y="60"
                 :stroke="row.stroke"
-                :stroke-width="strokeWidth"
+                :stroke-width="row.strokeWidth"
                 :size="size"
                 :shape="shape"
                 fill="none"
@@ -181,12 +180,12 @@ export default {
     // sizeScale
     size: {
       type: [Number, Object, Array],
-      default: 20,
+      default: 10,
     },
 
     strokeWidth: {
       type: [Number, Object, Array],
-      default: 10,
+      default: 2,
     },
 
     // colorScale: {
@@ -195,12 +194,12 @@ export default {
     // },
 
     stroke: {
-      type: String,
-      default: '#8FD8D8',
+      type: [Object, Array, String],
+      default: undefined,
     },
 
     fill: {
-      type: String,
+      type: [Object, Array, String],
       default: 'none',
     },
 
@@ -229,40 +228,20 @@ export default {
       type: Boolean,
       default: false
     }
-
   },
 
-  computed:{
+  computed: {
     // strokeOpacity, fillOpacity
     opacityScale () {
 
-    },
-
-    // covers size/radius, strokeWidth
-    sizeScale () {
-      let size = this.size
-      if (size.constructor === Number) {
-        return () => {return size}
-      } else if (size.constructor === Array) {
-        return (index) => {return size[index]}
-      } else {
-        let scaleOptions = {
-          aestheticType: 'size',
-          domain: this._parsedScalingOptions[0],
-          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
-          range: this.size.range ? this.size.range : undefined,
-        }
-        console.log('range y', this.parentBranch.ranges.y)
-        let scalingFunction = createScale('size', this.$$dataInterface, scaleOptions)
-        return scalingFunction
-      }
     },
 
     // work on categorical scales - shapes, colors, sizes, stroke widths
     symbols () {
       let symbols = []
       let ticks = this.tickCount
-      let l = this.legendLabels, start = 0, end = 0, location
+      let l = this.legendLabels, start = 0, end = 0, location, symbol
+      let sizeScale = this.generateSizeScale
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
           if (i === 0) {
@@ -272,28 +251,99 @@ export default {
             end += this.segmentHeight
           }
           location = (start + end)/2
-          console.log('scale function', this.sizeScale(l[i]), l[i])
-          symbols.push({size: this.sizeScale(l[i]), fill: this.colorScale(l[i]), stroke: this.colorScale(l[i]), location: location, label: l[i]})
-          //symbols.push({strokeWidth: , stroke: , fill: , strokeOpacity: , fillOpacity, start: start, end: end, location: location, label: l[i]})
+          symbol = {location: location, label: l[i]}
+          symbols.push(this.parseAttributes(symbol, l[i]))
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
           start = end
           end += this.segmentHeight
           location = (start + end)/2
-          //symbols.push({color: this.colorScale(l[i]), start: start, end: end, location: location, label: l[i]})
-          symbols.push({size: this.sizeScale(l[i]), fill: this.colorScale(l[i]), stroke: this.colorScale(l[i]), location: location, label: l[i]})
-       }
+          symbol = {location: location, label: l[i]}
+          symbols.push(this.parseAttributes(symbol, l[i]))
+        }
       }
 
-      return symbols
+    return symbols
     }
   },
 
   methods: {
+    // covers size/radius, strokeWidth
+    generateSizeScale (prop, sizeBasis) {
+      let size = sizeBasis
 
+      if (size.constructor === Number) {
+        return () => {return size}
+      } else if (size.constructor === Array) {
+        return (index) => {return size[index]}
+      } else {
+        let scaleOptions = {
+          aestheticType: prop,
+          domain: this._domain,
+          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
+          range: size.range ? size.range : this.scale.range ? this.scale.range : [0,10],
+        }
+        let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
+        return scalingFunction
+      }
+    },
 
+    parseAttributes (symbol, value) {
+      // figure out which to prioritize - fill or stroke?
+      if (this.stroke) {
+        if (this.stroke === 'none' || this.stroke.constructor === String) {
+          symbol.stroke = this.stroke
+        } else {
+          let strokeScale = this.generateColorScale('stroke', this.stroke)
+          symbol.stroke = strokeScale(value)
+        }
+      } else {
+        symbol.stroke = 'black'
+      }
+
+      if (this.fill != "none") {
+        let fillScale = this.generateColorScale('fill', this.fill)
+        symbol.fill = fillScale(value)
+      } else if (this.fill.constructor === String) {
+        symbol.fill = this.fill
+      }
+
+      // how to deal with negative values given by scale?
+      if (this.size) {
+        let sizeScale = this.generateSizeScale('size', this.size)
+        if (sizeScale(value) < 0){
+          symbol.size = Math.abs(sizeScale(value))
+        } else {
+          symbol.size = sizeScale(value)
+        }
+      } else {
+        symbol.size = 10
+      }
+
+      if (this.strokeWidth) {
+        let strokeWidthScale = this.generateSizeScale('strokeWidth', this.strokeWidth)
+        if (strokeWidthScale(value) < 0){
+          symbol.strokeWidth = Math.abs(strokeWidthScale(value))
+        } else {
+          symbol.strokeWidth = strokeWidthScale(value)
+        }
+      } else {
+        symbol.strokeWidth = 5
+      }
+      // if (this.fillOpacity) {
+      //
+      // }
+      //
+      // if (this.strokeOpacity) {
+      //
+      // }
+      //
+      // if (this.strokeDash) {
+      //
+      // }
+      return symbol
+    },
   }
-
 }
 </script>

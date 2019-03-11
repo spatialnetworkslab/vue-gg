@@ -9,7 +9,7 @@ export default function (prop, variableType, domain, range, scalingOptions) {
   if (variableType === 'quantitative') {
     let scale = scalingOptions.type || 'linear'
     checkValidScale(prop, variableType, scale, quantitative)
-    console.log('check', scale, domain, range, scalingOptions)
+
     let scaleFunc = quantitative[scale](domain, range)
 
     if (scalingOptions.absolute) {

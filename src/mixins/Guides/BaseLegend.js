@@ -70,7 +70,7 @@ export default {
 
     height:{
       type: Number,
-      default: 260
+      default: 300
     },
 
     tickCount: {
@@ -98,6 +98,21 @@ export default {
       default: 10
     },
 
+    titlePadding: {
+      type: Number,
+      default: 0
+    },
+
+    columnPadding: {
+      type: Number,
+      default: 20
+    },
+
+    rowPadding: {
+      type: Number,
+      default: 1
+    },
+
     x: {
       type: [Number, Object, Array],
       default: undefined,
@@ -106,9 +121,13 @@ export default {
     y: {
       type: [Number, Object, Array],
       default: undefined,
+    },
+
+    tickMinStep: {
+      type: Number,
+      default: 5
     }
 
-    //columnPadding
     //rowPadding
     //fillColor = background color
     //gradient opacity
@@ -153,7 +172,6 @@ export default {
     },
 
     ranges () {
-      console.log('###', this.coordinateSpecification)
       return this.coordinateSpecification
     },
 
@@ -210,6 +228,7 @@ export default {
 
     legendLabels () {
       let labels = this.labels
+
       if (labels) {
         if (labels.constructor === Array) {
           return labels
@@ -234,40 +253,20 @@ export default {
       }
     },
 
-    colorScale () {
-      let color = this.fill
-
-      if (color.constructor === Array) {
-        return (index) => {return color[index]}
-      } else {
-        let scaleOptions = {
-          aestheticType: 'color',
-          domain: this._parsedScalingOptions[0],
-          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
-          scaleArgs: [[0, this.tickCount]],
-          type: color.type
-        }
-
-        let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)
-        return scalingFunction
-      }
-    },
-
     segmentHeight () {
       return 100 / this.tickCount
     },
-
-    colors () {
-      let ticks = this.tickCount
-      let colors = []
-      for (let i = 0; i < ticks - 1; i++) {
-        let color = this.colorScale(i)
-        colors.push(color)
-      }
-
-      return colors
-    }
-
+    //
+    // colors () {
+    //   let ticks = this.tickCount
+    //   let colors = []
+    //   for (let i = 0; i < ticks - 1; i++) {
+    //     let color = this.colorScale(i)
+    //     colors.push(color)
+    //   }
+    //
+    //   return colors
+    // }
   },
 
   mounted () {
@@ -284,18 +283,19 @@ export default {
     // expand this for categorical, time data too
     getNumericLabels (dataDomain, variableType) {
       if (variableType === 'count') { dataDomain[0] = 0 }
-
-      let interval = (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1)
+      let interval = (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1) < this.tickMinStep ? this.tickMinStep : (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1)
 
       let ticks = []
 
       for (let i = 0; i < this.tickCount; i++) {
         let value = Math.floor(dataDomain[0] + i * interval)
 
-        if (interval <= 10) {
-          value = value
-        } else {
-          value = this.round(value, 10)
+        if (interval >= 10) {
+          if (dataDomain[0] === 0) {
+            value = this.round(value, 10)
+          } else {
+            value = this.round(value, 1)
+          }
         }
 
         ticks.push(value)
@@ -303,5 +303,24 @@ export default {
 
       return ticks
     },
+
+    generateColorScale (prop, colorBasis) {
+      let color = colorBasis ? colorBasis : this.stroke
+      if (color.constructor === Array) {
+        return (index) => {return color[index]}
+      } else {
+        let scaleOptions = {
+          aestheticType: prop,
+          domain: this._parsedScalingOptions[0],
+          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
+          scaleArgs: [[0, this.tickCount]],
+          type: color.type
+        }
+
+        let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
+        return scalingFunction
+      }
+    }
+
   }
 }

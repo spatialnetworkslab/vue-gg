@@ -58,16 +58,29 @@
         :y2="y2"
         :scale="'dependent'"
       />
-      <!-- work on scaling for size, padding between symbols -->
+      <!-- work on padding between symbols -->
       <vgg-symbol-legend
-        :scale="{ domain: 'explanatory' }"
+        :scale="{ domain: 'explanatory', domainMin: 0}"
         :fontSize="10"
         :titleFontSize="16"
-        :tickCount="5"
+        :tickCount="10"
         :x="50"
-        :y="y2 * 0.5"
+        :y="y2 * 0.6"
+        shape="triangle-down"
+        stroke="green"
+        :size="{ domain: 'explanatory'}"
+      />
+
+      <vgg-symbol-legend
+        :scale="{ domain: 'dependent', domainMin: 0}"
+        :fontSize="10"
+        :titleFontSize="16"
+        :tickCount="10"
         shape="triangle-down"
         :stroke="{ type: 'viridis'}"
+        :size="10"
+        :x="50"
+        :y="30"
       />
     </vgg-graphic>
 

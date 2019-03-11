@@ -17,10 +17,10 @@
 
         <vgg-map v-slot="{ row }">
 
-          <vgg-point
+          <vgg-symbol
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
-            :radius="{ val: row.dependent, scale: { domain: 'dependent' } }"
+            :size="{ val: row.dependent, scale: { domain: 'dependent' } }"
             :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
           />
 
@@ -73,18 +73,39 @@
       />
 
       <vgg-symbol-legend
-        :scale="{ domain: 'dependent' }"
-        :fontSize="10"
-        :tickCount="5"
-        position="tr"
-        :fill="{ type: 'viridis'}"
-        :size="{ domain: 'dependent' }"
+        :scale="{ domain: 'dependent', domainMin: 5}"
+        position="br"
+        :size="{ domain: 'dependent'}"
+        :tickCount="10"
+        :rowPadding="2"
+        :tickMinStep="12"
+        :height="300"
+        :columnPadding="25"
       />
-<!--
-      <vgg-discrete-legend
+
+      <!-- <vgg-symbol-legend
+        :scale="{ domain: 'explanatory', domainMin: 0}"
+        :fontSize="10"
+        :tickCount="10"
+        shape="triangle-down"
+        stroke="green"
+        :size="{ domain: 'explanatory'}"
+      /> -->
+
+
+      <vgg-symbol-legend
+        :scale="{ domain: 'explanatory', domainMin: 5}"
+        :tickCount="10"
+        :stroke="{ type: 'viridis' }"
+        :size="{ domain: 'explanatory'}"
+        :fill="{ type: 'viridis'}"
+        :columnPadding="30"
+      />
+
+      <!-- <vgg-gradient-legend
         :scale="{ domain: 'explanatory' }"
         :labels="'explanatory'"
-        :color="{ type: 'viridis'}"
+        :fill="{ type: 'viridis'}"
         :fontSize="10"
         :titleFontSize="16"
         :tickCount="10"
