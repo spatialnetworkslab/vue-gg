@@ -70,8 +70,17 @@ export default {
     dataScopeID (newVal, oldVal) {
       this.rename(newVal, oldVal)
     },
-    dataContainer (newVal, oldVal) {
-      this.update(this.dataScopeID, this.dataContainer)
+
+    data (newVal, oldVal) {
+      if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+        this.update(this.dataScopeID, this.dataContainer)
+      }
+    },
+
+    transform (newVal, oldVal) {
+      if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+        this.update(this.dataScopeID, this.dataContainer)
+      }
     }
   },
 

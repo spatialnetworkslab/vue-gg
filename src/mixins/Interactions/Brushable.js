@@ -197,7 +197,6 @@ export default {
 
         for (let uid in this.brushManager.rectangle.selection) {
           if (!currentSelection[uid]) {
-            console.log(uid)
             this.brushManager.rectangle.selection[uid].instance.$emit('deselect')
             delete this.brushManager.rectangle.selection[uid]
           }

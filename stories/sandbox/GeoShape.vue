@@ -16,17 +16,28 @@
       :x2="500"
       :y1="100"
       :y2="500"
+      :scale-geo="{}"
+      :brush="'rectangle'"
+      :brush-points.sync="brushPoints"
     >
 
-      <vgg-map v-slot="{ row }">
+      <vgg-map v-slot="{ row, i }">
 
         <vgg-polygon
-          :geometry="{ val: row.geometry, scaleGeo: {} }"
-          :fill="{ val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
-          @click="log(row)"
+          :geometry="row.geometry"
+          :fill="selected[i] ? 'yellow' : { val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
+          @select="handleSelect(i, true)"
+          @deselect="handleSelect(i, false)"
         />
 
       </vgg-map>
+
+      <vgg-polygon
+        v-if="brushPoints.length > 1"
+        :points="brushPoints"
+        :fill="'red'"
+        :opacity="0.6"
+      />
 
     </vgg-section>
 
@@ -43,7 +54,9 @@ export default {
 
   data () {
     return {
-      data: {}
+      data: {},
+      brushPoints: [],
+      selected: {}
     }
   },
 
@@ -73,7 +86,15 @@ export default {
       })
     },
 
-    log (row) { console.log(row) }
+    log (row) { console.log(row) },
+
+    handleSelect (i, add) {
+      if (add) {
+        this.$set(this.selected, i, true)
+      } else {
+        this.$delete(this.selected, i)
+      }
+    }
   }
 }
 </script>
