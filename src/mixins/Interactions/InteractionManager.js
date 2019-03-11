@@ -196,10 +196,6 @@ export default {
           handler(coords, e)
         }
       }
-
-      if (spatialIndex.trackedSelectables !== 0) {
-        this._handleSelectables(coords, e)
-      }
     },
 
     _handleMouseMoveMarks (coords, e) {
@@ -252,10 +248,6 @@ export default {
           spatialIndex.hoverItems--
         }
       }
-    },
-
-    _handleSelectables (coords, e) {
-      console.log(coords)
     },
 
     _handleMouseDownListener (e) {

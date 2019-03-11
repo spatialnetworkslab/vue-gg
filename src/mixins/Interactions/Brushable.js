@@ -12,10 +12,17 @@ export default {
     return {
       brushManager: {
         rectangle: {
-          start: null,
-          previous: null,
-          current: null,
-          end: null
+          selection: {},
+          data: {
+            start: null,
+            current: null,
+            end: null
+          },
+          screen: {
+            start: null,
+            current: null,
+            end: null
+          }
         }
       }
     }
@@ -32,6 +39,19 @@ export default {
 
     $$inverseTransform () {
       return this.$$coordinateTree.getInverseTransformation(this.coordinateTreeBranchID)
+    },
+
+    _listener () {
+      return this.$$interactionManager.interactionManager.spatialIndices.mousemove
+    },
+
+    _spatialIndex () {
+      return this._listener.selectableBush
+    },
+
+    _anySelectables () {
+      let listener = this._listener
+      return listener.trackedSelectables !== 0
     }
   },
 
@@ -79,57 +99,63 @@ export default {
       return events
     },
 
-    _onMouseDown (coords, e) {
+    _onMouseDown ({ x, y }, e) {
       let type = this._brush.type
-      let dataCoords = this._getDataCoords(coords)
+      let dataCoords = this._getDataCoords(x, y)
 
-      this.brushManager[type].start = dataCoords
+      let brush = this.brushManager[type]
+
+      for (let uid in brush.selection) {
+        brush.selection[uid].instance.$emit('deselect')
+        delete brush.selection[uid]
+      }
+
+      brush.screen.start = [x, y]
+      brush.data.start = dataCoords
     },
 
-    _onMouseMove (coords, e) {
+    _onMouseMove ({ x, y }, e) {
       let type = this._brush.type
-      if (this.brushManager[type].start) {
-        let dataCoords = this._getDataCoords(coords)
+      if (this.brushManager[type].screen.start) {
+        let dataCoords = this._getDataCoords(x, y)
 
-        this.brushManager[type].current = dataCoords
+        this.brushManager[type].screen.current = [x, y]
+        this.brushManager[type].data.current = dataCoords
         this._syncBrushPoints()
+
+        if (this._anySelectables) {
+          this._updateSelection()
+        }
       }
     },
 
-    _onMouseUp (coords, e) {
+    _onMouseUp ({ x, y }, e) {
       let type = this._brush.type
-      let dataCoords = this._getDataCoords(coords)
+      let dataCoords = this._getDataCoords(x, y)
 
-      this.brushManager[type].end = dataCoords
+      this.brushManager[type].screen.end = [x, y]
+      this.brushManager[type].data.end = dataCoords
       this._emitBrushEvent()
       this._syncBrushPoints()
+      this._resetEverything()
     },
 
-    _getDataCoords ({ x, y }) {
-      let dataCoords = this.$$inverseTransform([x, y])
-      return dataCoords
+    _getDataCoords (x, y) {
+      return this.$$inverseTransform([x, y])
     },
 
     _syncBrushPoints () {
       if (this._brush.type === 'rectangle') {
-        let start = this.brushManager.rectangle.start
-        let current = this.brushManager.rectangle.current
-        let end = this.brushManager.rectangle.end
+        let start = this.brushManager.rectangle.data.start
+        let current = this.brushManager.rectangle.data.current
+        let end = this.brushManager.rectangle.data.end
 
         let points = []
 
         if (!end) {
-          points = [
-            start,
-            [start[0], current[1]],
-            current,
-            [current[0], start[1]]
-          ]
+          points = this._getBrushPoints(start, current)
         } else {
           points = []
-          this.brushManager.rectangle.start = null
-          this.brushManager.rectangle.current = null
-          this.brushManager.rectangle.end = null
         }
 
         this.$emit('update:brushPoints', points)
@@ -139,17 +165,73 @@ export default {
     _emitBrushEvent () {
       let type = this._brush.type
       if (type === 'rectangle') {
-        let start = this.brushManager.rectangle.start
-        let end = this.brushManager.rectangle.end
+        let start = this.brushManager.rectangle.data.start
+        let end = this.brushManager.rectangle.data.end
 
-        let bbox = {
-          minX: Math.min(start[0], end[0]),
-          minY: Math.min(start[1], end[1]),
-          maxX: Math.max(start[0], end[0]),
-          maxY: Math.max(start[1], end[1])
-        }
+        let bbox = this._getBBox(start, end)
 
         this.$emit('brush', bbox)
+      }
+    },
+
+    _updateSelection () {
+      let type = this._brush.type
+      if (type === 'rectangle') {
+        let start = this.brushManager.rectangle.screen.start
+        let current = this.brushManager.rectangle.screen.current
+
+        let bbox = this._getBBox(start, current)
+
+        let hits = this._spatialIndex.search(bbox)
+        let currentSelection = {}
+
+        for (let hit of hits) {
+          let uid = hit.uid
+          currentSelection[uid] = true
+
+          if (!this.brushManager.rectangle.selection[uid]) {
+            this.brushManager.rectangle.selection[uid] = hit
+            hit.instance.$emit('select')
+          }
+        }
+
+        for (let uid in this.brushManager.rectangle.selection) {
+          if (!currentSelection[uid]) {
+            console.log(uid)
+            this.brushManager.rectangle.selection[uid].instance.$emit('deselect')
+            delete this.brushManager.rectangle.selection[uid]
+          }
+        }
+      }
+    },
+
+    _getBBox (a, b) {
+      return {
+        minX: Math.min(a[0], b[0]),
+        minY: Math.min(a[1], b[1]),
+        maxX: Math.max(a[0], b[0]),
+        maxY: Math.max(a[1], b[1])
+      }
+    },
+
+    _getBrushPoints (a, b) {
+      if (this._brush.type === 'rectangle') {
+        return [
+          a,
+          [a[0], b[1]],
+          b,
+          [b[0], a[1]]
+        ]
+      }
+    },
+
+    _resetEverything () {
+      let type = this._brush.type
+      for (let key in this.brushManager[type].screen) {
+        this.brushManager[type].screen[key] = null
+      }
+      for (let key in this.brushManager[type].data) {
+        this.brushManager[type].data[key] = null
       }
     }
   }

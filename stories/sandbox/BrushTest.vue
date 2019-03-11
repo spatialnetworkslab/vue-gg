@@ -36,7 +36,7 @@
         <vgg-point
           :x="{ val: row.a, scale: 'a' }"
           :y="{ val: row.b, scale: 'b' }"
-          :fill="selectedPoints[i] ? 'green' : 'black'"
+          :fill="selectedPoints[i] ? 'yellow' : 'black'"
           @select="handleSelect(i, true)"
           @deselect="handleSelect(i, false)"
         />
