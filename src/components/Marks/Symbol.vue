@@ -71,8 +71,8 @@ export default {
 
         'triangle-up': 'M0,-1L1,1L-1,1L0,-1Z',
         'triangle-down': 'M1,-1L0,1L-1,-1L1,-1Z',
-        'triangle-left': 'M-1,-1L1,0L-1,1L-1,-1Z',
-        'triangle-right': 'M1,-1L-1,0L1,1L1,-1Z',
+        'triangle-right': 'M-1,-1L1,0L-1,1L-1,-1Z',
+        'triangle-left': 'M1,-1L-1,0L1,1L1,-1Z',
 
         'star4': 'M0,.71L1,1L.71,0L1,-1L0,-.71L-1,-1L-.71,0L-1,1L0,.71Z',
         'star5': 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z',

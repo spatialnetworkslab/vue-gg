@@ -103,6 +103,7 @@ module.exports = {
                     'scales/coords',
                     'scales/opacity',
                     'scales/radius',
+                    'scales/shape',
                     ]
             },
             {
