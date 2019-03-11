@@ -13,9 +13,9 @@
     </linearGradient>
     </defs>
 
-    <!-- Vertical orientation -->
+    <!-- Vertical direction -->
     <vgg-section
-      v-if="orient==='vertical'"
+      v-if="direction==='vertical'"
       :x1="0"
       :x2="width"
       :y1="0"
@@ -49,7 +49,7 @@
             />
             <vgg-map v-slot="{ row }">
               <vgg-label
-                :x="95"
+                :x="80 + labelPadding"
                 :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
@@ -67,7 +67,7 @@
                 :fill="'url(#grad1)'"
               />
               <vgg-label
-                :x="5"
+                :x="labelPadding"
                 :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
@@ -79,9 +79,9 @@
       </vgg-section>
     </vgg-section>
 
-    <!-- Horizontal gradient -->
+    <!-- Horizontal direction -->
     <vgg-section
-      v-if="orient==='horizontal'"
+      v-if="direction==='horizontal'"
       :x1="0"
       :x2="height"
       :y1="0"
@@ -117,7 +117,7 @@
 
               <vgg-label
                 :x="row.location"
-                :y="7"
+                :y="labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -134,7 +134,7 @@
             <vgg-map v-slot="{ row }">
               <vgg-label
                 :x="row.location"
-                :y="80"
+                :y="75 + labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -176,7 +176,7 @@ export default {
       let l = this.legendLabels
       let colors = []
       if (!this.flip) {
-        if (this.orient === "vertical"){
+        if (this.direction === "vertical"){
           for (let i = l.length - 1; i >=0; i--) {
             let color = this.colorScale(l[i])
             colors.push(color)
@@ -188,7 +188,7 @@ export default {
           }
         }
       } else {
-        if (this.orient === "vertical"){
+        if (this.direction === "vertical"){
           for (let i = 0; i < l.length; i++) {
             let color = this.colorScale(l[i])
             colors.push(color)
@@ -206,7 +206,7 @@ export default {
 
     composeGradient() {
       let specs = {}
-      if (this.orient === "vertical" ) {
+      if (this.direction === "vertical" ) {
         specs.endX = "0%"
         specs.endY = "100%"
       } else {

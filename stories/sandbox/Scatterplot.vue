@@ -2,7 +2,7 @@
   <div>
 
     <vgg-graphic
-      :width="600"
+      :width="700"
       :height="600"
       :data="xy">
 
@@ -72,6 +72,15 @@
         :scale="'dependent'"
       />
 
+      <vgg-symbol-legend
+        :scale="{ domain: 'dependent' }"
+        :fontSize="10"
+        :tickCount="5"
+        position="tr"
+        :fill="{ type: 'viridis'}"
+        :size="{ domain: 'dependent' }"
+      />
+<!--
       <vgg-discrete-legend
         :scale="{ domain: 'explanatory' }"
         :labels="'explanatory'"
@@ -82,7 +91,8 @@
         :width="70"
         :height="300"
         flipNumbers
-      />
+      /> -->
+
 
     </vgg-graphic>
 

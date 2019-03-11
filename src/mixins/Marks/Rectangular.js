@@ -92,6 +92,7 @@ export default {
       let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h, this.parentBranch, 'y')
 
       let newCoords = { x1, x2, y1, y2 }
+
       return newCoords
     }
   }

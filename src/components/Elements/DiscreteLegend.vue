@@ -1,8 +1,8 @@
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
-    <!-- Vertical orientation -->
+    <!-- Vertical direction -->
     <vgg-section
-      v-if="orient==='vertical'"
+      v-if="direction==='vertical'"
       :x1="0"
       :x2="width"
       :y1="0"
@@ -33,11 +33,11 @@
                 :x2="75"
                 :y1="row.start"
                 :y2="row.end"
-                :fill="row.color"
+                :fill="row.fill"
               />
               <vgg-label
                 :x="80 + labelPadding"
-                :y="row.labelPost"
+                :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -51,11 +51,11 @@
                 :x2="100"
                 :y1="row.start"
                 :y2="row.end"
-                :fill="row.color"
+                :fill="row.fill"
               />
               <vgg-label
                 :x="labelPadding"
-                :y="row.labelPost"
+                :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -66,9 +66,9 @@
       </vgg-section>
     </vgg-section>
 
-    <!-- Horizontal gradient -->
+    <!-- Horizontal direction -->
     <vgg-section
-      v-if="orient==='horizontal'"
+      v-if="direction==='horizontal'"
       :x1="0"
       :x2="height"
       :y1="0"
@@ -99,10 +99,10 @@
                 :x2="row.end"
                 :y1="25"
                 :y2="95"
-                :fill="row.color"
+                :fill="row.fill"
               />
               <vgg-label
-                :x="row.labelPost"
+                :x="row.location"
                 :y="labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
@@ -116,10 +116,10 @@
                 :x2="row.end"
                 :y1="0"
                 :y2="75"
-                :fill="row.color"
+                :fill="row.fill"
               />
               <vgg-label
-                :x="row.labelPost"
+                :x="row.location"
                 :y="75 + labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
@@ -151,7 +151,7 @@ export default {
     boxes () {
       let boxes = []
       let ticks = this.tickCount
-      let l = this.legendLabels, start = 0, end = 0, labelPost
+      let l = this.legendLabels, start = 0, end = 0, location
 
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
@@ -161,15 +161,15 @@ export default {
             start = end
             end += this.segmentHeight
           }
-          labelPost = (start + end)/2
-          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          location = (start + end)/2
+          boxes.push({fill: this.colorScale(l[i]), start: start, end: end, location: location, label: l[i]})
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
           start = end
           end += this.segmentHeight
-          labelPost = (start + end)/2
-          boxes.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          location = (start + end)/2
+          boxes.push({fill: this.colorScale(l[i]), start: start, end: end, location: location, label: l[i]})
        }
       }
 

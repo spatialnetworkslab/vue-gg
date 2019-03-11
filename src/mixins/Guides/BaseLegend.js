@@ -47,7 +47,7 @@ export default {
       default: undefined
     },
 
-    orient: {
+    direction: {
       type: String,
       default: 'vertical',
       validator: function (value) {
@@ -85,12 +85,12 @@ export default {
 
     titleFontSize: {
       type: Number,
-      default: 16
+      default: 14
     },
 
-    color: {
+    fill: {
       type: [String, Object, Array],
-      default: '#8FD8D8',
+      default: '#8FD8D8'
     },
 
     labelPadding: {
@@ -108,7 +108,19 @@ export default {
       default: undefined,
     }
 
-    //direction: {},
+    //columnPadding
+    //rowPadding
+    //fillColor = background color
+    //gradient opacity
+    //label opacity
+    //tickMinStep
+    //titleAnchor
+    //titleColor
+    //titleFont
+    //titleFontSize
+    //titleOpacity
+    //titleOrient
+    //titlePadding
     //fill: {},
     //offset: {},
     //padding: {},
@@ -117,6 +129,7 @@ export default {
     //tickCount: {},
     //values: {},
     //zindex: {}
+    //ordering legends
   },
   computed: {
     _parsedScalingOptions () {
@@ -140,7 +153,8 @@ export default {
     },
 
     ranges () {
-      return this.convertCoordinateSpecification(this.aesthetics)
+      console.log('###', this.coordinateSpecification)
+      return this.coordinateSpecification
     },
 
     plotWidth () {
@@ -159,13 +173,13 @@ export default {
       if (!this.x && !this.y) {
         let p = this.position
         if (p === 'right' || p === "tr" || p === "br" || p === "cr") {
-          if (this.orient === "vertical") {
-            return this.plotWidth - this.width
+          if (this.direction === "vertical") {
+            return (this.plotWidth - this.width) * 0.98
           } else {
             return this.plotWidth - this.height
           }
         } else {
-          return 0
+          return this.plotWidth * 0.02
         }
       } else {
         return this.x
@@ -176,7 +190,7 @@ export default {
       if (!this.x && !this.y) {
         let p = this.position
         if (p === 'top' || p === "tl" || p === "tr") {
-          if (this.orient === "vertical"){
+          if (this.direction === "vertical"){
             return this.height - this.plotHeight * 0.95
           } else {
             return this.width - this.plotHeight + this.plotMargin
@@ -209,11 +223,19 @@ export default {
             return this.getNumericLabels(variableData, variableType)
           }
         }
+      } else {
+        let variableType = this._domainType
+        let variableData = this._domain
+        if (variableType === 'nominal') {
+          return variableData
+        } else {
+          return this.getNumericLabels(variableData, variableType)
+        }
       }
     },
 
     colorScale () {
-      let color = this.color
+      let color = this.fill
 
       if (color.constructor === Array) {
         return (index) => {return color[index]}
@@ -223,7 +245,7 @@ export default {
           domain: this._parsedScalingOptions[0],
           domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
           scaleArgs: [[0, this.tickCount]],
-          type: this.color.type
+          type: color.type
         }
 
         let scalingFunction = createScale('color', this.$$dataInterface, scaleOptions)

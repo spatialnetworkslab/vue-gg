@@ -39,11 +39,11 @@ export default function (prop, context, passedScalingOptions) {
   // Pixel-value props
   if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
     let range
+    console.log('prop', prop, scalingOptions)
     if (!scalingOptions.range) {
       console.warn(`No range specified for prop ${prop}. Defaulting to [0, 10]`)
       range = [0, 10]
     } else { range = scalingOptions.range }
-
     return createCoordsScale(prop, domainType, domain, range, scalingOptions)
   }
 

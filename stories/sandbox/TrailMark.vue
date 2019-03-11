@@ -72,16 +72,15 @@
       :fontSize="10"
       :titleFontSize="16"
       :tickCount="6"
-
-      shape="triangle-left"
+      shape="line"
       :color="colors"
       :size="15"
-      :stroke-width="3"
+      :stroke-width="{ val: 'rainfall'}"
       :height="200"
 
       orient="vertical"
-      :x="50"
-      :y="y2*0.01"
+      :x="600"
+      :y="300"
     />
   </vgg-graphic>
 </template>

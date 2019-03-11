@@ -1,8 +1,8 @@
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
-    <!-- Vertical orientation -->
+    <!-- Vertical direction -->
     <vgg-section
-      v-if="orient==='vertical'"
+      v-if="direction==='vertical'"
       :x1="0"
       :x2="width"
       :y1="0"
@@ -28,18 +28,24 @@
         <vgg-data :data="symbols">
           <g v-if="!flipNumbers">
             <vgg-map v-slot="{ row }">
+              <vgg-path
+                v-if="shape==='line'"
+                :points="[[0, row.location], [70, row.location]]"
+                :strokeWidth="strokeWidth"
+              />
               <vgg-symbol
+                v-else
                 :x="0"
-                :y="row.labelPost"
-                :stroke="row.color"
-                :stroke-width="strokeWidth"
-                :size="size"
+                :y="row.location"
+                :stroke="row.stroke"
+                :stroke-width="5"
+                :size="row.size"
                 :shape="shape"
-                fill="none"
+                :fill="row.fill"
               />
               <vgg-label
-                :x="95"
-                :y="row.labelPost"
+                :x="80"
+                :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -50,8 +56,8 @@
             <vgg-map v-slot="{ row }">
               <vgg-symbol
                 :x="100"
-                :y="row.labelPost"
-                :stroke="row.color"
+                :y="row.location"
+                :stroke="row.stroke"
                 :stroke-width="strokeWidth"
                 :size="size"
                 :shape="shape"
@@ -59,7 +65,7 @@
               />
               <vgg-label
                 :x="5"
-                :y="row.labelPost"
+                :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -72,7 +78,7 @@
 
     <!-- Horizontal gradient -->
     <vgg-section
-      v-if="orient==='horizontal'"
+      v-if="direction==='horizontal'"
       :x1="0"
       :x2="height"
       :y1="0"
@@ -99,16 +105,16 @@
           <g v-if="!flipNumbers">
             <vgg-map v-slot="{ row }">
               <vgg-symbol
-                :x="row.labelPost"
+                :x="row.location"
                 :y="labelPadding"
-                :stroke="row.color"
+                :stroke="row.stroke"
                 :stroke-width="strokeWidth"
                 :size="size"
                 :shape="shape"
                 fill="none"
               />
               <vgg-label
-                :x="row.labelPost"
+                :x="row.location"
                 :y="50 + labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
@@ -118,16 +124,16 @@
           </g><g v-else>
             <vgg-map v-slot="{ row }">
               <vgg-symbol
-                :x="row.labelPost"
-                :y="60"
-                :stroke="row.color"
+                :x="row.location"
+                y="60"
+                :stroke="row.stroke"
                 :stroke-width="strokeWidth"
                 :size="size"
                 :shape="shape"
                 fill="none"
               />
               <vgg-label
-                :x="row.labelPost"
+                :x="row.location"
                 :y="labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
@@ -153,6 +159,11 @@ export default {
   mixins: [BaseLegend, Rectangular],
 
   props: {
+    type: {
+      type: String,
+      default: 'symbol'
+    },
+
     shape: {
       type: String,
       default: 'circle',
@@ -161,58 +172,42 @@ export default {
       },
     },
 
-    symbolOpacity: {
+    // distance of text from symbols
+    labelPadding: {
+      type: Number,
+      default: 5
+    },
+
+    // sizeScale
+    size: {
       type: [Number, Object, Array],
       default: 20,
     },
 
-    color: {
-      type: String,
-      default: '#8FD8D8',
-    },
-
-    size: {
-      type: Number,
+    strokeWidth: {
+      type: [Number, Object, Array],
       default: 10,
     },
+
     // colorScale: {
     //   type: [String, Array],
     //   default: undefined
     // },
 
-    symbolShape: {
-      type: [String, Array],
-      default: 'rect'
-    },
-
-    symbolPadding: {
-      type: Number,
-      default: 5
-    },
-
-    labelPadding: {
-      type: Number,
-      default: 10
-    },
-
-    strokeColor: {
+    stroke: {
       type: String,
       default: '#8FD8D8',
-    },
-
-    strokeWidth: {
-      type: [Number, Object, Array],
-      default: 20,
-    },
-
-    strokeOpacity: {
-      type: [Number, Object, Array],
-      default: 1,
     },
 
     fill: {
       type: String,
-      default: '#8FD8D8',
+      default: 'none',
+    },
+
+    // opacityScale
+    strokeOpacity: {
+      type: [Number, Object, Array],
+      default: 1,
     },
 
     fillOpacity: {
@@ -220,87 +215,54 @@ export default {
       default: 1,
     },
 
-    opacity: {
-      type: [Number, Object, Array],
-      default: 1,
+    symbolPadding:{
+      type : Number,
+      default: 5
     },
+
+    shape:{
+      type: [Array, String],
+      default: 'circle'
+    },
+
+    fillShape:{
+      type: Boolean,
+      default: false
+    }
+
   },
 
-  computed: {
-    symbolWidthScale () {
-      let size = this.symbolWidth
+  computed:{
+    // strokeOpacity, fillOpacity
+    opacityScale () {
+
+    },
+
+    // covers size/radius, strokeWidth
+    sizeScale () {
+      let size = this.size
       if (size.constructor === Number) {
         return () => {return size}
       } else if (size.constructor === Array) {
         return (index) => {return size[index]}
       } else {
         let scaleOptions = {
-          aestheticType: 'xy',
-          scaleArgs: [this.domain, size.range]
+          aestheticType: 'size',
+          domain: this._parsedScalingOptions[0],
+          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
+          range: this.size.range ? this.size.range : undefined,
         }
-        let scalingFunction = createScale(size.scale, scaleOptions)
+        console.log('range y', this.parentBranch.ranges.y)
+        let scalingFunction = createScale('size', this.$$dataInterface, scaleOptions)
         return scalingFunction
       }
     },
 
-    symbolHeightScale () {
-      let size = this.symbolHeight
-      if (size.constructor === Number) {
-        return () => {return size}
-      } else if (size.constructor === Array) {
-        return (index) => {return size[index]}
-      } else {
-        let scaleOptions = {
-          aestheticType: 'xy',
-          scaleArgs: [this.domain, size.range]
-        }
-        let scalingFunction = createScale(size.scale, scaleOptions)
-        return scalingFunction
-      }
-    },
-
-    colorScaleFunc () {
-      let color = this.color
-      let colorScale = this.colorScale
-      if (!colorScale) {
-        return () => {return color}
-      }
-      if (colorScale.constructor === Array) {
-        return (index) => {return colorScale[index]}
-      } else {
-        let scaleOptions = {
-          aestheticType: 'color',
-          scaleArgs: [this.domain, 0]
-        }
-        let scalingFunction = createScale(colorScale, scaleOptions)
-        return scalingFunction
-      }
-    },
-
-    symbols () {
-      let symbols = []
-      let l = this.legendLabels
-      for (let i = 0; i < l.length; i++) {
-        let w = this.symbolWidthScale(i)
-        let h = this.symbolHeightScale(i)
-        let c = this.colorScaleFunc(i)
-        symbols.push({w: w, h: h, color: c, label: l[i]})
-      }
-      return symbols
-    },
-
-    maxSymbolHeight () {
-      return this.symbols[this.symbols.length - 1].h
-    },
-
-    maxSymbolWidth () {
-      return this.symbols[this.symbols.length - 1].w
-    },
-
+    // work on categorical scales - shapes, colors, sizes, stroke widths
     symbols () {
       let symbols = []
       let ticks = this.tickCount
-      let l = this.legendLabels, start = 0, end = 0, labelPost
+      let l = this.legendLabels, start = 0, end = 0, location
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
           if (i === 0) {
@@ -309,15 +271,18 @@ export default {
             start = end
             end += this.segmentHeight
           }
-          labelPost = (start + end)/2
-          symbols.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          location = (start + end)/2
+          console.log('scale function', this.sizeScale(l[i]), l[i])
+          symbols.push({size: this.sizeScale(l[i]), fill: this.colorScale(l[i]), stroke: this.colorScale(l[i]), location: location, label: l[i]})
+          //symbols.push({strokeWidth: , stroke: , fill: , strokeOpacity: , fillOpacity, start: start, end: end, location: location, label: l[i]})
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
           start = end
           end += this.segmentHeight
-          labelPost = (start + end)/2
-          symbols.push({color: this.colorScale(l[i]), start: start, end: end, labelPost: labelPost, label: l[i]})
+          location = (start + end)/2
+          //symbols.push({color: this.colorScale(l[i]), start: start, end: end, location: location, label: l[i]})
+          symbols.push({size: this.sizeScale(l[i]), fill: this.colorScale(l[i]), stroke: this.colorScale(l[i]), location: location, label: l[i]})
        }
       }
 
@@ -326,6 +291,8 @@ export default {
   },
 
   methods: {
+
+
   }
 
 }
