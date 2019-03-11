@@ -73,12 +73,9 @@
       :titleFontSize="16"
       :tickCount="6"
       shape="line"
-      :color="colors"
       :size="15"
-      :stroke-width="{ val: 'rainfall'}"
+      :stroke-width="{ domain: 'rainfall', range: [0, 10]}"
       :height="200"
-
-      orient="vertical"
       :x="600"
       :y="300"
     />

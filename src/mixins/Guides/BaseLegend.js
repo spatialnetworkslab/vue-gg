@@ -214,11 +214,11 @@ export default {
     titleY () {
       let p = this.legendPosition
       if (p === 'tr' || p === "tl" || p === "right" || p === "left") {
-        return 105
+        return 100
       } else if (p === "bl" || p === "br") {
         return 0
       } else {
-        return 105
+        return 102
       }
     },
 

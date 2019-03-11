@@ -30,7 +30,7 @@
             <vgg-map v-slot="{ row, i }">
               <vgg-path
                 v-if="shape==='line'"
-                :points="[[0, row.location], [70, row.location]]"
+                :points="[[20, row.location], [50, row.location]]"
                 :strokeWidth="row.strokeWidth"
               />
               <vgg-symbol
@@ -44,6 +44,14 @@
                 :fill="row.fill"
               />
               <vgg-label
+                v-if="shape==='line'"
+                :x="80"
+                :y="row.location"
+                :text="row.label"
+                :font-size="fontSize"
+              />
+              <vgg-label
+                v-else
                 :x="70"
                 :y="row.location + labelPadding * i/10"
                 :text="row.label"
@@ -87,7 +95,7 @@
     >
       <vgg-label
         :text="title"
-        :x="titleX + 10"
+        :x="titleX"
         :y="titleY + titlePadding"
         :font-size="titleFontSize"
         font-weight="bold"
@@ -107,6 +115,7 @@
               v-if="shape==='line'"
               :points="[[0, row.location], [70, row.location]]"
               :strokeWidth="row.strokeWidth"
+              :stroke="row.stroke"
             />
             <vgg-symbol
               v-else
@@ -269,7 +278,7 @@ export default {
           symbols.push(this.parseAttributes(symbol, l[i]))
         }
       }
-
+    console.log(symbols)
     return symbols
     }
   },

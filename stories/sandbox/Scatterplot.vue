@@ -78,6 +78,7 @@
         :size="{ domain: 'dependent'}"
         :tickCount="8"
         :tickMinStep="12"
+        direction="horizontal"
       />
 
       <!-- <vgg-symbol-legend
@@ -96,7 +97,6 @@
         :stroke="{ type: 'viridis' }"
         :size="{ domain: 'dependent'}"
         :fill="{ type: 'viridis'}"
-        direction="horizontal"
         flipNumbers
       />
 
