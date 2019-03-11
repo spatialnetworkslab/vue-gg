@@ -390,9 +390,7 @@ export default {
           slotContent.push(...gridLines)
         }
 
-        let on = this.generateEventListeners()
-
-        return createElement('g', { class: 'section', on }, slotContent)
+        return createElement('g', { class: 'section' }, slotContent)
       }
 
       if (this.axes) {

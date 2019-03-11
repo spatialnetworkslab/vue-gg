@@ -1,5 +1,5 @@
 import rbush from 'rbush'
-import debounce from 'lodash.debounce'
+// import debounce from 'lodash.debounce'
 
 import ItemCache from './utils/ItemCache/ItemCache.js'
 import cacheItem from './utils/ItemCache/cacheFuncs/cacheItem.js'
@@ -16,15 +16,53 @@ export default {
             bush: rbush(),
             active: false,
             trackedItems: 0,
-            handler (e) { this._handleClickListener(e) }
+
+            trackedBrushes: 0,
+
+            trackedSelectables: 0,
+
+            handler: this._handleClickListener
           },
+
           mousemove: {
             bush: rbush(),
+            selectableBush: rbush(),
             active: false,
             trackedItems: 0,
-            handler (e) { debounce(this._handleMouseMoveListener, 25)(e) },
+
             hovering: {},
-            hoverItems: 0
+            hoverItems: 0,
+
+            trackedBrushes: 0,
+            brushHandlers: {},
+
+            trackedSelectables: 0,
+
+            handler: this._handleMouseMoveListener
+          },
+
+          mousedown: {
+            active: false,
+            trackedItems: 0,
+
+            trackedBrushes: 0,
+            brushHandlers: {},
+
+            trackedSelectables: 0,
+
+            handler: this._handleMouseDownListener
+          },
+
+          mouseup: {
+            active: false,
+            trackedItems: 0,
+
+            trackedBrushes: 0,
+            brushHandlers: {},
+
+            trackedSelectables: 0,
+
+            handler: this._handleMouseUpListener
           }
         },
 
@@ -52,13 +90,33 @@ export default {
   },
 
   methods: {
-    // These two functions are exposed to the component
+    // These functions are exposed to the component
     addItem (uid, type, coordinates, instance, events) {
       this._cacheItem(uid, type, coordinates, instance, events)
     },
 
     removeItem (uid) {
       this._removeItem(uid)
+    },
+
+    addBrush (uid, handlers) {
+      for (let listener of ['mousedown', 'mousemove', 'mouseup']) {
+        let spatialIndex = this.interactionManager.spatialIndices[listener]
+        spatialIndex.trackedBrushes++
+        spatialIndex.brushHandlers[uid] = handlers[listener]
+      }
+
+      this._updateListeners()
+    },
+
+    removeBrush (uid) {
+      for (let listener of ['mousedown', 'mousemove', 'mouseup']) {
+        let spatialIndex = this.interactionManager.spatialIndices[listener]
+        spatialIndex.trackedBrushes--
+        delete spatialIndex.brushHandlers[uid]
+      }
+
+      this._updateListeners()
     },
 
     // These functions are all for internal use only
@@ -90,8 +148,11 @@ export default {
     _updateListeners () {
       for (let listener in this.interactionManager.spatialIndices) {
         let spatialIndex = this.interactionManager.spatialIndices[listener]
-
-        if (spatialIndex.trackedItems === 0) {
+        if (
+          spatialIndex.trackedItems === 0 &&
+          spatialIndex.trackedBrushes === 0 &&
+          spatialIndex.trackedSelectables === 0
+        ) {
           let handler = spatialIndex.handler.bind(this)
           spatialIndex.active = false
           this.svg.removeEventListener(listener, handler)
@@ -123,6 +184,25 @@ export default {
 
     _handleMouseMoveListener (e) {
       let coords = getCoords(this.svg, this.svgPoint, e)
+      let spatialIndex = this.interactionManager.spatialIndices['mousemove']
+
+      if (spatialIndex.trackedItems !== 0) {
+        this._handleMouseMoveMarks(coords, e)
+      }
+
+      if (spatialIndex.trackedBrushes !== 0) {
+        for (let sectionID in spatialIndex.brushHandlers) {
+          let handler = spatialIndex.brushHandlers[sectionID]
+          handler(coords, e)
+        }
+      }
+
+      if (spatialIndex.trackedSelectables !== 0) {
+        this._handleSelectables(coords, e)
+      }
+    },
+
+    _handleMouseMoveMarks (coords, e) {
       let spatialIndex = this.interactionManager.spatialIndices['mousemove']
       let hits = collisionTest(coords, spatialIndex)
 
@@ -171,6 +251,30 @@ export default {
           delete spatialIndex.hovering[uid]
           spatialIndex.hoverItems--
         }
+      }
+    },
+
+    _handleSelectables (coords, e) {
+      console.log(coords)
+    },
+
+    _handleMouseDownListener (e) {
+      let coords = getCoords(this.svg, this.svgPoint, e)
+      let spatialIndex = this.interactionManager.spatialIndices['mousedown']
+
+      for (let sectionID in spatialIndex.brushHandlers) {
+        let handler = spatialIndex.brushHandlers[sectionID]
+        handler(coords, e)
+      }
+    },
+
+    _handleMouseUpListener (e) {
+      let coords = getCoords(this.svg, this.svgPoint, e)
+      let spatialIndex = this.interactionManager.spatialIndices['mouseup']
+
+      for (let sectionID in spatialIndex.brushHandlers) {
+        let handler = spatialIndex.brushHandlers[sectionID]
+        handler(coords, e)
       }
     }
   },

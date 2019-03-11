@@ -1,5 +1,3 @@
-import getCoords from './utils/getCoords.js'
-
 export default {
   inject: ['$$interactionManager'],
 
@@ -15,6 +13,7 @@ export default {
       brushManager: {
         rectangle: {
           start: null,
+          previous: null,
           current: null,
           end: null
         }
@@ -36,8 +35,37 @@ export default {
     }
   },
 
+  watch: {
+    _brush: 'updateInteractionManager'
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      if (this._brush) {
+        this.updateInteractionManager(this._brush)
+      }
+    })
+  },
+
+  beforeDestroy () {
+    if (this._brush) {
+      this.$$interactionManager.removeBrush(this.uuid)
+    }
+  },
+
   methods: {
-    generateEventListeners () {
+    updateInteractionManager (newVal, oldVal) {
+      if (oldVal === undefined && newVal !== undefined) {
+        let handlers = this.generateHandlers()
+        this.$$interactionManager.addBrush(this.uuid, handlers)
+      }
+
+      if (oldVal !== undefined && newVal === undefined) {
+        this.$$interactionManager.removeBrush(this.uuid)
+      }
+    },
+
+    generateHandlers () {
       let brush = this._brush
       let events
 
@@ -51,37 +79,33 @@ export default {
       return events
     },
 
-    _onMouseDown (e) {
+    _onMouseDown (coords, e) {
       let type = this._brush.type
-      let dataCoords = this._getDataCoords(e)
+      let dataCoords = this._getDataCoords(coords)
 
       this.brushManager[type].start = dataCoords
     },
 
-    _onMouseMove (e) {
+    _onMouseMove (coords, e) {
       let type = this._brush.type
       if (this.brushManager[type].start) {
-        let dataCoords = this._getDataCoords(e)
+        let dataCoords = this._getDataCoords(coords)
 
         this.brushManager[type].current = dataCoords
         this._syncBrushPoints()
       }
     },
 
-    _onMouseUp (e) {
+    _onMouseUp (coords, e) {
       let type = this._brush.type
-      let dataCoords = this._getDataCoords(e)
+      let dataCoords = this._getDataCoords(coords)
 
       this.brushManager[type].end = dataCoords
       this._emitBrushEvent()
       this._syncBrushPoints()
     },
 
-    _getDataCoords (e) {
-      let svg = this.$$interactionManager.svg
-      let svgPoint = this.$$interactionManager.svgPoint
-      let { x, y } = getCoords(svg, svgPoint, e)
-
+    _getDataCoords ({ x, y }) {
       let dataCoords = this.$$inverseTransform([x, y])
       return dataCoords
     },

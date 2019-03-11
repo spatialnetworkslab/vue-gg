@@ -1,17 +1,19 @@
 import findBoundingBoxPath from '../../geometry/findBoundingBoxPath.js'
 import { syncListeners, updateIndices } from './syncSpatialIndices.js'
 
-export default function (uid, type, coords, instance, itemCache, listeners, spatialIndices) {
+export default function (uid, type, coords, instance, itemCache, listeners, selectable, spatialIndices) {
   let args = [coords, instance.strokeWidth]
   let hasnt = !itemCache.hasItem(uid)
   let nonIdentical = !itemCache.itemIsIdentical(uid, args)
 
   let oldItem
   let oldListeners = {}
+  let oldSelectable = false
 
   if (!hasnt) {
     oldItem = itemCache.getItem(uid)
     oldListeners = itemCache.getListeners(uid)
+    oldSelectable = itemCache.getSelectable(uid)
   }
 
   if (hasnt || nonIdentical) {
@@ -45,15 +47,16 @@ export default function (uid, type, coords, instance, itemCache, listeners, spat
 
     let item = { uid, geometry, instance, minX, minY, maxX, maxY }
 
-    updateIndices(spatialIndices, oldListeners, listeners, oldItem, item)
+    updateIndices(spatialIndices, oldListeners, listeners, oldSelectable, selectable, oldItem, item)
 
     if (hasnt) {
-      itemCache.addItem(uid, args, item, listeners)
+      itemCache.addItem(uid, args, item, listeners, selectable)
     } else {
-      itemCache.updateItem(uid, args, item, listeners)
+      itemCache.updateItem(uid, args, item, listeners, selectable)
     }
   } else {
-    syncListeners(spatialIndices, oldListeners, listeners, oldItem)
+    syncListeners(spatialIndices, oldListeners, listeners, oldSelectable, selectable, oldItem)
     itemCache.updateListeners(uid, listeners)
+    itemCache.updateSelectable(uid, selectable)
   }
 }

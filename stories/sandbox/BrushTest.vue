@@ -2,6 +2,7 @@
   <vgg-graphic
     :width="500"
     :height="500"
+    :data="data"
   >
 
     <vgg-section
@@ -13,7 +14,6 @@
       :scale-y="[0, 1]"
       :brush="'rectangle'"
       :brush-points.sync="brushPoints"
-      @brush="log($event)"
     >
 
       <vgg-rectangle
@@ -32,10 +32,15 @@
         :opacity="0.6"
       />
 
-      <vgg-point
-        :x="0.5"
-        :y="0.5"
-      />
+      <vgg-map v-slot="{ row, i }">
+        <vgg-point
+          :x="{ val: row.a, scale: 'a' }"
+          :y="{ val: row.b, scale: 'b' }"
+          :fill="selectedPoints[i] ? 'green' : 'black'"
+          @select="handleSelect(i, true)"
+          @deselect="handleSelect(i, false)"
+        />
+      </vgg-map>
 
     </vgg-section>
 
@@ -46,12 +51,26 @@
 export default {
   data () {
     return {
-      brushPoints: []
+      brushPoints: [],
+      selectedPoints: {},
+
+      data: {
+        a: new Array(50).fill(0).map((_, i) => Math.random() * i),
+        b: new Array(50).fill(0).map((_, i) => Math.random() * i)
+      }
     }
   },
 
   methods: {
-    log: console.log
+    log: console.log,
+
+    handleSelect (i, add) {
+      if (add) {
+        this.$set(this.selectedPoints, i, true)
+      } else {
+        this.$delete(this.selectedPoints, i)
+      }
+    }
   }
 }
 </script>

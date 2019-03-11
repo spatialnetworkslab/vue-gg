@@ -5,24 +5,25 @@ import cachePathItem from './cachePathItem.js'
 
 export default function (uid, type, coordinates, instance, itemCache, events, spatialIndices) {
   let listeners = getListeners(events)
+  let selectable = isSelectable(events)
 
   if (['point', 'symbol'].includes(type)) {
-    cachePointItem(uid, type, coordinates, instance, itemCache, listeners, spatialIndices)
+    cachePointItem(uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices)
     return
   }
 
   if (type === 'rectangle') {
-    cacheRectangleItem(uid, type, coordinates, instance, itemCache, listeners, spatialIndices)
+    cacheRectangleItem(uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices)
     return
   }
 
   if (type === 'line') {
-    cacheLineItem(uid, type, coordinates, instance, itemCache, listeners, spatialIndices)
+    cacheLineItem(uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices)
     return
   }
 
   if (['polygon', 'multiline', 'path', 'area', 'trail'].includes(type)) {
-    cachePathItem(uid, type, coordinates, instance, itemCache, listeners, spatialIndices)
+    cachePathItem(uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices)
   }
 }
 
@@ -32,6 +33,8 @@ const listenerLookup = {
   mouseover: 'mousemove',
   mouseout: 'mousemove'
 }
+
+const selectEvents = ['select', 'unselect']
 
 // Creates an object with listeners (click, mousemove) as keys, and arrays of
 // events (click, hover, mouseenter, mouseout...) as values.
@@ -48,4 +51,11 @@ function getListeners (events) {
   }
 
   return listeners
+}
+
+function isSelectable (events) {
+  for (let event of selectEvents) {
+    if (events.includes(event)) { return true }
+  }
+  return false
 }

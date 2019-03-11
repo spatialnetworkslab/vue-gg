@@ -1,14 +1,21 @@
-export default function (uid, type, coordinates, instance, itemCache, listeners, spatialIndices) {
+export default function (uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices) {
   // The point calculation is so fast that the cache logic is probably slower.
   // So we will just always update the point
   if (itemCache.hasItem(uid)) {
     let item = itemCache.getItem(uid)
     let oldListeners = itemCache.getListeners(uid)
+    let oldSelectable = itemCache.getSelectable(uid)
 
     for (let listener in oldListeners) {
       let spatialIndex = spatialIndices[listener]
       spatialIndex.bush.remove(item)
       spatialIndex.trackedItems--
+    }
+
+    if (oldSelectable) {
+      let spatialIndex = spatialIndices.mousemove
+      spatialIndex.selectableBush.remove(item)
+      spatialIndex.trackedSelectables--
     }
 
     itemCache.deleteItem(uid)
@@ -38,5 +45,11 @@ export default function (uid, type, coordinates, instance, itemCache, listeners,
     let spatialIndex = spatialIndices[listener]
     spatialIndex.bush.insert(item)
     spatialIndex.trackedItems++
+  }
+
+  if (selectable) {
+    let spatialIndex = spatialIndices.mousemove
+    spatialIndex.selectableBush.insert(item)
+    spatialIndex.trackedSelectables++
   }
 }
