@@ -11,8 +11,8 @@ export default {
   data () {
     return {
       brushManager: {
+        selection: {},
         rectangle: {
-          selection: {},
           data: {
             start: null,
             current: null,
@@ -104,10 +104,11 @@ export default {
       let dataCoords = this._getDataCoords(x, y)
 
       let brush = this.brushManager[type]
+      let selection = this.brushManager.selection
 
-      for (let uid in brush.selection) {
-        brush.selection[uid].instance.$emit('deselect')
-        delete brush.selection[uid]
+      for (let uid in selection) {
+        selection[uid].instance.$emit('deselect')
+        delete selection[uid]
       }
 
       brush.screen.start = [x, y]
@@ -189,16 +190,16 @@ export default {
           let uid = hit.uid
           currentSelection[uid] = true
 
-          if (!this.brushManager.rectangle.selection[uid]) {
-            this.brushManager.rectangle.selection[uid] = hit
+          if (!this.brushManager.selection[uid]) {
+            this.brushManager.selection[uid] = hit
             hit.instance.$emit('select')
           }
         }
 
-        for (let uid in this.brushManager.rectangle.selection) {
+        for (let uid in this.brushManager.selection) {
           if (!currentSelection[uid]) {
-            this.brushManager.rectangle.selection[uid].instance.$emit('deselect')
-            delete this.brushManager.rectangle.selection[uid]
+            this.brushManager.selection[uid].instance.$emit('deselect')
+            delete this.brushManager.selection[uid]
           }
         }
       }
