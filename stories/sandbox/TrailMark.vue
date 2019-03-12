@@ -68,13 +68,13 @@
 
     <vgg-symbol-legend
       :scale="{ domain: 'rainfall'}"
-      :labels="'rainfall'"
       :fontSize="10"
       :titleFontSize="16"
       :tickCount="6"
       shape="line"
       :size="15"
-      :stroke-width="{ domain: 'rainfall', range: [0, 10]}"
+      :stroke-width="{ domain: 'rainfall'}"
+      stroke="blue"
       :height="200"
       :x="600"
       :y="300"

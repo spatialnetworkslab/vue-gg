@@ -226,7 +226,7 @@ export default {
       if (!this.x && !this.y) {
         let p = this.position
         if (p === 'right' || p === "tr" || p === "br" || p === "cr") {
-          return (this.plotWidth - this.width)
+          return (this.plotWidth - this.width) * 0.98
         } else {
           return this.plotWidth * 0.01
         }
@@ -333,6 +333,7 @@ export default {
 
     generateColorScale (prop, colorBasis) {
       let color = colorBasis ? colorBasis : this.stroke
+      
       if (color.constructor === Array) {
         return (index) => {return color[index]}
       } else {

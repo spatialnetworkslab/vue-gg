@@ -130,50 +130,58 @@
         let top = [], bottom = []
 
         for (let ix = 0; ix < points.length - 1; ix++) {
-          let total = [], point = {}, nextPt = {}
-          point.coord = this.$$transform(points[ix].coord)
-          nextPt.coord = this.$$transform(points[ix + 1].coord)
-          let x1 = point.coord[0]
-          let y1 = point.coord[1]
-          let x2 = nextPt.coord[0]
-          let y2 = nextPt.coord[1]
-          let w1 = points[ix].strokeWidth/2
-          let w2 = points[ix + 1].strokeWidth/2
+          if (points[ix + 1]){
+            let total = [], point = {}, nextPt = {}
+            if (points[ix].coord){
+              point.coord = this.$$transform(points[ix].coord)
+              nextPt.coord = this.$$transform(points[ix + 1].coord)
+            } else {
+              point.coord = this.$$transform(points[ix])
+              nextPt.coord = this.$$transform(points[ix + 1])
+            }
+            console.log(point, nextPt)
+            let x1 = point.coord[0]
+            let y1 = point.coord[1]
+            let x2 = nextPt.coord[0]
+            let y2 = nextPt.coord[1]
+            let w1 = points[ix].strokeWidth/2
+            let w2 = points[ix + 1].strokeWidth/2
 
-          // to prevent strokes from disappearing completely
-          // when scaling turns width to 0
-          if (w1 === 0) {
-            w1 += 0.1
+            // to prevent strokes from disappearing completely
+            // when scaling turns width to 0
+            if (w1 === 0) {
+              w1 += 0.1
+            }
+
+            if (w2 === 0) {
+              w2 += 0.1
+            }
+
+            // computes reference line segment - between start and end points
+            let vector = [x1 - x2, y1 - y2]
+            let magnitude = Math.sqrt(vector[0]**2 + vector[1]**2)
+            let m = vector[1]/vector[0]
+            let uVector = [vector[0] / magnitude, vector[1] / magnitude]
+            let uVectorP = [uVector[1], -uVector[0]]
+
+            // Approach: One mark per two rows (point 1, stroke width 1 -> point 2, stroke width 2)
+            // to calculate corners of 'polygon' composing 'line segment' with interpolated 'width' in any orientation
+            // use the line equation parallel to the line defining the start and end points
+            // and project the widths on the unit vector of these lines
+
+            // start points
+            let coord1 = [x1 + uVectorP[0] * w1, y1 + uVectorP[1] * w1]
+            let coord4 = [x1 - uVectorP[0] * w1, y1 - uVectorP[1] * w1]
+
+            // end points
+            let coord2 = [x2 + uVectorP[0] * w2, y2 + uVectorP[1] * w2]
+            let coord3 = [x2 - uVectorP[0] * w2, y2 - uVectorP[1] * w2]
+
+            top.push(coord1)
+            top.push(coord2)
+            bottom.push(coord4)
+            bottom.push(coord3)
           }
-
-          if (w2 === 0) {
-            w2 += 0.1
-          }
-
-          // computes reference line segment - between start and end points
-          let vector = [x1 - x2, y1 - y2]
-          let magnitude = Math.sqrt(vector[0]**2 + vector[1]**2)
-          let m = vector[1]/vector[0]
-          let uVector = [vector[0] / magnitude, vector[1] / magnitude]
-          let uVectorP = [uVector[1], -uVector[0]]
-
-          // Approach: One mark per two rows (point 1, stroke width 1 -> point 2, stroke width 2)
-          // to calculate corners of 'polygon' composing 'line segment' with interpolated 'width' in any orientation
-          // use the line equation parallel to the line defining the start and end points
-          // and project the widths on the unit vector of these lines
-
-          // start points
-          let coord1 = [x1 + uVectorP[0] * w1, y1 + uVectorP[1] * w1]
-          let coord4 = [x1 - uVectorP[0] * w1, y1 - uVectorP[1] * w1]
-
-          // end points
-          let coord2 = [x2 + uVectorP[0] * w2, y2 + uVectorP[1] * w2]
-          let coord3 = [x2 - uVectorP[0] * w2, y2 - uVectorP[1] * w2]
-
-          top.push(coord1)
-          top.push(coord2)
-          bottom.push(coord4)
-          bottom.push(coord3)
         }
 
         let segments = top
@@ -216,7 +224,7 @@
             if (this.close) {
               points = this.closePoints(points)
             }
-
+            console.log(points)
             // obtains polygon corresponding to multiline with stroke widths
             segments = this.createTrail(points)
 

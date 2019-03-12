@@ -28,10 +28,11 @@
         <vgg-data :data="symbols">
           <g v-if="!flipNumbers">
             <vgg-map v-slot="{ row, i }">
-              <vgg-path
+              <vgg-trail
                 v-if="shape==='line'"
-                :points="[[20, row.location], [50, row.location]]"
-                :strokeWidth="row.strokeWidth"
+                :points="[[10, row.location], [50, row.location]]"
+                :stroke-width="{ val: row.strokeWidth}"
+                :stroke="row.stroke"
               />
               <vgg-symbol
                 v-else
@@ -287,6 +288,7 @@ export default {
     // covers size/radius, strokeWidth
     generateSizeScale (prop, sizeBasis) {
       let size = sizeBasis
+      console.log(')))', sizeBasis, this._domain)
       if (size.constructor === Number) {
         return () => {return size}
       } else if (size.constructor === Array) {
@@ -295,8 +297,8 @@ export default {
         let scaleOptions = {
           aestheticType: prop,
           domain: this._domain,
-          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
-          range: size.range ? size.range : this.scale.range ? this.scale.range : [0,10],
+          domainMid: (this._domain[0] + this._domain[1])/2,
+          range: size.range ? size.range : this.scale.range ? this.scale.range : this.shape === 'line' ? [0, 5] : [0,10],
         }
         let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
         return scalingFunction
@@ -304,6 +306,7 @@ export default {
     },
 
     parseAttributes (symbol, value) {
+      console.log(symbol, value, this.stroke)
       // figure out which to prioritize - fill or stroke?
       if (this.stroke) {
         if (this.stroke === 'none' || this.stroke.constructor === String) {
