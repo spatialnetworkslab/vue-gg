@@ -170,6 +170,10 @@ export default {
       return transformation
     },
 
+    $$ownTransform () {
+      return this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
+    },
+
     coordinateTreeBranchID () {
       let id
       let parentData = this.$parent.$vnode.data
@@ -375,7 +379,7 @@ export default {
   },
 
   provide () {
-    let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
+    let $$transform = this.$$ownTransform
     let $$coordinateTreeParent = this.coordinateTreeBranchID
     return { $$transform, $$coordinateTreeParent }
   },

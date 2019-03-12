@@ -14,7 +14,6 @@
       :scale-y="[0, 1]"
       :brush="'rectangle'"
       :brush-points.sync="brushPoints"
-      type="polar"
     >
 
       <vgg-rectangle

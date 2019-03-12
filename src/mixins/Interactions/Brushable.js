@@ -1,3 +1,5 @@
+import findBoundingBox from './utils/geometry/findBoundingBox.js'
+
 export default {
   inject: ['$$interactionManager'],
 
@@ -52,6 +54,21 @@ export default {
     _anySelectables () {
       let listener = this._listener
       return listener.trackedSelectables !== 0
+    },
+
+    _sectionBBox () {
+      let domains = this.transformation.domains
+
+      let cornerPoints = [
+        [domains.x[0], domains.y[0]],
+        [domains.x[0], domains.y[1]],
+        [domains.x[1], domains.y[1]],
+        [domains.x[1], domains.y[0]],
+        [domains.x[0], domains.y[0]]
+      ].map(this.$$ownTransform)
+
+      let bbox = findBoundingBox(cornerPoints)
+      return bbox
     }
   },
 
@@ -100,19 +117,21 @@ export default {
     },
 
     _onMouseDown ({ x, y }, e) {
-      let type = this._brush.type
-      let dataCoords = this._getDataCoords(x, y)
+      if (this._inBBox([x, y], this._sectionBBox)) {
+        let type = this._brush.type
+        let dataCoords = this._getDataCoords(x, y)
 
-      let brush = this.brushManager[type]
-      let selection = this.brushManager.selection
+        let brush = this.brushManager[type]
+        let selection = this.brushManager.selection
 
-      for (let uid in selection) {
-        selection[uid].instance.$emit('deselect')
-        delete selection[uid]
+        for (let uid in selection) {
+          selection[uid].instance.$emit('deselect')
+          delete selection[uid]
+        }
+
+        brush.screen.start = [x, y]
+        brush.data.start = dataCoords
       }
-
-      brush.screen.start = [x, y]
-      brush.data.start = dataCoords
     },
 
     _onMouseMove ({ x, y }, e) {
@@ -206,16 +225,16 @@ export default {
     },
 
     _getBBox (a, b) {
-      return {
+      return a && b ? {
         minX: Math.min(a[0], b[0]),
         minY: Math.min(a[1], b[1]),
         maxX: Math.max(a[0], b[0]),
         maxY: Math.max(a[1], b[1])
-      }
+      } : null
     },
 
     _getBrushPoints (a, b) {
-      if (this._brush.type === 'rectangle') {
+      if (a && b && this._brush.type === 'rectangle') {
         let points = [
           a,
           [a[0], b[1]],
@@ -236,6 +255,11 @@ export default {
       for (let key in this.brushManager[type].data) {
         this.brushManager[type].data[key] = null
       }
+    },
+
+    _inBBox (point, bbox) {
+      return point[0] > bbox.minX && point[0] < bbox.maxX &&
+        point[1] > bbox.minY && point[1] < bbox.maxY
     }
   }
 }
