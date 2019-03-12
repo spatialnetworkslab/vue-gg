@@ -48,7 +48,7 @@ It is possible to define a custom shape scheme by providing an array of `ranges`
 	:shape = "{
 		val: row.x,
 		scale: { ranges: ['circle', 'star', 'M-1,-1H1V1H-1Z', 'diamond'],
-		domain: 'row.x'
+				 domain: 'row.x' }
 	}" >
 ```
 
