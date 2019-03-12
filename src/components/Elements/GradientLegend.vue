@@ -49,7 +49,7 @@
             />
             <vgg-map v-slot="{ row }">
               <vgg-label
-                :x="80 + labelPadding"
+                :x="85 + labelPadding"
                 :y="row.location"
                 :text="row.label"
                 :font-size="fontSize"
