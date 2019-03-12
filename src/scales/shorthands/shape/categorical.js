@@ -20,7 +20,7 @@ function triangles (domain) {
 }
 
 function stars (domain) {
-  let shapeOptions = ['triangle-up', 'star4', 'star5', 'star6']
+  let shapeOptions = ['star4', 'star5', 'star6', 'star8']
 
   return scaleFromRange(domain, shapeOptions)
 }

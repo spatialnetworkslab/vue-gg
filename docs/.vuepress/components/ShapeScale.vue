@@ -55,10 +55,10 @@ export default {
         ]
       } else if (this.scheme === 'stars') {
         return [
-          { name: 'triangle-up' },
           { name: 'star4' },
           { name: 'star5' },
           { name: 'star6' },
+          { name: 'star8' },
         ]
       } else if (this.scheme === 'polygons') {
         return [
