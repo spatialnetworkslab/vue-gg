@@ -1,7 +1,7 @@
 import findBoundingBox from '../../geometry/findBoundingBox.js'
-import { syncListeners, updateIndices } from './syncSpatialIndices.js'
+import { syncListenerTrackers, updateListenerTrackers } from './syncListenerTrackers.js'
 
-export default function (uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices) {
+export default function (uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers) {
   let args = [coordinates, instance.strokeWidth]
   let hasnt = !itemCache.hasItem(uid)
   let nonIdentical = !itemCache.itemIsIdentical(uid, args)
@@ -27,7 +27,7 @@ export default function (uid, type, coordinates, instance, itemCache, listeners,
 
     let item = { uid, geometry, instance, minX, maxX, minY, maxY }
 
-    updateIndices(spatialIndices, oldListeners, listeners, oldSelectable, selectable, oldItem, item)
+    updateListenerTrackers(listenerTrackers, oldListeners, listeners, oldSelectable, selectable, oldItem, item)
 
     if (hasnt) {
       itemCache.addItem(uid, args, item, listeners, selectable)
@@ -35,7 +35,7 @@ export default function (uid, type, coordinates, instance, itemCache, listeners,
       itemCache.updateItem(uid, args, item, listeners, selectable)
     }
   } else {
-    syncListeners(spatialIndices, oldListeners, listeners, oldSelectable, selectable, oldItem)
+    syncListenerTrackers(listenerTrackers, oldListeners, listeners, oldSelectable, selectable, oldItem)
     itemCache.updateListeners(uid, listeners)
     itemCache.updateSelectable(uid, selectable)
   }

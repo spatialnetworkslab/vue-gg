@@ -11,22 +11,18 @@ export default {
     return {
       interactionManager: Object.freeze({
         // This object contains one spatial index per listener
-        spatialIndices: {
+        listenerTrackers: {
           click: {
-            bush: rbush(),
+            spatialIndex: rbush(),
             active: false,
             trackedItems: 0,
-
-            trackedBrushes: 0,
-
-            trackedSelectables: 0,
 
             handler: this._handleClickListener
           },
 
           mousemove: {
-            bush: rbush(),
-            selectableBush: rbush(),
+            spatialIndex: rbush(),
+            selectableSpatialIndex: rbush(),
             active: false,
             trackedItems: 0,
 
@@ -43,24 +39,16 @@ export default {
 
           mousedown: {
             active: false,
-            trackedItems: 0,
-
             trackedBrushes: 0,
             brushHandlers: {},
-
-            trackedSelectables: 0,
 
             handler: this._handleMouseDownListener
           },
 
           mouseup: {
             active: false,
-            trackedItems: 0,
-
             trackedBrushes: 0,
             brushHandlers: {},
-
-            trackedSelectables: 0,
 
             handler: this._handleMouseUpListener
           }
@@ -83,9 +71,9 @@ export default {
   },
 
   mounted () {
-    let spatialIndices = this.interactionManager.spatialIndices
-    for (let listener in spatialIndices) {
-      spatialIndices[listener].handler.bind(this)
+    let listenerTrackers = this.interactionManager.listenerTrackers
+    for (let listenerName in listenerTrackers) {
+      listenerTrackers[listenerName].handler.bind(this)
     }
   },
 
@@ -101,9 +89,9 @@ export default {
 
     addBrush (uid, handlers) {
       for (let listener of ['mousedown', 'mousemove', 'mouseup']) {
-        let spatialIndex = this.interactionManager.spatialIndices[listener]
-        spatialIndex.trackedBrushes++
-        spatialIndex.brushHandlers[uid] = handlers[listener]
+        let listenerTracker = this.interactionManager.listenerTrackers[listener]
+        listenerTracker.trackedBrushes++
+        listenerTracker.brushHandlers[uid] = handlers[listener]
       }
 
       this._updateListeners()
@@ -111,9 +99,9 @@ export default {
 
     removeBrush (uid) {
       for (let listener of ['mousedown', 'mousemove', 'mouseup']) {
-        let spatialIndex = this.interactionManager.spatialIndices[listener]
-        spatialIndex.trackedBrushes--
-        delete spatialIndex.brushHandlers[uid]
+        let listenerTracker = this.interactionManager.listenerTrackers[listener]
+        listenerTracker.trackedBrushes--
+        delete listenerTracker.brushHandlers[uid]
       }
 
       this._updateListeners()
@@ -122,9 +110,9 @@ export default {
     // These functions are all for internal use only
     _cacheItem (uid, type, coordinates, instance, events) {
       let itemCache = this.interactionManager.itemCache
-      let spatialIndices = this.interactionManager.spatialIndices
+      let listenerTrackers = this.interactionManager.listenerTrackers
 
-      cacheItem(uid, type, coordinates, instance, itemCache, events, spatialIndices)
+      cacheItem(uid, type, coordinates, instance, itemCache, events, listenerTrackers)
 
       this._updateListeners()
     },
@@ -135,9 +123,9 @@ export default {
       let listeners = cache.getListeners(uid)
 
       for (let listener in listeners) {
-        let spatialIndex = this.interactionManager.spatialIndices[listener]
-        spatialIndex.bush.remove(item)
-        spatialIndex.trackedItems--
+        let listenerTracker = this.interactionManager.listenerTrackers[listener]
+        listenerTracker.spatialIndex.remove(item)
+        listenerTracker.trackedItems--
       }
 
       cache.deleteItem(uid)
@@ -146,20 +134,21 @@ export default {
     },
 
     _updateListeners () {
-      for (let listener in this.interactionManager.spatialIndices) {
-        let spatialIndex = this.interactionManager.spatialIndices[listener]
-        if (
-          spatialIndex.trackedItems === 0 &&
-          spatialIndex.trackedBrushes === 0 &&
-          spatialIndex.trackedSelectables === 0
-        ) {
-          let handler = spatialIndex.handler.bind(this)
-          spatialIndex.active = false
+      for (let listener in this.interactionManager.listenerTrackers) {
+        let listenerTracker = this.interactionManager.listenerTrackers[listener]
+
+        let trackedItems = listenerTracker.trackedItems || 0
+        let trackedBrushes = listenerTracker.trackedBrushes || 0
+        let trackedSelectables = listenerTracker.trackedSelectables || 0
+
+        if (trackedItems === 0 && trackedBrushes === 0 && trackedSelectables === 0) {
+          let handler = listenerTracker.handler.bind(this)
+          listenerTracker.active = false
           this.svg.removeEventListener(listener, handler)
         } else {
-          if (spatialIndex.active === false) {
-            let handler = spatialIndex.handler.bind(this)
-            spatialIndex.active = true
+          if (listenerTracker.active === false) {
+            let handler = listenerTracker.handler.bind(this)
+            listenerTracker.active = true
             this.svg.addEventListener(listener, handler)
           }
         }
@@ -168,8 +157,8 @@ export default {
 
     _handleClickListener (e) {
       let coords = getCoords(this.svg, this.svgPoint, e)
-      let spatialIndex = this.interactionManager.spatialIndices['click']
-      let hits = collisionTest(coords, spatialIndex)
+      let listenerTracker = this.interactionManager.listenerTrackers['click']
+      let hits = collisionTest(coords, listenerTracker.spatialIndex)
 
       for (let hit of hits) {
         let uid = hit.uid
@@ -184,23 +173,23 @@ export default {
 
     _handleMouseMoveListener (e) {
       let coords = getCoords(this.svg, this.svgPoint, e)
-      let spatialIndex = this.interactionManager.spatialIndices['mousemove']
+      let listenerTracker = this.interactionManager.listenerTrackers['mousemove']
 
-      if (spatialIndex.trackedItems !== 0) {
+      if (listenerTracker.trackedItems !== 0) {
         this._handleMouseMoveMarks(coords, e)
       }
 
-      if (spatialIndex.trackedBrushes !== 0) {
-        for (let sectionID in spatialIndex.brushHandlers) {
-          let handler = spatialIndex.brushHandlers[sectionID]
+      if (listenerTracker.trackedBrushes !== 0) {
+        for (let sectionID in listenerTracker.brushHandlers) {
+          let handler = listenerTracker.brushHandlers[sectionID]
           handler(coords, e)
         }
       }
     },
 
     _handleMouseMoveMarks (coords, e) {
-      let spatialIndex = this.interactionManager.spatialIndices['mousemove']
-      let hits = collisionTest(coords, spatialIndex)
+      let listenerTracker = this.interactionManager.listenerTrackers['mousemove']
+      let hits = collisionTest(coords, listenerTracker.spatialIndex)
 
       let newHits = {}
 
@@ -210,9 +199,9 @@ export default {
         newHits[uid] = true
 
         // If this was already a hit, we do nothing
-        if (!spatialIndex.hovering[uid]) {
-          spatialIndex.hovering[uid] = true
-          spatialIndex.hoverItems++
+        if (!listenerTracker.hovering[uid]) {
+          listenerTracker.hovering[uid] = true
+          listenerTracker.hoverItems++
 
           let events = this.interactionManager.itemCache.getListeners(uid)['mousemove']
 
@@ -226,7 +215,7 @@ export default {
 
       // Second, we check if some things that were previous hits, are now not
       // hits anymore (mouseout)
-      for (let uid in spatialIndex.hovering) {
+      for (let uid in listenerTracker.hovering) {
         if (!newHits[uid]) {
           let cache = this.interactionManager.itemCache
           let events = cache.getListeners(uid)['mousemove']
@@ -240,32 +229,32 @@ export default {
 
           // If this is the last one, and it is just about to be deleted:
           // emit 'null'
-          if (spatialIndex.hoverItems === 1) {
+          if (listenerTracker.hoverItems === 1) {
             instance.$emit('hover', null)
           }
 
-          delete spatialIndex.hovering[uid]
-          spatialIndex.hoverItems--
+          delete listenerTracker.hovering[uid]
+          listenerTracker.hoverItems--
         }
       }
     },
 
     _handleMouseDownListener (e) {
       let coords = getCoords(this.svg, this.svgPoint, e)
-      let spatialIndex = this.interactionManager.spatialIndices['mousedown']
+      let listenerTracker = this.interactionManager.listenerTrackers['mousedown']
 
-      for (let sectionID in spatialIndex.brushHandlers) {
-        let handler = spatialIndex.brushHandlers[sectionID]
+      for (let sectionID in listenerTracker.brushHandlers) {
+        let handler = listenerTracker.brushHandlers[sectionID]
         handler(coords, e)
       }
     },
 
     _handleMouseUpListener (e) {
       let coords = getCoords(this.svg, this.svgPoint, e)
-      let spatialIndex = this.interactionManager.spatialIndices['mouseup']
+      let listenerTracker = this.interactionManager.listenerTrackers['mouseup']
 
-      for (let sectionID in spatialIndex.brushHandlers) {
-        let handler = spatialIndex.brushHandlers[sectionID]
+      for (let sectionID in listenerTracker.brushHandlers) {
+        let handler = listenerTracker.brushHandlers[sectionID]
         handler(coords, e)
       }
     }

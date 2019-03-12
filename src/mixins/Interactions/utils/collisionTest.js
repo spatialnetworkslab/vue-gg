@@ -3,7 +3,7 @@ import pointDistance from './geometry/pointDistance.js'
 import lineIntersection from './geometry/lineIntersection.js'
 
 export default function ({ x, y }, spatialIndex) {
-  let hitCandidates = spatialIndex.bush.search({
+  let hitCandidates = spatialIndex.search({
     minX: x, minY: y, maxX: x, maxY: y
   })
 

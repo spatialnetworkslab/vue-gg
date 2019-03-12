@@ -3,27 +3,27 @@ import cacheRectangleItem from './cacheRectangleItem.js'
 import cacheLineItem from './cacheLineItem.js'
 import cachePathItem from './cachePathItem.js'
 
-export default function (uid, type, coordinates, instance, itemCache, events, spatialIndices) {
+export default function (uid, type, coordinates, instance, itemCache, events, listenerTrackers) {
   let listeners = getListeners(events)
   let selectable = isSelectable(events)
 
   if (['point', 'symbol'].includes(type)) {
-    cachePointItem(uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices)
+    cachePointItem(uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers)
     return
   }
 
   if (type === 'rectangle') {
-    cacheRectangleItem(uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices)
+    cacheRectangleItem(uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers)
     return
   }
 
   if (type === 'line') {
-    cacheLineItem(uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices)
+    cacheLineItem(uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers)
     return
   }
 
   if (['polygon', 'multiline', 'path', 'area', 'trail'].includes(type)) {
-    cachePathItem(uid, type, coordinates, instance, itemCache, listeners, selectable, spatialIndices)
+    cachePathItem(uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers)
   }
 }
 

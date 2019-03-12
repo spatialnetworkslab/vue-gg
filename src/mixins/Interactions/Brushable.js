@@ -42,11 +42,11 @@ export default {
     },
 
     _listener () {
-      return this.$$interactionManager.interactionManager.spatialIndices.mousemove
+      return this.$$interactionManager.interactionManager.listenerTrackers.mousemove
     },
 
     _spatialIndex () {
-      return this._listener.selectableBush
+      return this._listener.selectableSpatialIndex
     },
 
     _anySelectables () {
