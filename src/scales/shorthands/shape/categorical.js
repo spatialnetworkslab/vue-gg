@@ -8,7 +8,7 @@ export default {
 }
 
 function shape8 (domain) {
-  let shapeOptions = ['circle', 'square', 'triangle-up', 'diamond', 'cross', 'star', 'hexagon', 'crossSharp']
+  let shapeOptions = ['circle', 'square', 'triangle-up', 'diamond', 'cross', 'star', 'hexagon', 'cross-sharp']
 
   return scaleFromRange(domain, shapeOptions)
 }

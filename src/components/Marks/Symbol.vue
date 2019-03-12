@@ -65,7 +65,7 @@ export default {
     pathAlias() {
       return {
         'cross': 'M-.5,-1L.5,-1L.5,-.5L1,-.5L1,.5L.5,.5L.5,1L-.5,1L-.5,.5L-1,.5L-1,-.5L-.5,-.5L-.5,-1Z',
-        'crossSharp': 'M0,-1L.2,-.2L1,0L.2,.2L0,1L-.2,.2L-1,0L-.2,-.2Z',
+        'cross-sharp': 'M0,-1L.2,-.2L1,0L.2,.2L0,1L-.2,.2L-1,0L-.2,-.2Z',
 
         'diamond': 'M0,-1L1,0L0,1L-1,0L0,-1Z',
 

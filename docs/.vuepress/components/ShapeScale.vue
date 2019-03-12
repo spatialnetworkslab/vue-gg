@@ -44,7 +44,7 @@ export default {
           { name: 'cross' },
           { name: 'star' },
           { name: 'hexagon' },
-          { name: 'crossSharp' },
+          { name: 'cross-sharp' },
         ]
       } else if (this.scheme === 'triangles') {
         return [
