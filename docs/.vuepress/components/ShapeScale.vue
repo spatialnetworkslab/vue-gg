@@ -72,8 +72,9 @@ export default {
       } else if (this.scheme === 'custom') {
         return [
           { name: 'circle' },
-          { name: 'square' },
           { name: 'star' },
+          { name: 'M-1,-1H1V1H-1Z' },
+          { name: 'diamond' },
         ]
       }
     }
