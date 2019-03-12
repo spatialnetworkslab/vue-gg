@@ -14,6 +14,7 @@ export default {
     return {
       brushManager: {
         selection: {},
+
         rectangle: {
           data: {
             start: null,
@@ -24,6 +25,15 @@ export default {
             start: null,
             current: null,
             end: null
+          }
+        },
+
+        polygon: {
+          data: {
+
+          },
+          screen: {
+
           }
         }
       }
