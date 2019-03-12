@@ -106,14 +106,9 @@ export default {
       default: 0
     },
 
-    symbolPadding: {
-      type: Number,
-      default: 0
-    },
-
     titlePadding: {
       type: Number,
-      default: 2
+      default: 0
     },
 
     columnPadding: {
@@ -138,7 +133,7 @@ export default {
 
     tickMinStep: {
       type: Number,
-      default: 5
+      default: undefined
     }
 
     //rowPadding
@@ -310,8 +305,7 @@ export default {
     // expand this for categorical, time data too
     getNumericLabels (dataDomain, variableType) {
       if (variableType === 'count') { dataDomain[0] = 0 }
-      let interval = (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1) < this.tickMinStep ? this.tickMinStep : (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1)
-
+      let interval = this.tickMinStep ? (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1) < this.tickMinStep ? this.tickMinStep : (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1) : (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1)
       let ticks = []
 
       for (let i = 0; i < this.tickCount; i++) {
@@ -333,7 +327,7 @@ export default {
 
     generateColorScale (prop, colorBasis) {
       let color = colorBasis ? colorBasis : this.stroke
-      
+
       if (color.constructor === Array) {
         return (index) => {return color[index]}
       } else {

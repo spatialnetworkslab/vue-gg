@@ -93,7 +93,7 @@
         for (let i = 0; i < points.length; i++) {
           let point = points[i]
           if (invalidPoint(point.coord)) {
-            console.warn(`Skipped invalid point ${JSON.stringify(point)} at index ${i}`)
+            console.warn(`Skipped invalid point ${JSON.stringify(point.coord)} at index ${i}`)
           } else {
             filtered.push(point)
           }
@@ -139,7 +139,7 @@
               point.coord = this.$$transform(points[ix])
               nextPt.coord = this.$$transform(points[ix + 1])
             }
-            console.log(point, nextPt)
+
             let x1 = point.coord[0]
             let y1 = point.coord[1]
             let x2 = nextPt.coord[0]
@@ -198,19 +198,21 @@
         checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
         let aesthetics = this._props
 
-        if (this.geometry) {
-          let path = createGeoPath(aesthetics.geometry, this.$$transform)
-          return createElement('path', {
-            attrs: {
-              'd': path
-            },
-            style: createSVGStyle(aesthetics)
-          })
-        } else {
+        if (aesthetics.points || (aesthetics.x && aesthetics.y)) {
           let points = [], segments = []
-
-          if (aesthetics.points) {
-            points = aesthetics.points
+          if (aesthetics.points && aesthetics.points.length > 1) {
+            let x = [], y = []
+            for (let i = 0; i < aesthetics.points.length; i++) {
+              if (aesthetics.points[i]) {
+                if (aesthetics.points[i][0] && aesthetics.points[i][1]) {
+                  x.push(aesthetics.points[i][0])
+                  y.push(aesthetics.points[i][1])
+                } else {
+                  console.warn("Skipped invalid point " + aesthetics.points[i] +" at index " + i)
+                }
+              }
+            }
+            points = this.generatePoints(x, y, aesthetics)
           } else {
             points = this.generatePoints(aesthetics.x, aesthetics.y, aesthetics)
           }
@@ -224,7 +226,6 @@
             if (this.close) {
               points = this.closePoints(points)
             }
-            console.log(points)
             // obtains polygon corresponding to multiline with stroke widths
             segments = this.createTrail(points)
 
@@ -246,6 +247,8 @@
           } else {
             console.warn('Not enough valid points to draw Mark')
           }
+        } else {
+          console.warn('Not enough valid points to draw Mark')
         }
       }
     }

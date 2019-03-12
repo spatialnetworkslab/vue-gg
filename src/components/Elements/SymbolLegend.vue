@@ -30,9 +30,9 @@
             <vgg-map v-slot="{ row, i }">
               <vgg-trail
                 v-if="shape==='line'"
-                :points="[[10, row.location], [50, row.location]]"
+                :points="[[10, row.location + symbolPadding * i/10], [50, row.location + symbolPadding * i/10]]"
                 :stroke-width="{ val: row.strokeWidth}"
-                :stroke="row.stroke"
+                :fill="row.stroke"
               />
               <vgg-symbol
                 v-else
@@ -47,7 +47,7 @@
               <vgg-label
                 v-if="shape==='line'"
                 :x="80"
-                :y="row.location"
+                :y="row.location + labelPadding * i/10"
                 :text="row.label"
                 :font-size="fontSize"
               />
@@ -62,6 +62,12 @@
           </g>
           <g v-else>
             <vgg-map v-slot="{ row, i }">
+              <vgg-trail
+                v-if="shape==='line'"
+                :points="[[50, row.location + symbolPadding * i/10], [90, row.location + symbolPadding * i/10]]"
+                :stroke-width="{ val: row.strokeWidth}"
+                :fill="row.stroke"
+              />
               <vgg-symbol
                 :x="80"
                 :y="row.location + symbolPadding * i/10"
@@ -72,6 +78,14 @@
                 :fill="row.fill"
               />
               <vgg-label
+                v-if="shape==='line'"
+                :x="30 - labelPadding"
+                :y="row.location"
+                :text="row.label"
+                :font-size="fontSize"
+              />
+              <vgg-label
+                v-else
                 :x="30 - labelPadding"
                 :y="row.location + labelPadding * i/10"
                 :text="row.label"
@@ -232,7 +246,7 @@ export default {
 
     symbolPadding:{
       type : Number,
-      default: 5
+      default: 0
     },
 
     shape:{
@@ -279,7 +293,7 @@ export default {
           symbols.push(this.parseAttributes(symbol, l[i]))
         }
       }
-    console.log(symbols)
+
     return symbols
     }
   },
@@ -288,7 +302,7 @@ export default {
     // covers size/radius, strokeWidth
     generateSizeScale (prop, sizeBasis) {
       let size = sizeBasis
-      console.log(')))', sizeBasis, this._domain)
+
       if (size.constructor === Number) {
         return () => {return size}
       } else if (size.constructor === Array) {
@@ -298,7 +312,7 @@ export default {
           aestheticType: prop,
           domain: this._domain,
           domainMid: (this._domain[0] + this._domain[1])/2,
-          range: size.range ? size.range : this.scale.range ? this.scale.range : this.shape === 'line' ? [0, 5] : [0,10],
+          range: size.range ? size.range : this.scale.range ? this.scale.range : [0,10],
         }
         let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
         return scalingFunction
@@ -306,7 +320,6 @@ export default {
     },
 
     parseAttributes (symbol, value) {
-      console.log(symbol, value, this.stroke)
       // figure out which to prioritize - fill or stroke?
       if (this.stroke) {
         if (this.stroke === 'none' || this.stroke.constructor === String) {
