@@ -147,9 +147,9 @@ export default {
 
     _syncBrushPoints () {
       if (this._brush.type === 'rectangle') {
-        let start = this.brushManager.rectangle.data.start
-        let current = this.brushManager.rectangle.data.current
-        let end = this.brushManager.rectangle.data.end
+        let start = this.brushManager.rectangle.screen.start
+        let current = this.brushManager.rectangle.screen.current
+        let end = this.brushManager.rectangle.screen.end
 
         let points = []
 
@@ -216,12 +216,15 @@ export default {
 
     _getBrushPoints (a, b) {
       if (this._brush.type === 'rectangle') {
-        return [
+        let points = [
           a,
           [a[0], b[1]],
           b,
           [b[0], a[1]]
         ]
+
+        let rootTransform = this.$$coordinateTree.getBranch('root').inverseTransform
+        return points.map(rootTransform)
       }
     },
 

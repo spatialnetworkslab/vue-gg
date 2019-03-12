@@ -14,6 +14,7 @@
       :scale-y="[0, 1]"
       :brush="'rectangle'"
       :brush-points.sync="brushPoints"
+      type="polar"
     >
 
       <vgg-rectangle
@@ -23,13 +24,6 @@
         :y2="1"
         :fill="'blue'"
         :opacity="0.4"
-      />
-
-      <vgg-polygon
-        v-if="brushPoints.length > 1"
-        :points="brushPoints"
-        :fill="'red'"
-        :opacity="0.6"
       />
 
       <vgg-map v-slot="{ row, i }">
@@ -43,6 +37,13 @@
       </vgg-map>
 
     </vgg-section>
+
+    <vgg-polygon
+      v-if="brushPoints.length > 1"
+      :points="brushPoints"
+      :fill="'red'"
+      :opacity="0.6"
+    />
 
   </vgg-graphic>
 </template>

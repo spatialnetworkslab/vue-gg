@@ -32,14 +32,14 @@
 
       </vgg-map>
 
-      <vgg-polygon
-        v-if="brushPoints.length > 1"
-        :points="brushPoints"
-        :fill="'red'"
-        :opacity="0.6"
-      />
-
     </vgg-section>
+
+    <vgg-polygon
+      v-if="brushPoints.length > 1"
+      :points="brushPoints"
+      :fill="'red'"
+      :opacity="0.6"
+    />
 
   </vgg-graphic>
 

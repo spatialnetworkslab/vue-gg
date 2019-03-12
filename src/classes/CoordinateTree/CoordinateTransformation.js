@@ -114,7 +114,16 @@ export default class CoordinateTransformation {
         return [toRangeX(cartesian[0]), toRangeY(cartesian[1])]
       }
 
-      // this.inverseTransform // TODO
+      // TODO: fix, this is still wrong
+      this.inverseTransform = ([x, y]) => {
+        let cartesian = [toRangeX.invert(x), toRangeY.invert(y)]
+        let [theta, r] = cartesianToPolar(...cartesian)
+
+        let _x = toTheta.invert(theta)
+        let _y = toRadius.invert(r)
+
+        return [this.invertX(_x), this.invertY(_y)]
+      }
     }
   }
 
@@ -159,4 +168,11 @@ function polarToCartesian (theta, r) {
   let y = r * Math.cos(theta)
 
   return [x, y]
+}
+
+function cartesianToPolar (x, y) {
+  let r = Math.sqrt(y ** 2 + x ** 2)
+  let theta = Math.atan(x / y)
+
+  return [theta, r]
 }
