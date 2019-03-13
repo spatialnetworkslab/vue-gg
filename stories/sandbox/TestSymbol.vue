@@ -62,23 +62,23 @@
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
         :fontSize="10"
-        :tickCount="8"
+        :tickCount="15"
         shape="triangle-down"
         stroke="green"
         :size="{ domain: 'dependent'}"
-        :height="250"
         position="tl"
+        direction="horizontal"
       />
 
       <vgg-symbol-legend
-        :scale="{ domain: 'dependent', domainMin: 0}"
+        :scale="{ domain: 'explanatory', domainMax: 100}"
         :fontSize="10"
         :tickCount="6"
         shape="triangle-down"
         :stroke="{ type: 'viridis'}"
-        :size="10"
-        :height="250"
+        :size=10
         position="bl"
+        direction="horizontal"
       />
     </vgg-graphic>
 

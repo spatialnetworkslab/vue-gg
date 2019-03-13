@@ -16,7 +16,7 @@ components in a grid format.
 | Prop           | Required | Types            | Default   | Description                               |
 | -------------- | -------- | ---------------- | --------- | ----------------------------------------- |
 | rows           | depends  | Number           | undefined | Max. number of rows the grid can have     |
-| cols           | depends  | Number           | undefined | Max. number olf columns the grid can have |
+| cols           | depends  | Number           | undefined | Max. number of columns the grid can have |
 | layout-padding | false    | [Number, Object] | 0         | Padding with respect to parent element    |
 | cell-padding   | false    | [Number, Object] | 0         | Padding between child elements            |
 

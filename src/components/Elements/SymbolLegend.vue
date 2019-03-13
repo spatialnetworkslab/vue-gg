@@ -1,12 +1,13 @@
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
+
     <!-- Vertical direction -->
     <vgg-section
       v-if="direction==='vertical'"
       :x1="0"
-      :x2="width"
+      :x2="sectionWidth"
       :y1="0"
-      :y2="height"
+      :y2="sectionHeight"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
@@ -26,85 +27,54 @@
         :scale-y="[0, 100]"
       >
         <vgg-data :data="symbols">
-          <g v-if="!flipNumbers">
-            <vgg-map v-slot="{ row, i }">
-              <vgg-trail
+          <vgg-grid
+            :cols="columns"
+            :layout-padding="0"
+            :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
+          >
+            <vgg-section
+              v-for="s,i in symbols"
+              :key="i"
+              :scale-x="[0, 1]"
+              :scale-y="[0, 1]"
+            >
+              <vgg-multi-line
                 v-if="shape==='line'"
-                :points="[[10, row.location + symbolPadding * i/10], [50, row.location + symbolPadding * i/10]]"
-                :stroke-width="{ val: row.strokeWidth}"
-                :fill="row.stroke"
+                :x="positionElements.multilineX"
+                :y="[0.5, 0.5]"
+                :stroke-width="s.strokeWidth"
+                :stroke="s.stroke"
+                :stroke-linecap="linecap"
               />
               <vgg-symbol
                 v-else
-                :x="20"
-                :y="row.location + symbolPadding * i/10"
-                :stroke="row.stroke"
-                :stroke-width="row.strokeWidth"
-                :size="row.size"
+                :x="positionElements.symbolX"
+                :y="0.5"
+                :stroke="s.stroke"
+                :stroke-width="s.strokeWidth"
+                :size="s.size"
                 :shape="shape"
-                :fill="row.fill"
+                :fill="s.fill"
               />
               <vgg-label
-                v-if="shape==='line'"
-                :x="80"
-                :y="row.location + labelPadding * i/10"
-                :text="row.label"
+                :x="positionElements.labelX"
+                :y="0.5"
+                :text="s.label"
                 :font-size="fontSize"
               />
-              <vgg-label
-                v-else
-                :x="70"
-                :y="row.location + labelPadding * i/10"
-                :text="row.label"
-                :font-size="fontSize"
-              />
-            </vgg-map>
-          </g>
-          <g v-else>
-            <vgg-map v-slot="{ row, i }">
-              <vgg-trail
-                v-if="shape==='line'"
-                :points="[[50, row.location + symbolPadding * i/10], [90, row.location + symbolPadding * i/10]]"
-                :stroke-width="{ val: row.strokeWidth}"
-                :fill="row.stroke"
-              />
-              <vgg-symbol
-                :x="80"
-                :y="row.location + symbolPadding * i/10"
-                :stroke="row.stroke"
-                :stroke-width="row.strokeWidth"
-                :size="row.size"
-                :shape="shape"
-                :fill="row.fill"
-              />
-              <vgg-label
-                v-if="shape==='line'"
-                :x="30 - labelPadding"
-                :y="row.location"
-                :text="row.label"
-                :font-size="fontSize"
-              />
-              <vgg-label
-                v-else
-                :x="30 - labelPadding"
-                :y="row.location + labelPadding * i/10"
-                :text="row.label"
-                :font-size="fontSize"
-                :anchor-point="'center'"
-              />
-            </vgg-map>
-          </g>
+            </vgg-section>
+          </vgg-grid>
         </vgg-data>
       </vgg-section>
     </vgg-section>
 
-    <!-- Horizontal gradient -->
+    <!-- Horizontal direction -->
     <vgg-section
       v-if="direction==='horizontal'"
       :x1="0"
-      :x2="width"
+      :x2="sectionWidth"
       :y1="0"
-      :y2="height"
+      :y2="sectionHeight"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
@@ -124,56 +94,45 @@
         :scale-y="[0, 100]"
       >
       <vgg-data :data="symbols">
-        <g v-if="!flipNumbers">
-          <vgg-map v-slot="{ row, i }">
-            <vgg-path
+        <vgg-grid
+          :cols="columns"
+          :layout-padding="0"
+          :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
+        >
+          <vgg-section
+            v-for="s in symbols"
+            :scale-x="[0, 1]"
+            :scale-y="[0, 1]"
+          >
+            <vgg-multi-line
               v-if="shape==='line'"
-              :points="[[0, row.location], [70, row.location]]"
-              :strokeWidth="row.strokeWidth"
-              :stroke="row.stroke"
+              :x="[0.4, 0.6]"
+              :y="positionElements.multilineY"
+              :stroke-width="s.strokeWidth"
+              :stroke="s.stroke"
+              :stroke-linecap="linecap"
             />
             <vgg-symbol
               v-else
-              :x="row.location + symbolPadding * i"
-              :y="70"
-              :stroke="row.stroke"
-              :stroke-width="row.strokeWidth"
-              :size="row.size"
+              :x="0.5"
+              :y="positionElements.symbolY"
+              :stroke="s.stroke"
+              :stroke-width="s.strokeWidth"
+              :size="s.size"
               :shape="shape"
-              :fill="row.fill"
+              :fill="s.fill"
             />
             <vgg-label
-              :x="row.location + symbolPadding * i"
-              :y="30"
-              :text="row.label"
+              :x="0.5"
+              :y="positionElements.labelY"
+              :text="s.label"
               :font-size="fontSize"
             />
-          </vgg-map>
-        </g>
-        <g v-else>
-          <vgg-map v-slot="{ row, i }">
-            <vgg-symbol
-              :x="row.location + symbolPadding * i"
-              :y="30"
-              :stroke="row.stroke"
-              :stroke-width="row.strokeWidth"
-              :size="row.size"
-              :shape="shape"
-              :fill="row.fill"
-            />
-            <vgg-label
-              :x="row.location + labelPadding * i"
-              :y="70"
-              :text="row.label"
-              :font-size="fontSize"
-              :anchor-point="'center'"
-            />
-          </vgg-map>
-        </g>
+          </vgg-section>
+        </vgg-grid>
       </vgg-data>
       </vgg-section>
     </vgg-section>
-
   </g>
 </template>
 
@@ -201,12 +160,13 @@ export default {
       },
     },
 
-    // distance of text from symbols
-    labelPadding: {
-      type: Number,
-      default: 5
+    linecap: {
+      type: String,
+      default: 'round',
+      validator: function (value) {
+        return ['round', 'square', 'butt'].indexOf(value) !== -1
+      },
     },
-
     // sizeScale
     size: {
       type: [Number, Object, Array],
@@ -218,10 +178,10 @@ export default {
       default: 2,
     },
 
-    // colorScale: {
-    //   type: [String, Array],
-    //   default: undefined
-    // },
+    columns: {
+      type: Number,
+      default: function (value) { if (this.direction === "vertical") { return 1 } else if (this.tickCount.constructor === Number) { return this.tickCount } else { return 10 }}
+    },
 
     stroke: {
       type: [Object, Array, String],
@@ -246,7 +206,7 @@ export default {
 
     symbolPadding:{
       type : Number,
-      default: 0
+      default: 0.05
     },
 
     shape:{
@@ -265,7 +225,7 @@ export default {
     opacityScale () {
 
     },
-
+    
     // work on categorical scales - shapes, colors, sizes, stroke widths
     symbols () {
       let symbols = []
@@ -289,7 +249,7 @@ export default {
           start = end
           end += this.segmentHeight
           location = (start + end)/2
-          symbol = {location: location, label: l[i]}
+          symbol = {location: location, start: start, end: end, label: l[i]}
           symbols.push(this.parseAttributes(symbol, l[i]))
         }
       }

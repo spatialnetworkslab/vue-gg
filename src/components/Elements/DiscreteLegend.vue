@@ -2,18 +2,17 @@
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
     <!-- Vertical direction -->
     <vgg-section
-      v-if="direction==='vertical'"
       :x1="0"
-      :x2="width"
+      :x2="sectionWidth"
       :y1="0"
-      :y2="height"
+      :y2="sectionHeight"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
       <vgg-label
         :text="title"
-        :x="50"
-        :y="100"
+        :x="titleX"
+        :y="titleY + titlePadding"
         :font-size="titleFontSize"
         font-weight="bold"
       />
@@ -26,84 +25,18 @@
         :scale-y="[0, 100]"
       >
         <vgg-data :data="boxes">
-          <g v-if="!flipNumbers">
+          <g v-if="direction==='vertical'">
             <vgg-map v-slot="{ row }">
               <vgg-rectangle
-                :x1="0"
-                :x2="75"
+                :x1="positionElements.rectangle.x1"
+                :x2="positionElements.rectangle.x2"
                 :y1="row.start"
                 :y2="row.end"
                 :fill="row.fill"
               />
               <vgg-label
-                :x="85 + labelPadding"
+                :x="positionElements.label"
                 :y="row.location"
-                :text="row.label"
-                :font-size="fontSize"
-                :anchor-point="'center'"
-              />
-            </vgg-map>
-          </g>
-          <g v-else>
-            <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-                :x1="25"
-                :x2="100"
-                :y1="row.start"
-                :y2="row.end"
-                :fill="row.fill"
-              />
-              <vgg-label
-                :x="labelPadding"
-                :y="row.location"
-                :text="row.label"
-                :font-size="fontSize"
-                :anchor-point="'center'"
-              />
-            </vgg-map>
-          </g>
-        </vgg-data>
-      </vgg-section>
-    </vgg-section>
-
-    <!-- Horizontal direction -->
-    <vgg-section
-      v-if="direction==='horizontal'"
-      :x1="0"
-      :x2="height"
-      :y1="0"
-      :y2="width"
-      :scale-x="[0, 100]"
-      :scale-y="[0, 100]"
-    >
-      <vgg-label
-        :text="title"
-        :x="50"
-        :y="105"
-        :font-size="titleFontSize"
-        font-weight="bold"
-      />
-      <vgg-section
-        :x1="0"
-        :x2="100"
-        :y1="0"
-        :y2="95"
-        :scale-x="[0, 100]"
-        :scale-y="[0, 100]"
-      >
-        <vgg-data :data="boxes">
-          <g v-if="!flipNumbers">
-            <vgg-map v-slot="{ row }">
-              <vgg-rectangle
-                :x1="row.start"
-                :x2="row.end"
-                :y1="25"
-                :y2="95"
-                :fill="row.fill"
-              />
-              <vgg-label
-                :x="row.location"
-                :y="labelPadding"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -114,13 +47,13 @@
               <vgg-rectangle
                 :x1="row.start"
                 :x2="row.end"
-                :y1="0"
-                :y2="75"
+                :y1="positionElements.rectangle.y1"
+                :y2="positionElements.rectangle.y2"
                 :fill="row.fill"
               />
               <vgg-label
                 :x="row.location"
-                :y="75 + labelPadding"
+                :y="positionElements.label"
                 :text="row.label"
                 :font-size="fontSize"
                 :anchor-point="'center'"
@@ -128,11 +61,8 @@
             </vgg-map>
           </g>
         </vgg-data>
-
       </vgg-section>
-
     </vgg-section>
-
   </g>
 </template>
 
@@ -146,8 +76,14 @@ export default {
 
   mixins: [BaseLegend, Rectangular],
 
-  computed: {
+  props: {
+    type: {
+      type: String,
+      default: 'discrete'
+    },
+  },
 
+  computed: {
     boxes () {
       let boxes = []
       let ticks = this.tickCount

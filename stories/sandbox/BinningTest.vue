@@ -85,8 +85,8 @@
           :fontSize="10"
           :titleFontSize="16"
           :tickCount="10"
-          :width="70"
-          :height="300"
+          flip
+          position="tl"
         />
 
         <vgg-gradient-legend
@@ -96,9 +96,8 @@
           :fontSize="10"
           :titleFontSize="16"
           :tickCount="10"
-          :width="70"
-          :height="300"
-          position="right"
+          position="tr"
+          flipNumbers
         />
 
       </vgg-data>

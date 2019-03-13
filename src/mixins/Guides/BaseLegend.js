@@ -73,12 +73,12 @@ export default {
 
     width: {
       type: Number,
-      default: function (value) { if (this.direction === "vertical") { return 50 } else { return 280 }}
+      default: function (value) { if (this.direction === "vertical") { return 60 } else { return 280 }}
     },
 
     height:{
       type: Number,
-      default: function (value) { if (this.direction === "vertical") { return 280 } else { return 50 }}
+      default: function (value) { if (this.direction === "horizontal") { return 60 } else { return 280}}
     },
 
     tickCount: {
@@ -134,26 +134,45 @@ export default {
     tickMinStep: {
       type: Number,
       default: undefined
+    },
+
+    labelOpacity:{
+      type: Number,
+      default: undefined
+    },
+
+    titleOpacity: {
+      type: Number,
+      default: undefined
+    },
+
+    titleFontColor: {
+      type: String,
+      default: 'black'
+    },
+
+    strokeOpacity: {
+      type: [Number, Object, Array],
+      default: undefined,
+    },
+
+    fillOpacity: {
+      type: [Number, Object, Array],
+      default: undefined,
     }
 
     //rowPadding
     //fillColor = background color
-    //gradient opacity
-    //label opacity
-    //tickMinStep
     //titleAnchor
     //titleColor
     //titleFont
     //titleFontSize
-    //titleOpacity
     //titleOrient
-    //titlePadding
     //fill: {},
     //offset: {},
     //padding: {},
     //strokeColor: {},
     //strokeWidth: {},
-    //tickCount: {},
     //values: {},
     //zindex: {}
     //ordering legends
@@ -196,7 +215,7 @@ export default {
     },
 
     titleX () {
-      let p = this.legendPosition
+      let p = this.titlePosition
       if (p === 'right' || p === "tr" || p === "br") {
         return 100
       } else if (p === 'left' || p === "tl" || p === "bl") {
@@ -207,13 +226,17 @@ export default {
     },
 
     titleY () {
-      let p = this.legendPosition
+      let p = this.titlePosition
       if (p === 'tr' || p === "tl" || p === "right" || p === "left") {
         return 100
       } else if (p === "bl" || p === "br") {
         return 0
       } else {
-        return 102
+        if (this.direction === "horizontal") {
+          return 105
+        } else {
+          return 100
+        }
       }
     },
 
@@ -278,6 +301,68 @@ export default {
     segmentHeight () {
       return 100 / this.tickCount
     },
+
+    sectionWidth () {
+      return this.width
+    },
+
+    sectionHeight () {
+      return this.height
+    },
+
+    positionElements() {
+      if (this.type === 'discrete' || this.type === 'gradient') {
+        let rectangle, label, title
+        console.log(this.type)
+        if (this.direction === "vertical") {
+          title = this.titleX
+          if (!this.flipNumbers) {
+            rectangle = { x1: 0,  x2: 75, y1: 0, y2: 100 }
+            label = 90 + this.labelPadding
+          } else {
+            rectangle = { x1: 25,  x2: 100, y1: 0, y2: 100}
+            label = 10 - this.labelPadding
+          }
+        } else {
+          title = 55
+          if (!this.flipNumbers) {
+            rectangle = { x1: 0,  x2: 100, y1: 25,  y2: 95 }
+            label = 10 - this.labelPadding
+          } else {
+            rectangle = { x1: 0,  x2: 100, y1: 0,  y2: 70}
+            label = 80 + this.labelPadding
+          }
+        }
+        return { rectangle, label, title }
+      } else if (this.type === 'symbol') {
+        if (this.direction === "vertical") {
+          let multilineX, symbolX, labelX
+          if (!this.flipNumbers) {
+            multilineX = [0.25 - this.symbolPadding, 0.55 - this.symbolPadding]
+            symbolX = 0.3 - this.symbolPadding
+            labelX = 0.8 + this.labelPadding
+          } else {
+            multilineX = [0.6 + this.symbolPadding, 0.9 + this.symbolPadding]
+            symbolX = 0.7 + this.symbolPadding
+            labelX = 0.3 - this.labelPadding
+          }
+          return { multilineX, symbolX, labelX }
+        } else {
+          let multilineY, symbolY, labelY
+          if (!this.flipNumbers) {
+            multilineY = [0.6 + this.symbolPadding, 0.6 + this.symbolPadding]
+            symbolY = 0.6 + this.symbolPadding
+            labelY = 0.3 - this.labelPadding
+          } else {
+            multilineY = [0.5 - this.symbolPadding, 0.5 - this.symbolPadding]
+            symbolY = 0.35 - this.symbolPadding
+            labelY = 0.7 + this.labelPadding
+          }
+          return { multilineY, symbolY, labelY }
+        }
+      }
+    },
+
     //
     // colors () {
     //   let ticks = this.tickCount
@@ -292,7 +377,6 @@ export default {
   },
 
   mounted () {
-    this.legendLabels
   },
 
   beforeDestroy () {},

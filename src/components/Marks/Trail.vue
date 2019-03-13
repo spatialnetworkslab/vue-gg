@@ -226,6 +226,7 @@
             if (this.close) {
               points = this.closePoints(points)
             }
+            
             // obtains polygon corresponding to multiline with stroke widths
             segments = this.createTrail(points)
 

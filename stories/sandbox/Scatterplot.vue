@@ -73,45 +73,23 @@
       />
 
       <vgg-symbol-legend
-        :scale="{ domain: 'dependent'}"
+        :scale="{ domain: 'explanatory'}"
         position="br"
-        :size="{ domain: 'dependent'}"
-        :tickCount="8"
-        :tickMinStep="12"
-        direction="horizontal"
-      />
-
-      <!-- <vgg-symbol-legend
-        :scale="{ domain: 'explanatory', domainMin: 0}"
-        :fontSize="10"
-        :tickCount="10"
-        shape="triangle-down"
-        stroke="green"
         :size="{ domain: 'explanatory'}"
-      /> -->
-
+        :tickCount="10"
+        direction="horizontal"
+        :labels="{ domain: 'explanatory'}"
+        flipNumbers
+      />
 
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
-        :tickCount="7"
+        :tickCount=15
         :stroke="{ type: 'viridis' }"
         :size="{ domain: 'dependent'}"
         :fill="{ type: 'viridis'}"
         flipNumbers
       />
-
-      <!-- <vgg-gradient-legend
-        :scale="{ domain: 'explanatory' }"
-        :labels="'explanatory'"
-        :fill="{ type: 'viridis'}"
-        :fontSize="10"
-        :titleFontSize="16"
-        :tickCount="10"
-        :width="70"
-        :height="300"
-        flipNumbers
-      /> -->
-
 
     </vgg-graphic>
 

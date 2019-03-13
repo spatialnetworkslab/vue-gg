@@ -42,16 +42,17 @@
       </vgg-data>
     </vgg-section>
     <vgg-symbol-legend
-      :scale="{ domain: 'rainfall', range: [2, 12]}"
+      :scale="{ domain: 'rainfall'}"
       :fontSize="10"
       :titleFontSize="16"
       shape="line"
+      :tickCount=11
       :size="15"
-      :stroke-width="{ domain: 'rainfall'}"
-      flipNumbers
-      :height="200"
-      :x="600"
-      :y="300"
+      :stroke-width="{ domain: 'rainfall', range: [0, 10]}"
+      :x=550
+      :y=200
+      stroke="orange"
+      direction="vertical"
     />
     <vgg-x-grid
       :x1="100"
