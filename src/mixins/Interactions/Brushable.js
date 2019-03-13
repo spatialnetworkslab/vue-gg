@@ -118,7 +118,7 @@ export default {
 
           let { scaleX, scaleY } = createGeoScale(this.context, this._brush.scaleGeo)
 
-          return ([x, y]) => { return this.$$inverseTransform([scaleX(x), scaleY(y)]) }
+          return ([x, y]) => { return [scaleX.invert(x), scaleY.invert(y)] }
         } else {
           let scaleX = x => x
           let scaleY = y => y
@@ -130,7 +130,7 @@ export default {
             scaleY = createScale('y', this.context, this._brush.scaleY)
           }
 
-          return ([x, y]) => { return this.$$inverseTransform([scaleX(x), scaleY(y)]) }
+          return ([x, y]) => { return [scaleX.invert(x), scaleY.invert(y)] }
         }
       }
     }
@@ -196,7 +196,7 @@ export default {
         }
 
         let localCoords = this._getLocalCoords(x, y)
-        let transformedCoords = this._localTransform([x, y])
+        let transformedCoords = this._localTransform(localCoords)
         let selection = this.brushManager.selection
 
         // Empty current selection
@@ -227,7 +227,7 @@ export default {
           if (type === 'swipeY') { x = this._sectionBBox.maxX }
 
           let localCoords = this._getLocalCoords(x, y)
-          let transformedCoords = this._localTransform([x, y])
+          let transformedCoords = this._localTransform(localCoords)
 
           brush.screen.current = [x, y]
           brush.local.current = localCoords
@@ -245,7 +245,7 @@ export default {
         let brush = this.brushManager.polygon
         if (brush.screen.start) {
           let localCoords = this._getLocalCoords(x, y)
-          let transformedCoords = this._localTransform([x, y])
+          let transformedCoords = this._localTransform(localCoords)
 
           brush.screen.points.push([x, y])
           brush.local.points.push(localCoords)
@@ -263,7 +263,7 @@ export default {
       let type = this._brush.type
       let brush
       let localCoords = this._getLocalCoords(x, y)
-      let transformedCoords = this._localTransform([x, y])
+      let transformedCoords = this._localTransform(localCoords)
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
         brush = this.brushManager.rectangle
