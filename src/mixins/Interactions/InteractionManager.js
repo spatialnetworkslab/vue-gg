@@ -3,6 +3,7 @@ import rbush from 'rbush'
 
 import ItemCache from './utils/ItemCache/ItemCache.js'
 import cacheItem from './utils/ItemCache/cacheFuncs/cacheItem.js'
+import removeItem from './utils/ItemCache/cacheFuncs/removeItem.js'
 import collisionTest from './utils/collisionTest.js'
 import getCoords from './utils/getCoords.js'
 
@@ -22,16 +23,15 @@ export default {
 
           mousemove: {
             spatialIndex: rbush(),
-            selectableSpatialIndex: rbush(),
             active: false,
             trackedItems: 0,
 
             hovering: {},
             hoverItems: 0,
 
+            selectableSpatialIndex: rbush(),
             trackedBrushes: 0,
             brushHandlers: {},
-
             trackedSelectables: 0,
 
             handler: this._handleMouseMoveListener
@@ -54,8 +54,15 @@ export default {
           }
         },
 
-        // This object caches and keeps track of all indexed items
-        itemCache: new ItemCache()
+        // This object caches and keeps track of all indexed marks.
+        // Mark interaction (mouseover, hover, click etc) are mostly handled
+        // in this mixin.
+        markCache: new ItemCache(),
+
+        // We use a separate one for selectables, because of different indexing
+        // requirements (for selection, you only need to index the centroid of a polygon,
+        // for example). These are mostly handled in the appropriate Brushable mixin.
+        selectableCache: new ItemCache()
       })
     }
   },
@@ -78,7 +85,7 @@ export default {
   },
 
   methods: {
-    // These functions are exposed to the component
+    // These functions are exposed to other components
     addItem (uid, type, coordinates, instance, events) {
       this._cacheItem(uid, type, coordinates, instance, events)
     },
@@ -109,26 +116,21 @@ export default {
 
     // These functions are all for internal use only
     _cacheItem (uid, type, coordinates, instance, events) {
-      let itemCache = this.interactionManager.itemCache
+      let markCache = this.interactionManager.markCache
+      let selectableCache = this.interactionManager.selectableCache
       let listenerTrackers = this.interactionManager.listenerTrackers
 
-      cacheItem(uid, type, coordinates, instance, itemCache, events, listenerTrackers)
+      cacheItem(uid, type, coordinates, instance, markCache, selectableCache, events, listenerTrackers)
 
       this._updateListeners()
     },
 
     _removeItem (uid) {
-      let cache = this.interactionManager.itemCache
-      let item = cache.getItem(uid)
-      let listeners = cache.getListeners(uid)
+      let markCache = this.interactionManager.markCache
+      let selectableCache = this.interactionManager.selectableCache
+      let listenerTrackers = this.interactionManager.listenerTrackers
 
-      for (let listener in listeners) {
-        let listenerTracker = this.interactionManager.listenerTrackers[listener]
-        listenerTracker.spatialIndex.remove(item)
-        listenerTracker.trackedItems--
-      }
-
-      cache.deleteItem(uid)
+      removeItem(uid, markCache, selectableCache, listenerTrackers)
 
       this._updateListeners()
     },
@@ -163,7 +165,7 @@ export default {
       for (let hit of hits) {
         let uid = hit.uid
 
-        let events = this.interactionManager.itemCache.getListeners(uid)['click']
+        let events = this.interactionManager.markCache.getListeners(uid)['click']
 
         for (let event of events) {
           hit.instance.$emit(event, e)
@@ -203,7 +205,7 @@ export default {
           listenerTracker.hovering[uid] = true
           listenerTracker.hoverItems++
 
-          let events = this.interactionManager.itemCache.getListeners(uid)['mousemove']
+          let events = this.interactionManager.markCache.getListeners(uid)['mousemove']
 
           for (let event of events) {
             if (event === 'mouseover' || event === 'hover') {
@@ -217,7 +219,7 @@ export default {
       // hits anymore (mouseout)
       for (let uid in listenerTracker.hovering) {
         if (!newHits[uid]) {
-          let cache = this.interactionManager.itemCache
+          let cache = this.interactionManager.markCache
           let events = cache.getListeners(uid)['mousemove']
           let instance = cache.getItem(uid).instance
 

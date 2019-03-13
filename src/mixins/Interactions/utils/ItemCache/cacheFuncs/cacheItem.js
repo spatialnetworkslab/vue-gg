@@ -1,29 +1,55 @@
-import cachePointItem from './cachePointItem.js'
-import cacheRectangleItem from './cacheRectangleItem.js'
-import cacheLineItem from './cacheLineItem.js'
-import cachePathItem from './cachePathItem.js'
+import cachePointMark from './markInteraction/cachePointMark.js'
+import cacheRectangleMark from './markInteraction/cacheRectangleMark.js'
+import cacheLineMark from './markInteraction/cacheLineMark.js'
+import cachePathMark from './markInteraction/cachePathMark.js'
 
-export default function (uid, type, coordinates, instance, itemCache, events, listenerTrackers) {
+import cachePointSelectable from './selections/cachePointSelectable.js'
+import cacheRectangleSelectable from './selections/cacheRectangleSelectable.js'
+import cacheLineSelectable from './selections/cacheLineSelectable.js'
+import cachePathSelectable from './selections/cachePathSelectable.js'
+
+export default function (uid, type, coordinates, instance, markCache, selectableCache, events, listenerTrackers) {
   let listeners = getListeners(events)
   let selectable = isSelectable(events)
 
   if (['point', 'symbol'].includes(type)) {
-    cachePointItem(uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers)
-    return
+    if (events.length > 0) {
+      cachePointMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+    }
+
+    if (selectable) {
+      cachePointSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+    }
   }
 
   if (type === 'rectangle') {
-    cacheRectangleItem(uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers)
-    return
+    if (events.length > 0) {
+      cacheRectangleMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+    }
+
+    if (selectable) {
+      cacheRectangleSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+    }
   }
 
   if (type === 'line') {
-    cacheLineItem(uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers)
-    return
+    if (events.length > 0) {
+      cacheLineMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+    }
+
+    if (selectable) {
+      cacheLineSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+    }
   }
 
   if (['polygon', 'multiline', 'path', 'area', 'trail'].includes(type)) {
-    cachePathItem(uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers)
+    if (events.length > 0) {
+      cachePathMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+    }
+
+    if (selectable) {
+      cachePathSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+    }
   }
 }
 

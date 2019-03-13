@@ -20,9 +20,9 @@ export default class ItemCache {
     return true
   }
 
-  addItem (uid, args, item, listeners, selectable) {
+  addItem (uid, args, item, listeners) {
     let strArgs = args.map(arg => JSON.stringify(arg))
-    this.cache[uid] = { args: strArgs, item, listeners, selectable }
+    this.cache[uid] = { args: strArgs, item, listeners }
   }
 
   getItem (uid) {
@@ -31,10 +31,6 @@ export default class ItemCache {
 
   getListeners (uid) {
     return this.cache[uid].listeners
-  }
-
-  getSelectable (uid) {
-    return this.cache[uid].selectable
   }
 
   deleteItem (uid) {
@@ -48,9 +44,5 @@ export default class ItemCache {
 
   updateListeners (uid, listeners) {
     this.cache[uid].listeners = listeners
-  }
-
-  updateSelectable (uid, selectable) {
-    this.cache[uid].selectable = selectable
   }
 }

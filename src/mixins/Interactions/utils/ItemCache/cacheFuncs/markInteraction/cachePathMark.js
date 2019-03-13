@@ -1,19 +1,17 @@
-import findBoundingBoxPath from '../../geometry/findBoundingBoxPath.js'
+import findBoundingBoxPath from '../../../geometry/findBoundingBoxPath.js'
 import { syncListenerTrackers, updateListenerTrackers } from './syncListenerTrackers.js'
 
-export default function (uid, type, coords, instance, itemCache, listeners, selectable, listenerTrackers) {
+export default function (uid, type, coords, instance, cache, listeners, listenerTrackers) {
   let args = [coords, instance.strokeWidth]
-  let hasnt = !itemCache.hasItem(uid)
-  let nonIdentical = !itemCache.itemIsIdentical(uid, args)
+  let hasnt = !cache.hasItem(uid)
+  let nonIdentical = !cache.itemIsIdentical(uid, args)
 
   let oldItem
   let oldListeners = {}
-  let oldSelectable = false
 
   if (!hasnt) {
-    oldItem = itemCache.getItem(uid)
-    oldListeners = itemCache.getListeners(uid)
-    oldSelectable = itemCache.getSelectable(uid)
+    oldItem = cache.getItem(uid)
+    oldListeners = cache.getListeners(uid)
   }
 
   if (hasnt || nonIdentical) {
@@ -47,16 +45,15 @@ export default function (uid, type, coords, instance, itemCache, listeners, sele
 
     let item = { uid, geometry, instance, minX, minY, maxX, maxY }
 
-    updateListenerTrackers(listenerTrackers, oldListeners, listeners, oldSelectable, selectable, oldItem, item)
+    updateListenerTrackers(listenerTrackers, oldListeners, listeners, oldItem, item)
 
     if (hasnt) {
-      itemCache.addItem(uid, args, item, listeners, selectable)
+      cache.addItem(uid, args, item, listeners)
     } else {
-      itemCache.updateItem(uid, args, item, listeners, selectable)
+      cache.updateItem(uid, args, item, listeners)
     }
   } else {
-    syncListenerTrackers(listenerTrackers, oldListeners, listeners, oldSelectable, selectable, oldItem)
-    itemCache.updateListeners(uid, listeners)
-    itemCache.updateSelectable(uid, selectable)
+    syncListenerTrackers(listenerTrackers, oldListeners, listeners, oldItem)
+    cache.updateListeners(uid, listeners)
   }
 }

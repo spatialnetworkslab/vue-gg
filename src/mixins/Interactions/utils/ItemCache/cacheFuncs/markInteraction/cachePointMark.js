@@ -1,10 +1,9 @@
-export default function (uid, type, coordinates, instance, itemCache, listeners, selectable, listenerTrackers) {
+export default function (uid, type, coordinates, instance, cache, listeners, listenerTrackers) {
   // The point calculation is so fast that the cache logic is probably slower.
   // So we will just always update the point
-  if (itemCache.hasItem(uid)) {
-    let item = itemCache.getItem(uid)
-    let oldListeners = itemCache.getListeners(uid)
-    let oldSelectable = itemCache.getSelectable(uid)
+  if (cache.hasItem(uid)) {
+    let item = cache.getItem(uid)
+    let oldListeners = cache.getListeners(uid)
 
     for (let listener in oldListeners) {
       let listenerTracker = listenerTrackers[listener]
@@ -12,13 +11,7 @@ export default function (uid, type, coordinates, instance, itemCache, listeners,
       listenerTracker.trackedItems--
     }
 
-    if (oldSelectable) {
-      let listenerTracker = listenerTrackers.mousemove
-      listenerTracker.selectableSpatialIndex.remove(item)
-      listenerTracker.trackedSelectables--
-    }
-
-    itemCache.deleteItem(uid)
+    cache.deleteItem(uid)
   }
 
   let radius
@@ -39,17 +32,11 @@ export default function (uid, type, coordinates, instance, itemCache, listeners,
 
   let item = { uid, geometry, instance, minX, maxX, minY, maxY }
 
-  itemCache.addItem(uid, [], item, listeners)
+  cache.addItem(uid, [], item, listeners)
 
   for (let listener in listeners) {
     let listenerTracker = listenerTrackers[listener]
     listenerTracker.spatialIndex.insert(item)
     listenerTracker.trackedItems++
-  }
-
-  if (selectable) {
-    let listenerTracker = listenerTrackers.mousemove
-    listenerTracker.selectableSpatialIndex.insert(item)
-    listenerTracker.trackedSelectables++
   }
 }
