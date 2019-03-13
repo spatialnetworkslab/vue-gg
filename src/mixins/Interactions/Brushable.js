@@ -1,4 +1,5 @@
 import findBoundingBox from './utils/geometry/findBoundingBox.js'
+import pointInPolygon from './utils/geometry/pointInPolygon.js'
 
 export default {
   inject: ['$$interactionManager'],
@@ -32,14 +33,12 @@ export default {
           data: {
             start: null,
             points: null,
-            end: null,
-            bbox: null
+            end: null
           },
           screen: {
             start: null,
             points: null,
-            end: null,
-            bbox: null
+            end: null
           }
         }
       }
@@ -140,7 +139,7 @@ export default {
         if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
           if (type === 'swipeX') { y = this._sectionBBox.minY }
           if (type === 'swipeY') { x = this._sectionBBox.minX }
-          brush = this.brushManager.retangle
+          brush = this.brushManager.rectangle
         }
 
         if (type === 'polygon') {
@@ -162,9 +161,6 @@ export default {
         if (type === 'polygon') {
           brush.screen.points = [[x, y]]
           brush.data.points = [dataCoords]
-
-          brush.screen.bbox = this._getBBox([x, y], [x, y])
-          brush.data.bbox = this._getBbox(dataCoords, dataCoords)
         }
       }
     },
@@ -197,10 +193,6 @@ export default {
 
           brush.screen.points.push([x, y])
           brush.data.points.push(dataCoords)
-
-          brush.screen.bbox = this._updateBBox(brush.screen.bbox, [x, y])
-          brush.data.bbox = this._updateBBox(brush.data.bbox, dataCoords)
-
           this._syncBrushPoints()
 
           if (this._anySelectables) {
@@ -313,13 +305,37 @@ export default {
       }
 
       if (type === 'polygon') {
-        let bbox = this.brushManager.polygon.screen.bbox
+        let points = this.brushManager.polygon.screen.points
+        let len = points.length
+        if (len > 2) {
+          let triangle = [
+            points[0],
+            points[len - 2],
+            points[len - 1]
+          ]
 
-        let hits = this._spatialIndex.search(bbox)
-        let currentSelection = {}
+          let bboxTriangle = findBoundingBox(triangle)
 
-        for (let hit of hits) {
-          // TODO
+          let hits = this._spatialIndex.search(bboxTriangle)
+          let currentSelection = {}
+
+          for (let hit of hits) {
+            let centroid = [hit.minX, hit.minY]
+            if (pointInPolygon(centroid, triangle)) {
+              let uid = hit.uid
+              currentSelection[uid] = true
+
+              if (!this.brushManager.selection[uid]) {
+                this.brushManager.selection[uid] = hit
+                hit.instance.$emit('select')
+              }
+
+              if (this.brushManager.selection[uid]) {
+                this.brushManager.selection[uid].instance.$emit('deselect')
+                delete this.brushManager.selection[uid]
+              }
+            }
+          }
         }
       }
     },
@@ -331,15 +347,6 @@ export default {
         maxX: Math.max(a[0], b[0]),
         maxY: Math.max(a[1], b[1])
       } : null
-    },
-
-    _updateBBox (bbox, point) {
-      return {
-        minX: Math.min(bbox.minX, point[0]),
-        minY: Math.min(bbox.minY, point[1]),
-        maxX: Math.max(bbox.maxX, point[0]),
-        maxY: Math.max(bbox.maxY, point[1])
-      }
     },
 
     _getBrushPoints (a, b) {

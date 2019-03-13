@@ -1,8 +1,9 @@
-export default function (listenerTrackers, oldItem, newItem) {
-  let listenerTracker = listenerTrackers.mousemove
-  listenerTracker.spatialIndex.remove(oldItem)
-  listenerTracker.trackedItems--
+export default function (listenerTracker, oldItem, newItem) {
+  if (oldItem) {
+    listenerTracker.selectableSpatialIndex.remove(oldItem)
+    listenerTracker.trackedSelectables--
+  }
 
-  listenerTracker.spatialIndex.insert(newItem)
-  listenerTracker.trackedItems++
+  listenerTracker.selectableSpatialIndex.insert(newItem)
+  listenerTracker.trackedSelectables++
 }
