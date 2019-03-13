@@ -5,6 +5,7 @@ import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'categorical') {
+
     if (scalingOptions.ranges) {
       return scaleFromRange(domain, scalingOptions.ranges)
     }

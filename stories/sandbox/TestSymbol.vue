@@ -21,12 +21,12 @@
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
             :size="{ val: row.dependent, scale: {domain: 'dependent', range: [5, 20]} }"
-            :stroke="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
+            :stroke="color(row.categorical)"
             :stroke-width="2"
             :shape="shape(row.categorical)"
             fill="none"
           />
-            
+          <!--:stroke="color(row.explanatory)"-->
         </vgg-map>
 
         <vgg-x-axis
@@ -71,6 +71,22 @@
       </select>
     </p>
 
+    <p>Color Scheme:
+      <select v-model="colorScheme">
+        <option value="category10">default scheme (category10)</option>
+        <option value="accent">accent</option>
+        <option value="dark2">dark 2</option>
+        <option value="pastel1">pastel 1</option>
+        <option value="pastel2">pastel 2</option>
+        <option value="set1">set 1</option>
+        <option value="set2">set 2</option>
+        <option value="set3">set 3</option>
+        <option value="color20">color 20</option>
+        <option value="color20b">color 20b</option>
+        <option value="color20c">color 20c</option>
+      </select>
+    </p>
+
   </div>
 </template>
 
@@ -82,6 +98,7 @@ export default {
     return {
       xy: this.generateNewData(),
       shapeScheme: 'shape8',
+      colorScheme: 'category10'
     }
   },
   methods: {
@@ -100,10 +117,19 @@ export default {
         'durian'
       ]
       for (let i = 0; i < newData.length; i++) {
-        newData[i].categorical = fruits[Math.floor(i / 10)]
+        newData[i].categorical = fruits[Math.floor(i / 12)]
         newData[i].dependent = newData[i].dependent + Math.random() * 100
       }
+
       return newData
+    },
+
+    color (value) {
+      if (this.colorScheme === 'custom') {
+        return { val: value, scale: { ranges: [], domain: 'categorical' } }
+      }
+
+      return { val: value, scale: { type: this.colorScheme, domain: 'categorical' } }
     },
 
     shape (value) {

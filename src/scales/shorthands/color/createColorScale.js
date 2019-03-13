@@ -1,5 +1,4 @@
 import checkValidScale from '../../utils/checkValidScale.js'
-
 import quantitative from './quantitative.js'
 import categorical from './categorical.js'
 
@@ -18,9 +17,23 @@ export default function (prop, variableType, domain, scalingOptions) {
   }
 
   if (variableType === 'categorical') {
-    let scale = scalingOptions.type || 'colors'
+    if (scalingOptions.ranges) {
+      return scaleFromRange(domain, scalingOptions.ranges)
+    }
+
+    let scale = scalingOptions.type || 'category10'
     checkValidScale(prop, variableType, scale, categorical)
 
-    return categorical[scale](domain, scalingOptions.range)
+    let scaleFunc = categorical[scale](domain, scalingOptions)
+
+    return scaleFunc
+
+    // if (scalingOptions.ranges) {
+    //   return scaleFromRange(domain, scalingOptions.ranges)
+    // }
+    // let scale = scalingOptions.type || 'shape8'
+    // checkValidScale(prop, variableType, scale, categorical)
+    //
+    // return categorical[scale](domain)
   }
 }

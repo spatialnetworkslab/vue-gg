@@ -149,7 +149,7 @@ export default {
         return this.createSquare(createElement, aesthetics)
       } else if (this.pathAlias.hasOwnProperty(this.shape)) {
         path = this.pathAlias[this.shape]
-      } 
+      }
 
       else {
         return this.createPath(createElement, aesthetics, this.shape)
