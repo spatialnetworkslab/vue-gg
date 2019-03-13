@@ -67,7 +67,6 @@
         stroke="green"
         :size="{ domain: 'dependent'}"
         position="tl"
-        direction="horizontal"
       />
 
       <vgg-symbol-legend
@@ -78,6 +77,7 @@
         :stroke="{ type: 'viridis'}"
         :size=10
         position="bl"
+        title=""
         direction="horizontal"
       />
     </vgg-graphic>
