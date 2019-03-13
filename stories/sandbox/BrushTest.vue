@@ -12,8 +12,13 @@
       :y2="450"
       :scale-x="[0, 1]"
       :scale-y="[0, 1]"
-      :brush="'polygon'"
+      :brush="{
+        type: 'rectangle',
+        scaleX: 'a',
+        scaleY: 'b'
+      }"
       :brush-points.sync="brushPoints"
+      @brushup="log($event)"
     >
 
       <vgg-rectangle

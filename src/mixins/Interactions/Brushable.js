@@ -1,5 +1,7 @@
 import findBoundingBox from './utils/geometry/findBoundingBox.js'
 import pointInPolygon from './utils/geometry/pointInPolygon.js'
+import createScale from '../../scales/createScale.js'
+import createGeoScale from '../../scales/createGeoScale.js'
 
 export default {
   inject: ['$$interactionManager'],
@@ -17,12 +19,17 @@ export default {
         selection: {},
 
         rectangle: {
-          data: {
+          screen: {
             start: null,
             current: null,
             end: null
           },
-          screen: {
+          local: {
+            start: null,
+            current: null,
+            end: null
+          },
+          scaled: {
             start: null,
             current: null,
             end: null
@@ -30,12 +37,17 @@ export default {
         },
 
         polygon: {
-          data: {
+          screen: {
             start: null,
             points: null,
             end: null
           },
-          screen: {
+          local: {
+            start: null,
+            points: null,
+            end: null
+          },
+          scaled: {
             start: null,
             points: null,
             end: null
@@ -84,6 +96,43 @@ export default {
 
       let bbox = findBoundingBox(cornerPoints)
       return bbox
+    },
+
+    context () {
+      return {
+        ranges: this.transformation.domains,
+        dataInterface: this.$$dataInterface,
+        scaleManager: this.$$scaleManager
+      }
+    },
+
+    _localTransform () {
+      if (this._brush) {
+        if (this._brush.hasOwnProperty('scaleGeo')) {
+          if (this._brush.hasOwnProperty('scaleX') || this._brush.hasOwnProperty('scaleY')) {
+            throw new Error(`Cannot set 'scaleX' or 'scaleY' when 'scaleGeo' is defined`)
+          }
+          if (!this.$$dataInterface.hasColumn('geometry')) {
+            throw new Error(`'scale-geo' is only allowed when data has geometry column`)
+          }
+
+          let { scaleX, scaleY } = createGeoScale(this.context, this._brush.scaleGeo)
+
+          return ([x, y]) => { return this.$$inverseTransform([scaleX(x), scaleY(y)]) }
+        } else {
+          let scaleX = x => x
+          let scaleY = y => y
+
+          if (this._brush.hasOwnProperty('scaleX')) {
+            scaleX = createScale('x', this.context, this._brush.scaleX)
+          }
+          if (this._brush.hasOwnProperty('scaleY')) {
+            scaleY = createScale('y', this.context, this._brush.scaleY)
+          }
+
+          return ([x, y]) => { return this.$$inverseTransform([scaleX(x), scaleY(y)]) }
+        }
+      }
     }
   },
 
@@ -146,7 +195,8 @@ export default {
           brush = this.brushManager.polygon
         }
 
-        let dataCoords = this._getDataCoords(x, y)
+        let localCoords = this._getLocalCoords(x, y)
+        let transformedCoords = this._localTransform([x, y])
         let selection = this.brushManager.selection
 
         // Empty current selection
@@ -156,11 +206,13 @@ export default {
         }
 
         brush.screen.start = [x, y]
-        brush.data.start = dataCoords
+        brush.local.start = localCoords
+        brush.scaled.start = transformedCoords
 
         if (type === 'polygon') {
           brush.screen.points = [[x, y]]
-          brush.data.points = [dataCoords]
+          brush.local.points = [localCoords]
+          brush.scaled.points = [transformedCoords]
         }
       }
     },
@@ -174,10 +226,13 @@ export default {
           if (type === 'swipeX') { y = this._sectionBBox.maxY }
           if (type === 'swipeY') { x = this._sectionBBox.maxX }
 
-          let dataCoords = this._getDataCoords(x, y)
+          let localCoords = this._getLocalCoords(x, y)
+          let transformedCoords = this._localTransform([x, y])
 
           brush.screen.current = [x, y]
-          brush.data.current = dataCoords
+          brush.local.current = localCoords
+          brush.scaled.current = transformedCoords
+
           this._syncBrushPoints()
 
           if (this._anySelectables) {
@@ -189,10 +244,12 @@ export default {
       if (type === 'polygon') {
         let brush = this.brushManager.polygon
         if (brush.screen.start) {
-          let dataCoords = this._getDataCoords(x, y)
+          let localCoords = this._getLocalCoords(x, y)
+          let transformedCoords = this._localTransform([x, y])
 
           brush.screen.points.push([x, y])
-          brush.data.points.push(dataCoords)
+          brush.local.points.push(localCoords)
+          brush.local.points.push(transformedCoords)
           this._syncBrushPoints()
 
           if (this._anySelectables) {
@@ -205,7 +262,8 @@ export default {
     _onMouseUp ({ x, y }, e) {
       let type = this._brush.type
       let brush
-      let dataCoords = this._getDataCoords(x, y)
+      let localCoords = this._getLocalCoords(x, y)
+      let transformedCoords = this._localTransform([x, y])
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
         brush = this.brushManager.rectangle
@@ -216,13 +274,15 @@ export default {
       }
 
       brush.screen.end = [x, y]
-      brush.data.end = dataCoords
-      this._emitBrushEvent()
+      brush.local.end = localCoords
+      brush.scaled.end = transformedCoords
+
+      this._emitBrushUpEvent()
       this._syncBrushPoints()
       this._resetEverything()
     },
 
-    _getDataCoords (x, y) {
+    _getLocalCoords (x, y) {
       return this.$$inverseTransform([x, y])
     },
 
@@ -257,22 +317,21 @@ export default {
       }
     },
 
-    _emitBrushEvent () {
+    _emitBrushUpEvent () {
       let type = this._brush.type
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        let start = this.brushManager.rectangle.data.start
-        let end = this.brushManager.rectangle.data.end
+        let screen = this.brushManager.rectangle.screen
+        let local = this.brushManager.rectangle.local
+        let scaled = this.brushManager.rectangle.scaled
 
-        let bbox = this._getBBox(start, end)
+        let bboxScreen = this._getBBox(screen.start, screen.end)
+        let bboxLocal = this._getBBox(local.start, local.end)
+        let bboxScaled = this._getBBox(scaled.start, scaled.end)
 
-        this.$emit('brush', bbox)
-      }
-
-      if (type === 'polygon') {
-        let bbox = findBoundingBox(this.brushManager.polygon.data.points)
-
-        this.$emit('brush', bbox)
+        if (Object.keys(this.brushManager.selection).length > 0) {
+          this.$emit('brushup', { bboxScreen, bboxLocal, bboxScaled })
+        }
       }
     },
 
@@ -386,8 +445,11 @@ export default {
       for (let key in brush.screen) {
         brush.screen[key] = null
       }
-      for (let key in brush.data) {
-        brush.data[key] = null
+      for (let key in brush.local) {
+        brush.local[key] = null
+      }
+      for (let key in brush.scaled) {
+        brush.scaled[key] = null
       }
     },
 
