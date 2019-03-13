@@ -30,10 +30,16 @@ export default {
 
         polygon: {
           data: {
-
+            start: null,
+            points: null,
+            end: null,
+            bbox: null
           },
           screen: {
-
+            start: null,
+            points: null,
+            end: null,
+            bbox: null
           }
         }
       }
@@ -129,22 +135,36 @@ export default {
     _onMouseDown ({ x, y }, e) {
       if (this._inBBox([x, y], this._sectionBBox)) {
         let type = this._brush.type
+        let brush
+
         if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
           if (type === 'swipeX') { y = this._sectionBBox.minY }
           if (type === 'swipeY') { x = this._sectionBBox.minX }
+          brush = this.brushManager.retangle
+        }
 
-          let dataCoords = this._getDataCoords(x, y)
+        if (type === 'polygon') {
+          brush = this.brushManager.polygon
+        }
 
-          let brush = this.brushManager.rectangle
-          let selection = this.brushManager.selection
+        let dataCoords = this._getDataCoords(x, y)
+        let selection = this.brushManager.selection
 
-          for (let uid in selection) {
-            selection[uid].instance.$emit('deselect')
-            delete selection[uid]
-          }
+        // Empty current selection
+        for (let uid in selection) {
+          selection[uid].instance.$emit('deselect')
+          delete selection[uid]
+        }
 
-          brush.screen.start = [x, y]
-          brush.data.start = dataCoords
+        brush.screen.start = [x, y]
+        brush.data.start = dataCoords
+
+        if (type === 'polygon') {
+          brush.screen.points = [[x, y]]
+          brush.data.points = [dataCoords]
+
+          brush.screen.bbox = this._getBBox([x, y], [x, y])
+          brush.data.bbox = this._getBbox(dataCoords, dataCoords)
         }
       }
     },
@@ -169,21 +189,45 @@ export default {
           }
         }
       }
+
+      if (type === 'polygon') {
+        let brush = this.brushManager.polygon
+        if (brush.screen.start) {
+          let dataCoords = this._getDataCoords(x, y)
+
+          brush.screen.points.push([x, y])
+          brush.data.points.push(dataCoords)
+
+          brush.screen.bbox = this._updateBBox(brush.screen.bbox, [x, y])
+          brush.data.bbox = this._updateBBox(brush.data.bbox, dataCoords)
+
+          this._syncBrushPoints()
+
+          if (this._anySelectables) {
+            this._updateSelection()
+          }
+        }
+      }
     },
 
     _onMouseUp ({ x, y }, e) {
       let type = this._brush.type
+      let brush
       let dataCoords = this._getDataCoords(x, y)
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        let brush = this.brushManager.rectangle
-
-        brush.screen.end = [x, y]
-        brush.data.end = dataCoords
-        this._emitBrushEvent()
-        this._syncBrushPoints()
-        this._resetEverything()
+        brush = this.brushManager.rectangle
       }
+
+      if (type === 'polygon') {
+        brush = this.brushManager.polygon
+      }
+
+      brush.screen.end = [x, y]
+      brush.data.end = dataCoords
+      this._emitBrushEvent()
+      this._syncBrushPoints()
+      this._resetEverything()
     },
 
     _getDataCoords (x, y) {
@@ -205,6 +249,18 @@ export default {
 
         this.$emit('update:brushPoints', points)
       }
+
+      if (type === 'polygon') {
+        let start = this.brushManager.polygon.screen.start
+        let points = this.brushManager.polygon.screen.points
+        let end = this.brushManager.polygon.screen.end
+
+        if (!end) {
+          points = this._getBrushPoints(start, points)
+        }
+
+        this.$emit('update:brushPoints', points)
+      }
     },
 
     _emitBrushEvent () {
@@ -215,6 +271,12 @@ export default {
         let end = this.brushManager.rectangle.data.end
 
         let bbox = this._getBBox(start, end)
+
+        this.$emit('brush', bbox)
+      }
+
+      if (type === 'polygon') {
+        let bbox = findBoundingBox(this.brushManager.polygon.data.points)
 
         this.$emit('brush', bbox)
       }
@@ -249,6 +311,17 @@ export default {
           }
         }
       }
+
+      if (type === 'polygon') {
+        let bbox = this.brushManager.polygon.screen.bbox
+
+        let hits = this._spatialIndex.search(bbox)
+        let currentSelection = {}
+
+        for (let hit of hits) {
+          // TODO
+        }
+      }
     },
 
     _getBBox (a, b) {
@@ -260,9 +333,20 @@ export default {
       } : null
     },
 
+    _updateBBox (bbox, point) {
+      return {
+        minX: Math.min(bbox.minX, point[0]),
+        minY: Math.min(bbox.minY, point[1]),
+        maxX: Math.max(bbox.maxX, point[0]),
+        maxY: Math.max(bbox.maxY, point[1])
+      }
+    },
+
     _getBrushPoints (a, b) {
-      let type = this._brush.type
       if (a && b) {
+        let type = this._brush.type
+        let rootTransform = this.$$coordinateTree.getBranch('root').inverseTransform
+
         if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
           let points = [
             a,
@@ -271,23 +355,32 @@ export default {
             [b[0], a[1]]
           ]
 
-          let rootTransform = this.$$coordinateTree.getBranch('root').inverseTransform
           return points.map(rootTransform)
+        }
+
+        if (type === 'polygon') {
+          return b.map(rootTransform)
         }
       }
     },
 
     _resetEverything () {
       let type = this._brush.type
+      let brush
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        let brush = this.brushManager.rectangle
-        for (let key in brush.screen) {
-          this.brushManager.rectangle.screen[key] = null
-        }
-        for (let key in brush.data) {
-          this.brushManager.rectangle.data[key] = null
-        }
+        brush = this.brushManager.rectangle
+      }
+
+      if (type === 'polygon') {
+        brush = this.brushManager.polygon
+      }
+
+      for (let key in brush.screen) {
+        brush.screen[key] = null
+      }
+      for (let key in brush.data) {
+        brush.data[key] = null
       }
     },
 
