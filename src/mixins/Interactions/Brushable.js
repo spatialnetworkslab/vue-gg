@@ -124,13 +124,13 @@ export default {
           let scaleY = y => y
 
           if (this._brush.hasOwnProperty('scaleX')) {
-            scaleX = createScale('x', this.context, this._brush.scaleX)
+            scaleX = createScale('x', this.context, this._brush.scaleX).invert
           }
           if (this._brush.hasOwnProperty('scaleY')) {
-            scaleY = createScale('y', this.context, this._brush.scaleY)
+            scaleY = createScale('y', this.context, this._brush.scaleY).invert
           }
 
-          return ([x, y]) => { return [scaleX.invert(x), scaleY.invert(y)] }
+          return ([x, y]) => { return [scaleX(x), scaleY(y)] }
         }
       }
     }
