@@ -249,6 +249,8 @@ export default {
 
         if (!end) {
           points = this._getBrushPoints(start, points)
+        } else {
+          points = []
         }
 
         this.$emit('update:brushPoints', points)
@@ -328,9 +330,7 @@ export default {
               if (!this.brushManager.selection[uid]) {
                 this.brushManager.selection[uid] = hit
                 hit.instance.$emit('select')
-              }
-
-              if (this.brushManager.selection[uid]) {
+              } else {
                 this.brushManager.selection[uid].instance.$emit('deselect')
                 delete this.brushManager.selection[uid]
               }

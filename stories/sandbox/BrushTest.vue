@@ -12,7 +12,7 @@
       :y2="450"
       :scale-x="[0, 1]"
       :scale-y="[0, 1]"
-      :brush="'rectangle'"
+      :brush="'polygon'"
       :brush-points.sync="brushPoints"
     >
 

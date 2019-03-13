@@ -17,7 +17,7 @@
       :y1="100"
       :y2="500"
       :scale-geo="{}"
-      :brush="'rectangle'"
+      :brush="'polygon'"
       :brush-points.sync="brushPoints"
     >
 
