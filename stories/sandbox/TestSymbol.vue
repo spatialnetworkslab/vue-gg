@@ -58,7 +58,6 @@
         :y2="500"
         :scale="'dependent'"
       />
-
     </vgg-graphic>
 
     <p>Shape Scheme:
@@ -76,14 +75,13 @@
         <option value="category10">default scheme (category10)</option>
         <option value="accent">accent</option>
         <option value="dark2">dark 2</option>
+        <option value="paired">paired</option>
         <option value="pastel1">pastel 1</option>
         <option value="pastel2">pastel 2</option>
         <option value="set1">set 1</option>
         <option value="set2">set 2</option>
         <option value="set3">set 3</option>
-        <option value="color20">color 20</option>
-        <option value="color20b">color 20b</option>
-        <option value="color20c">color 20c</option>
+        <option value="custom">custom (ggplot2 default)</option>
       </select>
     </p>
 
@@ -126,7 +124,7 @@ export default {
 
     color (value) {
       if (this.colorScheme === 'custom') {
-        return { val: value, scale: { ranges: [], domain: 'categorical' } }
+        return { val: value, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }
       }
 
       return { val: value, scale: { type: this.colorScheme, domain: 'categorical' } }

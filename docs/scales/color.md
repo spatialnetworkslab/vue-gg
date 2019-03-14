@@ -4,9 +4,51 @@ title: Color
 
 # Color Scales
 
-We provide a few default color scales that can be used as-is. They are based off the color scales as implemented in [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic)
+We provide a few default color scales that can be used as-is. They are based off the color scales as implemented in [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic).
 
-Color scales can be applied to any variable of type ```nominal```, ```count```, ```ratio```.
+Color scales can be applied to any variable of type ```quantitative```, ```categorical```, ```interval```, .
+
+### Prop definition
+
+```
+<vgg-symbol
+	:stroke="{ val: value, scale: { type: 'category10', domain: 'categorical' } }">
+```
+`val` is set to the value that the color scale will be mapped against. `domain` is set to the domain of `val`.
+
+## Categorical
+
+### category10
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/category10.png" alt="10 categorical colors" height="50px"/>
+
+This is the default set of colors for categorical data.
+
+### accent
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Accent.png" alt="accent color scale" height="50px"/>
+
+### dark2
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Dark2.png" alt="dark2 color scale" height="50px"/>
+
+### paired
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Paired.png" alt="paired color scale" height="50px"/>
+
+### pastel1
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Pastel1.png" alt="pastel1 color scale" height="50px"/>
+
+### pastel2
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Pastel2.png" alt="pastel2 color scale" height="50px"/>
+
+### set1
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Set1.png" alt="set1 color scale" height="50px"/>
+
+### set2
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Set2.png" alt="set2 color scale" height="50px"/>
+
+### set3
+<img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Set3.png" alt="set3 color scale" height="50px"/>
+
+
+## Continuous
 
 ### brownBlue
 
@@ -103,3 +145,15 @@ Color scales can be applied to any variable of type ```nominal```, ```count```, 
 ### sinebow
 
 <img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/sinebow.png" alt="sinebow color scale" height="50px"/>
+
+# Custom Color Scales
+
+It is possible to define a custom color scale by providing an array of `ranges` to the scaling options instead of `type`. Elements of the array can be hex codes, RGB codes or color names.
+
+### Prop definition
+
+```
+<vgg-symbol
+	:stroke="{ val: row.categorical, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }">
+```
+<ColorScale />
