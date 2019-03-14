@@ -319,19 +319,27 @@ export default {
 
     _emitBrushUpEvent () {
       let type = this._brush.type
+      let notPolar = this.type !== 'polar'
 
-      if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
+      if (notPolar && ['rectangle', 'swipeX', 'swipeY'].includes(type)) {
         let screen = this.brushManager.rectangle.screen
         let local = this.brushManager.rectangle.local
         let scaled = this.brushManager.rectangle.scaled
 
-        let bboxScreen = this._getBBox(screen.start, screen.end)
-        let bboxLocal = this._getBBox(local.start, local.end)
-        let bboxScaled = this._getBBox(scaled.start, scaled.end)
+        let localDomainTypes = this.transformation.domainTypes
+        let scaledDomainTypes = {}
+        if (this._brush.scaleX) {
 
-        if (Object.keys(this.brushManager.selection).length > 0) {
-          this.$emit('brushup', { bboxScreen, bboxLocal, bboxScaled })
-        }
+        } else { scaledDomainTypes.x = localDomainTypes.x }
+        if (this._brush.scaleY) {
+
+        } else { scaledDomainTypes.y = localDomainTypes.y }
+
+        let bboxScreen = this._getBBox(screen.start, screen.end)
+        let bboxLocal = this._getBBox(local.start, local.end, localDomainTypes)
+        let bboxScaled = this._getBBox(scaled.start, scaled.end, scaledDomainTypes)
+
+        this.$emit('brushup', { bboxScreen, bboxLocal, bboxScaled })
       }
     },
 
@@ -399,13 +407,57 @@ export default {
       }
     },
 
-    _getBBox (a, b) {
-      return a && b ? {
-        minX: Math.min(a[0], b[0]),
-        minY: Math.min(a[1], b[1]),
-        maxX: Math.max(a[0], b[0]),
-        maxY: Math.max(a[1], b[1])
-      } : null
+    _getBBox (a, b, _domainTypes) {
+      if (a && b) {
+        let domainTypes = _domainTypes || { x: 'quantitative', y: 'quantitative' }
+        let bbox = {}
+
+        if (domainTypes.x === 'quantitative') {
+          bbox.minX = Math.min(a[0], b[0])
+          bbox.maxX = Math.max(a[0], b[0])
+        }
+
+        if (domainTypes.x === 'categorical') {
+          bbox.x = []
+          let within = 0
+          for (let cat of this.transformation.actualDomains.x) {
+            if (cat === a[0] || cat === b[0]) {
+              within++
+            }
+            if (within > 0) { bbox.x.push(cat) }
+            if (within === 2) { break }
+          }
+        }
+
+        if (domainTypes.x === 'temporal') {
+          bbox.minX = new Date(Math.min(a[0].getTime(), b[0].getTime()))
+          bbox.maxX = new Date(Math.max(a[0].getTime(), b[0].getTime()))
+        }
+
+        if (domainTypes.y === 'quantitative') {
+          bbox.minY = Math.min(a[1], b[1])
+          bbox.maxY = Math.max(a[1], b[1])
+        }
+
+        if (domainTypes.y === 'categorical') {
+          bbox.y = []
+          let within = 0
+          for (let cat of this.transformation.actualDomains.y) {
+            if (cat === a[1] || cat === b[1]) {
+              within++
+            }
+            if (within > 0) { bbox.y.push(cat) }
+            if (within === 2) { break }
+          }
+        }
+
+        if (domainTypes.y === 'temporal') {
+          bbox.minX = new Date(Math.min(a[1].getTime(), b[1].getTime()))
+          bbox.maxX = new Date(Math.max(a[1].getTime(), b[1].getTime()))
+        }
+
+        return bbox
+      }
     },
 
     _getBrushPoints (a, b) {

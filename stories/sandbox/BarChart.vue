@@ -14,6 +14,8 @@
       :y2="500"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
+      :brush="'rectangle'"
+      @brushup="log($event)"
     >
 
       <vgg-plot-title
@@ -30,7 +32,6 @@
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           :fill="hoverI === i ? 'green' : 'black'"
-          @hover="handleHover($event, i)"
         />
 
         <vgg-line
@@ -101,7 +102,9 @@ export default {
   methods: {
     handleHover (e, i) {
       this.hoverI = e ? i : null
-    }
+    },
+
+    log: console.log
   }
 }
 </script>

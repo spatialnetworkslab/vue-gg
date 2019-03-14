@@ -42,24 +42,28 @@ export default class CoordinateTransformation {
 
     // If we have a categorical or temporal domain: set ranges as domains
     this.domains = {}
+    this.actualDomains = {}
 
     if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
       this.domains.x = ranges.x
+      this.actualDomains.x = domainX
     } else {
       this.domains.x = domainX
+      this.actualDomains.x = domainX
     }
 
     if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
       this.domains.y = ranges.y
+      this.actualDomains = domainY
     } else {
       this.domains.y = domainY
+      this.actualDomains.y = domainY
     }
 
     this.ranges = {
       x: parseRange(ranges.x, scaleOptionsX),
       y: parseRange(ranges.y, scaleOptionsY)
     }
-
     this.scaleX = createCoordsScale('x', domainXType, domainX, this.ranges.x,
       scaleOptionsX
     )
@@ -72,14 +76,15 @@ export default class CoordinateTransformation {
     // before we actually use $$transform. This is necessary in a few cases.
     if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
       this.getX = x => x.constructor === Number ? x : this.scaleX(x)
-      this.invertX = x => x.constructor === Number ? x : this.scaleX.invert(x)
+      this.invertX = x => x.constructor !== Number ? x : this.scaleX.invert(x)
     } else {
       this.getX = this.scaleX
       this.invertX = this.scaleX.invert
     }
+
     if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
       this.getY = y => y.constructor === Number ? y : this.scaleY(y)
-      this.invertY = y => y.constructor === Number ? y : this.scaleY.invert(y)
+      this.invertY = y => y.constructor !== Number ? y : this.scaleY.invert(y)
     } else {
       this.getY = this.scaleY
       this.invertY = this.scaleY.invert
