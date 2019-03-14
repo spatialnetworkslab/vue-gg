@@ -21,7 +21,7 @@ export default {
   mixins: [CoordinateSystem, DataManager, ScaleManager, InteractionManager],
 
   provide () {
-    return { $$grid: false }
+    return { $$grid: false, $$sectionParentChain: [] }
   }
 }
 </script>

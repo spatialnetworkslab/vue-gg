@@ -4,7 +4,7 @@ import createSVGStyle from './utils/createSVGStyle.js'
 export default {
   mixins: [CoordinateTreeUser],
 
-  inject: ['$$transform', '$$interactionManager'],
+  inject: ['$$transform', '$$interactionManager', '$$sectionParentChain'],
 
   props: {
     interpolate: {
@@ -40,6 +40,10 @@ export default {
       }
 
       return events
+    },
+
+    sectionParentChain () {
+      return JSON.stringify(this.$$sectionParentChain)
     }
   },
 

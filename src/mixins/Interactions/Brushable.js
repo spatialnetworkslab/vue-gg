@@ -5,7 +5,7 @@ import createGeoScale from '../../scales/createGeoScale.js'
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
 export default {
-  inject: ['$$interactionManager'],
+  inject: ['$$interactionManager', '$$sectionParentChain'],
 
   props: {
     brush: {
@@ -154,6 +154,10 @@ export default {
 
         return localScaledDomainTypes
       }
+    },
+
+    sectionParentChain () {
+      return [...this.$$sectionParentChain, this.uuid]
     }
   },
 
@@ -524,5 +528,9 @@ export default {
       return point[0] >= bbox.minX && point[0] <= bbox.maxX &&
         point[1] >= bbox.minY && point[1] <= bbox.maxY
     }
+  },
+
+  provide () {
+    return { $$sectionParentChain: this.sectionParentChain }
   }
 }

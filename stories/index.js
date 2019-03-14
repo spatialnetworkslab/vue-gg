@@ -25,6 +25,7 @@ import MappingGridLayout from './sandbox/MappingGridLayout.vue'
 import RepeatLayout from './sandbox/RepeatLayout.vue'
 import SectionAxesTest from './sandbox/SectionAxesTest.vue'
 import BrushTest from './sandbox/BrushTest.vue'
+import MultipleBrushes from './sandbox/MultipleBrushes.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -53,3 +54,4 @@ storiesOf('Sandbox', module)
   .add('Repeat Grid layout', () => (RepeatLayout))
   .add('Section axes', () => (SectionAxesTest))
   .add('Brush test', () => (BrushTest))
+  .add('Multiple brushes', () => (MultipleBrushes))
