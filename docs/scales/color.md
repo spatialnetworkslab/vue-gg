@@ -148,12 +148,12 @@ This is the default set of colors for categorical data.
 
 # Custom Color Scales
 
-It is possible to define a custom color scale by providing an array of `ranges` to the scaling options instead of `type`. Elements of the array can be hex codes, RGB codes or color names.
+It is possible to define a custom color scale by providing an array of `ranges` to the scaling options instead of `type`. Elements of the array can be hexadecimal codes, RGB codes or color names.
 
 ### Prop definition
 
 ```
 <vgg-symbol
-	:stroke="{ val: row.categorical, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }">
+	:fill="{ val: value, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: [ ... ] } }"
 ```
-<ColorScale />
+<ColorScale/>

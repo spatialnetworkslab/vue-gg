@@ -20,13 +20,6 @@
 
 <script>
 export default {
-  props: {
-    scheme: {
-      type: String,
-      default: 'shape8'
-    }
-  },
-
   computed: {
     shapes () {
       return [
