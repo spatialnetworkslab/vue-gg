@@ -142,14 +142,14 @@ export default {
 
   mounted () {
     this.$nextTick(() => {
-      if (this._brush) {
+      if (this._brush && !this.axes) {
         this.updateInteractionManager(this._brush)
       }
     })
   },
 
   beforeDestroy () {
-    if (this._brush) {
+    if (this._brush && !this.axes) {
       this.$$interactionManager.removeBrush(this.uuid)
     }
   },

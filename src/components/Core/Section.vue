@@ -286,9 +286,10 @@ export default {
 
     createSection (createElement) {
       let props = this.nestedSectionProps
+      let on = this.$options._parentListeners
       let slotContent = this.getSlotContent()
 
-      return createElement(Section, { props }, slotContent)
+      return createElement(Section, { props, on }, slotContent)
     },
 
     createAxes (createElement) {

@@ -12,6 +12,10 @@
       :y2="450"
       :scale-x="[0, 1]"
       :scale-y="[0, 1]"
+      :axes="{
+        left: { scale: 'b' },
+        bottom: { scale: 'a' }
+      }"
       :brush="{
         type: 'rectangle',
         scaleX: 'a',
