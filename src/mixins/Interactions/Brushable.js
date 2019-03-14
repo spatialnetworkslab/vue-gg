@@ -2,6 +2,7 @@ import findBoundingBox from './utils/geometry/findBoundingBox.js'
 import pointInPolygon from './utils/geometry/pointInPolygon.js'
 import createScale from '../../scales/createScale.js'
 import createGeoScale from '../../scales/createGeoScale.js'
+import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 
 export default {
   inject: ['$$interactionManager'],
@@ -106,7 +107,7 @@ export default {
       }
     },
 
-    _localTransform () {
+    _localScaledTransform () {
       if (this._brush) {
         if (this._brush.hasOwnProperty('scaleGeo')) {
           if (this._brush.hasOwnProperty('scaleX') || this._brush.hasOwnProperty('scaleY')) {
@@ -132,6 +133,26 @@ export default {
 
           return ([x, y]) => { return [scaleX(x), scaleY(y)] }
         }
+      }
+    },
+
+    _localScaledDomainTypes () {
+      if (this._brush) {
+        if (this.scaleGeo) { return { x: 'quantitative', y: 'quantitative' } }
+        let localScaledDomainTypes = {}
+
+        if (this._brush.hasOwnProperty('scaleX')) {
+          localScaledDomainTypes.x = parseScaleOptions(
+            this._brush.scaleX, this.$$dataInterface, this.$$scaleManager
+          )[1]
+        } else { localScaledDomainTypes.x = this.transformation.domainTypes.x }
+        if (this._brush.hasOwnProperty('scaleY')) {
+          localScaledDomainTypes.y = parseScaleOptions(
+            this._brush.scaleY, this.$$dataInterface, this.$$scaleManager
+          )[1]
+        } else { localScaledDomainTypes.y = this.transformation.domainTypes.y }
+
+        return localScaledDomainTypes
       }
     }
   },
@@ -196,7 +217,7 @@ export default {
         }
 
         let localCoords = this._getLocalCoords(x, y)
-        let transformedCoords = this._localTransform(localCoords)
+        let transformedCoords = this._localScaledTransform(localCoords)
         let selection = this.brushManager.selection
 
         // Empty current selection
@@ -227,7 +248,7 @@ export default {
           if (type === 'swipeY') { x = this._sectionBBox.maxX }
 
           let localCoords = this._getLocalCoords(x, y)
-          let transformedCoords = this._localTransform(localCoords)
+          let transformedCoords = this._localScaledTransform(localCoords)
 
           brush.screen.current = [x, y]
           brush.local.current = localCoords
@@ -245,7 +266,7 @@ export default {
         let brush = this.brushManager.polygon
         if (brush.screen.start) {
           let localCoords = this._getLocalCoords(x, y)
-          let transformedCoords = this._localTransform(localCoords)
+          let transformedCoords = this._localScaledTransform(localCoords)
 
           brush.screen.points.push([x, y])
           brush.local.points.push(localCoords)
@@ -263,7 +284,7 @@ export default {
       let type = this._brush.type
       let brush
       let localCoords = this._getLocalCoords(x, y)
-      let transformedCoords = this._localTransform(localCoords)
+      let transformedCoords = this._localScaledTransform(localCoords)
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
         brush = this.brushManager.rectangle
@@ -327,13 +348,7 @@ export default {
         let scaled = this.brushManager.rectangle.scaled
 
         let localDomainTypes = this.transformation.domainTypes
-        let scaledDomainTypes = {}
-        if (this._brush.scaleX) {
-
-        } else { scaledDomainTypes.x = localDomainTypes.x }
-        if (this._brush.scaleY) {
-
-        } else { scaledDomainTypes.y = localDomainTypes.y }
+        let scaledDomainTypes = this._localScaledDomainTypes
 
         let bboxScreen = this._getBBox(screen.start, screen.end)
         let bboxLocal = this._getBBox(local.start, local.end, localDomainTypes)

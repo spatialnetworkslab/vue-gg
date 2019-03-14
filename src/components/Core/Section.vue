@@ -83,7 +83,6 @@ export default {
     },
 
     scales () {
-      console.log('retriggering scales computed property...')
       if ((this.scaleX || this.scaleY || this.scaleGeo)) {
         let scales = {}
         if (this.scaleX) { scales.x = this.scaleX }
