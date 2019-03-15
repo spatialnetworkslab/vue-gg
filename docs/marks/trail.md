@@ -14,13 +14,14 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 
 # Path Mark
 
-The standard trail mark takes the following props.
+The standard trail mark takes the following props. Note that `x` and `y`, and `points` cannot be inputted simultaneously.
 
 ### Positioning
 | Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
 | ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
 | x    | true     | [Number, String, Date] | undefined | x-coordinates of center of each symbol | Local coordinates |
 | y    | true     | [Number, String, Date] | undefined | y-coordinates of center of each symbol | Local coordinates |
+| points    | true     | [Number, String, Date] | undefined | Array of coordinate pairs [x, y] referring to each point |
 
 ### Aesthetics
 
@@ -72,4 +73,16 @@ The `stroke-width` prop sets the stroke width of the `trail` mark at a given poi
 
 <TrailMarkDemo />
 
-This produces a green trail mark with 0.4 opacity and varying stroke width according to `dataframe.width`.
+This produces a green trail mark with 0.4 opacity and varying stroke width according to `dataframe.width`. Alternatively, `points` can be used to input an array of coordinate pairs, like so:
+
+::: v-pre
+```html
+<vgg-trail
+  :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
+  :stroke-width="[1, 5, 5, 3, 4, 2]"
+  fill="orange"
+  :fillOpacity="0.7"
+  :sort="'x'"
+/>
+```
+:::

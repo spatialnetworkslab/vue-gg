@@ -13,6 +13,14 @@
       :scale-y="'yValues'"
     >
 
+      <vgg-trail
+        :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
+        :stroke-width="[1, 5, 5, 3, 4, 2]"
+        :fill-opacity="0.7"
+        :sort="'x'"
+        fill="orange"
+      />
+
       <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
       <vgg-data :transform="{ groupBy: 'colors' }">
@@ -26,7 +34,6 @@
             :fill="row.colors"
             :fill-opacity="0.7"
             :sort="'x'"
-            @click="log(row)"
           />
 
         </vgg-map>
