@@ -10,10 +10,12 @@ Color scales can be applied to any variable of type ```quantitative```, ```categ
 
 ### Prop definition
 
-```
+::: v-pre
+```html
 <vgg-symbol
 	:stroke="{ val: value, scale: { type: 'category10', domain: 'categorical' } }">
 ```
+:::
 `val` is set to the value that the color scale will be mapped against. `domain` is set to the domain of `val`.
 
 ## Categorical
@@ -152,8 +154,11 @@ It is possible to define a custom color scale by providing an array of `ranges` 
 
 ### Prop definition
 
-```
+::: v-pre
+```html
 <vgg-symbol
 	:fill="{ val: value, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: [ ... ] } }"
+/>
 ```
+:::
 <ColorScale/>
