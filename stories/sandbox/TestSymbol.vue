@@ -20,10 +20,10 @@
           <vgg-symbol
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
-            :size="{ val: row.dependent, scale: 'dependent' }"
+            :size="{ val: row.dependent, scale: {domain: 'dependent', range: [5, 20]} }"
             :stroke="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
             :stroke-width="2"
-            shape="triangle-left"
+            :shape="shape(row.categorical)"
             fill="none"
           />
 
@@ -60,9 +60,15 @@
       />
     </vgg-graphic>
 
-    <div style="margin-top: 10px;">
-      <button @click="generateNewData()">Generate new data</button>
-    </div>
+    <p>Shape Scheme:
+      <select v-model="shapeScheme">
+        <option value="shape8">default scheme (shape8)</option>
+        <option value="triangles">triangles</option>
+        <option value="stars">stars</option>
+        <option value="polygons">polygons</option>
+        <option value="custom">custom circles and squares</option>
+      </select>
+    </p>
 
   </div>
 </template>
@@ -73,18 +79,38 @@ export default {
   name: 'Scatterplot',
   data () {
     return {
-      x1: 200,
-      x2: 600,
-      y1: 100,
-      y2: 500,
-      xy: xy('explanatory', 'dependent')
+      xy: this.generateNewData(),
+      shapeScheme: 'shape8',
     }
   },
   methods: {
     generateNewData () {
       let newData = xy('explanatory', 'dependent')
-      this.xy = newData
-    }
+      let fruits = [
+        'apple',
+        'banana',
+        'kiwi',
+        'pomelo',
+        'jackfruit',
+        'guava',
+        'cherry',
+        'dragonfruit',
+        'grape',
+        'durian'
+      ]
+      for (let i = 0; i < newData.length; i++) {
+        newData[i].categorical = fruits[Math.floor(i / 10)]
+        newData[i].dependent = newData[i].dependent + Math.random() * 100
+      }
+      return newData
+    },
+
+    shape (value) {
+      if (this.shapeScheme === 'custom') {
+        return { val: value, scale: { ranges: ['circle', 'square'], domain: 'categorical' } }
+      }
+      return { val: value, scale: { type: this.shapeScheme, domain: 'categorical' } }
+    },
   }
 }
 </script>

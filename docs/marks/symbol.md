@@ -55,10 +55,9 @@ the parent Section has.
 ### Other props
 
 The `shape` prop sets the shape of the symbol mark. The value defaults to `circle`
-but can be set to any of the available options: `square`, `cross`, `diamond`, `triangle-up`,
-`triangle-down`, `triangle-left`, `triangle-right` and `star`. Additionally,
-it is possible to provide a custom shape, specified as a SVG path string with
-coordinates scaled to [-1, 1] both horizontally and vertically.
+but can be set to any of the available options. Some pre-defined shapes include `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-left`, `triangle-right` and `star`.
+
+For a full list of options, refer to [shape](../scales/shape.md) documentation. Additionally, it is possible to provide a custom shape, specified as a SVG path string with coordinates scaled to [-1, 1] both horizontally and vertically.
 
 `size` defaults to 10px. This same value refers to both the height and width of
 the shape. In order to improve the accuracy when reading off the (x, y) values

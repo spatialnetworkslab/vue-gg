@@ -38,6 +38,8 @@
 
         </vgg-map>
 
+      </vgg-data>
+
 
       </vgg-data>
     </vgg-section>
