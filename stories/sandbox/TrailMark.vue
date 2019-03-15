@@ -13,24 +13,32 @@
       :scale-y="'yValues'"
     >
 
-    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
+      <vgg-trail
+        :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
+        :stroke-width="[1, 5, 5, 3, 4, 2]"
+        fill="orange"
+        :fillOpacity="0.7"
+        :sort="'x'"
+      />
 
-    <vgg-data :transform="{ groupBy: 'colors' }">
+      <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
-      <vgg-map v-slot="{ row }">
+      <vgg-data :transform="{ groupBy: 'colors' }">
 
-        <vgg-trail
-          :x="row.grouped.xValues"
-          :y="row.grouped.yValues"
-          :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
-          :fill="row.colors"
-          :fillOpacity="0.7"
-          :sort="'x'"
-        />
+        <vgg-map v-slot="{ row }">
 
-      </vgg-map>
+          <vgg-trail
+            :x="row.grouped.xValues"
+            :y="row.grouped.yValues"
+            :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
+            :fill="row.colors"
+            :fillOpacity="0.7"
+            :sort="'x'"
+          />
 
-    </vgg-data>
+        </vgg-map>
+
+      </vgg-data>
 
     </vgg-section>
     <vgg-x-grid
