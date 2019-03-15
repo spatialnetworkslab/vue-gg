@@ -12,11 +12,13 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 
 The discrete legend maps the given scale to a rectangular section composed of discrete rectangles pertaining to the value of the label as per the `fill` color scale.
 
+The scale given in `scale` must be the same as that used in `fill`, if an input to the latter is given. Otherwise, the behavior of the legend is undefined.
+
 # Props
 
 | Prop   | Required | Regular types           | Default   | Description                                               |
 | ------ | -------- | ----------------------- | --------- | --------------------------------------------------------- |
-| scale  | true     | [Array, String, Object] | undefined | range of values covered by the legend, can be variable name |
+| scale  | true     | [Array, String, Object] | undefined | range of values visualized by the legend, can be variable name |
 | orientation   | false    | String               | vertical     | orientation of legend (vertical/horizontal)|
 | flip   | false    | [Boolean]               | false     | flip order of legend labels; if true, shows decreasing order                        |
 | flipNumbers   | false    | [Boolean]               | false     | flip placement of numbers and discrete color rectangles                        |

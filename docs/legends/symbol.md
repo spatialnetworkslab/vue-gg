@@ -10,13 +10,15 @@ title: Symbol Legend
 
 Legends are used to show scale mappings for values like color, shape, size, opacity. Each legend is typically mapped to a single dimension or variable.
 
-The discrete legend maps the given scale to a rectangular section composed of discrete rectangles pertaining to the value of the label as per the `fill` color scale.
+The symbol legend maps the given scale to a series of symbols.
+
+ At least one of the `size`, `shape`, `fill`, `stroke`, `stroke-width` `stroke-opacity`, or `fill-opacity` properties must be specified. All properties used for this legend must have the same input domain as `scale` (but each property can have its own range). If different domains are given per property, the legend will follow that which is given to `scale`.
 
 # Props
 
 | Prop   | Required | Regular types           | Default   | Description                                               |
 | ------ | -------- | ----------------------- | --------- | --------------------------------------------------------- |
-| scale  | true     | [Array, String, Object] | undefined | range of values covered by the legend, can be variable name |
+| scale  | true     | [Array, String, Object] | undefined | range of values visualized by the legend, can be variable name |
 | orientation   | false    | String               | vertical     | orientation of legend (vertical/horizontal)|
 | flip   | false    | [Boolean]               | false     | flip order of legend labels; if true, shows decreasing order                        |
 | flipNumbers   | false    | [Boolean]               | false     | flip placement of numbers and discrete color rectangles                        |

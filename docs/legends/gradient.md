@@ -12,11 +12,13 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 
 The gradient legend maps the given scale to a rectangular gradient of two (2) or more colors.
 
+The scale given in `scale` must be the same as that used in `fill`, if an input to the latter is given. Otherwise, the behavior of the legend is undefined.
+
 # Props
 
 | Prop   | Required | Regular types           | Default   | Description                                               |
 | ------ | -------- | ----------------------- | --------- | --------------------------------------------------------- |
-| scale  | true     | [Array, String, Object] | undefined | range of values covered by the legend, can be variable name |
+| scale  | true     | [Array, String, Object] | undefined | range of values visualized by the legend, can be variable name |
 | orientation   | false    | String               | vertical     | orientation of legend (vertical/horizontal)|
 | flip   | false    | [Boolean]               | false     | flip order of legend labels; if true, shows decreasing order                        |
 | flipNumbers   | false    | [Boolean]               | false     | flip placement of numbers and rectangular gradient                        |
