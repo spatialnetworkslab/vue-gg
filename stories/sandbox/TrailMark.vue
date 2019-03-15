@@ -46,13 +46,30 @@
       :fontSize="10"
       :titleFontSize="16"
       shape="line"
-      :tickCount=11
+      :tickCount=10
       :size="15"
       :stroke-width="{ domain: 'rainfall', range: [0, 10]}"
       :x=550
       :y=200
       stroke="orange"
+      :columns=2
       direction="vertical"
+      title="Stroke width"
+    />
+
+    <vgg-symbol-legend
+      :scale="{ domain: 'rainfall'}"
+      :fontSize="10"
+      :titleFontSize="16"
+      shape="line"
+      :tickCount=11
+      :size="15"
+      :x=0
+      :y=520
+      :stroke-width=10
+      :stroke-opacity="{ domain: 'rainfall', range: [0, 0.7] }"
+      title="Opacity test"
+      orientation="horizontal"
     />
     <vgg-x-grid
       :x1="100"

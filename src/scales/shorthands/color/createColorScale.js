@@ -3,6 +3,8 @@ import checkValidScale from '../../utils/checkValidScale.js'
 import quantitative from './quantitative.js'
 import categorical from './categorical.js'
 
+import { interpolateLab } from 'd3'
+
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {
     let scale = scalingOptions.type || 'blues'

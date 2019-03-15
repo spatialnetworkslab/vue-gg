@@ -58,28 +58,6 @@
         :y2="y2"
         :scale="'dependent'"
       />
-      <!-- work on padding between symbols -->
-      <vgg-symbol-legend
-        :scale="{ domain: 'dependent'}"
-        :fontSize="10"
-        :tickCount="15"
-        shape="triangle-down"
-        stroke="green"
-        :size="{ domain: 'dependent'}"
-        position="tl"
-      />
-
-      <vgg-symbol-legend
-        :scale="{ domain: 'explanatory', domainMax: 100}"
-        :fontSize="10"
-        :tickCount="6"
-        shape="triangle-down"
-        :stroke="{ type: 'viridis'}"
-        :size=10
-        position="bl"
-        title=""
-        direction="horizontal"
-      />
     </vgg-graphic>
 
     <div style="margin-top: 10px;">

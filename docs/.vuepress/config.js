@@ -80,6 +80,15 @@ module.exports = {
                     ]
             },
             {
+                title: 'Legends',
+                collapsable: true,
+                children: [
+                    'legends/discrete',
+                    'legends/gradient',
+                    'legends/symbol'
+                    ]
+            },
+            {
                 title: 'Transformations',
                 collapsable: true,
                 children: [

@@ -72,23 +72,25 @@
         :scale="'dependent'"
       />
 
+      <!-- no title -->
       <vgg-symbol-legend
+        title=""
         :scale="{ domain: 'explanatory'}"
-        position="br"
         :size="{ domain: 'explanatory'}"
-        :tickCount="10"
-        direction="horizontal"
-        :labels="{ domain: 'explanatory'}"
+        :tickCount=10
+        position="br"
         flipNumbers
       />
 
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
-        :tickCount=15
-        :stroke="{ type: 'viridis' }"
-        :size="{ domain: 'dependent'}"
+        :tickCount=10
+        :stroke="'none'"
+        :size="{ domain: 'dependent', range: [1, 15]}"
         :fill="{ type: 'viridis'}"
-        flipNumbers
+        title="Size + Color"
+        position="tr"
+        flip
       />
 
     </vgg-graphic>

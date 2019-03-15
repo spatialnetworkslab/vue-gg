@@ -1,6 +1,6 @@
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
-    <!-- Vertical direction -->
+    <!-- Vertical orientation -->
     <vgg-section
       :x1="0"
       :x2="sectionWidth"
@@ -9,23 +9,36 @@
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
+      <vgg-rectangle
+        :x1="0"
+        :x2="100"
+        :y1="0"
+        :y2="100"
+        :fill="legendFill"
+        :stroke="legendStroke"
+        :stroke-width="legendStrokeWidth"
+      />
       <vgg-label
         :text="title"
         :x="titleX"
         :y="titleY + titlePadding"
         :font-size="titleFontSize"
-        font-weight="bold"
+        :font-family="titleFont"
+        :font-weight="titleFontWeight"
+        :opacity="titleOpacity"
+        :font-color="titleFontColor"
       />
       <vgg-section
         :x1="0"
         :x2="100"
         :y1="0"
-        :y2="95"
+        :y2="90"
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
         <vgg-data :data="boxes">
-          <g v-if="direction==='vertical'">
+          <g v-if="orientation==='vertical'">
+
             <vgg-map v-slot="{ row }">
               <vgg-rectangle
                 :x1="positionElements.rectangle.x1"
@@ -33,16 +46,37 @@
                 :y1="row.start"
                 :y2="row.end"
                 :fill="row.fill"
+                :opacity="legendOpacity"
               />
               <vgg-label
+                v-if="labelRotate"
                 :x="positionElements.label"
                 :y="row.location"
                 :text="row.label"
-                :font-size="fontSize"
+                :font-size="labelFontSize"
                 :anchor-point="'center'"
+                :opacity="labelOpacity"
+                :font-family="labelFont"
+                :font-weight="labelFontWeight"
+                :rotation="flip ? 30 : -30"
+                :fill="labelColor"
+              />
+              <vgg-label
+                v-else
+                :x="positionElements.label"
+                :y="row.location"
+                :text="row.label"
+                :font-size="labelFontSize"
+                :anchor-point="'center'"
+                :opacity="labelOpacity"
+                :font-family="labelFont"
+                :font-weight="labelFontWeight"
+                :fill="labelColor"
               />
             </vgg-map>
+
           </g><g v-else>
+
             <vgg-map v-slot="{ row }">
               <vgg-rectangle
                 :x1="row.start"
@@ -50,15 +84,35 @@
                 :y1="positionElements.rectangle.y1"
                 :y2="positionElements.rectangle.y2"
                 :fill="row.fill"
+                :opacity="legendOpacity"
               />
               <vgg-label
+                v-if="labelRotate"
                 :x="row.location"
                 :y="positionElements.label"
                 :text="row.label"
-                :font-size="fontSize"
+                :font-size="labelFontSize"
                 :anchor-point="'center'"
+                :opacity="labelOpacity"
+                :font-family="labelFont"
+                :font-weight="labelFontWeight"
+                :rotation="flip ? 30 : -30"
+                :fill="labelColor"
+              />
+              <vgg-label
+                v-else
+                :x="row.location"
+                :y="positionElements.label"
+                :text="row.label"
+                :font-size="labelFontSize"
+                :anchor-point="'center'"
+                :opacity="labelOpacity"
+                :font-family="labelFont"
+                :font-weight="labelFontWeight"
+                :fill="labelColor"
               />
             </vgg-map>
+
           </g>
         </vgg-data>
       </vgg-section>
@@ -81,6 +135,11 @@ export default {
       type: String,
       default: 'discrete'
     },
+
+    legendOpacity: {
+      type: Number,
+      default: 1
+    }
   },
 
   computed: {
@@ -113,9 +172,5 @@ export default {
       return boxes
     }
   },
-
-  methods: {
-  }
-
 }
 </script>

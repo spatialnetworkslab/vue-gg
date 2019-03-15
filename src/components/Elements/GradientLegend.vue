@@ -13,7 +13,7 @@
     </linearGradient>
     </defs>
 
-    <!-- Vertical/horizontal direction -->
+    <!-- Vertical/horizontal orientation -->
     <vgg-section
       :x1="0"
       :x2="width"
@@ -22,18 +22,30 @@
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
+      <vgg-rectangle
+        :x1="0"
+        :x2="100"
+        :y1="0"
+        :y2="100"
+        :fill="legendFill"
+        :stroke="legendStroke"
+        :stroke-width="legendStrokeWidth"
+      />
       <vgg-label
         :text="title"
         :x="positionElements.title"
         :y="titleY + titlePadding"
         :font-size="titleFontSize"
-        font-weight="bold"
+        :font-family="titleFont"
+        :font-weight="titleFontWeight"
+        :opacity="titleOpacity"
+        :font-color="titleFontColor"
       />
       <vgg-section
         :x1="0"
         :x2="100"
         :y1="0"
-        :y2="95"
+        :y2="90"
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
@@ -44,25 +56,62 @@
             :y1="positionElements.rectangle.y1"
             :y2="positionElements.rectangle.y2"
             :fill="'url(#grad1)'"
+            :opacity="legendOpacity"
           />
-          <g v-if="direction === 'vertical' ">
+          <g v-if="orientation === 'vertical' ">
             <vgg-map v-slot="{ row }">
               <vgg-label
+                v-if="labelRotate"
                 :x="positionElements.label"
                 :y="row.location"
                 :text="row.label"
-                :font-size="fontSize"
+                :font-size="labelFontSize"
                 :anchor-point="'center'"
+                :opacity="labelOpacity"
+                :font-family="labelFont"
+                :font-weight="labelFontWeight"
+                :rotation="flip ? 30 : -30"
+                :fill="labelColor"
+              />
+              <vgg-label
+                v-else
+                :x="positionElements.label"
+                :y="row.location"
+                :text="row.label"
+                :font-size="labelFontSize"
+                :anchor-point="'center'"
+                :opacity="labelOpacity"
+                :font-family="labelFont"
+                :font-weight="labelFontWeight"
+                :fill="labelColor"
               />
             </vgg-map>
           </g><g v-else>
             <vgg-map v-slot="{ row }">
               <vgg-label
+                v-if="labelRotate"
                 :x="row.location"
                 :y="positionElements.label"
                 :text="row.label"
-                :font-size="fontSize"
+                :font-size="labelFontSize"
                 :anchor-point="'center'"
+                :opacity="labelOpacity"
+                :font-family="labelFont"
+                :font-weight="labelFontWeight"
+                :rotation="flip ? 30 : -30"
+                :fill="labelColor"
+              />
+              <vgg-label
+                v-else
+                :x="row.location"
+                :y="positionElements.label"
+                :text="row.label"
+                :font-size="labelFontSize"
+                :anchor-point="'center'"
+                :opacity="labelOpacity"
+                :font-family="labelFont"
+                :font-weight="labelFontWeight"
+                :fill="labelColor"
               />
             </vgg-map>
           </g>
@@ -86,6 +135,11 @@ export default {
       type: String,
       default: 'gradient'
     },
+
+    legendOpacity: {
+      type: Number,
+      default: 1
+    }
   },
 
   mounted () {
@@ -106,7 +160,7 @@ export default {
       let colors = []
       let colorScale = this.generateColorScale('fill', this.fill)
       if (!this.flip) {
-        if (this.direction === "vertical"){
+        if (this.orientation === "vertical"){
           for (let i = l.length - 1; i >=0; i--) {
             let color = colorScale(l[i])
             colors.push(color)
@@ -118,7 +172,7 @@ export default {
           }
         }
       } else {
-        if (this.direction === "vertical"){
+        if (this.orientation === "vertical"){
           for (let i = 0; i < l.length; i++) {
             let color = colorScale(l[i])
             colors.push(color)
@@ -136,7 +190,7 @@ export default {
 
     composeGradient() {
       let specs = {}
-      if (this.direction === "vertical" ) {
+      if (this.orientation === "vertical" ) {
         specs.endX = "0%"
         specs.endY = "100%"
       } else {
@@ -159,23 +213,18 @@ export default {
             start = end
             end += this.segmentHeight
           }
-          //location = (start + end)/2
           boxes.push({location: start, label: l[i]})
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
           start = end
           end += this.segmentHeight
-          //location = (start + end)/2
           boxes.push({location: start, label: l[i]})
        }
       }
 
       return boxes
     }
-  },
-
-  methods: {
   }
 
 }
