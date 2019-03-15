@@ -180,7 +180,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, events) {
-      this.$$interactionManager.addItem(this.uuid, 'symbol', coordinates, this, events)
+      this.$$interactionManager.addItem(this.uuid, 'symbol', coordinates, this, events, this.sectionParentChain)
     }
   }
 }

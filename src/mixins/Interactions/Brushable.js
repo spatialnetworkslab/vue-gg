@@ -365,6 +365,7 @@ export default {
     _updateSelection () {
       let type = this._brush.type
 
+      let sectionChain = JSON.stringify(this.sectionParentChain)
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
         let start = this.brushManager.rectangle.screen.start
         let current = this.brushManager.rectangle.screen.current
@@ -375,12 +376,14 @@ export default {
         let currentSelection = {}
 
         for (let hit of hits) {
-          let uid = hit.uid
-          currentSelection[uid] = true
+          if (hit.parentSectionChain === sectionChain) {
+            let uid = hit.uid
+            currentSelection[uid] = true
 
-          if (!this.brushManager.selection[uid]) {
-            this.brushManager.selection[uid] = hit
-            hit.instance.$emit('select')
+            if (!this.brushManager.selection[uid]) {
+              this.brushManager.selection[uid] = hit
+              hit.instance.$emit('select')
+            }
           }
         }
 
@@ -409,7 +412,7 @@ export default {
 
           for (let hit of hits) {
             let centroid = [hit.minX, hit.minY]
-            if (pointInPolygon(centroid, triangle)) {
+            if (sectionChain === hit.parentSectionChain && pointInPolygon(centroid, triangle)) {
               let uid = hit.uid
               currentSelection[uid] = true
 

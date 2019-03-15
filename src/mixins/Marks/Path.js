@@ -272,7 +272,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, events) {
-      this.$$interactionManager.addItem(this.uuid, this.pathType, coordinates, this, events)
+      this.$$interactionManager.addItem(this.uuid, this.pathType, coordinates, this, events, this.sectionParentChain)
     }
   }
 }

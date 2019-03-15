@@ -257,7 +257,7 @@ export default {
     },
 
     addToSpatialIndex (points, events) {
-      this.$$interactionManager.addItem(this.uuid, 'trail', points, this, events)
+      this.$$interactionManager.addItem(this.uuid, 'trail', points, this, events, this.sectionParentChain)
     }
   }
 }

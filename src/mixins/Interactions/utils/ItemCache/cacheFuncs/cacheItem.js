@@ -9,7 +9,7 @@ import cacheRectangleSelectable from './selections/cacheRectangleSelectable.js'
 import cacheLineSelectable from './selections/cacheLineSelectable.js'
 import cachePathSelectable from './selections/cachePathSelectable.js'
 
-export default function (uid, type, coordinates, instance, markCache, selectableCache, events, listenerTrackers) {
+export default function (uid, type, coordinates, instance, markCache, selectableCache, events, listenerTrackers, parentSectionChain) {
   let listeners = getListeners(events)
   let selectable = isSelectable(events)
 
@@ -19,7 +19,7 @@ export default function (uid, type, coordinates, instance, markCache, selectable
     }
 
     if (selectable) {
-      cachePointSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+      cachePointSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 
@@ -29,7 +29,7 @@ export default function (uid, type, coordinates, instance, markCache, selectable
     }
 
     if (selectable) {
-      cacheRectangleSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+      cacheRectangleSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 
@@ -39,7 +39,7 @@ export default function (uid, type, coordinates, instance, markCache, selectable
     }
 
     if (selectable) {
-      cacheLineSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+      cacheLineSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 
@@ -49,7 +49,7 @@ export default function (uid, type, coordinates, instance, markCache, selectable
     }
 
     if (selectable) {
-      cachePathSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+      cachePathSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 
@@ -59,7 +59,7 @@ export default function (uid, type, coordinates, instance, markCache, selectable
     }
 
     if (selectable) {
-      cachePathSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+      cachePathSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 }

@@ -1,7 +1,7 @@
 import updateListenerTracker from './updateListenerTracker.js'
 import findCentroidPath from '../../../geometry/findCentroidPath.js'
 
-export default function (uid, type, coords, instance, cache, listenerTrackers) {
+export default function (uid, type, coords, instance, cache, listenerTrackers, parentSectionChain) {
   let args = [coords]
   let hasnt = !cache.hasItem(uid)
   let nonIdentical = !cache.itemIsIdentical(uid, args)
@@ -45,7 +45,7 @@ export default function (uid, type, coords, instance, cache, listenerTrackers) {
     let minY = y
     let maxY = y
 
-    let item = { uid, instance, minX, maxX, minY, maxY }
+    let item = { uid, instance, minX, maxX, minY, maxY, parentSectionChain }
 
     updateListenerTracker(listenerTracker, oldItem, item)
 

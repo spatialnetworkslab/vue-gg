@@ -84,7 +84,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, events) {
-      this.$$interactionManager.addItem(this.uuid, 'point', coordinates, this, events)
+      this.$$interactionManager.addItem(this.uuid, 'point', coordinates, this, events, this.sectionParentChain)
     }
   }
 }

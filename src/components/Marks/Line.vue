@@ -132,7 +132,7 @@ export default {
     },
 
     addToSpatialIndex (coordinates, events) {
-      this.$$interactionManager.addItem(this.uuid, 'line', coordinates, this, events)
+      this.$$interactionManager.addItem(this.uuid, 'line', coordinates, this, events, this.sectionParentChain)
     }
   }
 }
