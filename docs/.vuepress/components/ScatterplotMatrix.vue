@@ -9,10 +9,20 @@
       v-slot="{ x, y }"
       :x="['a', 'b', 'c']"
       :y="['a', 'b', 'c']"
-      :cell-padding="20"
+      :cell-padding="10"
+      :sides="['right', 'bottom']"
     >
 
-      <vgg-section>
+      <vgg-section
+        :axes="{
+          right: { scale: y, flip: true, 'label-font-size': 10 },
+          bottom: { scale: x, labelRotate: true, 'label-font-size': 8 }
+        }"
+        :grid-lines="{
+          x: { scale: x },
+          y: { scale: y }
+        }"
+      >
 
         <vgg-map v-slot="{ row }">
 

@@ -5,6 +5,38 @@ import { createPath, interpolatePath } from './utils/createPath.js'
 export default {
   mixins: [Rectangular],
 
+  props: {
+    stroke: {
+      type: String,
+      default: 'none'
+    },
+
+    strokeWidth: {
+      type: Number,
+      default: 2
+    },
+
+    fill: {
+      type: String,
+      default: '#000000'
+    },
+
+    opacity: {
+      type: [Number, undefined],
+      default: undefined
+    },
+
+    strokeOpacity: {
+      type: [Number, undefined],
+      default: undefined
+    },
+
+    fillOpacity: {
+      type: [Number, undefined],
+      default: undefined
+    }
+  },
+
   methods: {
     renderSVG (createElement) {
       let aesthetics = this._props

@@ -1,9 +1,9 @@
 <template>
   <vgg-section
-    :x1="ranges.x1"
-    :x2="ranges.x2"
-    :y1="ranges.y1"
-    :y2="ranges.y2"
+    :x1="gridCoords.x1"
+    :x2="gridCoords.x2"
+    :y1="gridCoords.y1"
+    :y2="gridCoords.y2"
     :scale-x="scale"
     :scale-y="[0, 1]"
     class="x-grid"

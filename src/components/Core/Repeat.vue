@@ -22,6 +22,13 @@ export default {
     cellPadding: {
       type: [Number, Object],
       default: 0
+    },
+    sides: {
+      type: [Array, undefined],
+      default: undefined,
+      validator: sides => sides.every(
+        side => ['left', 'right', 'top', 'bottom'].includes(side)
+      )
     }
   },
 
@@ -40,9 +47,10 @@ export default {
     let options = this._props
     let ranges = this.parentBranch.domains
     let layout = calculateGridLayout(rows, cols, options, ranges)
+    let sides = this.sides
 
     let slot = this.$scopedSlots.default
-    let newSections = repeatSections(createElement, slot, layout, this.x, this.y)
+    let newSections = repeatSections(createElement, slot, layout, this.x, this.y, sides)
 
     return createElement('g', { class: 'layout-repeat' }, newSections)
   }
