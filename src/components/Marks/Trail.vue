@@ -3,7 +3,7 @@
   import checkPoints from '../../mixins/Marks/utils/checkPoints.js'
   import { invalidPoint } from '../../utils/equals.js'
   import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
-  import { line, curve, curveCatmullRom, curveCardinal } from 'd3-shape'
+  import * as d3 from 'd3-path'
 
   export default {
     mixins: [Path],
@@ -127,18 +127,16 @@
 
       // Maps line aesthetics to the data and creates the segments wrt stroke widths
       createTrail (points) {
-        let top = [], bottom = []
+        let path = d3.path()
 
         for (let ix = 0; ix < points.length - 1; ix++) {
-          let total = [], point = {}, nextPt = {}
-          point.coord = this.$$transform(points[ix].coord)
-          nextPt.coord = this.$$transform(points[ix + 1].coord)
-          let x1 = point.coord[0]
-          let y1 = point.coord[1]
-          let x2 = nextPt.coord[0]
-          let y2 = nextPt.coord[1]
-          let w1 = points[ix].strokeWidth/2
-          let w2 = points[ix + 1].strokeWidth/2
+
+          // Get start and end coordinates of line segment
+          let [x1, y1] = this.$$transform(points[ix].coord)
+          let [x2, y2] = this.$$transform(points[ix + 1].coord)
+          
+          let w1 = points[ix].strokeWidth / 2
+          let w2 = points[ix + 1].strokeWidth / 2
 
           // to prevent strokes from disappearing completely
           // when scaling turns width to 0
@@ -149,41 +147,47 @@
           if (w2 === 0) {
             w2 += 0.1
           }
+          
+          // First calculate x and y offsets of main line
+          let dX = x2 - x1
+          let dY = y2 - y1
 
-          // computes reference line segment - between start and end points
-          let vector = [x1 - x2, y1 - y2]
-          let magnitude = Math.sqrt(vector[0]**2 + vector[1]**2)
-          let m = vector[1]/vector[0]
-          let uVector = [vector[0] / magnitude, vector[1] / magnitude]
-          let uVectorP = [uVector[1], -uVector[0]]
+          // Calculate magnitude of main line
+          let magnitude = Math.sqrt(dX ** 2 + dY ** 2)
 
-          // Approach: One mark per two rows (point 1, stroke width 1 -> point 2, stroke width 2)
-          // to calculate corners of 'polygon' composing 'line segment' with interpolated 'width' in any orientation
-          // use the line equation parallel to the line defining the start and end points
-          // and project the widths on the unit vector of these lines
+          // Calculate unit vectors of main line
+          let uX = dX / magnitude
+          let uY = dY / magnitude
 
-          // start points
-          let coord1 = [x1 + uVectorP[0] * w1, y1 + uVectorP[1] * w1]
-          let coord4 = [x1 - uVectorP[0] * w1, y1 - uVectorP[1] * w1]
+          // Calculate unit vectors of normal
+          let normalX = uY * -1
+          let normalY = uX
 
-          // end points
-          let coord2 = [x2 + uVectorP[0] * w2, y2 + uVectorP[1] * w2]
-          let coord3 = [x2 - uVectorP[0] * w2, y2 - uVectorP[1] * w2]
+          // Calculate offset of normal in x an y directions
+          // for starting point using strokewidth values at that point
+          let rx1 = normalX * w1
+          let ry1 = normalY * w1
 
-          top.push(coord1)
-          top.push(coord2)
-          bottom.push(coord4)
-          bottom.push(coord3)
+          // Calculate offset of normal in x an y directions
+          // for ending point using strokewidth values at that point
+          let rx2 = normalX * w2
+          let ry2 = normalY * w2
+
+          // Calculate angle of arc
+          // This value can be used for both start and end points
+          // Since the angle of the normal at both points is the same
+          let angle = Math.atan2(ry1, rx1)
+
+          // Create a closed path for each segment in the multiline
+          path.moveTo(x1 - rx1, y1 - ry1)
+          path.lineTo(x2 - rx2, y2 - ry2)
+          path.arc(x2, y2, w2, angle - Math.PI, angle);
+          path.lineTo(x1 + rx1, y1 + ry1);
+          path.arc(x1, y1, w1, angle, angle + Math.PI);
+          path.closePath()
         }
 
-        let segments = top
-        for (let b = bottom.length - 1; b >= 0; b--) {
-          segments.push(bottom[b])
-        }
-        // to smooth the first curve of the trail - point 0
-        segments.push(segments[0])
-        segments.push(segments[1])
-        return segments
+        return path.toString()
       },
 
       renderSVG (createElement) {
@@ -219,24 +223,18 @@
               points = this.closePoints(points)
             }
 
-            // obtains polygon corresponding to multiline with stroke widths
+            // obtains path of trail mark
             segments = this.createTrail(points)
 
-            // creates line path
-            // tension value set to minimum value for smooth transitions between sections
-            const arcGenerator = line().curve(curveCardinal.tension(0.96))
-            let path = arcGenerator(segments)
-            let elements = []
             let totalAesthetics = {'stroke': 'none', 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity}
             let element = createElement('path', {
               attrs: {
-                'd': path
+                'd': segments
               },
               style: createSVGStyle(totalAesthetics)
             })
-            elements.push(element)
 
-            return createElement('g', elements)
+            return element
           } else {
             console.warn('Not enough valid points to draw Mark')
           }
