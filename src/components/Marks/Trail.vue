@@ -160,7 +160,7 @@
           let uY = dY / magnitude
 
           // Calculate unit vectors of normal
-          let normalX = uY * -1
+          let normalX = -uY
           let normalY = uX
 
           // Calculate offset of normal in x an y directions
@@ -195,7 +195,7 @@
         let aesthetics = this._props
 
         if (aesthetics.points || (aesthetics.x && aesthetics.y)) {
-          let points = [], segments = []
+          let points = []
           if (aesthetics.points && aesthetics.points.length > 1) {
             let x = [], y = []
             for (let i = 0; i < aesthetics.points.length; i++) {
@@ -224,7 +224,7 @@
             }
 
             // obtains path of trail mark
-            segments = this.createTrail(points)
+            let segments = this.createTrail(points)
 
             let totalAesthetics = {'stroke': 'none', 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity}
             let element = createElement('path', {
