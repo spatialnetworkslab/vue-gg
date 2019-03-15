@@ -77,6 +77,7 @@ module.exports = {
                 collapsable: true,
                 children: [
                     'axes/cartesian',
+                    'axes/gridlines'
                     ]
             },
             {

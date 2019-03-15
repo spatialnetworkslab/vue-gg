@@ -7,7 +7,7 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '@/scales/createScale.js'
-import defaultFormat from './defaultFormat.js'
+import defaultFormat from './utils/defaultFormat.js'
 
 export default {
   mixins: [Rectangular, DataReceiver],
@@ -168,7 +168,7 @@ export default {
 
     fill: {
       type: [Object, Array],
-      default: { type: 'blues '}
+      default: function () { return { type: 'blues' } }
     },
 
     x: {

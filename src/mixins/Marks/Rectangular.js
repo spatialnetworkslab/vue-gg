@@ -43,36 +43,6 @@ export default {
     h: {
       type: [Number, undefined],
       default: undefined
-    },
-
-    stroke: {
-      type: String,
-      default: 'none'
-    },
-
-    strokeWidth: {
-      type: Number,
-      default: 2
-    },
-
-    fill: {
-      type: String,
-      default: '#000000'
-    },
-
-    opacity: {
-      type: [Number, undefined],
-      default: undefined
-    },
-
-    strokeOpacity: {
-      type: [Number, undefined],
-      default: undefined
-    },
-
-    fillOpacity: {
-      type: [Number, undefined],
-      default: undefined
     }
   },
 
@@ -88,20 +58,57 @@ export default {
     coordinateSpecification () {
       let aes = this._props
 
-      let [x1, x2] = convertSpecification(aes.x1, aes.x2, aes.x, aes.w, this.parentBranch, 'x')
-      let [y1, y2] = convertSpecification(aes.y1, aes.y2, aes.y, aes.h, this.parentBranch, 'y')
+      if (this.invalidX || this.invalidY) {
+        throw new Error('Invalid combination of props')
+      }
+
+      let [x1, x2] = this.convertSpecification(aes.x1, aes.x2, aes.x, aes.w, this.parentBranch, 'x')
+      let [y1, y2] = this.convertSpecification(aes.y1, aes.y2, aes.y, aes.h, this.parentBranch, 'y')
 
       let newCoords = { x1, x2, y1, y2 }
 
       return newCoords
+    }
+  },
+
+  methods: {
+    // Converts any valid combination of x1, x2, x and w to [x1, x2]
+    convertSpecification (x1, x2, x, w, parentBranch, dimension) {
+      let domainType = parentBranch.domainTypes[dimension]
+      let converter
+      if (domainType === 'quantitative') {
+        converter = x => x
+      } else {
+        converter = parentBranch[dimension === 'x' ? 'getX' : 'getY']
+      }
+
+      // If there is nothing, just x1, just x2, or just x1 and x2
+      if (isnt(x) && isnt(w)) {
+        return [x1, x2].map(converter)
+      }
+      // If there is just x1 and w
+      if (is(x1) && isnt(x2) && isnt(x) && is(w)) {
+        let cx1 = converter(x1)
+        return [cx1, cx1 + w]
+      }
+      // If there is just x2 and w
+      if (isnt(x1) && is(x2) && isnt(x) && is(w)) {
+        let cx2 = converter(x2)
+        return [cx2 - w, cx2]
+      }
+      // If there is just x and w
+      if (isnt(x1) && isnt(x2) && is(x) && is(w)) {
+        let cx = converter(x)
+        return [cx - (w / 2), cx + (w / 2)]
+      }
     }
   }
 }
 
 function invalidCombination (x1, x2, x, w) {
   let validCombinations = [
-    // If there is nothing, just x1, just x2, or just x1 and x2
-    isnt(x) && isnt(w),
+    // If there is  just x1 and x2
+    is(x1) && is(x2) && isnt(x) && isnt(w),
     // If there is just x1 and w
     is(x1) && isnt(x2) && isnt(x) && is(w),
     // If there is just x2 and w
@@ -111,35 +118,4 @@ function invalidCombination (x1, x2, x, w) {
   ]
 
   return !(validCombinations.some(combo => combo === true))
-}
-
-// Converts any valid combination of x1, x2, x and w to [x1, x2]
-function convertSpecification (x1, x2, x, w, parentBranch, dimension) {
-  let domainType = parentBranch.domainTypes[dimension]
-  let converter
-  if (domainType === 'quantitative') {
-    converter = x => x
-  } else {
-    converter = parentBranch[dimension === 'x' ? 'getX' : 'getY']
-  }
-
-  // If there is nothing, just x1, just x2, or just x1 and x2
-  if (isnt(x) && isnt(w)) {
-    return [x1, x2].map(converter)
-  }
-  // If there is just x1 and w
-  if (is(x1) && isnt(x2) && isnt(x) && is(w)) {
-    let cx1 = converter(x1)
-    return [cx1, cx1 + w]
-  }
-  // If there is just x2 and w
-  if (isnt(x1) && is(x2) && isnt(x) && is(w)) {
-    let cx2 = converter(x2)
-    return [cx2 - w, cx2]
-  }
-  // If there is just x and w
-  if (isnt(x1) && isnt(x2) && is(x) && is(w)) {
-    let cx = converter(x)
-    return [cx - (w / 2), cx + (w / 2)]
-  }
 }

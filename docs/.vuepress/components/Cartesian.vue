@@ -10,35 +10,45 @@
 
     <vgg-section
       v-if="showX"
-      :x1="100"
-      :x2="550"
+      :x1="150"
+      :x2="450"
       :y1="25"
       :y2="200"
-      :scale-x="'xValues'"
-      :scale-y="'yValues'"
     >
+
+      <vgg-rectangle
+        :x1="150"
+        :x2="450"
+        :y1="25"
+        :y2="200"
+        :opacity="0.2"
+        fill="blue"
+      />
 
       <vgg-x-axis
         :scale="'xValues'"
         :vjust="0"
-        :tickCount="5"
-        :tickExtra="false"
+        :tick-count="5"
+        :tick-extra="false"
+        :title-vjust="1"
         title="vjust = 0"
       />
 
       <vgg-x-axis
         :scale="'xValues'"
         :vjust="0.5"
-        :tickCount="5"
-        :tickExtra="false"
+        :tick-count="5"
+        :tick-extra="false"
+        :title-vjust="1"
         title="vjust = 0.5"
       />
 
       <vgg-x-axis
         :scale="'xValues'"
         :vjust="1"
-        :tickCount="5"
-        :tickExtra="false"
+        :tick-count="5"
+        :tick-extra="false"
+        :title-vjust="1"
         title="vjust = 1"
       />
 
@@ -46,35 +56,45 @@
 
     <vgg-section
       v-if="showY"
-      :x1="50"
-      :x2="550"
+      :x1="150"
+      :x2="450"
       :y1="25"
       :y2="200"
-      :scale-x="'xValues'"
-      :scale-y="'yValues'"
     >
+
+      <vgg-rectangle
+        :x1="150"
+        :x2="450"
+        :y1="25"
+        :y2="200"
+        :opacity="0.2"
+        fill="blue"
+      />
 
       <vgg-y-axis
         :scale="'yValues'"
-        :tickExtra="false"
+        :tick-extra="false"
         :hjust="0"
-        :tickCount="5"
+        :tick-count="5"
+        :title-hjust="-0.7"
         title="hjust = 0"
       />
 
       <vgg-y-axis
         :scale="'yValues'"
-        :tickExtra="false"
+        :tick-extra="false"
         :hjust="0.5"
-        :tickCount="5"
+        :tick-count="5"
+        :title-hjust="-0.7"
         title="hjust = 0.5"
       />
 
       <vgg-y-axis
         :scale="'yValues'"
-        :tickExtra="false"
+        :tick-extra="false"
         :hjust="1"
-        :tickCount="5"
+        :tick-count="5"
+        :title-hjust="-0.7"
         title="hjust = 1"
       />
 
@@ -82,8 +102,8 @@
 
     <vgg-section
       v-if="showAll"
-      :x1="50"
-      :x2="550"
+      :x1="150"
+      :x2="450"
       :y1="25"
       :y2="250"
       :scale-x="'xValues'"
@@ -93,14 +113,14 @@
       <vgg-x-axis
         :scale="'xValues'"
         title="x axis"
-        :tickExtra="false"
-        :titleHjust="1.05"
+        :tick-extra="false"
+        :title-hjust="1.05"
       />
 
       <vgg-y-axis
         :scale="'yValues'"
-        :tickExtra="false"
-        :tickCount="5"
+        :tick-extra="false"
+        :tick-count="5"
         title="y axis"
       />
 

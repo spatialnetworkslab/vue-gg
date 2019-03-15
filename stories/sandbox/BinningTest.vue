@@ -58,6 +58,8 @@
             flip
           /> -->
 
+          <vgg-x-grid :scale="'bins'" />
+
         </vgg-section>
 
         <vgg-x-axis

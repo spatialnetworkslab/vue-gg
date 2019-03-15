@@ -61,9 +61,7 @@ export default {
     let $$coordinateTree = this.coordinateTree
     let $$transform = this.coordinateTree.getTotalTransformation('root')
     let $$coordinateTreeParent = 'root'
-    let $$getLocalX = this.coordinateTree.getLocalX(this.coordinateTreeBranchID)
-    let $$getLocalY = this.coordinateTree.getLocalY(this.coordinateTreeBranchID)
 
-    return { $$coordinateTree, $$transform, $$coordinateTreeParent, $$getLocalX, $$getLocalY }
+    return { $$coordinateTree, $$transform, $$coordinateTreeParent }
   }
 }

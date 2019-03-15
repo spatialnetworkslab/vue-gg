@@ -23,6 +23,7 @@ import GlobalDataScope from './sandbox/GlobalDataScope.vue'
 import SimpleGridLayout from './sandbox/SimpleGridLayout.vue'
 import MappingGridLayout from './sandbox/MappingGridLayout.vue'
 import RepeatLayout from './sandbox/RepeatLayout.vue'
+import SectionAxesTest from './sandbox/SectionAxesTest.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -49,3 +50,4 @@ storiesOf('Sandbox', module)
   .add('Simple Grid layout', () => (SimpleGridLayout))
   .add('Mapping Grid layout', () => (MappingGridLayout))
   .add('Repeat Grid layout', () => (RepeatLayout))
+  .add('Section axes', () => (SectionAxesTest))

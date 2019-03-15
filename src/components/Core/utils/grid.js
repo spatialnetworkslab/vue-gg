@@ -28,7 +28,7 @@ export function calculateRowsCols (options, numberOfCells) {
   return { rows, cols }
 }
 
-export function calculateGridLayout (rows, cols, options, ranges) {
+export function calculateGridLayout (rows, cols, options, ranges, axes) {
   let lP = getPadding(options.layoutPadding)
   let cP = getPadding(options.cellPadding)
 

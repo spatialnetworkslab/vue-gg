@@ -13,12 +13,13 @@ components in a 2d matrix format.
 
 # Props
 
-| Prop           | Required | Types            | Default   | Description                            |
-| -------------- | -------- | ---------------- | --------- | -------------------------------------- |
-| x              | depends  | Array            | undefined | Values corresponding to matrix columns |
-| y              | depends  | Array            | undefined | Values corresponding to matrix rows    |
-| layout-padding | false    | [Number, Object] | 0         | Padding with respect to parent element |
-| cell-padding   | false    | [Number, Object] | 0         | Padding between child elements         |
+| Prop           | Required | Types            | Default   | Description                             |
+| -------------- | -------- | ---------------- | --------- | --------------------------------------- |
+| x              | depends  | Array            | undefined | Values corresponding to matrix columns  |
+| y              | depends  | Array            | undefined | Values corresponding to matrix rows     |
+| layout-padding | false    | [Number, Object] | 0         | Padding with respect to parent element  |
+| cell-padding   | false    | [Number, Object] | 0         | Padding between child elements          |
+| sides          | false    | Array            | undefined | On which sides the axes should be drawn |
 
 The repeat component is useful for quickly creating a 2d matrix of Sections. This
 is useful for creating, for example, a [scatterplot matrix](#scatterplot-matrix).
@@ -32,6 +33,11 @@ that are in the Arrays passed to `x` and `y`.
 
 The `layout-padding` and `cell-padding` props work exactly the same as props
 of the same names used in the [Grid](./grid.md#props) component.
+
+The `sides` prop can be used in combination with the [axes and gridlines props](./section.md#axes-and-gridlines)
+of the Section component to only draw the necessary axes. This will give a less
+chaotic view than to have every repeated Section have its own axes. See the example
+below for a demonstration on how to use the `sides` prop.
 
 # Usage
 
@@ -49,9 +55,19 @@ data, called `a`, `b` and `c`.
     :x="['a', 'b', 'c']"
     :y="['a', 'b', 'c']"
     :cell-padding="20"
+    :sides="['right', 'bottom']"
   >
 
-    <vgg-section>
+    <vgg-section
+      :axes="{
+        right: { scale: y, flip: true, 'label-font-size': 10 },
+        bottom: { scale: x, labelRotate: true, 'label-font-size': 8 }
+      }"
+      :grid-lines="{
+        x: { scale: x },
+        y: { scale: y }
+      }"
+    >
 
       <vgg-map v-slot="{ row }">
 
