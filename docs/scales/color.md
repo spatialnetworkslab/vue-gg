@@ -148,7 +148,7 @@ This is the default set of colors for categorical data.
 
 # Custom Color Scales
 
-It is possible to define a custom color scale by providing an array of `ranges` to the scaling options instead of `type`. Elements of the array can be hexadecimal codes, RGB codes or color names.
+It is possible to define a custom color scale by providing an array of `ranges` to the scaling options instead of `type`. Elements of the array can be hexadecimal codes, RGB codes or color names. The input given to `domain` must be the domain of the input given to `val`.
 
 ### Prop definition
 

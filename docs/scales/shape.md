@@ -6,7 +6,7 @@ title: Shape
 
 We provide a few default shape schemes that can be used as scales for categorical variables.
 
-### Prop definition
+### prop definition
 
 ```
 <vgg-symbol
@@ -41,7 +41,7 @@ This scale provides 6 distinct polygons that can be assigned to different catego
 
 It is possible to define a custom shape scheme by providing an array of `ranges` to the scaling options instead of `type`. Elements of the array can be pre-defined shape names or custom shape paths.
 
-### Prop definition
+### prop definition
 
 ```
 <vgg-symbol
