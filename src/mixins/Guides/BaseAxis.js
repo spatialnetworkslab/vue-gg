@@ -4,45 +4,24 @@ import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../Marks/Rectangular.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
+import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
-
-import defaultFormat from './defaultFormat.js'
+import defaultFormat from './utils/defaultFormat.js'
+import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
 export default {
-  mixins: [Rectangular, DataReceiver],
+  mixins: [Rectangular, DataReceiver, ScaleReceiver],
 
   props: {
     scale: {
-      type: [Array, String, Object, undefined],
-      default: undefined,
+      type: [Array, String, Object],
       required: true
-    },
-
-    format: {
-      type: [String, Function, undefined],
-      default: undefined
     },
 
     flip: {
       type: Boolean,
       default: false
-    },
-
-    hjust: {
-      type: [Number, String],
-      default: 'l',
-      validator: function (p) {
-        return (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
-      }
-    },
-
-    vjust: {
-      type: [Number, String],
-      default: 'b',
-      validator: function (p) {
-        return (p.constructor === Number) || (['center', 't', 'b'].includes(p))
-      }
     },
 
     // STYLING OPTIONS //
@@ -83,7 +62,7 @@ export default {
       type: String,
       default: 'black'
     },
-    
+
     labelFont: {
       type: String,
       default: 'Helvetica'
@@ -98,18 +77,18 @@ export default {
       type: [String, Number],
       default: 'normal'
     },
-    
+
     labelOpacity: {
       type: Number,
       default: 1
     },
-    
+
     // Distance between tick and label **
     // labelPadding: {
     //   type: Number,
     //   default: 0
     // },
-    
+
     labelRotate: {
       type: Boolean,
       default: false
@@ -120,11 +99,6 @@ export default {
       default: true
     },
 
-    tickColor: {
-      type: String,
-      default: 'black'
-    },
-
     tickValues: {
       type: [Array, undefined],
       default: undefined
@@ -133,6 +107,11 @@ export default {
     tickCount: {
       type: Number,
       default: 10
+    },
+
+    tickColor: {
+      type: String,
+      default: 'black'
     },
 
     tickExtra: {
@@ -149,15 +128,25 @@ export default {
       type: Number,
       default: 1
     },
-    
+
     tickSize: {
       type: Number,
       default: 7
     },
 
+    tickLength: {
+      type: [Number, undefined],
+      default: undefined
+    },
+
     tickWidth: {
       type: Number,
       default: 0.5
+    },
+
+    format: {
+      type: [String, Function, undefined],
+      default: undefined
     },
 
     title: {
@@ -195,69 +184,79 @@ export default {
       type: Number,
       default: 500
     },
-    
+
     titleOpacity: {
       type: Number,
       default: 1
     },
 
-    titleHjust: {
-      type: [Number, String],
-      validator: function (p) {
-        return (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
-      }
-    },
-
-    titleVjust: {
-      type: [Number, String],
-      validator: function (p) {
-        return (p.constructor === Number) || (['center', 't', 'b'].includes(p))
-      }
+    hide: {
+      type: Boolean,
+      default: false
     }
+  },
 
+  data () {
+    return {
+      justLookup: { l: 0, b: 0, r: 1, t: 1, center: 0.5 }
+    }
   },
 
   computed: {
-    _parsedScalingOptions () {
+    parsedScalingOptions () {
       return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {
-      return this._parsedScalingOptions[0]
+      return this.parsedScalingOptions[0]
     },
 
-    _domainType () {
-      return this._parsedScalingOptions[1]
-    },
-    _scalingOptions () {
-      return this._parsedScalingOptions[2]
+    domainType () {
+      return this.parsedScalingOptions[1]
     },
 
-    _parentNodes () {
-      return this.getParents(this.parentBranch, [this.parentBranch])
+    scalingOptions () {
+      return this.parsedScalingOptions[2]
     },
 
-    validX () {
-      return (this.x1 !== undefined && this.x2 !== undefined) || (this.x !== undefined && this.w !== undefined)
+    parentDomains () {
+      return this.parentBranch.domains
     },
 
-    validY () {
-      return (this.y1 !== undefined && this.y2 !== undefined) || (this.y !== undefined && this.h !== undefined)
+    parentDomainWidths () {
+      return {
+        x: this.parentDomains.x[1] - this.parentDomains.x[0],
+        y: this.parentDomains.y[1] - this.parentDomains.y[0]
+      }
     },
 
-    coords () {
-      if (this.validX || this.validY) {return this.coordinateSpecification}
+    widthX () {
+      let { x1, x2 } = this.axisCoords
+      return x2 - x1
     },
 
-    xDomain () {
-      return this.parentBranch.domains.x
+    widthY () {
+      let { y1, y2 } = this.axisCoords
+      return y2 - y1
     },
 
-    yDomain () {
-      return this.parentBranch.domains.y
+    ranges () {
+      return {
+        x: [this.axisCoords.x1, this.axisCoords.x2],
+        y: [this.axisCoords.y1, this.axisCoords.y2]
+      }
     },
 
-    tickData () {
+    context () {
+      return {
+        ranges: this.ranges,
+        parentBranch: this.parentBranch,
+        dataInterface: this.$$dataInterface,
+        scaleManager: this.$$scaleManager
+      }
+    },
+
+    generatedTicks () {
       let firstValue = this._domain[0]
       let newTickValues
 
@@ -275,7 +274,7 @@ export default {
         let ticks
         let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
 
-        if (this._domainType === 'quantitative') {
+        if (this.domainType === 'quantitative') {
           newTickValues = arrayTicks(...this._domain, this.tickCount)
 
           if (this.tickExtra && newTickValues[0] !== firstValue) {
@@ -291,13 +290,13 @@ export default {
           })
         }
 
-        if (this._domainType === 'categorical') {
+        if (this.domainType === 'categorical') {
           ticks = this._domain.map(value => {
             return { value, label: format(value) }
           })
         }
 
-        if (this._domainType === 'temporal') {
+        if (this.domainType === 'temporal') {
           if (this.format) {
             if (this.format.constructor === String) { format = timeFormat(this.format) }
           } else {
@@ -323,14 +322,14 @@ export default {
           })
         }
 
-        if (this._domainType === 'interval:quantitative') {
+        if (this.domainType === 'interval:quantitative') {
           let intervals = this.$$dataInterface.getColumn(this.scale)
-          ticks = this.ticksFromIntervals(intervals).map(value => {
+          ticks = ticksFromIntervals(intervals).map(value => {
             return { value, label: format(value) }
           })
         }
 
-        if (this._domainType === 'interval:temporal') {
+        if (this.domainType === 'interval:temporal') {
           if (this.format) {
             if (this.format.constructor === String) { format = timeFormat(this.format) }
           } else {
@@ -338,29 +337,23 @@ export default {
           }
 
           let intervals = this.$$dataInterface.getColumn(this.scale)
-          ticks = this.ticksFromIntervals(intervals).map(value => {
+          ticks = ticksFromIntervals(intervals).map(value => {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })
         }
 
-        return ticks
+        return ticks.map(tick => {
+          let newTick = { label: tick.label, value: this.parsedScale(tick.value) }
+          return newTick
+        })
       }
     }
   },
 
   methods: {
-    ticksFromIntervals (intervals) {
-      let ticks = new Set()
-      for (let interval of intervals) {
-        ticks.add(interval[0])
-        ticks.add(interval[1])
-      }
-      return Array.from(ticks)
-    },
-
-    getLocalX (n) { return this.$$getLocalX(n) },
-
-    getLocalY (n) { return this.$$getLocalY(n) }
+    getJust (lowerBound, width, just) {
+      return lowerBound + (width * just)
+    }
   }
 }
