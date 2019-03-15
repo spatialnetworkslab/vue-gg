@@ -103,6 +103,11 @@ export default {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
       let r = aesthetics.size / 2
 
+      let events = this.events
+      if (events.length > 0) {
+        this.addToSpatialIndex([cx, cy], events)
+      }
+
       return createElement('circle', {
         attrs: {
           'cx': cx,
@@ -119,6 +124,11 @@ export default {
       let l = aesthetics.size
       let x = cx - (l / 2)
       let y = cy - (l / 2)
+
+      let events = this.events
+      if (events.length > 0) {
+        this.addToSpatialIndex([x, y], events)
+      }
 
       return createElement('rect', {
         attrs: {
