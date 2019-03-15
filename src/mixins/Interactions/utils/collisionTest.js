@@ -1,6 +1,7 @@
 import pointInPolygon from './geometry/pointInPolygon.js'
 import pointDistance from './geometry/pointDistance.js'
 import lineIntersection from './geometry/lineIntersection.js'
+import trailIntersection from './geometry/trailIntersection.js'
 
 export default function ({ x, y }, spatialIndex) {
   let hitCandidates = spatialIndex.search({
@@ -16,8 +17,10 @@ export default function ({ x, y }, spatialIndex) {
       if (collisionTestRectangle(x, y, candidate)) { hits.push(candidate) }
     } else if (['line', 'multiline', 'path'].includes(candidate.geometry.type)) {
       if (collisionTestLine(x, y, candidate)) { hits.push(candidate) }
-    } else if (['polygon', 'area', 'trail'].includes(candidate.geometry.type)) {
+    } else if (['polygon', 'area'].includes(candidate.geometry.type)) {
       if (collisionTestPolygon(x, y, candidate)) { hits.push(candidate) }
+    } else if (candidate.geometry.type === 'trail') {
+      if (collisionTestTrail(x, y, candidate)) { hits.push(candidate) }
     }
   }
 
@@ -122,4 +125,9 @@ function collisionTestPolygon (x, y, candidate) {
   }
 
   return false
+}
+
+function collisionTestTrail (x, y, candidate) {
+  let geometry = candidate.geometry
+  return trailIntersection([x, y], geometry.coordinates)
 }

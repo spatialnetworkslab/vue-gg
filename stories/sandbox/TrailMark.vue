@@ -19,6 +19,7 @@
         :fill-opacity="0.7"
         :sort="'x'"
         fill="orange"
+        @click="log('test')"
       />
 
       <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
@@ -34,6 +35,7 @@
             :fill="row.colors"
             :fill-opacity="0.7"
             :sort="'x'"
+            @click="log(row)"
           />
 
         </vgg-map>

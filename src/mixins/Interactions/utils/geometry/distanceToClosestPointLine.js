@@ -1,6 +1,8 @@
+import pointDistance from './pointDistance.js'
+
 export default function ([x, y], lineSegment) {
   let closestPoint = closestPointOnLine([x, y], lineSegment)
-  return distance([x, y], closestPoint)
+  return pointDistance([x, y], closestPoint)
 }
 
 // https://stackoverflow.com/a/6853926/7237112
@@ -37,11 +39,4 @@ export function closestPointOnLine ([x, y], [i, j]) {
   }
 
   return [xx, yy]
-}
-
-export function distance (from, to) {
-  let dx = from[0] - to[0]
-  let dy = from[1] - to[1]
-
-  return Math.sqrt(dx * dx + dy * dy)
 }

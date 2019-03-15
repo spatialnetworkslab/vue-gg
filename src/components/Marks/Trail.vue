@@ -69,13 +69,14 @@ export default {
         }
       } else {
         for (let i = 0; i < x.length; ++i) {
-          point = { coord: [x[i], y[i]] }
+          point = { coord: this.$$transform([x[i], y[i]]) }
           for (let row in this.mappable) {
             point = this.storeAesthetic(point, aesthetics, this.mappable[row], i)
           }
           points.push(point)
         }
       }
+
       return this.filterInvalid(points)
     },
 
@@ -138,8 +139,8 @@ export default {
 
       for (let ix = 0; ix < points.length - 1; ix++) {
         // Get start and end coordinates of line segment
-        let [x1, y1] = this.$$transform(points[ix].coord)
-        let [x2, y2] = this.$$transform(points[ix + 1].coord)
+        let [x1, y1] = points[ix].coord
+        let [x2, y2] = points[ix + 1].coord
 
         let w1 = points[ix].strokeWidth / 2
         let w2 = points[ix + 1].strokeWidth / 2
@@ -230,13 +231,13 @@ export default {
             points = this.closePoints(points)
           }
 
-          // obtains path of trail mark
-          let segments = this.createTrail(points)
-
           let events = this.events
           if (events.length > 0) {
-            this.addToSpatialIndex(segments, events)
+            this.addToSpatialIndex(points, events)
           }
+
+          // obtains path of trail mark
+          let segments = this.createTrail(points)
 
           let totalAesthetics = { 'stroke': 'none', 'fill': aesthetics.fill, 'fillOpacity': aesthetics.fillOpacity, 'opacity': aesthetics.opacity }
           let element = createElement('path', {

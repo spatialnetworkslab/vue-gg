@@ -2,7 +2,7 @@ import findBoundingBoxPath from '../../../geometry/findBoundingBoxPath.js'
 import { syncListenerTrackers, updateListenerTrackers } from './syncListenerTrackers.js'
 
 export default function (uid, type, coords, instance, cache, listeners, listenerTrackers) {
-  let args = [coords, instance.strokeWidth]
+  let args = [coords]
   let hasnt = !cache.hasItem(uid)
   let nonIdentical = !cache.itemIsIdentical(uid, args)
 
@@ -15,31 +15,13 @@ export default function (uid, type, coords, instance, cache, listeners, listener
   }
 
   if (hasnt || nonIdentical) {
-    let coordinates
-    let pathType
-
-    if (coords.constructor === Object && coords.hasOwnProperty('type')) {
-      // If we are dealing with a GeoJSON geometry
-      coordinates = coords.coordinates
-      pathType = coords.type
-    } else {
-      // If we are dealing with our own, simple polygon coordinates
-      coordinates = coords
-
-      if (['multiline', 'path'].includes(type)) {
-        pathType = 'LineString'
-      }
-
-      if (['polygon', 'area'].includes(type)) {
-        pathType = 'SimplePolygon'
-      }
-    }
+    let coordinates = coords.map(c => c.coord)
+    let pathType = 'LineString'
 
     let { minX, minY, maxX, maxY } = findBoundingBoxPath(coordinates, pathType)
     let geometry = {
       type,
-      coordinates,
-      strokeWidth: instance.strokeWidth,
+      coordinates: coords,
       pathType
     }
 

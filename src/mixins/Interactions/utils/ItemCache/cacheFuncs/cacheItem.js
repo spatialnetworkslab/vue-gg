@@ -1,6 +1,7 @@
 import cachePointMark from './markInteraction/cachePointMark.js'
 import cacheRectangleMark from './markInteraction/cacheRectangleMark.js'
 import cacheLineMark from './markInteraction/cacheLineMark.js'
+import cacheTrailMark from './markInteraction/cacheTrailMark.js'
 import cachePathMark from './markInteraction/cachePathMark.js'
 
 import cachePointSelectable from './selections/cachePointSelectable.js'
@@ -42,7 +43,17 @@ export default function (uid, type, coordinates, instance, markCache, selectable
     }
   }
 
-  if (['polygon', 'multiline', 'path', 'area', 'trail'].includes(type)) {
+  if (type === 'trail') {
+    if (events.length > 0) {
+      cacheTrailMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+    }
+
+    if (selectable) {
+      cachePathSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers)
+    }
+  }
+
+  if (['polygon', 'multiline', 'path', 'area'].includes(type)) {
     if (events.length > 0) {
       cachePathMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
     }

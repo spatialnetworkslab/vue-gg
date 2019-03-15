@@ -35,6 +35,10 @@ export default function (uid, type, coords, instance, cache, listenerTrackers) {
       }
     }
 
+    if (type === 'trail') {
+      coordinates = coordinates.map(c => c.coord)
+    }
+
     let [x, y] = findCentroidPath(coordinates, pathType)
     let minX = x
     let maxX = x
