@@ -82,9 +82,9 @@
         <!-- work on edge labels, custom color scales -->
         <vgg-discrete-legend
           :scale="{ domain: 'bins', domainMin: 20 }"
-          :fontSize="10"
-          :titleFontSize="16"
-          :tickCount="10"
+          :font-size="10"
+          :title-font-size="16"
+          :tick-count="10"
           flip
           position="tl"
           title="Discrete"
@@ -92,11 +92,11 @@
 
         <vgg-gradient-legend
           :scale="'bins'"
-          :fontSize="10"
-          :titleFontSize="16"
-          :tickCount="10"
+          :font-size="10"
+          :title-font-size="16"
+          :tick-count="10"
           position="tr"
-          flipNumbers
+          flip-numbers
           title="Gradient"
         />
 

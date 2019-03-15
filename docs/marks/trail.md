@@ -63,7 +63,7 @@ The `stroke-width` prop sets the stroke width of the `trail` mark at a given poi
     :x="{ val: dataframe.time, scale: 'time' }"
     :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
     :stroke-width="{ val: dataframe.width, scale: 'width'}"
-    :fillOpacity="0.4"
+    :fill-opacity="0.4"
     fill="green"
   />
 
@@ -81,7 +81,7 @@ This produces a green trail mark with 0.4 opacity and varying stroke width accor
   :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
   :stroke-width="[1, 5, 5, 3, 4, 2]"
   fill="orange"
-  :fillOpacity="0.7"
+  :fill-opacity="0.7"
   :sort="'x'"
 />
 ```

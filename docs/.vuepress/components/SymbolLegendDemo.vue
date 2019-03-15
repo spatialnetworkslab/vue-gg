@@ -33,9 +33,9 @@
       :size="{ domain: 'a', range: [1, 20]}"
       :fill="{ type: 'plasma'}"
       title="Size + Color"
-      titleFontWeight="bold"
-      :titleFontSize=12
-      :titlePadding="10"
+      title-font-weight="bold"
+      :title-font-size=12
+      :title-padding="10"
       :height="120"
       :width="200"
       :columns=5

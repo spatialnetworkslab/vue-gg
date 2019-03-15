@@ -21,7 +21,7 @@
           :x="{ val: dataframe.time, scale: 'time' }"
           :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
           :stroke-width="{ val: dataframe.width, scale: 'width'}"
-          :fillOpacity="0.4"
+          :fill-opacity="0.4"
           fill="green"
         />
 

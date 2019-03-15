@@ -45,10 +45,10 @@
     </vgg-section>
     <vgg-symbol-legend
       :scale="{ domain: 'rainfall'}"
-      :fontSize="10"
-      :titleFontSize="16"
+      :font-size="10"
+      :title-font-size="16"
       shape="line"
-      :tickCount=10
+      :tick-count=10
       :size="15"
       :stroke-width="{ domain: 'rainfall', range: [0, 10]}"
       :x=550
@@ -61,10 +61,10 @@
 
     <vgg-symbol-legend
       :scale="{ domain: 'rainfall'}"
-      :fontSize="10"
-      :titleFontSize="16"
+      :font-size="10"
+      :title-font-size="16"
       shape="line"
-      :tickCount=11
+      :tick-count=11
       :size="15"
       :x=0
       :y=520

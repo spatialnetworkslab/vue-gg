@@ -39,10 +39,9 @@
 
         <vgg-gradient-legend
           :scale="{ domain: 'bins', domainMin: 10 }"
-          :fontSize="10"
-          :titleFontSize="16"
-          :tickCount="10"
-          flipNumbers
+          :font-size="10"
+          :title-font-size="16"
+          :tick-count="10"
           title="Legend title"
           position="tr"
         />

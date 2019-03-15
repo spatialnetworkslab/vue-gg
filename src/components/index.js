@@ -9,15 +9,15 @@ import Grid from './Core/Grid.vue'
 import Repeat from './Core/Repeat.vue'
 
 // Elements
-import DiscreteLegend from './Elements/DiscreteLegend.vue'
-import GradientLegend from './Elements/GradientLegend.vue'
-import SymbolLegend from './Elements/SymbolLegend.vue'
 import PlotTitle from './Elements/PlotTitle.vue'
 
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'
 
 // Guides
+import DiscreteLegend from './Guides/DiscreteLegend.vue'
+import GradientLegend from './Guides/GradientLegend.vue'
+import SymbolLegend from './Guides/SymbolLegend.vue'
 import XAxis from './Guides/XAxis.vue'
 import YAxis from './Guides/YAxis.vue'
 import XGrid from './Guides/XGrid.vue'
