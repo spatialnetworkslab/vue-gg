@@ -24,6 +24,16 @@ export default {
     y2: {
       type: undefined,
       default: undefined
+    },
+
+    _validGeomTypes: {
+      type: Array,
+      default: () => ['LineString', 'MultiLineString']
+    },
+
+    _mark: {
+      type: String,
+      default: 'vgg-multi-line'
     }
   }
 }

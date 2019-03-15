@@ -1,6 +1,7 @@
 import Mark from './Mark.js'
 import { createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
 import checkPoints from './utils/checkPoints.js'
+import checkGeometry from './utils/checkGeometry.js'
 import { invalidPoint } from '../../utils/equals.js'
 
 export default {
@@ -88,11 +89,6 @@ export default {
     interpolate: {
       type: Boolean,
       default: false
-    },
-
-    strokeLinecap: {
-      type: String,
-      default: 'square'
     },
 
     // This is not actually meant to be used, just a flag for the mixin logic
@@ -189,6 +185,7 @@ export default {
       let aesthetics = this._props
 
       if (this.geometry) {
+        checkGeometry(this._mark, this._validGeomTypes, this.geometry)
         let path = createGeoPath(aesthetics.geometry, this.$$transform)
         return createElement('path', {
           attrs: {
