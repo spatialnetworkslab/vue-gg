@@ -17,8 +17,8 @@
       :scale-x="'date'"
       :scale-y="[0, 100]"
       :brush="'rectangle'"
-      :brush-points.sync="brushPoints"
       @brushup="log($event)"
+      @updateBrushPoints="brushPoints = $event"
     >
 
       <vgg-map v-slot="{ row, i }">
@@ -71,8 +71,8 @@
       :scale-x="'a'"
       :scale-y="'b'"
       :brush="'rectangle'"
-      :brush-points.sync="brushPoints"
       @brushup="log($event)"
+      @updateBrushPoints="brushPoints = $event"
     >
 
       <vgg-map v-slot="{ row, i }">

@@ -13,7 +13,7 @@
         :scale-x="'a'"
         :scale-y="'b'"
         :brush="'rectangle'"
-        :brush-points.sync="leftBrushPoints"
+        @updateBrushPoints="leftBrushPoints = $event"
       >
 
         <vgg-map v-slot="{ row, i }">
@@ -39,7 +39,7 @@
         :scale-x="'c'"
         :scale-y="'d'"
         :brush="'rectangle'"
-        :brush-points.sync="rightBrushPoints"
+        @updateBrushPoints="rightBrushPoints = $event"
       >
 
         <vgg-map v-slot="{ row, i }">

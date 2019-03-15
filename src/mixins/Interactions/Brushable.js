@@ -324,7 +324,7 @@ export default {
           points = this._getBrushPoints(start, current)
         }
 
-        this.$emit('update:brushPoints', points)
+        this.$emit('updateBrushPoints', points)
       }
 
       if (type === 'polygon') {
@@ -338,7 +338,7 @@ export default {
           points = []
         }
 
-        this.$emit('update:brushPoints', points)
+        this.$emit('updateBrushPoints', points)
       }
     },
 
