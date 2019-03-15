@@ -2,16 +2,16 @@
   <div>
 
     <vgg-graphic
-      :width="400"
-      :height="400"
+      :width="600"
+      :height="600"
       class="graphic">
 
       <vgg-section
         :type="outerTransformation"
         :x1="0"
-        :x2="400"
+        :x2="600"
         :y1="0"
-        :y2="400"
+        :y2="600"
         :scale-x="domains.x"
         :scale-y="domains.y">
 
@@ -32,16 +32,17 @@
             :key="'p' + j"
             :x="p.x"
             :y="p.y"
-            :color="cs.color"
+            :fill="cs.color"
+            :radius="4"
           />
 
           <vgg-rectangle
             :x1="0"
-            :x2="50"
+            :x2="100"
             :y1="0"
-            :y2="50"
-            :color="cs.color"
-            style="opacity: 0.2;"
+            :y2="100"
+            :fill="cs.color"
+            :opacity="0.2"
           />
 
         </vgg-section>
@@ -85,23 +86,23 @@ export default {
   computed: {
     nestedCoordinateSystems () {
       return [
-        { x: 0, x2: 25, y: 0, y2: 25, color: 'green' },
-        { x: 25, x2: 50, y: 0, y2: 25, color: 'red' },
-        { x: 0, x2: 25, y: 25, y2: 50, color: 'yellow' },
-        { x: 25, x2: 50, y: 25, y2: 50, color: 'blue' }
+        { x: 0, x2: 50, y: 0, y2: 50, color: 'green' },
+        { x: 50, x2: 100, y: 0, y2: 50, color: 'red' },
+        { x: 0, x2: 50, y: 50, y2: 100, color: 'yellow' },
+        { x: 50, x2: 100, y: 50, y2: 100, color: 'blue' }
       ]
     },
 
     domains () {
       return {
-        x: [0, 50],
-        y: [0, 50]
+        x: [0, 100],
+        y: [0, 100]
       }
     },
 
     points () {
       let points = []
-      for (let i = 0; i < 50; ++i) {
+      for (let i = 0; i < 100; ++i) {
         let x = 0.5 + i
         let y = 0.5 + i
 

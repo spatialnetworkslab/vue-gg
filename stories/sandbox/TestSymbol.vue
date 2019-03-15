@@ -20,13 +20,13 @@
           <vgg-symbol
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
-            :size="{ val: row.dependent, scale: 'dependent' }"
-            :stroke="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
+            :size="{ val: row.dependent, scale: {domain: 'dependent', range: [5, 20]} }"
+            :stroke="color(row.categorical)"
             :stroke-width="2"
-            shape="triangle-left"
+            :shape="shape(row.categorical)"
             fill="none"
           />
-            
+          <!--:stroke="color(row.explanatory)"-->
         </vgg-map>
 
         <vgg-x-axis
@@ -58,12 +58,32 @@
         :y2="500"
         :scale="'dependent'"
       />
-
     </vgg-graphic>
 
-    <div style="margin-top: 10px;">
-      <button @click="generateNewData()">Generate new data</button>
-    </div>
+    <p>Shape Scheme:
+      <select v-model="shapeScheme">
+        <option value="shape8">default scheme (shape8)</option>
+        <option value="triangles">triangles</option>
+        <option value="stars">stars</option>
+        <option value="polygons">polygons</option>
+        <option value="custom">custom circles and squares</option>
+      </select>
+    </p>
+
+    <p>Color Scheme:
+      <select v-model="colorScheme">
+        <option value="category10">default scheme (category10)</option>
+        <option value="accent">accent</option>
+        <option value="dark2">dark 2</option>
+        <option value="paired">paired</option>
+        <option value="pastel1">pastel 1</option>
+        <option value="pastel2">pastel 2</option>
+        <option value="set1">set 1</option>
+        <option value="set2">set 2</option>
+        <option value="set3">set 3</option>
+        <option value="custom">custom (ggplot2 default)</option>
+      </select>
+    </p>
 
   </div>
 </template>
@@ -74,14 +94,48 @@ export default {
   name: 'Scatterplot',
   data () {
     return {
-      xy: xy('explanatory', 'dependent')
+      xy: this.generateNewData(),
+      shapeScheme: 'shape8',
+      colorScheme: 'category10'
     }
   },
   methods: {
     generateNewData () {
       let newData = xy('explanatory', 'dependent')
-      this.xy = newData
-    }
+      let fruits = [
+        'apple',
+        'banana',
+        'kiwi',
+        'pomelo',
+        'jackfruit',
+        'guava',
+        'cherry',
+        'dragonfruit',
+        'grape',
+        'durian'
+      ]
+      for (let i = 0; i < newData.length; i++) {
+        newData[i].categorical = fruits[Math.floor(i / 12)]
+        newData[i].dependent = newData[i].dependent + Math.random() * 100
+      }
+
+      return newData
+    },
+
+    color (value) {
+      if (this.colorScheme === 'custom') {
+        return { val: value, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }
+      }
+
+      return { val: value, scale: { type: this.colorScheme, domain: 'categorical' } }
+    },
+
+    shape (value) {
+      if (this.shapeScheme === 'custom') {
+        return { val: value, scale: { ranges: ['circle', 'square'], domain: 'categorical' } }
+      }
+      return { val: value, scale: { type: this.shapeScheme, domain: 'categorical' } }
+    },
   }
 }
 </script>
