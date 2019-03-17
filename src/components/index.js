@@ -35,6 +35,7 @@ import IdcPoint from './Marks/idcPoint.vue'
 import IdcRectangle from './Marks/idcRectangle.vue'
 import IdcLabel from './Marks/idcLabel.vue'
 import IdcXAxis from './Guides/idcXAxis.vue'
+import IdcYAxis from './Guides/idcYAxis.vue'
 
 export default {
   Glyph,
@@ -69,6 +70,7 @@ export default {
   IdcPoint,
   IdcRectangle,
   IdcLabel,
-  IdcXAxis
+  IdcXAxis,
+  IdcYAxis
 
 }

@@ -121,7 +121,7 @@ export default {
 
     tickExtraLabel: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     tickOpacity: {

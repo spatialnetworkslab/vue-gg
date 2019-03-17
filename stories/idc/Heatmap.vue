@@ -34,7 +34,7 @@
                 </vgg-map>
               </vgg-data>
 
-              <vgg-x-axis
+              <!-- <vgg-x-axis
                 :scale="actualOptions(options[j])"
                 :title="xAxis"
                 :labelFontSize="12"
@@ -47,8 +47,7 @@
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
                 :labelFontSize="12"
-                flip
-              />
+              /> -->
             </vgg-section>
         </g>
       </g>
@@ -173,6 +172,7 @@ export default {
               segments[i].push(macro)
             }
         }
+        console.log(segments)
         return segments
       }
     },

@@ -122,11 +122,8 @@ export default {
       if (!this.invalidX && !this.invalidY) {
         return this.coordinateSpecification
       }
-
       let coords = {}
-
       // X coords
-
       // If there is a valid x-coordinate specification, we will use it
       if (!this.invalidX) {
         let [x1, x2] = this.convertSpecification(
@@ -135,7 +132,6 @@ export default {
         coords.x1 = x1
         coords.x2 = x2
       }
-
       // If there is no valid x-coordinate specification, we have to make sure
       // that there are NO x-coordinates specified. In that case, we will take
       // the parent section domain. Otherwise we throw an error.
@@ -147,9 +143,7 @@ export default {
           throw new Error('Invalid combination of x-positioning props')
         }
       }
-
       // Y coords
-
       // If there is a valid y-coordinate specification, we will use it
       if (!this.invalidY) {
         let [y1, y2] = this.convertSpecification(
@@ -158,46 +152,35 @@ export default {
         coords.y1 = y1
         coords.y2 = y2
       }
-
       // If there is no valid y-coordinate specification, we will use vjust
       if (this.invalidY) {
         if (this.y || this.y1 || this.y2) {
           throw new Error('Invalid combination of y-positioning props')
         }
-
         let h
-
         if (this.h) { h = this.h }
         if (!this.h) { h = this.parentDomainWidths.y / 8 }
-
         let just
-
         if (this.vjust.constructor === Number) { just = this.vjust }
         if (this.vjust.constructor === String) {
           just = this.justLookup[this.vjust]
         }
-
         let center = this.getJust(
           this.parentDomains.y[0], this.parentDomainWidths.y, just
         )
         coords.y1 = center - (h / 2)
         coords.y2 = center + (h / 2)
       }
-
       return coords
     },
-
     noX () {
       return isnt(this.x1) && isnt(this.x2) && isnt(this.x) && isnt(this.w)
     },
-
     midY () {
       return this.axisCoords.y1 + (this.widthY / 2)
     },
-
     titleCoords () {
       let coords = {}
-
       if (this.titleHjust.constructor === Number) {
         coords.x = this.getJust(this.axisCoords.x1, this.widthX, this.titleHjust)
       }
@@ -205,7 +188,6 @@ export default {
         let just = this.justLookup[this.titleHjust]
         coords.x = this.getJust(this.axisCoords.x1, this.widthX, just)
       }
-
       if (this.titleVjust.constructor === Number) {
         coords.y = this.getJust(this.axisCoords.y1, this.widthY, this.titleVjust)
       }
@@ -213,12 +195,11 @@ export default {
         let just = this.justLookup[this.titleVjust]
         coords.y = this.getJust(this.axisCoords.y1, this.widthY, just)
       }
-
       return coords
     },
-
     _tickLength () {
       if (this.tickLength) { return this.tickLength }
+      console.log('___', this.tickLength, this.widthY / 5)
       return this.widthY / 5
     },
     parsedScale () {

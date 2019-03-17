@@ -1,20 +1,20 @@
 <template>
   <g
     v-if="!hide"
-    class="x-axis"
+    class="y-axis"
   >
 
     <!-- Main line -->
     <vgg-line
       v-if="domain"
-      :x1="axisCoords.x1"
-      :x2="axisCoords.x2"
-      :y1="midY"
-      :y2="midY"
+      :x1="midX"
+      :x2="midX"
+      :y1="axisCoords.y1"
+      :y2="axisCoords.y2"
       :stroke="domainColor"
       :stroke-opacity="domainOpacity"
       :stroke-width="domainWidth"
-      class="x-axis-line"
+      class="y-axis-line"
     />
 
     <!-- Axis title -->
@@ -29,62 +29,62 @@
       :font-weight="titleFontWeight"
       :opacity="titleOpacity"
       :rotation="titleAngle"
-      class="x-axis-title"
+      class="y-axis-title"
     />
 
     <!-- Ticks -->
     <g
       v-if="ticks"
-      class="x-axis-ticks"
+      class="y-axis-ticks"
     >
 
       <g
         v-for="(tick, i) in coloredTicks"
         :key="i"
-        class="x-axis-tick"
+        class="y-axis-tick"
       >
 
         <vgg-line
-          :x1="tick.value"
-          :x2="tick.value"
-          :y1="midY"
-          :y2="flip ? midY + _tickLength : midY - _tickLength"
+          :x1="midX"
+          :x2="flip ? midX - _tickLength : midX + _tickLength"
+          :y1="tick.value"
+          :y2="tick.value"
           :stroke="tickColor"
           :stroke-opacity="tickOpacity"
           :stroke-width="tickWidth"
         />
 
         <vgg-symbol
-          :x="tick.value"
-          :y="flip ? midY + (_tickLength * 1.01) : midY - (_tickLength * 1.01)"
-          :stroke="tick.color"
-          :size="15"
-          :fillOpacity="1"
+          :x="flip ? midX + _tickLength * 1.5 : midX - _tickLength * 1.5"
+          :y="tick.value"
+          :fill="tick.color"
+          :size="12"
+          :fillOpacity="0.7"
         />
 
         <!-- Tick labels -->
         <vgg-label
           v-if="(!labelRotate) && labels"
-          :x="tick.value"
-          :y="flip ? midY + (_tickLength * 1.001) : midY - (_tickLength * 1.001)"
+          :x="flip ? midX + (_tickLength * 2.7) : midX - (_tickLength * 2.7)"
+          :y="tick.value"
           :text="tick.label"
           :font-family="labelFont"
           :font-size="labelFontSize"
           :font-weight="labelFontWeight"
-          :anchor-point="flip ? 'b' : 't'"
+          :anchor-point="flip ? 'l' : 'r'"
           :opacity="labelOpacity"
         />
 
         <vgg-label
           v-if="labelRotate && labels"
-          :x="tick.value"
-          :y="flip ? midY + (_tickLength * 1.009) : midY - (_tickLength * 1.009)"
+          :x="flip ? midX + (_tickLength * 2.7) : midX - (_tickLength * 2.7)"
+          :y="tick.value"
           :text="tick.label"
           :font-family="labelFont"
           :font-size="labelFontSize"
           :font-weight="labelFontWeight"
-          :rotation="flip ? 30 : -30"
-          :anchor-point="flip ? 'rb' : 'rt'"
+          :rotation="flip ? -30 : 30"
+          :anchor-point="flip ? 'l' : 'r'"
           :opacity="labelOpacity"
         />
 
@@ -99,31 +99,37 @@
 import BaseAxis from '../../mixins/Guides/BaseAxis.js'
 import { isnt } from '../../utils/equals.js'
 import createScale from '../../scales/createScale.js'
+
 export default {
   mixins: [BaseAxis],
+
   props: {
-    vjust: {
+    hjust: {
       type: [Number, String, undefined],
-      default: 'b',
+      default: 'r',
       validator: v => v.constructor === String
-        ? ['b', 't', 'center'].includes(v)
+        ? ['l', 'r', 'center'].includes(v)
         : true
     },
+
     titleHjust: {
       type: [Number, String],
-      default: 0.5,
+      default: 1.4,
       validator: p => (p.constructor === Number) || (['center', 'l', 'r'].includes(p))
     },
+
     titleVjust: {
       type: [Number, String],
-      default: -0.1,
+      default: 0.5,
       validator: p => (p.constructor === Number) || (['center', 't', 'b'].includes(p))
     },
+
     labelColor:{
       type: [String, Array],
       default: 'blue'
     }
   },
+
   mounted() {
     this.coloredTicks
   },
@@ -131,11 +137,11 @@ export default {
   computed: {
     coloredTicks () {
       let coloredTicks = []
-      for (let i = 0; i < this.generatedTicks.length; i++) {
+      for (let i = 0; i < this.generatedTicks.length ; i++) {
         coloredTicks.push(this.generatedTicks[i])
         coloredTicks[i].color = this.labelColor[i]
       }
-      console.log(coloredTicks)
+      console.log('###', coloredTicks)
       return coloredTicks
     },
 
@@ -146,28 +152,11 @@ export default {
       if (!this.invalidX && !this.invalidY) {
         return this.coordinateSpecification
       }
+
       let coords = {}
-      // X coords
-      // If there is a valid x-coordinate specification, we will use it
-      if (!this.invalidX) {
-        let [x1, x2] = this.convertSpecification(
-          this.x1, this.x2, this.x, this.w, this.parentBranch, 'x'
-        )
-        coords.x1 = x1
-        coords.x2 = x2
-      }
-      // If there is no valid x-coordinate specification, we have to make sure
-      // that there are NO x-coordinates specified. In that case, we will take
-      // the parent section domain. Otherwise we throw an error.
-      if (this.invalidX) {
-        if (this.noX) {
-          coords.x1 = this.parentDomains.x[0]
-          coords.x2 = this.parentDomains.x[1]
-        } else {
-          throw new Error('Invalid combination of x-positioning props')
-        }
-      }
+
       // Y coords
+
       // If there is a valid y-coordinate specification, we will use it
       if (!this.invalidY) {
         let [y1, y2] = this.convertSpecification(
@@ -176,35 +165,69 @@ export default {
         coords.y1 = y1
         coords.y2 = y2
       }
-      // If there is no valid y-coordinate specification, we will use vjust
+
+      // If there is no valid y-coordinate specification, we have to make sure
+      // that there are NO y-coordinates specified. In that case, we will take
+      // the parent section domain. Otherwise we throw an error.
       if (this.invalidY) {
-        if (this.y || this.y1 || this.y2) {
+        if (this.noY) {
+          coords.y1 = this.parentDomains.y[0]
+          coords.y2 = this.parentDomains.y[1]
+        } else {
           throw new Error('Invalid combination of y-positioning props')
         }
-        let h
-        if (this.h) { h = this.h }
-        if (!this.h) { h = this.parentDomainWidths.y / 8 }
-        let just
-        if (this.vjust.constructor === Number) { just = this.vjust }
-        if (this.vjust.constructor === String) {
-          just = this.justLookup[this.vjust]
-        }
-        let center = this.getJust(
-          this.parentDomains.y[0], this.parentDomainWidths.y, just
-        )
-        coords.y1 = center - (h / 2)
-        coords.y2 = center + (h / 2)
       }
+
+      // X coords
+
+      // If there is a valid x-coordinate specification, we will use it
+      if (!this.invalidX) {
+        let [x1, x2] = this.convertSpecification(
+          this.x1, this.x2, this.x, this.w, this.parentBranch, 'x'
+        )
+        coords.x1 = x1
+        coords.x2 = x2
+      }
+
+      // If there is no valid x-coordinate specification, we will use vjust
+      if (this.invalidX) {
+        if (this.x || this.x1 || this.x2) {
+          throw new Error('Invalid combination of x-positioning props')
+        }
+
+        let w
+
+        if (this.w) { w = this.w }
+        if (!this.w) { w = this.parentDomainWidths.x / 8 }
+
+        let just
+
+        if (this.hjust.constructor === Number) { just = this.hjust }
+        if (this.hjust.constructor === String) {
+          just = this.justLookup[this.hjust]
+        }
+
+        let center = this.getJust(
+          this.parentDomains.x[0], this.parentDomainWidths.x, just
+        )
+        coords.x1 = center - (w / 2)
+        coords.x2 = center + (w / 2)
+      }
+
       return coords
     },
-    noX () {
-      return isnt(this.x1) && isnt(this.x2) && isnt(this.x) && isnt(this.w)
+
+    noY () {
+      return isnt(this.y1) && isnt(this.y2) && isnt(this.y) && isnt(this.h)
     },
-    midY () {
-      return this.axisCoords.y1 + (this.widthY / 2)
+
+    midX () {
+      return this.axisCoords.x1 + (this.widthX / 2)
     },
+
     titleCoords () {
       let coords = {}
+
       if (this.titleHjust.constructor === Number) {
         coords.x = this.getJust(this.axisCoords.x1, this.widthX, this.titleHjust)
       }
@@ -212,6 +235,7 @@ export default {
         let just = this.justLookup[this.titleHjust]
         coords.x = this.getJust(this.axisCoords.x1, this.widthX, just)
       }
+
       if (this.titleVjust.constructor === Number) {
         coords.y = this.getJust(this.axisCoords.y1, this.widthY, this.titleVjust)
       }
@@ -219,14 +243,17 @@ export default {
         let just = this.justLookup[this.titleVjust]
         coords.y = this.getJust(this.axisCoords.y1, this.widthY, just)
       }
+
       return coords
     },
+
     _tickLength () {
       if (this.tickLength) { return this.tickLength }
-      return this.widthY / 5
+      return this.widthX / 5
     },
+
     parsedScale () {
-      return createScale('x', this.context, this.scalingOptions)
+      return createScale('y', this.context, this.scalingOptions)
     }
   }
 }

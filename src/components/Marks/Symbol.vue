@@ -142,7 +142,7 @@ export default {
     renderSVG (createElement) {
       let aesthetics = this._props
       let path
-      console.log(aesthetics)
+
       if (this.shape === 'circle') {
         return this.createCircle(createElement, aesthetics)
       } else if (this.shape === 'square') {
