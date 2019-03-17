@@ -61,9 +61,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
     domainType = getDataType(domain[0])
   }
-
   domain = updateDomain(domain, domainType, scaleOptions)
-
   return [domain, domainType, scaleOptions]
 }
 
@@ -93,7 +91,7 @@ function checkValidDomainArray (array) {
 
 function updateDomain (domain, domainType, scalingOptions, dataInterface) {
   if (validScalingOptions(domainType, scalingOptions)) {
-    let newDomain = [domain[0], domain[1]]
+    let newDomain = domain.slice()
 
     if (is(scalingOptions.domainMin)) {
       newDomain[0] = scalingOptions.domainMin
@@ -128,7 +126,7 @@ function validScalingOptions (domainType, scalingOptions) {
     if (hasAnyWrongProperty(scalingOptions)) {
       throw new Error(`Invalid scaling options for categorical domain: ${JSON.stringify(scalingOptions)}`)
     }
-    return false
+    return true
   } else {
     checkTypes(domainType, scalingOptions)
     return true
