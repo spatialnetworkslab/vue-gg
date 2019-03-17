@@ -21,4 +21,5 @@ yarn-error.log*
 /docs/.vuepress/dist
 
 /dist-docs
-/stats.html
+stats.html
+/dist
