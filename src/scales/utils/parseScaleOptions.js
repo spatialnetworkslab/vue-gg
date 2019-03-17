@@ -1,3 +1,4 @@
+import { tickIncrement } from 'd3-array'
 import getDataType from '../../utils/getDataType.js'
 import { is } from '../../utils/equals.js'
 
@@ -102,11 +103,22 @@ function updateDomain (domain, domainType, scalingOptions, dataInterface) {
       newDomain[1] = scalingOptions.domainMax
     }
 
+    if (!(is(scalingOptions.domainMin) | is(scalingOptions.domainMax)) & domainType !== 'categorical') {
+      let domainNice = scalingOptions.nice || true
+      if (domainNice === true) {
+        newDomain = nice(newDomain, 10)
+      }
+      if (Number.isInteger(domainNice)) {
+        newDomain = nice(newDomain, domainNice)
+      }
+    }
+
     if (is(scalingOptions.reverse)) {
       if (scalingOptions.reverse === true) {
         newDomain.reverse()
       }
     }
+
     return newDomain
   } else { return domain }
 }
@@ -124,7 +136,7 @@ function validScalingOptions (domainType, scalingOptions) {
 }
 
 function hasAnyWrongProperty (obj) {
-  let keys = ['domainMin', 'domainMax', 'domainMid', 'absolute']
+  let keys = ['domainMin', 'domainMax', 'domainMid', 'absolute', 'nice']
   for (let key of keys) {
     if (obj.hasOwnProperty(key)) { return true }
   }
@@ -136,7 +148,6 @@ function checkTypes (type, obj) {
   for (let key of keys) {
     if (obj.hasOwnProperty(key)) {
       let propertyType = getDataType(obj[key])
-
       if (type.startsWith('interval')) {
         let intervalType = type.split(':')[1]
         if (propertyType !== intervalType) {
@@ -162,4 +173,46 @@ function absoluteDomain (arr) {
   }
 
   return [min, max]
+}
+
+function nice (domain, count) {
+  // adopted from d3-scale: https://github.com/d3/d3-scale
+  domain = domain.slice()
+
+  let i0 = 0
+  let i1 = domain.length - 1
+  let start = domain[i0]
+  let stop = domain[i1]
+  let step
+
+  if (stop < start) {
+    step = start
+    start = stop
+    stop = step
+    step = i0
+    i0 = i1
+    i1 = step
+  }
+
+  step = tickIncrement(start, stop, count)
+
+  if (step > 0) {
+    start = Math.floor(start / step) * step
+    stop = Math.ceil(stop / step) * step
+    step = tickIncrement(start, stop, count)
+  } else if (step < 0) {
+    start = Math.ceil(start * step) / step
+    stop = Math.floor(stop * step) / step
+    step = tickIncrement(start, stop, count)
+  }
+
+  if (step > 0) {
+    domain[i0] = Math.floor(start / step) * step
+    domain[i1] = Math.ceil(stop / step) * step
+  } else if (step < 0) {
+    domain[i0] = Math.ceil(start * step) / step
+    domain[i1] = Math.floor(stop * step) / step
+  }
+
+  return domain
 }

@@ -28,17 +28,18 @@ The other two will be discussed under [Usage](#usage).
 
 ### Properties
 
-| Property   | Required | Types           | Default   | Description                                                           |
-| ---------- | -------- | --------------- | --------- | --------------------------------------------------------------------- |
-| domain     | true     | [Array, String] | undefined | Array containing domain boundaries, or a String referencing a column. |
-| type       | false    | String          | depends   | Type of scale.                                                        |
-| domain-min | false    | Number          | undefined | Lower domain boundary. Used to overwrite `domain`.                    |
-| domain-max | false    | Number          | undefined | Upper domain boundary. Used to overwrite `domain`.                    |
-| domain-mid | false    | Number          | undefined | Mid-point of domain. Useful for creating diverging scales.            |
-| range-min  | false    | Number          | undefined | Lower range boundary. Used to overwrite chosen range.                 |
-| range-max  | false    | Number          | undefined | Upper range boundary. Used to overwrite chosen range.                 |
-| absolute   | false    | Boolean         | false     | Will treat negative values as positive.                               |
-| reverse    | false    | Boolean         | true      | Will reverse the order of the scale/domain                            |
+| Property   | Required | Types            | Default   | Description                                                           |
+| ---------- | -------- | ---------------- | --------- | --------------------------------------------------------------------- |
+| domain     | true     | [Array, String]  | undefined | Array containing domain boundaries, or a String referencing a column. |
+| type       | false    | String           | depends   | Type of scale.                                                        |
+| domain-min | false    | Number           | undefined | Lower domain boundary. Used to overwrite `domain`.                    |
+| domain-max | false    | Number           | undefined | Upper domain boundary. Used to overwrite `domain`.                    |
+| domain-mid | false    | Number           | undefined | Mid-point of domain. Useful for creating diverging scales.            |
+| range-min  | false    | Number           | undefined | Lower range boundary. Used to overwrite chosen range.                 |
+| range-max  | false    | Number           | undefined | Upper range boundary. Used to overwrite chosen range.                 |
+| absolute   | false    | Boolean          | false     | Will treat negative values as positive.                               |
+| reverse    | false    | Boolean          | false     | Will reverse the order of the scale/domain                            |
+| nice       | false    | [Boolean, Number]| true      | Extends the domain to start/stop on nice, round values. Can be either a boolean or the desired tick count |
 
 ##### domain
 
