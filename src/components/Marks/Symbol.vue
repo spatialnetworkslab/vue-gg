@@ -62,7 +62,7 @@ export default {
   },
 
   computed: {
-    pathAlias() {
+    pathAlias () {
       return {
         'cross': 'M-.5,-1L.5,-1L.5,-.5L1,-.5L1,.5L.5,.5L.5,1L-.5,1L-.5,.5L-1,.5L-1,-.5L-.5,-.5L-.5,-1Z',
         'cross-sharp': 'M0,-1L.2,-.2L1,0L.2,.2L0,1L-.2,.2L-1,0L-.2,-.2Z',
@@ -149,9 +149,7 @@ export default {
         return this.createSquare(createElement, aesthetics)
       } else if (this.pathAlias.hasOwnProperty(this.shape)) {
         path = this.pathAlias[this.shape]
-      } 
-
-      else {
+      } else {
         return this.createPath(createElement, aesthetics, this.shape)
       }
 

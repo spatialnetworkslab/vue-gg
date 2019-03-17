@@ -90,11 +90,6 @@ export default {
       default: false
     },
 
-    strokeLinecap: {
-      type: String,
-      default: 'square'
-    },
-
     // This is not actually meant to be used, just a flag for the mixin logic
     _area: {
       type: Boolean,

@@ -37,7 +37,7 @@ export default function (prop, context, passedScalingOptions) {
     return createOpacityScale(prop, domainType, domain, scalingOptions)
   }
 
-  if (['shape'].includes (prop)) {
+  if (['shape'].includes(prop)) {
     return createShapeScale(prop, domainType, domain, scalingOptions)
   }
 
