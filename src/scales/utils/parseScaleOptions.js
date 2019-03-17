@@ -102,6 +102,11 @@ function updateDomain (domain, domainType, scalingOptions, dataInterface) {
       newDomain[1] = scalingOptions.domainMax
     }
 
+    if (is(scalingOptions.reverse)) {
+      if (scalingOptions.reverse === true) {
+        newDomain.reverse()
+      }
+    }
     return newDomain
   } else { return domain }
 }

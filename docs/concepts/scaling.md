@@ -38,6 +38,7 @@ The other two will be discussed under [Usage](#usage).
 | range-min  | false    | Number          | undefined | Lower range boundary. Used to overwrite chosen range.                 |
 | range-max  | false    | Number          | undefined | Upper range boundary. Used to overwrite chosen range.                 |
 | absolute   | false    | Boolean         | false     | Will treat negative values as positive.                               |
+| reverse    | false    | Boolean         | true      | Will reverse the order of the scale/domain                            |
 
 ##### domain
 
