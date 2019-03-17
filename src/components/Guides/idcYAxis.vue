@@ -141,7 +141,6 @@ export default {
         coloredTicks.push(this.generatedTicks[i])
         coloredTicks[i].color = this.labelColor[i]
       }
-      console.log('###', coloredTicks)
       return coloredTicks
     },
 

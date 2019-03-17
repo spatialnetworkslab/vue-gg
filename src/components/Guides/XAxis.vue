@@ -58,7 +58,7 @@
         <vgg-label
           v-if="(!labelRotate) && labels"
           :x="tick.value"
-          :y="flip ? midY + (_tickLength * 1.03) : midY - (_tickLength * 1.03)"
+          :y="flip ? midY + (_tickLength * 1.05) : midY - (_tickLength * 1.05)"
           :text="tick.label"
           :font-family="labelFont"
           :font-size="labelFontSize"
@@ -71,7 +71,7 @@
         <vgg-label
           v-if="labelRotate && labels"
           :x="tick.value"
-          :y="flip ? midY + (_tickLength * 1.03) : midY - (_tickLength * 1.03)"
+          :y="flip ? midY + (_tickLength * 1.08) : midY - (_tickLength * 1.08)"
           :text="tick.label"
           :font-family="labelFont"
           :font-size="labelFontSize"

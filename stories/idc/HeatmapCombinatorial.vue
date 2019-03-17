@@ -27,14 +27,6 @@
               :scale-y="[o[0], o[1]]"
             >
 
-            <vgg-rectangle
-            :x1="d[0]"
-            :x2="d[1]"
-            :y1="o[0]"
-            :y2="o[1]"
-            fill="blue"
-            :opacity=0.4
-            />
               <vgg-data v-for="(item, index) in segments(dimensions[i], options[j])"
                 :data="item"
                 :key="index"
@@ -55,10 +47,11 @@
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
                 label-rotate
-                :tick-length=7
-                :title-hjust="1.3"
+                :tick-length="7"
+                :title-hjust="1 + ((dimensions.length - i) * 0.1)"
                 :title-vjust="0.5"
                 :vjust="1"
+                :title-font-weight="700"
                 flip
               />
 
@@ -67,10 +60,10 @@
                 :scale="actualOptions(options[j]).names"
                 :label-color="actualOptions(options[j]).colors"
                 :title="yAxis"
+                :title-font-weight="700"
                 :hjust="0"
-                :tick-length=7
-                :title-hjust="1.3"
-                :title-vjust="-0.015 * (options.length - j)"
+                :tick-length="7"
+                :title-vjust="-0.015 * (j+1)"
               />
             </vgg-section>
         </g>
@@ -101,10 +94,10 @@ export default {
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
       dimensions: [3, 5, 10],
-      options: [5, 10, 25, 40, 50],
+      options: [40, 25, 10, 5],
       height: 6500,
       width: 2000,
-      baseX: 150,
+      baseX: 300,
       baseY: 100,
       padX: 300,
       padY: 200
@@ -158,8 +151,10 @@ export default {
     actualOptions (options) {
       let names = [], colors = []
       for (let i = 0; i < options; i++ ) {
-        names.push(this.data[i].Name)
-        colors.push(this.data[i].Color)
+        if (this.data[i]){
+          names.push(this.data[i].Name)
+          colors.push(this.data[i].Color)
+        }
       }
 
       return { names, colors }
@@ -203,7 +198,7 @@ export default {
             }
           }
         }
-
+        console.log(segments)
         return segments
       }
     },
