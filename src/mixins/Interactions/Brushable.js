@@ -137,6 +137,7 @@ export default {
     },
 
     _localScaledDomainTypes () {
+      console.log('retrigger local scaled domain types...')
       if (this._brush) {
         if (this.scaleGeo) { return { x: 'quantitative', y: 'quantitative' } }
         let localScaledDomainTypes = {}
