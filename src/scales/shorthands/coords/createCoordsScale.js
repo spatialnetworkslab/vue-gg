@@ -5,7 +5,6 @@ import temporal from './temporal.js'
 import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, range, scalingOptions) {
-
   if (variableType === 'quantitative') {
     let scale = scalingOptions.type || 'linear'
     checkValidScale(prop, variableType, scale, quantitative)

@@ -8,7 +8,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
   let scaleOptions
 
   // Check if no invalid options were passed
-  if (!passedScaleOptions){
+  if (!passedScaleOptions) {
     throw new Error('Input to `passedScaleOptions` is undefined')
   }
   if (![Array, String, Object].includes(passedScaleOptions.constructor)) {
@@ -143,7 +143,6 @@ function validScalingOptions (domainType, scalingOptions) {
 function hasAnyWrongProperty (obj) {
   let keys = ['domainMin', 'domainMax', 'domainMid', 'absolute', 'nice']
   for (let key of keys) {
-
     if (obj.hasOwnProperty(key)) { return true }
   }
   return false

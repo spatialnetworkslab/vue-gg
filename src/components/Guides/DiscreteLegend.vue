@@ -152,27 +152,27 @@ export default {
       let colorScale = this.generateColorScale('fill', this.fill)
 
       if (!this.flip) {
-         for (let i = 0; i < ticks; i++) {
+        for (let i = 0; i < ticks; i++) {
           if (i === 0) {
             end += this.segmentHeight
           } else {
             start = end
             end += this.segmentHeight
           }
-          location = (start + end)/2
-          boxes.push({fill: colorScale(l[i]), start: start, end: end, location: location, label: l[i]})
+          location = (start + end) / 2
+          boxes.push({ fill: colorScale(l[i]), start: start, end: end, location: location, label: l[i] })
         }
       } else {
-        for (let i = ticks - 1; i >=0; i--) {
+        for (let i = ticks - 1; i >= 0; i--) {
           start = end
           end += this.segmentHeight
-          location = (start + end)/2
-          boxes.push({fill: colorScale(l[i]), start: start, end: end, location: location, label: l[i]})
-       }
+          location = (start + end) / 2
+          boxes.push({ fill: colorScale(l[i]), start: start, end: end, location: location, label: l[i] })
+        }
       }
 
       return boxes
     }
-  },
+  }
 }
 </script>

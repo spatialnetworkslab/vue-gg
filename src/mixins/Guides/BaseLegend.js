@@ -1,5 +1,5 @@
-import { ticks as arrayTicks } from 'd3-array'
-import { scaleTime } from 'd3-scale'
+// import { ticks as arrayTicks } from 'd3-array'
+// import { scaleTime } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../Marks/Rectangular.js'
@@ -158,12 +158,12 @@ export default {
 
     width: {
       type: Number,
-      default: function (value) { if (this.orientation === 'vertical') { return 70 } else { return 280 }}
+      default: function (value) { if (this.orientation === 'vertical') { return 70 } else { return 280 } }
     },
 
     height: {
       type: Number,
-      default: function (value) { if (this.orientation === 'horizontal') { return 70 } else { return 280 }}
+      default: function (value) { if (this.orientation === 'horizontal') { return 70 } else { return 280 } }
     },
 
     fill: {
@@ -257,7 +257,7 @@ export default {
     legendLeft () {
       if (!this.x && !this.y) {
         let p = this.position
-        if (p === 'right' || p === "tr" || p === "br" || p === "cr") {
+        if (p === 'right' || p === 'tr' || p === 'br' || p === 'cr') {
           return (this.plotWidth - this.width) * 0.95
         } else {
           return this.plotWidth * 0.01
@@ -270,16 +270,16 @@ export default {
     legendTop () {
       if (!this.x && !this.y) {
         let p = this.position
-        if (p === 'top' || p === "tl" || p === "tr") {
+        if (p === 'top' || p === 'tl' || p === 'tr') {
           return (this.height - this.plotHeight) * 0.9
-        } else if (p === 'bottom' || p === "bl" || p === "br") {
+        } else if (p === 'bottom' || p === 'bl' || p === 'br') {
           return 0
         } else {
           return -this.plotHeight * 0.45
         }
       } else {
         if (this.position && this.position !== 'left') {
-          console.warn("Ignoring position value `" + this.position + "` because of `x` and `y` inputs")
+          console.warn('Ignoring position value `' + this.position + '` because of `x` and `y` inputs')
         }
         return this.y * -1
       }
@@ -287,7 +287,7 @@ export default {
 
     legendLabels () {
       let labels = this.labels
-      let newLabelValues, variableType, variableData
+      let variableType, variableData
 
       if (labels) {
         if (labels.constructor === Array) {
@@ -306,7 +306,6 @@ export default {
 
       if (variableType === 'nominal' || variableType === 'categorical') {
         return variableData
-
       } else if (variableType === 'temporal') {
         if (this.format) {
           if (this.format.constructor === String) {
@@ -316,14 +315,13 @@ export default {
           format = timeFormat('%d/%m/%Y')
         }
 
-        let scale = scaleTime().domain(this._domain)
+        // let scale = scaleTime().domain(this._domain)
         let ticks = variableData.map((value, i) => {
           let date = new Date(value)
           return format(date)
         })
 
         return ticks
-
       } else if (variableType === 'interval:temporal') {
         if (this.format) {
           if (this.format.constructor === String) { format = timeFormat(this.format) }
@@ -338,11 +336,9 @@ export default {
         })
 
         return ticks
-
       } else {
         return this.formatLabels(variableData, variableType)
       }
-
     },
 
     segmentHeight () {
@@ -357,32 +353,32 @@ export default {
       return this.height
     },
 
-    positionElements() {
+    positionElements () {
       if (this.type === 'discrete' || this.type === 'gradient') {
         let rectangle, label, title
 
-        if (this.orientation === "vertical") {
+        if (this.orientation === 'vertical') {
           title = this.titleX
           if (!this.flipNumbers) {
-            rectangle = { x1: 0,  x2: 75, y1: 0, y2: 100 }
+            rectangle = { x1: 0, x2: 75, y1: 0, y2: 100 }
             label = 90 + this.labelPadding
           } else {
-            rectangle = { x1: 25,  x2: 100, y1: 0, y2: 100}
+            rectangle = { x1: 25, x2: 100, y1: 0, y2: 100 }
             label = 10 - this.labelPadding
           }
         } else {
           title = 55
           if (!this.flipNumbers) {
-            rectangle = { x1: 0,  x2: 100, y1: 15,  y2: 85 }
+            rectangle = { x1: 0, x2: 100, y1: 15, y2: 85 }
             label = 10 - this.labelPadding
           } else {
-            rectangle = { x1: 0,  x2: 100, y1: 0,  y2: 70}
+            rectangle = { x1: 0, x2: 100, y1: 0, y2: 70 }
             label = 80 + this.labelPadding
           }
         }
         return { rectangle, label, title }
       } else if (this.type === 'symbol') {
-        if (this.orientation === "vertical") {
+        if (this.orientation === 'vertical') {
           let multilineX, symbolX, labelX
           if (!this.flipNumbers) {
             multilineX = [0.25 - this.symbolPadding, 0.55 - this.symbolPadding]
@@ -422,7 +418,7 @@ export default {
     },
 
     round (value, n) {
-      return Math.floor(value/n) * n
+      return Math.floor(value / n) * n
     },
 
     formatLabels (dataDomain, variableType) {
@@ -441,7 +437,7 @@ export default {
           }
         }
 
-        if (this.format) { value = format(value) }
+        if (this.format) { value = this.format(value) }
         ticks.push(value)
       }
 
@@ -449,11 +445,11 @@ export default {
     },
 
     generateColorScale (prop, colorBasis) {
-      let color = colorBasis ? colorBasis : this.fill
+      let color = colorBasis || this.fill
       let scaleOptions
 
       if (color.constructor === Array) {
-        return (index) => {return color[index]}
+        return (index) => { return color[index] }
       } else {
         if (this._domainType === 'categorical') {
           scaleOptions = {
@@ -466,7 +462,7 @@ export default {
           scaleOptions = {
             aestheticType: prop,
             domain: color.domain ? color.domain : this._domain,
-            domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
+            domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1]) / 2,
             scaleArgs: [[0, this.tickCount]],
             type: color.type,
             ranges: color.ranges

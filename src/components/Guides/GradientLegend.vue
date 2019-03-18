@@ -4,13 +4,18 @@
 
     <!-- Gradient definition -->
     <defs>
-    <linearGradient id="grad1" x1="0%" y1="0%" :x2="composeGradient.endX" :y2="composeGradient.endY">
-      <stop
-        v-for="(c, i) in colors"
-        :key="i"
-        :offset="`${i * offset + '%'}`"
-        :style="`stop-color:${c}`" />
-    </linearGradient>
+      <linearGradient
+        id="grad1"
+        :x2="composeGradient.endX"
+        :y2="composeGradient.endY"
+        x1="0%"
+        y1="0%">
+        <stop
+          v-for="(c, i) in colors"
+          :key="i"
+          :offset="`${i * offset + '%'}`"
+          :style="`stop-color:${c}`" />
+      </linearGradient>
     </defs>
 
     <!-- Vertical/horizontal orientation -->
@@ -142,10 +147,6 @@ export default {
     }
   },
 
-  mounted () {
-    this.composeGradient
-  },
-
   computed: {
     offset () {
       return 100 / (this.tickCount - 1)
@@ -160,8 +161,8 @@ export default {
       let colors = []
       let colorScale = this.generateColorScale('fill', this.fill)
       if (!this.flip) {
-        if (this.orientation === "vertical"){
-          for (let i = l.length - 1; i >=0; i--) {
+        if (this.orientation === 'vertical') {
+          for (let i = l.length - 1; i >= 0; i--) {
             let color = colorScale(l[i])
             colors.push(color)
           }
@@ -172,14 +173,13 @@ export default {
           }
         }
       } else {
-        if (this.orientation === "vertical"){
+        if (this.orientation === 'vertical') {
           for (let i = 0; i < l.length; i++) {
             let color = colorScale(l[i])
             colors.push(color)
           }
-
         } else {
-          for (let i = l.length - 1; i >=0; i--) {
+          for (let i = l.length - 1; i >= 0; i--) {
             let color = colorScale(l[i])
             colors.push(color)
           }
@@ -188,14 +188,14 @@ export default {
       return colors
     },
 
-    composeGradient() {
+    composeGradient () {
       let specs = {}
-      if (this.orientation === "vertical" ) {
-        specs.endX = "0%"
-        specs.endY = "100%"
+      if (this.orientation === 'vertical') {
+        specs.endX = '0%'
+        specs.endY = '100%'
       } else {
-        specs.endX = "100%"
-        specs.endY = "0%"
+        specs.endX = '100%'
+        specs.endY = '0%'
       }
       return specs
     },
@@ -203,28 +203,32 @@ export default {
     boxes () {
       let boxes = []
       let ticks = this.tickCount
-      let l = this.legendLabels, start = 1, end = 0, location
+      let l = this.legendLabels; let start = 1; let end = 0
 
       if (!this.flip) {
-         for (let i = 0; i < ticks; i++) {
+        for (let i = 0; i < ticks; i++) {
           if (i === 0) {
             end += this.segmentHeight
           } else {
             start = end
             end += this.segmentHeight
           }
-          boxes.push({location: start, label: l[i]})
+          boxes.push({ location: start, label: l[i] })
         }
       } else {
-        for (let i = ticks - 1; i >=0; i--) {
+        for (let i = ticks - 1; i >= 0; i--) {
           start = end
           end += this.segmentHeight
-          boxes.push({location: start, label: l[i]})
-       }
+          boxes.push({ location: start, label: l[i] })
+        }
       }
 
       return boxes
     }
+  },
+
+  mounted () {
+    this.composeGradient()
   }
 
 }
