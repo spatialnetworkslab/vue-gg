@@ -121,7 +121,7 @@ export default {
 
     tickExtraLabel: {
       type: Boolean,
-      default: false
+      default: true
     },
 
     tickOpacity: {
@@ -277,7 +277,6 @@ export default {
 
         if (this.domainType === 'quantitative') {
           newTickValues = arrayTicks(...this._domain, this.tickCount)
-
           if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
