@@ -148,7 +148,7 @@ export default {
     transformation () {
       let transformation
 
-      if (!props.axes) {
+      if (!this.axes) {
         transformation = new CoordinateTransformation({
           type: this.type,
           scales: this.scales,
@@ -158,7 +158,7 @@ export default {
         })
       }
 
-      if (props.axes) {
+      if (this.axes) {
         // If there are axes, we will just do an identity transformation.
         // The actual transformation will then take place in the nested child section.
         transformation = new CoordinateTransformation({
@@ -194,14 +194,14 @@ export default {
     },
 
     _axes () {
-      if (props.axes && props.axes.constructor === Array) {
+      if (this.axes && this.axes.constructor === Array) {
         let axes = {}
-        for (let axis of props.axes) {
+        for (let axis of this.axes) {
           axes[axis] = {}
         }
         return axes
       } else {
-        return props.axes
+        return this.axes
       }
     },
 
@@ -237,14 +237,14 @@ export default {
     },
 
     _gridLines () {
-      if (props.gridLines && props.gridLines.constructor === Array) {
+      if (this.gridLines && this.gridLines.constructor === Array) {
         let gridLines = {}
-        for (let gridLine of props.gridLines) {
+        for (let gridLine of this.gridLines) {
           gridLines[gridLine] = null
         }
         return gridLines
       } else {
-        return props.gridLines
+        return this.gridLines
       }
     }
   },
@@ -254,7 +254,7 @@ export default {
   },
 
   beforeCreate () {
-    props = createPropCache(this, ['scaleX', 'scaleY', 'scaleGeo', 'transform', 'axes', 'gridLines', 'brush'])
+    props = createPropCache(this, ['scaleX', 'scaleY', 'scaleGeo'])
   },
 
   beforeDestroy () {
