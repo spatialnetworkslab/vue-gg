@@ -44,17 +44,16 @@
       </vgg-data>
     </vgg-section>
     <vgg-symbol-legend
-      :scale="{ domain: 'rainfall'}"
+      :scale="{ domain: 'colors'}"
       :font-size="10"
       :title-font-size="16"
       shape="line"
-      :tick-count=10
       :size="15"
-      :stroke-width="{ domain: 'rainfall', range: [0, 10]}"
+      :stroke="{ ranges: ['red', 'blue', 'green']}"
       :x=550
       :y=200
-      stroke="orange"
-      :columns=2
+      :tick-count="3"
+      :stroke-width=10
       direction="vertical"
       title="Stroke width"
     />
@@ -69,7 +68,7 @@
       :x=0
       :y=520
       :stroke-width=10
-      :stroke-opacity="{ domain: 'rainfall', range: [0, 0.7] }"
+      :stroke-opacity="{ range: [0, 0.7] }"
       title="Opacity test"
       orientation="horizontal"
     />

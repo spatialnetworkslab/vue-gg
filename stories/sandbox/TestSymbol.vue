@@ -2,7 +2,7 @@
   <div>
 
     <vgg-graphic
-      :width="600"
+      :width="900"
       :height="600"
       :data="xy">
 
@@ -42,6 +42,21 @@
         />
 
       </vgg-section>
+
+      <vgg-symbol-legend
+         :scale="{ domain: 'categorical'}"
+         :font-size="10"
+         :title-font-size="19"
+         :size="15"
+         shape="circle"
+         :x="550"
+         :y="200"
+         :tick-count="9"
+         :stroke="{ type: this.colorScheme }"
+         :shape="{ type: this.shapeScheme }"
+         direction="vertical"
+         title="Fruits"
+       />
 
       <vgg-x-grid
         :x1="100"
@@ -132,6 +147,20 @@ export default {
       }
       return { val: value, scale: { type: this.shapeScheme, domain: 'categorical' } }
     },
+
+    colorLegend (colorScheme){
+      if (this.colorScheme === 'custom') {
+        return { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'] }
+      }
+      return { type: colorScheme }
+    },
+
+    shapeLegend () {
+      if (this.shapeScheme === 'custom') {
+        return { ranges: ['circle', 'square'] }
+      }
+      return { type: this.shapeScheme }
+    }
   }
 }
 </script>

@@ -69,7 +69,7 @@ export default function (data, length) {
               if (getDataType(value) !== type) {
                 throw new Error(`Invalid column ${key}: column contains multiple data types`)
               }
-
+              
               domains[key] = updateDomain(domains[key], value, type)
             }
           }

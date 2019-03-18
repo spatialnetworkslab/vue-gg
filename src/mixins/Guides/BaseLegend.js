@@ -450,17 +450,27 @@ export default {
 
     generateColorScale (prop, colorBasis) {
       let color = colorBasis ? colorBasis : this.fill
+      let scaleOptions
 
       if (color.constructor === Array) {
         return (index) => {return color[index]}
       } else {
-        let scaleOptions = {
-          aestheticType: prop,
-          domain: this._parsedScalingOptions[0],
-          domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
-          scaleArgs: [[0, this.tickCount]],
-          type: color.type,
-          ranges: color.ranges
+        if (this._domainType === 'categorical') {
+          scaleOptions = {
+            aestheticType: prop,
+            domain: color.domain ? color.domain : this._domain,
+            type: color.type,
+            ranges: color.ranges
+          }
+        } else {
+          scaleOptions = {
+            aestheticType: prop,
+            domain: color.domain ? color.domain : this._domain,
+            domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1])/2,
+            scaleArgs: [[0, this.tickCount]],
+            type: color.type,
+            ranges: color.ranges
+          }
         }
 
         let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)

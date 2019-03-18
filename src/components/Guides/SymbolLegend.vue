@@ -67,7 +67,7 @@
                 :stroke="s.stroke"
                 :stroke-width="s.strokeWidth"
                 :size="s.size"
-                :shape="shape"
+                :shape="s.shape"
                 :fill="s.fill"
                 :stroke-opacity="s.strokeOpacity"
                 :fill-opacity="s.fillOpacity"
@@ -168,7 +168,7 @@
               :stroke="s.stroke"
               :stroke-width="s.strokeWidth"
               :size="s.size"
-              :shape="shape"
+              :shape="s.shape"
               :fill="s.fill"
               :stroke-opacity="s.strokeOpacity"
               :fill-opacity="s.fillOpacity"
@@ -280,18 +280,18 @@ export default {
     },
 
     shape:{
-      type: [Array, String],
+      type: [Object, Array, String],
       default: 'circle'
     }
   },
 
   computed: {
     // work on categorical scales - shapes, colors, sizes, stroke widths
-    symbols () {
+    symbols() {
       let symbols = []
       let ticks = this.tickCount
       let l = this.legendLabels, start = 0, end = 0, location, symbol
-      let sizeScale = this.generateSizeScale
+
       if (!this.flip) {
          for (let i = 0; i < ticks; i++) {
           if (i === 0) {
@@ -302,7 +302,101 @@ export default {
           }
           location = (start + end)/2
           symbol = {location: location, label: l[i]}
-          symbols.push(this.parseAttributes(symbol, l[i]))
+          let value = l[i]
+
+          if (this.shape) {
+            if (this.shape.constructor === String) {
+              symbol.shape = this.shape
+            } else {
+              let shapeScale = this.generateShapeScale('shape', this.shape)
+              symbol.shape = shapeScale(value)
+            }
+          } else {
+            symbol.shape = 'circle'
+          }
+
+          // figure out which to prioritize - fill or stroke?
+          if (this.stroke) {
+            if (this.stroke === 'none' || this.stroke.constructor === String) {
+              symbol.stroke = this.stroke
+            } else {
+              let strokeScale = this.generateColorScale('stroke', this.stroke)
+              symbol.stroke = strokeScale(value)
+            }
+          } else {
+            symbol.stroke = 'black'
+          }
+
+          if (this.fill != "none") {
+            let fillScale = this.generateColorScale('fill', this.fill)
+            symbol.fill = fillScale(value)
+          } else if (this.fill.constructor === String) {
+            symbol.fill = this.fill
+          }
+
+          if (this.size) {
+            let sizeScale = this.generateSizeScale('size', this.size)
+            if (sizeScale(value) < 0){
+              symbol.size = Math.abs(sizeScale(value))/2
+            } else {
+              symbol.size = sizeScale(value)
+            }
+          } else {
+            symbol.size = 10
+          }
+
+          if (this.strokeWidth && this.strokeWidth.constructor != Number) {
+            let strokeWidthScale = this.generateSizeScale('strokeWidth', this.strokeWidth)
+            if (strokeWidthScale(value) < 0){
+              symbol.strokeWidth = Math.abs(strokeWidthScale(value))/2
+            } else if (strokeWidthScale(value) === 0){
+              symbol.strokeWidth = 0.0001
+            } else {
+              symbol.strokeWidth = strokeWidthScale(value)
+            }
+          } else {
+            if (this.strokeWidth.constructor === Number){
+              symbol.strokeWidth = this.strokeWidth
+            } else {
+              symbol.strokeWidth = 5
+            }
+          }
+
+          if (this.fillOpacity && this.fillOpacity.constructor != Number) {
+            let fillOpacityScale = this.generateOpacityScale('fillOpacity', this.fillOpacity)
+            if (fillOpacityScale(value) < 0){
+              symbol.fillOpacity = Math.abs(fillOpacityScale(value))/2
+            } else if (fillOpacityScale(value) === 0){
+              symbol.fillOpacity = 0.0001
+            } else {
+              symbol.fillOpacity = fillOpacityScale(value)
+            }
+          } else {
+            if (this.fillOpacity.constructor === Number){
+              symbol.fillOpacity = this.fillOpacity
+            } else {
+              symbol.fillOpacity = 1
+            }
+          }
+
+          if (this.strokeOpacity && this.strokeOpacity.constructor != Number) {
+            let strokeOpacityScale = this.generateOpacityScale('strokeOpacity', this.strokeOpacity)
+            if (strokeOpacityScale(value) < 0){
+              symbol.strokeOpacity = Math.abs(strokeOpacityScale(value))/2
+            } else if (strokeOpacityScale(value) === 0){
+              symbol.strokeOpacity = 0.0001
+            } else {
+              symbol.strokeOpacity = strokeOpacityScale(value)
+            }
+          } else {
+            if (this.strokeOpacity.constructor === Number){
+              symbol.strokeOpacity = this.strokeOpacity
+            } else {
+              symbol.strokeOpacity = 1
+            }
+          }
+
+          symbols.push(symbol)
         }
       } else {
         for (let i = ticks - 1; i >=0; i--) {
@@ -313,7 +407,6 @@ export default {
           symbols.push(this.parseAttributes(symbol, l[i]))
         }
       }
-
     return symbols
     }
   },
@@ -321,38 +414,79 @@ export default {
   methods: {
     // scale generator for stroke, fill opacities
     generateOpacityScale (prop, opacityBasis) {
-      let opacity = opacityBasis
+      let opacity = opacityBasis, scaleOptions
 
       if (opacity.constructor === Number) {
         return () => {return opacity}
       } else if (opacity.constructor === Array) {
         return (index) => {return opacity[index]}
       } else {
-        let scaleOptions = {
-          aestheticType: prop,
-          domain: this._domain,
-          domainMid: (this._domain[0] + this._domain[1])/2,
-          range: opacity.range ? opacity.range : this.scale.range ? this.scale.range : [0,1],
+        if( this._domainType === "categorical" ){
+          scaleOptions = {
+            aestheticType: prop,
+            domain: opacity.domain ? opacity.domain : this._domain,
+            range: opacity.range ? opacity.range : this.scale.range ? this.scale.range : [0,1],
+          }
+        } else {
+          scaleOptions = {
+            aestheticType: prop,
+            domain: opacity.domain ? opacity.domain : this._domain,
+            domainMid: (this._domain[0] + this._domain[1])/2,
+            range: opacity.range ? opacity.range : this.scale.range ? this.scale.range : [0,1],
+          }
+          let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
+          return scalingFunction
         }
-        let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
-        return scalingFunction
       }
     },
 
     // scale generator for  size/radius, strokeWidth
     generateSizeScale (prop, sizeBasis) {
-      let size = sizeBasis
+      let size = sizeBasis, scaleOptions
 
       if (size.constructor === Number) {
         return () => {return size}
       } else if (size.constructor === Array) {
         return (index) => {return size[index]}
       } else {
-        let scaleOptions = {
-          aestheticType: prop,
-          domain: this._domain,
-          domainMid: (this._domain[0] + this._domain[1])/2,
-          range: size.range ? size.range : this.scale.range ? this.scale.range : [0,10],
+        if( this._domainType === "categorical" ){
+          scaleOptions = {
+            aestheticType: prop,
+            domain: size.domain ? size.domain : this._domain,
+            range: size.range ? size.range : this.scale.range ? this.scale.range : [0,10],
+          }
+        } else {
+          scaleOptions = {
+            aestheticType: prop,
+            domain: size.domain ? size.domain : this._domain,
+            domainMid: (this._domain[0] + this._domain[1])/2,
+            range: size.range ? size.range : this.scale.range ? this.scale.range : [0,10],
+          }
+        }
+        console.log(scaleOptions, this.$$dataInterface._manager.ready)
+        let scalingFunction = createScale(prop, this.$$dataInterface._manager, scaleOptions)
+        return scalingFunction
+      }
+    },
+
+    generateShapeScale (prop, shapeBasis) {
+      let shape = shapeBasis, scaleOptions
+
+      if (shape.constructor === String) {
+        return () => {return shape}
+      } else if (shape.constructor === Array) {
+        return (index) => {return size[index]}
+      } else {
+        if (shape.type){
+          scaleOptions = {
+            domain: shape.domain ? shape.domain : this._domain,
+            type: shape.type,
+          }
+        } else {
+          scaleOptions = {
+            domain: shape.domain ? shape.domain : this._domain,
+            ranges: shape.ranges ? shape.ranges : ['circle', 'square'],
+          }
         }
         let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
         return scalingFunction
@@ -360,6 +494,17 @@ export default {
     },
 
     parseAttributes (symbol, value) {
+      if (this.shape) {
+        if (this.shape.constructor === String) {
+          symbol.shape = this.shape
+        } else {
+          let shapeScale = this.generateShapeScale('shape', this.shape)
+          symbol.shape = shapeScale(value)
+        }
+      } else {
+        symbol.shape = 'circle'
+      }
+
       // figure out which to prioritize - fill or stroke?
       if (this.stroke) {
         if (this.stroke === 'none' || this.stroke.constructor === String) {
