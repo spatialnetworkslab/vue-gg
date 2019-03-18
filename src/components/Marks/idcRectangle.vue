@@ -37,6 +37,7 @@ export default {
 
   computed: {
     strokeColor () {
+      console.log(this.index, this.selectionIndex, this.index === this.selectionIndex)
       if (this.index && this.selectionIndex && (this.index === this.selectionIndex)) {
         return "red"
       } else {

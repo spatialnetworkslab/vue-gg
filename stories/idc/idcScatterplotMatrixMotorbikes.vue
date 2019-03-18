@@ -43,7 +43,8 @@
           <vgg-x-axis
             :scale="categoryX[pair[0]]"
             :title="categoryX[pair[0]]"
-            :titleHjust="1.05"
+            :title-hjust="1.05"
+            :title-vjust="0.5"
             :vjust="-.05"
             titleAnchorPoint="l"
             :tickCount="5"
@@ -53,6 +54,8 @@
             :scale="categoryY[pair[1]]"
             :title="categoryY[pair[1]]"
             :hjust="-.05"
+            :title-vjust="1.05"
+            :title-hjust="0.5"
             :tickCount="5"
             flip
           />
@@ -77,14 +80,25 @@ export default {
       selected: false,
       // categoryX: ['Sodium', 'ServingSize', 'Calories', 'Sugars', 'Protein'],
       // categoryY: ['Protein', 'Sugars', 'Calories', 'ServingSize', 'Sodium'],
-      categoryX: ['Price', 'MilesPG' , 'RearWheelHP', 'TopSpeed', 'Stop60'],
-      categoryY: ['Stop60', 'TopSpeed' , 'RearWheelHP', 'MilesPG', 'Price'],
+      categoryX: ['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio'],
+      categoryY: ['PWRatio', 'QuartermileSec' , 'RearWheelTQLbFt', 'Stop60', 'ZeroTo60', 'MilesPG', 'TopSpeed', 'RearWheelHorsepower', 'WetWeight', 'Price'],
       pairs: [[1, 4], [2, 4], [3, 4], [4, 4],
               [0, 3], [2, 3], [3, 3], [4, 3],
               [0, 2], [1, 2], [3, 2], [4, 2],
               [0, 1], [1, 1], [2, 1], [4, 1],
               [0, 0], [1, 0], [2, 0], [3, 0]
-            ]
+            ],
+      // pairs: [[1, 9], [2, 9], [3, 9], [4, 9], [5, 9], [6, 9], [7, 9], [8, 9], [9, 9],
+      //         [0, 8], [2, 8], [3, 8], [4, 8], [5, 8], [6, 8], [7, 8], [8, 8], [9, 8],
+      //         [0, 7], [1, 7], [3, 7], [4, 7], [5, 7], [6, 7], [7, 7], [8, 7], [9, 7],
+      //         [0, 6], [1, 6], [2, 6], [4, 6], [5, 6], [6, 6], [7, 6], [8, 6], [9, 6],
+      //         [0, 5], [1, 5], [2, 5], [3, 5], [4, 5], [5, 5], [6, 5], [7, 5], [8, 5],
+      //         [0, 4], [1, 4], [2, 4], [3, 4], [4, 4], [6, 4], [7, 4], [8, 4], [9, 4],
+      //         [0, 3], [1, 3], [2, 3], [3, 3], [4, 3], [5, 3], [7, 3], [8, 3], [9, 3],
+      //         [0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [6, 2], [8, 2], [9, 2],
+      //         [0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [9, 1],
+      //         [0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0],
+      //       ]
     }
   },
 
@@ -159,13 +173,21 @@ export default {
       csv('../../static/mcn_performance_index14_40.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
+            Name: d['Make and Model'],
             Price: parseInt(d['Base MSRP']),
+            Rating: d['Rating Category'],
+            PWRatio: parseInt(d.PWRatio),
             MilesPG: parseInt(d['Average MPG']),
-            RearWheelHP: parseInt(d['Rear-Wheel HP']),
+            RearWheelHorsepower: parseInt(d['Rear-Wheel HP']),
+            RearWheelTQLbFt: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
             ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            WetWeight: parseInt(d['Wet Weight']),
             TopSpeed: parseInt(d['Top Speed']),
+            ZeroTo60: parseInt(d['0–60 mph, sec.']),
+            QuartermileSec: parseInt(d['Quartermile, sec']),
+            QuartermileHr: parseInt(d['Quartermile, mph']),
             Stop60: parseInt(d['Braking 60–0 mph (feet)']),
-            Color: d.Color
+            Color: d.Color,
           }
         }))
       })
@@ -175,13 +197,21 @@ export default {
       csv('../../static/mcn_performance_index14_5.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
+            Name: d['Make and Model'],
             Price: parseInt(d['Base MSRP']),
+            Rating: d['Rating Category'],
+            PWRatio: parseInt(d.PWRatio),
             MilesPG: parseInt(d['Average MPG']),
-            RearWheelHP: parseInt(d['Rear-Wheel HP']),
+            RearWheelHorsepower: parseInt(d['Rear-Wheel HP']),
+            RearWheelTQLbFt: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
             ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            WetWeight: parseInt(d['Wet Weight']),
             TopSpeed: parseInt(d['Top Speed']),
+            ZeroTo60: parseInt(d['0–60 mph, sec.']),
+            QuartermileSec: parseInt(d['Quartermile, sec']),
+            QuartermileHr: parseInt(d['Quartermile, mph']),
             Stop60: parseInt(d['Braking 60–0 mph (feet)']),
-            Color: d.Color
+            Color: d.Color,
           }
         }))
       })
@@ -191,13 +221,21 @@ export default {
       csv('../../static/mcn_performance_index14_10.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
+            Name: d['Make and Model'],
             Price: parseInt(d['Base MSRP']),
+            Rating: d['Rating Category'],
+            PWRatio: parseInt(d.PWRatio),
             MilesPG: parseInt(d['Average MPG']),
-            RearWheelHP: parseInt(d['Rear-Wheel HP']),
+            RearWheelHorsepower: parseInt(d['Rear-Wheel HP']),
+            RearWheelTQLbFt: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
             ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            WetWeight: parseInt(d['Wet Weight']),
             TopSpeed: parseInt(d['Top Speed']),
+            ZeroTo60: parseInt(d['0–60 mph, sec.']),
+            QuartermileSec: parseInt(d['Quartermile, sec']),
+            QuartermileHr: parseInt(d['Quartermile, mph']),
             Stop60: parseInt(d['Braking 60–0 mph (feet)']),
-            Color: d.Color
+            Color: d.Color,
           }
         }))
       })
@@ -207,13 +245,21 @@ export default {
       csv('../../static/mcn_performance_index14_25.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
+            Name: d['Make and Model'],
             Price: parseInt(d['Base MSRP']),
+            Rating: d['Rating Category'],
+            PWRatio: parseInt(d.PWRatio),
             MilesPG: parseInt(d['Average MPG']),
-            RearWheelHP: parseInt(d['Rear-Wheel HP']),
+            RearWheelHorsepower: parseInt(d['Rear-Wheel HP']),
+            RearWheelTQLbFt: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
             ZeroTo100: parseInt(d['0–100 mph, sec.']),
+            WetWeight: parseInt(d['Wet Weight']),
             TopSpeed: parseInt(d['Top Speed']),
+            ZeroTo60: parseInt(d['0–60 mph, sec.']),
+            QuartermileSec: parseInt(d['Quartermile, sec']),
+            QuartermileHr: parseInt(d['Quartermile, mph']),
             Stop60: parseInt(d['Braking 60–0 mph (feet)']),
-            Color: d.Color
+            Color: d.Color,
           }
         }))
       })

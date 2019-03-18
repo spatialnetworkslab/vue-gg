@@ -12,42 +12,65 @@
         :fontSize="50"/>
 
       <g v-if="data">
-        <g v-for="(d, i) in dimensionSections">
-          <g v-for="(o, j) in optionSections">
+        <g v-for="(d, i) in dimensionSections"
+          :key="i"
+          >
+          <g v-for="(o, j) in optionSections"
+          :key="j"
+          >
             <vgg-section
-              :x1="o[0]"
-              :x2="o[1]"
-              :y1="d[0]"
-              :y2="d[1]"
-              :scale-x="[o[0], o[1]]"
-              :scale-y="[d[0], d[1]]"
+              :x1="d[0]"
+              :x2="d[1]"
+              :y1="o[0]"
+              :y2="o[1]"
+              :scale-x="[d[0], d[1]]"
+              :scale-y="[o[0], o[1]]"
             >
-              <vgg-data v-for="(item, i) in segments(dimensions[i], options[j])" :data="item">
+
+              <vgg-data v-for="(item, index) in segments(dimensions[i], options[j])"
+                :data="item"
+                :key="index"
+                >
                 <vgg-map v-slot="{ row }">
-                  <vgg-rectangle
+                  {{ index }}
+                  <vgg-idc-rectangle
                   :x1="row.x1"
                   :x2="row.x2"
                   :y1="row.y1"
                   :y2="row.y2"
                   :fill="{val: row.value, scale: { type: row.colorScale, domain: 'value'}}"
+                  :index="{val: row.indexNo}"
+                  :selectionIndex="index"
+                  :clickHandler="clickHandler"
+                  :hoverHandler="hoverHandler"
+                  :leaveHandler="leaveHandler"
                   />
                 </vgg-map>
               </vgg-data>
 
-              <!-- <vgg-x-axis
-                :scale="actualOptions(options[j])"
-                :title="xAxis"
-                :labelFontSize="12"
-                :titleHjust="1.01"
-                titleAnchorPoint="l"
-                labelRotate
-              />
 
-              <vgg-y-axis
+              <vgg-x-axis
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
-                :labelFontSize="12"
-              /> -->
+                label-rotate
+                :tick-length="7"
+                :title-hjust="1 + ((dimensions.length - i) * 0.2)"
+                :title-vjust="0.5"
+                :vjust="1"
+                :title-font-weight="700"
+                flip
+              />
+
+              <vgg-idc-y-axis
+                v-if="actualOptions(options[j]).colors"
+                :scale="actualOptions(options[j]).names"
+                :label-color="actualOptions(options[j]).colors"
+                :title="yAxis"
+                :title-font-weight="700"
+                :hjust="0"
+                :tick-length="7"
+                :title-vjust="-0.015 * (j+1)"
+              />
             </vgg-section>
         </g>
       </g>
@@ -68,22 +91,23 @@ export default {
       data: undefined,
       names: [],
       categories: [],
-      xAxis: undefined,
+      yAxis: undefined,
       title: undefined,
-      drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'VitaminA', 'VitaminC', 'Calcium', 'Iron'],
-      bikeCategories: ['Price', 'RearWheelHorsepower', 'RearWheelTQLbFt', 'WetWeight', 'MilesPG', 'TopSpeed', 'ZeroTo60', 'ZeroTo100', 'QuartermileSec', 'QuartermileHr','Stop60', 'PWRatio'],
+      index: -1,
+      drinkCategories: ['Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'Calcium', 'Iron', 'VitaminA', 'VitaminC'],
+      bikeCategories: ['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio'],
       cameraCategories: ['MaxRes', 'LowRes', 'EffectivePix', 'ZoomWide', 'ZoomTele', 'NormFocusRange', 'MacroFocusRange', 'StorageGB', 'Weight', 'Dimensions'],
       carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower' ,'Length' ,'ForwardGears' ,'Torque'],
-      colorScales: ['blues', 'reds', 'purples', 'oranges'],
+      colorScales: ['blues', 'greys', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
       dimensions: [3, 5, 10],
-      options: [50, 100],
-      height: 2000,
-      width: 8700,
-      baseX: 150,
+      options: [40, 25],
+      height: 4200,
+      width: 2000,
+      baseX: 300,
       baseY: 100,
-      padX: 250,
-      padY: 150
+      padX: 300,
+      padY: 200
     }
   },
 
@@ -97,17 +121,17 @@ export default {
     dimensionSections () {
       let sections = []
       for (let d in this.dimensions){
-        let y1 = this.baseY, y2
+        let x1 = this.baseX, x2
         if (d > 0) {
           for (let prevD in this.dimensions.slice(0, d)){
-            y1 += this.dimensions[prevD] * 40
+            x1 += this.dimensions[prevD] * 40
           }
-          y1 += this.padY * d
-          y2 = y1 + this.dimensions[d] * 40
+          x1 += this.padX * d
+          x2 = x1 + this.dimensions[d] * 40
         } else {
-          y2 = this.baseY + this.dimensions[d] * 40
+          x2 = this.baseX + this.dimensions[d] * 40
         }
-        sections.push([y1, y2])
+        sections.push([x1, x2])
       }
       return sections
     },
@@ -115,28 +139,70 @@ export default {
     optionSections () {
       let sections = []
       for (let o in this.options){
-        let x1 = this.baseX, x2
+        let y1 = this.baseY, y2
         if (o > 0) {
           for (let prevO in this.options.slice(0, o)){
-            x1 += this.options[prevO] * 40
+            y1 += this.options[prevO] * 40
           }
-          x1 += this.padX * o
-          x2 = x1 + this.options[o] * 40
+          y1 += this.padY * o
+          y2 = y1 + this.options[o] * 40
         } else {
-          x2 = this.baseX + this.options[o] * 40
+          y2 = this.baseY + this.options[o] * 40
         }
-        sections.push([x1, x2])
+        sections.push([y1, y2])
       }
       return sections
     }
   },
   methods: {
-    actualOptions (options) {
-      let names = []
-      for (let i = 0; i < options; i++ ) {
-        names.push(this.data[i].Name)
+    clickHandler (self) {
+      return () => {
+        console.log('@@@', this.selected, this.index)
+        if (!this.selected) {
+          this.index = self.index
+          this.selected = true
+        } else if (this.selected && this.index != self.index) {
+          this.index = self.index
+          this.selected = true
+        } else if (this.selected && this.index === self.index) {
+          this.index = -1
+          this.selected = false
+        } else {
+          throw new Error('Error in click handler')
+        }
       }
-      return names
+    },
+
+    hoverHandler (self) {
+      return () => {
+        if (this.selected) {
+          return
+        } else {
+          this.index = self.index
+        }
+      }
+    },
+
+    leaveHandler (self) {
+      return () => {
+        if (this.selected) {
+          return
+        } else {
+          this.index = -1
+        }
+      }
+    },
+
+    actualOptions (options) {
+      let names = [], colors = []
+      for (let i = 0; i < options; i++ ) {
+        if (this.data[i]){
+          names.push(this.data[i].Name)
+          colors.push(this.data[i].Color)
+        }
+      }
+
+      return { names, colors }
     },
 
     actualDimensions (dimensions) {
@@ -156,30 +222,36 @@ export default {
 
         let segments = []
         let heightDelta = 40, widthDelta = 40
-        let y = this.dimensionSections[this.dimensions.indexOf(dimensions)][0], x = this.optionSections[this.options.indexOf(options)][0]
+        let x = this.dimensionSections[this.dimensions.indexOf(dimensions)][0], y = this.optionSections[this.options.indexOf(options)][0]
+
         for (let i = 0; i < categories.length; i++) {
-            segments[i] = []
-            for (let j = 0; j < options; j++) {
+          segments[i] = []
+          for (let j = 0; j < options; j++) {
+            if (this.data[j]) {
               let macro = {}
-              macro.x1 = x + widthDelta * j
-              macro.x2 = x + widthDelta * (j+1)
-              macro.y1 = y + heightDelta * i
-              macro.y2 = y + heightDelta * (i+1)
+              macro.x1 = x + widthDelta * i
+              macro.x2 = x + widthDelta * (i+1)
+              macro.y1 = y + heightDelta * j
+              macro.y2 = y + heightDelta * (j+1)
               macro.value = this.data[j][categories[i]]
               macro.attribute = categories[i]
               macro.name = this.data[j].Name
-              macro.colorScale = this.colorScales[this.dataSets.indexOf(this.xAxis)]
+              macro.colorScale = this.colorScales[this.dataSets.indexOf(this.yAxis)]
+              macro.indexNo =  this.data[i].Index
               segments[i].push(macro)
+            } else {
+              console.log("Skipping index ", i, " as it is undefined")
             }
+          }
         }
-        console.log(segments)
+        console.log('@@@', segments)
         return segments
       }
     },
 
     drinks () {
       this.categories = this.drinkCategories
-      this.xAxis = 'Drinks'
+      this.yAxis = 'Drinks'
       this.title = 'Drinks Data'
       this.dataset = 'drinks'
       // change name of csv
@@ -209,13 +281,14 @@ export default {
 
     bikes () {
       this.categories = this.bikeCategories
-      this.xAxis = 'Motorbike Model'
+      this.yAxis = 'Motorbike Model'
       this.title = 'Motorcycle Performance 2014'
       this.colorScale = "reds"
       // change name of csv
       csv('../../static/mcn_performance_index14_alphabetical.csv').then((data) => {
-        this.data = Object.freeze(data.map(d => {
+        this.data = Object.freeze(data.map((d, i) => {
           return {
+            Index: i,
             Name: d['Make and Model'],
             Price: parseInt(d['Base MSRP']),
             Rating: d['Rating Category'],
@@ -229,7 +302,8 @@ export default {
             ZeroTo60: parseInt(d['0–60 mph, sec.']),
             QuartermileSec: parseInt(d['Quartermile, sec']),
             QuartermileHr: parseInt(d['Quartermile, mph']),
-            Stop60: parseInt(d['Braking 60–0 mph (feet)'])
+            Stop60: parseInt(d['Braking 60–0 mph (feet)']),
+            Color: d.Color,
           }
         }))
       })
@@ -237,7 +311,7 @@ export default {
 
     cameras () {
       this.categories = this.cameraCategories
-      this.xAxis = 'Camera Model'
+      this.yAxis = 'Camera Model'
       this.title = 'Camera Specifications 2007'
       // change name of csv
       csv('../../static/cameras_1038.csv').then((data) => {
@@ -262,7 +336,7 @@ export default {
 
     cars () {
       this.categories = this.carCategories
-      this.xAxis = 'Car ID'
+      this.yAxis = 'Car ID'
       this.title = 'Car Specifications 2012'
       // change name of csv
       csv('../../static/cars7xu2012.csv').then((data) => {

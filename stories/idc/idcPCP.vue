@@ -27,22 +27,6 @@
               :scale-y="[o[0], o[1]]"
             >
 
-              <vgg-data v-for="(item, index) in segments(dimensions[i], options[j])"
-                :data="item"
-                :key="index"
-                >
-                <vgg-map v-slot="{ row }">
-                  <vgg-rectangle
-                  :x1="row.x1"
-                  :x2="row.x2"
-                  :y1="row.y1"
-                  :y2="row.y2"
-                  :fill="{val: row.value, scale: { type: row.colorScale, domain: 'value'}}"
-                  />
-                </vgg-map>
-              </vgg-data>
-
-
               <vgg-x-axis
                 :scale="actualDimensions(dimensions[i])"
                 title="Attributes"
@@ -63,8 +47,7 @@
                 :title-font-weight="700"
                 :hjust="0"
                 :tick-length="7"
-                :title-hjust="0.4"
-                :title-vjust="-0.02 * (j+1)"
+                :title-vjust="-0.015 * (j+1)"
               />
             </vgg-section>
         </g>
@@ -79,7 +62,7 @@
 import {csv} from 'd3-fetch'
 
 export default {
-  name: 'idc-heatmap',
+  name: 'idc-pcp',
 
   data () {
     return {
