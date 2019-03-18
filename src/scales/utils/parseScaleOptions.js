@@ -105,7 +105,7 @@ function updateDomain (domain, domainType, scalingOptions, dataInterface) {
       // nice domains turned on by default for non-categorical domains
       // TODO specific logic for temporal domains
       let domainNice = true
-      if (scalingOptions.nice) {
+      if (is(scalingOptions.nice)) {
         domainNice = scalingOptions.nice
       }
       if (domainNice === true) {
