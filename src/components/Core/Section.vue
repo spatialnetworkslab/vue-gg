@@ -7,7 +7,6 @@ import Rectangular from '../../mixins/Marks/Rectangular.js'
 import Brushable from '../../mixins/Interactions/Brushable.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
-import randomID from '../../utils/id.js'
 
 import { calculateWidths, createAxisProps } from './utils/section.js'
 import { createPropCache, createWatchers } from './utils/propCache.js'
@@ -179,16 +178,17 @@ export default {
 
     coordinateTreeBranchID () {
       let id
+
       let parentData = this.$parent.$vnode.data
       if (parentData.attrs && parentData.attrs.id) {
         // use id if given
-        id = parentData.attrs.id + '_' + this.randomID
+        id = parentData.attrs.id + '_' + this.uuid
       } else if (parentData.staticClass) {
         // fall back on class if no id is given
         let elClass = parentData.staticClass.replace(/\s+/g, '_')
-        id = elClass + '_' + this.randomID
+        id = elClass + '_' + this.uuid
       } else {
-        id = '_' + randomID()
+        id = '_' + this.uuid
       }
       return id
     },

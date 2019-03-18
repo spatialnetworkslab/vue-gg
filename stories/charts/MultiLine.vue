@@ -79,7 +79,7 @@ export default {
       for (let i = 0; i < 30; i++) {
         let colorIndex = Math.floor(Math.random() * 3)
         let color = colors[colorIndex]
-        let rain = rainfall[i%rainfall.length]
+        let rain = rainfall[i % rainfall.length]
         data.colors.push(color)
         data.xValues.push(Math.random() * 10)
         data.yValues.push(Math.random() * 100)
