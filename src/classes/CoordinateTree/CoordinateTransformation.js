@@ -137,6 +137,17 @@ export default class CoordinateTransformation {
 
         return [this.invertX(_x), this.invertY(_y)]
       }
+
+      // This too
+      this.actualinverseTransform = ([x, y]) => {
+        let cartesian = [toRangeX.invert(x), toRangeY.invert(y)]
+        let [theta, r] = cartesianToPolar(...cartesian)
+
+        let _x = toTheta.invert(theta)
+        let _y = toRadius.invert(r)
+
+        return [this.actualInvertX(_x), this.actualInvertY(_y)]
+      }
     }
   }
 
@@ -173,6 +184,8 @@ export default class CoordinateTransformation {
     this.inverseTransform = ([x, y]) => {
       return [this.invertX(x), this.invertY(y)]
     }
+
+    this.actualInverseTransform = this.inverseTransform
   }
 }
 
