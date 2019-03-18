@@ -21,7 +21,7 @@ export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'categorical') {
     if (scalingOptions.ranges) {
       return scaleFromRange(domain, scalingOptions.ranges)
-    } else if (scalingOptions.rangeMin || scalingOptions.rangeMax){
+    } else if (scalingOptions.rangeMin || scalingOptions.rangeMax) {
       console.warn('Categorical color scales use `ranges` to specify custom color scales. Using default color scale `category10`')
     }
 
@@ -31,6 +31,5 @@ export default function (prop, variableType, domain, scalingOptions) {
     let scaleFunc = categorical[scale](domain, scalingOptions)
 
     return scaleFunc
-
   }
 }

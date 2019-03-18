@@ -66,5 +66,5 @@ export default {
   Rectangle,
   Label,
   Symbol,
-  Trail,
+  Trail
 }

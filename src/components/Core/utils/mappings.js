@@ -193,7 +193,7 @@ function isFeature (prop) {
 
 function applyScale (value, scale) {
   if (invalid(value)) return
-  
+
   if (value.constructor === Array) {
     // points (array of arrays)
     if (value[0].constructor === Array) {
