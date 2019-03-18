@@ -123,7 +123,6 @@
 <script>
 import BaseLegend from '@/mixins/Guides/BaseLegend.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import createScale from '@/scales/createScale.js'
 
 export default {
   name: 'DiscreteLegend',
@@ -146,7 +145,10 @@ export default {
     boxes () {
       let boxes = []
       let ticks = this.tickCount
-      let l = this.legendLabels, start = 0, end = 0, location
+      let l = this.legendLabels
+      let start = 0
+      let end = 0
+      let location
       let colorScale = this.generateColorScale('fill', this.fill)
 
       if (!this.flip) {
