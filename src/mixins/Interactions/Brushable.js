@@ -60,10 +60,10 @@ export default {
 
   computed: {
     _brush () {
-      if (this.brush && this.brush.constructor === String) {
-        return { type: this.brush }
+      if (this.props.brush && this.props.brush.constructor === String) {
+        return { type: this.props.brush }
       } else {
-        return this.brush
+        return this.props.brush
       }
     },
 
@@ -148,7 +148,7 @@ export default {
 
     _localScaledDomainTypes () {
       if (this._brush) {
-        if (this.scaleGeo) { return { x: 'quantitative', y: 'quantitative' } }
+        if (this.props.scaleGeo) { return { x: 'quantitative', y: 'quantitative' } }
         let localScaledDomainTypes = {}
 
         if (this._brush.hasOwnProperty('scaleX')) {

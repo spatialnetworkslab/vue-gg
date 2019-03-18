@@ -17,8 +17,6 @@ import YAxis from '../Guides/YAxis.vue'
 import XGrid from '../Guides/XGrid.vue'
 import YGrid from '../Guides/YGrid.vue'
 
-let props
-
 export default {
   mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular, Brushable],
 
@@ -71,7 +69,8 @@ export default {
 
   data () {
     return {
-      ready: false
+      ready: false,
+      props: createPropCache(this, ['scaleX', 'scaleY', 'scaleGeo', 'axes', 'gridLines', 'brush'])
     }
   },
 
@@ -85,11 +84,11 @@ export default {
     },
 
     scales () {
-      if ((props.scaleX || props.scaleY || props.scaleGeo)) {
+      if ((this.props.scaleX || this.props.scaleY || this.props.scaleGeo)) {
         let scales = {}
-        if (props.scaleX) { scales.x = props.scaleX }
-        if (props.scaleY) { scales.y = props.scaleY }
-        if (props.scaleGeo) { scales.geo = props.scaleGeo }
+        if (this.props.scaleX) { scales.x = this.props.scaleX }
+        if (this.props.scaleY) { scales.y = this.props.scaleY }
+        if (this.props.scaleGeo) { scales.geo = this.props.scaleGeo }
 
         let hasX = scales.hasOwnProperty('x')
         let hasY = scales.hasOwnProperty('y')
@@ -147,7 +146,7 @@ export default {
     transformation () {
       let transformation
 
-      if (!this.axes) {
+      if (!this._axes) {
         transformation = new CoordinateTransformation({
           type: this.type,
           scales: this.scales,
@@ -157,7 +156,7 @@ export default {
         })
       }
 
-      if (this.axes) {
+      if (this._axes) {
         // If there are axes, we will just do an identity transformation.
         // The actual transformation will then take place in the nested child section.
         transformation = new CoordinateTransformation({
@@ -194,14 +193,14 @@ export default {
     },
 
     _axes () {
-      if (this.axes && this.axes.constructor === Array) {
+      if (this.props.axes && this.props.axes.constructor === Array) {
         let axes = {}
-        for (let axis of this.axes) {
+        for (let axis of this.props.axes) {
           axes[axis] = {}
         }
         return axes
       } else {
-        return this.axes
+        return this.props.axes
       }
     },
 
@@ -237,14 +236,14 @@ export default {
     },
 
     _gridLines () {
-      if (this.gridLines && this.gridLines.constructor === Array) {
+      if (this.props.gridLines && this.props.gridLines.constructor === Array) {
         let gridLines = {}
-        for (let gridLine of this.gridLines) {
+        for (let gridLine of this.props.gridLines) {
           gridLines[gridLine] = null
         }
         return gridLines
       } else {
-        return this.gridLines
+        return this.props.gridLines
       }
     }
   },
@@ -253,17 +252,13 @@ export default {
     transformation: 'updateCoordinateTreeBranch'
   },
 
-  beforeCreate () {
-    props = createPropCache(this, ['scaleX', 'scaleY', 'scaleGeo'])
-  },
-
   beforeDestroy () {
     this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
   },
 
   mounted () {
     this.setCoordinateTreeBranch()
-    createWatchers(this, props)
+    createWatchers(this, this.props)
     this.ready = true
   },
 
@@ -393,7 +388,7 @@ export default {
 
   render (createElement) {
     if (this.ready && this.allowScales) {
-      if (!this.axes) {
+      if (!this._axes) {
         let slotContent = this.getSlotContent()
 
         if (this.gridLines) {
@@ -404,7 +399,7 @@ export default {
         return createElement('g', { class: 'section' }, slotContent)
       }
 
-      if (this.axes) {
+      if (this._axes) {
         let section = this.createSection(createElement)
         let axes = this.createAxes(createElement)
         let content = [section, ...axes]

@@ -8,7 +8,7 @@ export function createPropCache (instance, propKeys) {
     props[key] = propVals[key] || undefined
   }
 
-  return Vue.observable(props)
+  return props
 }
 
 export function createWatchers (instance, propCache) {
