@@ -37,26 +37,25 @@
         <vgg-y-axis
           :scale="'dependent'"
           :hjust="-.05"
-          :tickExtraLabel="false"
+          :tick-extra-label="false"
           flip
         />
 
       </vgg-section>
 
       <vgg-symbol-legend
-         :scale="{ domain: 'categorical'}"
-         :font-size="10"
-         :title-font-size="19"
-         :size="15"
-         shape="circle"
-         :x="550"
-         :y="200"
-         :tick-count="9"
-         :stroke="{ type: this.colorScheme }"
-         :shape="{ type: this.shapeScheme }"
-         direction="vertical"
-         title="Fruits"
-       />
+        :scale="{ domain: 'categorical'}"
+        :font-size="10"
+        :title-font-size="19"
+        :size="15"
+        :x="550"
+        :y="200"
+        :tick-count="9"
+        :stroke="colorLegend(colorScheme)"
+        :shape="shapeLegend(shapeScheme)"
+        direction="vertical"
+        title="Fruits"
+      />
 
       <vgg-x-grid
         :x1="100"
@@ -148,7 +147,7 @@ export default {
       return { val: value, scale: { type: this.shapeScheme, domain: 'categorical' } }
     },
 
-    colorLegend (colorScheme){
+    colorLegend (colorScheme) {
       if (this.colorScheme === 'custom') {
         return { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'] }
       }

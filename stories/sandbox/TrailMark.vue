@@ -44,15 +44,14 @@
       </vgg-data>
     </vgg-section>
     <vgg-symbol-legend
-      :scale="{ domain: 'colors'}"
+      :scale="{ domain: 'rainfall'}"
       :font-size="10"
       :title-font-size="16"
       shape="line"
       :size="15"
-      :stroke="{ ranges: ['red', 'blue', 'green']}"
+      stroke="orange"
       :x=550
       :y=200
-      :tick-count="3"
       :stroke-width=10
       direction="vertical"
       title="Stroke width"

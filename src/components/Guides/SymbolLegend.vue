@@ -226,10 +226,7 @@ export default {
 
     shape: {
       type: [String, Object, Array],
-      default: 'circle',
-      validator: function (value) {
-        return ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-left', 'triangle-right', 'triangle-down', 'star'].indexOf(value) !== -1
-      }
+      default: 'circle'
     },
 
     linecap: {
