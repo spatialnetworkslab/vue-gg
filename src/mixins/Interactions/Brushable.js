@@ -125,10 +125,20 @@ export default {
           let scaleY = y => y
 
           if (this._brush.hasOwnProperty('scaleX')) {
-            scaleX = createScale('x', this.context, this._brush.scaleX).invert
+            let _scaleX = createScale('x', this.context, this._brush.scaleX).invert
+            if (this.transformation.domainTypes.x !== 'quantitative') {
+              scaleX = x => _scaleX(this.transformation.scaleX(x))
+            } else {
+              scaleX = _scaleX
+            }
           }
           if (this._brush.hasOwnProperty('scaleY')) {
-            scaleY = createScale('y', this.context, this._brush.scaleY).invert
+            let _scaleY = createScale('y', this.context, this._brush.scaleY).invert
+            if (this.transformation.domainTypes.y !== 'quantitative') {
+              scaleY = y => _scaleY(this.transformation.scaleY(y))
+            } else {
+              scaleY = _scaleY
+            }
           }
 
           return ([x, y]) => { return [scaleX(x), scaleY(y)] }
@@ -137,7 +147,6 @@ export default {
     },
 
     _localScaledDomainTypes () {
-      console.log('retrigger local scaled domain types...')
       if (this._brush) {
         if (this.scaleGeo) { return { x: 'quantitative', y: 'quantitative' } }
         let localScaledDomainTypes = {}

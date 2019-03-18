@@ -26,6 +26,7 @@ import RepeatLayout from './sandbox/RepeatLayout.vue'
 import SectionAxesTest from './sandbox/SectionAxesTest.vue'
 import BrushTest from './sandbox/BrushTest.vue'
 import MultipleBrushes from './sandbox/MultipleBrushes.vue'
+import NestedBrushing from './sandbox/NestedBrushing.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -55,3 +56,4 @@ storiesOf('Sandbox', module)
   .add('Section axes', () => (SectionAxesTest))
   .add('Brush test', () => (BrushTest))
   .add('Multiple brushes', () => (MultipleBrushes))
+  .add('NestedBrushing', () => (NestedBrushing))

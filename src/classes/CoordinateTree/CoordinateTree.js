@@ -78,11 +78,21 @@ export default class CoordinateTree {
     let transformation = function ([x, y]) {
       let branchPath = this._branchPaths[id]
       let branch = this.getBranch('root')
-      let result = branch.inverseTransform([x, y])
+      let result
+
+      if (branchPath[branchPath.length - 1] !== 'root') {
+        result = branch.inverseTransform([x, y])
+      } else {
+        result = branch.actualInverseTransform([x, y])
+      }
 
       for (let branchID of branchPath) {
         branch = this.getBranch(branchID)
-        result = branch.inverseTransform(result)
+        if (branchPath[branchPath.length - 1] !== branchID) {
+          result = branch.inverseTransform([x, y])
+        } else {
+          result = branch.actualInverseTransform([x, y])
+        }
       }
 
       return result
@@ -109,5 +119,9 @@ class Branch {
     }
 
     this.updateCount += 1
+  }
+
+  hasChildren () {
+    return Object.keys(this.children).length > 0
   }
 }

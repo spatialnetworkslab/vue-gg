@@ -76,18 +76,22 @@ export default class CoordinateTransformation {
     // before we actually use $$transform. This is necessary in a few cases.
     if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
       this.getX = x => x.constructor === Number ? x : this.scaleX(x)
-      this.invertX = x => x.constructor !== Number ? x : this.scaleX.invert(x)
+      this.invertX = x => x.constructor === Number ? x : this.scaleX.invert(x)
+      this.actualInvertX = this.scaleX.invert
     } else {
       this.getX = this.scaleX
       this.invertX = this.scaleX.invert
+      this.actualInvertX = this.invertX
     }
 
     if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
       this.getY = y => y.constructor === Number ? y : this.scaleY(y)
-      this.invertY = y => y.constructor !== Number ? y : this.scaleY.invert(y)
+      this.invertY = y => y.constructor === Number ? y : this.scaleY.invert(y)
+      this.actualInvertY = this.scaleY.invert
     } else {
       this.getY = this.scaleY
       this.invertY = this.scaleY.invert
+      this.actualInvertY = this.invertY
     }
 
     if (options.type === 'scale') {
@@ -97,6 +101,10 @@ export default class CoordinateTransformation {
 
       this.inverseTransform = ([x, y]) => {
         return [this.invertX(x), this.invertY(y)]
+      }
+
+      this.actualInverseTransform = ([x, y]) => {
+        return [this.actualInvertX(x), this.actualInvertY(y)]
       }
     }
 
