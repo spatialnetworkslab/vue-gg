@@ -1,10 +1,17 @@
 ---
-title: Path Mark
+title: Path mark
 ---
 
-# Path Mark
+# Component tag
 
-The standard path mark takes the following props:
+`<vgg-path>`
 
-Prop      | Required | Default   |  Description 
-----------|----------|-----------|----------------------------
+# Description
+
+# Props
+
+# Events
+
+TODO
+
+# Example

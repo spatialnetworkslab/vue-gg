@@ -12,14 +12,17 @@ The Trail mark is used to plot point data with a line connecting all the points,
 
 This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpacity` to manipulate its color and opacity respectively.
 
+# Props
+
 ### Positioning
+
 | Prop   | Required | Types | Default   | Description                                           | Unit(s)           |
 | ------ | -------- | ----- | --------- | ----------------------------------------------------- | ----------------- |
-| x      | depends  | Array | undefined | Array of x-coordiantes for each trail point           | Local coordinates |
+| x      | depends  | Array | undefined | Array of x-coordinates for each trail point           | Local coordinates |
 | y      | depends  | Array | undefined | Array of y-coordinates for each trail point           | Local coordinates |
 | points | depends  | Array | undefined | Array of coordinate pairs [x, y] for each trail point | Local coordinates |
 
-### Aesthetics
+### Other aesthetics
 
 | Prop         | Required | Types           | Default   | Description                                              | Unit(s)                    |
 | ------------ | -------- | --------------- | --------- | -------------------------------------------------------- | -------------------------- |
@@ -27,12 +30,16 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 | fill         | false    | String          | 'black'   | Fill color                                               | Named color, hex, rgb, hsl |
 | fill-opacity | false    | Number          | undefined | Fill opacity                                             | Number between 0 and 1     |
 
-### Other Props
+### Other props
 
 | Prop  | Required | Types   | Default   | Description                                                             | Unit(s) |
 | ----- | -------- | ------- | --------- | ----------------------------------------------------------------------- | ------- |
 | sort  | false    | Boolean | undefined | Points are to be sorted based on their x- or y-values, or left unsorted | Boolean |
 | close | false    | Boolean | false     | If true, start point of trail is also its last point                    | Boolean |
+
+# Events
+
+TODO
 
 # Usage
 
@@ -49,7 +56,6 @@ The `stroke-width` prop sets the stroke width of the `trail` mark at a given poi
 
 ::: v-pre
 ```html
-
 <vgg-map
   v-slot="{ dataframe }"
   unit="dataframe"
@@ -59,7 +65,7 @@ The `stroke-width` prop sets the stroke width of the `trail` mark at a given poi
     :x="{ val: dataframe.time, scale: 'time' }"
     :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
     :stroke-width="{ val: dataframe.width, scale: 'width'}"
-    :fillOpacity="0.4"
+    :fill-opacity="0.4"
     fill="green"
   />
 
@@ -76,9 +82,9 @@ This produces a green trail mark with 0.4 opacity and varying stroke width accor
 <vgg-trail
   :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
   :stroke-width="[1, 5, 5, 3, 4, 2]"
-  fill="orange"
-  :fillOpacity="0.7"
+  :fill-opacity="0.7"
   :sort="'x'"
+  fill="orange"
 />
 ```
 :::

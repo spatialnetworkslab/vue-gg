@@ -39,8 +39,12 @@ These are analogous to the CSS properties of the same names.
 
 | Prop        | Required | Types   | Default   | Description                                                              |
 | ----------- | -------- | ------- | --------- | ------------------------------------------------------------------------ |
-| interpolate | false    | Boolean | undefined | Interpolate between points (when using non-cartesian coordinate systems) | 
+| interpolate | false    | Boolean | undefined | Interpolate between points (when using non-cartesian coordinate systems) |
 | transition  | false    | Number  | 0         | Time taken to animate changes to each line when data changes             |
+
+# Events
+
+TODO
 
 # Usage
 
@@ -50,8 +54,6 @@ There are two main ways of drawing a `vgg-line`: by using `x1`, `y1`, `x2` and `
 or by using `func`. When using the former method, all `x1`, `y1`, `x2` and `y2`
 are required. When using `func`, no other prop is required. See [Example](#example)
 for an example of both.
-
-# Events
 
 # Example
 

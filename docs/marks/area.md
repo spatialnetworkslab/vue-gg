@@ -50,6 +50,17 @@ These are analogous to the CSS properties of the same names.
 | interpolate | false    | Boolean | false   | Interpolate between points (when using non-cartesian coordinate systems) |
 | sort        | false    | String  | 'x'     | Sort points in ascending order in x or y dimension                       |
 
+# Events
+
+| Event     | Description                               |
+| --------- | ----------------------------------------- |
+| click     | Triggered when user clicks on mark        |
+| hover     | Triggered when user hovers over mark      |
+| mouseover | Triggered when user's mouse is above mark |
+| mouseout  | Triggered when user's mouse leaves mark   |
+| select    | Triggered when mark                       | 
+| unselect  |                                           |
+
 # Usage
 
 ### Positioning

@@ -39,6 +39,10 @@ These are analogous to the CSS properties of the same names.
 | ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
 | transition | false    | Number | 0       | Time taken to animate changes to each point when data changes |
 
+# Events
+
+TODO
+
 # Usage
 
 ### Positioning
@@ -46,8 +50,6 @@ These are analogous to the CSS properties of the same names.
 To render the Point mark, you will need to provide the `x` and `y` props.
 These can be of type `Number`, `String` and `Date`, depending what kind of domain type
 the parent Section has.
-
-# Events
 
 # Example
 

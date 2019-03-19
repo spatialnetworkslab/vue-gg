@@ -1,10 +1,19 @@
 ---
-title: Polygon Mark
+title: Polygon mark
 ---
 
-# Polygon Mark
+# Component tag
 
-The standard polygon mark takes the following props:
+`<vgg-polygon>`
 
-Prop      | Required | Default   |  Description 
-----------|----------|-----------|----------------------------
+# Description
+
+# Props
+
+# Events
+
+TODO
+
+# Usage
+
+# Example

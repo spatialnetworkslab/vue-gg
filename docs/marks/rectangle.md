@@ -45,6 +45,10 @@ These are analogous to the CSS properties of the same names.
 | interpolate | false    | Boolean | undefined | Interpolate between points (when using non-cartesian coordinate systems) |
 | transition  | false    | Number  | 0         | Time taken to animate changes to each line when data changes             |
 
+# Events
+
+TODO
+
 # Usage
 
 ### Positioning
@@ -105,7 +109,5 @@ coordinate system will be used. So,
 
 the `:w` value of `100` here is in the coordinate system of the `vgg-graphic`,
 which is the first parent that has a quantitative coordinate system.
-
-# Events
 
 # Example

@@ -44,6 +44,10 @@ These are analogous to the CSS properties of the same names.
 | size        | false    | Number  | 10      | Length and width of the symbol                                           |
 | transition  | false    | Number  | 0       | Time taken to animate changes to each symbol when data changes           |
 
+# Events
+
+TODO
+
 # Usage
 
 ### Positioning
