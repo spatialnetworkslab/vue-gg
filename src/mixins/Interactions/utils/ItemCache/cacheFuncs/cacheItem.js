@@ -71,7 +71,7 @@ const listenerLookup = {
   mouseout: 'mousemove'
 }
 
-const selectEvents = ['select', 'unselect']
+const selectEvents = ['select', 'deselect']
 
 // Creates an object with listeners (click, mousemove) as keys, and arrays of
 // events (click, hover, mouseenter, mouseout...) as values.
