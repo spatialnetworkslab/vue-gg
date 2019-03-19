@@ -16,8 +16,8 @@ The most basic mark in `vue-gg`: the Point.
 
 | Prop | Required | Types                  | Default   | Description                     | Unit(s)           |
 | ---- | -------- | ---------------------- | --------- | ------------------------------- | ----------------- |
-| x    | true     | [Number, String, Date] | undefined | X-coordinate of center of point | Local coordinates |
-| y    | true     | [Number, String, Date] | undefined | Y-coordinate of center of point | Local coordinates |
+| x    | true     | [Number, String, Date] | undefined | x-coordinate of center of point | Local coordinates |
+| y    | true     | [Number, String, Date] | undefined | y-coordinate of center of point | Local coordinates |
 
 ### Other aesthetics
 

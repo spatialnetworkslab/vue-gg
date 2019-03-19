@@ -20,8 +20,8 @@ in a scatterplot with the shape set to `circle`.
 
 | Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
 | ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
-| x    | true     | [Number, String, Date] | undefined | x-coordinates of center of each symbol | Local coordinates |
-| y    | true     | [Number, String, Date] | undefined | y-coordinates of center of each symbol | Local coordinates |
+| x    | true     | [Number, String, Date] | undefined | x-coordinate of center of each symbol | Local coordinates |
+| y    | true     | [Number, String, Date] | undefined | y-coordinate of center of each symbol | Local coordinates |
 
 ### Other aesthetics
 
