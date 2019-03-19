@@ -12,7 +12,7 @@ The Trail mark is used to plot point data with a line connecting all the points,
 
 This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpacity` to manipulate its color and opacity respectively.
 
-# Path Mark
+# Trail Mark
 
 The standard trail mark takes the following props. Note that `x` and `y`, and `points` cannot be inputted simultaneously.
 

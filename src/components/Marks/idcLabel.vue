@@ -97,7 +97,7 @@ export default {
 
     renderSVG (createElement) {
       let aesthetics = this._props
-      let aestheticsOption = {'fill': blue, 'fillOpacity': 0.6}
+      let aestheticsOption = { 'fill': blue, 'fillOpacity': 0.6 }
 
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
 

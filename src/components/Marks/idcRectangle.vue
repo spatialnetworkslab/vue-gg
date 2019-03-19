@@ -5,12 +5,6 @@ import { createPath, interpolatePath } from './utils/createPath.js'
 export default {
   mixins: [Rectangular],
 
-  data () {
-    return {
-      oldStroke: undefined,
-    }
-  },
-
   props: {
     index: {
       type: Number,
@@ -35,20 +29,26 @@ export default {
     }
   },
 
+  data () {
+    return {
+      oldStroke: undefined
+    }
+  },
+
   computed: {
     strokeColor () {
       console.log(this.index, this.selectionIndex, this.index === this.selectionIndex)
       if (this.index && this.selectionIndex && (this.index === this.selectionIndex)) {
-        return "red"
+        return 'red'
       } else {
-        return "none"
+        return 'none'
       }
     },
     strokeWidth () {
       if (this.index && this.selectionIndex && (this.index === this.selectionIndex)) {
-        return "5"
+        return '5'
       } else {
-        return "none"
+        return 'none'
       }
     }
   },

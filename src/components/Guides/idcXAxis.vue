@@ -59,7 +59,7 @@
           :y="flip ? midY + (_tickLength * 1.01) : midY - (_tickLength * 1.01)"
           :stroke="tick.color"
           :size="15"
-          :fillOpacity="1"
+          :fill-opacity="1"
         />
 
         <!-- Tick labels -->
@@ -119,13 +119,10 @@ export default {
       default: -0.1,
       validator: p => (p.constructor === Number) || (['center', 't', 'b'].includes(p))
     },
-    labelColor:{
+    labelColor: {
       type: [String, Array],
       default: 'blue'
     }
-  },
-  mounted() {
-    this.coloredTicks
   },
 
   computed: {
@@ -228,6 +225,9 @@ export default {
     parsedScale () {
       return createScale('x', this.context, this.scalingOptions)
     }
+  },
+  mounted () {
+    this.coloredTicks
   }
 }
 </script>

@@ -180,6 +180,7 @@ export default {
     },
 
     renderSVG (createElement) {
+      console.log(this.points)
       checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
       let aesthetics = this._props
 

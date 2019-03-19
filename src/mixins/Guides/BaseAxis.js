@@ -248,7 +248,6 @@ export default {
     },
 
     context () {
-      console.log('!!!', this.ranges, this.parentBranch, this.$$dataInterface,)
       return {
         ranges: this.ranges,
         parentBranch: this.parentBranch,

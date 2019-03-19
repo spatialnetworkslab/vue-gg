@@ -59,7 +59,7 @@
           :y="tick.value"
           :fill="tick.color"
           :size="12"
-          :fillOpacity="0.7"
+          :fill-opacity="0.7"
         />
 
         <!-- Tick labels -->
@@ -124,20 +124,16 @@ export default {
       validator: p => (p.constructor === Number) || (['center', 't', 'b'].includes(p))
     },
 
-    labelColor:{
+    labelColor: {
       type: [String, Array],
       default: 'blue'
     }
   },
 
-  mounted() {
-    this.coloredTicks
-  },
-
   computed: {
     coloredTicks () {
       let coloredTicks = []
-      for (let i = 0; i < this.generatedTicks.length ; i++) {
+      for (let i = 0; i < this.generatedTicks.length; i++) {
         coloredTicks.push(this.generatedTicks[i])
         coloredTicks[i].color = this.labelColor[i]
       }
@@ -254,6 +250,10 @@ export default {
     parsedScale () {
       return createScale('y', this.context, this.scalingOptions)
     }
+  },
+
+  mounted () {
+    this.coloredTicks
   }
 }
 </script>

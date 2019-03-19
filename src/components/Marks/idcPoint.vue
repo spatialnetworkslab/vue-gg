@@ -4,12 +4,6 @@ import Mark from '../../mixins/Marks/Mark.js'
 export default {
   mixins: [Mark],
 
-  data () {
-    return {
-      oldFill: undefined,
-    }
-  },
-
   props: {
     x: {
       type: [Number, String, Date],
@@ -84,10 +78,16 @@ export default {
     }
   },
 
+  data () {
+    return {
+      oldFill: undefined
+    }
+  },
+
   computed: {
     fillColor () {
       if (this.index && this.selectionIndex && (this.index === this.selectionIndex)) {
-        return "red"
+        return 'red'
       } else {
         return this._props.fill
       }
@@ -119,7 +119,7 @@ export default {
         attrs: {
           'cx': cx,
           'cy': cy,
-          'r': aesthetics.radius,
+          'r': aesthetics.radius
         },
         on: {
           click: clickHandler(this),
