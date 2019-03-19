@@ -1,5 +1,5 @@
 ---
-title: Area Mark
+title: Area mark
 ---
 
 # Component tag
