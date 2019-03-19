@@ -16,9 +16,9 @@
       :y2="500"
       :scale-x="'date'"
       :scale-y="[0, 100]"
-      :brush="'rectangle'"
-      @brushup="log($event)"
-      @updateBrushPoints="brushPoints = $event"
+      :select="'rectangle'"
+      :selection-bounds.sync="selectionBounds"
+      @selectionDone="log($event)"
     >
 
       <vgg-map v-slot="{ row, i }">
@@ -47,8 +47,8 @@
     </vgg-section>
 
     <vgg-polygon
-      v-if="brushPoints.length > 1"
-      :points="brushPoints"
+      v-if="selectionBounds.length > 1"
+      :points="selectionBounds"
       :fill="'green'"
       :opacity="0.3"
     />
@@ -70,9 +70,9 @@
       :y2="500"
       :scale-x="'a'"
       :scale-y="'b'"
-      :brush="'rectangle'"
-      @brushup="log($event)"
-      @updateBrushPoints="brushPoints = $event"
+      :select="'rectangle'"
+      :selection-bounds.sync="selectionBounds"
+      @selectionDone="log($event)"
     >
 
       <vgg-map v-slot="{ row, i }">
@@ -101,8 +101,8 @@
     </vgg-section>
 
     <vgg-polygon
-      v-if="brushPoints.length > 1"
-      :points="brushPoints"
+      v-if="selectionBounds.length > 1"
+      :points="selectionBounds"
       :fill="'green'"
       :opacity="0.3"
     />
@@ -114,7 +114,7 @@
 export default {
   data () {
     return {
-      brushPoints: []
+      selectionBounds: []
     }
   },
 

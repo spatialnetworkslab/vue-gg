@@ -4,7 +4,7 @@ import DataProvider from '../../mixins/Data/DataProvider.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import Brushable from '../../mixins/Interactions/Brushable.js'
+import SelectionManager from '../../mixins/Interactions/SelectionManager.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
 
@@ -18,7 +18,7 @@ import XGrid from '../Guides/XGrid.vue'
 import YGrid from '../Guides/YGrid.vue'
 
 export default {
-  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular, Brushable],
+  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular, SelectionManager],
 
   props: {
     type: {
@@ -70,7 +70,7 @@ export default {
   data () {
     return {
       ready: false,
-      props: createPropCache(this, ['scaleX', 'scaleY', 'scaleGeo', 'axes', 'gridLines', 'brush'])
+      props: createPropCache(this, ['scaleX', 'scaleY', 'scaleGeo', 'axes', 'gridLines', 'select'])
     }
   },
 

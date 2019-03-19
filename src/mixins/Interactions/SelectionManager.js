@@ -8,12 +8,12 @@ export default {
   inject: ['$$interactionManager', '$$sectionParentChain'],
 
   props: {
-    brush: {
+    select: {
       type: [String, Object, undefined],
       default: undefined
     },
 
-    brushPoints: {
+    selectionBounds: {
       type: [Array, undefined],
       default: undefined
     }
@@ -21,7 +21,7 @@ export default {
 
   data () {
     return {
-      brushManager: {
+      selectionManager: {
         selection: {},
 
         rectangle: {
@@ -64,16 +64,12 @@ export default {
   },
 
   computed: {
-    _brush () {
-      if (this.props.brush) {
-        if (this.props.brush.constructor === String) {
-          return { type: this.props.brush, resetOnRelease: true }
+    _select () {
+      if (this.props.select) {
+        if (this.props.select.constructor === String) {
+          return { type: this.props.select }
         } else {
-          if (!this.props.brush.hasOwnProperty('resetOnRelease')) {
-            let brush = { ...this.props.brush, resetOnRelease: true }
-            return brush
-          }
-          return this.props.brush
+          return this.props.select
         }
       }
     },
@@ -119,32 +115,32 @@ export default {
     },
 
     _localScaledTransform () {
-      if (this._brush) {
-        if (this._brush.hasOwnProperty('scaleGeo')) {
-          if (this._brush.hasOwnProperty('scaleX') || this._brush.hasOwnProperty('scaleY')) {
+      if (this._select) {
+        if (this._select.hasOwnProperty('scaleGeo')) {
+          if (this._select.hasOwnProperty('scaleX') || this._select.hasOwnProperty('scaleY')) {
             throw new Error(`Cannot set 'scaleX' or 'scaleY' when 'scaleGeo' is defined`)
           }
           if (!this.$$dataInterface.hasColumn('geometry')) {
             throw new Error(`'scale-geo' is only allowed when data has geometry column`)
           }
 
-          let { scaleX, scaleY } = createGeoScale(this.context, this._brush.scaleGeo)
+          let { scaleX, scaleY } = createGeoScale(this.context, this._select.scaleGeo)
 
           return ([x, y]) => { return [scaleX.invert(x), scaleY.invert(y)] }
         } else {
           let scaleX = x => x
           let scaleY = y => y
 
-          if (this._brush.hasOwnProperty('scaleX')) {
-            let _scaleX = createScale('x', this.context, this._brush.scaleX).invert
+          if (this._select.hasOwnProperty('scaleX')) {
+            let _scaleX = createScale('x', this.context, this._select.scaleX).invert
             if (this.transformation.domainTypes.x !== 'quantitative') {
               scaleX = x => _scaleX(this.transformation.scaleX(x))
             } else {
               scaleX = _scaleX
             }
           }
-          if (this._brush.hasOwnProperty('scaleY')) {
-            let _scaleY = createScale('y', this.context, this._brush.scaleY).invert
+          if (this._select.hasOwnProperty('scaleY')) {
+            let _scaleY = createScale('y', this.context, this._select.scaleY).invert
             if (this.transformation.domainTypes.y !== 'quantitative') {
               scaleY = y => _scaleY(this.transformation.scaleY(y))
             } else {
@@ -158,18 +154,18 @@ export default {
     },
 
     _localScaledDomainTypes () {
-      if (this._brush) {
+      if (this._select) {
         if (this.props.scaleGeo) { return { x: 'quantitative', y: 'quantitative' } }
         let localScaledDomainTypes = {}
 
-        if (this._brush.hasOwnProperty('scaleX')) {
+        if (this._select.hasOwnProperty('scaleX')) {
           localScaledDomainTypes.x = parseScaleOptions(
-            this._brush.scaleX, this.$$dataInterface, this.$$scaleManager
+            this._select.scaleX, this.$$dataInterface, this.$$scaleManager
           )[1]
         } else { localScaledDomainTypes.x = this.transformation.domainTypes.x }
-        if (this._brush.hasOwnProperty('scaleY')) {
+        if (this._select.hasOwnProperty('scaleY')) {
           localScaledDomainTypes.y = parseScaleOptions(
-            this._brush.scaleY, this.$$dataInterface, this.$$scaleManager
+            this._select.scaleY, this.$$dataInterface, this.$$scaleManager
           )[1]
         } else { localScaledDomainTypes.y = this.transformation.domainTypes.y }
 
@@ -183,20 +179,20 @@ export default {
   },
 
   watch: {
-    _brush: 'updateInteractionManager'
+    _select: 'updateInteractionManager'
   },
 
   mounted () {
     this.$nextTick(() => {
-      if (this._brush && !this.axes) {
-        this.updateInteractionManager(this._brush)
+      if (this._select && !this.axes) {
+        this.updateInteractionManager(this._select)
       }
     })
   },
 
   beforeDestroy () {
-    if (this._brush && !this.axes) {
-      this.$$interactionManager.removeBrush(this.uuid)
+    if (this._select && !this.axes) {
+      this.$$interactionManager.removeSelectionTool(this.uuid)
     }
   },
 
@@ -204,19 +200,19 @@ export default {
     updateInteractionManager (newVal, oldVal) {
       if (oldVal === undefined && newVal !== undefined) {
         let handlers = this.generateHandlers()
-        this.$$interactionManager.addBrush(this.uuid, handlers)
+        this.$$interactionManager.addSelectionTool(this.uuid, handlers)
       }
 
       if (oldVal !== undefined && newVal === undefined) {
-        this.$$interactionManager.removeBrush(this.uuid)
+        this.$$interactionManager.removeSelectionTool(this.uuid)
       }
     },
 
     generateHandlers () {
-      let brush = this._brush
+      let select = this._select
       let events
 
-      if (brush) {
+      if (select) {
         events = {}
         events.mousedown = this._onMouseDown.bind(this)
         events.mousemove = this._onMouseMove.bind(this)
@@ -228,22 +224,22 @@ export default {
 
     _onMouseDown ({ x, y }, e) {
       if (this._inBBox([x, y], this._sectionBBox)) {
-        let type = this._brush.type
-        let brush
+        let type = this._select.type
+        let selectionTool
 
         if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
           if (type === 'swipeX') { y = this._sectionBBox.minY }
           if (type === 'swipeY') { x = this._sectionBBox.minX }
-          brush = this.brushManager.rectangle
+          selectionTool = this.selectionManager.rectangle
         }
 
         if (type === 'polygon') {
-          brush = this.brushManager.polygon
+          selectionTool = this.selectionManager.polygon
         }
 
         let localCoords = this._getLocalCoords(x, y)
         let transformedCoords = this._localScaledTransform(localCoords)
-        let selection = this.brushManager.selection
+        let selection = this.selectionManager.selection
 
         // Empty current selection
         for (let uid in selection) {
@@ -251,35 +247,35 @@ export default {
           delete selection[uid]
         }
 
-        brush.screen.start = [x, y]
-        brush.local.start = localCoords
-        brush.scaled.start = transformedCoords
+        selectionTool.screen.start = [x, y]
+        selectionTool.local.start = localCoords
+        selectionTool.scaled.start = transformedCoords
 
         if (type === 'polygon') {
-          brush.screen.points = [[x, y]]
-          brush.local.points = [localCoords]
-          brush.scaled.points = [transformedCoords]
+          selectionTool.screen.points = [[x, y]]
+          selectionTool.local.points = [localCoords]
+          selectionTool.scaled.points = [transformedCoords]
         }
       }
     },
 
     _onMouseMove ({ x, y }, e) {
-      let type = this._brush.type
+      let type = this._select.type
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        let brush = this.brushManager.rectangle
-        if (brush.screen.start) {
+        let selectionTool = this.selectionManager.rectangle
+        if (selectionTool.screen.start) {
           if (type === 'swipeX') { y = this._sectionBBox.maxY }
           if (type === 'swipeY') { x = this._sectionBBox.maxX }
 
           let localCoords = this._getLocalCoords(x, y)
           let transformedCoords = this._localScaledTransform(localCoords)
 
-          brush.screen.current = [x, y]
-          brush.local.current = localCoords
-          brush.scaled.current = transformedCoords
+          selectionTool.screen.current = [x, y]
+          selectionTool.local.current = localCoords
+          selectionTool.scaled.current = transformedCoords
 
-          this._syncBrushPoints()
+          this._syncSelectionBounds()
 
           if (this._anySelectables) {
             this._updateSelection()
@@ -288,15 +284,15 @@ export default {
       }
 
       if (type === 'polygon') {
-        let brush = this.brushManager.polygon
-        if (brush.screen.start) {
+        let selectionTool = this.selectionManager.polygon
+        if (selectionTool.screen.start) {
           let localCoords = this._getLocalCoords(x, y)
           let transformedCoords = this._localScaledTransform(localCoords)
 
-          brush.screen.points.push([x, y])
-          brush.local.points.push(localCoords)
-          brush.local.points.push(transformedCoords)
-          this._syncBrushPoints()
+          selectionTool.screen.points.push([x, y])
+          selectionTool.local.points.push(localCoords)
+          selectionTool.local.points.push(transformedCoords)
+          this._syncSelectionBounds()
 
           if (this._anySelectables) {
             this._updateSelection()
@@ -306,25 +302,25 @@ export default {
     },
 
     _onMouseUp ({ x, y }, e) {
-      let type = this._brush.type
-      let brush
+      let type = this._select.type
+      let selectionTool
       let localCoords = this._getLocalCoords(x, y)
       let transformedCoords = this._localScaledTransform(localCoords)
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        brush = this.brushManager.rectangle
+        selectionTool = this.selectionManager.rectangle
       }
 
       if (type === 'polygon') {
-        brush = this.brushManager.polygon
+        selectionTool = this.selectionManager.polygon
       }
 
-      brush.screen.end = [x, y]
-      brush.local.end = localCoords
-      brush.scaled.end = transformedCoords
+      selectionTool.screen.end = [x, y]
+      selectionTool.local.end = localCoords
+      selectionTool.scaled.end = transformedCoords
 
-      this._emitBrushUpEvent()
-      this._syncBrushPoints()
+      this._emitSelectionDoneEvent()
+      this._syncSelectionBounds()
       this._resetEverything()
     },
 
@@ -332,47 +328,49 @@ export default {
       return this.$$inverseTransform([x, y])
     },
 
-    _syncBrushPoints () {
-      let type = this._brush.type
+    _syncSelectionBounds () {
+      let type = this._select.type
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        let start = this.brushManager.rectangle.screen.start
-        let current = this.brushManager.rectangle.screen.current
-        let end = this.brushManager.rectangle.screen.end
+        let start = this.selectionManager.rectangle.screen.start
+        let current = this.selectionManager.rectangle.screen.current
+        let end = this.selectionManager.rectangle.screen.end
 
         if (!end) {
-          let points = this._getBrushPoints(start, current)
-          this.$emit('update:brushPoints', points)
+          let points = this._getSelectionBounds(start, current)
+          this.$emit('update:selectionBounds', points)
         }
 
-        if (end && this._brush.resetOnRelease) {
-          this.$emit('update:brushPoints', [])
+        if (end) {
+          this.$emit('update:selectionBounds', [])
         }
       }
 
       if (type === 'polygon') {
-        let start = this.brushManager.polygon.screen.start
-        let points = this.brushManager.polygon.screen.points
-        let end = this.brushManager.polygon.screen.end
+        let start = this.selectionManager.polygon.screen.start
+        let selectionPoints = this.selectionManager.polygon.screen.points
+        let end = this.selectionManager.polygon.screen.end
 
         if (!end) {
-          points = this._getBrushPoints(start, points)
-        } else {
-          points = []
+          let points = this._getSelectionBounds(start, selectionPoints)
+          this.$emit('update:selectionBounds', points)
         }
 
-        this.$emit('update:brushPoints', points)
+        if (end) {
+          let points = []
+          this.$emit('update:selectionBounds', points)
+        }
       }
     },
 
-    _emitBrushUpEvent () {
-      let type = this._brush.type
+    _emitSelectionDoneEvent () {
+      let type = this._select.type
       let notPolar = this.type !== 'polar'
 
       if (notPolar && ['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        let screen = this.brushManager.rectangle.screen
-        let local = this.brushManager.rectangle.local
-        let scaled = this.brushManager.rectangle.scaled
+        let screen = this.selectionManager.rectangle.screen
+        let local = this.selectionManager.rectangle.local
+        let scaled = this.selectionManager.rectangle.scaled
 
         let localDomainTypes = this.transformation.domainTypes
         let scaledDomainTypes = this._localScaledDomainTypes
@@ -381,17 +379,17 @@ export default {
         let bboxLocal = this._getBBox(local.start, local.end, localDomainTypes)
         let bboxScaled = this._getBBox(scaled.start, scaled.end, scaledDomainTypes)
 
-        this.$emit('brushup', { bboxScreen, bboxLocal, bboxScaled })
+        this.$emit('selectionDone', { bboxScreen, bboxLocal, bboxScaled })
       }
     },
 
     _updateSelection () {
-      let type = this._brush.type
-
+      let type = this._select.type
       let sectionChain = JSON.stringify(this.sectionParentChain)
+
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        let start = this.brushManager.rectangle.screen.start
-        let current = this.brushManager.rectangle.screen.current
+        let start = this.selectionManager.rectangle.screen.start
+        let current = this.selectionManager.rectangle.screen.current
 
         let bbox = this._getBBox(start, current)
 
@@ -403,23 +401,23 @@ export default {
             let uid = hit.uid
             currentSelection[uid] = true
 
-            if (!this.brushManager.selection[uid]) {
-              this.brushManager.selection[uid] = hit
+            if (!this.selectionManager.selection[uid]) {
+              this.selectionManager.selection[uid] = hit
               hit.instance.$emit('select')
             }
           }
         }
 
-        for (let uid in this.brushManager.selection) {
+        for (let uid in this.selectionManager.selection) {
           if (!currentSelection[uid]) {
-            this.brushManager.selection[uid].instance.$emit('deselect')
-            delete this.brushManager.selection[uid]
+            this.selectionManager.selection[uid].instance.$emit('deselect')
+            delete this.selectionManager.selection[uid]
           }
         }
       }
 
       if (type === 'polygon') {
-        let points = this.brushManager.polygon.screen.points
+        let points = this.selectionManager.polygon.screen.points
         let len = points.length
         if (len > 2) {
           let triangle = [
@@ -439,12 +437,12 @@ export default {
               let uid = hit.uid
               currentSelection[uid] = true
 
-              if (!this.brushManager.selection[uid]) {
-                this.brushManager.selection[uid] = hit
+              if (!this.selectionManager.selection[uid]) {
+                this.selectionManager.selection[uid] = hit
                 hit.instance.$emit('select')
               } else {
-                this.brushManager.selection[uid].instance.$emit('deselect')
-                delete this.brushManager.selection[uid]
+                this.selectionManager.selection[uid].instance.$emit('deselect')
+                delete this.selectionManager.selection[uid]
               }
             }
           }
@@ -505,9 +503,9 @@ export default {
       }
     },
 
-    _getBrushPoints (a, b) {
+    _getSelectionBounds (a, b) {
       if (a && b) {
-        let type = this._brush.type
+        let type = this._select.type
         let rootTransform = this.$$coordinateTree.getBranch('root').inverseTransform
 
         if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
@@ -528,25 +526,25 @@ export default {
     },
 
     _resetEverything () {
-      let type = this._brush.type
-      let brush
+      let type = this._select.type
+      let selectionTool
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
-        brush = this.brushManager.rectangle
+        selectionTool = this.selectionManager.rectangle
       }
 
       if (type === 'polygon') {
-        brush = this.brushManager.polygon
+        selectionTool = this.selectionManager.polygon
       }
 
-      for (let key in brush.screen) {
-        brush.screen[key] = null
+      for (let key in selectionTool.screen) {
+        selectionTool.screen[key] = null
       }
-      for (let key in brush.local) {
-        brush.local[key] = null
+      for (let key in selectionTool.local) {
+        selectionTool.local[key] = null
       }
-      for (let key in brush.scaled) {
-        brush.scaled[key] = null
+      for (let key in selectionTool.scaled) {
+        selectionTool.scaled[key] = null
       }
     },
 

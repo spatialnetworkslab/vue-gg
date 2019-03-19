@@ -12,8 +12,8 @@
         :y2="450"
         :scale-x="'a'"
         :scale-y="'b'"
-        :brush="'rectangle'"
-        :brush-points.sync="leftBrushPoints"
+        :select="'rectangle'"
+        :selection-bounds.sync="leftSelectionBounds"
       >
 
         <vgg-map v-slot="{ row, i }">
@@ -38,8 +38,8 @@
         :y2="450"
         :scale-x="'c'"
         :scale-y="'d'"
-        :brush="'rectangle'"
-        :brush-points.sync="rightBrushPoints"
+        :select="'rectangle'"
+        :selection-bounds.sync="rightSelectionBounds"
       >
 
         <vgg-map v-slot="{ row, i }">
@@ -56,17 +56,17 @@
       </vgg-section>
     </vgg-data>
 
-    <!-- Brushes -->
+    <!-- Selection tools -->
     <vgg-polygon
-      v-if="leftBrushPoints.length > 1"
-      :points="leftBrushPoints"
+      v-if="leftSelectionBounds.length > 1"
+      :points="leftSelectionBounds"
       :fill="'red'"
       :opacity="0.3"
     />
 
     <vgg-polygon
-      v-if="rightBrushPoints.length > 1"
-      :points="rightBrushPoints"
+      v-if="rightSelectionBounds.length > 1"
+      :points="rightSelectionBounds"
       :fill="'blue'"
       :opacity="0.3"
     />
@@ -82,8 +82,8 @@ export default {
       left: xy('a', 'b'),
       right: xy('c', 'd'),
 
-      leftBrushPoints: [],
-      rightBrushPoints: []
+      leftSelectionBounds: [],
+      rightSelectionBounds: []
     }
   },
 

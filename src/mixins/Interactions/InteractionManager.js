@@ -11,7 +11,6 @@ export default {
   data () {
     return {
       interactionManager: Object.freeze({
-        // This object contains one spatial index per listener
         listenerTrackers: {
           click: {
             spatialIndex: rbush(),
@@ -30,8 +29,8 @@ export default {
             hoverItems: 0,
 
             selectableSpatialIndex: rbush(),
-            trackedBrushes: 0,
-            brushHandlers: {},
+            trackedSelectors: 0,
+            selectorHandlers: {},
             trackedSelectables: 0,
 
             handler: this._handleMouseMoveListener
@@ -39,16 +38,16 @@ export default {
 
           mousedown: {
             active: false,
-            trackedBrushes: 0,
-            brushHandlers: {},
+            trackedSelectors: 0,
+            selectorHandlers: {},
 
             handler: this._handleMouseDownListener
           },
 
           mouseup: {
             active: false,
-            trackedBrushes: 0,
-            brushHandlers: {},
+            trackedSelectors: 0,
+            selectorHandlers: {},
 
             handler: this._handleMouseUpListener
           }
@@ -61,7 +60,7 @@ export default {
 
         // We use a separate one for selectables, because of different indexing
         // requirements (for selection, you only need to index the centroid of a polygon,
-        // for example). These are mostly handled in the appropriate Brushable mixin.
+        // for example). This are mostly handled in the appropriate SelectionManager mixin.
         selectableCache: new ItemCache()
       })
     }
@@ -94,21 +93,21 @@ export default {
       this._removeItem(uid)
     },
 
-    addBrush (uid, handlers) {
+    addSelectionTool (uid, handlers) {
       for (let listener of ['mousedown', 'mousemove', 'mouseup']) {
         let listenerTracker = this.interactionManager.listenerTrackers[listener]
-        listenerTracker.trackedBrushes++
-        listenerTracker.brushHandlers[uid] = handlers[listener]
+        listenerTracker.trackedSelectors++
+        listenerTracker.selectorHandlers[uid] = handlers[listener]
       }
 
       this._updateListeners()
     },
 
-    removeBrush (uid) {
+    removeSelectionTool (uid) {
       for (let listener of ['mousedown', 'mousemove', 'mouseup']) {
         let listenerTracker = this.interactionManager.listenerTrackers[listener]
-        listenerTracker.trackedBrushes--
-        delete listenerTracker.brushHandlers[uid]
+        listenerTracker.trackedSelectors--
+        delete listenerTracker.selectorHandlers[uid]
       }
 
       this._updateListeners()
@@ -140,10 +139,10 @@ export default {
         let listenerTracker = this.interactionManager.listenerTrackers[listener]
 
         let trackedItems = listenerTracker.trackedItems || 0
-        let trackedBrushes = listenerTracker.trackedBrushes || 0
+        let trackedSelectors = listenerTracker.trackedSelectors || 0
         let trackedSelectables = listenerTracker.trackedSelectables || 0
 
-        if (trackedItems === 0 && trackedBrushes === 0 && trackedSelectables === 0) {
+        if (trackedItems === 0 && trackedSelectors === 0 && trackedSelectables === 0) {
           let handler = listenerTracker.handler.bind(this)
           listenerTracker.active = false
           this.svg.removeEventListener(listener, handler)
@@ -181,9 +180,9 @@ export default {
         this._handleMouseMoveMarks(coords, e)
       }
 
-      if (listenerTracker.trackedBrushes !== 0) {
-        for (let sectionID in listenerTracker.brushHandlers) {
-          let handler = listenerTracker.brushHandlers[sectionID]
+      if (listenerTracker.trackedSelectors !== 0) {
+        for (let sectionID in listenerTracker.selectorHandlers) {
+          let handler = listenerTracker.selectorHandlers[sectionID]
           handler(coords, e)
         }
       }
@@ -245,8 +244,8 @@ export default {
       let coords = getCoords(this.svg, this.svgPoint, e)
       let listenerTracker = this.interactionManager.listenerTrackers['mousedown']
 
-      for (let sectionID in listenerTracker.brushHandlers) {
-        let handler = listenerTracker.brushHandlers[sectionID]
+      for (let sectionID in listenerTracker.selectorHandlers) {
+        let handler = listenerTracker.selectorHandlers[sectionID]
         handler(coords, e)
       }
     },
@@ -255,8 +254,8 @@ export default {
       let coords = getCoords(this.svg, this.svgPoint, e)
       let listenerTracker = this.interactionManager.listenerTrackers['mouseup']
 
-      for (let sectionID in listenerTracker.brushHandlers) {
-        let handler = listenerTracker.brushHandlers[sectionID]
+      for (let sectionID in listenerTracker.selectorHandlers) {
+        let handler = listenerTracker.selectorHandlers[sectionID]
         handler(coords, e)
       }
     }

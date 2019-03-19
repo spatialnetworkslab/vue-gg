@@ -14,8 +14,8 @@
       :y2="500"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
-      :brush="'rectangle'"
-      @brushup="log($event)"
+      :select="'rectangle'"
+      @selectionDone="log($event)"
     >
 
       <vgg-plot-title

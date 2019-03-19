@@ -17,8 +17,8 @@
       :y1="100"
       :y2="500"
       :scale-geo="{}"
-      :brush="'polygon'"
-      :brush-points.sync="brushPoints"
+      :select="'polygon'"
+      :selection-bounds.sync="selectionBounds"
     >
 
       <vgg-map v-slot="{ row, i }">
@@ -35,8 +35,8 @@
     </vgg-section>
 
     <vgg-polygon
-      v-if="brushPoints.length > 1"
-      :points="brushPoints"
+      v-if="selectionBounds.length > 1"
+      :points="selectionBounds"
       :fill="'red'"
       :opacity="0.6"
     />
@@ -55,7 +55,7 @@ export default {
   data () {
     return {
       data: {},
-      brushPoints: [],
+      selectionBounds: [],
       selected: {}
     }
   },

@@ -11,11 +11,11 @@
       :y2="450"
       :scale-x="['a', 'b', 'c', 'd', 'e']"
       :scale-y="[0, 100]"
-      :brush="{
+      :select="{
         type: 'rectangle',
         scaleX: [0, 5]
       }"
-      @brushup="log($event)"
+      @selectionDone="log($event)"
     >
 
       <vgg-section

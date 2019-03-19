@@ -17,13 +17,13 @@
           left: { scale: 'b' },
           bottom: { scale: 'a' }
         }"
-        :brush="{
+        :select="{
           type: 'rectangle',
           scaleX: 'a',
           scaleY: 'b'
         }"
-        :brush-points.sync="brushPoints"
-        @brushup="log($event)"
+        :selection-bounds.sync="selectionBounds"
+        @selectionDone="log($event)"
       >
 
         <vgg-rectangle
@@ -48,8 +48,8 @@
       </vgg-section>
 
       <vgg-polygon
-        v-if="brushPoints.length > 1"
-        :points="brushPoints"
+        v-if="selectionBounds.length > 1"
+        :points="selectionBounds"
         :fill="'red'"
         :opacity="0.6"
       />
@@ -62,7 +62,7 @@
 export default {
   data () {
     return {
-      brushPoints: [],
+      selectionBounds: [],
       selectedPoints: {},
 
       data: {
