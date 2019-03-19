@@ -22,7 +22,7 @@
           scaleX: 'a',
           scaleY: 'b'
         }"
-        @updateBrushPoints="brushPoints = $event"
+        :brush-points.sync="brushPoints"
         @brushup="log($event)"
       >
 

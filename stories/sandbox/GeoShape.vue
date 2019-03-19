@@ -18,7 +18,7 @@
       :y2="500"
       :scale-geo="{}"
       :brush="'polygon'"
-      @updateBrushPoints="brushPoints = $event"
+      :brush-points.sync="brushPoints"
     >
 
       <vgg-map v-slot="{ row, i }">

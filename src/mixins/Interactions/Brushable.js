@@ -11,6 +11,11 @@ export default {
     brush: {
       type: [String, Object, undefined],
       default: undefined
+    },
+
+    brushPoints: {
+      type: [Array, undefined],
+      default: undefined
     }
   },
 
@@ -60,10 +65,16 @@ export default {
 
   computed: {
     _brush () {
-      if (this.props.brush && this.props.brush.constructor === String) {
-        return { type: this.props.brush }
-      } else {
-        return this.props.brush
+      if (this.props.brush) {
+        if (this.props.brush.constructor === String) {
+          return { type: this.props.brush, resetOnRelease: true }
+        } else {
+          if (!this.props.brush.hasOwnProperty('resetOnRelease')) {
+            let brush = { ...this.props.brush, resetOnRelease: true }
+            return brush
+          }
+          return this.props.brush
+        }
       }
     },
 
@@ -322,7 +333,6 @@ export default {
     },
 
     _syncBrushPoints () {
-      let points = []
       let type = this._brush.type
 
       if (['rectangle', 'swipeX', 'swipeY'].includes(type)) {
@@ -331,10 +341,13 @@ export default {
         let end = this.brushManager.rectangle.screen.end
 
         if (!end) {
-          points = this._getBrushPoints(start, current)
+          let points = this._getBrushPoints(start, current)
+          this.$emit('update:brushPoints', points)
         }
 
-        this.$emit('updateBrushPoints', points)
+        if (end && this._brush.resetOnRelease) {
+          this.$emit('update:brushPoints', [])
+        }
       }
 
       if (type === 'polygon') {
@@ -348,7 +361,7 @@ export default {
           points = []
         }
 
-        this.$emit('updateBrushPoints', points)
+        this.$emit('update:brushPoints', points)
       }
     },
 

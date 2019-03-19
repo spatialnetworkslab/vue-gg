@@ -391,7 +391,7 @@ export default {
       if (!this._axes) {
         let slotContent = this.getSlotContent()
 
-        if (this.gridLines) {
+        if (this.props.gridLines) {
           let gridLines = this.createGridLines(createElement)
           slotContent.push(...gridLines)
         }
