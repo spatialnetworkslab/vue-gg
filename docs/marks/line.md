@@ -37,9 +37,10 @@ These are analogous to the CSS properties of the same names.
 
 ### Other props
 
-| Prop       | Required | Types  | Default | Description                                                   |
-| ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
-| transition | false    | Number | 0       | Time taken to animate changes to each line when data changes  |
+| Prop        | Required | Types   | Default   | Description                                                              |
+| ----------- | -------- | ------- | --------- | ------------------------------------------------------------------------ |
+| interpolate | false    | Boolean | undefined | Interpolate between points (when using non-cartesian coordinate systems) | 
+| transition  | false    | Number  | 0         | Time taken to animate changes to each line when data changes             |
 
 # Usage
 

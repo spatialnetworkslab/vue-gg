@@ -12,38 +12,34 @@ The Trail mark is used to plot point data with a line connecting all the points,
 
 This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpacity` to manipulate its color and opacity respectively.
 
-# Path Mark
-
-The standard trail mark takes the following props. Note that `x` and `y`, and `points` cannot be inputted simultaneously.
-
 ### Positioning
-| Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
-| ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
-| x    | true     | [Number, String, Date] | undefined | x-coordinates of center of each symbol | Local coordinates |
-| y    | true     | [Number, String, Date] | undefined | y-coordinates of center of each symbol | Local coordinates |
-| points    | true     | [Number, String, Date] | undefined | Array of coordinate pairs [x, y] referring to each point |
+| Prop   | Required | Types | Default   | Description                                           | Unit(s)           |
+| ------ | -------- | ----- | --------- | ----------------------------------------------------- | ----------------- |
+| x      | depends  | Array | undefined | Array of x-coordiantes for each trail point           | Local coordinates |
+| y      | depends  | Array | undefined | Array of y-coordinates for each trail point           | Local coordinates |
+| points | depends  | Array | undefined | Array of coordinate pairs [x, y] for each trail point | Local coordinates |
 
 ### Aesthetics
 
-| Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
-| ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
-| stroke-width   | false    | [Number, Array] | undefined | Stroke width in screen pixel of `trail` at the given point   | Screen pixel               |
-| fill           | false    | String | 'black'   | Fill color     | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number | undefined | Fill opacity   | Number between 0 and 1     |
+| Prop         | Required | Types           | Default   | Description                                              | Unit(s)                    |
+| ------------ | -------- | --------------- | --------- | -------------------------------------------------------- | -------------------------- |
+| stroke-width | false    | [Number, Array] | undefined | Stroke width in screen pixel of trail at the given point | Screen pixel               |
+| fill         | false    | String          | 'black'   | Fill color                                               | Named color, hex, rgb, hsl |
+| fill-opacity | false    | Number          | undefined | Fill opacity                                             | Number between 0 and 1     |
 
 ### Other Props
 
-| Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
-| ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
-| sort   | false    | Boolean | undefined | Points are to be sorted based on their x- or y-values, or left unsorted   | Boolean               |
-| close   | false    | Boolean | false | If true, start point of trail is also its last point   | Boolean               |
+| Prop  | Required | Types   | Default   | Description                                                             | Unit(s) |
+| ----- | -------- | ------- | --------- | ----------------------------------------------------------------------- | ------- |
+| sort  | false    | Boolean | undefined | Points are to be sorted based on their x- or y-values, or left unsorted | Boolean |
+| close | false    | Boolean | false     | If true, start point of trail is also its last point                    | Boolean |
 
 # Usage
 
 ### Positioning
 
-To render the Trail mark, you will need to provide the `x` and `y` props.
-These can be of type `Number`, `String` and `Date`, depending what kind of domain type the parent Section has.
+The Trail mark can be positioned in two ways: by providing both the `x` and `y` props,
+or by providing the `points` prop. These two ways are mutually exclusive.
 
 ### Other Props
 

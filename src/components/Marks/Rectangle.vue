@@ -38,6 +38,11 @@ export default {
     fillOpacity: {
       type: [Number, undefined],
       default: undefined
+    },
+
+    transition: {
+      type: Number,
+      default: 0
     }
   },
 

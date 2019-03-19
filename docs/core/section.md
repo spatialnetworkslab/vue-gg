@@ -34,7 +34,7 @@ All of these will be discussed below, under [Usage](#usage).
 | h    | depends  | Number                 | undefined | Height               | Local coordinates |
 
 Positioning the Section component works exactly the same way as positioning the
-Rectangle mark. See the [documentation for the Rectangle mark](../marks/rectangle.md)
+Rectangle mark. See the [documentation for the Rectangle mark](../marks/rectangle.md#usage)
 for an in-depth explanation.
 
 ### Other props
