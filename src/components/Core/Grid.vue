@@ -30,12 +30,20 @@ export default {
     }
   },
 
-  computed: {
-    children () {
-      let children = this.$slots.default
+  methods: {
+    getSlotContent () {
+      if (this.$scopedSlots.default) {
+        return this.$scopedSlots.default()
+      } else if (this.$slots.default) {
+        return this.$slots.default
+      } else {
+        return []
+      }
+    },
 
+    children (slotContent) {
       // Filter out undefined components (whitespace, v-if="false")
-      let definedChildren = children.filter(c => c.tag !== undefined)
+      let definedChildren = slotContent.filter(c => c.tag !== undefined)
 
       let wrongUseError = new Error(`'vgg-grid' can have in its slot:
         1. any number of 'vgg-section' components
@@ -58,7 +66,8 @@ export default {
   },
 
   provide () {
-    let [, childType] = this.children
+    let slotContent = this.getSlotContent()
+    let [, childType] = this.children(slotContent)
     if (childType === 'map') {
       let $$grid = this._props
       return { $$grid }
@@ -69,7 +78,8 @@ export default {
     let options = this._props
     validateGridOptions(options)
 
-    let [children, childType] = this.children
+    let slotContent = this.getSlotContent()
+    let [children, childType] = this.children(slotContent)
 
     if (childType === 'section') {
       let sections = children
