@@ -56,6 +56,38 @@
         "prop0": "value0",
         "prop1": "value1"
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              102.5,
+              0.5
+            ],
+            [
+              103.0,
+              0.75
+            ]
+          ],
+          [
+            [
+              103.5,
+              0.5
+            ],
+            [
+              104.0,
+              0.25
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "prop0": "value0",
+        "prop1": "value1"
+      }
     }
   ]
 }
