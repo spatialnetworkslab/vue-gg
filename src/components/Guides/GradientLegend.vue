@@ -21,9 +21,9 @@
     <!-- Vertical/horizontal orientation -->
     <vgg-section
       :x1="0"
-      :x2="width"
+      :x2="sectionWidth"
       :y1="0"
-      :y2="height"
+      :y2="sectionHeight"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
@@ -152,10 +152,6 @@ export default {
       return 100 / (this.tickCount - 1)
     },
 
-    segmentHeight () {
-      return 100 / this.tickCount
-    },
-
     colors () {
       let l = this.legendLabels
       let colors = []
@@ -228,7 +224,7 @@ export default {
   },
 
   mounted () {
-    this.composeGradient()
+    this.composeGradient
   }
 
 }

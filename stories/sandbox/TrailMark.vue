@@ -50,11 +50,12 @@
       shape="line"
       :size="15"
       stroke="orange"
-      :x=550
-      :y=200
-      :stroke-width=10
+      :x="600"
+      :y="300"
+      :stroke-width="{ range: [2, 12] }"
       direction="vertical"
       title="Stroke width"
+      :h="200"
     />
 
     <vgg-symbol-legend
@@ -62,11 +63,10 @@
       :font-size="10"
       :title-font-size="16"
       shape="line"
-      :tick-count=11
       :size="15"
-      :x=0
-      :y=520
-      :stroke-width=10
+      :x="0"
+      :y="520"
+      :stroke-width="10"
       :stroke-opacity="{ range: [0, 0.7] }"
       title="Opacity test"
       orientation="horizontal"

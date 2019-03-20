@@ -8,6 +8,7 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '@/scales/createScale.js'
 import defaultFormat from './utils/defaultFormat.js'
+import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
 export default {
   mixins: [Rectangular, DataReceiver],
@@ -156,14 +157,14 @@ export default {
       }
     },
 
-    width: {
+    w: {
       type: Number,
-      default: function (value) { if (this.orientation === 'vertical') { return 70 } else { return 280 } }
+      default: undefined
     },
 
-    height: {
+    h: {
       type: Number,
-      default: function (value) { if (this.orientation === 'horizontal') { return 70 } else { return 280 } }
+      default: undefined
     },
 
     fill: {
@@ -184,6 +185,16 @@ export default {
     tickCount: {
       type: Number,
       default: 6
+    },
+
+    ticks: {
+      type: Boolean,
+      default: true
+    },
+
+    tickValues: {
+      type: [Array, undefined],
+      default: undefined
     },
 
     tickMinStep: {
@@ -210,6 +221,17 @@ export default {
 
     _parentNodes () {
       return this.getParents(this.parentBranch, [this.parentBranch])
+    },
+
+    parentDomains () {
+      return this.parentBranch.domains
+    },
+
+    parentDomainWidths () {
+      return {
+        x: this.parentDomains.x[1] - this.parentDomains.x[0],
+        y: this.parentDomains.y[1] - this.parentDomains.y[0]
+      }
     },
 
     ranges () {
@@ -258,7 +280,7 @@ export default {
       if (!this.x && !this.y) {
         let p = this.position
         if (p === 'right' || p === 'tr' || p === 'br' || p === 'cr') {
-          return (this.plotWidth - this.width) * 0.95
+          return (this.plotWidth - this.sectionWidth)
         } else {
           return this.plotWidth * 0.01
         }
@@ -270,8 +292,9 @@ export default {
     legendTop () {
       if (!this.x && !this.y) {
         let p = this.position
+
         if (p === 'top' || p === 'tl' || p === 'tr') {
-          return (this.height - this.plotHeight) * 0.9
+          return -(this.plotHeight - this.sectionHeight) * 0.9
         } else if (p === 'bottom' || p === 'bl' || p === 'br') {
           return 0
         } else {
@@ -281,11 +304,101 @@ export default {
         if (this.position && this.position !== 'left') {
           console.warn('Ignoring position value `' + this.position + '` because of `x` and `y` inputs')
         }
-        return this.y * -1
+        return -this.y
       }
     },
 
     legendLabels () {
+      // let firstValue = this._domain[0]
+      // let newTickValues
+      //
+      // if (this.tickValues) {
+      //   newTickValues = this.tickValues
+      //
+      //   if (this.tickExtra && this.tickValues[0] !== firstValue) {
+      //     newTickValues.unshift(firstValue)
+      //   }
+      //
+      //   return newTickValues.map(value => {
+      //     return { value }
+      //   })
+      // } else {
+      //   let ticks
+      //   let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
+      //
+      //   if (this._domainType === 'quantitative') {
+      //     newTickValues = arrayTicks(...this._domain, this.tickCount)
+      //     if (this.tickExtra && newTickValues[0] !== firstValue) {
+      //       newTickValues.unshift(firstValue)
+      //     }
+      //
+      //     ticks = newTickValues.map((value, i) => {
+      //       if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+      //         return { value, label: '' }
+      //       } else {
+      //         return { value, label: format(value) }
+      //       }
+      //     })
+      //   }
+      //
+      //   if (this._domainType === 'categorical') {
+      //     ticks = this._domain.map(value => {
+      //       return { value, label: format(value) }
+      //     })
+      //   }
+      //
+      //   if (this._domainType === 'temporal') {
+      //     if (this.format) {
+      //       if (this.format.constructor === String) { format = timeFormat(this.format) }
+      //     } else {
+      //       format = timeFormat('%d/%m/%Y')
+      //     }
+      //
+      //     let scale = scaleTime().domain(this._domain)
+      //
+      //     newTickValues = scale.ticks(this.tickCount)
+      //
+      //     if (this.tickExtra && newTickValues[0] !== firstValue) {
+      //       newTickValues.unshift(firstValue)
+      //     }
+      //
+      //     ticks = newTickValues.map((value, i) => {
+      //       let date = new Date(value)
+      //
+      //       if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+      //         return { value: date, label: '' }
+      //       } else {
+      //         return { value: date, label: format(date) }
+      //       }
+      //     })
+      //   }
+      //
+      //   if (this._domainType === 'interval:quantitative') {
+      //     let intervals = this.$$dataInterface.getColumn(this.scale)
+      //     console.log('###')
+      //     ticks = ticksFromIntervals(intervals).map(value => {
+      //       return { value, label: format(value) }
+      //     })
+      //   }
+      //
+      //   if (this._domainType === 'interval:temporal') {
+      //     if (this.format) {
+      //       if (this.format.constructor === String) { format = timeFormat(this.format) }
+      //     } else {
+      //       format = timeFormat('%d/%m/%Y')
+      //     }
+      //
+      //     let intervals = this.$$dataInterface.getColumn(this.scale)
+      //     ticks = ticksFromIntervals(intervals).map(value => {
+      //       let date = new Date(value)
+      //       return { value: date, label: format(date) }
+      //     })
+      //   }
+      //   return ticks.map(tick => {
+      //     let newTick = { label: tick.label, value: format(tick.value) }
+      //     return newTick
+      //   })
+      // }
       let labels = this.labels
       let variableType, variableData
 
@@ -346,11 +459,27 @@ export default {
     },
 
     sectionWidth () {
-      return this.width
+      if (!this.w) {
+        if (this.orientation === 'vertical') {
+          return this.labelFontSize * 6
+        } else {
+          return this.plotWidth * 0.3 + this.titleFontSize + this.titlePadding * 2
+        }
+      } else {
+        return this.w
+      }
     },
 
     sectionHeight () {
-      return this.height
+      if (!this.h) {
+        if (this.orientation === 'vertical') {
+          return this.plotHeight * 0.3 + this.titleFontSize + this.titlePadding * 2
+        } else {
+          return this.labelFontSize * 6
+        }
+      } else {
+        return this.h
+      }
     },
 
     positionElements () {

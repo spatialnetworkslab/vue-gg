@@ -456,7 +456,7 @@ export default {
             range: size.range ? size.range : this.scale.range ? this.scale.range : [0, 10]
           }
         }
-        console.log(scaleOptions, this.$$dataInterface._manager.ready)
+        // console.log(scaleOptions, this.$$dataInterface._manager.ready)
         let scalingFunction = createScale(prop, this.$$dataInterface._manager, scaleOptions)
         return scalingFunction
       }

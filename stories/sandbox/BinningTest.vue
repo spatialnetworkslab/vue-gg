@@ -84,8 +84,6 @@
           :scale="{ domain: 'bins', domainMin: 20 }"
           :font-size="10"
           :title-font-size="16"
-          :tick-count="10"
-          flip
           position="tl"
           title="Discrete"
         />
@@ -94,7 +92,6 @@
           :scale="'bins'"
           :font-size="10"
           :title-font-size="16"
-          :tick-count="10"
           position="tr"
           flip-numbers
           title="Gradient"
