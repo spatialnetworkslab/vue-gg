@@ -39,14 +39,14 @@ for an in-depth explanation.
 
 ### Other props
 
-| Prop      | Required | Types                   | Default   | Description                     |
-| --------- | -------- | ----------------------- | --------- | ------------------------------- |
-| data      | false    | [Array, Object]         | undefined | Some supported data structure   |
-| type      | false    | String                  | 'scale'   | Type of local coordinate system |
-| scale-x   | false    | [String, Array, Object] | undefined | Scaling of x dimension          |
-| scale-y   | false    | [String, Array, Object] | undefined | Scaling of y dimension          |
-| format    | false    | String                  | undefined | Format of data structure        |
-| transform | false    | [Array, Object]         | undefined | Transformation(s) to be applied |
+| Prop            | Required | Types                   | Default   | Description                     |
+| --------------- | -------- | ----------------------- | --------- | ------------------------------- |
+| data            | false    | [Array, Object]         | undefined | Some supported data structure   |
+| type            | false    | String                  | 'scale'   | Type of local coordinate system |
+| scale-x         | false    | [String, Array, Object] | undefined | Scaling of x dimension          |
+| scale-y         | false    | [String, Array, Object] | undefined | Scaling of y dimension          |
+| format          | false    | String                  | undefined | Format of data structure        |
+| transform       | false    | [Array, Object]         | undefined | Transformation(s) to be applied |
 
 The props passed to the `scale-x` and `scale-y` are [scaling options](../concepts/scaling.md) props.
 
@@ -94,6 +94,25 @@ is that the axes and gridlines will automatically inherit the Section's `scale-x
 and `scale-y` values. Like with the components, the axes will by default be 1/8 of
 the Section, unless you specify a `h` prop for the x-axes or a `w` prop for the
 y-axes.
+
+### Selection
+
+| Prop            | Required | Types            | Default   | Description                     |
+| --------------- | -------- | ---------------- | --------- | ------------------------------- |
+| select          | false    | [String, Object] | undefined | Selection tool                  |
+| selectionBounds | false    | Array            | undefined | Shape created by selection tool |
+
+For more on making selections, see the [Interactivity](../concepts/interactivity.md)
+documentation.
+
+# Events
+
+| Event         | Description                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------------- |
+| selectionDone | Triggered when the user is done creating a selection (on mouseup). Emits bounding box selection |
+
+For more on making selections, see the [Interactivity](../concepts/interactivity.md)
+documentation.
 
 # Usage
 
