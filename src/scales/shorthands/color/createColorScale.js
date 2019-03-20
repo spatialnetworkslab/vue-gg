@@ -1,7 +1,7 @@
 import checkValidScale from '../../utils/checkValidScale.js'
-
 import quantitative from './quantitative.js'
 import categorical from './categorical.js'
+import scaleFromRange from './scaleFromRange.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {
@@ -18,9 +18,17 @@ export default function (prop, variableType, domain, scalingOptions) {
   }
 
   if (variableType === 'categorical') {
-    let scale = scalingOptions.type || 'colors'
+    if (scalingOptions.ranges) {
+      return scaleFromRange(domain, scalingOptions.ranges)
+    } else if (scalingOptions.rangeMin || scalingOptions.rangeMax) {
+      console.warn('Categorical color scales use `ranges` to specify custom color scales. Using default color scale `category10`')
+    }
+
+    let scale = scalingOptions.type || 'category10'
     checkValidScale(prop, variableType, scale, categorical)
 
-    return categorical[scale](domain, scalingOptions.range)
+    let scaleFunc = categorical[scale](domain, scalingOptions)
+
+    return scaleFunc
   }
 }

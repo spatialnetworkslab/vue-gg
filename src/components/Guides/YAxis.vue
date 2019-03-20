@@ -45,8 +45,8 @@
       >
 
         <vgg-line
-          :x1="midX"
-          :x2="flip ? midX - _tickLength : midX + _tickLength"
+          :x1="flip ? midX + _tickLength : midX - _tickLength"
+          :x2="midX"
           :y1="tick.value"
           :y2="tick.value"
           :stroke="tickColor"
@@ -57,7 +57,7 @@
         <!-- Tick labels -->
         <vgg-label
           v-if="(!labelRotate) && labels"
-          :x="flip ? midX + (_tickLength * 0.3) : midX - (_tickLength * 0.3)"
+          :x="flip ? midX + (_tickLength * 1.2) : midX - (_tickLength * 1.2)"
           :y="tick.value"
           :text="tick.label"
           :font-family="labelFont"
@@ -70,7 +70,7 @@
 
         <vgg-label
           v-if="labelRotate && labels"
-          :x="flip ? midX + (_tickLength * 0.3) : midX - (_tickLength * 0.3)"
+          :x="flip ? midX + (_tickLength * 1.2) : midX - (_tickLength * 1.2)"
           :y="tick.value"
           :text="tick.label"
           :font-family="labelFont"

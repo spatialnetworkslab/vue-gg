@@ -2,6 +2,7 @@ import createCoordsScale from './shorthands/coords/createCoordsScale.js'
 import createColorScale from './shorthands/color/createColorScale.js'
 import createOpacityScale from './shorthands/opacity/createOpacityScale.js'
 import createRadiusScale from './shorthands/radius/createRadiusScale.js'
+import createShapeScale from './shorthands/shape/createShapeScale.js'
 
 import parseScaleOptions from './utils/parseScaleOptions.js'
 import parseRange from './utils/parseRange.js'
@@ -34,6 +35,10 @@ export default function (prop, context, passedScalingOptions) {
 
   if (['opacity', 'strokeOpacity', 'fillOpacity'].includes(prop)) {
     return createOpacityScale(prop, domainType, domain, scalingOptions)
+  }
+
+  if (['shape'].includes(prop)) {
+    return createShapeScale(prop, domainType, domain, scalingOptions)
   }
 
   // Pixel-value props
