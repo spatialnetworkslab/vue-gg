@@ -28,16 +28,13 @@ export default {
     fill: {
       type: String,
       default: '#000000'
-    },
+    }
+  },
 
-    _validGeomTypes: {
-      type: Array,
-      default: () => ['Polygon', 'MultiPolygon']
-    },
-
-    _mark: {
-      type: String,
-      default: 'vgg-polygon'
+  data () {
+    return {
+      pathType: 'polygon',
+      validGeomTypes: ['Polygon', 'MultiPolygon']
     }
   }
 }

@@ -185,7 +185,7 @@ export default {
       let aesthetics = this._props
 
       if (this.geometry) {
-        checkGeometry(this._mark, this._validGeomTypes, this.geometry)
+        checkGeometry(this.pathType, this.validGeomTypes, this.geometry)
         let path = createGeoPath(aesthetics.geometry, this.$$transform)
         return createElement('path', {
           attrs: {
