@@ -1,7 +1,6 @@
 {
   "name": "vue-gg",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.4",
   "main": "dist/vue-gg.cjs.js",
   "module": "dist/vue-gg.esm.js",
   "browser": "dist/vue-gg.js",
@@ -12,7 +11,9 @@
     "build": "rollup -c rollup.config.js --environment BUILD:production --sourcemap",
     "docs:dev": "yarn vuepress dev docs",
     "docs:build": "yarn vuepress build docs",
-    "now-build": "yarn run docs:build && mv docs/.vuepress/dist dist-docs && yarn run storybook:build && mv .storybook/dist dist-docs/storybook"
+    "now-build": "yarn run docs:build && mv docs/.vuepress/dist dist-docs && yarn run storybook:build && mv .storybook/dist dist-docs/storybook",
+    "lint": "yarn run eslint --ext .js,.vue src/",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@turf/meta": "^6.0.2",

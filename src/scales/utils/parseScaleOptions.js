@@ -1,3 +1,4 @@
+import { tickIncrement } from 'd3-array'
 import getDataType from '../../utils/getDataType.js'
 import { is } from '../../utils/equals.js'
 
@@ -60,9 +61,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
     domainType = getDataType(domain[0])
   }
-
   domain = updateDomain(domain, domainType, scaleOptions)
-
   return [domain, domainType, scaleOptions]
 }
 
@@ -92,7 +91,7 @@ function checkValidDomainArray (array) {
 
 function updateDomain (domain, domainType, scalingOptions, dataInterface) {
   if (validScalingOptions(domainType, scalingOptions)) {
-    let newDomain = [domain[0], domain[1]]
+    let newDomain = domain.slice()
 
     if (is(scalingOptions.domainMin)) {
       newDomain[0] = scalingOptions.domainMin
@@ -100,6 +99,27 @@ function updateDomain (domain, domainType, scalingOptions, dataInterface) {
 
     if (is(scalingOptions.domainMax)) {
       newDomain[1] = scalingOptions.domainMax
+    }
+
+    if (!(is(scalingOptions.domainMin) | is(scalingOptions.domainMax)) & domainType !== 'categorical') {
+      // nice domains turned on by default for non-categorical domains
+      // TODO specific logic for temporal domains
+      let domainNice = true
+      if (is(scalingOptions.nice)) {
+        domainNice = scalingOptions.nice
+      }
+      if (domainNice === true) {
+        newDomain = nice(newDomain, 10)
+      }
+      if (Number.isInteger(domainNice)) {
+        newDomain = nice(newDomain, domainNice)
+      }
+    }
+
+    if (is(scalingOptions.reverse)) {
+      if (scalingOptions.reverse === true) {
+        newDomain.reverse()
+      }
     }
 
     return newDomain
@@ -111,7 +131,7 @@ function validScalingOptions (domainType, scalingOptions) {
     if (hasAnyWrongProperty(scalingOptions)) {
       throw new Error(`Invalid scaling options for categorical domain: ${JSON.stringify(scalingOptions)}`)
     }
-    return false
+    return true
   } else {
     checkTypes(domainType, scalingOptions)
     return true
@@ -119,7 +139,7 @@ function validScalingOptions (domainType, scalingOptions) {
 }
 
 function hasAnyWrongProperty (obj) {
-  let keys = ['domainMin', 'domainMax', 'domainMid', 'absolute']
+  let keys = ['domainMin', 'domainMax', 'domainMid', 'absolute', 'nice']
   for (let key of keys) {
     if (obj.hasOwnProperty(key)) { return true }
   }
@@ -131,7 +151,6 @@ function checkTypes (type, obj) {
   for (let key of keys) {
     if (obj.hasOwnProperty(key)) {
       let propertyType = getDataType(obj[key])
-
       if (type.startsWith('interval')) {
         let intervalType = type.split(':')[1]
         if (propertyType !== intervalType) {
@@ -157,4 +176,46 @@ function absoluteDomain (arr) {
   }
 
   return [min, max]
+}
+
+function nice (domain, count) {
+  // adopted from d3-scale: https://github.com/d3/d3-scale
+  domain = domain.slice()
+
+  let i0 = 0
+  let i1 = domain.length - 1
+  let start = domain[i0]
+  let stop = domain[i1]
+  let step
+
+  if (stop < start) {
+    step = start
+    start = stop
+    stop = step
+    step = i0
+    i0 = i1
+    i1 = step
+  }
+
+  step = tickIncrement(start, stop, count)
+
+  if (step > 0) {
+    start = Math.floor(start / step) * step
+    stop = Math.ceil(stop / step) * step
+    step = tickIncrement(start, stop, count)
+  } else if (step < 0) {
+    start = Math.ceil(start * step) / step
+    stop = Math.floor(stop * step) / step
+    step = tickIncrement(start, stop, count)
+  }
+
+  if (step > 0) {
+    domain[i0] = Math.floor(start / step) * step
+    domain[i1] = Math.ceil(stop / step) * step
+  } else if (step < 0) {
+    domain[i0] = Math.ceil(start * step) / step
+    domain[i1] = Math.floor(stop * step) / step
+  }
+
+  return domain
 }
