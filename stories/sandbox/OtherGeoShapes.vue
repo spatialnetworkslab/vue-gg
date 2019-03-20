@@ -54,6 +54,7 @@
 
         <vgg-point
           :geometry="{ val: row.geometry, scaleGeo: {} }"
+          :radius="5"
         />
 
       </vgg-map>
