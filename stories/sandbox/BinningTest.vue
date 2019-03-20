@@ -86,6 +86,7 @@
           :title-font-size="16"
           position="tl"
           title="Discrete"
+          flip-numbers
         />
 
         <vgg-gradient-legend
@@ -93,7 +94,6 @@
           :font-size="10"
           :title-font-size="16"
           position="tr"
-          flip-numbers
           title="Gradient"
         />
 

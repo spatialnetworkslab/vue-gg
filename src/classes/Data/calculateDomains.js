@@ -140,7 +140,7 @@ function updateDomain (domain, value, type) {
     if (domain[0].getTime() >= epoch) { domain[0] = value }
     if (domain[1].getTime() <= epoch) { domain[1] = value }
   }
-  console.log(type)
+
   if (type.startsWith('interval')) {
     let intervalType = type.split(':')[1]
     domain = updateDomain(domain, value[0], intervalType)

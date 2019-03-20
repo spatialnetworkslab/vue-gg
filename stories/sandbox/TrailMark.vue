@@ -49,7 +49,7 @@
       :title-font-size="16"
       shape="line"
       :size="15"
-      stroke="orange"
+      stroke="blue"
       :x="600"
       :y="300"
       :stroke-width="{ range: [2, 12] }"

@@ -2,8 +2,8 @@
   <div>
 
     <vgg-graphic
-      :width="900"
-      :height="600"
+      :width="sectionWidth"
+      :height="sectionHeight"
       :data="xy">
 
       <vgg-plot-title text="Scatterplot" />
@@ -46,14 +46,12 @@
       <vgg-symbol-legend
         :scale="{ domain: 'categorical'}"
         :font-size="10"
-        :title-font-size="19"
         :size="15"
-        :x="550"
-        :y="200"
+        :x="sectionWidth * 0.6"
+        :y="sectionHeight * 0.5"
         :tick-count="9"
         :stroke="colorLegend(colorScheme)"
         :shape="shapeLegend(shapeScheme)"
-        direction="vertical"
         title="Fruits"
       />
 
@@ -110,7 +108,9 @@ export default {
     return {
       xy: this.generateNewData(),
       shapeScheme: 'shape8',
-      colorScheme: 'category10'
+      colorScheme: 'category10',
+      sectionWidth: 900,
+      sectionHeight: 600
     }
   },
   methods: {

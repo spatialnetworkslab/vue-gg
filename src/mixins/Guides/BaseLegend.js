@@ -8,7 +8,7 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '@/scales/createScale.js'
 import defaultFormat from './utils/defaultFormat.js'
-import ticksFromIntervals from './utils/ticksFromIntervals.js'
+// import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
 export default {
   mixins: [Rectangular, DataReceiver],
@@ -136,6 +136,14 @@ export default {
       default: 'normal'
     },
 
+    labelAnchorPoint: {
+      type: String,
+      default: undefined,
+      validator: function (value) {
+        return ['l', 'r', 'center'].indexOf(value) !== -1
+      }
+    },
+
     labelRotate: {
       type: Boolean,
       default: false
@@ -204,7 +212,12 @@ export default {
   },
   computed: {
     _parsedScalingOptions () {
-      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
+      if (this.scale.constructor === String && this.scale.indexOf('#') === 0) {
+        console.log(this.parentBranch)
+        return parseScaleOptions(this.scale, this.context, this.$$scaleManager)
+      } else {
+        return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
+      }
     },
 
     _domain () {
@@ -235,7 +248,19 @@ export default {
     },
 
     ranges () {
-      return this.coordinateSpecification
+      return {
+        x: [this.legendLeft, this.legendLeft + this.sectionWidth],
+        y: [this.legendTop, this.legendTop + this.sectionHeight]
+      }
+    },
+
+    context () {
+      return {
+        ranges: this.ranges,
+        parentBranch: this.parentBranch,
+        dataInterface: this.$$dataInterface,
+        scaleManager: this.$$scaleManager
+      }
     },
 
     plotWidth () {
@@ -280,7 +305,7 @@ export default {
       if (!this.x && !this.y) {
         let p = this.position
         if (p === 'right' || p === 'tr' || p === 'br' || p === 'cr') {
-          return (this.plotWidth - this.sectionWidth)
+          return (this.plotWidth - this.sectionWidth) * 0.95
         } else {
           return this.plotWidth * 0.01
         }
@@ -312,10 +337,10 @@ export default {
       // let firstValue = this._domain[0]
       // let newTickValues
       //
-      // if (this.tickValues) {
-      //   newTickValues = this.tickValues
+      // if (this.labels) {
+      //   newTickValues = this.labels
       //
-      //   if (this.tickExtra && this.tickValues[0] !== firstValue) {
+      //   if (this.tickValues[0] !== firstValue) {
       //     newTickValues.unshift(firstValue)
       //   }
       //
@@ -323,7 +348,7 @@ export default {
       //     return { value }
       //   })
       // } else {
-      //   let ticks
+      //   let labels
       //   let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
       //
       //   if (this._domainType === 'quantitative') {
@@ -332,7 +357,7 @@ export default {
       //       newTickValues.unshift(firstValue)
       //     }
       //
-      //     ticks = newTickValues.map((value, i) => {
+      //     labels = newTickValues.map((value, i) => {
       //       if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
       //         return { value, label: '' }
       //       } else {
@@ -342,7 +367,7 @@ export default {
       //   }
       //
       //   if (this._domainType === 'categorical') {
-      //     ticks = this._domain.map(value => {
+      //     labels = this._domain.map(value => {
       //       return { value, label: format(value) }
       //     })
       //   }
@@ -362,7 +387,7 @@ export default {
       //       newTickValues.unshift(firstValue)
       //     }
       //
-      //     ticks = newTickValues.map((value, i) => {
+      //     labels = newTickValues.map((value, i) => {
       //       let date = new Date(value)
       //
       //       if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
@@ -375,30 +400,11 @@ export default {
       //
       //   if (this._domainType === 'interval:quantitative') {
       //     let intervals = this.$$dataInterface.getColumn(this.scale)
-      //     console.log('###')
-      //     ticks = ticksFromIntervals(intervals).map(value => {
+      //     labels = ticksFromIntervals(intervals).map(value => {
       //       return { value, label: format(value) }
       //     })
       //   }
-      //
-      //   if (this._domainType === 'interval:temporal') {
-      //     if (this.format) {
-      //       if (this.format.constructor === String) { format = timeFormat(this.format) }
-      //     } else {
-      //       format = timeFormat('%d/%m/%Y')
-      //     }
-      //
-      //     let intervals = this.$$dataInterface.getColumn(this.scale)
-      //     ticks = ticksFromIntervals(intervals).map(value => {
-      //       let date = new Date(value)
-      //       return { value: date, label: format(date) }
-      //     })
-      //   }
-      //   return ticks.map(tick => {
-      //     let newTick = { label: tick.label, value: format(tick.value) }
-      //     return newTick
-      //   })
-      // }
+
       let labels = this.labels
       let variableType, variableData
 
@@ -484,43 +490,56 @@ export default {
 
     positionElements () {
       if (this.type === 'discrete' || this.type === 'gradient') {
-        let rectangle, label, title
+        let rectangle, label, labelAnchorPoint, title
 
         if (this.orientation === 'vertical') {
           title = this.titleX
           if (!this.flipNumbers) {
             rectangle = { x1: 0, x2: 75, y1: 0, y2: 100 }
-            label = 90 + this.labelPadding
+            label = 80 + this.labelPadding
+            if (!this.labelAnchorPoint) {
+              labelAnchorPoint = 'l'
+            }
           } else {
             rectangle = { x1: 25, x2: 100, y1: 0, y2: 100 }
-            label = 10 - this.labelPadding
+            label = 20 - this.labelPadding
+            if (!this.labelAnchorPoint) {
+              labelAnchorPoint = 'r'
+            }
           }
         } else {
           title = 55
           if (!this.flipNumbers) {
             rectangle = { x1: 0, x2: 100, y1: 15, y2: 85 }
-            label = 10 - this.labelPadding
+            label = 20 - this.labelPadding
           } else {
             rectangle = { x1: 0, x2: 100, y1: 0, y2: 70 }
             label = 80 + this.labelPadding
           }
+          labelAnchorPoint = 'center'
         }
-        return { rectangle, label, title }
+        return { rectangle, label, title, labelAnchorPoint }
       } else if (this.type === 'symbol') {
         if (this.orientation === 'vertical') {
-          let multilineX, symbolX, labelX
+          let multilineX, symbolX, labelX, labelAnchorPoint
           if (!this.flipNumbers) {
             multilineX = [0.25 - this.symbolPadding, 0.55 - this.symbolPadding]
             symbolX = 0.3 - this.symbolPadding
-            labelX = 0.8 + this.labelPadding
+            labelX = 0.7 + this.labelPadding
+            if (!this.labelAnchorPoint) {
+              labelAnchorPoint = 'l'
+            }
           } else {
             multilineX = [0.6 + this.symbolPadding, 0.9 + this.symbolPadding]
-            symbolX = 0.8 + this.symbolPadding
+            symbolX = 0.7 + this.symbolPadding
             labelX = 0.3 - this.labelPadding
+            if (!this.labelAnchorPoint) {
+              labelAnchorPoint = 'r'
+            }
           }
-          return { multilineX, symbolX, labelX }
+          return { multilineX, symbolX, labelX, labelAnchorPoint }
         } else {
-          let multilineY, symbolY, labelY
+          let multilineY, symbolY, labelY, labelAnchorPoint
           if (!this.flipNumbers) {
             multilineY = [0.6 + this.symbolPadding, 0.6 + this.symbolPadding]
             symbolY = 0.6 + this.symbolPadding
@@ -530,7 +549,8 @@ export default {
             symbolY = 0.3 - this.symbolPadding
             labelY = 0.6 + this.labelPadding
           }
-          return { multilineY, symbolY, labelY }
+          labelAnchorPoint = 'center'
+          return { multilineY, symbolY, labelY, labelAnchorPoint }
         }
       }
     }

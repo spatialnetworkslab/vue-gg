@@ -71,7 +71,7 @@
                 :y="row.location"
                 :text="row.label"
                 :font-size="labelFontSize"
-                :anchor-point="'center'"
+                :anchor-point="positionElements.labelAnchorPoint"
                 :opacity="labelOpacity"
                 :font-family="labelFont"
                 :font-weight="labelFontWeight"
@@ -84,7 +84,7 @@
                 :y="row.location"
                 :text="row.label"
                 :font-size="labelFontSize"
-                :anchor-point="'center'"
+                :anchor-point="positionElements.labelAnchorPoint"
                 :opacity="labelOpacity"
                 :font-family="labelFont"
                 :font-weight="labelFontWeight"
@@ -99,7 +99,7 @@
                 :y="positionElements.label"
                 :text="row.label"
                 :font-size="labelFontSize"
-                :anchor-point="'center'"
+                :anchor-point="positionElements.labelAnchorPoint"
                 :opacity="labelOpacity"
                 :font-family="labelFont"
                 :font-weight="labelFontWeight"
@@ -112,7 +112,7 @@
                 :y="positionElements.label"
                 :text="row.label"
                 :font-size="labelFontSize"
-                :anchor-point="'center'"
+                :anchor-point="positionElements.labelAnchorPoint"
                 :opacity="labelOpacity"
                 :font-family="labelFont"
                 :font-weight="labelFontWeight"
@@ -221,10 +221,6 @@ export default {
 
       return boxes
     }
-  },
-
-  mounted () {
-    this.composeGradient
   }
 
 }
