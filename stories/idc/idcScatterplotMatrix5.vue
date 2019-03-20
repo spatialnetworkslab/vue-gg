@@ -47,6 +47,8 @@
             :hjust="-.05"
             :tickCount="5"
             flip
+            :title-vjust="1.1"
+            :title-hjust="0"
           />
 
         </vgg-section>

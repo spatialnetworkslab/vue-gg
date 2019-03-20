@@ -78,7 +78,7 @@
           <text
             x="20"
             y="35"
-            class="small">{{ item }}</text>
+            class="small">{{ item.x }}</text>
 
             <!-- <vgg-map v-slot="{ row }">
               <vgg-multi-line
