@@ -42,6 +42,24 @@
     
     </vgg-section>
 
+    <vgg-section
+      :x1="100"
+      :x2="500"
+      :y1="100"
+      :y2="500"
+      :data="points"
+    >
+
+      <vgg-map v-slot="{ row }">
+
+        <vgg-point
+          :geometry="{ val: row.geometry, scaleGeo: {} }"
+        />
+
+      </vgg-map>
+
+    </vgg-section>
+
   </vgg-graphic>
 
 </template>
@@ -50,6 +68,7 @@
 <script>
 import { polygons } from './Polygons.js'
 import { linestrings } from './LineStrings.js'
+import { points } from './Points.js'
 
 export default {
   name: 'OtherGeoShapes',
@@ -57,7 +76,8 @@ export default {
   data () {
     return {
       polygons: {},
-      linestrings: {}
+      linestrings: {},
+      points: {}
     }
   },
 
@@ -72,6 +92,9 @@ export default {
       })
       linestrings().then(data => {
         this.linestrings = Object.freeze(data)
+      })
+      points().then(data => {
+        this.points = Object.freeze(data)
       })
     }
   }
