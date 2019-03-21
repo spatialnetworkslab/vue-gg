@@ -132,7 +132,7 @@ These properties can be mapped to show scaling with respect to a specific variab
 ```
 :::
 
-<SymbolLegendDemo/>
+<SymbolLegend/>
 
 ::: v-pre
 ```html
