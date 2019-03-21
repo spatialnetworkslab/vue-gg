@@ -34,6 +34,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
   if (domainConstructor === String) {
     // If the domain was specified as a String, we will have to check the
     // availability of the data
+
     if (dataInterface.ready()) {
       if (!dataInterface.hasColumn(scaleOptions.domain)) {
         throw new Error(`Invalid scale options: domain '${domain}' not found`)

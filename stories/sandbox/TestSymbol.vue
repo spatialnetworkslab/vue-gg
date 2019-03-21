@@ -46,6 +46,7 @@
       <vgg-symbol-legend
         :scale="{ domain: 'categorical'}"
         :font-size="10"
+        :title-font-size="19"
         :size="15"
         :x="sectionWidth * 0.6"
         :y="sectionHeight * 0.5"

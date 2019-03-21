@@ -3,6 +3,7 @@
     :width="900"
     :height="600"
     :data="data">
+    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
     <vgg-section
       :x1="100"
@@ -16,58 +17,66 @@
       <vgg-trail
         :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
         :stroke-width="[1, 5, 5, 3, 4, 2]"
-        fill="orange"
-        :fillOpacity="0.7"
+        :fill-opacity="0.7"
         :sort="'x'"
+        fill="orange"
       />
 
-      <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
-
       <vgg-data :transform="{ groupBy: 'colors' }">
-
         <vgg-map v-slot="{ row }">
-
           <vgg-trail
             :x="row.grouped.xValues"
             :y="row.grouped.yValues"
             :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
             :fill="row.colors"
-            :fillOpacity="0.7"
+            :fill-opacity="0.7"
             :sort="'x'"
           />
 
         </vgg-map>
-
+      </vgg-data>
       </vgg-data>
 
-
-      </vgg-data>
     </vgg-section>
+
     <vgg-symbol-legend
-      :scale="{ domain: 'rainfall'}"
+      :scale="'#rainfallScale'"
       :font-size="10"
       :title-font-size="16"
-      shape="line"
       :size="15"
-      stroke="blue"
       :x="600"
       :y="300"
       :stroke-width="{ range: [2, 12] }"
+      :h="200"
+      shape="line"
+      stroke="orange"
       direction="vertical"
       title="Stroke width"
-      :h="200"
     />
 
     <vgg-symbol-legend
-      :scale="{ domain: 'rainfall'}"
+      :scale="'colors'"
       :font-size="10"
       :title-font-size="16"
+      :stroke-width="15"
       shape="line"
+      :stroke="['red', 'green', 'blue']"
+      :fill="['red', 'green', 'blue']"
+      title="Stroke color"
+      :tickCount="3"
+      :x="600"
+      :y="0"
+    />
+    <vgg-symbol-legend
+      :scale="'rainfall'"
+      :font-size="10"
+      :title-font-size="16"
       :size="15"
       :x="0"
       :y="520"
       :stroke-width="10"
       :stroke-opacity="{ range: [0, 0.7] }"
+      shape="line"
       title="Opacity test"
       orientation="horizontal"
     />
@@ -116,12 +125,13 @@ export default {
       for (let i = 0; i < 30; i++) {
         let colorIndex = Math.floor(Math.random() * 3)
         let color = colors[colorIndex]
-        let rain = rainfall[i%rainfall.length]
+        let rain = rainfall[i % rainfall.length]
         data.colors.push(color)
         data.xValues.push(Math.random() * 10)
         data.yValues.push(Math.random() * 100)
         data.rainfall.push(rain)
       }
+
       return data
     }
   }

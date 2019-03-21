@@ -4,6 +4,7 @@ import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../Marks/Rectangular.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
+import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '@/scales/createScale.js'
@@ -11,7 +12,7 @@ import defaultFormat from './utils/defaultFormat.js'
 // import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
 export default {
-  mixins: [Rectangular, DataReceiver],
+  mixins: [Rectangular, DataReceiver, ScaleReceiver],
 
   props: {
     title: {
@@ -212,12 +213,7 @@ export default {
   },
   computed: {
     _parsedScalingOptions () {
-      if (this.scale.constructor === String && this.scale.indexOf('#') === 0) {
-        console.log(this.parentBranch)
-        return parseScaleOptions(this.scale, this.context, this.$$scaleManager)
-      } else {
-        return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
-      }
+      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {

@@ -335,7 +335,6 @@ export default {
       } else {
         scales.size = 10
       }
-
       if (this.strokeWidth) {
         if (this.strokeWidth.constructor !== Number) {
           let strokeWidthScale = this.generateScale('strokeWidth', this.strokeWidth)
@@ -409,6 +408,22 @@ export default {
   },
 
   methods: {
+    // CSS color recognition for color reliant properties
+    checkValidColor (color) {
+      let e = document.getElementById('divValidColor')
+      if (!e) {
+        e = document.createElement('div')
+        e.id = 'divValidColor'
+      }
+      e.style.borderColor = ''
+      e.style.borderColor = color
+      let tmpcolor = e.style.borderColor
+      if (tmpcolor.length === 0) {
+        return false
+      }
+      return true
+    },
+
     generateScale (prop, scaleBasis) {
       let scaleOptions
 
@@ -481,13 +496,7 @@ export default {
           }
         }
 
-        if (this.scale.constructor === String) {
-          if (this.scale.indexOf('#')) {
-            scalingFunction = createScale(prop, this.context, this.scale)
-          }
-        } else {
-          scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
-        }
+        scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
 
         return scalingFunction
       }
@@ -512,6 +521,8 @@ export default {
             } else {
               symbol[item] = this.scales[item](value)
             }
+          } else if (this.checkValidColor(value) && (item === 'fill' || item === 'stroke')) {
+            symbol[item] = value
           } else {
             symbol[item] = this.scales[item](value)
           }
