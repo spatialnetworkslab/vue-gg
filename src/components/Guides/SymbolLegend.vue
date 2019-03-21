@@ -40,7 +40,8 @@
       >
 
         <vgg-grid
-          :cols="columns"
+          v-if="checkGrid.columns"
+          :cols="checkGrid.columns"
           :layout-padding="0"
           :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
         >
@@ -50,16 +51,6 @@
             :scale-x="[0, 1]"
             :scale-y="[0, 1]"
           >
-            <!-- <vgg-section
-          v-for="(s, i) in symbols"
-          :key="i"
-          :x1="0"
-          :x2="100"
-          :y1="100/symbols.length * (i+1)"
-          :y2="100/symbols.length * i"
-          :scale-x="[0, 1]"
-          :scale-y="[0, 1]"
-        > -->
             <vgg-multi-line
               v-if="shape==='line'"
               :x="positionElements.multilineX"
@@ -109,6 +100,69 @@
             />
           </vgg-section>
         </vgg-grid>
+
+        <vgg-grid
+          v-if="checkGrid.rows"
+          :rows="checkGrid.rows"
+          :layout-padding="0"
+          :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
+        >
+          <vgg-section
+            v-for="(s, i) in symbols"
+            :key="i"
+            :scale-x="[0, 1]"
+            :scale-y="[0, 1]"
+          >
+            <vgg-multi-line
+              v-if="shape==='line'"
+              :x="positionElements.multilineX"
+              :y="[0.5, 0.5]"
+              :stroke-width="s.strokeWidth"
+              :stroke="s.stroke"
+              :stroke-linecap="linecap"
+              :stroke-opacity="s.strokeOpacity"
+              :fill-opacity="s.fillOpacity"
+            />
+            <vgg-symbol
+              v-else
+              :x="positionElements.symbolX"
+              :y="0.5"
+              :stroke="s.stroke"
+              :stroke-width="s.strokeWidth"
+              :size="s.size"
+              :shape="s.shape"
+              :fill="s.fill"
+              :stroke-opacity="s.strokeOpacity"
+              :fill-opacity="s.fillOpacity"
+            />
+            <vgg-label
+              v-if="labelRotate"
+              :x="positionElements.labelX"
+              :y="0.5"
+              :text="s.label"
+              :font-size="labelFontSize"
+              :anchor-point="positionElements.labelAnchorPoint"
+              :opacity="labelOpacity"
+              :font-family="labelFont"
+              :font-weight="labelFontWeight"
+              :rotation="flip ? 30 : -30"
+              :fill="labelColor"
+            />
+            <vgg-label
+              v-else
+              :x="positionElements.labelX"
+              :y="0.5"
+              :text="s.label"
+              :font-size="labelFontSize"
+              :anchor-point="positionElements.labelAnchorPoint"
+              :opacity="labelOpacity"
+              :font-family="labelFont"
+              :font-weight="labelFontWeight"
+              :fill="labelColor"
+            />
+          </vgg-section>
+        </vgg-grid>
+
       </vgg-section>
     </vgg-section>
 
@@ -150,7 +204,8 @@
         :scale-y="[0, 100]"
       >
         <vgg-grid
-          :cols="columns"
+          v-if="checkGrid.columns"
+          :cols="checkGrid.columns"
           :layout-padding="0"
           :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
         >
@@ -161,16 +216,6 @@
             :scale-y="[0, 1]"
           >
 
-            <!-- <vgg-section
-          v-for="(s, i) in symbols"
-          :key="i"
-          :y1="0"
-          :y2="100"
-          :x1="100/symbols.length * (i+1)"
-          :x2="100/symbols.length * i"
-          :scale-x="[0, 1]"
-          :scale-y="[0, 1]"
-        > -->
             <vgg-multi-line
               v-if="shape==='line'"
               :x="[0.4, 0.6]"
@@ -221,6 +266,71 @@
             />
           </vgg-section>
         </vgg-grid>
+
+        <vgg-grid
+          v-if="checkGrid.rows"
+          :rows="checkGrid.rows"
+          :layout-padding="0"
+          :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
+        >
+          <vgg-section
+            v-for="(s, i) in symbols"
+            :key="i"
+            :scale-x="[0, 1]"
+            :scale-y="[0, 1]"
+          >
+
+            <vgg-multi-line
+              v-if="shape==='line'"
+              :x="[0.4, 0.6]"
+              :y="positionElements.multilineY"
+              :stroke-width="s.strokeWidth"
+              :stroke="s.stroke"
+              :stroke-linecap="linecap"
+              :stroke-opacity="s.strokeOpacity"
+              :fill-opacity="s.fillOpacity"
+            />
+            <vgg-symbol
+              v-else
+              :x="0.5"
+              :y="positionElements.symbolY"
+              :stroke="s.stroke"
+              :stroke-width="s.strokeWidth"
+              :size="s.size"
+              :shape="s.shape"
+              :fill="s.fill"
+              :stroke-opacity="s.strokeOpacity"
+              :fill-opacity="s.fillOpacity"
+            />
+
+            <vgg-label
+              v-if="labelRotate"
+              :x="0.5"
+              :y="positionElements.labelY"
+              :text="s.label"
+              :font-size="labelFontSize"
+              :anchor-point="positionElements.labelAnchorPoint"
+              :opacity="labelOpacity"
+              :font-family="labelFont"
+              :font-weight="labelFontWeight"
+              :rotation="flip ? 30 : -30"
+              :fill="labelColor"
+            />
+            <vgg-label
+              v-else
+              :x="0.5"
+              :y="positionElements.labelY"
+              :text="s.label"
+              :font-size="labelFontSize"
+              :anchor-point="positionElements.labelAnchorPoint"
+              :opacity="labelOpacity"
+              :font-family="labelFont"
+              :font-weight="labelFontWeight"
+              :fill="labelColor"
+            />
+          </vgg-section>
+        </vgg-grid>
+
       </vgg-section>
     </vgg-section>
   </g>
@@ -266,7 +376,12 @@ export default {
 
     columns: {
       type: Number,
-      default: function (value) { if (this.orientation === 'vertical') { return 1 } else if (this.tickCount.constructor === Number) { return this.tickCount } else { return 10 } }
+      default: undefined
+    },
+
+    rows: {
+      type: Number,
+      default: undefined
     },
 
     stroke: {
@@ -381,16 +496,16 @@ export default {
     symbols () {
       let symbols = []
       let l = this.legendLabels
-
       let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
       let start = 0; let end = 0; let location; let symbol
+      let segHeight = 100 / ticks
 
       if (!this.flip) {
         for (let i = 0; i < ticks; i++) {
           if (i !== 0) {
             start = end
           }
-          end += this.segmentHeight
+          end += segHeight
           location = (start + end) / 2
           symbol = { location: location, label: l[i].label }
           symbols.push(this.parseAttributes(symbol, l[i].value))
@@ -398,7 +513,7 @@ export default {
       } else {
         for (let i = ticks - 1; i >= 0; i--) {
           start = end
-          end += this.segmentHeight
+          end += segHeight
           location = (start + end) / 2
           symbol = { location: location, start: start, end: end, label: l[i].label }
           symbols.push(this.parseAttributes(symbol, l[i].value))
@@ -406,6 +521,28 @@ export default {
       }
 
       return symbols
+    },
+
+    checkGrid () {
+      let grid = {}
+
+      if (this.columns && this.rows) {
+        throw new Error('Specify only columns or only rows')
+      } else if (!this.rows && !this.columns) {
+        if (this.orientation === 'vertical') {
+          grid = { columns: 1 }
+        } else if (this.orientation === 'horizontal') {
+          grid = { rows: 1 }
+        }
+      } else {
+        if (this.rows) {
+          grid = { rows: this.rows }
+        } else {
+          grid = { columns: this.columns }
+        }
+      }
+      console.log(grid, this.title)
+      return grid
     }
   },
 

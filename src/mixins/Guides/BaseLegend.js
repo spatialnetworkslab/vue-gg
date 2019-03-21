@@ -206,7 +206,7 @@ export default {
       default: undefined
     },
 
-    nice: {
+    makeNice: {
       type: Boolean,
       default: true
     }
@@ -363,7 +363,7 @@ export default {
             if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
               return { value, label: '' }
             } else {
-              return { value, label: this.nice ? this.round(format(value), 1) : format(value) }
+              return { value, label: this.makeNice ? this.round(format(value), 1) : format(value) }
             }
           })
         }
@@ -409,7 +409,7 @@ export default {
           }
 
           ticks = ticksFromIntervals(intervals).map(value => {
-            return { value, label: this.nice ? this.round(format(value), 1) : format(value) }
+            return { value, label: this.makeNice ? this.round(format(value), 1) : format(value) }
           })
         }
 
@@ -429,10 +429,6 @@ export default {
 
         return ticks
       }
-    },
-
-    segmentHeight () {
-      return 100 / this.tickCount
     },
 
     sectionWidth () {
@@ -512,13 +508,13 @@ export default {
         } else {
           let multilineY, symbolY, labelY, labelAnchorPoint
           if (!this.flipNumbers) {
-            multilineY = [0.7 + this.symbolPadding, 0.7 + this.symbolPadding]
-            symbolY = 0.7 + this.symbolPadding
+            multilineY = [0.6 + this.symbolPadding, 0.6 + this.symbolPadding]
+            symbolY = 0.6 + this.symbolPadding
             labelY = 0.3 - this.labelPadding
           } else {
             multilineY = [0.5 - this.symbolPadding, 0.5 - this.symbolPadding]
             symbolY = 0.3 - this.symbolPadding
-            labelY = 0.7 + this.labelPadding
+            labelY = 0.6 + this.labelPadding
           }
           labelAnchorPoint = 'center'
           return { multilineY, symbolY, labelY, labelAnchorPoint }

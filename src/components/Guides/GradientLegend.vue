@@ -149,7 +149,8 @@ export default {
 
   computed: {
     offset () {
-      return 100 / (this.tickCount - 1)
+      let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
+      return 100 / (ticks - 1)
     },
 
     colors () {
@@ -198,23 +199,25 @@ export default {
 
     boxes () {
       let boxes = []
-      let ticks = this.tickCount
-      let l = this.legendLabels; let start = 1; let end = 0
+      let l = this.legendLabels
+      let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
+      let start = 1; let end = 0
+      let segHeight = 100 / ticks
 
       if (!this.flip) {
         for (let i = 0; i < ticks; i++) {
           if (i === 0) {
-            end += this.segmentHeight
+            end += segHeight
           } else {
             start = end
-            end += this.segmentHeight
+            end += segHeight
           }
           boxes.push({ location: start, label: l[i].label })
         }
       } else {
         for (let i = ticks - 1; i >= 0; i--) {
           start = end
-          end += this.segmentHeight
+          end += segHeight
           boxes.push({ location: start, label: l[i].label })
         }
       }

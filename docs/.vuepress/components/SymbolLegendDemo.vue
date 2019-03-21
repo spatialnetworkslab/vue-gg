@@ -36,10 +36,10 @@
       title-font-weight="bold"
       :title-font-size=12
       :title-padding="10"
-      :h="120"
-      :w="200"
-      :columns=5
       position="tl"
+      :rows="2"
+      :symbolPadding="0.2"
+      :h="100"
       orientation="horizontal"
     />
 
