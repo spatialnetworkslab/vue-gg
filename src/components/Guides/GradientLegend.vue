@@ -159,24 +159,24 @@ export default {
       if (!this.flip) {
         if (this.orientation === 'vertical') {
           for (let i = l.length - 1; i >= 0; i--) {
-            let color = colorScale(l[i])
+            let color = colorScale(l[i].value)
             colors.push(color)
           }
         } else {
           for (let i = 0; i < l.length; i++) {
-            let color = colorScale(l[i])
+            let color = colorScale(l[i].value)
             colors.push(color)
           }
         }
       } else {
         if (this.orientation === 'vertical') {
           for (let i = 0; i < l.length; i++) {
-            let color = colorScale(l[i])
+            let color = colorScale(l[i].value)
             colors.push(color)
           }
         } else {
           for (let i = l.length - 1; i >= 0; i--) {
-            let color = colorScale(l[i])
+            let color = colorScale(l[i].value)
             colors.push(color)
           }
         }
@@ -209,13 +209,13 @@ export default {
             start = end
             end += this.segmentHeight
           }
-          boxes.push({ location: start, label: l[i] })
+          boxes.push({ location: start, label: l[i].label })
         }
       } else {
         for (let i = ticks - 1; i >= 0; i--) {
           start = end
           end += this.segmentHeight
-          boxes.push({ location: start, label: l[i] })
+          boxes.push({ location: start, label: l[i].label })
         }
       }
 

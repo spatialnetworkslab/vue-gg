@@ -32,12 +32,12 @@
       :stroke="'none'"
       :size="{ domain: 'a', range: [1, 20]}"
       :fill="{ type: 'plasma'}"
-      title="Size + Color"
+      title="Size & Color"
       title-font-weight="bold"
       :title-font-size=12
       :title-padding="10"
-      :height="120"
-      :width="200"
+      :h="120"
+      :w="200"
       :columns=5
       position="tl"
       orientation="horizontal"

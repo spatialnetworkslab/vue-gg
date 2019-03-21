@@ -1,5 +1,5 @@
-// import { ticks as arrayTicks } from 'd3-array'
-// import { scaleTime } from 'd3-scale'
+import { ticks as arrayTicks } from 'd3-array'
+import { scaleTime } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../Marks/Rectangular.js'
@@ -9,7 +9,7 @@ import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '@/scales/createScale.js'
 import defaultFormat from './utils/defaultFormat.js'
-// import ticksFromIntervals from './utils/ticksFromIntervals.js'
+import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
 export default {
   mixins: [Rectangular, DataReceiver, ScaleReceiver],
@@ -193,12 +193,7 @@ export default {
 
     tickCount: {
       type: Number,
-      default: 6
-    },
-
-    ticks: {
-      type: Boolean,
-      default: true
+      default: 10
     },
 
     tickValues: {
@@ -209,8 +204,14 @@ export default {
     tickMinStep: {
       type: Number,
       default: undefined
+    },
+
+    nice: {
+      type: Boolean,
+      default: true
     }
   },
+
   computed: {
     _parsedScalingOptions () {
       return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
@@ -267,10 +268,6 @@ export default {
       return (this.parentBranch.ranges.y[0] - this.parentBranch.ranges.y[1])
     },
 
-    plotMargin () {
-      return 40
-    },
-
     titleX () {
       let p = this.titleAnchorPoint
       if (p === 'right' || p === 'tr' || p === 'br') {
@@ -290,7 +287,7 @@ export default {
         return 0
       } else {
         if (this.orientation === 'horizontal') {
-          return 90
+          return 95
         } else {
           return 95
         }
@@ -330,129 +327,107 @@ export default {
     },
 
     legendLabels () {
-      // let firstValue = this._domain[0]
-      // let newTickValues
-      //
-      // if (this.labels) {
-      //   newTickValues = this.labels
-      //
-      //   if (this.tickValues[0] !== firstValue) {
-      //     newTickValues.unshift(firstValue)
-      //   }
-      //
-      //   return newTickValues.map(value => {
-      //     return { value }
-      //   })
-      // } else {
-      //   let labels
-      //   let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
-      //
-      //   if (this._domainType === 'quantitative') {
-      //     newTickValues = arrayTicks(...this._domain, this.tickCount)
-      //     if (this.tickExtra && newTickValues[0] !== firstValue) {
-      //       newTickValues.unshift(firstValue)
-      //     }
-      //
-      //     labels = newTickValues.map((value, i) => {
-      //       if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
-      //         return { value, label: '' }
-      //       } else {
-      //         return { value, label: format(value) }
-      //       }
-      //     })
-      //   }
-      //
-      //   if (this._domainType === 'categorical') {
-      //     labels = this._domain.map(value => {
-      //       return { value, label: format(value) }
-      //     })
-      //   }
-      //
-      //   if (this._domainType === 'temporal') {
-      //     if (this.format) {
-      //       if (this.format.constructor === String) { format = timeFormat(this.format) }
-      //     } else {
-      //       format = timeFormat('%d/%m/%Y')
-      //     }
-      //
-      //     let scale = scaleTime().domain(this._domain)
-      //
-      //     newTickValues = scale.ticks(this.tickCount)
-      //
-      //     if (this.tickExtra && newTickValues[0] !== firstValue) {
-      //       newTickValues.unshift(firstValue)
-      //     }
-      //
-      //     labels = newTickValues.map((value, i) => {
-      //       let date = new Date(value)
-      //
-      //       if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
-      //         return { value: date, label: '' }
-      //       } else {
-      //         return { value: date, label: format(date) }
-      //       }
-      //     })
-      //   }
-      //
-      //   if (this._domainType === 'interval:quantitative') {
-      //     let intervals = this.$$dataInterface.getColumn(this.scale)
-      //     labels = ticksFromIntervals(intervals).map(value => {
-      //       return { value, label: format(value) }
-      //     })
-      //   }
+      let firstValue = this._domain[0]
+      let newTickValues
 
-      let labels = this.labels
-      let variableType, variableData
+      if (this.tickValues) {
+        newTickValues = this.tickValues
 
-      if (labels) {
-        if (labels.constructor === Array) {
-          return labels
-        } else {
-          console.warn('Ignoring labels value ' + labels + ' as it is a string input. Using domain ' + this._domain + ' given in scale input')
-          variableType = this._domainType
-          variableData = this._domain
+        if (this.tickExtra && this.tickValues[0] !== firstValue) {
+          newTickValues.unshift(firstValue)
         }
+
+        return newTickValues.map(value => {
+          return { value }
+        })
       } else {
-        variableType = this._domainType
-        variableData = this._domain
-      }
+        let ticks
+        let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
+        let domain = this._domain
 
-      let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
+        if (this.scale.domainMin) {
+          domain = [this.scale.domainMin, this._domain[this._domain.length - 1]]
+        }
 
-      if (variableType === 'nominal' || variableType === 'categorical') {
-        return variableData
-      } else if (variableType === 'temporal') {
-        if (this.format) {
-          if (this.format.constructor === String) {
-            format = timeFormat(this.format)
+        if (this.scale.domainMax) {
+          domain = [this._domain[0], this.scale.domainMax]
+        }
+
+        if (this._domainType === 'quantitative') {
+          newTickValues = arrayTicks(...domain, this.tickCount)
+          if (this.tickExtra && newTickValues[0] !== firstValue) {
+            newTickValues.unshift(firstValue)
           }
-        } else {
-          format = timeFormat('%d/%m/%Y')
+
+          ticks = newTickValues.map((value, i) => {
+            if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+              return { value, label: '' }
+            } else {
+              return { value, label: this.nice ? this.round(format(value), 1) : format(value) }
+            }
+          })
         }
 
-        // let scale = scaleTime().domain(this._domain)
-        let ticks = variableData.map((value, i) => {
-          let date = new Date(value)
-          return format(date)
-        })
-
-        return ticks
-      } else if (variableType === 'interval:temporal') {
-        if (this.format) {
-          if (this.format.constructor === String) { format = timeFormat(this.format) }
-        } else {
-          format = timeFormat('%d/%m/%Y')
+        if (this._domainType === 'categorical') {
+          ticks = domain.map(value => {
+            return { value, label: format(value) }
+          })
         }
 
-        let intervals = this.$$dataInterface.getColumn(this.scale.domain)
-        let ticks = this.ticksFromIntervals(intervals).map(value => {
-          let date = new Date(value)
-          return format(date)
-        })
+        if (this._domainType === 'temporal') {
+          if (this.format) {
+            if (this.format.constructor === String) { format = timeFormat(this.format) }
+          } else {
+            format = timeFormat('%d/%m/%Y')
+          }
+
+          let scale = scaleTime().domain(domain)
+
+          newTickValues = scale.ticks(this.tickCount)
+
+          if (this.tickExtra && newTickValues[0] !== firstValue) {
+            newTickValues.unshift(firstValue)
+          }
+
+          ticks = newTickValues.map((value, i) => {
+            let date = new Date(value)
+
+            if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+              return { value: date, label: '' }
+            } else {
+              return { value: date, label: format(date) }
+            }
+          })
+        }
+
+        if (this._domainType === 'interval:quantitative') {
+          let intervals
+          if (this.scale.constructor === String) {
+            intervals = this.$$dataInterface.getColumn(this.scale)
+          } else if (this.scale.constructor === Object) {
+            intervals = this.$$dataInterface.getColumn(this.scale.domain)
+          }
+
+          ticks = ticksFromIntervals(intervals).map(value => {
+            return { value, label: this.nice ? this.round(format(value), 1) : format(value) }
+          })
+        }
+
+        if (this._domainType === 'interval:temporal') {
+          if (this.format) {
+            if (this.format.constructor === String) { format = timeFormat(this.format) }
+          } else {
+            format = timeFormat('%d/%m/%Y')
+          }
+
+          let intervals = this.$$dataInterface.getColumn(this.scale)
+          ticks = ticksFromIntervals(intervals).map(value => {
+            let date = new Date(value)
+            return { value: date, label: format(date) }
+          })
+        }
 
         return ticks
-      } else {
-        return this.formatLabels(variableData, variableType)
       }
     },
 
@@ -537,13 +512,13 @@ export default {
         } else {
           let multilineY, symbolY, labelY, labelAnchorPoint
           if (!this.flipNumbers) {
-            multilineY = [0.6 + this.symbolPadding, 0.6 + this.symbolPadding]
-            symbolY = 0.6 + this.symbolPadding
+            multilineY = [0.7 + this.symbolPadding, 0.7 + this.symbolPadding]
+            symbolY = 0.7 + this.symbolPadding
             labelY = 0.3 - this.labelPadding
           } else {
             multilineY = [0.5 - this.symbolPadding, 0.5 - this.symbolPadding]
             symbolY = 0.3 - this.symbolPadding
-            labelY = 0.6 + this.labelPadding
+            labelY = 0.7 + this.labelPadding
           }
           labelAnchorPoint = 'center'
           return { multilineY, symbolY, labelY, labelAnchorPoint }
@@ -564,29 +539,6 @@ export default {
 
     round (value, n) {
       return Math.floor(value / n) * n
-    },
-
-    formatLabels (dataDomain, variableType) {
-      if (variableType === 'count') { dataDomain[0] = 0 }
-      let interval = this.tickMinStep ? (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1) < this.tickMinStep ? this.tickMinStep : (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1) : (dataDomain[1] - dataDomain[0]) / (this.tickCount - 1)
-      let ticks = []
-
-      for (let i = 0; i < this.tickCount; i++) {
-        let value = Math.floor(dataDomain[0] + i * interval)
-
-        if (interval >= 10) {
-          if (dataDomain[0] === 0) {
-            value = this.round(value, 10)
-          } else {
-            value = this.round(value, 1)
-          }
-        }
-
-        if (this.format) { value = this.format(value) }
-        ticks.push(value)
-      }
-
-      return ticks
     },
 
     generateColorScale (prop, colorBasis) {

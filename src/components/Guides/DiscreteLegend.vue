@@ -144,7 +144,6 @@ export default {
   computed: {
     boxes () {
       let boxes = []
-      let ticks = this.tickCount
       let l = this.legendLabels
       let start = 0
       let end = 0
@@ -152,7 +151,7 @@ export default {
       let colorScale = this.generateColorScale('fill', this.fill)
 
       if (!this.flip) {
-        for (let i = 0; i < ticks; i++) {
+        for (let i = 0; i < l.length; i++) {
           if (i === 0) {
             end += this.segmentHeight
           } else {
@@ -160,14 +159,15 @@ export default {
             end += this.segmentHeight
           }
           location = (start + end) / 2
-          boxes.push({ fill: colorScale(l[i]), start: start, end: end, location: location, label: l[i] })
+
+          boxes.push({ fill: colorScale(l[i].value), start: start, end: end, location: location, label: l[i].label })
         }
       } else {
-        for (let i = ticks - 1; i >= 0; i--) {
+        for (let i = l.length - 1; i >= 0; i--) {
           start = end
           end += this.segmentHeight
           location = (start + end) / 2
-          boxes.push({ fill: colorScale(l[i]), start: start, end: end, location: location, label: l[i] })
+          boxes.push({ fill: colorScale(l[i].value), start: start, end: end, location: location, label: l[i].label })
         }
       }
 

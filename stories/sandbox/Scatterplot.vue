@@ -77,14 +77,12 @@
         title=""
         :scale="{ domain: 'explanatory'}"
         :size="{ domain: 'explanatory'}"
-        :tick-count=10
         position="br"
         flip-numbers
       />
 
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
-        :tick-count=10
         :stroke="'none'"
         :size="{ domain: 'dependent', range: [1, 15]}"
         :fill="{ type: 'viridis'}"

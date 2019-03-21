@@ -380,8 +380,10 @@ export default {
     // work on categorical scales - shapes, colors, sizes, stroke widths
     symbols () {
       let symbols = []
-      let ticks = this.tickCount
-      let l = this.legendLabels; let start = 0; let end = 0; let location; let symbol
+      let l = this.legendLabels
+
+      let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
+      let start = 0; let end = 0; let location; let symbol
 
       if (!this.flip) {
         for (let i = 0; i < ticks; i++) {
@@ -390,16 +392,16 @@ export default {
           }
           end += this.segmentHeight
           location = (start + end) / 2
-          symbol = { location: location, label: l[i] }
-          symbols.push(this.parseAttributes(symbol, l[i]))
+          symbol = { location: location, label: l[i].label }
+          symbols.push(this.parseAttributes(symbol, l[i].value))
         }
       } else {
         for (let i = ticks - 1; i >= 0; i--) {
           start = end
           end += this.segmentHeight
           location = (start + end) / 2
-          symbol = { location: location, start: start, end: end, label: l[i] }
-          symbols.push(this.parseAttributes(symbol, l[i]))
+          symbol = { location: location, start: start, end: end, label: l[i].label }
+          symbols.push(this.parseAttributes(symbol, l[i].value))
         }
       }
 

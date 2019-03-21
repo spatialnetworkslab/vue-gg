@@ -50,7 +50,6 @@
         :size="15"
         :x="sectionWidth * 0.6"
         :y="sectionHeight * 0.5"
-        :tick-count="9"
         :stroke="colorLegend(colorScheme)"
         :shape="shapeLegend(shapeScheme)"
         title="Fruits"

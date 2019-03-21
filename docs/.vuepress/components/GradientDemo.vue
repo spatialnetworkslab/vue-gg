@@ -1,24 +1,23 @@
 <template>
   <div>
-
     <vgg-graphic
-      :width="500"
-      :height="500"
+      :width="650"
+      :height="650"
       :data="data"
     >
       <vgg-data
         :transform="[
           { rename: { a: 'apple', b: 'banana', d: 'durian' } },
-          { binning: { groupBy: 'apple', method: 'EqualInterval', numClasses: 5 } },
+          { binning: { groupBy: 'apple', method: selected, numClasses: 5 } },
           { summarise: { binCount: { apple: 'count' } } }
         ]"
       >
 
         <vgg-section
-          :x1="0"
-          :x2="400"
-          :y1="0"
-          :y2="400"
+          :x1="100"
+          :x2="500"
+          :y1="100"
+          :y2="500"
           :scale-x="'bins'"
           :scale-y="{ domain: 'binCount', domainMin: 0 }"
         >
@@ -38,12 +37,12 @@
         </vgg-section>
 
         <vgg-gradient-legend
-          :scale="{ domain: 'bins', domainMin: 10 }"
+          :scale="'bins'"
           :font-size="10"
           :title-font-size="16"
-          :tick-count="10"
-          title="Legend title"
           position="tr"
+          title-font-weight="bold"
+          title="Bins"
         />
 
       </vgg-data>
@@ -61,10 +60,10 @@ export default {
         b: this.generate(10, true),
         c: this.generate(100),
         d: this.generate(100)
-      }
+      },
+      selected: 'EqualInterval'
     }
   },
-
   methods: {
     generate (spread, str) {
       const N = 100

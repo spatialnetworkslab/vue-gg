@@ -88,12 +88,12 @@ These properties control the number of labels/the interval between the labels in
 ::: v-pre
 ```html
 <vgg-gradient-legend
-  :scale="{ domain: 'bins', domainMin: 10 }"
+  :scale="'bins'"
   :font-size="10"
   :title-font-size="16"
-  :tick-count="10"
-  title="Legend title"
   position="tr"
+  title-font-weight="bold"
+  title="Legend"
 />
 ```
 :::
