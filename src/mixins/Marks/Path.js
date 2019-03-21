@@ -85,6 +85,41 @@ export default {
       default: false
     },
 
+    curve: {
+      type: [Boolean, String, undefined],
+      default: false
+    },
+
+    curveBeta: {
+      type: Number,
+      default: undefined
+    },
+
+    curveTension: {
+      type: Number,
+      default: undefined
+    },
+
+    curveAlpha: {
+      type: Number,
+      default: undefined
+    },
+
+    regression: {
+      type: [Boolean, String, undefined],
+      default: false
+    },
+
+    regressionOrder: {
+      type: Number,
+      default: 2
+    },
+
+    regressionPrecision: {
+      type: Number,
+      default: 2
+    },
+
     interpolate: {
       type: Boolean,
       default: false
@@ -101,6 +136,19 @@ export default {
     _interpolate () {
       if (this.interpolate !== undefined) { return this.interpolate }
       return false
+    },
+
+    curveSpec () {
+      let beta = this.curveBeta ? this.curveBeta : 0
+      let tension = this.curveTension ? this.curveTension : 0
+      let alpha = this.curveAlpha ? this.curveAlpha : 0
+      return { beta: beta, tension: tension, alpha: alpha }
+    },
+
+    regressSpec () {
+      let order = this.regressionOrder
+      let precision = this.regressionPrecision
+      return { order: order, precision: precision }
     }
   },
 
@@ -171,11 +219,11 @@ export default {
 
     createPath (points) {
       if (this._interpolate) {
-        return interpolatePath(points, this.$$transform)
+        return interpolatePath(points, this.$$transform, this.curve, this.curveSpec)
       }
 
       if (!this._interpolate) {
-        return createPath(points, this.$$transform)
+        return createPath(points, this.$$transform, this.curve, this.curveSpec, this.regression, this.regressSpec)
       }
     },
 

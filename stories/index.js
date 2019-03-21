@@ -23,6 +23,8 @@ import GlobalDataScope from './sandbox/GlobalDataScope.vue'
 import SimpleGridLayout from './sandbox/SimpleGridLayout.vue'
 import MappingGridLayout from './sandbox/MappingGridLayout.vue'
 import RepeatLayout from './sandbox/RepeatLayout.vue'
+import CurveExplorer from './sandbox/CurveExplorer.vue'
+import RegressionExplorer from './sandbox/RegressionExplorer.vue'
 import SectionAxesTest from './sandbox/SectionAxesTest.vue'
 
 storiesOf('Charts', module)
@@ -50,4 +52,6 @@ storiesOf('Sandbox', module)
   .add('Simple Grid layout', () => (SimpleGridLayout))
   .add('Mapping Grid layout', () => (MappingGridLayout))
   .add('Repeat Grid layout', () => (RepeatLayout))
+  .add('Curve Explorer', () => (CurveExplorer))
+  .add('Regression Explorer', () => (RegressionExplorer))
   .add('Section axes', () => (SectionAxesTest))
