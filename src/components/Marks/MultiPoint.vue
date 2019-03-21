@@ -6,16 +6,6 @@ export default {
   mixins: [Mark],
 
   props: {
-    x: {
-      type: [Number, String, Date],
-      default: undefined
-    },
-
-    y: {
-      type: [Number, String, Date],
-      default: undefined
-    },
-
     fill: {
       type: String,
       default: '#000000'
@@ -59,13 +49,18 @@ export default {
     geometry: {
       type: undefined,
       default: undefined
+    },
+
+    points: {
+      type: undefined,
+      default: undefined
     }
   },
 
   data () {
     return {
-      markType: 'point',
-      validGeomTypes: ['Point']
+      markType: 'multi-point',
+      validGeomTypes: ['MultiPoint']
     }
   },
 
@@ -77,20 +72,23 @@ export default {
         checkGeometry(this.markType, this.validGeomTypes, this.geometry)
       }
 
-      let xy = this.geometry
+      let points = this.geometry
         ? aesthetics.geometry.coordinates
-        : [aesthetics.x, aesthetics.y]
+        : aesthetics.points
 
-      let [cx, cy] = this.$$transform(xy)
-
-      return createElement('circle', {
-        attrs: {
-          'cx': cx,
-          'cy': cy,
-          'r': aesthetics.radius
-        },
-        style: this.createSVGStyle(aesthetics)
-      })
+      return createElement('g',
+        points.map(p => {
+          let [cx, cy] = this.$$transform(p)
+          return createElement('circle', {
+            attrs: {
+              'cx': cx,
+              'cy': cy,
+              'r': aesthetics.radius
+            },
+            style: this.createSVGStyle(aesthetics)
+          })
+        })
+      )
     }
   }
 }
