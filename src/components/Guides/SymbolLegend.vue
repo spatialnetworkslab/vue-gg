@@ -541,7 +541,7 @@ export default {
           grid = { columns: this.columns }
         }
       }
-      console.log(grid, this.title)
+
       return grid
     }
   },

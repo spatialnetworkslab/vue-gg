@@ -137,19 +137,17 @@ These properties can be mapped to show scaling with respect to a specific variab
 ::: v-pre
 ```html
 <vgg-symbol-legend
-  :scale="'a'"
-  :tickCount=10
-  :stroke="'none'"
-  :size="{ range: [1, 20] }"
-  :fill="{ type: 'plasma'}"
-  title="Legend"
+  :scale="'category'"
+  :size="{ range: [1, 30] }"
+  :fill="{ type: 'paired'}"
+  :shape="{ type: 'stars'}"
+  stroke="'none'"
+  :w="400"
+  title="Fill, Shape, Size"
   title-font-weight="bold"
   :title-font-size=12
   :title-padding="10"
-  position="tl"
-  :rows="2"
-  :symbol-padding="0.2"
-  :h="100"
+  position="tr"
   orientation="horizontal"
 />
 ```

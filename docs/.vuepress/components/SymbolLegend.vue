@@ -18,9 +18,9 @@
         <vgg-symbol
           :x="{ val: row.a, scale: 'a' }"
           :y="{ val: row.b, scale: 'b' }"
-          :size="{ val: row.a, scale: { domain: 'a', range: [1, 20] } }"
-          :fill="{ val: row.categorical, scale: { type: 'paired', domain: 'categorical' } }"
-          :shape="{ val: row.categorical, scale: { type: 'stars', domain: 'categorical' } }"
+          :size="{ val: row.a, scale: { domain: 'a', range: [1, 30] } }"
+          :fill="{ val: row.category, scale: { type: 'paired', domain: 'category' } }"
+          :shape="{ val: row.category, scale: {type: 'stars', domain: 'category'}}"
         />
 
       </vgg-map>
@@ -28,17 +28,17 @@
     </vgg-section>
 
     <vgg-symbol-legend
-      :scale="{ domain: 'categorical' }"
-      :size="{ range: [1, 20] }"
+      :scale="'category'"
+      :size="{ range: [1, 30] }"
       :fill="{ type: 'paired'}"
-      :shape="{ type: "stars"}"
-      title="Shape, Size, Fill"
+      :shape="{ type: 'stars'}"
+      stroke="'none'"
+      :w="400"
+      title="Fill, Shape, Size"
       title-font-weight="bold"
       :title-font-size=12
       :title-padding="10"
-      position="tl"
-      :rows="2"
-      :symbol-padding="0.2"
+      position="tr"
       orientation="horizontal"
     />
 
@@ -75,10 +75,9 @@ export default {
         let a = Math.random() * range
         let error = Math.random() * range
         let b = beta0 + a * beta1 + error
-        let categorical = fruits[Math.floor(i / 12)]
-        data.push({ a, b, categorical })
+        let category = fruits[Math.floor(i / 12)]
+        data.push({ a, b, category })
       }
-
       return data
     }
   }
