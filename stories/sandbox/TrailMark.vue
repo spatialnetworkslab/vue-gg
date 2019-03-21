@@ -61,7 +61,6 @@
       :stroke-width="15"
       shape="line"
       :stroke="['red', 'green', 'blue']"
-      :fill="['red', 'green', 'blue']"
       title="Stroke color"
       :tickCount="3"
       :x="600"

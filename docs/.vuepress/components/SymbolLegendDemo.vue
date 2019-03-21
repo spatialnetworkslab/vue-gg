@@ -27,10 +27,10 @@
     </vgg-section>
 
     <vgg-symbol-legend
-      :scale="{ domain: 'a'}"
+      :scale="'a'"
       :tickCount=10
       :stroke="'none'"
-      :size="{ domain: 'a', range: [1, 20]}"
+      :size="{ range: [1, 20] }"
       :fill="{ type: 'plasma'}"
       title="Size & Color"
       title-font-weight="bold"
@@ -38,7 +38,7 @@
       :title-padding="10"
       position="tl"
       :rows="2"
-      :symbolPadding="0.2"
+      :symbol-padding="0.2"
       :h="100"
       orientation="horizontal"
     />

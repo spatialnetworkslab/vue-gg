@@ -434,7 +434,7 @@ export default {
     sectionWidth () {
       if (!this.w) {
         if (this.orientation === 'vertical') {
-          return this.labelFontSize * 6
+          return this.plotWidth * 0.1
         } else {
           return this.plotWidth * 0.3 + this.titleFontSize + this.titlePadding * 2
         }
@@ -448,7 +448,7 @@ export default {
         if (this.orientation === 'vertical') {
           return this.plotHeight * 0.3 + this.titleFontSize + this.titlePadding * 2
         } else {
-          return this.labelFontSize * 6
+          return this.plotHeight * 0.1
         }
       } else {
         return this.h
