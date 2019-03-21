@@ -45,9 +45,21 @@ The standard trail mark takes the following props. Note that `x` and `y`, and `p
 To render the Trail mark, you will need to provide the `x` and `y` props.
 These can be of type `Number`, `String` and `Date`, depending what kind of domain type the parent Section has.
 
+| Prop | Required | Regular types    | Default   | Description                             | Unit(s)                |
+| ---- | -------- | ---------------- | --------- | --------------------------------------- | ---------------------- |
+| points| false    | Array | []       | array of x-y coordinate pairs referring to path tracked by `trail` mark                      | [ [ x1, y1 ], [ x2, y2 ], ...] |
+| x    | true    | Number         | undefined | position of legend along section x-axis                      | Local Coordinates      |
+| y    | true    | Number         | undefined | position of legend along section y-axis                         | Local Coordinates      |
+
+Alternatively, the `points` prop may be used to specify the path followed by `trail`. Only `x` and `y` or `points` may be used at any given time for a certain `trail` mark.
+
 ### Other Props
 
 The `stroke-width` prop sets the stroke width of the `trail` mark at a given point. This may be given in screen pixels, or as a scaled value, as shown in the Example section.
+
+Prop           | Required | Regular types    | Default     | Description                                    | Unit(s)                    |
+| -------------- | -------- | ---------------- | ----------- | ---------------------------------------------- | -------------------------- |
+| stroke-width          | false    | [Number, Object, Array]        | 2        | symbol stroke width| Screen pixel |
 
 # Example
 

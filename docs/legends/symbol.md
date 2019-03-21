@@ -96,7 +96,7 @@ These properties can be mapped to show scaling with respect to a specific variab
 | shape          | false    | [String, Array]        | circle        | symbol shape | See [Marks > Symbol](./marks/symbol.md); an additional shape value called `line` is also available for the symbol legend |
 | linecap          | false    | String      | round        | stroke line cap of symbol when `shape` is set to `line`| round, butt, square |
 | size          | false    | [Number, Object, Array]        | 16        | symbol size | Screen pixel |
-| stroke-width          | false    | [Object, Array]        | 2        | symbol stroke width| Screen pixel |
+| stroke-width          | false    | [Number, Object, Array]        | 2        | symbol stroke width| Screen pixel |
 | stroke          | false    | [Object, Array, String]        | undefined      | symbol stroke color| Named color, hex, rgb, hsl |
 | stroke-opacity          | false    | [Number, Object, Array]        | 1        | symbol stroke opacity | Number between 0 and 1 |
 | symbol-padding          | false    | Number        | 0.05        | space between symbol and label | Number between 0 and 1 |
@@ -107,9 +107,9 @@ These properties can be mapped to show scaling with respect to a specific variab
 
 `columns` or `rows` instructs the component to draw the legend as a grid with the specified number of columns or rows. By default, the legend will draw ten (10) ticks.
 
-# Example
+# Examples
 
-<SymbolLegendDemo/>
+<SizeColorLegend/>
 
 ::: v-pre
 ```html
@@ -128,6 +128,66 @@ These properties can be mapped to show scaling with respect to a specific variab
   :symbol-padding="0.2"
   :h="100"
   orientation="horizontal"
+/>
+```
+:::
+
+<SymbolLegendDemo/>
+
+::: v-pre
+```html
+<vgg-symbol-legend
+  :scale="'a'"
+  :tickCount=10
+  :stroke="'none'"
+  :size="{ range: [1, 20] }"
+  :fill="{ type: 'plasma'}"
+  title="Legend"
+  title-font-weight="bold"
+  :title-font-size=12
+  :title-padding="10"
+  position="tl"
+  :rows="2"
+  :symbol-padding="0.2"
+  :h="100"
+  orientation="horizontal"
+/>
+```
+:::
+
+
+<LineLegend/>
+
+::: v-pre
+```html
+// stroke width and opacity
+<vgg-symbol-legend
+  :scale="'#rainfallScale'"
+  :font-size="10"
+  :size="15"
+  :x="600"
+  :y="300"
+  :stroke-width="{ range: [2, 12] }"
+  :stroke-opacity="{ range: [0, 0.7] }"
+  shape="line"
+  direction="vertical"
+  title="Stroke width & opacity"
+  title-font-weight="bold"
+  :title-font-size="12"
+/>
+
+// stroke color
+<vgg-symbol-legend
+  :scale="'colors'"
+  :font-size="10"
+  :stroke-width="15"
+  :stroke="['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']"
+  :x="600"
+  :y="50"
+  shape="line"
+  title="Stroke color"
+  title-font-weight="bold"
+  :title-font-size="12"
 />
 ```
 :::
