@@ -157,6 +157,7 @@ export default {
     },
 
     _handleClickListener (e) {
+      e.preventDefault()
       let coords = getCoords(this.svg, this.svgPoint, e)
       let listenerTracker = this.interactionManager.listenerTrackers['click']
       let hits = collisionTest(coords, listenerTracker.spatialIndex)
@@ -173,6 +174,7 @@ export default {
     },
 
     _handleMouseMoveListener (e) {
+      e.preventDefault()
       let coords = getCoords(this.svg, this.svgPoint, e)
       let listenerTracker = this.interactionManager.listenerTrackers['mousemove']
 
@@ -241,6 +243,7 @@ export default {
     },
 
     _handleMouseDownListener (e) {
+      e.preventDefault()
       let coords = getCoords(this.svg, this.svgPoint, e)
       let listenerTracker = this.interactionManager.listenerTrackers['mousedown']
 
@@ -251,6 +254,7 @@ export default {
     },
 
     _handleMouseUpListener (e) {
+      e.preventDefault()
       let coords = getCoords(this.svg, this.svgPoint, e)
       let listenerTracker = this.interactionManager.listenerTrackers['mouseup']
 
