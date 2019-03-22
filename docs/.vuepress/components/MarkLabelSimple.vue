@@ -23,11 +23,12 @@
 
       <vgg-map v-slot="{ row }">
 
-        <vgg-rectangle
+        <vgg-label
           :x="row.year"
-          :y1="row.population"
-          :y2="0"
-          :w="2.5"
+          :y="row.population"
+          :text="row.population"
+          :font-size="12"
+          font-family="Comic Sans MS"
           fill="#c66366"
         />
 
