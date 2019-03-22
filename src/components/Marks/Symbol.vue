@@ -91,10 +91,22 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
+    }
+  },
+
   methods: {
     createCircle (createElement, aesthetics) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
       let r = aesthetics.size / 2
+
+      let events = this.events
+      if (events.length > 0) {
+        this.addToSpatialIndex([cx, cy], events)
+      }
 
       return createElement('circle', {
         attrs: {
@@ -113,6 +125,11 @@ export default {
       let x = cx - (l / 2)
       let y = cy - (l / 2)
 
+      let events = this.events
+      if (events.length > 0) {
+        this.addToSpatialIndex([x, y], events)
+      }
+
       return createElement('rect', {
         attrs: {
           'width': l,
@@ -126,6 +143,12 @@ export default {
 
     createPath (createElement, aesthetics, d) {
       let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
+
+      let events = this.events
+      if (events.length > 0) {
+        this.addToSpatialIndex([cx, cy], events)
+      }
+
       let s = this.createSVGStyle(aesthetics)
       let scale = aesthetics.size / 2
       s.strokeWidth = s.strokeWidth / scale
@@ -155,6 +178,10 @@ export default {
       }
 
       return this.createPath(createElement, aesthetics, path)
+    },
+
+    addToSpatialIndex (coordinates, events) {
+      this.$$interactionManager.addItem(this.uuid, 'symbol', coordinates, this, events, this.sectionParentChain)
     }
   }
 }

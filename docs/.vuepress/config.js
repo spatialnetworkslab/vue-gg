@@ -41,7 +41,8 @@ module.exports = {
               children: [
                 'concepts/data-loading.md',
                 'concepts/transforming-data.md',
-                'concepts/scaling.md'
+                'concepts/scaling.md',
+                'concepts/interactivity.md'
               ]
             },
             {

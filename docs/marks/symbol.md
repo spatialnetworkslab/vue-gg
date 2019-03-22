@@ -20,8 +20,8 @@ in a scatterplot with the shape set to `circle`.
 
 | Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
 | ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
-| x    | true     | [Number, String, Date] | undefined | x-coordinates of center of each symbol | Local coordinates |
-| y    | true     | [Number, String, Date] | undefined | y-coordinates of center of each symbol | Local coordinates |
+| x    | true     | [Number, String, Date] | undefined | x-coordinate of center of each symbol | Local coordinates |
+| y    | true     | [Number, String, Date] | undefined | y-coordinate of center of each symbol | Local coordinates |
 
 ### Other aesthetics
 
@@ -43,6 +43,20 @@ These are analogous to the CSS properties of the same names.
 | shape       | false    | String  | 'circle'| Shape of the symbol                                                      |
 | size        | false    | Number  | 10      | Length and width of the symbol                                           |
 | transition  | false    | Number  | 0       | Time taken to animate changes to each symbol when data changes           |
+
+# Events
+
+| Event     | Description                                   |
+| --------- | --------------------------------------------- |
+| click     | Triggered when user clicks on mark            |
+| hover     | Triggered when user hovers over mark          |
+| mouseover | Triggered when user's mouse is above mark     |
+| mouseout  | Triggered when user's mouse leaves mark       |
+| select    | Triggered when mark is selected               |
+| deselect  | Triggered when mark is removed from selection |
+
+For more information on these events, see the [Interactivity](../concepts/interactivity.md)
+documentation.
 
 # Usage
 

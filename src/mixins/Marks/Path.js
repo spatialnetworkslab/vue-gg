@@ -1,5 +1,12 @@
 import Mark from './Mark.js'
-import { createPath, interpolatePath, createGeoPath } from '../../components/Marks/utils/createPath.js'
+import {
+  interpolatePoints,
+  transformPoints,
+  transformFeature,
+  createPath,
+  createGeoPath
+} from '../../components/Marks/utils/createPath.js'
+
 import checkPoints from './utils/checkPoints.js'
 import { invalidPoint } from '../../utils/equals.js'
 
@@ -88,12 +95,6 @@ export default {
     interpolate: {
       type: Boolean,
       default: false
-    },
-
-    // This is not actually meant to be used, just a flag for the mixin logic
-    _area: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -101,6 +102,13 @@ export default {
     _interpolate () {
       if (this.interpolate !== undefined) { return this.interpolate }
       return false
+    }
+  },
+
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
     }
   },
 
@@ -170,21 +178,42 @@ export default {
     },
 
     createPath (points) {
+      let transformedPoints
+      let path
+
       if (this._interpolate) {
-        return interpolatePath(points, this.$$transform)
+        let interpolatedPoints = interpolatePoints(points)
+        transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
+        path = createPath(transformedPoints)
       }
 
       if (!this._interpolate) {
-        return createPath(points, this.$$transform)
+        transformedPoints = transformPoints(points, this.$$transform)
+        path = createPath(transformedPoints)
       }
+
+      let events = this.events
+      if (events.length > 0) {
+        this.addToSpatialIndex(transformedPoints, events)
+      }
+
+      return path
     },
 
     renderSVG (createElement) {
-      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, this._area)
+      let area = this.pathType === 'area'
+      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, area)
       let aesthetics = this._props
 
       if (this.geometry) {
-        let path = createGeoPath(aesthetics.geometry, this.$$transform)
+        let tranformedFeature = transformFeature(aesthetics.geometry, this.$$transform)
+
+        let events = this.events
+        if (events.length > 0) {
+          this.addToSpatialIndex(tranformedFeature, events)
+        }
+
+        let path = createGeoPath(tranformedFeature)
         return createElement('path', {
           attrs: {
             'd': path
@@ -203,7 +232,7 @@ export default {
             points = this.sortPoints(points)
           }
 
-          if (this._area) {
+          if (area) {
             let points2
 
             if (aesthetics.x2 && !aesthetics.y2) {
@@ -227,6 +256,7 @@ export default {
           }
 
           let path = this.createPath(points)
+
           let element = createElement('path', {
             attrs: {
               'd': path
@@ -239,6 +269,10 @@ export default {
           console.warn('Not enough valid points to draw Mark')
         }
       }
+    },
+
+    addToSpatialIndex (coordinates, events) {
+      this.$$interactionManager.addItem(this.uuid, this.pathType, coordinates, this, events, this.sectionParentChain)
     }
   }
 }

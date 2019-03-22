@@ -4,11 +4,12 @@ import DataProvider from '../../mixins/Data/DataProvider.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
+import SelectionManager from '../../mixins/Interactions/SelectionManager.js'
 
 import CoordinateTransformation from '../../classes/CoordinateTree/CoordinateTransformation.js'
-import randomID from '../../utils/id.js'
 
 import { calculateWidths, createAxisProps } from './utils/section.js'
+import { createPropCache, createWatchers } from './utils/propCache.js'
 
 import Section from './Section.vue'
 import XAxis from '../Guides/XAxis.vue'
@@ -17,7 +18,7 @@ import XGrid from '../Guides/XGrid.vue'
 import YGrid from '../Guides/YGrid.vue'
 
 export default {
-  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular],
+  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular, SelectionManager],
 
   props: {
     type: {
@@ -68,7 +69,8 @@ export default {
 
   data () {
     return {
-      ready: false
+      ready: false,
+      props: createPropCache(this, ['scaleX', 'scaleY', 'scaleGeo', 'axes', 'gridLines', 'select'])
     }
   },
 
@@ -82,11 +84,11 @@ export default {
     },
 
     scales () {
-      if ((this.scaleX || this.scaleY || this.scaleGeo)) {
+      if ((this.props.scaleX || this.props.scaleY || this.props.scaleGeo)) {
         let scales = {}
-        if (this.scaleX) { scales.x = this.scaleX }
-        if (this.scaleY) { scales.y = this.scaleY }
-        if (this.scaleGeo) { scales.geo = this.scaleGeo }
+        if (this.props.scaleX) { scales.x = this.props.scaleX }
+        if (this.props.scaleY) { scales.y = this.props.scaleY }
+        if (this.props.scaleGeo) { scales.geo = this.props.scaleGeo }
 
         let hasX = scales.hasOwnProperty('x')
         let hasY = scales.hasOwnProperty('y')
@@ -144,7 +146,7 @@ export default {
     transformation () {
       let transformation
 
-      if (!this.axes) {
+      if (!this._axes) {
         transformation = new CoordinateTransformation({
           type: this.type,
           scales: this.scales,
@@ -154,7 +156,7 @@ export default {
         })
       }
 
-      if (this.axes) {
+      if (this._axes) {
         // If there are axes, we will just do an identity transformation.
         // The actual transformation will then take place in the nested child section.
         transformation = new CoordinateTransformation({
@@ -169,31 +171,36 @@ export default {
       return transformation
     },
 
+    $$ownTransform () {
+      return this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
+    },
+
     coordinateTreeBranchID () {
       let id
+
       let parentData = this.$parent.$vnode.data
       if (parentData.attrs && parentData.attrs.id) {
         // use id if given
-        id = parentData.attrs.id + '_' + this.randomID
+        id = parentData.attrs.id + '_' + this.uuid
       } else if (parentData.staticClass) {
         // fall back on class if no id is given
         let elClass = parentData.staticClass.replace(/\s+/g, '_')
-        id = elClass + '_' + this.randomID
+        id = elClass + '_' + this.uuid
       } else {
-        id = '_' + randomID()
+        id = '_' + this.uuid
       }
       return id
     },
 
     _axes () {
-      if (this.axes && this.axes.constructor === Array) {
+      if (this.props.axes && this.props.axes.constructor === Array) {
         let axes = {}
-        for (let axis of this.axes) {
+        for (let axis of this.props.axes) {
           axes[axis] = {}
         }
         return axes
       } else {
-        return this.axes
+        return this.props.axes
       }
     },
 
@@ -229,14 +236,14 @@ export default {
     },
 
     _gridLines () {
-      if (this.gridLines && this.gridLines.constructor === Array) {
+      if (this.props.gridLines && this.props.gridLines.constructor === Array) {
         let gridLines = {}
-        for (let gridLine of this.gridLines) {
+        for (let gridLine of this.props.gridLines) {
           gridLines[gridLine] = null
         }
         return gridLines
       } else {
-        return this.gridLines
+        return this.props.gridLines
       }
     }
   },
@@ -251,6 +258,7 @@ export default {
 
   mounted () {
     this.setCoordinateTreeBranch()
+    createWatchers(this, this.props)
     this.ready = true
   },
 
@@ -263,7 +271,7 @@ export default {
       )
     },
 
-    updateCoordinateTreeBranch () {
+    updateCoordinateTreeBranch (newVal, oldVal) {
       this.$$coordinateTree.updateBranch(this.coordinateTreeBranchID, this.transformation)
     },
 
@@ -279,9 +287,10 @@ export default {
 
     createSection (createElement) {
       let props = this.nestedSectionProps
+      let on = this.$options._parentListeners
       let slotContent = this.getSlotContent()
 
-      return createElement(Section, { props }, slotContent)
+      return createElement(Section, { props, on }, slotContent)
     },
 
     createAxes (createElement) {
@@ -372,17 +381,17 @@ export default {
   },
 
   provide () {
-    let $$transform = this.$$coordinateTree.getTotalTransformation(this.coordinateTreeBranchID)
+    let $$transform = this.$$ownTransform
     let $$coordinateTreeParent = this.coordinateTreeBranchID
     return { $$transform, $$coordinateTreeParent }
   },
 
   render (createElement) {
     if (this.ready && this.allowScales) {
-      if (!this.axes) {
+      if (!this._axes) {
         let slotContent = this.getSlotContent()
 
-        if (this.gridLines) {
+        if (this.props.gridLines) {
           let gridLines = this.createGridLines(createElement)
           slotContent.push(...gridLines)
         }
@@ -390,7 +399,7 @@ export default {
         return createElement('g', { class: 'section' }, slotContent)
       }
 
-      if (this.axes) {
+      if (this._axes) {
         let section = this.createSection(createElement)
         let axes = this.createAxes(createElement)
         let content = [section, ...axes]
