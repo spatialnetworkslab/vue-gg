@@ -4,7 +4,7 @@ module.exports = {
     description: "",
     themeConfig: {
         nav: [],
-        sidebarDepth: 2,
+        sidebarDepth: 1,
         sidebar: [{
                 title: 'Introduction',
                 collapsable: false,
