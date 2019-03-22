@@ -19,12 +19,12 @@ The `vgg-polygon` mark is used to plot polygonal elements.
 
 <div style='width: 40%; height: 100%;'>
 
-```vue
-  <vgg-polygon
-    :points="points"
-    fill="008080"
-    stroke="none"
-  />
+```html
+<vgg-polygon
+  :points="points"
+  fill="008080"
+  stroke="none"
+/>
 ```
 
 </div>
