@@ -1,18 +1,47 @@
 ---
-title: Trail Mark
+title: Trail mark
 ---
 
-# Component tag
+# Trail mark
 
-`<vgg-trail>`
-
-# Description
-
-The Trail mark is used to plot point data with a line connecting all the points, and is particularly useful if you want to draw lines with variable width size as a third encoding aside from position (x, y) color, and opacity. Trail marks are similar to `vgg-multi-line` in that they can follow arbitrary trajectories and do not need to follow a vertical or horizontal orientation. Their main feature is being mappable to variable widths from point to point, as inputted to `stroke-width`.
+The Trail mark is used to plot point data with a line connecting all the points, and is particularly useful if you want to draw lines with variable width encoding in addition to position, color, and opacity. Trail marks are similar to `vgg-multi-line`. Their main feature is being mappable to variable widths from point to point, as specified in the `stroke-width` property.
 
 This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpacity` to manipulate its color and opacity respectively.
 
-# Props
+<div style="display: flex;
+  justify-content: space-around;
+  align-items: center"
+>
+
+<div>
+
+<MarkTrailSimple />
+
+</div>
+
+<div style='width: 40%; height: 100%; overflow:scroll;'>
+
+```html
+<vgg-map v-slot="{ dataframe }"
+  unit="dataframe">
+
+  <vgg-trail
+    :x="dataframe.xValues"
+    :y="dataframe.yValues"
+    :stroke-width="{
+      val: dataframe.xValues,
+      scale: 'xValues' }"
+    fill="#c66366"
+  />
+
+</vgg-map>
+```
+
+</div>
+
+</div>
+
+## Properties
 
 ### Positioning
 
@@ -22,6 +51,14 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 | y      | depends  | Array | undefined | Array of y-coordinates for each trail point           | Local coordinates |
 | points | depends  | Array | undefined | Array of coordinate pairs [x, y] for each trail point | Local coordinates |
 
+#### Allowed combinations of positioning props
+The positioning properties of the Trail mark can only be used in certain combinations.
+
+| Combination | Explanation                                                                                                                    |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `x` + `y`   | `x` refers to x-coordinate of each point along the trail, `y` refers to y-coordinate of each point along the trail.            |
+| `points`    | Each point along the trail is specified as [x, y], where x and y are numbers and not variables. All points in the trail should be passed to the mark in the form [ [ x1 , y1 ] , [ x2 , y2 ] ... ]          |
+
 ### Other aesthetics
 
 | Prop         | Required | Types           | Default   | Description                                              | Unit(s)                    |
@@ -30,14 +67,14 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 | fill         | false    | String          | 'black'   | Fill color                                               | Named color, hex, rgb, hsl |
 | fill-opacity | false    | Number          | undefined | Fill opacity                                             | Number between 0 and 1     |
 
-### Other props
+### Other properties
 
 | Prop  | Required | Types   | Default   | Description                                                             | Unit(s) |
 | ----- | -------- | ------- | --------- | ----------------------------------------------------------------------- | ------- |
 | sort  | false    | Boolean | undefined | Points are to be sorted based on their x- or y-values, or left unsorted | Boolean |
-| close | false    | Boolean | false     | If true, start point of trail is also its last point                    | Boolean |
+| close | false    | Boolean | false     | If true, the start and end points of the trail are connected to form a closed path    | Boolean |
 
-# Events
+## Events
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
@@ -51,50 +88,22 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 For more information on these events, see the [Interactivity](../concepts/interactivity.md)
 documentation.
 
-# Usage
+## Usage
 
 ### Positioning
 
-The Trail mark can be positioned in two ways: by providing both the `x` and `y` props,
-or by providing the `points` prop. These two ways are mutually exclusive.
+The Trail mark can be positioned in two ways: by providing both the `x` and `y` properties, or by providing the `points` property.
 
-### Other Props
+### Other aesthetics
 
-The `stroke-width` prop sets the stroke width of the `trail` mark at a given point. This may be given in screen pixels, or as a scaled value, as shown in the Example section.
+In the trail mark, the `stroke-width` properties can be scaled according to a third variable. However, the `fill` and `fill-opacity` properties can only take on a single value that applies to the entire trail mark.
 
-# Example
+### Other properties
 
-::: v-pre
-```html
-<vgg-map
-  v-slot="{ dataframe }"
-  unit="dataframe"
->
+The `sort` property sorts the data according to the given variable before plotting the trail mark. Sorting is done from lowest to highest (or alphabetically).
 
-  <vgg-trail
-    :x="{ val: dataframe.time, scale: 'time' }"
-    :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
-    :stroke-width="{ val: dataframe.width, scale: 'width'}"
-    :fill-opacity="0.4"
-    fill="green"
-  />
+The `close` property, when true, joins the start and end points of the trail mark to form a closed path.
 
-</vgg-map>
-```
-:::
+## Example
 
-<TrailMarkDemo />
-
-This produces a green trail mark with 0.4 opacity and varying stroke width according to `dataframe.width`. Alternatively, `points` can be used to input an array of coordinate pairs, like so:
-
-::: v-pre
-```html
-<vgg-trail
-  :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
-  :stroke-width="[1, 5, 5, 3, 4, 2]"
-  :fill-opacity="0.7"
-  :sort="'x'"
-  fill="orange"
-/>
-```
-:::
+<MarkTrailDemo />
