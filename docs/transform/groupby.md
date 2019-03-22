@@ -17,10 +17,10 @@ columns is also possible.
 
 ### Instructions
 
-| Type   | Description      | Result                               |
-| ------ | ---------------- | ------------------------------------ |
-| String | Name of column   | Column that data will be grouped by  |
-| Array  | Names of columns | Columns that data will be grouped by |
+| Type   | Description      | Result                                                 |
+| ------ | ---------------- | ------------------------------------------------------ |
+| String | Name of column   | Returns grouped dataframe, grouped by one column       |
+| Array  | Names of columns | Returns grouped dataframe, grouped by multiple columns | 
 
 ### Usage
 
