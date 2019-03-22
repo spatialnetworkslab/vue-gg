@@ -170,11 +170,11 @@ Example:
 ::: v-pre
 ```html
 <vgg-data
-  :data="{ : [1, 2, 3, 4], color: ['red', 'red', 'green', 'blue'] }"
-  :transform="{ filter: row -> row.color !== 'red' }"
+  :data="{ value: [1, 2, 3, 4], color: ['red', 'red', 'green', 'blue'] }"
+  :transform="{ filter: row => row.color !== 'red' }"
 >
 
-  <!-- Data scope: { a: [3, 4], color: ['green', 'blue'] } -->
+  <!-- Data scope: { value: [3, 4], color: ['green', 'blue'] } -->
 
 </vgg-data>
 ```

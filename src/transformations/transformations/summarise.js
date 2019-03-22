@@ -43,10 +43,27 @@ export function initNewData (summariseInstructions, data) {
 export function summariseGroup (data, summariseInstructions, newData) {
   for (let newColName in summariseInstructions) {
     let instruction = summariseInstructions[newColName]
-    let column = checkKeyValuePair(instruction, Object.keys(data))
-    let aggregation = instruction[column]
 
-    newData[newColName].push(aggregations[aggregation](data[column]))
+    // If the aggregation instructions are an Object, only one column will be
+    // used as summary: the column that is used as key in the Object
+    if (instruction.constructor === Object) {
+      let column = checkKeyValuePair(instruction, Object.keys(data))
+      let aggregation = instruction[column]
+
+      if (aggregation.constructor === String) {
+        newData[newColName].push(aggregations[aggregation](data[column]))
+      } else if (aggregation.constructor === Function) {
+        newData[newColName].push(aggregation(data[column]))
+      } else {
+        throw new Error(`Invalid aggregation instruction: ${aggregation}. Must be String or Function`)
+      }
+    }
+
+    // If the instruction is a Function, it will be passed the entire group,
+    // and is expected to return a completely new dataframe.
+    if (instruction.constructor === Function) {
+      newData[newColName].push(instruction(data))
+    }
   }
 
   return newData
