@@ -9,8 +9,8 @@ module.exports = {
                 title: 'Introduction',
                 collapsable: false,
                 children: [
-                    'guide/intro',
-                    'guide/installation',
+                    'introduction/intro',
+                    'introduction/installation',
                 ]
             },
             {
@@ -21,19 +21,6 @@ module.exports = {
                     'tutorials/custom2',
                     'tutorials/customColor'
                 ]
-            },
-            {
-                title: 'Template Graphs',
-                collapsable: true,
-                children: [
-                    'graphs/plottitle',
-                    'graphs/areaunder',
-                    'graphs/boxplot',
-                    'graphs/histogram',
-                    'graphs/multiline',
-                    'graphs/piechart',
-                    'graphs/scatterplot',
-                    ]
             },
             {
               title: 'Concepts',
@@ -56,7 +43,8 @@ module.exports = {
                     'core/scales',
                     'core/grid',
                     'core/repeat',
-                    'core/glyph'
+                    'core/glyph',
+                    'core/plottitle'
                     ]
             },
             {
@@ -76,11 +64,11 @@ module.exports = {
                     ]
             },
             {
-                title: 'Axes',
+                title: 'Guides',
                 collapsable: true,
                 children: [
-                    'axes/cartesian',
-                    'axes/gridlines'
+                    'guides/cartesian',
+                    'guides/gridlines'
                     ]
             },
             {
