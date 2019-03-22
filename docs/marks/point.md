@@ -2,47 +2,33 @@
 title: Point mark
 ---
 
-# Point
+# Point Mark
 
-`<vgg-point>`
-
-# Description
-
-The most basic mark in `vue-gg`: the Point. The mark used in the scatter plot.
+The `vgg-point` mark is used to plot simple point elements. It is a special case of the more general [Symbol mark](./symbol.md) that is made available on its own for convenience.
 
 <div style="display: flex;align-items: center;justify-content:space-around">
 
 <div>
 
-<PointExample/>
+<MarkPointSimple />
 
 </div>
 
 <div style='width: 40%; height: 100%;'>
 
-```vue
-<vgg-map v-slot="{ row }">
-    <vgg-point
-        :x="
-        { 
-            val: row.x, 
-            scale: 'x' 
-        }"
-        :y="
-        { 
-            val: row.y, 
-            scale: 'y' 
-        }"
-    />
-</vgg-map>
+```html
+<vgg-point
+    :x="row.x"
+    :y="row.y"
+/>
 ```
 </div>
 </div>
 
 
 
-# Props
-
+## Props
+A `vgg-point` can contain the following position properties.
 ### Positioning
 
 | Prop | Required | Types                  | Default   | Description                     | Unit(s)           |
@@ -70,7 +56,7 @@ These are analogous to the CSS properties of the same names.
 | ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
 | transition | false    | Number | 0       | Time taken to animate changes to each point when data changes |
 
-# Events
+## Events
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
@@ -84,15 +70,12 @@ These are analogous to the CSS properties of the same names.
 For more information on these events, see the [Interactivity](../concepts/interactivity.md)
 documentation.
 
-# Usage
+## Usage
 
 ### Positioning
-
 To render the Point mark, you will need to provide the `x` and `y` props.
 These can be of type `Number`, `String` and `Date`, depending what kind of domain type
 the parent Section has.
 
-# Example
-
-
-<PointExampleAdvanced/>
+## Example
+<MarkPointAdvanced/>
