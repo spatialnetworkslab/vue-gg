@@ -93,6 +93,7 @@ export default {
       color: 'both',
     }
   },
+
   computed : {
     stroke () {
       if (this.color === 'both' || this.color === 'stroke') {
