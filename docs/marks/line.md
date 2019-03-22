@@ -2,25 +2,55 @@
 title: Line mark
 ---
 
-# Component tag
+# Line Mark
 
 `<vgg-line>`
 
-# Description
+## Description
 
-TODO
+A simple line mark component that takes either two coordinates or a function f(x). Besides drawing a line, it can also be used as a rule mark.
 
-# Props
+<div style="display:flex;align-items: center;">
+ <lines-example style="flex:1;"/>
+<div style="width:40%;flex:1">
+
+```vue
+...
+<vgg-line
+    :x1="-1"
+    :x2="1"
+    :y1="-1"
+    :y2="1"
+    stroke="green"
+/>
+<vgg-line :func="x => x ** 2" 
+          stroke="blue" />
+...
+```
+
+</div>
+
+</div>
+
+## Properties
 
 ### Positioning
 
-| Prop   | Required | Types                  | Default   | Description                       | Unit(s)              |
-| ------ | -------- | ---------------------- | --------- | --------------------------------- | -------------------- |
-| x1     | depends  | [Number, String, Date] | undefined | x-coordinate of beginning of line | Local coordinates    |
-| y1     | depends  | [Number, String, Date] | undefined | y-coordinate of beginning of line | Local coordinates    |
-| x2     | depends  | [Number, String, Date] | undefined | x-coordinate of end of line       | Local coordinates    |
-| y2     | depends  | [Number, String, Date] | undefined | y-coordinate of end of line       | Local coordinates    |
-| func   | depends  | Function               | undefined | Function used to draw line        | y as a function of x |
+| Prop | Required | Types                  | Default   | Description                       | Unit(s)              |
+| ---- | -------- | ---------------------- | --------- | --------------------------------- | -------------------- |
+| x1   | depends  | [Number, String, Date] | undefined | x-coordinate of beginning of line | Local coordinates    |
+| y1   | depends  | [Number, String, Date] | undefined | y-coordinate of beginning of line | Local coordinates    |
+| x2   | depends  | [Number, String, Date] | undefined | x-coordinate of end of line       | Local coordinates    |
+| y2   | depends  | [Number, String, Date] | undefined | y-coordinate of end of line       | Local coordinates    |
+| func | depends  | Function               | undefined | Function used to draw line        | y as a function of x |
+
+### Allowed combinations of positioning props
+The positing properties of the Line mark can only be used in certain combinations.
+
+| Combination | Explanation                     |
+| ----------- | ------------------------------- |
+| x1+x2+y1+y2 | Two coordinates (x1,y1),(x2,y2) |
+| func        | A function f(x)                 |
 
 ### Other aesthetics
 
@@ -67,39 +97,4 @@ for an example of both.
 
 # Example
 
-::: v-pre
-```html
-<vgg-graphic
-  :width="300"
-  :height="300"
->
-
-  <vgg-section
-    :x1="25"
-    :x2="275"
-    :y1="25"
-    :y2="275"
-    :scale-x="[-1, 1]"
-    :scale-y="[-1, 1]"
-  >
-
-    <vgg-line
-      :x1="-1"
-      :x2="1"
-      :y1="-1"
-      :y2="1"
-      stroke="green"
-    />
-
-    <vgg-line :func="x => x ** 2" stroke="blue" />
-
-    <vgg-x-axis :scale="[-1, 1]" :vjust="0.5" />
-    <vgg-y-axis :scale="[-1, 1]" :hjust="0.5" />
-
-  </vgg-section>
-
-</vgg-graphic>
-```
-:::
-
-<lines-example />
+<LinesExampleAdvanced/>
