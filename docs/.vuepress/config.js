@@ -111,13 +111,6 @@ module.exports = {
                     ]
             },
             {
-                title: 'Positioners',
-                collapsable: true,
-                children: [
-                    'positioners/wh',
-                    ]
-            },
-            {
                 title: 'Glyphs',
                 collapsable: true,
                 children: [
