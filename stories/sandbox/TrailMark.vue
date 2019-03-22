@@ -16,9 +16,10 @@
       <vgg-trail
         :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
         :stroke-width="[1, 5, 5, 3, 4, 2]"
-        fill="orange"
-        :fillOpacity="0.7"
+        :fill-opacity="0.7"
         :sort="'x'"
+        fill="orange"
+        @click="log('test')"
       />
 
       <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
@@ -32,8 +33,9 @@
             :y="row.grouped.yValues"
             :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
             :fill="row.colors"
-            :fillOpacity="0.7"
+            :fill-opacity="0.7"
             :sort="'x'"
+            @click="log(row)"
           />
 
         </vgg-map>
@@ -86,7 +88,7 @@ export default {
       for (let i = 0; i < 30; i++) {
         let colorIndex = Math.floor(Math.random() * 3)
         let color = colors[colorIndex]
-        let rain = rainfall[i%rainfall.length]
+        let rain = rainfall[i % rainfall.length]
         data.colors.push(color)
         data.xValues.push(Math.random() * 10)
         data.yValues.push(Math.random() * 100)
@@ -94,6 +96,8 @@ export default {
       }
       return data
     }
-  }
+  },
+
+  methods: { log: console.log }
 }
 </script>

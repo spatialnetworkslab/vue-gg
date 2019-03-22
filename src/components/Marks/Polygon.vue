@@ -29,6 +29,12 @@ export default {
       type: String,
       default: '#000000'
     }
+  },
+
+  data () {
+    return {
+      pathType: 'polygon'
+    }
   }
 }
 </script>

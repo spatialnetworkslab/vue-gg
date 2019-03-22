@@ -21,6 +21,7 @@
             :x="row.grouped.xValues"
             :y="row.grouped.yValues"
             :stroke="row.colors"
+            @click="log(row)"
           />
 
         </vgg-map>
@@ -100,6 +101,10 @@ export default {
       }
       return data
     }
+  },
+
+  methods: {
+    log: console.log
   }
 }
 </script>

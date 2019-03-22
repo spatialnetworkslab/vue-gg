@@ -10,6 +10,14 @@ export default {
       }
     }
 
+    let uuid = 0
+    Vue.mixin({
+      beforeCreate () {
+        this.uuid = uuid.toString()
+        uuid += 1
+      }
+    })
+
     for (let key in components) {
       let componentName = prefix + key
 
