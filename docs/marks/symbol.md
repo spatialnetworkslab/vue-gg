@@ -4,8 +4,6 @@ title: Symbol Mark
 
 # Symbol Mark
 
-## Description
-
 The Symbol mark is used for plotting point data, with each data instance being represented as a symbol (or shape). The most common use for the Symbol mark is for creating points such as used in a scatterplot.
 
 <div style="display: flex;
@@ -15,19 +13,23 @@ The Symbol mark is used for plotting point data, with each data instance being r
 
 <div>
 
-<SymbolMarkSimple />
+<MarkSymbolSimple />
 
 </div>
 
 <div style='width: 40%; height: 100%;'>
 
 ```html
-<vgg-symbol
-    :x="xValues"
-    :y="yValues"
-    shape="circle"
-    fill="#c66366"
-/>
+<vgg-map v-slot="{ row }">
+
+	<vgg-symbol
+	    :x="row.xValues"
+	    :y="row.yValues"
+	    shape="circle"
+	    fill="#c66366"
+	/>
+
+</vgg-map>
 ```
 
 </div>
@@ -64,7 +66,7 @@ Most of these are analogous to the CSS properties of the same names.
 | ----------- | -------- | ------- | ------- | ------------------------------------------------------------------------ |
 | transition  | false    | Number  | 0       | Time taken to animate changes to each symbol when data changes           |
 
-# Events
+## Events
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
@@ -105,4 +107,4 @@ of time in seconds.
 
 ## Example
 
-<SymbolMarkDemo />
+<MarkSymbolDemo />

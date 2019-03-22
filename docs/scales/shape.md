@@ -8,9 +8,15 @@ We provide a few default shape schemes that can be used as scales for categorica
 
 ### prop definition
 
-```
-<vgg-symbol
-	:shape = "{ val: row.x, scale: { type: 'shape8', domain: 'row.x' } }">
+```html
+<vgg-map v-slot="{ row }">
+
+	<vgg-symbol
+	    :shape="{ val: row.x,
+	    		  scale: { type: 'shape8', domain: 'row.x' } }"
+	/>
+
+</vgg-map>
 ```
 
 ### shape8
