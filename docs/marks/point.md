@@ -2,13 +2,44 @@
 title: Point mark
 ---
 
-# Component tag
+# Point
 
 `<vgg-point>`
 
 # Description
 
-The most basic mark in `vue-gg`: the Point.
+The most basic mark in `vue-gg`: the Point. The mark used in the scatter plot.
+
+<div style="display: flex;align-items: center;justify-content:space-around">
+
+<div>
+
+<PointExample/>
+
+</div>
+
+<div style='width: 40%; height: 100%;'>
+
+```vue
+<vgg-map v-slot="{ row }">
+    <vgg-point
+        :x="
+        { 
+            val: row.x, 
+            scale: 'x' 
+        }"
+        :y="
+        { 
+            val: row.y, 
+            scale: 'y' 
+        }"
+    />
+</vgg-map>
+```
+</div>
+</div>
+
+
 
 # Props
 
@@ -63,4 +94,5 @@ the parent Section has.
 
 # Example
 
-TODO
+
+<PointExampleAdvanced/>
