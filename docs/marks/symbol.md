@@ -1,12 +1,9 @@
 ---
-title: Symbol Mark
+title: Symbol mark
 ---
 
-# Symbol Mark
-
-## Description
-
-The Symbol mark is used for plotting point data, with each data instance being represented as a symbol (or shape). The most common use for the Symbol mark is for creating points such as used in a scatterplot.
+# Symbol mark
+The Symbol mark is used for plotting point data, with each data instance being represented as a symbol (or shape) element. The most common use for the Symbol mark is for creating points such as used in a scatterplot.
 
 <div style="display: flex;
 	justify-content: space-around;
@@ -64,7 +61,7 @@ Most of these are analogous to the CSS properties of the same names.
 | ----------- | -------- | ------- | ------- | ------------------------------------------------------------------------ |
 | transition  | false    | Number  | 0       | Time taken to animate changes to each symbol when data changes           |
 
-# Events
+## Events
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |

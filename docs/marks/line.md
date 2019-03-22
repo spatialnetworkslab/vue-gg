@@ -2,20 +2,17 @@
 title: Line mark
 ---
 
-# Line Mark
+# Line mark
+The `vgg-line` mark plots a simple line element by taking either a start and end coordinate or a function `f(x)`. In this way, it can also be used as a rule mark.
 
-`<vgg-line>`
-
-## Description
-
-A simple line mark component that takes either two coordinates or a function f(x). Besides drawing a line, it can also be used as a rule mark.
-
-<div style="display:flex;align-items: center;">
- <lines-example style="flex:1;"/>
+<div style="display: flex;
+	justify-content: space-around;
+	align-items: center"
+>
+ <MarkLineSimple />
 <div style="width:40%;flex:1">
 
-```vue
-...
+```html
 <vgg-line
     :x1="-1"
     :x2="1"
@@ -23,9 +20,10 @@ A simple line mark component that takes either two coordinates or a function f(x
     :y2="1"
     stroke="green"
 />
-<vgg-line :func="x => x ** 2" 
-          stroke="blue" />
-...
+<vgg-line 
+    :func="x => x ** 2" 
+    stroke="blue" 
+/>
 ```
 
 </div>
@@ -33,6 +31,7 @@ A simple line mark component that takes either two coordinates or a function f(x
 </div>
 
 ## Properties
+A `vgg-line` can contain the following position properties.
 
 ### Positioning
 
@@ -45,12 +44,12 @@ A simple line mark component that takes either two coordinates or a function f(x
 | func | depends  | Function               | undefined | Function used to draw line        | y as a function of x |
 
 ### Allowed combinations of positioning props
-The positing properties of the Line mark can only be used in certain combinations.
+The positioning properties of the Line  can only be used in certain combinations.
 
-| Combination | Explanation                     |
-| ----------- | ------------------------------- |
-| x1+x2+y1+y2 | Two coordinates (x1,y1),(x2,y2) |
-| func        | A function f(x)                 |
+| Combination               | Explanation                     |
+|---------------------------|---------------------------------|
+| `x1` + `x2` + `y1` + `y2` | Two coordinates (x1,y1),(x2,y2) |
+| `func`                    | A function f(x)                 |
 
 ### Other aesthetics
 
@@ -72,8 +71,7 @@ These are analogous to the CSS properties of the same names.
 | interpolate | false    | Boolean | undefined | Interpolate between points (when using non-cartesian coordinate systems) |
 | transition  | false    | Number  | 0         | Time taken to animate changes to each line when data changes             |
 
-# Events
-
+## Events
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
 | click     | Triggered when user clicks on mark            |
@@ -86,8 +84,7 @@ These are analogous to the CSS properties of the same names.
 For more information on these events, see the [Interactivity](../concepts/interactivity.md)
 documentation.
 
-# Usage
-
+## Usage
 ### Positioning
 
 There are two main ways of drawing a `vgg-line`: by using `x1`, `y1`, `x2` and `y2`,
@@ -95,6 +92,6 @@ or by using `func`. When using the former method, all `x1`, `y1`, `x2` and `y2`
 are required. When using `func`, no other prop is required. See [Example](#example)
 for an example of both.
 
-# Example
+## Example
 
-<LinesExampleAdvanced/>
+<MarkLineAdvanced />

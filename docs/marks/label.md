@@ -1,7 +1,7 @@
 ---
-title: Label Mark
+title: Label mark
 ---
-# Label Mark
+# Label mark
 The `vgg-label` mark is used to plot text elements.
 
 <div style="display: flex;
