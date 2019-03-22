@@ -2,7 +2,7 @@
 title: Binning
 ---
 
-# Transformation Specification
+# Binning transformation
 
 ```
 <vgg-data

@@ -12,8 +12,8 @@ title: Summarise
 
 ### Instructions
 
-| Type   | Description                                           | Result                             |
-| ------ | ----------------------------------------------------- | ---------------------------------- |
+| Type   | Description                                               | Result                             |
+| ------ | --------------------------------------------------------- | ---------------------------------- |
 | Object | Object containing aggregation instructions per new column | New dataframe with summarised data |
 
 ### Usage
