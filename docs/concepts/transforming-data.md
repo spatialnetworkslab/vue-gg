@@ -26,7 +26,82 @@ documentation, but will be discussed into more detail on this page.
 
 # The transform prop
 
+Like the `data` prop, the `transform` prop is available on all [Graphic](../core/graphic.md),
+[Data](../core/data.md) and [Section](../core/section.md) components. When the
+`transform` prop is on the same component as the `data` prop, the transformations
+will be applied to the input data immediately, and only one data scope will
+be created: one for the transformed data.
 
+::: v-pre
+```html
+<vgg-data
+  :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }"
+  :transform="{ filter: row => row.a > 2 }"
+>
+
+  <!-- Data scope: { a: [3, 4], b: [7, 8] } -->
+
+</vgg-data>
+```
+:::
+
+You can also put the `transform` prop on a component without a `data` prop. That way,
+it will create a different data scope, containing the transformed version of the
+data in its parent scope:
+
+::: v-pre
+```html
+<vgg-data :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }">
+
+  <!-- Data scope: { a: [1, 2, 3, 4], b: [5, 6, 7, 8] } -->
+
+  <vgg-data :transform="{ summarise: { meanA: { a: 'mean' } } }">
+
+    <!-- Data scope: { meanA: [2.5] } -->
+
+  </vgg-data>
+
+</vgg-data>
+```
+:::
+
+The `transform` prop accepts two types: an Object or an Array.
+We will call the Object a `transformation`. A `transformation` always has the
+following format:
+
+```js
+{ <transformation verb>: <verb-specific instructions> }
+```
+
+A `transformation` is an object with exactly one key and one value. The key is
+a transformation verb like `filter` or `summarise`, and the verb-specific
+instructions will determine how the transformation will be applied.See the
+[transformation verb](#transformation-verbs) documentation below for an
+overview of the available transformation verbs, and the individual documentation
+pages for each verb for more details on the verb-specific instructions.
+
+It is also possible to have an Array of `transformation`s:
+
+```js
+[
+  { filter: row => row.a > 2 },
+  { arrange: { a: 'ascending' } },
+  { groupBy: 'b' },
+  { summarise: { sumA: { a: 'sum' } } }
+]
+```
+
+In this way, the result of every transformation will be piped into the next one.
+So all rows where `row.a > 2` will be piped into `arrange`, where they will be
+sorted ascendingly. Next, the data will be grouped based on the values in column
+`b`, and finally, the sum of values in the column `a` will be calculated for each
+group.
+
+To avoid wasting memory and achieve the best performance, it is recommended to
+always put the `data` and `transform` props on the same component if possible. In
+addition, when possible, try to use the Array syntax to perform all transformations
+in one go, instead of spreading them out over different components. The less
+data scopes the better.
 
 # Transformation verbs
 
