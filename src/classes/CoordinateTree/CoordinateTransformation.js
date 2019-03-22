@@ -42,24 +42,28 @@ export default class CoordinateTransformation {
 
     // If we have a categorical or temporal domain: set ranges as domains
     this.domains = {}
+    this.actualDomains = {}
 
     if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
       this.domains.x = ranges.x
+      this.actualDomains.x = domainX
     } else {
       this.domains.x = domainX
+      this.actualDomains.x = domainX
     }
 
     if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
       this.domains.y = ranges.y
+      this.actualDomains = domainY
     } else {
       this.domains.y = domainY
+      this.actualDomains.y = domainY
     }
 
     this.ranges = {
       x: parseRange(ranges.x, scaleOptionsX),
       y: parseRange(ranges.y, scaleOptionsY)
     }
-
     this.scaleX = createCoordsScale('x', domainXType, domainX, this.ranges.x,
       scaleOptionsX
     )
@@ -73,21 +77,34 @@ export default class CoordinateTransformation {
     if (['categorical', 'temporal'].includes(this.domainTypes.x)) {
       this.getX = x => x.constructor === Number ? x : this.scaleX(x)
       this.invertX = x => x.constructor === Number ? x : this.scaleX.invert(x)
+      this.actualInvertX = this.scaleX.invert
     } else {
       this.getX = this.scaleX
       this.invertX = this.scaleX.invert
+      this.actualInvertX = this.invertX
     }
+
     if (['categorical', 'temporal'].includes(this.domainTypes.y)) {
       this.getY = y => y.constructor === Number ? y : this.scaleY(y)
       this.invertY = y => y.constructor === Number ? y : this.scaleY.invert(y)
+      this.actualInvertY = this.scaleY.invert
     } else {
       this.getY = this.scaleY
       this.invertY = this.scaleY.invert
+      this.actualInvertY = this.invertY
     }
 
     if (options.type === 'scale') {
       this.transform = ([x, y]) => {
         return [this.getX(x), this.getY(y)]
+      }
+
+      this.inverseTransform = ([x, y]) => {
+        return [this.invertX(x), this.invertY(y)]
+      }
+
+      this.actualInverseTransform = ([x, y]) => {
+        return [this.actualInvertX(x), this.actualInvertY(y)]
       }
     }
 
@@ -109,6 +126,28 @@ export default class CoordinateTransformation {
 
         return [toRangeX(cartesian[0]), toRangeY(cartesian[1])]
       }
+
+      // TODO: fix, this is still wrong
+      this.inverseTransform = ([x, y]) => {
+        let cartesian = [toRangeX.invert(x), toRangeY.invert(y)]
+        let [theta, r] = cartesianToPolar(...cartesian)
+
+        let _x = toTheta.invert(theta)
+        let _y = toRadius.invert(r)
+
+        return [this.invertX(_x), this.invertY(_y)]
+      }
+
+      // This too
+      this.actualinverseTransform = ([x, y]) => {
+        let cartesian = [toRangeX.invert(x), toRangeY.invert(y)]
+        let [theta, r] = cartesianToPolar(...cartesian)
+
+        let _x = toTheta.invert(theta)
+        let _y = toRadius.invert(r)
+
+        return [this.actualInvertX(_x), this.actualInvertY(_y)]
+      }
     }
   }
 
@@ -122,6 +161,9 @@ export default class CoordinateTransformation {
 
     this.domains = { x: domainX, y: domainY }
     this.domainTypes = { x: 'quantitative', y: 'quantitative' }
+
+    this.type = 'scale' // Polar is not supported in combination with geo scales
+
     this.ranges = ranges
 
     let { scaleX, scaleY, center } = createGeoScale(options)
@@ -138,6 +180,12 @@ export default class CoordinateTransformation {
     this.transform = ([x, y]) => {
       return [this.getX(x), this.getY(y)]
     }
+
+    this.inverseTransform = ([x, y]) => {
+      return [this.invertX(x), this.invertY(y)]
+    }
+
+    this.actualInverseTransform = this.inverseTransform
   }
 }
 
@@ -146,4 +194,11 @@ function polarToCartesian (theta, r) {
   let y = r * Math.cos(theta)
 
   return [x, y]
+}
+
+function cartesianToPolar (x, y) {
+  let r = Math.sqrt(y ** 2 + x ** 2)
+  let theta = Math.atan(x / y)
+
+  return [theta, r]
 }

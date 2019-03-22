@@ -1,7 +1,6 @@
 import DataContainer from '../../classes/Data/DataContainer.js'
 import DataInterface from '../../classes/Data/DataInterface.js'
 import applyTransformations from '../../transformations/applyTransformations.js'
-import id from '../../utils/id.js'
 
 export default {
   props: {
@@ -23,8 +22,6 @@ export default {
 
   data () {
     return {
-      randomID: id(),
-
       containers: {}
     }
   },
@@ -54,9 +51,9 @@ export default {
       } else if (this.$vnode.data.staticClass) {
         // fall back on class if no id is given
         let elClass = this.$vnode.data.staticClass.replace(/\s+/g, '_')
-        id = elClass + '_' + this.randomID
+        id = elClass + '_' + this.uuid
       } else {
-        id = '_' + this.randomID
+        id = '_' + this.uuid
       }
       return id
     }
@@ -70,8 +67,17 @@ export default {
     dataScopeID (newVal, oldVal) {
       this.rename(newVal, oldVal)
     },
-    dataContainer (newVal, oldVal) {
-      this.update(this.dataScopeID, this.dataContainer)
+
+    data (newVal, oldVal) {
+      if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+        this.update(this.dataScopeID, this.dataContainer)
+      }
+    },
+
+    transform (newVal, oldVal) {
+      if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+        this.update(this.dataScopeID, this.dataContainer)
+      }
     }
   },
 

@@ -25,6 +25,12 @@ export default {
       type: undefined,
       default: undefined
     }
+  },
+
+  data () {
+    return {
+      pathType: 'multiline'
+    }
   }
 }
 </script>

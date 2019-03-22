@@ -25,39 +25,33 @@
             :stroke-width="2"
             :shape="shape(row.categorical)"
             fill="none"
+            @click="log(row)"
           />
-          <!--:stroke="color(row.explanatory)"-->
+
         </vgg-map>
 
         <vgg-x-axis
-          :scale="[0, 150]"
+          :scale="'explanatory'"
           :vjust="-.05"
         />
 
         <vgg-y-axis
           :scale="'dependent'"
           :hjust="-.05"
-          :tickExtraLabel="false"
+          :tick-extra-label="false"
           flip
+        />
+
+        <vgg-x-grid
+          :scale="'explanatory'"
+        />
+
+        <vgg-y-grid
+          :scale="'dependent'"
         />
 
       </vgg-section>
 
-      <vgg-x-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="[0, 150]"
-      />
-
-      <vgg-y-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'dependent'"
-      />
     </vgg-graphic>
 
     <p>Shape Scheme:
@@ -99,7 +93,10 @@ export default {
       colorScheme: 'category10'
     }
   },
+
   methods: {
+    log: console.log,
+
     generateNewData () {
       let newData = xy('explanatory', 'dependent')
       let fruits = [
@@ -135,7 +132,7 @@ export default {
         return { val: value, scale: { ranges: ['circle', 'square'], domain: 'categorical' } }
       }
       return { val: value, scale: { type: this.shapeScheme, domain: 'categorical' } }
-    },
+    }
   }
 }
 </script>
