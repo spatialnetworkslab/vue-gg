@@ -10,15 +10,13 @@ title: Arrange
 
 `arrange` is used to sort data.
 
-### Instructions
-
+## Instructions
 | Type   | Description                                                  | Result                                |
 | ------ | ------------------------------------------------------------ | ------------------------------------- |
 | Object | Object containing which variable to sort, and how            | Rows are sorted by one variable       |
 | Array  | Array of Objects containing which variables to sort, and how | Rows are sorted by multiple variables |
 
-### Usage
-
+## Usage
 When using a single Object for sorting, the Object must have only one key, which
 represents the name of the variable that all rows will be sorted by:
 

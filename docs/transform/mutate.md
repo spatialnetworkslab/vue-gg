@@ -11,7 +11,7 @@ title: Mutate
 `transmute` does the same thing, except it throws away all columns other than the
 just calculated ones.
 
-### Instructions
+## Instructions
 
 | Type   | Description                                                           | Result                 |
 | ------ | --------------------------------------------------------------------- | ---------------------- |

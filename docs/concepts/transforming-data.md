@@ -1,8 +1,7 @@
 ---
 title: Transforming data
 ---
-
-# Introduction
+# Transforming data
 
 After loading data into `vue-gg`, it is often necessary to
 perform one or more transformations on this data. Situations where transforming
@@ -16,15 +15,15 @@ data is necessary include:
 6. Needing to divide data into groups or bins, in order to create particular graphics
 
 Some of these operations, like 1, only require a single transformation before passing
-the data into `vue-gg`, while for others, like 4 or 6, might only be desirable
-in certain parts of the graphic- for example, when you want one part of the
+the data into `vue-gg`. Others, like 4 or 6, might only be desirable
+in certain parts of the graphic – for example, when you want one part of the
 graphic showing a scatterplot of all data points, but another part showing
 just a bar chart with average values across categories.
 
 Transformation has already been briefly dicussed in the [data loading](./data-loading.md)
 documentation, but will be discussed into more detail on this page.
 
-# The transform prop
+## The transform prop
 
 Like the `data` prop, the `transform` prop is available on all [Graphic](../core/graphic.md),
 [Data](../core/data.md) and [Section](../core/section.md) components. When the
@@ -103,12 +102,11 @@ addition, when possible, try to use the Array syntax to perform all transformati
 in one go, instead of spreading them out over different components. The less
 data scopes the better.
 
-# Transformation verbs
-
+## Transformation verbs
 R users familiar with [dplyr](https://dplyr.tidyverse.org/) (part of the
 [tidyverse](https://www.tidyverse.org/)) will, by now, have seen a lot of similarities
 between the verbs used in `dplyr` and the verbs used in `vue-gg`'s data transformations.
-There are some small differences, but this similarity is no accident- the verbs and
+There are some small differences, but this similarity is no accident – the verbs and
 piping syntax used in `dplyr` have greatly inspired `vue-gg`'s transformation syntax.
 
 For users less familiar with the `dplyr` verbs, this paragraph will give a small
@@ -116,7 +114,6 @@ overview of what each verb does, including a short example and a link to each ve
 own documentation page.
 
 ### Select
-
 `select` is used to get rid of undesired columns. Some datasets might have a lot of
 columns, and using select, the irrelevant ones can be thrown away. This will
 reduce memory usage and improve performance a bit.
@@ -139,7 +136,6 @@ Example:
 [Go to the select documentation](../transform/select.md)
 
 ### Rename
-
 As the name suggests, `rename` is used to give columns a different name.
 
 Example:
@@ -160,7 +156,6 @@ Example:
 [Go to the rename documentation](../transform/rename.md)
 
 ### Filter
-
 `filter` will throw away all rows that do not satisfy a certain condition.
 Note that the row will disappear in all columns, even if your condition only
 involves one column!
@@ -183,7 +178,6 @@ Example:
 [Go to the filter documentation](../transform/filter.md)
 
 ### Drop NA
-
 `dropNA` is essentially a special case of `filter`, that throws away
 all rows that contain invalid values, like `NaN`, `null` or `undefined`.
 
@@ -203,7 +197,6 @@ all rows that contain invalid values, like `NaN`, `null` or `undefined`.
 [Go to the drop NA documentation](../transform/dropna.md)
 
 ### Arrange
-
 `arrange` is used to sort data.
 
 ::: v-pre
@@ -222,7 +215,6 @@ all rows that contain invalid values, like `NaN`, `null` or `undefined`.
 [Go to the arrange documentation](../transform/arrange.md)
 
 ### Mutate and transmute
-
 `mutate` is used to calculate a new column based on the available data.
 
 ::: v-pre
@@ -244,7 +236,6 @@ just calculated ones.
 [Go to the mutate/transmute documentation](../transform/mutate.md)
 
 ### Summarise
-
 `summarise` is used to calculate summary statistics over columns or groups.
 
 ::: v-pre
@@ -263,7 +254,6 @@ just calculated ones.
 [Go to the summarise documentation](../transform/summarise.md)
 
 ### Mutarise
-
 `mutarise` is a combination of `mutate` and `summarise`. Its syntax is identical
 to `summarise`, but instead of collapsing the dataframe to a single row or one row
 per group, it will add a new column with the summarised values.
@@ -284,12 +274,11 @@ per group, it will add a new column with the summarised values.
 [Go to the mutarise documentation](../transform/mutarise.md)
 
 ### Group by
-
-`groupBy` is an operation that splits up a single dataframe into a couple of dataframes,
-which are stored in another dataframe, inside of a column named `grouped`. This
-grouped data can then be used in various ways, like creating facets, making plots with
-multiple trend lines, or calculating summary statistics for groups or categories.
-It is only possible to make groups with categorical data. Grouping by multiple
+`groupBy` is an operation that groups a single dataframe on a certain column, creating a new
+row for each unique value in the grouping column. It will store all the original rows belonging to that group
+in a nested dataframe in a column named 'grouped'. This
+grouped data can then be used in various ways: e.g. to create facets, making plots with
+multiple trend lines, or calculating summary statistics for groups or categories. Grouping by multiple
 columns is also possible.
 
 ::: v-pre

@@ -8,15 +8,15 @@ title: Rename
 { rename: ... }
 ```
 
-As the name suggests, `rename` is used to give columns a different name.
+`rename` is used to give columns a different name.
 
-### Instructions
+## Instructions
 
 | Type   | Description                     | Result                 |
 | ------ | ------------------------------- | ---------------------- |
 | Object | Object with rename instructions | Columns get a new name |
 
-### Usage
+## Usage
 
 The `rename` instructions are given as an Object, where the keys are the old
 column names, and the values are the new column names.

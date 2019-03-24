@@ -13,13 +13,13 @@ data. Also, while `groupBy` keeps the name of the variable(s) that the data were
 by, binning will create a new column named `bins`. It is only possible to bin based
 on one column.
 
-### Instructions
+## Instructions
 
 | Type   | Description                            | Result                        |
 | ------ | -------------------------------------- | ----------------------------- |
 | Object | Object containing binning instructions | Returns new grouped dataframe |
 
-### Usage
+## Usage
 
 The binning transformation takes an object specifying the parameters of the binning method used,
 and returns a new dataframe with two columns:
@@ -29,7 +29,7 @@ bins as [interval](../concepts/data-loading#data-types) data.
 2. a column called `'grouped'`, that contains the data that is inside of each
 bin as [nested](../concepts/data-loading#data-types) data.
 
-### Keys
+## Keys
 
 ```js
 { binning: { groupBy: ..., method: ..., ... } }
@@ -69,7 +69,7 @@ required `numClasses` key:
 ```
 :::
 
-#### IntervalSize
+### IntervalSize
 
 The `IntervalSize` method groups data into bins of a given size.
 
@@ -77,7 +77,7 @@ Key       | Type      |  Description
 ----------|-----------|----------------------------
 binSize   | Number    | Size of each bin
 
-#### EqualInterval
+### EqualInterval
 
 The `EqualInterval` method groups data into a given number of equal sized bins.
 
@@ -85,7 +85,7 @@ Key       | Type      |  Description
 ----------|-----------|----------------------------
 numClasses| Number    | Number of bins
 
-#### StandardDeviation, ArithmeticProgression, Geometric Progression, Quantile, Jenks
+### StandardDeviation, ArithmeticProgression, Geometric Progression, Quantile, Jenks
 
 These classification methods are made available through [geostats](https://github.com/simogeo/geostats)
 (see geostats docs for details on each method).
@@ -94,7 +94,7 @@ Key       | Type      |  Description
 ----------|-----------|----------------------------
 numClasses| Number    | Number of bins
 
-#### Manual
+### Manual
 
 The `Manual` method groups data into user-defined ranges.
 

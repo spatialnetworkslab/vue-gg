@@ -12,14 +12,14 @@ title: Select
 columns, and using select, the irrelevant ones can be thrown away. This will
 reduce memory usage and improve performance a bit.
 
-### Instructions
+## Instructions
 
 | Type   | Description      | Result                                            |
 | ------ | ---------------- | ------------------------------------------------- |
 | String | Name of column   | All other columns except this one are thrown away |
 | Array  | Names of columns | All other columns except these are thrown away    | 
 
-### Usage
+## Usage
 
 The `select` transformation's instructions can be passed as a single String,
 or as an Array of Strings. When passing a single String, the String must be the

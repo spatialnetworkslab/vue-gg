@@ -12,13 +12,13 @@ title: Filter
 Note that the row will disappear in all columns, even if your condition only
 involves one column!
 
-### Instructions
+## Instructions
 
 | Type     | Description                                           | Result                                          |
 | -------- | ----------------------------------------------------- | ----------------------------------------------- |
 | Function | Function that takes current (row, index) as arguments | Row is removed if Function does not return true |
 
-### Usage
+## Usage
 
 To keep all rows that satisfy a certain condition, write a filter function that
 returns true when that condition occurs. For example, to keep all rows where

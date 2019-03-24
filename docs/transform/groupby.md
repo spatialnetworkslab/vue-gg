@@ -8,21 +8,21 @@ title: Group by
 { groupBy: ... }
 ```
 
-`groupBy` is an operation that splits up a single dataframe into a couple of dataframes,
-which are stored in another dataframe, inside of a column named `grouped`. This
-grouped data can then be used in various ways, like creating facets, making plots with
-multiple trend lines, or calculating summary statistics for groups or categories.
-It is only possible to make groups with categorical data. Grouping by multiple
+`groupBy` is an operation that groups a single dataframe on a certain column, creating a new
+row for each unique value in the grouping column. It will store all the original rows belonging to that group
+in a nested dataframe in a column named 'grouped'. This
+grouped data can then be used in various ways: e.g. to create facets, making plots with
+multiple trend lines, or calculating summary statistics for groups or categories. Grouping by multiple
 columns is also possible.
 
-### Instructions
+## Instructions
 
 | Type   | Description      | Result                                                 |
 | ------ | ---------------- | ------------------------------------------------------ |
 | String | Name of column   | Returns grouped dataframe, grouped by one column       |
 | Array  | Names of columns | Returns grouped dataframe, grouped by multiple columns | 
 
-### Usage
+## Usage
 
 To grouped data based on a single categorical column, pass the name of the column
 as String to groupBy:

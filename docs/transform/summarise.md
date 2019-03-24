@@ -10,20 +10,20 @@ title: Summarise
 
 `summarise` is used to calculate summary statistics over columns or groups.
 
-### Instructions
+## Instructions
 
 | Type   | Description                                               | Result                             |
 | ------ | --------------------------------------------------------- | ---------------------------------- |
 | Object | Object containing aggregation instructions per new column | New dataframe with summarised data |
 
-### Usage
+## Usage
 
 `summarise` is most useful when used in combination with `groupBy` or `binning`. However,
 for the purpose of explanation, using `summarise` to summarise an entire dataframe
 will first be discussed in the following paragraph. In the paragraph after that,
 the same principles will then be applied to data grouped with `groupBy` or `binning`.
 
-#### Summarising an entire dataframe
+### Summarising an entire dataframe
 
 The `summarise` instructions Object has new column names as keys, and 'aggregation
 instructions' as value:
@@ -122,7 +122,7 @@ there are more advanced summary techniques possible with this method:
 ```
 :::
 
-#### Summarising groups
+### Summarising groups
 
 As mentioned above, `summarise` is especially powerful in combination with grouped
 data. For more information on how to create grouped data, check out the
@@ -139,7 +139,7 @@ the average price per fruit:
   :data="{ value: [1, 2, 3, 4], fruit: ['apple', 'banana', 'apple', 'banana'] }"
   :transform="[
     { groupBy: 'fruit' },
-    { summarise: { meanFruit: { fruit: 'mean' } } }
+    { summarise: { meanFruit: { value: 'mean' } } }
   ]"
 >
 

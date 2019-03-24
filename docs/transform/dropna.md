@@ -11,7 +11,7 @@ title: Drop NA
 `dropNA` is essentially a special case of `filter`, that throws away
 all rows that contain invalid values, like `NaN`, `null` or `undefined`.
 
-### Instructions
+## Instructions
 
 | Type   | Description               | Result                                                                  |
 | ------ | ------------------------- | ----------------------------------------------------------------------- |
@@ -19,7 +19,7 @@ all rows that contain invalid values, like `NaN`, `null` or `undefined`.
 | String | Name of column            | Will throw away any row that has an invalid value in this column        |
 | Array  | Names of columns          | Will throw away any row that has invalid values in any of these columns |
 
-### Usage
+## Usage
 
 When using `null`, each row that has an invalid value in any of its columns will
 be thrown out:
