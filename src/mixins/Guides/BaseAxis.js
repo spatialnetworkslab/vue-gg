@@ -287,6 +287,8 @@ export default {
               return { value, label: format(value) }
             }
           })
+
+          console.log(this.scalingOptions)
         }
 
         if (this.domainType === 'categorical') {
