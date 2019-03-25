@@ -71,7 +71,7 @@ export default {
       let xMax = Math.max(xRange[0], xRange[1])
 
       if (this.hjust.constructor === Number) {
-        let scaledVal = (xMax - xMin) * this.vjust
+        let scaledVal = (xMax - xMin) * this.hjust
         return scaledVal
       } else if (this.hjust === 'center') {
         return (xMax - xMin) / 2 + xRange[0]
@@ -89,7 +89,7 @@ export default {
       let yMax = Math.max(yRange[0], yRange[1])
 
       if (this.vjust.constructor === Number) {
-        let scaledVal = (yMax - yMin) * this.hjust
+        let scaledVal = (yMax - yMin) * this.vjust
         return scaledVal
       } else if (this.vjust === 'center') {
         return (yMax - yMin) / 2 + yMin

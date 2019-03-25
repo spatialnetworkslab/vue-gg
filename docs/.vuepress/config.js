@@ -17,7 +17,7 @@ module.exports = {
                 title: 'Tutorials',
                 collapsable: true,
                 children: [
-                    'tutorials/templates',
+                    'tutorials/basic',
                     'tutorials/custom2',
                     'tutorials/customColor'
                 ]
