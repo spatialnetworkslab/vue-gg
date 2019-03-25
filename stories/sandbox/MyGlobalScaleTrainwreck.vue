@@ -1,49 +1,54 @@
 <template>
   <vgg-graphic
     :width="1000"
-    :height="1000"
+    :height="800"
     :data="resaleData"
-    :transform="{ groupBy: 'town' }"
   >
 
-    <vgg-grid
-      :rows="4"
-      :layout-padding="10"
-      :cell-padding="5"
-    >
+    <vgg-scales :scales="{ typeScale: 'flat_type' }" />
 
-      <vgg-map v-slot="{ row: facet }">
+    <vgg-data :transform="{ groupBy: 'town' }">
 
-        <vgg-section
-          :data="{ val: facet.grouped }"
-          :transform="[
-            { groupBy: 'flat_type'},
-            { summarise: { total_sales: { resale_price: 'count' } } }
-          ]"
-        >
-          <vgg-map v-slot="{ row }">
+      <vgg-grid
+        :rows="4"
+        :layout-padding="10"
+        :cell-padding="5"
+      >
 
-            <vgg-rectangle
-              :y="{ val: row.flat_type, scale: 'flat_type' }"
-              :x1="0"
-              :x2="{ val: row.total_sales, scale: 'total_sales' }"
-              :h="20"
-            />
+        <vgg-map v-slot="{ row: facet }">
 
-          </vgg-map>
+          <vgg-section
+            :data="{ val: facet.grouped }"
+            :transform="[
+              { groupBy: 'flat_type'},
+              { summarise: { total_sales: { resale_price: 'count' } } }
+            ]"
+          >
+            <vgg-map v-slot="{ row }">
 
-          <!-- <vgg-x-axis
-            :scale="'total_sales'"
-            :tick-count="4"
-            :vjust="0"
-            label-rotate
-          /> -->
+              <vgg-rectangle
+                :y="{ val: row.flat_type, scale: '#typeScale' }"
+                :x1="{ val: 0, scale: { domain: 'total_sales', domainMin: 0 } }"
+                :x2="{ val: row.total_sales, scale: { domain: 'total_sales', domainMin: 0 } }"
+                :h="{ band: '#typeScale' }"
+              />
 
-        </vgg-section>
+            </vgg-map>
 
-      </vgg-map>
+            <!-- <vgg-x-axis
+              :scale="{ domain: 'total_sales', domainMin: 0 }"
+              :tick-count="4"
+              :vjust="0"
+              label-rotate
+            /> -->
 
-    </vgg-grid>
+          </vgg-section>
+
+        </vgg-map>
+
+      </vgg-grid>
+
+    </vgg-data>
 
   </vgg-graphic>
 </template>
