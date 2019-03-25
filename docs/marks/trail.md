@@ -1,8 +1,8 @@
 ---
-title: Trail Mark
+title: Trail mark
 ---
 
-# Trail Mark
+# Trail mark
 
 The Trail mark is used to plot point data with a line connecting all the points, and is particularly useful if you want to draw lines with variable width encoding in addition to position, color, and opacity. Trail marks are similar to `vgg-multi-line`. Their main feature is being mappable to variable widths from point to point, as specified in the `stroke-width` property.
 

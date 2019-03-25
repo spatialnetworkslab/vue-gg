@@ -2,7 +2,7 @@
 home: true
 description: A Vue-based data visualization framework
 actionText: Get Started →
-actionLink: /guide/intro
+actionLink: /introduction/intro.html
 features:
 - title: A grammar of graphics for Vue
   details: Create complicated graphics, all within a single component's template.

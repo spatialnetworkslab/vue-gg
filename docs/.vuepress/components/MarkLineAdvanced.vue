@@ -57,14 +57,15 @@
       </p>
       <p>Stroke Width:
         <select v-model="strokeWidth">
-          <option :value="2">Small</option>
-          <option :value="4">Medium</option>
-          <option :value="6">Large</option>
+          <option :value="2">2</option>
+          <option :value="4">4</option>
+          <option :value="6">5</option>
         </select>
       </p>
 
       <p>Fill:
         <select v-model="fill">
+          <option :value="'none'">None</option>
           <option :value="'red'">Red</option>
           <option :value="'green'">Green</option>
           <option :value="'white'">White</option>
@@ -79,7 +80,7 @@ export default {
   data() {
     return {
       strokeWidth:2,
-      fill: "red",
+      fill: "none",
       func: "poly"
     };
   },

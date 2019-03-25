@@ -1,10 +1,8 @@
 ---
-title: Symbol Mark
+title: Symbol mark
 ---
-
-# Symbol Mark
-
-The Symbol mark is used for plotting point data, with each data instance being represented as a symbol (or shape). The most common use for the Symbol mark is for creating points such as used in a scatterplot.
+# Symbol mark
+The Symbol mark is used for plotting point data, with each data instance being represented as a symbol (or shape) element. The most common use for the Symbol mark is for creating points such as used in a scatterplot.
 
 <div style="display: flex;
 	justify-content: space-around;

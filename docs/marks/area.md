@@ -1,7 +1,7 @@
 ---
-title: Area Mark
+title: Area mark
 ---
-# Area Mark
+# Area mark
 
 The `vgg-area` mark is used to plot filled areas. This is useful to visualize change over time. It can either be used by itself or in a 'stacked' configuration. 
 

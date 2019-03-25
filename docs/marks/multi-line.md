@@ -1,7 +1,7 @@
 ---
-title: Multi-line Mark
+title: Multi-line mark
 ---
-# Multi-line Mark
+# Multi-line mark
 
 The `vgg-multi-line` mark is used to plot line elements that consist of multiple line segments. This is in contrast to the Line Mark, which consists of only a single line segment.
 

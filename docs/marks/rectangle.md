@@ -1,7 +1,7 @@
 ---
-title: Rectangle Mark
+title: Rectangle mark
 ---
-# Rectangle Mark
+# Rectangle mark
 The `vgg-rectangle` mark is used to plot rectangular elements.
 
 <div style="display: flex;
