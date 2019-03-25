@@ -61,6 +61,8 @@ All components declared within the opening and ending tags of `vgg-data` will us
 </vgg-graphic>
 ```
 
+For further details on the data component, refer to the [documentation](../core/data.md).
+
 ## Specifying Transformations
 
 In order to transform the data, we need to specify the `transform` property in the data component.
@@ -113,9 +115,11 @@ In this case, the error can be traced back to the data output of the transformat
 { meanDiameter: [ some_value ] }
 ```
 
+The documentation for each transformation includes details about the data scope output from each transformation. For further details on the `summarise` transformation, refer to its [documentation](../transform/summarise.md).
+
 Note that because we asked for the `mean` of the `diameter` variable, only a single mean is calculated from all the diameters in the original dataset. There is no intuitive way of graphing this result. Besides, it is better presented textually than as a graph.
 
-What we want to do is calculate the means of each category of fruit. As such, the transformation we want is `groupBy` followed by `summarise` such that the original data is first grouped by type of fruit before the mean value is calculated for each group/category.
+What we want to do is calculate the mean of each category of fruit. As such, the transformation we want is `groupBy` followed by `summarise` such that the original data is first grouped by type of fruit before the mean value is calculated for each group/category.
 
 This can be done by specifying an array of transformations. Transformations are applied in order of specification, so the `groupBy` transformation will be applied before `summarise`.
 
