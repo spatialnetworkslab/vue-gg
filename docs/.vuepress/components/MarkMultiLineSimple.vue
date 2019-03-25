@@ -1,0 +1,41 @@
+<template>
+
+  <vgg-graphic
+    :width="200"
+    :height="250"
+    :data="{
+      year: [2000, 2005, 2010, 2015],
+      population: [100, 110, 130, 180]
+    }">
+
+    <vgg-section
+      :x1="25"
+      :x2="175"
+      :y1="25"
+      :y2="225"
+      scale-x="year"
+      scale-y="population"
+      :axes="{
+        left: {'tick-count': 4, 'w': 30},
+        bottom: {'tick-count': 4}
+      }"
+    >
+
+      <vgg-map v-slot="{ dataframe }"
+      unit="dataframe">
+
+        <vgg-multi-line
+          :x="dataframe.year"
+          :y="dataframe.population"
+          stroke="#c66366"
+        />
+
+      </vgg-map>
+
+    </vgg-section>
+
+   
+
+  </vgg-graphic>
+
+</template>

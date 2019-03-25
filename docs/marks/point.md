@@ -2,22 +2,35 @@
 title: Point mark
 ---
 
-# Component tag
+# Point Mark
 
-`<vgg-point>`
+The `vgg-point` mark is used to plot simple point elements. It is a special case of the more general [Symbol mark](./symbol.md) that is made available on its own for convenience.
 
-# Description
+<CodeDemoLayout>
 
-The most basic mark in `vue-gg`: the Point.
+<MarkPointSimple />
 
-# Props
+<CodeLayout>
+
+```html
+<vgg-point
+  :x="row.x"
+  :y="row.y"
+/>
+```
+</CodeLayout>
+
+</CodeDemoLayout>
+
+## Properties
 
 ### Positioning
 
-| Prop | Required | Types                  | Default   | Description                     | Unit(s)           |
-| ---- | -------- | ---------------------- | --------- | ------------------------------- | ----------------- |
-| x    | true     | [Number, String, Date] | undefined | x-coordinate of center of point | Local coordinates |
-| y    | true     | [Number, String, Date] | undefined | y-coordinate of center of point | Local coordinates |
+| Prop     | Required | Types                  | Default   | Description                     | Unit(s)           |
+| -------- | -------- | ---------------------- | --------- | ------------------------------- | ----------------- |
+| x        | depends  | [Number, String, Date] | undefined | x-coordinate of center of point | Local coordinates |
+| y        | depends  | [Number, String, Date] | undefined | y-coordinate of center of point | Local coordinates |
+| geometry | depends  | Object                 | undefined | GeoJSON object of type Point    | Local coordinates |
 
 ### Other aesthetics
 
@@ -39,7 +52,7 @@ These are analogous to the CSS properties of the same names.
 | ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
 | transition | false    | Number | 0       | Time taken to animate changes to each point when data changes |
 
-# Events
+## Events
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
@@ -53,14 +66,13 @@ These are analogous to the CSS properties of the same names.
 For more information on these events, see the [Interactivity](../concepts/interactivity.md)
 documentation.
 
-# Usage
+## Usage
 
 ### Positioning
 
-To render the Point mark, you will need to provide the `x` and `y` props.
-These can be of type `Number`, `String` and `Date`, depending what kind of domain type
-the parent Section has.
+To render the Point mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive. `x` and `y` can be of type `Number`, `String` and `Date`, depending on the domain type of the parent Section. `geometry` accepts GeoJSON Point objects only. To render other geometry types, see documentation on the [Multi-line](multi-line.md) and [Polygon](polygon.md) marks.
 
-# Example
 
-TODO
+## Example
+
+<MarkPointAdvanced/>
