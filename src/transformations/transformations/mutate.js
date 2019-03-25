@@ -9,10 +9,21 @@ export function mutate (data, mutateObj) {
 
   for (let i = 0; i < length; i++) {
     let row = {}
-    for (let colName in data) { row[colName] = data[colName][i] }
+    let prevRow = {}
+    let nextRow = {}
+
+    for (let colName in data) {
+      row[colName] = data[colName][i]
+      prevRow[colName] = data[colName][i - 1]
+      nextRow[colName] = data[colName][i + 1]
+    }
+
+    if (i === 0) { prevRow = undefined }
+    if (i === length - 1) { nextRow = undefined }
+
     for (let key in mutateObj) {
       let mutateFunc = mutateObj[key]
-      data[key][i] = mutateFunc(row, i)
+      data[key][i] = mutateFunc(row, i, prevRow, nextRow)
     }
   }
 
