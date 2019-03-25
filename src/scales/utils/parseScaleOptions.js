@@ -122,6 +122,17 @@ function updateDomain (domain, domainType, scalingOptions, dataInterface) {
       }
     }
 
+    if (is(scalingOptions.order)) {
+      let sortedDomain = [...scalingOptions.order]
+      for (let cat of newDomain) {
+        if (!sortedDomain.includes(cat)) {
+          sortedDomain.unshift(cat)
+        }
+      }
+
+      newDomain = sortedDomain
+    }
+
     return newDomain
   } else { return domain }
 }
@@ -131,8 +142,14 @@ function validScalingOptions (domainType, scalingOptions) {
     if (hasAnyWrongProperty(scalingOptions)) {
       throw new Error(`Invalid scaling options for categorical domain: ${JSON.stringify(scalingOptions)}`)
     }
+    if (scalingOptions.order && scalingOptions.order.constructor !== Array) {
+      throw new Error(`'order' must be array`)
+    }
     return true
   } else {
+    if (scalingOptions.hasOwnProperty('order')) {
+      throw new Error(`Invalid scaling option: 'order'. Can only be used with categorical domain`)
+    }
     checkTypes(domainType, scalingOptions)
     return true
   }
