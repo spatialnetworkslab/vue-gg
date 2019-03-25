@@ -1,6 +1,11 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import { createPath, interpolatePath, interpolatePathFromFunc } from './utils/createPath.js'
+import {
+  interpolatePoints,
+  interpolatePointsFromFunc,
+  transformPoints,
+  createPath
+} from './utils/createPath.js'
 
 export default {
   mixins: [Mark],
@@ -68,25 +73,43 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
+    }
+  },
+
   methods: {
     createPath (func, coords) {
+      let transformedPoints
       let path
 
       if (func) {
         let parentId = this.$$coordinateTreeParent
         let domains = this.$$coordinateTree.getBranch(parentId).domains
 
-        path = interpolatePathFromFunc(this.func, this.$$transform, domains)
+        let points = interpolatePointsFromFunc(this.func, domains)
+        transformedPoints = transformPoints(points, this.$$transform)
+        path = createPath(transformedPoints)
       }
 
       if (!func) {
         if (this._interpolate) {
-          path = interpolatePath(coords, this.$$transform)
+          let points = interpolatePoints(coords)
+          transformedPoints = transformPoints(points, this.$$transform)
+          path = createPath(transformedPoints)
         }
 
         if (!this._interpolate) {
-          path = createPath(coords, this.$$transform)
+          transformedPoints = transformPoints(coords, this.$$transform)
+          path = createPath(transformedPoints)
         }
+      }
+
+      let events = this.events
+      if (events.length > 0) {
+        this.addToSpatialIndex(transformedPoints, events)
       }
 
       return path
@@ -106,6 +129,10 @@ export default {
         },
         style: this.createSVGStyle(aesthetics)
       })
+    },
+
+    addToSpatialIndex (coordinates, events) {
+      this.$$interactionManager.addItem(this.uuid, 'line', coordinates, this, events, this.sectionParentChain)
     }
   }
 }

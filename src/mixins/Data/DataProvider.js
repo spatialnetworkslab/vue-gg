@@ -2,7 +2,6 @@ import DataContainer from '../../classes/Data/DataContainer.js'
 import DataReceiver from './DataReceiver.js'
 
 import applyTransformations from '../../transformations/applyTransformations.js'
-import id from '../../utils/id.js'
 
 export default {
   mixins: [DataReceiver],
@@ -23,12 +22,6 @@ export default {
     transform: {
       type: [Array, Object, undefined],
       default: undefined
-    }
-  },
-
-  data () {
-    return {
-      randomID: id()
     }
   },
 
@@ -67,9 +60,9 @@ export default {
       } else if (this.$vnode.data.staticClass) {
         // fall back on class if no id is given
         let elClass = this.$vnode.data.staticClass.replace(/\s+/g, '_')
-        id = elClass + '_' + this.randomID
+        id = elClass + '_' + this.uuid
       } else {
-        id = '_' + this.randomID
+        id = '_' + this.uuid
       }
       return id
     }

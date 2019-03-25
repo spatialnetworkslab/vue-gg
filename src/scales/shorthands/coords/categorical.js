@@ -3,22 +3,38 @@ export default {
 }
 
 // TODO better name
-function equidistant (domain, range, padStart = 0, padEnd = 0) {
+function equidistant (domain, range) {
   let deltaRange = range[1] - range[0]
-  let paddedRange = deltaRange - padStart - padEnd
 
   let sections = domain.length
-  let sectionLength = paddedRange / sections
+  let sectionLength = deltaRange / sections
 
   let mapping = {}
-  let i = 0
+  let inverseMapping = []
 
-  domain.forEach(entry => {
-    mapping[entry] = range[0] + padStart + (i * sectionLength) + (sectionLength / 2)
-    i++
+  domain.forEach((entry, i) => {
+    let lowerBound = range[0] + (i * sectionLength)
+    let upperBound = lowerBound + sectionLength
+
+    mapping[entry] = lowerBound + (sectionLength / 2)
+    inverseMapping.push({ lowerBound, upperBound, entry })
   })
 
-  return x => {
+  let scale = x => {
     return mapping[x]
   }
+
+  let invert = x => {
+    for (let entry of inverseMapping) {
+      if (x >= entry.lowerBound && x <= entry.upperBound) {
+        return entry.entry
+      }
+    }
+
+    return undefined
+  }
+
+  scale.invert = invert
+
+  return scale
 }

@@ -19,6 +19,12 @@ export default {
       type: undefined,
       default: undefined
     }
+  },
+
+  data () {
+    return {
+      pathType: 'path'
+    }
   }
 }
 </script>

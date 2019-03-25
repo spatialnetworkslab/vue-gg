@@ -19,8 +19,10 @@ function log (domain, range) {
   }
 
   let scale = d3.scaleLog().domain(domainCopy).range(range)
+  let offsetZeroScale = offsetZeroes(scale)
+  offsetZeroScale.invert = scale.invert
 
-  return offsetZeroes(scale)
+  return offsetZeroScale
 }
 
 function square (domain, range) {

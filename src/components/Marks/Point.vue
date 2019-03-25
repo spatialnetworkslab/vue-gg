@@ -69,6 +69,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
+    }
+  },
+
   methods: {
     renderSVG (createElement) {
       let aesthetics = this._props
@@ -83,6 +90,11 @@ export default {
 
       let [cx, cy] = this.$$transform(xy)
 
+      let events = this.events
+      if (events.length > 0) {
+        this.addToSpatialIndex([cx, cy], events)
+      }
+
       return createElement('circle', {
         attrs: {
           'cx': cx,
@@ -91,6 +103,10 @@ export default {
         },
         style: this.createSVGStyle(aesthetics)
       })
+    },
+
+    addToSpatialIndex (coordinates, events) {
+      this.$$interactionManager.addItem(this.uuid, 'point', coordinates, this, events, this.sectionParentChain)
     }
   }
 }

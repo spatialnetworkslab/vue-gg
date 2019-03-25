@@ -29,6 +29,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    let uid = this.uuid
+    if (this.events.length > 0) {
+      this.$$interactionManager.removeItem(uid)
+    }
+  },
+
   methods: {
     // This function generates the x-y coordinates + corresponding aesthetics
     // that need to be sorted alongside one another
@@ -62,13 +69,14 @@ export default {
         }
       } else {
         for (let i = 0; i < x.length; ++i) {
-          point = { coord: [x[i], y[i]] }
+          point = { coord: this.$$transform([x[i], y[i]]) }
           for (let row in this.mappable) {
             point = this.storeAesthetic(point, aesthetics, this.mappable[row], i)
           }
           points.push(point)
         }
       }
+
       return this.filterInvalid(points)
     },
 
@@ -117,7 +125,7 @@ export default {
       let lastID = points.length - 1
 
       if (points[0].coord[0] !== points[lastID].coord[0] ||
-          points[0].coord[1] !== points[lastID].coord[1]) {
+        points[0].coord[1] !== points[lastID].coord[1]) {
         // If not, close
         points.push(points[0])
       }
@@ -131,8 +139,8 @@ export default {
 
       for (let ix = 0; ix < points.length - 1; ix++) {
         // Get start and end coordinates of line segment
-        let [x1, y1] = this.$$transform(points[ix].coord)
-        let [x2, y2] = this.$$transform(points[ix + 1].coord)
+        let [x1, y1] = points[ix].coord
+        let [x2, y2] = points[ix + 1].coord
 
         let w1 = points[ix].strokeWidth / 2
         let w2 = points[ix + 1].strokeWidth / 2
@@ -196,7 +204,8 @@ export default {
       if (aesthetics.points || (aesthetics.x && aesthetics.y)) {
         let points = []
         if (aesthetics.points && aesthetics.points.length > 1) {
-          let x = []; let y = []
+          let x = []
+          let y = []
           for (let i = 0; i < aesthetics.points.length; i++) {
             if (aesthetics.points[i]) {
               if (aesthetics.points[i][0] && aesthetics.points[i][1]) {
@@ -222,6 +231,11 @@ export default {
             points = this.closePoints(points)
           }
 
+          let events = this.events
+          if (events.length > 0) {
+            this.addToSpatialIndex(points, events)
+          }
+
           // obtains path of trail mark
           let segments = this.createTrail(points)
 
@@ -240,6 +254,10 @@ export default {
       } else {
         console.warn('Not enough valid points to draw Mark')
       }
+    },
+
+    addToSpatialIndex (points, events) {
+      this.$$interactionManager.addItem(this.uuid, 'trail', points, this, events, this.sectionParentChain)
     }
   }
 }

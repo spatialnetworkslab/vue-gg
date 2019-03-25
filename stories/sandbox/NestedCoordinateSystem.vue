@@ -34,6 +34,7 @@
             :y="p.y"
             :fill="cs.color"
             :radius="4"
+            @mouseover="log('test')"
           />
 
           <vgg-rectangle
@@ -111,6 +112,10 @@ export default {
 
       return points
     }
+  },
+
+  methods: {
+    log: console.log
   }
 }
 </script>

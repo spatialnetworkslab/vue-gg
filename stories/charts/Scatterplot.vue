@@ -26,7 +26,7 @@
 
       <vgg-x-axis
         :scale="'a'"
-        :titleHjust="1.1"
+        :title-hjust="1.1"
         :vjust="-.05"
       />
 
