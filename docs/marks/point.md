@@ -70,7 +70,8 @@ documentation.
 
 ### Positioning
 
-To render the Point mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive. `x` and `y` can be of type `Number`, `String` and `Date`, depending on the domain type of the parent Section, while `geometry` accepts a GeoJSON Point object.
+To render the Point mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive. `x` and `y` can be of type `Number`, `String` and `Date`, depending on the domain type of the parent Section. `geometry` accepts GeoJSON Point objects only. To render other geometry types, see documentation on the [Multi-line](multi-line.md) and [Polygon](polygon.md) marks.
+
 
 ## Example
 

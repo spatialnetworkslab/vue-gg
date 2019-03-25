@@ -31,12 +31,14 @@ The `vgg-multi-line` mark is used to plot line elements that consist of multiple
 
 ## Properties
 A `vgg-multi-line` can contain the following position properties.
+
 ### Positioning
 
-| Prop | Required | Types | Default   | Description                             | Unit(s)           |
-| ---- | -------- | ----- | --------- | --------------------------------------- | ----------------- |
-| x    | true     | Array | undefined | x-coordinates of area path              | Local coordinates |
-| y    | true     | Array | undefined | y-coordinates of area path              | Local coordinates |
+| Prop     | Required | Types  | Default   | Description                                           | Unit(s)           |
+| -------- | -------- | -----  | --------- | ----------------------------------------------------- | ----------------- |
+| x        | depends  | Array  | undefined | x-coordinates of multi-line path                            | Local coordinates |
+| y        | depends  | Array  | undefined | y-coordinates of multi-line path                            | Local coordinates |
+| geometry | depends  | Object | undefined | GeoJSON object of type LineString or MultiLineString  | Local coordinates |
 
 ### Other aesthetics
 
@@ -57,7 +59,7 @@ These are analogous to the CSS properties of the same names.
 | ----------- | -------- | ------- | ------- | ------------------------------------------------------------------------ |
 | interpolate | false    | Boolean | false   | Interpolate between points (when using non-cartesian coordinate systems) |
 | sort        | false    | String  | 'x'     | Sort points in ascending order in x or y dimension                       |
-| close        | false    | Boolean  | false     | Whether line should closed, i.e. return to its origin                       |
+| close        | false    | Boolean  | false     | Whether line should be closed, i.e. return to its origin                       |
 
 ## Events
 
@@ -74,11 +76,10 @@ For more information on these events, see the [Interactivity](../concepts/intera
 documentation.
 
 ## Usage
+
 ### Positioning
 
-To render an Area mark, you will need to set the `x` and `y` prop. Both have to be passed an Array of values/coordinates. The length of `x` and `y` has to be the same, with one exception: if one has a length
-of greater than 1, the other one is allowed to have a length of exactly 1, which will
-then be recycled. So, for example
+To render a Multi-line mark, you will need to set the `x` and `y` or the `geometry` props. The two uses are mutually exclusive. `x` and `y` have to be passed an Array of values/coordinates of the same length, with one exception: when the shorter of the two arrays has length 1, its value will be repeated to match the length of the other array. For example
 
 ::: v-pre
 ```html
@@ -100,14 +101,13 @@ will be treated as
 ```
 :::
 
-It is also possible to use an entire column within the data scope as coordinates
-using `vgg-map` with `unit="dataframe"` (see [Map](../core/map.md) documentation). The rule of equal lengths still holds: if `x` is passed a dataframe
-column, and `y` is passed an array, the array has to be of the same length as the
-data column (except, again, if `y` is of length 1).
+`geometry` accepts GeoJSON LineString and MultiLineString objects only. To render other geometry types, see documentation on the [Point](point.md) and [Polygon](polygon.md) marks.
+
+It is also possible to use an entire column within the data scope as coordinates using `vgg-map` with `unit="dataframe"` (see [Map](../core/map.md) documentation). The rule of equal lengths still holds: if `x` is passed a dataframe column, and `y` is passed an array, the array has to be of the same length as the data column (except, again, if `y` is of length 1).
 
 ### Other props
 
-The `interpolate` option is switched off by default for Area marks. Only
+The `interpolate` option is switched off by default for Multi-line marks. Only
 turn it on when strictly necessary, otherwise it will slow down performance.
 `sort` is by default `'x'`, because most users will use the `x` dimension for
 variables that must be sorted ascendingly, like points in time, while using the
@@ -117,46 +117,45 @@ set `sort` to `'y'`.
 
 ## Example
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkMultiLineStacked />
 
-</div>
-
-<div style='width: 60%; height: 100%;'>
+<CodeLayout width="60%" style="margin-top: 25px;">
 
 ```html
 <vgg-graphic
-    :width="200"
-    :height="250"
-    :data="{
-      year: [2000, 2005, 2010, 2015,
-      2000, 2005, 2010, 2015],
-      population: [100, 110, 130, 180,
-      200, 310, 430, 480],
-      color: ['#c66366', '#c66366', '#c66366', '#c66366',
-      '#7CAE00', '#7CAE00', '#7CAE00', '#7CAE00']
-    }">
+  :width="200"
+  :height="250"
+  :data="{ 
+    year: [
+      2000, 2005, 2010, 2015,
+      2000, 2005, 2010, 2015
+    ],
+    population: [
+      100, 110, 130, 180,
+      200, 310, 430, 480
+    ],
+    color: [
+      '#c66366', '#c66366', '#c66366', '#c66366',
+      '#7CAE00', '#7CAE00', '#7CAE00', '#7CAE00'
+    ]
+  }">
 
-    <vgg-section
-      :x1="25"
-      :x2="175"
-      :y1="25"
-      :y2="225"
-      scale-x="year"
-      scale-y="population"
-      :axes="{
-        left: {'tick-count': 4, 'w': 30},
-        bottom: {'tick-count': 4}
-      }"
-    >
-      <vgg-data :transform="{ groupBy: 'color' }">
-      
+  <vgg-section
+    :x1="25"
+    :x2="175"
+    :y1="25"
+    :y2="225"
+    scale-x="year"
+    scale-y="population"
+    :axes="{
+      left: {'tick-count': 4, 'w': 30},
+      bottom: {'tick-count': 4}
+    }"
+  >
+    <vgg-data :transform="{ groupBy: 'color' }">
+    
       <vgg-map v-slot="{ row }">
 
         <vgg-multi-line
@@ -167,15 +166,13 @@ set `sort` to `'y'`.
 
       </vgg-map>
 
-      </vgg-data>
+    </vgg-data>
 
-    </vgg-section>
+  </vgg-section>
 
-   
-
-  </vgg-graphic>
+</vgg-graphic>
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>

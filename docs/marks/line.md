@@ -45,10 +45,10 @@ A `vgg-line` can contain the following position properties.
 ### Allowed combinations of positioning props
 The positioning properties of the Line  can only be used in certain combinations.
 
-| Combination               | Explanation                     |
-|---------------------------|---------------------------------|
-| `x1` + `x2` + `y1` + `y2` | Two coordinates (x1,y1),(x2,y2) |
-| `func`                    | A function f(x)                 |
+| Combination               | Explanation                        |
+|---------------------------|----------------------------------- |
+| `x1` + `x2` + `y1` + `y2` | Two coordinates (x1, y1), (x2, y2) |
+| `func`                    | A function f(x)                    |
 
 ### Other aesthetics
 

@@ -66,7 +66,7 @@ documentation.
 
 ### Positioning
 
-The Polygon mark can be positioned in several mutually exclusive ways: by providing both `x` and `y` props, the `points` prop or the `geometry` prop. 
+The Polygon mark can be positioned in several mutually exclusive ways: by providing both `x` and `y` props, the `points` prop or the `geometry` prop. `geometry` accepts GeoJSON Polygon and MultiPolygon objects only. To render other geometry types, see documentation on the [Point](point.md) and [Multi-line](multi-line.md) marks.
 
 ## Example
 
