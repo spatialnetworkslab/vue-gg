@@ -2,24 +2,50 @@
   <div id="app">
 
     <vgg-graphic
-    :width="600"
-    :height="600"
-    :data="data">
+      :width="1000"
+      :height="1000"
+      :data="resaleData"
+    >
 
-      <vgg-section
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale-x="[0, 10]"
-        :scale-y="[0, 10]"
-      >
+      <vgg-scales :scales="{ totalSalesScale: { domain: 'total_sales', domainMin: 0 } }" />
 
-        <vgg-trail
-          :points="[[0, 1], [1, 2], [3, 4], [7, 9], [3, 6], [9, 9]]"
-        />
+      <vgg-data :transform="{ groupBy: 'town' }">
 
-      </vgg-section>
+        <vgg-grid
+          :rows="4"
+          :layout-padding="10"
+          :cell-padding="5"
+        >
+
+          <vgg-map v-slot="{ row: facet }">
+
+            <vgg-section
+              :data="{ val: facet.grouped }"
+              :transform="[
+                { groupBy: 'flat_type'},
+                { summarise: { total_sales: { resale_price: 'count' } } }
+              ]"
+            >
+              <vgg-map v-slot="{ row }">
+
+                <vgg-rectangle
+                  :y="{ val: row.flat_type, scale: 'flat_type' }"
+                  :x1="0"
+                  :x2="{ val: row.total_sales, scale: '#totalSalesScale' }"
+                  :h="20"
+                />
+
+              </vgg-map>
+
+              <!-- <vgg-x-axis :tick-count="4" :scale="'#totalSalesScale'" :vjust="0" label-rotate /> -->
+
+            </vgg-section>
+
+          </vgg-map>
+
+        </vgg-grid>
+
+      </vgg-data>
 
     </vgg-graphic>
 
@@ -27,34 +53,27 @@
 </template>
 
 <script>
-export default {
-  name: 'app',
+import resaleData from './resale_sample.json'
 
+export default {
   data () {
     return {
-      data: this.generateData()
-    }
-  },
-
-  methods: {
-    generateData () {
-      let data = []
-      let beta0 = Math.random() * 100
-      let beta1 = 0.25 + Math.random() * 2
-      let range = Math.random() * 1000
-      for (let i = 0; i < 100; i++) {
-        let a = Math.random() * range
-        let error = Math.random() * range
-        let b = beta0 + a * beta1 + error
-
-        data.push({ a, b })
-      }
-
-      return data
+      resaleData: resaleData
     }
   }
+  // mounted () {
+  //   let unique = {}
+  //   for (let row of resaleData) {
+  //     unique[row.town] = true
+  //   }
+  //   console.log(Object.keys(unique))
+  // }
 }
 </script>
+
+<style>
+</style>
+
 
 <style>
 #app {

@@ -28,6 +28,7 @@ import SelectTest from './sandbox/SelectTest.vue'
 import MultipleSelections from './sandbox/MultipleSelections.vue'
 import NestedSelection from './sandbox/NestedSelection.vue'
 import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
+import MyGlobalScaleTrainwreck from './sandbox/MyGlobalScaleTrainwreck.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -59,3 +60,4 @@ storiesOf('Sandbox', module)
   .add('Multiple selections', () => (MultipleSelections))
   .add('Nested selection', () => (NestedSelection))
   .add('Ate axis scale bug', () => (AteAxisScaleBug))
+  .add('Global scale trainwreck', () => (MyGlobalScaleTrainwreck))
