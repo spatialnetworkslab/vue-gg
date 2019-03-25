@@ -13,12 +13,13 @@ components in a grid format.
 
 # Props
 
-| Prop           | Required | Types            | Default   | Description                               |
-| -------------- | -------- | ---------------- | --------- | ----------------------------------------- |
-| rows           | depends  | Number           | undefined | Max. number of rows the grid can have     |
-| cols           | depends  | Number           | undefined | Max. number olf columns the grid can have |
-| layout-padding | false    | [Number, Object] | 0         | Padding with respect to parent element    |
-| cell-padding   | false    | [Number, Object] | 0         | Padding between child elements            |
+| Prop           | Required | Types            | Default   | Description                                  |
+| -------------- | -------- | ---------------- | --------- | -------------------------------------------- |
+| rows           | depends  | Number           | undefined | Max. number of rows the grid can have        |
+| cols           | depends  | Number           | undefined | Max. number olf columns the grid can have    |
+| layout-padding | false    | [Number, Object] | 0         | Padding with respect to parent element       |
+| cell-padding   | false    | [Number, Object] | 0         | Padding between child elements               |
+| start          | false    | String           | 'b'       | Start filling from top ('t') or bottom ('b') | 
 
 The Grid component requires either the `rows`, _or_ the `cols` prop. If you use both,
 or neither, the component will throw an error. The number given to `rows` or `cols`
