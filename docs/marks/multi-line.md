@@ -102,7 +102,7 @@ will be treated as
 ```html
 <vgg-multi-line
   :x="[1, 2, 3, 4]"
-  :y="[100]"
+  :y="[100, 100, 100, 100]"
 />
 ```
 :::
