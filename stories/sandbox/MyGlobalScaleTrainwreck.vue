@@ -7,40 +7,52 @@
 
     <vgg-scales :scales="{ typeScale: 'flat_type' }" />
 
+    <vgg-data
+      :transform="[
+        { groupBy: ['town', 'flat_type'] },
+        { summarise: { total_sales: { resale_price: 'count' } } }
+      ]"
+    >
+
+      <vgg-scales :scales="{ totalScale: { domain: 'total_sales', domainMin: 0 } }" />
+
+    </vgg-data>
+
     <vgg-data :transform="{ groupBy: 'town' }">
 
       <vgg-grid
         :rows="4"
-        :layout-padding="10"
-        :cell-padding="5"
+        :layout-padding="15"
+        :cell-padding="10"
       >
 
         <vgg-map v-slot="{ row: facet }">
 
           <vgg-section
-            :data="{ val: facet.grouped }"
+            :data="facet.grouped"
             :transform="[
               { groupBy: 'flat_type'},
               { summarise: { total_sales: { resale_price: 'count' } } }
             ]"
           >
+
             <vgg-map v-slot="{ row }">
 
               <vgg-rectangle
                 :y="{ val: row.flat_type, scale: '#typeScale' }"
-                :x1="{ val: 0, scale: { domain: 'total_sales', domainMin: 0 } }"
-                :x2="{ val: row.total_sales, scale: { domain: 'total_sales', domainMin: 0 } }"
-                :h="{ band: '#typeScale' }"
+                :x1="{ val: 0, scale: '#totalScale' }"
+                :x2="{ val: row.total_sales, scale: '#totalScale' }"
+                :h="20"
               />
 
             </vgg-map>
 
-            <!-- <vgg-x-axis
-              :scale="{ domain: 'total_sales', domainMin: 0 }"
+            <vgg-y-axis :scale="'#typeScale'" />
+            <vgg-x-axis
+              :scale="'#totalScale'"
               :tick-count="4"
-              :vjust="0"
-              label-rotate
-            /> -->
+              rotate-label
+            />
 
           </vgg-section>
 
