@@ -38,7 +38,7 @@ grapefruit| 11.1     | | orange   | 8.9      |
 
 The data accepted by the library components takes the form of an array of objects, where each object contains the `column_name`:`value` pairs per instance (row).
 
-Given the above data, for example, should be pre-processed into the following structure:
+The above data, for example, should be pre-processed into the following structure:
 
 ```js
 let fruits_data = [{ fruit: 'lime', diameter: 4.7 },
@@ -131,7 +131,7 @@ In order to draw one mark per data column, refer to the map component documentat
 
 Now in order to actually render a point per row in the dataset, we need to specify the mark to use in the map component.
 
-In this case, the `vgg-point` component is sufficient for our purposes, however there are a wide range of marks that are available. For details of each, refer to the marks section of the documentation.
+In this case, the `vgg-point` component is sufficient for our purposes, however there are a wide range of marks that are available. For details of each, refer to the Marks section of the documentation.
 
 ```html{14-18}
 <vgg-graphic
@@ -258,7 +258,7 @@ The `title-vjust` and `title-hjust` properties are used to position the axis tit
 
 ## X/Y Grid (Optional)
 
-It is possible to add horizontal and vertical gridlines to the graph to help viewers read values off the graph. Like the axes, it is possible to specify gridlines either as a [property](../core/section.md) of the `vgg-section` component or to manually add gridlines using the `<vgg-x-grid>` and `<vgg-y-grid>` [components](../axes/gridlines.md).
+It is possible to add horizontal and vertical gridlines to the graph to help viewers read values off the graph. Like the axes, it is possible to specify gridlines either as a [property](../core/section.md) of the `vgg-section` component or by manually adding gridlines using the `<vgg-x-grid>` and `<vgg-y-grid>` [components](../axes/gridlines.md).
 
 When manually adding gridlines, make sure to specify the scale (variable) being used on each axis. Also specify the position of the gridlines. **Positioning of `<vgg-x-grid>` and `<vgg-y-grid>` is not done automatically**.
 
@@ -299,7 +299,7 @@ When manually adding gridlines, make sure to specify the scale (variable) being 
 
 We have briefly discussed the necessity of scales in the Marks section above. Scales are necessary for converting raw values in the dataset (e.g. fruit name) into values that can be rendered on a screen (e.g. pixels).
 
-However, scaling is not limited to changing data values into screen coordinates/pixels. Scaling can be done for a wide range of appearance aesthetics, such as color, shape and opacity. Different marks allow different aesthetics to be scaled. For details of each, refer to the marks and scales documentation.
+However, scaling is not limited to changing data values into screen coordinates/pixels. Scaling can be done for a wide range of appearance aesthetics, such as color, shape and opacity. Different marks allow different aesthetics to be scaled. For details of each, refer to the Marks and Scales documentation.
 
 In this case, the points on the graph can be scaled to display a different color for each category of fruit. To do so, the fill property on the `vgg-point` component can be changed from a single color to a scale, similar to the `x` and `y` properties.
 

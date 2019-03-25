@@ -18,8 +18,7 @@ module.exports = {
                 collapsable: true,
                 children: [
                     'tutorials/basic',
-                    'tutorials/custom2',
-                    'tutorials/customColor'
+                    'tutorials/transformTutorial',
                 ]
             },
             {
