@@ -30,6 +30,7 @@
         :rows="4"
         :layout-padding="15"
         :cell-padding="10"
+        :start="'t'"
       >
 
         <vgg-map v-slot="{ row: facet }">
