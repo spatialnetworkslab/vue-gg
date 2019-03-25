@@ -8,9 +8,15 @@ import parseScaleOptions from './utils/parseScaleOptions.js'
 import parseRange from './utils/parseRange.js'
 import getPrimitive from './utils/getPrimitive.js'
 
+import mappableProps from './utils/mappableProps.js'
+
 import getDimension from '../utils/getDimension.js'
 
 export default function (prop, context, passedScalingOptions) {
+  if (!mappableProps.includes(prop)) {
+    throw new Error(`Prop ${prop} not mappable`)
+  }
+
   let [domain, domainType, scalingOptions] = parseScaleOptions(
     passedScalingOptions,
     context.dataInterface,

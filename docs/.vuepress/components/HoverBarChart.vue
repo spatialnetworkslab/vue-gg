@@ -1,12 +1,5 @@
 <template>
-  <div>
-    <div v-if="hoverRow" style="float: right;">
-      <h3>{{ hoverRow.fruit }}</h3>
-      <h5>quantity: {{ hoverRow.quantity }}</h5>
-      <p>
-        {{ metadata.description[hoverRow.fruit] }}
-      </p>
-    </div>
+  <div style="display: flex">
 
     <vgg-graphic
       :width="300"
@@ -44,6 +37,14 @@
       </vgg-section>
 
     </vgg-graphic>
+
+    <div v-if="hoverRow" style="width: 40%; margin-left: 5%">
+      <h3>{{ hoverRow.fruit }}</h3>
+      <h5>quantity: {{ hoverRow.quantity }}</h5>
+      <p>
+        {{ metadata.description[hoverRow.fruit] }}
+      </p>
+    </div>
   </div>
 </template>
 

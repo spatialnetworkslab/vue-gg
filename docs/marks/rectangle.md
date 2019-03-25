@@ -1,17 +1,31 @@
 ---
-title: Rectangle Mark
+title: Rectangle mark
 ---
+# Rectangle mark
+The `vgg-rectangle` mark is used to plot rectangular elements.
 
-# Component tag
+<CodeDemoLayout>
 
-`<vgg-rectangle>`
+<MarkRectangleSimple />
 
-# Description
+<CodeLayout>
 
-TODO
+```html
+<vgg-rectangle
+  :x="row.year"
+  :y1="row.population"
+  :y2="0"
+  :w="2.5"
+  fill="#c66366"
+/>
+```
 
-# Props
+</CodeLayout>
 
+</CodeDemoLayout>
+
+## Properties
+A `vgg-rectangle` can contain the following position properties.
 ### Positioning
 
 | Prop | Required | Types                  | Default   | Description          | Unit(s)           |
@@ -24,6 +38,20 @@ TODO
 | y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates |
 | w    | depends  | Number                 | undefined | Width                | Local coordinates |
 | h    | depends  | Number                 | undefined | Height               | Local coordinates |
+
+#### Allowed combinations of positioning props
+The positioning properties of the Rectangle can only be used in certain combinations.
+
+| Combination | Explanation                                                                                                                    |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `x1` + `x2` | `x1` refers to x-coordinate of the left side of the rectangle, `x2` refers to x-coordinate of the right side of the rectangle. |
+| `x` + `w`   | `x` is the center of the rectangle in the x-dimension, `w` is the width. Here, `x1 = x - w / 2`, and `x2 = x + w / 2`.         |
+| `x1` + `w`  | `x2 = x1 + w`                                                                                                                  |
+| `x2` + `w`  | `x1 = x2 - w`                                                                                                                  |
+| `y1` + `y2` | `y1` refers to y-coordinate of the bottom side of the rectangle, `y2` refers to y-coordinate of the top side of the rectangle. |
+| `y` + `h`   | `y` is the center of the rectangle in the x-dimension, `h` is the width. Here, `y1 = y - h / 2`, and `y2 = y + h / 2`.         |
+| `y1` + `h`  | `y2 = y1 + w`                                                                                                                  |
+| `y2` + `h`  | `y1 = y2 - w`                                                                                                                  |
 
 ### Other aesthetics
 
@@ -38,14 +66,14 @@ TODO
 
 These are analogous to the CSS properties of the same names.
 
-### Other props
+### Other properties
 
 | Prop        | Required | Types   | Default   | Description                                                              |
 | ----------- | -------- | ------- | --------- | ------------------------------------------------------------------------ |
 | interpolate | false    | Boolean | undefined | Interpolate between points (when using non-cartesian coordinate systems) |
 | transition  | false    | Number  | 0         | Time taken to animate changes to each line when data changes             |
 
-# Events
+## Events
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
@@ -59,42 +87,17 @@ These are analogous to the CSS properties of the same names.
 For more information on these events, see the [Interactivity](../concepts/interactivity.md)
 documentation.
 
-# Usage
-
+## Usage
 ### Positioning
-
-There are a few caveats when positioning Rectangle marks. The Rectangle has four
-props that can be used for positioning in the x-dimension: `x1`, `x2`, `x` and `w`.
-This explanation is concerned with the x-dimension, but positioning works exactly the same
-for the y-dimension- just substitute the four above-mentioned props with
-`y1`, `y2`, `y` and `h`.
-
-There are four allowed combinations of `x1`, `x2`, `x` and `w`:
-
-1. just `x1` and `x2`
-2. just `x` and `w`
-3. just `x1` and `w`
-4. just `x2` and `w`
-
-The first option is straightforward: `x1` refers x-coordinate of the left side of the rectangle,
-and `x2` to the x-coordinate of the right side of the triangle. When using any of the
-other options, `vue-gg` will internally convert those to `x1` and `x2`, so we will
-explain the other options by explaining what they will be converted to internally.
-
-The second option uses `x`, which is the center of the rectangle in the x-dimension,
-and `w`, the width. Here, `x1 = x - w / 2`, and `y2 = x + w / 2`. The third option is
-using `x1` and `w`, where `x2 = x1 + w`. For the last option, `x1 = x2 - w`.
-
-Finally, there is one caveat related to `w` (and `h`). `x1`, `x2` and `x` can
+There is one caveat related to `w` (and `h`). `x1`, `x2` and `x` can
 be specified in the parent Section's coordinate system, even if those coordinates are
 categorical or temporal. `w`, however, does not take categorical or temporal data.
 Instead, the coordinate system of the first parent component that has a quantitative
-coordinate system will be used. So,
+coordinate system will be used. For example:
 
 ::: v-pre
 ```html{14}
 <vgg-graphic :width="500" :height="500">
-
   <vgg-section
     :x1="50"
     :x2="450"
@@ -112,12 +115,11 @@ coordinate system will be used. So,
     />
 
   </vgg-section>
-
 </vgg-graphic>
 ```
 :::
 
-the `:w` value of `100` here is in the coordinate system of the `vgg-graphic`,
+The `w` value of `100` here is in the coordinate system of the `vgg-graphic`,
 which is the first parent that has a quantitative coordinate system.
 
-# Example
+## Examples

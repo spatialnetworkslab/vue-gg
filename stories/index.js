@@ -28,6 +28,8 @@ import SectionAxesTest from './sandbox/SectionAxesTest.vue'
 import SelectTest from './sandbox/SelectTest.vue'
 import MultipleSelections from './sandbox/MultipleSelections.vue'
 import NestedSelection from './sandbox/NestedSelection.vue'
+import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
+import Facets from './sandbox/Facets.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -59,3 +61,5 @@ storiesOf('Sandbox', module)
   .add('Selection test', () => (SelectTest))
   .add('Multiple selections', () => (MultipleSelections))
   .add('Nested selection', () => (NestedSelection))
+  .add('Ate axis scale bug', () => (AteAxisScaleBug))
+  .add('Facets', () => (Facets))
