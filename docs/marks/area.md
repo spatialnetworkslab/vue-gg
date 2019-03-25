@@ -5,18 +5,11 @@ title: Area mark
 
 The `vgg-area` mark is used to plot filled areas. This is useful to visualize change over time. It can either be used by itself or in a 'stacked' configuration. 
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkAreaSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%;'>
+<CodeLayout>
 
 ```html
 <vgg-map 
@@ -33,9 +26,9 @@ The `vgg-area` mark is used to plot filled areas. This is useful to visualize ch
 </vgg-map>
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 A `vgg-area` can contain the following position properties.
@@ -141,18 +134,11 @@ set `sort` to `'y'`.
 
 ## Example
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkAreaStacked />
 
-</div>
-
-<div style='width: 60%; height: 100%;'>
+<CodeLayout width="60%" style="margin-top: 25px;">
 
 ```html
 <vgg-graphic
@@ -201,6 +187,6 @@ set `sort` to `'y'`.
   </vgg-graphic>
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>

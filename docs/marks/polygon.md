@@ -6,18 +6,11 @@ title: Polygon mark
 
 The `vgg-polygon` mark is used to plot polygonal elements. 
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkPolygonSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%;'>
+<CodeLayout>
 
 ```html
 <vgg-polygon
@@ -27,9 +20,9 @@ The `vgg-polygon` mark is used to plot polygonal elements.
 />
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 

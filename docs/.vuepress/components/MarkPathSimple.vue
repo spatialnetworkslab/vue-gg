@@ -20,6 +20,7 @@
           :y="dataframe.yValues"
           :close="false"
           fill="none"
+          stroke="#c66366"
         />
 
       </vgg-map>

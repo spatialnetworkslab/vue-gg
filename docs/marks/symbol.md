@@ -4,18 +4,11 @@ title: Symbol mark
 # Symbol mark
 The Symbol mark is used for plotting point data, with each data instance being represented as a symbol (or shape) element. The most common use for the Symbol mark is for creating points such as used in a scatterplot.
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkSymbolSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%;'>
+<CodeLayout width="40%">
 
 ```html
 <vgg-map v-slot="{ row }">
@@ -30,9 +23,9 @@ The Symbol mark is used for plotting point data, with each data instance being r
 </vgg-map>
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 

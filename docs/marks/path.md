@@ -8,18 +8,11 @@ The `vgg-path` mark is used to draw svg paths. It can be visually similar to `vg
 
 Most significantly, paths, even when closed and filled, are considered to have no area. Events (such as hover) are triggered only when the cursor is directly over the path. This is in contrast to polygons, which triggers events when the mouse is anywhere within the area of the mark.
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkPathSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%;'>
+<CodeLayout>
 
 ```html
 <vgg-map 
@@ -30,14 +23,16 @@ Most significantly, paths, even when closed and filled, are considered to have n
     :x="dataframe.year"
     :y="dataframe.population"
     stroke="#c66366"
+    :close="false"
+    fill="none"
   />
 
 </vgg-map>
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 

@@ -5,18 +5,11 @@ title: Multi-line mark
 
 The `vgg-multi-line` mark is used to plot line elements that consist of multiple line segments. This is in contrast to the Line Mark, which consists of only a single line segment.
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkMultiLineSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%;'>
+<CodeLayout>
 
 ```html
 <vgg-map 
@@ -32,9 +25,9 @@ The `vgg-multi-line` mark is used to plot line elements that consist of multiple
 </vgg-map>
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 A `vgg-multi-line` can contain the following position properties.

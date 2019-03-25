@@ -4,18 +4,11 @@ title: Label mark
 # Label mark
 The `vgg-label` mark is used to plot text elements.
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkLabelSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%;'>
+<CodeLayout>
 
 ```html
  <vgg-label
@@ -28,9 +21,9 @@ The `vgg-label` mark is used to plot text elements.
 />
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 A `vgg-label` can contain the following position properties.

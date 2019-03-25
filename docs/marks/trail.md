@@ -8,18 +8,11 @@ The Trail mark is used to plot point data with a line connecting all the points,
 
 This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpacity` to manipulate its color and opacity respectively.
 
-<div style="display: flex;
-  justify-content: space-around;
-  align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkTrailSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%; overflow:scroll;'>
+<CodeLayout>
 
 ```html
 <vgg-map v-slot="{ dataframe }"
@@ -37,9 +30,9 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 </vgg-map>
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 

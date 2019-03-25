@@ -5,12 +5,11 @@ title: Line mark
 # Line mark
 The `vgg-line` mark plots a simple line element by taking either a start and end coordinate or a function `f(x)`. In this way, it can also be used as a rule mark.
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
- <MarkLineSimple />
-<div style="width:40%;flex:1">
+<CodeDemoLayout>
+
+<MarkLineSimple />
+
+<CodeLayout>
 
 ```html
 <vgg-line
@@ -26,9 +25,9 @@ The `vgg-line` mark plots a simple line element by taking either a start and end
 />
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 A `vgg-line` can contain the following position properties.

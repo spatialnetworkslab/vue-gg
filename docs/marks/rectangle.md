@@ -4,18 +4,11 @@ title: Rectangle mark
 # Rectangle mark
 The `vgg-rectangle` mark is used to plot rectangular elements.
 
-<div style="display: flex;
-	justify-content: space-around;
-	align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkRectangleSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%;'>
+<CodeLayout>
 
 ```html
 <vgg-rectangle
@@ -27,9 +20,9 @@ The `vgg-rectangle` mark is used to plot rectangular elements.
 />
 ```
 
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 A `vgg-rectangle` can contain the following position properties.

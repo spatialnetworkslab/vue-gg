@@ -6,18 +6,11 @@ title: Point mark
 
 The `vgg-point` mark is used to plot simple point elements. It is a special case of the more general [Symbol mark](./symbol.md) that is made available on its own for convenience.
 
-<div style="display: flex;
-  justify-content:space-around;
-  align-items: center"
->
-
-<div>
+<CodeDemoLayout>
 
 <MarkPointSimple />
 
-</div>
-
-<div style='width: 40%; height: 100%;'>
+<CodeLayout>
 
 ```html
 <vgg-point
@@ -25,9 +18,9 @@ The `vgg-point` mark is used to plot simple point elements. It is a special case
   :y="row.y"
 />
 ```
-</div>
+</CodeLayout>
 
-</div>
+</CodeDemoLayout>
 
 ## Properties
 
