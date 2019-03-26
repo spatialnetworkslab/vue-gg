@@ -2,6 +2,7 @@ import checkValidScale from '../../utils/checkValidScale.js'
 import quantitative from './quantitative.js'
 import categorical from './categorical.js'
 import scaleFromRange from './scaleFromRange.js'
+import createOrdinalScale from '../../utils/createOrdinalScale.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {
@@ -21,14 +22,22 @@ export default function (prop, variableType, domain, scalingOptions) {
     if (scalingOptions.ranges) {
       return scaleFromRange(domain, scalingOptions.ranges)
     } else if (scalingOptions.rangeMin || scalingOptions.rangeMax) {
-      console.warn('Categorical color scales use `ranges` to specify custom color scales. Using default color scale `category10`')
+      throw new Error(`Cannot use 'rangeMin' or 'rangeMax' with categorical color scales`)
     }
 
-    let scale = scalingOptions.type || 'category10'
-    checkValidScale(prop, variableType, scale, categorical)
+    if (scalingOptions.order) {
+      // If we are dealing with ordinal data
+      let scale = scalingOptions.type || 'blues'
+      checkValidScale(prop, variableType, scale, quantitative)
+      return createOrdinalScale(scalingOptions.order, scalingOptions, quantitative)
+    } else {
+      // If we are dealing with regular categorical data
+      let scale = scalingOptions.type || 'category10'
+      checkValidScale(prop, variableType, scale, categorical)
 
-    let scaleFunc = categorical[scale](domain, scalingOptions)
+      let scaleFunc = categorical[scale](domain, scalingOptions)
 
-    return scaleFunc
+      return scaleFunc
+    }
   }
 }
