@@ -2,7 +2,7 @@ import checkValidScale from '../../utils/checkValidScale.js'
 import quantitative from './quantitative.js'
 import categorical from './categorical.js'
 import scaleFromRange from './scaleFromRange.js'
-import createOrdinalScale from '../../utils/createOrdinalScale.js'
+import createOrdinalScale from './createOrdinalScale.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {

@@ -32,6 +32,7 @@
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           :fill="'red'"
+          :opacity="{ val: row.fruit, scale: 'fruit' }"
         />
 
         <!-- <vgg-line
@@ -40,7 +41,7 @@
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           stroke="#ced02d"
-        />
+        /> -->
 
         <vgg-section
           :x="{ val: row.fruit, scale: 'fruit' }"
@@ -61,11 +62,11 @@
           <vgg-point
             :x="0"
             :y="0"
-            :radius="10"
+            :radius="{ val: row.fruit, scale: 'fruit' }"
             fill="#8b0000"
           />
 
-        </vgg-section> -->
+        </vgg-section>
 
       </vgg-map>
 
