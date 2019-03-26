@@ -66,9 +66,15 @@
         :y2="500"
         :scale="[0, 150]"
       />
+<<<<<<< HEAD
         <vgg-y-grid
           :scale="'dependent'"
         />
+=======
+      <vgg-y-grid
+        :scale="'dependent'"
+      />
+>>>>>>> c1afbbf7b192198f7bcf07866ca5625695a70ba6
 
       </vgg-section>
 

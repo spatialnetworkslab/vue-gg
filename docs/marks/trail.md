@@ -30,11 +30,17 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 </vgg-map>
 ```
 
+<<<<<<< HEAD
 </CodeLayout>
 
 </CodeDemoLayout>
 
 ## Properties
+=======
+# Props
+
+The standard trail mark takes the following props. Note that `x` and `y`, and `points` cannot be inputted simultaneously.
+>>>>>>> c1afbbf7b192198f7bcf07866ca5625695a70ba6
 
 ### Positioning
 
@@ -99,4 +105,35 @@ The `close` property, when true, joins the start and end points of the trail mar
 
 ## Example
 
+<<<<<<< HEAD
 <MarkTrailDemo />
+=======
+  <vgg-trail
+    :x="{ val: dataframe.time, scale: 'time' }"
+    :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
+    :stroke-width="{ val: dataframe.width, scale: 'width'}"
+    :fill-opacity="0.4"
+    fill="green"
+  />
+
+</vgg-map>
+```
+:::
+
+<TrailMarkDemo />
+
+This produces a green trail mark with 0.4 opacity and varying stroke width according to `dataframe.width`. Alternatively, `points` can be used to input an array of coordinate pairs, like so:
+
+::: v-pre
+```html
+<vgg-trail
+  :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
+  :stroke-width="[1, 5, 5, 3, 4, 2]"
+  fill="orange"
+  :fill-opacity="0.7"
+  :sort="'x'"
+  fill="orange"
+/>
+```
+:::
+>>>>>>> c1afbbf7b192198f7bcf07866ca5625695a70ba6
