@@ -123,14 +123,16 @@ function updateDomain (domain, domainType, scalingOptions, dataInterface) {
     }
 
     if (is(scalingOptions.order)) {
-      let sortedDomain = [...scalingOptions.order]
-      for (let cat of newDomain) {
-        if (!sortedDomain.includes(cat)) {
-          sortedDomain.unshift(cat)
+      if (scalingOptions.order.constructor === Array) {
+        if (scalingOptions.order.filter(s => newDomain.includes(s)).length < 1) {
+          throw new Error(`'order' scaling option must at least have one entry in common with domain`)
         }
+        newDomain = scalingOptions.order
+      } else if (scalingOptions.order.constructor === Function) {
+        newDomain = scalingOptions.order(newDomain)
+      } else {
+        throw new Error(`'order': can only be Array or Function`)
       }
-
-      newDomain = sortedDomain
     }
 
     return newDomain
@@ -141,9 +143,6 @@ function validScalingOptions (domainType, scalingOptions) {
   if (domainType === 'categorical') {
     if (hasAnyWrongProperty(scalingOptions)) {
       throw new Error(`Invalid scaling options for categorical domain: ${JSON.stringify(scalingOptions)}`)
-    }
-    if (scalingOptions.order && scalingOptions.order.constructor !== Array) {
-      throw new Error(`'order' must be array`)
     }
     return true
   } else {
