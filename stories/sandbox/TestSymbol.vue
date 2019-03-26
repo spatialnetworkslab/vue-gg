@@ -39,26 +39,11 @@
           :scale="'dependent'"
           :hjust="-.05"
           :tick-extra-label="false"
-          flip
         />
 
         <vgg-x-grid
           :scale="'explanatory'"
         />
-
-
-      <vgg-symbol-legend
-        :scale="{ domain: 'categorical'}"
-        :x="600"
-        :y="100"
-        title="Fruits"
-        :stroke="colorLegend(colorScheme)"
-        :shape="shapeLegend(shapeScheme)"
-        :font-size="10"
-        :title-font-size="16"
-        title-font-weight="bold"
-        orientation="horizontal"
-      />
 
       <vgg-x-grid
         :x1="100"
@@ -73,7 +58,17 @@
       />
 
       </vgg-section>
-
+      <vgg-symbol-legend
+        :scale="{ domain: 'categorical'}"
+        :title-font-size="20"
+        :size="{ range: [5, 20] }"
+        :x="sectionWidth * 0.6"
+        :y="sectionHeight * 0.5"
+        :label-padding="-0.2"
+        :stroke="colorLegend(colorScheme)"
+        :shape="shapeLegend(shapeScheme)"
+        title="Fruits"
+      />
     </vgg-graphic>
 
     <p>Shape Scheme:

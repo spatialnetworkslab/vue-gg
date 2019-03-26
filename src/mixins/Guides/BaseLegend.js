@@ -310,13 +310,20 @@ export default {
     legendTop () {
       if (!this.x && !this.y) {
         let p = this.position
-
         if (p === 'top' || p === 'tl' || p === 'tr') {
-          return -(this.plotHeight - this.sectionHeight) * 0.9
+          if (this.plotHeight - this.sectionHeight < 0) {
+            return (this.plotHeight - this.sectionHeight) * 0.9
+          } else {
+            return -(this.plotHeight - this.sectionHeight) * 0.9
+          }
         } else if (p === 'bottom' || p === 'bl' || p === 'br') {
           return 0
         } else {
-          return -this.plotHeight * 0.45
+          if (this.plotHeight < 0) {
+            return this.plotHeight * 0.45
+          } else {
+            return -this.plotHeight * 0.45
+          }
         }
       } else {
         if (this.position && this.position !== 'left') {
