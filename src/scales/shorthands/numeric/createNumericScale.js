@@ -3,10 +3,12 @@ import checkValidScale from '../../utils/checkValidScale.js'
 import quantitative from '../coords/quantitative.js'
 import categorical from '../coords/categorical.js'
 
+import createOrdinalScale from '../../utils/createOrdinalScale.js'
+
 export default function (prop, variableType, domain, scalingOptions) {
   let range
   if (['opacity', 'strokeOpacity', 'fillOpacity'].includes(prop)) {
-    range = [0, 1]
+    range = [0.1, 1]
   }
 
   if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
@@ -48,5 +50,17 @@ export default function (prop, variableType, domain, scalingOptions) {
     }
 
     return categorical[scale](domain, range)
+  }
+
+  if (variableType === 'temporal') {
+    console.warn('Temporal data not supported for color props')
+    return x => range[0]
+  }
+
+  if (variableType === 'interval:quantitative') {
+    let scale = scalingOptions.type || 'linear'
+    checkValidScale(prop, variableType, scale, quantitative)
+
+    return createOrdinalScale(domain, scale, quantitative, range)
   }
 }

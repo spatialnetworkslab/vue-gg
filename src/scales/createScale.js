@@ -48,6 +48,10 @@ export default function (prop, context, passedScalingOptions) {
     'opacity', 'strokeOpacity', 'fillOpacity',
     'radius'
   ].includes(prop)) {
+    if (domainType === 'interval:quantitative') {
+      domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
+      domain.sort((a, b) => a[0] - b[0])
+    }
     return createNumericScale(prop, domainType, domain, scalingOptions)
   }
 
