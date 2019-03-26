@@ -31,10 +31,14 @@
           :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
-          :fill="hoverI === i ? 'green' : 'black'"
+          :fill="{ val: row.fruit, scale: {
+              domain: 'fruit',
+              order: ['apple', 'banana', 'kiwi', 'pomelo', 'jackfruit', 'guava']
+            }
+          }"
         />
 
-        <vgg-line
+        <!-- <vgg-line
           :x1="{ val: row.fruit, scale: 'fruit' }"
           :x2="{ val: row.fruit, scale: 'fruit' }"
           :y1="0"
@@ -65,7 +69,7 @@
             fill="#8b0000"
           />
 
-        </vgg-section>
+        </vgg-section> -->
 
       </vgg-map>
 

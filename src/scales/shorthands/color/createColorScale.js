@@ -29,7 +29,7 @@ export default function (prop, variableType, domain, scalingOptions) {
       // If we are dealing with ordinal data
       let scale = scalingOptions.type || 'blues'
       checkValidScale(prop, variableType, scale, quantitative)
-      return createOrdinalScale(scalingOptions.order, scalingOptions, quantitative)
+      return createOrdinalScale(scalingOptions.order, scale, scalingOptions, quantitative)
     } else {
       // If we are dealing with regular categorical data
       let scale = scalingOptions.type || 'category10'
