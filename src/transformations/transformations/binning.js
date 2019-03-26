@@ -1,5 +1,6 @@
-import * as Geostats from 'geostats'
 import dataLength from '../utils/dataLength.js'
+// import * as Geostats from 'geostats'
+const geostats = require('geostats')
 
 export default function (data, binningObj) {
   if (binningObj.constructor !== Object) {
@@ -19,7 +20,8 @@ export default function (data, binningObj) {
   let numClasses = binningObj.numClasses
 
   let variableData = data[key]
-  let geoStat = new Geostats(variableData)
+  // let geoStat = new Geostats(variableData)
+  let geoStat = new geostats(variableData)
 
   let ranges
 
