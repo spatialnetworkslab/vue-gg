@@ -43,10 +43,6 @@ export default function (prop, context, passedScalingOptions) {
     return createOpacityScale(prop, domainType, domain, scalingOptions)
   }
 
-  if (['shape'].includes(prop)) {
-    return createShapeScale(prop, domainType, domain, scalingOptions)
-  }
-
   // Pixel-value props
   if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
     let range
@@ -66,5 +62,9 @@ export default function (prop, context, passedScalingOptions) {
     } else { range = scalingOptions.range }
 
     return createRadiusScale(prop, domainType, domain, range, scalingOptions)
+  }
+
+  if (['shape'].includes(prop)) {
+    return createShapeScale(prop, domainType, domain, scalingOptions)
   }
 }
