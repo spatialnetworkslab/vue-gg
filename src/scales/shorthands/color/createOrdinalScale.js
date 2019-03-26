@@ -14,7 +14,6 @@ export default function (orderedCategories, scale, quantitativeScales) {
   let quantitativeScale = quantitativeScales[scale](domain)
 
   let ordinalScale = cat => {
-    console.log(cat)
     return quantitativeScale(lookup[s(cat)])
   }
   return ordinalScale

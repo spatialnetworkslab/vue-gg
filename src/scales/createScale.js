@@ -35,7 +35,7 @@ export default function (prop, context, passedScalingOptions) {
   // Color props
   if (['stroke', 'fill'].includes(prop)) {
     if (domainType === 'interval:quantitative') {
-      domain = context.dataInterface.getColumn(scalingOptions.domain)
+      domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
       domain.sort((a, b) => a[0] - b[0])
     }
 
