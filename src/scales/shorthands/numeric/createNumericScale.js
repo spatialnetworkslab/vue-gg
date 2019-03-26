@@ -8,7 +8,7 @@ import createOrdinalScale from '../../utils/createOrdinalScale.js'
 export default function (prop, variableType, domain, scalingOptions) {
   let range
   if (['opacity', 'strokeOpacity', 'fillOpacity'].includes(prop)) {
-    range = [0.1, 1]
+    range = [0.05, 1]
   }
 
   if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
