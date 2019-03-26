@@ -32,11 +32,7 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 
 </CodeLayout>
 
-<<<<<<< HEAD
-# Trail Mark
-=======
 </CodeDemoLayout>
->>>>>>> 1c155254b6c8f4de7ef15a21a6b5edd90ae62ea9
 
 ## Properties
 
@@ -71,19 +67,7 @@ The positioning properties of the Trail mark can only be used in certain combina
 | sort  | false    | Boolean | undefined | Points are to be sorted based on their x- or y-values, or left unsorted | Boolean |
 | close | false    | Boolean | false     | If true, the start and end points of the trail are connected to form a closed path    | Boolean |
 
-<<<<<<< HEAD
-| Prop | Required | Regular types    | Default   | Description                             | Unit(s)                |
-| ---- | -------- | ---------------- | --------- | --------------------------------------- | ---------------------- |
-| points| false    | Array | []       | array of x-y coordinate pairs referring to path tracked by `trail` mark                      | [ [ x1, y1 ], [ x2, y2 ], ...] |
-| x    | true    | Number         | undefined | position of legend along section x-axis                      | Local Coordinates      |
-| y    | true    | Number         | undefined | position of legend along section y-axis                         | Local Coordinates      |
-
-Alternatively, the `points` prop may be used to specify the path followed by `trail`. Only `x` and `y` or `points` may be used at any given time for a certain `trail` mark.
-
-### Other Props
-=======
 ## Events
->>>>>>> 1c155254b6c8f4de7ef15a21a6b5edd90ae62ea9
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
@@ -94,32 +78,14 @@ Alternatively, the `points` prop may be used to specify the path followed by `tr
 | select    | Triggered when mark is selected               |
 | deselect  | Triggered when mark is removed from selection |
 
-<<<<<<< HEAD
-Prop           | Required | Regular types    | Default     | Description                                    | Unit(s)                    |
-| -------------- | -------- | ---------------- | ----------- | ---------------------------------------------- | -------------------------- |
-| stroke-width          | false    | [Number, Object, Array]        | 2        | symbol stroke width| Screen pixel |
-
-# Example
-=======
 For more information on these events, see the [Interactivity](../concepts/interactivity.md)
 documentation.
->>>>>>> 1c155254b6c8f4de7ef15a21a6b5edd90ae62ea9
 
 ## Usage
 
 ### Positioning
 
-<<<<<<< HEAD
-  <vgg-trail
-    :x="{ val: dataframe.time, scale: 'time' }"
-    :y="{ val: dataframe.measurement, scale: 'measurement', NA: 50 }"
-    :stroke-width="{ val: dataframe.width, scale: 'width'}"
-    :fill-opacity="0.4"
-    fill="green"
-  />
-=======
 The Trail mark can be positioned in two ways: by providing both the `x` and `y` properties, or by providing the `points` property.
->>>>>>> 1c155254b6c8f4de7ef15a21a6b5edd90ae62ea9
 
 ### Other aesthetics
 
@@ -127,19 +93,6 @@ In the trail mark, the `stroke-width` properties can be scaled according to a th
 
 ### Other properties
 
-<<<<<<< HEAD
-::: v-pre
-```html
-<vgg-trail
-  :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
-  :stroke-width="[1, 5, 5, 3, 4, 2]"
-  fill="orange"
-  :fill-opacity="0.7"
-  :sort="'x'"
-/>
-```
-:::
-=======
 The `sort` property sorts the data according to the given variable before plotting the trail mark. Sorting is done from lowest to highest (or alphabetically).
 
 The `close` property, when true, joins the start and end points of the trail mark to form a closed path.
@@ -147,4 +100,3 @@ The `close` property, when true, joins the start and end points of the trail mar
 ## Example
 
 <MarkTrailDemo />
->>>>>>> 1c155254b6c8f4de7ef15a21a6b5edd90ae62ea9
