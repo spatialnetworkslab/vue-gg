@@ -2,6 +2,8 @@ import createScale from '../../../scales/createScale.js'
 import createGeoScale from '../../../scales/createGeoScale.js'
 import createBand from '../../../scales/createBand.js'
 
+import mappableProps from '../../../scales/utils/mappableProps.js'
+
 import { transform } from '../../../utils/geojson.js'
 import { invalid } from '../../../utils/equals.js'
 
@@ -57,46 +59,48 @@ function updateMapping (mapping, element, context) {
   let props = element.componentOptions.propsData
 
   for (let propKey in props) {
-    let prop = props[propKey]
+    if (mappableProps.includes(propKey)) {
+      let prop = props[propKey]
 
-    if (prop.constructor === Object && !isFeature(prop)) {
-      validateMapping(prop)
+      if (prop.constructor === Object && !isFeature(prop)) {
+        validateMapping(prop)
 
-      if (prop.hasOwnProperty('scale')) {
-        let scaleOptions = prop.scale
-        let scaleStr = JSON.stringify(scaleOptions)
+        if (prop.hasOwnProperty('scale')) {
+          let scaleOptions = prop.scale
+          let scaleStr = JSON.stringify(scaleOptions)
 
-        mapping.scales[propKey] = mapping.scales[propKey] || {}
+          mapping.scales[propKey] = mapping.scales[propKey] || {}
 
-        if (!mapping.scales[propKey].hasOwnProperty(scaleStr)) {
-          let compiledScale = createScale(propKey, context, scaleOptions)
-          mapping.scales[propKey][scaleStr] = compiledScale
-        }
-      }
-
-      if (prop.hasOwnProperty('scaleGeo')) {
-        let scaleOptions = prop.scaleGeo
-        let scaleStr = JSON.stringify(scaleOptions)
-
-        mapping.geoScales[propKey] = mapping.geoScales[propKey] || {}
-
-        if (!mapping.geoScales[propKey].hasOwnProperty(scaleStr)) {
-          let { scaleX, scaleY } = createGeoScale(context, scaleOptions)
-          mapping.geoScales[propKey][scaleStr] = ([x, y]) => {
-            return [scaleX(x), scaleY(y)]
+          if (!mapping.scales[propKey].hasOwnProperty(scaleStr)) {
+            let compiledScale = createScale(propKey, context, scaleOptions)
+            mapping.scales[propKey][scaleStr] = compiledScale
           }
         }
-      }
 
-      if (prop.hasOwnProperty('band')) {
-        let bandOptions = prop.band
-        let bandStr = JSON.stringify(bandOptions)
+        if (prop.hasOwnProperty('scaleGeo')) {
+          let scaleOptions = prop.scaleGeo
+          let scaleStr = JSON.stringify(scaleOptions)
 
-        mapping.bands[propKey] = mapping.bands[propKey] || {}
+          mapping.geoScales[propKey] = mapping.geoScales[propKey] || {}
 
-        if (!mapping.bands[propKey].hasOwnProperty(bandStr)) {
-          let bandWidth = createBand(propKey, context, bandOptions)
-          mapping.bands[propKey][bandStr] = bandWidth
+          if (!mapping.geoScales[propKey].hasOwnProperty(scaleStr)) {
+            let { scaleX, scaleY } = createGeoScale(context, scaleOptions)
+            mapping.geoScales[propKey][scaleStr] = ([x, y]) => {
+              return [scaleX(x), scaleY(y)]
+            }
+          }
+        }
+
+        if (prop.hasOwnProperty('band')) {
+          let bandOptions = prop.band
+          let bandStr = JSON.stringify(bandOptions)
+
+          mapping.bands[propKey] = mapping.bands[propKey] || {}
+
+          if (!mapping.bands[propKey].hasOwnProperty(bandStr)) {
+            let bandWidth = createBand(propKey, context, bandOptions)
+            mapping.bands[propKey][bandStr] = bandWidth
+          }
         }
       }
     }
@@ -138,7 +142,7 @@ function mapElement (mapping, element, rowNumber) {
   for (let propKey in props) {
     let prop = props[propKey]
 
-    if (prop.constructor === Object && !isFeature(prop)) {
+    if (prop.constructor === Object && !isFeature(prop) && mappableProps.includes(propKey)) {
       let value
       if (prop.hasOwnProperty('val')) {
         value = prop.val

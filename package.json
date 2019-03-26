@@ -1,6 +1,6 @@
 {
   "name": "vue-gg",
-  "version": "0.0.4",
+  "version": "0.0.5-beta.0",
   "main": "dist/vue-gg.cjs.js",
   "module": "dist/vue-gg.esm.js",
   "browser": "dist/vue-gg.js",
@@ -26,9 +26,9 @@
     "d3-shape": "^1.2.2",
     "d3-time-format": "^2.1.3",
     "geostats": "^1.7.0",
-    "lodash.clonedeep": "^4.5.0",
-    "nanoid": "^2.0.1",
+    "lodash.debounce": "^4.0.8",
     "proj4": "^2.5.0",
+    "rbush": "^2.0.2",
     "vue": "2.6.1",
     "vue-server-renderer": "2.6.1"
   },

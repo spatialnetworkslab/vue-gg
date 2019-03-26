@@ -53,7 +53,7 @@
       <!-- Axes -->
       <vgg-x-axis
         :scale="[-1, 1]"
-        :titleHjust="1.1"
+        :title-hjust="1.1"
         :vjust="0.5"
       />
 

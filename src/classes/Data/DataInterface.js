@@ -43,8 +43,16 @@ export default class DataInterface {
   }
 
   hasColumn (str) {
-    let { containerID, colName } = this._parseGetterString(str)
-    return this._manager.getContainer(containerID).hasColumn(colName)
+    let containerID
+    let colName
+    try {
+      let split = this._parseGetterString(str)
+      containerID = split.containerID
+      colName = split.colName
+      return this._manager.getContainer(containerID).hasColumn(colName)
+    } catch (e) {
+      return false
+    }
   }
 
   getColumn (str) {

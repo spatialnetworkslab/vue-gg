@@ -25,12 +25,13 @@
             :stroke-width="2"
             :shape="shape(row.categorical)"
             fill="none"
+            @click="log(row)"
           />
-          <!--:stroke="color(row.explanatory)"-->
+
         </vgg-map>
 
         <vgg-x-axis
-          :scale="[0, 150]"
+          :scale="'explanatory'"
           :vjust="-.05"
         />
 
@@ -41,7 +42,10 @@
           flip
         />
 
-      </vgg-section>
+        <vgg-x-grid
+          :scale="'explanatory'"
+        />
+
 
       <vgg-symbol-legend
         :scale="{ domain: 'categorical'}"
@@ -62,14 +66,12 @@
         :y2="500"
         :scale="[0, 150]"
       />
+        <vgg-y-grid
+          :scale="'dependent'"
+        />
 
-      <vgg-y-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'dependent'"
-      />
+      </vgg-section>
+
     </vgg-graphic>
 
     <p>Shape Scheme:
@@ -113,7 +115,10 @@ export default {
       sectionHeight: 600
     }
   },
+
   methods: {
+    log: console.log,
+
     generateNewData () {
       let newData = xy('explanatory', 'dependent')
       let fruits = [

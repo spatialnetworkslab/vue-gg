@@ -20,6 +20,10 @@
         :fill-opacity="0.7"
         :sort="'x'"
         fill="orange"
+<<<<<<< HEAD
+=======
+        @click="log('test')"
+>>>>>>> 1c155254b6c8f4de7ef15a21a6b5edd90ae62ea9
       />
 
       <vgg-data :transform="{ groupBy: 'colors' }">
@@ -31,6 +35,7 @@
             :fill="row.colors"
             :fill-opacity="0.7"
             :sort="'x'"
+            @click="log(row)"
           />
 
         </vgg-map>
@@ -132,6 +137,8 @@ export default {
 
       return data
     }
-  }
+  },
+
+  methods: { log: console.log }
 }
 </script>

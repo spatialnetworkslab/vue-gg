@@ -2,79 +2,50 @@
   <div id="app">
 
     <vgg-graphic
-    :width="600"
-    :height="600"
-    :data="data">
+      :width="1000"
+      :height="1000"
+      :data="resaleData"
+    >
 
-      <vgg-section
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale-x="'a'"
-        :scale-y="'b'"
-      >
+      <vgg-scales :scales="{ totalSalesScale: { domain: 'total_sales', domainMin: 0 } }" />
 
-        <vgg-map v-slot="{ row }">
+      <vgg-data :transform="{ groupBy: 'town' }">
 
-          <vgg-point
-            :x="row.a"
-            :y="row.b"
-            :radius="3"
-            :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
-          />
+        <vgg-grid
+          :rows="4"
+          :layout-padding="10"
+          :cell-padding="5"
+        >
 
-        </vgg-map>
+          <vgg-map v-slot="{ row: facet }">
 
-        <vgg-x-axis
-          :vjust="0"
-          :scale="'a'"
-          title="henk"
-        />
+            <vgg-section
+              :data="{ val: facet.grouped }"
+              :transform="[
+                { groupBy: 'flat_type'},
+                { summarise: { total_sales: { resale_price: 'count' } } }
+              ]"
+            >
+              <vgg-map v-slot="{ row }">
 
-        <vgg-y-axis
-          :hjust="'r'"
-          :scale="'b'"
-          title="piet"
-        />
+                <vgg-rectangle
+                  :y="{ val: row.flat_type, scale: 'flat_type' }"
+                  :x1="0"
+                  :x2="{ val: row.total_sales, scale: '#totalSalesScale' }"
+                  :h="20"
+                />
 
-        <vgg-x-grid :scale="'a'" />
-        <vgg-y-grid :scale="'b'" />
+              </vgg-map>
 
-      </vgg-section>
+              <!-- <vgg-x-axis :tick-count="4" :scale="'#totalSalesScale'" :vjust="0" label-rotate /> -->
 
-      <!-- <vgg-x-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'a'"
-      />
+            </vgg-section>
 
-      <vgg-y-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="'b'"
-      /> -->
+          </vgg-map>
 
-      <!-- <vgg-x-axis
-        :x1="100"
-        :x2="500"
-        :y1="50"
-        :y2="100"
-        :scale="'a'"
-      /> -->
+        </vgg-grid>
 
-      <!-- <vgg-y-axis
-        :x1="50"
-        :x2="100"
-        :y1="100"
-        :y2="500"
-        :scale="'b'"
-        flip
-      /> -->
+      </vgg-data>
 
     </vgg-graphic>
 
@@ -82,34 +53,27 @@
 </template>
 
 <script>
-export default {
-  name: 'app',
+import resaleData from './resale_sample.json'
 
+export default {
   data () {
     return {
-      data: this.generateData()
-    }
-  },
-
-  methods: {
-    generateData () {
-      let data = []
-      let beta0 = Math.random() * 100
-      let beta1 = 0.25 + Math.random() * 2
-      let range = Math.random() * 1000
-      for (let i = 0; i < 100; i++) {
-        let a = Math.random() * range
-        let error = Math.random() * range
-        let b = beta0 + a * beta1 + error
-
-        data.push({ a, b })
-      }
-
-      return data
+      resaleData: resaleData
     }
   }
+  // mounted () {
+  //   let unique = {}
+  //   for (let row of resaleData) {
+  //     unique[row.town] = true
+  //   }
+  //   console.log(Object.keys(unique))
+  // }
 }
 </script>
+
+<style>
+</style>
+
 
 <style>
 #app {

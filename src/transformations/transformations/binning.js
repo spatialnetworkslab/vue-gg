@@ -131,6 +131,6 @@ function bin (data, variable, ranges) {
 
   // Add new dataFrame column to newData
   newData.grouped = bins
-
+  console.log(newData)
   return newData
 }
