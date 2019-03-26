@@ -1,26 +1,37 @@
 ---
 title: Area mark
 ---
+# Area mark
 
-# Component tag
+The `vgg-area` mark is used to plot filled areas. This is useful to visualize change over time. It can either be used by itself or in a 'stacked' configuration. 
 
-`<vgg-area>`
+<CodeDemoLayout>
 
-# Description
+<MarkAreaSimple />
 
-Like the MultiLine mark, the Area mark is useful for visualizing trends.
-But unlike the MultiLine, the Area is particularly suitable to dissect trends,
-and see what they are composed of, while the MultiLine is better suited to
-compare separate trends.
+<CodeLayout>
 
-For example, to analyse how much money you spend monthly on various things, you
-would want to use the Area mark, with each mark representing a different type of expense.
-On the other hand, if you wanted to compare your monthly spending with that of
-your friends, you might want to use the MultiLine, with each mark representing
-a different person's spending.
+```html
+<vgg-map 
+  v-slot="{ dataframe }"
+  unit="dataframe">
 
-# Props
+  <vgg-area
+    :x="dataframe.year"
+    :y="dataframe.population"
+    :y2="[0]"
+    fill="#c66366"
+  />
 
+</vgg-map>
+```
+
+</CodeLayout>
+
+</CodeDemoLayout>
+
+## Properties
+A `vgg-area` can contain the following position properties.
 ### Positioning
 
 | Prop | Required | Types | Default   | Description                             | Unit(s)           |
@@ -29,6 +40,14 @@ a different person's spending.
 | y    | true     | Array | undefined | y-coordinates of area path              | Local coordinates |
 | x2   | depends  | Array | undefined | x2-coordinates (secondary) of area path | Local coordinates |
 | y2   | depends  | Array | undefined | y2-coordinates (secondary) of area path | Local coordinates |
+
+#### Allowed combinations of positioning props
+The positioning properties of the Rectangle can only be used in certain combinations.
+
+| Combination      | Explanation                                                                                                                                                                 |
+|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `x` + `y` + `y2` | 'Vertical' alignment of area. Draws a line with `x` and `y` coordinates, then draws a line with `x` and `y2` coordinates and connects the two lines to complete the area.   |
+| `x` + `y` + `x2` | 'Horizontal' alignment of area. Draws a line with `x` and `y` coordinates, then draws a line with `x2` and `y` coordinates and connects the two lines to complete the area. |
 
 ### Other aesthetics
 
@@ -50,7 +69,7 @@ These are analogous to the CSS properties of the same names.
 | interpolate | false    | Boolean | false   | Interpolate between points (when using non-cartesian coordinate systems) |
 | sort        | false    | String  | 'x'     | Sort points in ascending order in x or y dimension                       |
 
-# Events
+## Events
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
@@ -64,8 +83,7 @@ These are analogous to the CSS properties of the same names.
 For more information on these events, see the [Interactivity](../concepts/interactivity.md)
 documentation.
 
-# Usage
-
+## Usage
 ### Positioning
 
 To render an Area mark, you will need the `x` prop, `y` prop, and a `x2` and/or `y2`
@@ -100,8 +118,7 @@ will be treated as
 :::
 
 It is also possible to use an entire column within the data scope as coordinates
-using `vgg-map` with `unit="dataframe"` (see [Map](../core/map.md) documenation).
-But the rule of equal lengths still holds: if `x` is passed a dataframe
+using `vgg-map` with `unit="dataframe"` (see [Map](../core/map.md) documentation). The rule of equal lengths still holds: if `x` is passed a dataframe
 column, and `y` is passed an array, the array has to be of the same length as the
 data column (except, again, if `y` is of length 1).
 
@@ -115,33 +132,63 @@ variables that must be sorted ascendingly, like points in time, while using the
 in time. If you want to plot time in the `y` dimension instead, make sure to
 set `sort` to `'y'`.
 
-# Example
+## Example
 
-::: v-pre
+<CodeDemoLayout>
+
+<MarkAreaStacked />
+
+<CodeLayout width="60%" style="margin-top: 25px;">
+
 ```html
 <vgg-graphic
-  :width="600"
-  :height="600"
-  :data="dummyData">
+  :width="200"
+  :height="250"
+  :data="{
+    year: [
+      2000, 2005, 2010, 2015,
+      2000, 2005, 2010, 2015
+    ],
+    population: [
+      100, 110, 130, 180,
+      200, 310, 430, 480
+    ],
+    color: [
+      '#c66366', '#c66366', '#c66366', '#c66366',
+      '#7CAE00', '#7CAE00', '#7CAE00', '#7CAE00'
+    ]
+  }">
 
   <vgg-section
-    :x1="100"
-    :x2="500"
-    :y1="100"
-    :y2="500"
-    :scale-x="'xValues'"
-    :scale-y="'yValues'"
+    :x1="25"
+    :x2="175"
+    :y1="25"
+    :y2="225"
+    scale-x="year"
+    :scale-y="{
+      domain: 'population',
+      domainMin: 0, 
+      domainMax: 700
+    }"
+    :axes="{
+      left: {'tick-count': 4, 'w': 30},
+      bottom: {'tick-count': 4}
+    }"
   >
-    <vgg-data :transform="{ groupBy: 'colors' }">
-
+    <vgg-data :transform="{ groupBy: 'color' }">
+    
       <vgg-map v-slot="{ row, i, prevRow }">
 
         <vgg-area
-          :x="row.grouped.xValues"
-          :y="row.grouped.yValues"
-          :y2="prevRow ? prevRow.grouped.yValues : [0]"
-          :fill="row.colors"
-          :opacity="0.5"
+          :x="row.grouped.year"
+          :y="prevRow 
+            ? row.grouped.population.map((value, i) =>
+              value + prevRow.grouped.population[i])
+            : row.grouped.population"
+          :y2="prevRow 
+            ? prevRow.grouped.population 
+            : [0]"
+          :fill="row.color"
         />
 
       </vgg-map>
@@ -152,4 +199,7 @@ set `sort` to `'y'`.
 
 </vgg-graphic>
 ```
-:::
+
+</CodeLayout>
+
+</CodeDemoLayout>

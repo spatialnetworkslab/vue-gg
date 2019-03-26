@@ -13,7 +13,7 @@
         { arrange: [{ banana: 'ascending' }, { apple: 'descending' }] },
         { mutate: { ratioAppleDurian: ({ apple, durian }) => apple / durian } },
         { groupBy: 'banana' },
-        { summarise: { appleSum: { apple: 'sum' }, maxRatio: { ratioAppleDurian: 'max' } } }
+        { mutarise: { appleSum: { apple: 'sum' }, maxRatio: { ratioAppleDurian: 'max' } } }
       ]"
     >
 

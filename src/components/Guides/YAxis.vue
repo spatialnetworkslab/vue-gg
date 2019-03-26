@@ -228,7 +228,7 @@ export default {
     },
 
     parsedScale () {
-      return createScale('y', this.context, this.scalingOptions)
+      return createScale('y', this.context, this.scale)
     }
   }
 }
