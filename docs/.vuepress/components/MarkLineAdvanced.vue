@@ -1,15 +1,15 @@
 <template>
   <div>
     <vgg-graphic
-      :width="300"
-      :height="300"
+      :width="500"
+      :height="500"
     >
 
       <vgg-section
-        :x1="25"
-        :x2="275"
-        :y1="25"
-        :y2="275"
+        :x1="50"
+        :x2="450"
+        :y1="50"
+        :y2="450"
         :scale-x="[-1, 1]"
         :scale-y="[-1, 1]"
       >
@@ -35,25 +35,23 @@
         <vgg-x-axis
           :scale="[-1, 1]"
           :vjust="0.5"
+          :tickCount="5"
         />
         <vgg-y-axis
           :scale="[-1, 1]"
           :hjust="0.5"
+          :tickCount="5"
         />
 
       </vgg-section>
     </vgg-graphic>
-    <div style="display:flex;flex-direction:column">
-      <p>Function
-      <select
-        style="width:100px"
-        v-model="func"
-      >
-        <option :value="null">hide</option>
-        <option value="poly">x^2</option>
-        <option value="sin">Math.sin(20*x)</option>
-        <option value="cos">Math.cos(20*x)</option>
-      </select>
+
+      <p>Function:
+        <select v-model="func">
+          <option value="poly">x^2</option>
+          <option value="sin">Math.sin(20*x)</option>
+          <option value="cos">Math.cos(20*x)</option>
+        </select>
       </p>
       <p>Stroke Width:
         <select v-model="strokeWidth">
@@ -65,23 +63,21 @@
       <p>Fill:
         <select v-model="fill">
           <option :value="'none'">None</option>
-          <option :value="'red'">Red</option>
-          <option :value="'green'">Green</option>
-          <option :value="'white'">White</option>
+          <option :value="'#c66366'">Red</option>
+          <option :value="'#008080'">Green</option>
         </select>
       </p>
 
-    </div>
     <vgg-graphic
-      :width="300"
-      :height="300"
+      :width="500"
+      :height="500"
     >
 
       <vgg-section
-        :x1="25"
-        :x2="275"
-        :y1="25"
-        :y2="275"
+        :x1="50"
+        :x2="450"
+        :y1="50"
+        :y2="450"
         :scale-x="[-1, 1]"
         :scale-y="[-1, 1]"
       >
@@ -91,16 +87,18 @@
           :x2="coordinates.x2"
           :y1="coordinates.y1"
           :y2="coordinates.y2"
-          stroke="green"
+          stroke="#008080"
         />
 
         <vgg-x-axis
           :scale="[-1, 1]"
           :vjust="0.5"
+          :tickCount="5"
         />
         <vgg-y-axis
           :scale="[-1, 1]"
           :hjust="0.5"
+          :tickCount="5"
         />
 
       </vgg-section>
@@ -120,7 +118,7 @@ export default {
     return {
       coordinates:{
         x1:1,
-        x2:-1.5,
+        x2:-1.2,
         y1:-1,
         y2:0.3
       },
@@ -143,8 +141,8 @@ export default {
         y2:1.2,
       },
       strokeWidth:2,
-      fill: "none",
-      func: "poly"
+      fill: 'none',
+      func: 'poly'
     };
   },
 };
