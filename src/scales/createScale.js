@@ -22,10 +22,9 @@ export default function (prop, context, passedScalingOptions) {
     context.scaleManager
   )
 
-  domainType = getPrimitive(domainType)
-
   // Coordinate props
   if (['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(prop)) {
+    domainType = getPrimitive(domainType)
     let dimension = getDimension(prop)
     let range = context.ranges[dimension]
     range = parseRange(range, scalingOptions)
@@ -35,7 +34,12 @@ export default function (prop, context, passedScalingOptions) {
 
   // Color props
   if (['stroke', 'fill'].includes(prop)) {
-    return createColorScale(prop, domainType, domain, scalingOptions)
+    if (domainType === 'interval:quantitative') {
+      domain = context.dataInterface.getColumn(scalingOptions.domain)
+      domain.sort((a, b) => a[0] - b[0])
+    }
+
+    return createColorScale(prop, domainType, domain, scalingOptions, context)
   }
 
   // Numeric props

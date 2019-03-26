@@ -61,7 +61,9 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
     domainType = getDataType(domain[0])
   }
+
   domain = updateDomain(domain, domainType, scaleOptions)
+
   return [domain, domainType, scaleOptions]
 }
 

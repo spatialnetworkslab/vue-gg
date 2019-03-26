@@ -1,4 +1,4 @@
-export default function (orderedCategories, scale, scalingOptions, quantitativeScales) {
+export default function (orderedCategories, scale, quantitativeScales) {
   let numberOfCategories = orderedCategories.length
   let domain = [0, numberOfCategories - 1]
 
@@ -11,8 +11,11 @@ export default function (orderedCategories, scale, scalingOptions, quantitativeS
     lookup[s(v)] = i
   })
 
-  let quantitativeScale = quantitativeScales[scale](domain, scalingOptions.domainMid)
+  let quantitativeScale = quantitativeScales[scale](domain)
 
-  let ordinalScale = cat => quantitativeScale(lookup[s(cat)])
+  let ordinalScale = cat => {
+    console.log(cat)
+    return quantitativeScale(lookup[s(cat)])
+  }
   return ordinalScale
 }

@@ -29,7 +29,7 @@ export default function (prop, variableType, domain, scalingOptions) {
       // If we are dealing with ordinal data
       let scale = scalingOptions.type || 'blues'
       checkValidScale(prop, variableType, scale, quantitative)
-      return createOrdinalScale(domain, scale, scalingOptions, quantitative)
+      return createOrdinalScale(domain, scale, quantitative)
     } else {
       // If we are dealing with regular categorical data
       let scale = scalingOptions.type || 'category10'
@@ -39,5 +39,17 @@ export default function (prop, variableType, domain, scalingOptions) {
 
       return scaleFunc
     }
+  }
+
+  if (variableType === 'temporal') {
+    console.warn('Temporal data not supported for color props')
+    return x => 'black'
+  }
+
+  if (variableType === 'interval:quantitative') {
+    let scale = scalingOptions.type || 'blues'
+    checkValidScale(prop, variableType, scale, quantitative)
+
+    return createOrdinalScale(domain, scale, quantitative)
   }
 }
