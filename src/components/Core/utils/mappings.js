@@ -198,7 +198,7 @@ function isFeature (prop) {
 function applyScale (value, scale, propKey) {
   if (invalid(value)) return
 
-  if (['x', 'y', 'points', 'geometry', 'x2', 'y2'].includes(propKey)) {
+  if (['x', 'y', 'points', 'geometry', 'x2', 'y2', 'strokeWidth'].includes(propKey)) {
     if (value.constructor === Array) {
       // points (array of arrays)
       if (value[0].constructor === Array) {
