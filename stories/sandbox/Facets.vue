@@ -43,6 +43,11 @@
             ]"
           >
 
+            <vgg-plot-title
+              :text="facet.town"
+              :vjust="1"
+            />
+
             <vgg-map v-slot="{ row }">
 
               <vgg-rectangle

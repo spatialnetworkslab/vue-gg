@@ -80,16 +80,16 @@
         :scale="{ domain: 'explanatory'}"
         :size="{ domain: 'explanatory'}"
         position="br"
+        title="Size"
         flip-numbers
       />
 
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
         :stroke="'none'"
-        :size="{ domain: 'dependent', range: [1, 15]}"
         :fill="{ type: 'viridis'}"
-        title="Size + Color"
-        position="tr"
+        title="Color"
+        position="right"
         flip
       />
 
