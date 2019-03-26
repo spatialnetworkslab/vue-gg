@@ -408,8 +408,9 @@ export default {
             intervals = this.$$dataInterface.getColumn(this.scale.domain)
           }
 
-          ticks = ticksFromIntervals(intervals).map(value => {
-            return { value, label: this.makeNice ? this.round(format(value), 1) : format(value) }
+          ticks = intervals.map((value, i) => {
+            let mean = (value[0] + value[1]) / 2
+            return { value: mean, label: this.makeNice ? format(this.round(mean, 1)) : format(mean) }
           })
         }
 
@@ -524,15 +525,6 @@ export default {
   },
 
   methods: {
-    ticksFromIntervals (intervals) {
-      let ticks = new Set()
-      for (let interval of intervals) {
-        ticks.add(interval[0])
-        ticks.add(interval[1])
-      }
-      return Array.from(ticks)
-    },
-
     round (value, n) {
       return Math.floor(value / n) * n
     },

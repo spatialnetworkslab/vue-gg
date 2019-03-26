@@ -49,14 +49,15 @@
 
       <vgg-symbol-legend
         :scale="{ domain: 'categorical'}"
-        :font-size="10"
-        :title-font-size="19"
-        :size="15"
-        :x="sectionWidth * 0.6"
-        :y="sectionHeight * 0.5"
+        :x="600"
+        :y="100"
+        title="Fruits"
         :stroke="colorLegend(colorScheme)"
         :shape="shapeLegend(shapeScheme)"
-        title="Fruits"
+        :font-size="10"
+        :title-font-size="16"
+        title-font-weight="bold"
+        orientation="horizontal"
       />
 
       <vgg-x-grid
@@ -66,15 +67,10 @@
         :y2="500"
         :scale="[0, 150]"
       />
-<<<<<<< HEAD
-        <vgg-y-grid
-          :scale="'dependent'"
-        />
-=======
+
       <vgg-y-grid
         :scale="'dependent'"
       />
->>>>>>> c1afbbf7b192198f7bcf07866ca5625695a70ba6
 
       </vgg-section>
 
