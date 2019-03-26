@@ -28,7 +28,7 @@ export function calculateRowsCols (options, numberOfCells) {
   return { rows, cols }
 }
 
-export function calculateGridLayout (rows, cols, options, ranges, axes) {
+export function calculateGridLayout (rows, cols, options, ranges, axes, start) {
   let lP = getPadding(options.layoutPadding)
   let cP = getPadding(options.cellPadding)
 
@@ -45,14 +45,29 @@ export function calculateGridLayout (rows, cols, options, ranges, axes) {
 
   let cells = []
 
-  for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
-    for (let colIndex = 0; colIndex < cols; colIndex++) {
-      let x1 = left + colIndex * cellWidth + cP.l
-      let x2 = x1 + cellWidth - cP.l - cP.r
-      let y1 = bottom + rowIndex * cellHeight + cP.b
-      let y2 = y1 + cellHeight - cP.b - cP.t
+  if (start === 'b') {
+    for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+      for (let colIndex = 0; colIndex < cols; colIndex++) {
+        let x1 = left + colIndex * cellWidth + cP.l
+        let x2 = x1 + cellWidth - cP.l - cP.r
+        let y1 = bottom + rowIndex * cellHeight + cP.b
+        let y2 = y1 + cellHeight - cP.b - cP.t
 
-      cells.push({ x1, x2, y1, y2 })
+        cells.push({ x1, x2, y1, y2 })
+      }
+    }
+  }
+
+  if (start === 't') {
+    for (let rowIndex = rows - 1; rowIndex >= 0; rowIndex--) {
+      for (let colIndex = 0; colIndex < cols; colIndex++) {
+        let x1 = left + colIndex * cellWidth + cP.l
+        let x2 = x1 + cellWidth - cP.l - cP.r
+        let y1 = bottom + rowIndex * cellHeight + cP.b
+        let y2 = y1 + cellHeight - cP.b - cP.t
+
+        cells.push({ x1, x2, y1, y2 })
+      }
     }
   }
 

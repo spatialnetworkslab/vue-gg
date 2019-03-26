@@ -108,7 +108,8 @@ export default {
       let numberOfSections = sections.length
       let { rows, cols } = calculateRowsCols(options, numberOfSections)
       let ranges = this.parentBranch.domains
-      let layout = calculateGridLayout(rows, cols, options, ranges)
+      let start = this.$$grid.start
+      let layout = calculateGridLayout(rows, cols, options, ranges, undefined, start)
 
       elements = updateGridSections(createElement, sections, layout)
     }

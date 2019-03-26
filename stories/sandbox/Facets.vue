@@ -5,7 +5,13 @@
     :data="resaleData"
   >
 
-    <vgg-scales :scales="{ typeScale: 'flat_type' }" />
+    <vgg-scales
+      :scales="{
+        typeScale: { domain: 'flat_type', order: [
+          '2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'EXECUTIVE'
+        ].reverse() }
+      }"
+    />
 
     <vgg-data
       :transform="[
@@ -24,6 +30,7 @@
         :rows="4"
         :layout-padding="15"
         :cell-padding="10"
+        :start="'t'"
       >
 
         <vgg-map v-slot="{ row: facet }">

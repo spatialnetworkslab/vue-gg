@@ -30,7 +30,7 @@ export default function (data, summariseInstructions) {
 export function initNewData (summariseInstructions, data) {
   let newData = {}
   for (let newCol in summariseInstructions) { newData[newCol] = [] }
-  if (data.hasOwnProperty('grouped')) {
+  if (data && data.hasOwnProperty('grouped')) {
     for (let col in data) {
       if (col !== 'grouped') {
         newData[col] = []
