@@ -31,7 +31,8 @@
           :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
-          :fill="{ val: row.fruit, scale: {
+          :fill="'red'"
+          :opacity="{ val: row.fruit, scale: {
               domain: 'fruit',
               order: ['apple', 'banana', 'kiwi', 'pomelo', 'jackfruit', 'guava']
             }
