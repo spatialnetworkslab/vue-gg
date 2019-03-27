@@ -67,6 +67,7 @@
         :label-padding="-0.2"
         :stroke="colorLegend(colorScheme)"
         :shape="shapeLegend(shapeScheme)"
+        fill="none"
         title="Fruits"
       />
     </vgg-graphic>

@@ -129,6 +129,7 @@
 <script>
 import BaseLegend from '@/mixins/Guides/BaseLegend.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
+import { scaleLinear } from 'd3-scale'
 
 export default {
   name: 'DiscreteLegend',
@@ -202,23 +203,15 @@ export default {
       let l = this.legendLabels
       let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
       let start = 1; let end = 0
-      let segHeight = 100 / ticks
+      let sectionScale = scaleLinear().domain(this._domain).range([0, 100])
 
       if (!this.flip) {
         for (let i = 0; i < ticks; i++) {
-          if (i === 0) {
-            end += segHeight
-          } else {
-            start = end
-            end += segHeight
-          }
-          boxes.push({ location: start, label: l[i].label })
+          boxes.push({ location: sectionScale(l[i].value), label: l[i].label })
         }
       } else {
         for (let i = ticks - 1; i >= 0; i--) {
-          start = end
-          end += segHeight
-          boxes.push({ location: start, label: l[i].label })
+          boxes.push({ location: 100 - sectionScale(l[i].value), label: l[i].label })
         }
       }
 

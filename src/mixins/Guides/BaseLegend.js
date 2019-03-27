@@ -181,6 +181,11 @@ export default {
       default: function () { return { type: 'blues' } }
     },
 
+    fillOpacity: {
+      type: [Number, Object, Array],
+      default: 1
+    },
+
     x: {
       type: [Number, Object, Array],
       default: undefined
@@ -370,7 +375,7 @@ export default {
             if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
               return { value, label: '' }
             } else {
-              return { value, label: this.makeNice ? this.round(format(value), 1) : format(value) }
+              return { value, label: this.makeNice ? format(value) : format(value) }
             }
           })
         }
@@ -421,7 +426,7 @@ export default {
           // })
 
           ticks = ticksFromIntervals(intervals).map(value => {
-            return { value: value, label: this.makeNice ? format(this.round(value, 1)) : format(value) }
+            return { value: value, label: this.makeNice ? format(value, 0.1) : format(value) }
           })
         }
 
@@ -448,7 +453,7 @@ export default {
         if (this.orientation === 'vertical') {
           return this.plotWidth * 0.1
         } else {
-          return this.plotWidth * 0.3 + this.titleFontSize + this.titlePadding * 2
+          return this.plotWidth * 0.3 + this.titleFontSize
         }
       } else {
         return this.w
@@ -458,7 +463,7 @@ export default {
     sectionHeight () {
       if (!this.h) {
         if (this.orientation === 'vertical') {
-          return this.plotHeight * 0.3 + this.titleFontSize + this.titlePadding * 2
+          return this.plotHeight * 0.3 + this.titleFontSize
         } else {
           return this.plotHeight * 0.1
         }
@@ -536,8 +541,96 @@ export default {
   },
 
   methods: {
-    round (value, n) {
-      return Math.floor(value / n) * n
+    generateScale (prop, scaleBasis) {
+      let scaleOptions
+
+      if (scaleBasis.constructor === Number) {
+        return () => { return scaleBasis }
+      // } else if (scaleBasis.constructor === Array) { // FIX THIS
+      //   return (index) => { return scaleBasis[index] }
+      } else {
+        let scalingFunction
+
+        if (prop === 'strokeOpacity' || prop === 'fillOpacity' || prop === 'opacity') {
+          if (this._domainType === 'categorical') {
+            scaleOptions = {
+              aestheticType: prop,
+              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
+              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 1]
+            }
+          } else {
+            scaleOptions = {
+              aestheticType: prop,
+              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
+              domainMid: (this._domain[0] + this._domain[1]) / 2,
+              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 1]
+            }
+          }
+        } else if (prop === 'stroke' || prop === 'fill') {
+          if (this._domainType === 'categorical') {
+            scaleOptions = {
+              aestheticType: prop,
+              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
+              type: scaleBasis.type,
+              ranges: scaleBasis.ranges
+            }
+          } else {
+            scaleOptions = {
+              aestheticType: prop,
+              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
+              domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1]) / 2,
+              scaleArgs: [[0, this.tickCount]],
+              type: scaleBasis.type,
+              ranges: scaleBasis.ranges
+            }
+          }
+        } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {
+          if (this._domainType === 'categorical') {
+            scaleOptions = {
+              aestheticType: prop,
+              domain: this._domain,
+              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 10]
+            }
+          } else {
+            scaleOptions = {
+              aestheticType: prop,
+              domain: this._domain,
+              domainMid: (this._domain[0] + this._domain[1]) / 2,
+              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 10]
+            }
+          }
+        } else if (prop === 'shape') {
+          if (scaleBasis.type) {
+            scaleOptions = {
+              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
+              type: scaleBasis.type
+            }
+          } else {
+            scaleOptions = {
+              domain: this._domain,
+              ranges: scaleBasis.ranges ? scaleBasis.ranges : ['circle', 'square']
+            }
+          }
+        }
+
+        return createScale(prop, this.context, scaleOptions)
+      }
+    },
+
+    // CSS color recognition for color reliant properties
+    checkValidColor (color) {
+      let e = document.getElementById('divValidColor')
+      if (!e) {
+        e = document.createElement('div')
+        e.id = 'divValidColor'
+      }
+      e.style.borderColor = ''
+      e.style.borderColor = color
+      let tmpcolor = e.style.borderColor
+      if (tmpcolor.length === 0) {
+        return false
+      }
+      return true
     },
 
     generateColorScale (prop, colorBasis) {
@@ -565,7 +658,7 @@ export default {
           }
         }
 
-        let scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
+        let scalingFunction = createScale(prop, this.context, scaleOptions)
         return scalingFunction
       }
     }

@@ -399,11 +399,6 @@ export default {
       default: 1
     },
 
-    fillOpacity: {
-      type: [Number, Object, Array],
-      default: 1
-    },
-
     symbolPadding: {
       type: Number,
       default: 0.05
@@ -427,7 +422,7 @@ export default {
 
       // figure out which to prioritize - fill or stroke?
       if (this.stroke) {
-        if (this.stroke === 'none' || this.stroke.constructor === String) {
+        if (this.stroke === 'none' || this.checkValidColor(this.stroke)) {
           scales.stroke = this.stroke
         } else {
           let strokeScale = this.generateScale('stroke', this.stroke)
@@ -437,10 +432,10 @@ export default {
         scales.stroke = 'black'
       }
 
-      if (this.fill !== 'none') {
+      if (!this.checkValidColor(this.fill)) {
         let fillScale = this.generateScale('fill', this.fill)
         scales.fill = fillScale
-      } else if (this.fill.constructor === String) {
+      } else {
         scales.fill = this.fill
       }
 
@@ -547,102 +542,9 @@ export default {
   },
 
   methods: {
-    // CSS color recognition for color reliant properties
-    checkValidColor (color) {
-      let e = document.getElementById('divValidColor')
-      if (!e) {
-        e = document.createElement('div')
-        e.id = 'divValidColor'
-      }
-      e.style.borderColor = ''
-      e.style.borderColor = color
-      let tmpcolor = e.style.borderColor
-      if (tmpcolor.length === 0) {
-        return false
-      }
-      return true
-    },
-
-    generateScale (prop, scaleBasis) {
-      let scaleOptions
-
-      if (scaleBasis.constructor === Number) {
-        return () => { return scaleBasis }
-      // } else if (scaleBasis.constructor === Array) { // FIX THIS
-      //   return (index) => { return scaleBasis[index] }
-      } else {
-        let scalingFunction
-
-        if (prop === 'strokeOpacity' || prop === 'fillOpacity') {
-          if (this._domainType === 'categorical') {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 1]
-            }
-          } else {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              domainMid: (this._domain[0] + this._domain[1]) / 2,
-              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 1]
-            }
-          }
-        } else if (prop === 'stroke' || prop === 'fill') {
-          if (this._domainType === 'categorical') {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              type: scaleBasis.type,
-              ranges: scaleBasis.ranges
-            }
-          } else {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1]) / 2,
-              scaleArgs: [[0, this.tickCount]],
-              type: scaleBasis.type,
-              ranges: scaleBasis.ranges
-            }
-          }
-        } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {
-          if (this._domainType === 'categorical') {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: this._domain,
-              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 10]
-            }
-          } else {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: this._domain,
-              domainMid: (this._domain[0] + this._domain[1]) / 2,
-              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 10]
-            }
-          }
-        } else if (prop === 'shape') {
-          if (scaleBasis.type) {
-            scaleOptions = {
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              type: scaleBasis.type
-            }
-          } else {
-            scaleOptions = {
-              domain: this._domain,
-              ranges: scaleBasis.ranges ? scaleBasis.ranges : ['circle', 'square']
-            }
-          }
-        }
-
-        scalingFunction = createScale(prop, this.$$dataInterface, scaleOptions)
-
-        return scalingFunction
-      }
-    },
-
     parseAttributes (symbol, value) {
       for (let item in this.scales) {
+        console.log(item, this.scales[item])
         if (this.scales[item].constructor === String || this.scales[item].constructor === Number) {
           symbol[item] = this.scales[item]
         } else if (this.scales[item].constructor === Function) {
@@ -669,6 +571,7 @@ export default {
           symbol[item] = this.scales[item](value)
         }
       }
+      console.log(symbol)
       return symbol
     }
   }

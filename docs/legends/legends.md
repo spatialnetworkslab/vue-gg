@@ -1,20 +1,39 @@
 ---
-title: All Legend Types
+title: Legends
 ---
 
 # Legends
 
 Legends are used to show scale mappings for values like color, shape, size, opacity. Each legend is typically mapped to a single dimension or variable. Vue Graphics Grammar supports three (3) types of legends – gradient, discrete, and symbol legends.
 
-`vgg-gradient-legend` maps the given scale to a continuous gradient of two (2) or more colors housed in a rectangular section. The progression of the gradient is dictated by the outcome of the value when it is fed to the scale derived from the `fill` prop. The number of 'ticks' or labels displayed is controlled by the prop `tickCount`, which is set to 10 by default.
-
-`vgg-discrete-legend` maps the domain given in `scale` to a rectangular section composed of discrete rectangles pertaining to the value of the label on the color scale generated from the `fill` prop.  The number of 'ticks' or labels displayed is controlled by the prop `tickCount`, which is set to 10 by default.
-
-`vgg-symbol-legend` maps `scale` to a series of symbols, which are based on those available in the `symbol` mark. At least one of the `size`, `shape`, `fill`, `stroke`, `stroke-width` `stroke-opacity`, or `fill-opacity` properties must be specified. All properties used for this legend must have the same input domain as `scale` (but each property can have its own range). If different domains are given per property, the legend will follow that which is given to `scale`.
+`vgg-gradient-legend` maps the given scale to a continuous gradient of two (2) or more colors housed in a rectangular section. The progression of the gradient is dictated by the outcome of the tick value when it is fed to the scale derived from the `fill` prop.
 
 <CodeDemoLayout>
 
-<MarkAreaSimple />
+<LegendGradientSimple/>
+
+<CodeLayout>
+
+```html
+<vgg-gradient-legend
+  :scale="'bins'"
+  :font-size="10"
+  :title-font-size="12"
+  :title-padding="5"
+  title-font-weight="bold"
+  title="Bins"
+/>
+```
+
+</CodeLayout>
+
+</CodeDemoLayout>
+
+`vgg-discrete-legend` maps the domain given in `scale` to a rectangular section composed of discrete colors pertaining to the value of the label on the color scale generated from the `fill` prop.
+
+<CodeDemoLayout>
+
+<LegendDiscreteSimple />
 
 <CodeLayout>
 
@@ -36,6 +55,36 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 </CodeLayout>
 
 </CodeDemoLayout>
+
+`vgg-symbol-legend` maps `scale` to a series of symbols, which are based on those available in the `symbol` mark. At least one of the `size`, `shape`, `fill`, `stroke`, `stroke-width` `stroke-opacity`, or `fill-opacity` properties must be specified. All properties used for this legend must have the same input domain as `scale` (but each property can have its own range). If different domains are given per property, the legend will follow that which is given to `scale`.
+
+<CodeDemoLayout>
+
+<LegendSymbolSimple />
+
+<CodeLayout>
+
+```html
+<vgg-symbol-legend
+  :scale="'population'"
+  :size="{ range: [2, 12] }"
+  :h="140"
+  title="Population"
+  title-font-weight="bold"
+  :title-font-size="10"
+  :stroke="'none'"
+  fill="#c66366"
+  orientation='vertical'
+  position="tr"
+/>
+```
+
+</CodeLayout>
+
+</CodeDemoLayout>
+
+The number of 'ticks' or labels displayed is controlled by the prop `tickCount`, which is set to 10 by default.
+
 
 ## Properties
 

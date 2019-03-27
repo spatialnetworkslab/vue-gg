@@ -80,7 +80,8 @@
           :scale="{ domain: 'binCount', domainMin: 0 }"
         />
 
-        <!-- work on edge labels, custom color scales -->
+        <!-- fix binning acccording to categorical order! -->
+
         <vgg-discrete-legend
           :scale="'bins'"
           :font-size="10"
@@ -88,10 +89,12 @@
           title-font-weight="bold"
           title="Legend"
           position="tl"
+          :fill="{ domain: 'bins' }"
+        
         />
 
         <vgg-gradient-legend
-          :scale="{ domain: 'bins', domainMin: 20 }"
+          :scale="{ domain: 'bins' }"
           :font-size="10"
           :title-font-size="16"
           position="tr"
