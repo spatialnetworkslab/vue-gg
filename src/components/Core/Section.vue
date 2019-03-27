@@ -1,7 +1,6 @@
 <script>
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataProvider from '../../mixins/Data/DataProvider.js'
-import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 import SelectionManager from '../../mixins/Interactions/SelectionManager.js'
@@ -18,7 +17,7 @@ import XGrid from '../Guides/XGrid.vue'
 import YGrid from '../Guides/YGrid.vue'
 
 export default {
-  mixins: [CoordinateTreeUser, DataProvider, DataReceiver, ScaleReceiver, Rectangular, SelectionManager],
+  mixins: [CoordinateTreeUser, DataProvider, ScaleReceiver, Rectangular, SelectionManager],
 
   props: {
     type: {
