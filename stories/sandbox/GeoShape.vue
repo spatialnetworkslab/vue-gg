@@ -16,7 +16,6 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :scale-geo="{}"
       :select="'polygon'"
       :selection-bounds.sync="selectionBounds"
     >
@@ -24,7 +23,7 @@
       <vgg-map v-slot="{ row, i }">
 
         <vgg-polygon
-          :geometry="row.geometry"
+          :geometry="{ val: row.geometry, scaleGeo: {} }"
           :fill="selected[i] ? 'yellow' : { val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
           @select="handleSelect(i, true)"
           @deselect="handleSelect(i, false)"
