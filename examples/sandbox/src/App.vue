@@ -1,87 +1,93 @@
 <template>
-  <div id="app">
-
-    <vgg-graphic
-      :width="1000"
-      :height="1000"
-      :data="resaleData"
+  <vgg-graphic :width="800" :height="850" :data="resaleData">
+    <!-- bar chart per flat type -->
+    <vgg-section
+      :x1="100"
+      :x2="400"
+      :y1="100"
+      :y2="400"
+      :transform="[
+        { groupBy: 'flat_type'},
+        { summarise: { total_sales: { resale_price: 'count' } } }
+      ]"
     >
+      <vgg-scales
+        :scales="{ typeScale: {domain: 'flat_type', order: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'] }}"
+      />
+      <vgg-scales :scales="{ countScale: { domain: 'total_sales', domainMin: 0 } }"/>
 
-      <vgg-scales :scales="{ totalSalesScale: { domain: 'total_sales', domainMin: 0 } }" />
+      <vgg-map v-slot="{ row }">
+        <vgg-rectangle
+          :y="{ val: row.flat_type, scale: '#typeScale' }"
+          :x1="{ val: 0, scale: '#countScale' }"
+          :x2="{ val: row.total_sales, scale: '#countScale' }"
+          :h="20"
+        />
+      </vgg-map>
 
-      <vgg-data :transform="{ groupBy: 'town' }">
+      <vgg-x-axis :scale="'#countScale'" :tick-count="4" rotate-label/>
+      <vgg-y-axis :scale="'#typeScale'" :hjust="0"/>
+    </vgg-section>
 
-        <vgg-grid
-          :rows="4"
-          :layout-padding="10"
-          :cell-padding="5"
-        >
+    <!-- red -->
+    <vgg-section
+      :x1="500"
+      :x2="800"
+      :y1="100"
+      :y2="400"
+      :scale-x="'floor_area_sqm'"
+      :scale-y="'resale_price'"
+    >
+      <vgg-map v-slot="{ row }">
+        <vgg-point :x="row.floor_area_sqm" :y="row.resale_price"/>
+      </vgg-map>
+      <vgg-x-axis :scale="'floor_area_sqm'" :tick-count="4" rotate-label/>
+      <vgg-y-axis :scale="'resale_price'" :hjust="0"/>
+    </vgg-section>
 
-          <vgg-map v-slot="{ row: facet }">
+    <!-- green -->
+    <vgg-section
+      :x1="100"
+      :x2="400"
+      :y1="500"
+      :y2="800"
+      :transform="[
+      { binning: { groupBy: 'resale_price', method: 'EqualInterval', numClasses: 10 } },
+      { summarise: { count: { resale_price: 'count' } } }
+      ]"
+    >
+      <vgg-scales :scales="{ myBins: { domain: 'bins' } }"/>
+      <vgg-scales :scales="{ binCount: { domain: 'count', domainMin: 0 } }"/>
 
-            <vgg-section
-              :data="{ val: facet.grouped }"
-              :transform="[
-                { groupBy: 'flat_type'},
-                { summarise: { total_sales: { resale_price: 'count' } } }
-              ]"
-            >
-              <vgg-map v-slot="{ row }">
+      <vgg-map v-slot="{ row }">
+        <vgg-rectangle
+          :y1="{ val: row.bins[0], scale: '#myBins' }"
+          :y2="{ val: row.bins[1], scale: '#myBins' }"
+          :x1="{ val: 0, scale: '#binCount' }"
+          :x2="{ val: row.count, scale: '#binCount' }"
+        />
+      </vgg-map>
 
-                <vgg-rectangle
-                  :y="{ val: row.flat_type, scale: 'flat_type' }"
-                  :x1="0"
-                  :x2="{ val: row.total_sales, scale: '#totalSalesScale' }"
-                  :h="20"
-                />
+      <vgg-x-axis :scale="'#binCount'" />
+      <vgg-y-axis :scale="'#myBins'" :hjust="0"/>
+    </vgg-section>
 
-              </vgg-map>
-
-              <!-- <vgg-x-axis :tick-count="4" :scale="'#totalSalesScale'" :vjust="0" label-rotate /> -->
-
-            </vgg-section>
-
-          </vgg-map>
-
-        </vgg-grid>
-
-      </vgg-data>
-
-    </vgg-graphic>
-
-  </div>
+    <!-- blue -->
+    <vgg-section :x1="500" :x2="800" :y1="500" :y2="800" :scale-x="[0, 1]" :scale-y="[0, 1]">
+      <vgg-rectangle :y1="0" :y2="1" :x1="0" :x2="1" fill="blue"/>
+    </vgg-section>
+  </vgg-graphic>
 </template>
 
 <script>
 import resaleData from './resale_sample.json'
 
 export default {
+  name: 'app',
   data () {
     return {
       resaleData: resaleData
     }
   }
-  // mounted () {
-  //   let unique = {}
-  //   for (let row of resaleData) {
-  //     unique[row.town] = true
-  //   }
-  //   console.log(Object.keys(unique))
-  // }
 }
 </script>
-
-<style>
-</style>
-
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

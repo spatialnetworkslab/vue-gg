@@ -322,7 +322,7 @@ export default {
         }
 
         if (this.domainType === 'interval:quantitative') {
-          let intervals = this.$$dataInterface.getColumn(this.scale)
+          let intervals = this.$$dataInterface.getColumn(this.scalingOptions.domain)
           ticks = ticksFromIntervals(intervals).map(value => {
             return { value, label: format(value) }
           })
@@ -335,7 +335,7 @@ export default {
             format = timeFormat('%d/%m/%Y')
           }
 
-          let intervals = this.$$dataInterface.getColumn(this.scale)
+          let intervals = this.$$dataInterface.getColumn(this.scalingOptions.domain)
           ticks = ticksFromIntervals(intervals).map(value => {
             let date = new Date(value)
             return { value: date, label: format(date) }
