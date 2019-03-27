@@ -5,10 +5,6 @@
 * Licensed under the MIT license
 */
 
-var isInt = function (n) {
-  return typeof n === 'number' && parseFloat(n) === parseInt(n, 10) && !isNaN(n)
-} // 6 characters
-
 var _t = function (str) {
   return str
 }
@@ -18,40 +14,7 @@ var isNumber = function (n) {
   return !isNaN(parseFloat(n)) && isFinite(n)
 }
 
-// indexOf polyfill
-// from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
-if (!Array.prototype.indexOf) {
-  Array.prototype.indexOf = function (searchElement, fromIndex) {
-    if (this === undefined || this === null) {
-      throw new TypeError('"this" is null or not defined')
-    }
-
-    var length = this.length >>> 0 // Hack to convert object.length to a UInt32
-
-    fromIndex = +fromIndex || 0
-
-    if (Math.abs(fromIndex) === Infinity) {
-      fromIndex = 0
-    }
-
-    if (fromIndex < 0) {
-      fromIndex += length
-      if (fromIndex < 0) {
-        fromIndex = 0
-      }
-    }
-
-    for (;fromIndex < length; fromIndex++) {
-      if (this[fromIndex] === searchElement) {
-        return fromIndex
-      }
-    }
-
-    return -1
-  }
-}
-
-var geostats = function (a) {
+export default function (a) {
   this.objectID = ''
   this.separator = ' - '
   this.legendSeparator = this.separator
@@ -308,7 +271,7 @@ var geostats = function (a) {
   }
 
   /** return variance value */
-  this.variance = function () {
+  this.variance = function (round) {
     round = (typeof round === 'undefined')
 
     if (this._nodata()) { return }
@@ -432,21 +395,6 @@ var geostats = function (a) {
     }
 
     return this.stat_sorted
-  }
-
-  /** return all info */
-  this.info = function () {
-    if (this._nodata()) { return }
-
-    var content = ''
-    content += _t('Population') + ' : ' + this.pop() + ' - [' + _t('Min') +
-      ' : ' + this.min() + ' | ' + _t('Max') + ' : ' + this.max() +
-      ']' + '\n'
-    content += _t('Mean') + ' : ' + this.mean() + ' - ' + _t('Median') + ' : ' + this.median() + '\n'
-    content += _t('Variance') + ' : ' + this.variance() + ' - ' + _t('Standard deviation') + ' : ' + this.stddev() +
-      ' - ' + _t('Coefficient of variation') + ' : ' + this.cov() + '\n'
-
-    return content
   }
 
   /**
@@ -968,5 +916,3 @@ var geostats = function (a) {
   this.getUniqueValues = this.getClassUniqueValues
   this.getArithmeticProgression = this.getClassArithmeticProgression
 }
-
-module.exports = geostats
