@@ -1,50 +1,52 @@
 <template>
-  <div>
-    <vgg-graphic
-      :width="500"
-      :height="500"
-    >
+  <div class="container">
 
-      <vgg-section
-        :x1="50"
-        :x2="450"
-        :y1="50"
-        :y2="450"
-        :scale-x="[-1, 1]"
-        :scale-y="[-1, 1]"
+    <div>
+      <vgg-graphic
+        :width="250"
+        :height="250"
       >
 
-        <vgg-line
-          v-if="func&&func==='sin'"
-          :func="x=>Math.sin(20*x)"
-          :fill="fill"
-          :stroke-width="strokeWidth"
-        />
-        <vgg-line
-          v-if="func&&func==='cos'"
-          :func="x=>Math.cos(20*x)"
-          :fill="fill"
-          :stroke-width="strokeWidth"
-        />
-        <vgg-line
-          v-if="func&&func==='poly'"
-          :func="x=>x**2"
-          :fill="fill"
-          :stroke-width="strokeWidth"
-        />
-        <vgg-x-axis
-          :scale="[-1, 1]"
-          :vjust="0.5"
-          :tickCount="5"
-        />
-        <vgg-y-axis
-          :scale="[-1, 1]"
-          :hjust="0.5"
-          :tickCount="5"
-        />
+        <vgg-section
+          :x1="25"
+          :x2="225"
+          :y1="25"
+          :y2="225"
+          :scale-x="[-1, 1]"
+          :scale-y="[-1, 1]"
+        >
 
-      </vgg-section>
-    </vgg-graphic>
+          <vgg-line
+            v-if="func&&func==='sin'"
+            :func="x=>Math.sin(20*x)"
+            :fill="fill"
+            :stroke-width="strokeWidth"
+          />
+          <vgg-line
+            v-if="func&&func==='cos'"
+            :func="x=>Math.cos(20*x)"
+            :fill="fill"
+            :stroke-width="strokeWidth"
+          />
+          <vgg-line
+            v-if="func&&func==='poly'"
+            :func="x=>x**2"
+            :fill="fill"
+            :stroke-width="strokeWidth"
+          />
+          <vgg-x-axis
+            :scale="[-1, 1]"
+            :vjust="0.5"
+            :tickCount="5"
+          />
+          <vgg-y-axis
+            :scale="[-1, 1]"
+            :hjust="0.5"
+            :tickCount="5"
+          />
+
+        </vgg-section>
+      </vgg-graphic>
 
       <p>Function:
         <select v-model="func">
@@ -67,51 +69,56 @@
           <option :value="'#008080'">Green</option>
         </select>
       </p>
+    </div>
 
-    <vgg-graphic
-      :width="500"
-      :height="500"
-    >
-
-      <vgg-section
-        :x1="50"
-        :x2="450"
-        :y1="50"
-        :y2="450"
-        :scale-x="[-1, 1]"
-        :scale-y="[-1, 1]"
+    <div>
+      <vgg-graphic
+        :width="250"
+        :height="250"
       >
 
-       <vgg-line
-          :x1="coordinates.x1"
-          :x2="coordinates.x2"
-          :y1="coordinates.y1"
-          :y2="coordinates.y2"
-          stroke="#008080"
-        />
+        <vgg-section
+          :x1="25"
+          :x2="225"
+          :y1="25"
+          :y2="225"
+          :scale-x="[-1, 1]"
+          :scale-y="[-1, 1]"
+        >
 
-        <vgg-x-axis
-          :scale="[-1, 1]"
-          :vjust="0.5"
-          :tickCount="5"
-        />
-        <vgg-y-axis
-          :scale="[-1, 1]"
-          :hjust="0.5"
-          :tickCount="5"
-        />
+         <vgg-line
+            :x1="coordinates.x1"
+            :x2="coordinates.x2"
+            :y1="coordinates.y1"
+            :y2="coordinates.y2"
+            stroke="#008080"
+          />
 
-      </vgg-section>
-    </vgg-graphic>
-    <p>(x1,y1) (x2,y2):
-        <select v-model="coordinates">
-          <option :value="set1">(1,-1) (-1.5,0.3)</option>
-          <option :value="set2">(1,0.6) (-1,0.6)</option>
-          <option :value="set3">(0.4,-1.7) (-0.1,1.2)</option>
-        </select>
-    </p>
+          <vgg-x-axis
+            :scale="[-1, 1]"
+            :vjust="0.5"
+            :tickCount="5"
+          />
+          <vgg-y-axis
+            :scale="[-1, 1]"
+            :hjust="0.5"
+            :tickCount="5"
+          />
+
+        </vgg-section>
+      </vgg-graphic>
+      <p>(x1,y1) (x2,y2):
+          <select v-model="coordinates">
+            <option :value="set1">(1,-1) (-1.5,0.3)</option>
+            <option :value="set2">(1,0.6) (-1,0.6)</option>
+            <option :value="set3">(0.4,-1.7) (-0.1,1.2)</option>
+          </select>
+      </p>
+    </div>
   </div>
+
 </template>
+
 <script>
 export default {
   data() {
@@ -148,3 +155,11 @@ export default {
 };
 </script>
 
+<style scoped>
+
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+
+</style>

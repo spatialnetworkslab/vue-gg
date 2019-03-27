@@ -3,31 +3,37 @@
     <vgg-graphic
       :width="600"
       :height="500"
-      :data="xy">
+    >
 
-      <vgg-data :transform="{ groupBy: 'brand' }">
+      <vgg-data
+        id="original"
+        :data="xy"
+      >
 
-        <vgg-section
-          :x1="50"
-          :x2="550"
-          :y1="50"
-          :y2="450"
-        >
+      <vgg-section
+        :x1="50"
+        :x2="550"
+        :y1="50"
+        :y2="450"
+      >
 
-          <vgg-map v-slot="{ row }">
+        <vgg-data :transform="{ groupBy: 'brand' }">
 
-            <vgg-trail
-              :x="{ val: row.time, scale: 'time' }"
-              :y="{ val: row.price, scale: 'price' }"
-              :stroke-width="{ val: row.price, scale: 'price' }"
-              fill="#008080"
-            />
+        <vgg-map v-slot="{ row, i }">
 
-          </vgg-map>
+          <vgg-trail
+            :x="{ val: row.grouped.time, scale: 'original/time' }"
+            :y="{ val: row.grouped.price, scale: 'original/price' }"
+            :stroke-width="{ val: row.grouped.price, scale: { domain: 'original/price', range: [0, trailWidth] } }"
+            :fill="{ val: row.grouped.color[i] }"
+            :opacity="0.9"
+          />
 
-        </vgg-section>
+        </vgg-map>
 
-        <!-- <vgg-x-axis
+        </vgg-data>
+
+        <vgg-x-axis
           scale="time"
           :tickCount="5"
         />
@@ -36,10 +42,12 @@
           scale="price"
           :hjust="0"
           :tickCount="5"
-        /> -->
+        />
+
+      </vgg-section>
 
       </vgg-data>
-      
+
     </vgg-graphic>
 
     <p>Max width:
@@ -49,50 +57,63 @@
         <button v-on:click="increase">+</button>
       </span>
     </p>
-
   </div>
 </template>
 
 <script>
+import alibaba from './sampleData/alibaba.json'
+import apple from './sampleData/apple.json'
+import facebook from './sampleData/facebook.json'
+
 export default {
   data () {
     return {
       xy: this.generateNewData(),
-      trailWidth: 20
+      trailWidth: 2,
+    }
+  },
+
+  computed: {
+    strokeScale () {
+      return { domain: 'price', domainMax: this.trailWidth }
     }
   },
 
   methods: {
     generateNewData () {
-      let apple = [178.940002, 190.369995, 194.199997, 195.960007,
-                   228.869995, 229.669998, 233.470001, 222.360001,
-                   184.940002, 169, 175.869995, 197.690002]
-      let tesla = [256.26001, 293.51001, 285.859985, 360.070007,
-                   297.98999, 296.940002, 305.769989, 338.26001,
-                   360, 306.100006, 305.420013, 306.940002]
-      let snap = [15.67, 14.34, 11.71, 13.05, 12.55, 10.92, 8.5,
-                  6.6, 6.61, 5.38, 6.78, 9.86]
       let newData =[]
-      for (let ix = 0; ix < 12; ix ++) {
-        newData.push({ brand: 'apple', price: apple[ix], time: ix })
-        newData.push({ brand: 'tesla', price: tesla[ix], time: ix })
-        newData.push({ brand: 'snap', price: snap[ix], time: ix })
+      for (let ix = 0; ix < alibaba.length; ix ++) {
+        newData.push({ brand: 'apple',
+                       price: apple[ix]['High'],
+                       time: ix,
+                       color: '#c66366',
+                     })
+        newData.push({ brand: 'alibaba',
+                       price: alibaba[ix]['High'],
+                       time: ix,
+                       color: '#ce9b3d',
+                     })
+        newData.push({ brand: 'facebook',
+                       price: facebook[ix]['High'],
+                       time: ix,
+                       color: '#008080',
+                     })
       }
       return newData
-
     },
 
     increase () {
-      if (this.trailWidth < 50) {
-        this.trailWidth = this.trailWidth + 5
+      if (this.trailWidth < 20) {
+        this.trailWidth++
       }
     },
 
     decrease () {
-      if (this.trailWidth > 5) {
-        this.trailWidth = this.trailWidth - 5
+      if (this.trailWidth > 2) {
+        this.trailWidth--
       }
     }
+
   }
 }
 </script>
