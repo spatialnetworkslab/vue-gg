@@ -40,7 +40,8 @@
               :x2="{ val: row.bins[1] }"
               :y1="0"
               :y2="{ val: row.binCount }"
-              :fill="{ val: row.bins[1], scale: { type: 'blues', domain: 'bins', domainMin: 0 } }"
+              :fill="'blue'"
+              :opacity="{ val: row.bins, scale: { domain: 'bins' } }"
             />
 
           </vgg-map>

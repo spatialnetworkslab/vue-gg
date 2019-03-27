@@ -40,7 +40,7 @@ The other two will be discussed under [Usage](#usage).
 | absolute   | false    | Boolean           | false     | Will treat negative values as positive.                                                   |
 | reverse    | false    | Boolean           | false     | Will reverse the order of the scale/domain                                                |
 | nice       | false    | [Boolean, Number] | true      | Extends the domain to start/stop on nice, round values. Boolean or the desired tick count |
-| order      | false    | Array             | undefined | For categorical domains: domain order                                                     |
+| order      | false    | Array, Function   | undefined | For categorical domains: domain order                                                     |
 
 ##### domain
 
@@ -102,20 +102,35 @@ overwritten with `domain-min` and `domain-max`.
 
 ##### order
 
-Adds ordering to categorical data. Convenient for `x`/`y` axes. Not modifying
-default behavior for other scales yet.
+Adds ordering to categorical data. Can be specified as an Array with the
+desired order, or as a Function that takes the chosen domain as first argument,
+and returning a new Array with the desired order:
+
+```js
+// Array
+{ scale: { domain: ..., order: ['apple', 'banana', 'pear'] } }
+
+// Function
+{ scale: { domain: ..., order: oldDomain => { oldDomain.sort(); return oldDomain } } }
+```
+
+Note that the new order will replace the existing domain. So data values not listed
+in the new order will return `undefined`, which could cause errors for required props.
+
+When using in combinat
 
 ### Defaults
 
 See [prop types]() to see which props fall under
 which types.
 
-| Prop type  | quantitative | categorical | temporal |
-| ---------- | ------------ | ----------- | -------- |
-| coordinate | linear       | equidistant | temporal |
-| color      | blues        | colors      | none yet |
-| opacity    | linear       | none yet    | none yet |
-| radius     | squareRoot   | none yet    | none yet |
+| Prop type  | quantitative | categorical | temporal | interval: quantitative |
+| ---------- | ------------ | ----------- | -------- | ---------------------- |
+| coordinate | linear       | equidistant | temporal | linear                 |
+| color      | blues        | category10  | NA       | blues                  |
+| opacity    | linear       | fullExtent  | NA       | fullExtent             |
+| radius     | squareRoot   | fullExtent  | NA       | fullExtent             |
+| other      | linear       | fullExtent  | NA       | fullExtent             | 
 
 # Usage
 
