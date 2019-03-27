@@ -25,6 +25,11 @@ import SimpleGridLayout from './sandbox/SimpleGridLayout.vue'
 import MappingGridLayout from './sandbox/MappingGridLayout.vue'
 import RepeatLayout from './sandbox/RepeatLayout.vue'
 import SectionAxesTest from './sandbox/SectionAxesTest.vue'
+import SelectTest from './sandbox/SelectTest.vue'
+import MultipleSelections from './sandbox/MultipleSelections.vue'
+import NestedSelection from './sandbox/NestedSelection.vue'
+import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
+import Facets from './sandbox/Facets.vue'
 
 // IDC Scatterplot Matrices
 import IDCScatter40 from './idc/idcScatterplotMatrix40.vue'
@@ -90,3 +95,8 @@ storiesOf('idcSandbox', module)
 
 storiesOf('Fun Graphs', module)
   .add('Minard', () => (Minard))
+  .add('Selection test', () => (SelectTest))
+  .add('Multiple selections', () => (MultipleSelections))
+  .add('Nested selection', () => (NestedSelection))
+  .add('Ate axis scale bug', () => (AteAxisScaleBug))
+  .add('Facets', () => (Facets))

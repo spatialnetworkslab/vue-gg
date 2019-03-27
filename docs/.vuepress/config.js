@@ -4,13 +4,13 @@ module.exports = {
     description: "",
     themeConfig: {
         nav: [],
-        sidebarDepth: 2,
+        sidebarDepth: 1,
         sidebar: [{
                 title: 'Introduction',
                 collapsable: false,
                 children: [
-                    'guide/intro',
-                    'guide/installation',
+                    'introduction/intro',
+                    'introduction/installation',
                 ]
             },
             {
@@ -23,25 +23,13 @@ module.exports = {
                 ]
             },
             {
-                title: 'Template Graphs',
-                collapsable: true,
-                children: [
-                    'graphs/plottitle',
-                    'graphs/areaunder',
-                    'graphs/boxplot',
-                    'graphs/histogram',
-                    'graphs/multiline',
-                    'graphs/piechart',
-                    'graphs/scatterplot',
-                    ]
-            },
-            {
               title: 'Concepts',
               collapsable: true,
               children: [
                 'concepts/data-loading.md',
                 'concepts/transforming-data.md',
-                'concepts/scaling.md'
+                'concepts/scaling.md',
+                'concepts/interactivity.md'
               ]
             },
             {
@@ -55,45 +43,48 @@ module.exports = {
                     'core/scales',
                     'core/grid',
                     'core/repeat',
-                    'core/glyph'
+                    'core/glyph',
+                    'core/plottitle'
                     ]
             },
             {
                 title: 'Marks',
                 collapsable: true,
                 children: [
+                    'marks/area',
                     'marks/label',
                     'marks/line',
+                    'marks/multi-line',
                     'marks/path',
+                    'marks/point',
                     'marks/polygon',
-                    'marks/area',
                     'marks/rectangle',
                     'marks/symbol',
                     'marks/trail'
                     ]
             },
             {
-                title: 'Axes',
+                title: 'Guides',
                 collapsable: true,
                 children: [
-                    'axes/cartesian',
-                    'axes/gridlines'
+                    'guides/cartesian',
+                    'guides/gridlines'
                     ]
             },
             {
                 title: 'Transformations',
                 collapsable: true,
                 children: [
-                    'transform/arrange',
-                    'transform/binning',
-                    'transform/filter',
-                    'transform/groupby',
-                    'transform/indexTransform',
-                    'transform/mutarize',
-                    'transform/mutate',
-                    'transform/rename',
                     'transform/select',
+                    'transform/rename',
+                    'transform/filter',
+                    'transform/dropna',
+                    'transform/arrange',
+                    'transform/mutate',
                     'transform/summarise',
+                    'transform/mutarise',
+                    'transform/groupby',
+                    'transform/binning',
                     ]
             },
             {
@@ -105,13 +96,6 @@ module.exports = {
                     'scales/opacity',
                     'scales/radius',
                     'scales/shape',
-                    ]
-            },
-            {
-                title: 'Positioners',
-                collapsable: true,
-                children: [
-                    'positioners/wh',
                     ]
             },
             {

@@ -203,7 +203,7 @@ export default {
       return this.widthY / 5
     },
     parsedScale () {
-      return createScale('x', this.context, this.scalingOptions)
+      return createScale('x', this.context, this.scale)
     }
   }
 }

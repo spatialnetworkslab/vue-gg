@@ -27,6 +27,11 @@ export default {
     cellPadding: {
       type: [Number, Object],
       default: 0
+    },
+    start: {
+      type: String,
+      default: 'b',
+      validator: s => ['b', 't'].includes(s)
     }
   },
 
@@ -77,7 +82,8 @@ export default {
       let numberOfSections = sections.length
       let { rows, cols } = calculateRowsCols(options, numberOfSections)
       let ranges = this.parentBranch.domains
-      let layout = calculateGridLayout(rows, cols, options, ranges)
+      let start = this.start
+      let layout = calculateGridLayout(rows, cols, options, ranges, undefined, start)
 
       let newSections = updateGridSections(createElement, sections, layout)
 

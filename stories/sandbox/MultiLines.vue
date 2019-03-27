@@ -23,6 +23,7 @@
             :stroke="row.colors"
             :stroke-width="5"
             stroke-linecap="round"
+            @click="log(row)"
           />
 
         </vgg-map>
@@ -103,6 +104,10 @@ export default {
 
       return data
     }
+  },
+
+  methods: {
+    log: console.log
   }
 }
 </script>

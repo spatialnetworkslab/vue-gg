@@ -4,7 +4,7 @@ import createSVGStyle from './utils/createSVGStyle.js'
 export default {
   mixins: [CoordinateTreeUser],
 
-  inject: ['$$transform'],
+  inject: ['$$transform', '$$interactionManager', '$$sectionParentChain'],
 
   props: {
     interpolate: {
@@ -25,6 +25,25 @@ export default {
     _interpolate () {
       if (this.interpolate !== undefined) { return this.interpolate }
       return this.__interpolationNecessary
+    },
+
+    events () {
+      let events = []
+      if (!this.$options._parentListeners) { return events }
+
+      const allowedEvents = ['click', 'hover', 'mouseover', 'mouseout', 'select', 'deselect']
+
+      for (let event of allowedEvents) {
+        if (this.$options._parentListeners.hasOwnProperty(event)) {
+          events.push(event)
+        }
+      }
+
+      return events
+    },
+
+    sectionParentChain () {
+      return JSON.stringify(this.$$sectionParentChain)
     }
   },
 
