@@ -24,7 +24,7 @@
           :y1="25"
           :y2="225"
           :scale-y="'#scaleY'"
-          :data="{ val: row.grouped }"
+          :data="row.grouped"
         >
 
           <vgg-map v-slot="{ row: innerRow }">

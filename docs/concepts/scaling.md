@@ -28,18 +28,19 @@ The other two will be discussed under [Usage](#usage).
 
 ### Properties
 
-| Property   | Required | Types            | Default   | Description                                                           |
-| ---------- | -------- | ---------------- | --------- | --------------------------------------------------------------------- |
-| domain     | true     | [Array, String]  | undefined | Array containing domain boundaries, or a String referencing a column. |
-| type       | false    | String           | depends   | Type of scale.                                                        |
-| domain-min | false    | Number           | undefined | Lower domain boundary. Used to overwrite `domain`.                    |
-| domain-max | false    | Number           | undefined | Upper domain boundary. Used to overwrite `domain`.                    |
-| domain-mid | false    | Number           | undefined | Mid-point of domain. Useful for creating diverging scales.            |
-| range-min  | false    | Number           | undefined | Lower range boundary. Used to overwrite chosen range.                 |
-| range-max  | false    | Number           | undefined | Upper range boundary. Used to overwrite chosen range.                 |
-| absolute   | false    | Boolean          | false     | Will treat negative values as positive.                               |
-| reverse    | false    | Boolean          | false     | Will reverse the order of the scale/domain                            |
-| nice       | false    | [Boolean, Number]| true      | Extends the domain to start/stop on nice, round values. Can be either a boolean or the desired tick count |
+| Property   | Required | Types             | Default   | Description                                                                               |
+| ---------- | -------- | ----------------- | --------- | ----------------------------------------------------------------------------------------- |
+| domain     | true     | [Array, String]   | undefined | Array containing domain boundaries, or a String referencing a column.                     |
+| type       | false    | String            | depends   | Type of scale.                                                                            |
+| domain-min | false    | Number            | undefined | Lower domain boundary. Used to overwrite `domain`.                                        |
+| domain-max | false    | Number            | undefined | Upper domain boundary. Used to overwrite `domain`.                                        |
+| domain-mid | false    | Number            | undefined | Mid-point of domain. Useful for creating diverging scales.                                |
+| range-min  | false    | Number            | undefined | Lower range boundary. Used to overwrite chosen range.                                     |
+| range-max  | false    | Number            | undefined | Upper range boundary. Used to overwrite chosen range.                                     |
+| absolute   | false    | Boolean           | false     | Will treat negative values as positive.                                                   |
+| reverse    | false    | Boolean           | false     | Will reverse the order of the scale/domain                                                |
+| nice       | false    | [Boolean, Number] | true      | Extends the domain to start/stop on nice, round values. Boolean or the desired tick count |
+| order      | false    | Array, Function   | undefined | For categorical domains: domain order                                                     |
 
 ##### domain
 
@@ -99,17 +100,37 @@ the column `[-5, -2, 1, 3, 4]`, which has domain `[-5, 4]`, will be treated as
 `[5, 2, 1, 3, 4]`, with the domain `[1, 5]`. This domain can then again be
 overwritten with `domain-min` and `domain-max`.
 
+##### order
+
+Adds ordering to categorical data. Can be specified as an Array with the
+desired order, or as a Function that takes the chosen domain as first argument,
+and returning a new Array with the desired order:
+
+```js
+// Array
+{ scale: { domain: ..., order: ['apple', 'banana', 'pear'] } }
+
+// Function
+{ scale: { domain: ..., order: oldDomain => { oldDomain.sort(); return oldDomain } } }
+```
+
+Note that the new order will replace the existing domain. So data values not listed
+in the new order will return `undefined`, which could cause errors for required props.
+
+When using in combinat
+
 ### Defaults
 
 See [prop types]() to see which props fall under
 which types.
 
-| Prop type  | quantitative | categorical | temporal |
-| ---------- | ------------ | ----------- | -------- |
-| coordinate | linear       | equidistant | temporal |
-| color      | blues        | colors      | none yet |
-| opacity    | linear       | none yet    | none yet |
-| radius     | squareRoot   | none yet    | none yet |
+| Prop type  | quantitative | categorical | temporal | interval: quantitative |
+| ---------- | ------------ | ----------- | -------- | ---------------------- |
+| coordinate | linear       | equidistant | temporal | linear                 |
+| color      | blues        | category10  | NA       | blues                  |
+| opacity    | linear       | fullExtent  | NA       | fullExtent             |
+| radius     | squareRoot   | fullExtent  | NA       | fullExtent             |
+| other      | linear       | fullExtent  | NA       | fullExtent             | 
 
 # Usage
 

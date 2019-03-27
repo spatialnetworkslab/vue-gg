@@ -50,7 +50,7 @@ This is the default set of colors for categorical data.
 <img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Set3.png" alt="set3 color scale" height="50px"/>
 
 
-## Continuous
+## Quantitative
 
 ### brownBlue
 

@@ -9,7 +9,7 @@
       <vgg-label
         :x="150"
         :y="{ val: row.name, scale: 'name' }"
-        :text="{ val: row.name }"
+        :text="row.name"
       />
 
       <vgg-point

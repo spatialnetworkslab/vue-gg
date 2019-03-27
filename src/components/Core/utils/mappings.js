@@ -151,14 +151,14 @@ function mapElement (mapping, element, rowNumber) {
           let scaleKey = JSON.stringify(prop.scale)
           let scale = mapping.scales[propKey][scaleKey]
 
-          value = applyScale(value, scale)
+          value = applyScale(value, scale, propKey)
         }
 
         if (prop.hasOwnProperty('scaleGeo')) {
           let scaleKey = JSON.stringify(prop.scaleGeo)
           let scale = mapping.geoScales[propKey][scaleKey]
 
-          value = applyScale(value, scale)
+          value = applyScale(value, scale, propKey)
         }
       }
 
@@ -195,23 +195,27 @@ function isFeature (prop) {
   return prop.hasOwnProperty('type') && prop.hasOwnProperty('coordinates')
 }
 
-function applyScale (value, scale) {
+function applyScale (value, scale, propKey) {
   if (invalid(value)) return
 
-  if (value.constructor === Array) {
-    // points (array of arrays)
-    if (value[0].constructor === Array) {
-      // TODO
-    }
+  if (['x', 'y', 'points', 'geometry', 'x2', 'y2', 'strokeWidth'].includes(propKey)) {
+    if (value.constructor === Array) {
+      // points (array of arrays)
+      if (value[0].constructor === Array) {
+        // TODO
+      }
 
-    // coordinateSet (array of x or y coordinates)
-    if (value[0].constructor !== Array) {
-      return value.map(val => scale(val))
-    }
-  } else if (value.constructor === Object) {
-    // geojson feature
-    if (isFeature(value)) {
-      return transform(value, scale)
+      // coordinateSet (array of x or y coordinates)
+      if (value[0].constructor !== Array) {
+        return value.map(val => scale(val))
+      }
+    } else if (value.constructor === Object) {
+      // geojson feature
+      if (isFeature(value)) {
+        return transform(value, scale)
+      }
+    } else {
+      return scale(value)
     }
   } else {
     return scale(value)

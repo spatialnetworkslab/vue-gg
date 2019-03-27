@@ -18,6 +18,12 @@
           :grid-lines="['x']"
         >
 
+          <vgg-plot-title
+            :margin="0"
+            :v-margin="-20"
+            text="Subsection"
+          />
+
           <vgg-map v-slot="{ row }">
 
             <vgg-point

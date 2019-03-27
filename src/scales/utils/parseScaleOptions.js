@@ -61,7 +61,9 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
     domainType = getDataType(domain[0])
   }
+
   domain = updateDomain(domain, domainType, scaleOptions)
+
   return [domain, domainType, scaleOptions]
 }
 
@@ -122,6 +124,19 @@ function updateDomain (domain, domainType, scalingOptions, dataInterface) {
       }
     }
 
+    if (is(scalingOptions.order)) {
+      if (scalingOptions.order.constructor === Array) {
+        if (scalingOptions.order.filter(s => newDomain.includes(s)).length < 1) {
+          throw new Error(`'order' scaling option must at least have one entry in common with domain`)
+        }
+        newDomain = scalingOptions.order
+      } else if (scalingOptions.order.constructor === Function) {
+        newDomain = scalingOptions.order(newDomain)
+      } else {
+        throw new Error(`'order': can only be Array or Function`)
+      }
+    }
+
     return newDomain
   } else { return domain }
 }
@@ -133,6 +148,9 @@ function validScalingOptions (domainType, scalingOptions) {
     }
     return true
   } else {
+    if (scalingOptions.hasOwnProperty('order')) {
+      throw new Error(`Invalid scaling option: 'order'. Can only be used with categorical domain`)
+    }
     checkTypes(domainType, scalingOptions)
     return true
   }

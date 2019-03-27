@@ -1,5 +1,5 @@
-import * as Geostats from 'geostats'
 import dataLength from '../utils/dataLength.js'
+import Geostats from '../utils/geoStats.js'
 
 export default function (data, binningObj) {
   if (binningObj.constructor !== Object) {
@@ -19,6 +19,7 @@ export default function (data, binningObj) {
   let numClasses = binningObj.numClasses
 
   let variableData = data[key]
+  // let geoStat = new Geostats(variableData)
   let geoStat = new Geostats(variableData)
 
   let ranges
@@ -131,6 +132,5 @@ function bin (data, variable, ranges) {
 
   // Add new dataFrame column to newData
   newData.grouped = bins
-  console.log(newData)
   return newData
 }
