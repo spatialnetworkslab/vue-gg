@@ -1,5 +1,6 @@
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import DataReceiver from '../Data/DataReceiver.js'
+import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
 
 export default {
   mixins: [DataReceiver],
@@ -13,12 +14,18 @@ export default {
     }
   },
 
+  data () {
+    return {
+      scaleCache: createPropCache(this, ['scales'])
+    }
+  },
+
   watch: {
     scales: {
       handler (newScales, oldScales) {
         let newScaleKeys = this.difference(newScales, oldScales)
         for (let scaleName of newScaleKeys) {
-          let scale = this.scales[scaleName]
+          let scale = this.scaleCache.scales[scaleName]
 
           let parsedScale = parseScaleOptions(
             scale, this.$$dataInterface, this.$$scaleManager
@@ -37,8 +44,8 @@ export default {
   },
 
   created () {
-    for (let scaleName in this.scales) {
-      let scale = this.scales[scaleName]
+    for (let scaleName in this.scaleCache.scales) {
+      let scale = this.scaleCache.scales[scaleName]
 
       let parsedScale = parseScaleOptions(
         scale, this.$$dataInterface, this.$$scaleManager
@@ -46,6 +53,10 @@ export default {
 
       this.$$scaleManager.storeScale(scaleName, parsedScale)
     }
+  },
+
+  mounted () {
+    createWatchers(this, this.scaleCache)
   },
 
   methods: {
