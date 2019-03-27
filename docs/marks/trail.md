@@ -32,11 +32,7 @@ This mark does not use `stroke` (nor `strokeOpacity`), but `fill` and `fillOpaci
 
 </CodeLayout>
 
-<<<<<<< HEAD
-# Trail Mark
-=======
 </CodeDemoLayout>
->>>>>>> 930fe939f66e1313fb5964749137a41090d25d09
 
 ## Properties
 
