@@ -87,7 +87,6 @@
           title-font-weight="bold"
           title="Legend"
           position="tl"
-          flip
         />
 
         <vgg-gradient-legend

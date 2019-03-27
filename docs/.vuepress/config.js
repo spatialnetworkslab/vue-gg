@@ -68,13 +68,15 @@ module.exports = {
                 collapsable: true,
                 children: [
                     'guides/cartesian',
-                    'guides/gridlines'
+                    'guides/gridlines',
+                    'legends/legends',
                     ]
             },
             {
                 title: 'Legends',
                 collapsable: true,
                 children: [
+                    'legends/legends',
                     'legends/discrete',
                     'legends/gradient',
                     'legends/symbol'

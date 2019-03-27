@@ -415,9 +415,13 @@ export default {
             intervals = this.$$dataInterface.getColumn(this.scale.domain)
           }
 
-          ticks = intervals.map((value, i) => {
-            let mean = (value[0] + value[1]) / 2
-            return { value: mean, label: this.makeNice ? format(this.round(mean, 1)) : format(mean) }
+          // ticks = intervals.map((value, i) => {
+          //   let mean = (value[0] + value[1]) / 2
+          //   return { value: mean, label: this.makeNice ? format(this.round(mean, 1)) : format(mean) }
+          // })
+
+          ticks = ticksFromIntervals(intervals).map(value => {
+            return { value: value, label: this.makeNice ? format(this.round(value, 1)) : format(value) }
           })
         }
 
