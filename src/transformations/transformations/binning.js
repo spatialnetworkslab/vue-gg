@@ -19,7 +19,6 @@ export default function (data, binningObj) {
   let numClasses = binningObj.numClasses
 
   let variableData = data[key]
-  // let geoStat = new Geostats(variableData)
   let geoStat = new Geostats(variableData)
 
   let ranges
