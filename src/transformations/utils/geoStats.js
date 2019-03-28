@@ -14,7 +14,8 @@ var isNumber = function (n) {
   return !isNaN(parseFloat(n)) && isFinite(n)
 }
 
-export default function (a) {
+var geostats = function (a) {
+// export default function (a) {
   this.objectID = ''
   this.separator = ' - '
   this.legendSeparator = this.separator
@@ -916,3 +917,5 @@ export default function (a) {
   this.getUniqueValues = this.getClassUniqueValues
   this.getArithmeticProgression = this.getClassArithmeticProgression
 }
+
+export default geostats
