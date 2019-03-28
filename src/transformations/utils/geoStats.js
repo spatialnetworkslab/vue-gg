@@ -679,7 +679,8 @@ export default function (a) {
     // each seems the same!
     // but the effect are 2 different arrays: mat1 and mat2
     var mat1 = []
-    for (var x = 0, xl = dataList.length + 1; x < xl; x++) {
+    // for (var x = 0, xl = dataList.length + 1; x < xl; x++) {
+    for (var x = 0; x < dataList.length + 1; x++) {
       var temp = []
       for (var j = 0, jl = nbClass + 1; j < jl; j++) {
         temp.push(0)
@@ -688,7 +689,8 @@ export default function (a) {
     }
 
     var mat2 = []
-    for (var i = 0, il = dataList.length + 1; i < il; i++) {
+    // for (var i = 0, il = dataList.length + 1; i < il; i++) {
+    for (var i = 0; i < dataList.length + 1; i++) {
       var temp2 = []
       for (var c = 0, cl = nbClass + 1; c < cl; c++) {
         temp2.push(0)
