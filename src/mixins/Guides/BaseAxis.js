@@ -204,6 +204,7 @@ export default {
 
   computed: {
     parsedScalingOptions () {
+      console.log(this.scale)
       return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
     },
 

@@ -25,8 +25,8 @@
               :x2="d[1]"
               :y1="o[0]"
               :y2="o[1]"
-              :scale-x="[d[0], d[1]]"
-              :scale-y="[o[0], o[1]]"
+              :scale-x="actualDimensions(dimensions[i])"
+              :scale-y="actualOptions(options[j]).names"
             >
 
               <vgg-data
@@ -36,10 +36,10 @@
               >
                 <vgg-map v-slot="{ row }">
                   <vgg-rectangle
-                    :x1="row.x1"
-                    :x2="row.x2"
-                    :y1="row.y1"
-                    :y2="row.y2"
+                    :x="row.attribute"
+                    :y="row.name"
+                    :w="40"
+                    :h="40"
                     :fill="{val: row.value, scale: { type: row.colorScale, domain: 'value'}}"
                   />
                 </vgg-map>
@@ -48,10 +48,10 @@
               <vgg-x-axis
                 :scale="actualDimensions(dimensions[i])"
                 :tick-length="7"
-                :title-hjust="1 + ((dimensions.length - i) * 0.1)"
+                :title-hjust="1.5"
                 :title-vjust="0.5"
-                :vjust="1"
                 :title-font-weight="700"
+                :vjust="1.0"
                 title="Attributes"
                 label-rotate
                 flip
@@ -64,9 +64,9 @@
                 :title="yAxis"
                 :title-font-weight="700"
                 :hjust="0"
-                :tick-length="7"
+                :tick-length="10"
                 :title-hjust="0.4"
-                :title-vjust="-0.02 * (j+1)"
+                :title-vjust="-0.03"
               />
             </vgg-section>
           </g>
@@ -97,7 +97,7 @@ export default {
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
       dimensions: [3, 5, 10],
-      options: [40],
+      options: [5, 10, 20, 40],
       height: 4200,
       width: 2000,
       baseX: 300,
@@ -122,6 +122,7 @@ export default {
         }
         sections.push([x1, x2])
       }
+      console.log('dimensions', sections)
       return sections
     },
 
@@ -140,6 +141,7 @@ export default {
         }
         sections.push([y1, y2])
       }
+      console.log('options', sections)
       return sections
     }
   },
@@ -175,23 +177,22 @@ export default {
         }
 
         if (isNaN(options)) {
-          let options = this.data.length
+          options = this.data.length
         }
 
         let segments = []
-        let widthDelta = (this.dimensionSections[this.dimensions.indexOf(dimensions)][1] - this.dimensionSections[this.dimensions.indexOf(dimensions)][0]) / dimensions
-        let heightDelta = (this.optionSections[this.options.indexOf(options)][1] - this.optionSections[this.options.indexOf(options)][0]) / options
-        let x = this.dimensionSections[this.dimensions.indexOf(dimensions)][0]; let y = this.optionSections[this.options.indexOf(options)][0]
-        console.log(widthDelta, heightDelta)
+        // let widthDelta = (this.dimensionSections[this.dimensions.indexOf(dimensions)][1] - this.dimensionSections[this.dimensions.indexOf(dimensions)][0]) / dimensions
+        // let heightDelta = (this.optionSections[this.options.indexOf(options)][1] - this.optionSections[this.options.indexOf(options)][0]) / options
+        // let x = this.dimensionSections[this.dimensions.indexOf(dimensions)][0]; let y = this.optionSections[this.options.indexOf(options)][0]
         for (let i = 0; i < categories.length; i++) {
           segments[i] = []
           for (let j = 0; j < options; j++) {
             if (this.data[j]) {
               let macro = {}
-              macro.x1 = x + widthDelta * i
-              macro.x2 = x + widthDelta * (i + 1)
-              macro.y1 = y + heightDelta * j
-              macro.y2 = y + heightDelta * (j + 1)
+              // macro.x1 = x + widthDelta * i
+              // macro.x2 = x + widthDelta * (i + 1)
+              // macro.y1 = y + heightDelta * j
+              // macro.y2 = y + heightDelta * (j + 1)
               macro.value = this.data[j][categories[i]]
               macro.attribute = categories[i]
               macro.name = this.data[j].Name
@@ -202,7 +203,9 @@ export default {
             }
           }
         }
-        console.log(segments)
+        for (let item in segments) {
+          console.log(item, segments[item])
+        }
         return segments
       }
     },
