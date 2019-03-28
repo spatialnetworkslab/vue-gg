@@ -701,6 +701,8 @@ var geostats = function (a) {
     // group in the
     // mat1 and mat2 arrays to 1 and 0 respectively
     for (var y = 1, yl = nbClass + 1; y < yl; y++) {
+      console.log('mat1[0][y]', mat1[0][y])
+      console.log('mat2[0][y]', mat2[0][y])
       mat1[0][y] = 1
       mat2[0][y] = 0
       for (var t = 1, tl = dataList.length + 1; t < tl; t++) {
@@ -727,6 +729,7 @@ var geostats = function (a) {
         w += 1
         v = s2 - (s1 * s1) / w
         var i4 = i3 - 1
+        console.log('i4', i4)
         if (i4 !== 0) {
           for (var p = 2, pl = nbClass + 1; p < pl; p++) {
             if (mat2[l][p] >= (v + mat2[i4][p - 1])) {
@@ -736,6 +739,8 @@ var geostats = function (a) {
           }
         }
       }
+      console.log('mat1[l][1]', mat1[l][1])
+      console.log('mat2[l][1]', mat2[l][1])
       mat1[l][1] = 1
       mat2[l][1] = v
     }
