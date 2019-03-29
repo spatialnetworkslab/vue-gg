@@ -11,16 +11,6 @@
         :hjust="'center'"
         :font-size="50"/>
 
-      <!-- <vgg-section
-        :x1="sectionX[0]"
-        :x2="sectionX[1]"
-        :y1="sectionY[0]"
-        :y2="sectionY[1]/2"
-        :scale-x="[0, 1]"
-        :scale-y="[0, 10]"
-        type="polar"
-      > -->
-
       <vgg-section
         :x1="sectionX[0]"
         :x2="sectionX[1]"
@@ -28,7 +18,17 @@
         :y2="sectionY[1]/2"
         :scale-x="[0, 1]"
         :scale-y="[0, 10]"
+        type="polar"
       >
+
+      <!-- <vgg-section
+        :x1="sectionX[0]"
+        :x2="sectionX[1]"
+        :y1="sectionY[0]"
+        :y2="sectionY[1]/2"
+        :scale-x="[0, 1]"
+        :scale-y="[0, 10]"
+      > -->
 
         <g v-for="category, i in bikeCategories.slice(0, dimensions[0])">
           <vgg-y-axis
@@ -42,23 +42,25 @@
           />
 
           <g v-for="segment, i in segments(dimensions[0], options[0])">
-            <!-- <vgg-multi-line
+            <vgg-multi-line
               :x="segment.x"
               :y="segment.y"
               :opacity="0.1"
               :stroke="hoverI === i ? 'red' : 'steelblue'"
               :close="true"
               stroke-linecap="round"
+              :fill="hoverI === i ? 'red' : 'steelblue'"
+              :fill-opacity="0.1"
               @hover="handleHover($event, row, i)"
-            /> -->
-            <vgg-multi-line
+            />
+            <!-- <vgg-multi-line
               :x="segment.x"
               :y="segment.y"
               :opacity="0.1"
               :stroke="hoverI === i ? 'red' : 'steelblue'"
               stroke-linecap="round"
               @hover="handleHover($event, row, i)"
-            />
+            /> -->
           </g>
         </g>
       </vgg-section>
