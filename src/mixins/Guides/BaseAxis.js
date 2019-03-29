@@ -1,5 +1,5 @@
 import { ticks as arrayTicks } from 'd3-array'
-import { scaleTime } from 'd3-scale'
+import { scaleTime, scaleLinear } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../Marks/Rectangular.js'
@@ -106,7 +106,7 @@ export default {
 
     tickCount: {
       type: Number,
-      default: 10
+      default: undefined
     },
 
     tickColor: {
@@ -263,19 +263,17 @@ export default {
       if (this.tickValues) {
         newTickValues = this.tickValues
 
-        if (this.tickExtra && this.tickValues[0] !== firstValue) {
-          newTickValues.unshift(firstValue)
-        }
+        let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
 
         return newTickValues.map(value => {
-          return { value }
-        })
+                 return { value: this.parsedScale(value), label: format(value) } })
       } else {
         let ticks
         let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
 
         if (this.domainType === 'quantitative') {
-          newTickValues = arrayTicks(...this._domain, this.tickCount)
+          let numTicks = this.tickCount ? this.tickCount : 10
+          newTickValues = arrayTicks(...this._domain, numTicks)
           if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
@@ -293,6 +291,11 @@ export default {
           ticks = this._domain.map(value => {
             return { value, label: format(value) }
           })
+
+          if (this.tickCount) {
+            let step = Math.floor(ticks.length / this.tickCount)
+            ticks = ticks.filter((value, i) => (i % step) === 0)
+          }
         }
 
         if (this.domainType === 'temporal') {
@@ -326,6 +329,11 @@ export default {
           ticks = ticksFromIntervals(intervals).map(value => {
             return { value, label: format(value) }
           })
+
+          if (this.tickCount) {
+            let step = Math.floor(ticks.length / this.tickCount)
+            ticks = ticks.filter((value, i) => (i % step) === 0)
+          }
         }
 
         if (this.domainType === 'interval:temporal') {
@@ -340,6 +348,11 @@ export default {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })
+
+          if (this.tickCount) {
+            let step = Math.floor(ticks.length / this.tickCount)
+            ticks = ticks.filter((value, i) => (i % step) === 0)
+          }
         }
 
         return ticks.map(tick => {
@@ -353,6 +366,6 @@ export default {
   methods: {
     getJust (lowerBound, width, just) {
       return lowerBound + (width * just)
-    }
+    },
   }
 }

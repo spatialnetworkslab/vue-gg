@@ -74,8 +74,11 @@
         :scale="'fruit'"
         :title-hjust="1.1"
         :vjust="-.05"
+        :tickCount="5"
         label-rotate
       />
+
+      <!-- :tick-values="['apple', 'guava', 'pomelo']" -->
 
       <vgg-y-axis
         :scale="{ domain: 'quantity', domainMin: 0 }"

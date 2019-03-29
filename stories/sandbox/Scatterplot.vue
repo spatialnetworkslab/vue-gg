@@ -32,29 +32,13 @@
           :scale="'explanatory'"
           :title-hjust="1.1"
           :vjust="-.05"
+          :tick-values="[0, 20, 60, 100]"
         />
 
         <vgg-y-axis
           :scale="'dependent'"
           :hjust="-.05"
-          flip
         />
-
-        <!-- <vgg-y-axis
-          :x1="500"
-          :x2="550"
-          :y1="100"
-          :y2="500"
-          :scale="'dependent'"
-        />
-
-        <vgg-x-axis
-          :x1="100"
-          :x2="500"
-          :y="75"
-          :h="30"
-          :scale="'explanatory'"
-        /> -->
 
       </vgg-section>
 
