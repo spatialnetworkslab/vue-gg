@@ -74,6 +74,18 @@
         :scale="'dependent'"
       />
 
+      <vgg-gradient-legend
+        :scale="'dependent'"
+        :font-size="10"
+        :title-font-size="16"
+        title-font-weight="bold"
+        title="Legend"
+        position="tl"
+        :fill="{ type: 'viridis'}"
+        :w="50"
+        flip
+      />
+
       <!-- no title -->
       <vgg-symbol-legend
         title=""

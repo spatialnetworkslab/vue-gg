@@ -50,7 +50,7 @@
             </vgg-map>
           </vgg-data>
 
-          <vgg-data :data="labels">
+          <!-- <vgg-data :data="ticks">
             <vgg-map v-slot="{ row }">
               <vgg-label
                 v-if="labelRotate"
@@ -78,7 +78,7 @@
                 :fill="labelColor"
               />
             </vgg-map>
-          </vgg-data>
+          </vgg-data> -->
 
         </g><g v-else>
 
@@ -127,7 +127,7 @@
 <script>
 import BaseLegend from '@/mixins/Guides/BaseLegend.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import { scaleLinear } from 'd3-scale'
+import { scaleLinear, scaleOrdinal } from 'd3-scale'
 
 export default {
   name: 'DiscreteLegend',
@@ -147,65 +147,79 @@ export default {
   },
 
   computed: {
-    sectionScale () {
-      return scaleLinear().domain(this._domain).range([0, 100])
-    },
 
     aesthetics () {
-      let aesthetics = []; let fillOpacity; let fill; let start = 0; let end = 0
+      // fix to allow for both binned and non-binned data
+      let aesthetics = []; let fillOpacity; let fill; let start = 0; let end = 0; let valueDomain = []; let sectionScale
 
+      // create section length scale and format valueDomain from legend labels, depending on if interval domain type or not
+      if (this._domainType.includes('interval')) {
+        // valueDomain = this.$$dataInterface.getColumn(this.scale)
+        for (let i = 0; i < this.$$dataInterface.getColumn(this.scale).length; i++) {
+          valueDomain.push([this.legendLabels[i].value, this.legendLabels[i + 1].value])
+        }
+        console.log(valueDomain)
+        sectionScale = scaleOrdinal().domain(valueDomain).range([0, 100])
+      } else {
+        valueDomain = this.legendLabels
+        sectionScale = scaleLinear().domain(this._domain).range([0, 100])
+      }
+
+      // create fill/fillOpacity scales for rectangles
       if (!this.checkValidColor(this.fill)) {
         fill = this.generateColorScale('fill', this.fill)
         fillOpacity = 1
-      } else if (this.fillOpacity) {
+      } else if (this.fillOpacity && this.checkValidColor(this.fill)) {
         fill = this.fill
         fillOpacity = this.generateScale('fillOpacity', this.fillOpacity)
       } else {
         throw new Error('If `fill` is set to a color (HSL, RGB or CSS value), then `fillOpacity` must be specified to create the legend')
       }
-      let valueDomain = this.$$dataInterface.getColumn(this.scale)
 
-      console.log(valueDomain)
+      // generate aesthetics for discrete color rectangles
       if (!this.flip) {
-        for (let i = 0; i < valueDomain.length; i++) {
+        for (let i = 0; i < valueDomain.length - 1; i++) {
           aesthetics[i] = {}
           if (i === 0) {
-            end += this.sectionScale(valueDomain[1][1])
+            end += this._domainType.includes('interval') ? sectionScale(valueDomain[1]) : sectionScale(valueDomain[1].value)
           } else {
-            start = this.sectionScale(valueDomain[i][0])
-            end = this.sectionScale(valueDomain[i][1])
+            start = end
+            end = this._domainType.includes('interval') ? sectionScale(valueDomain[i + 1]) : sectionScale(valueDomain[i + 1].value)
           }
+
+          aesthetics[i].start = start
+          aesthetics[i].end = end
 
           if (this._domainType.includes('interval')) {
             if (fill.constructor === Function) {
-              aesthetics[i].fill = fill(valueDomain[i])
-              aesthetics.fillOpacity = fillOpacity
+              aesthetics[i].fill = this._domainType.includes('interval') ? fill(valueDomain[i]) : fill(valueDomain[i].value)
+              aesthetics[i].fillOpacity = fillOpacity
             } else if (fillOpacity.constructor === Function) {
               aesthetics[i].fill = fill
-              aesthetics.fillOpacity = fillOpacity(valueDomain[i])
+              aesthetics[i].fillOpacity = this._domainType.includes('interval') ? fillOpacity(valueDomain[i]) : fillOpacity(valueDomain[i].value)
             }
           } else {
-            aesthetics[i].fill = fill(valueDomain[i])
+            aesthetics[i].fill = this._domainType.includes('interval') ? fill(valueDomain[i]) : fill(valueDomain[i].value)
             aesthetics[i].fillOpacity = fillOpacity
           }
         }
       } else {
-        for (let i = valueDomain.length - 1; i >= 0; i--) {
+        for (let i = valueDomain.length - 1; i >= 1; i--) {
           aesthetics[i] = {}
-          start = end
-          end = 100 - this.sectionScale(l[i].value)
-
+          aesthetics[i].start = end
           if (this._domainType.includes('interval')) {
+            aesthetics[i].end = 100 - sectionScale(valueDomain[i - 1])
             if (fill.constructor === Function) {
-              aesthetics[i].fill = fill(valueDomain[i])
-              aesthetics.fillOpacity = fillOpacity
+              aesthetics[i].fill = fill(valueDomain[i].value)
+              aesthetics[i].fillOpacity = fillOpacity
             } else if (fillOpacity.constructor === Function) {
               aesthetics[i].fill = fill
-              aesthetics.fillOpacity = fillOpacity(valueDomain[i])
+              aesthetics[i].fillOpacity = fillOpacity(valueDomain[i].value)
             }
           } else {
-            aesthetics[i].fill = fill(valueDomain[i])
-            aesthetics.fillOpacity = fillOpacity
+            aesthetics[i].end = 100 - sectionScale(valueDomain[i - 1].value)
+            aesthetics[i].fill = fill(valueDomain[i].value)
+            aesthetics[i].fillOpacity = fillOpacity
           }
         }
       }
@@ -213,25 +227,53 @@ export default {
       return aesthetics
     },
 
-    labels () {
-      let labels = []
+    ticks () {
+      let ticks = []
       let l = this.legendLabels
-      let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
+      let tickCount = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
       let start = 0; let end = 0; let location
 
       if (!this.flip) {
-        for (let i = 0; i < l.length; i++) {
-          location = this.sectionScale(l[i].value)
-          labels.push({ location: location, label: l[i].label })
+        for (let i = 0; i < tickCount; i++) {
+          if (this._domainType.includes('interval')) {
+            location = this.sectionScale(l[i].value)
+          } else {
+            if (i === 0) {
+              end += this.sectionScale(l[i + 1].value)
+            } else {
+              start = this.sectionScale(l[i].value)
+              end = this.sectionScale(l[i + 1].value)
+            }
+            location = (start + end) / 2
+          }
+
+          ticks.push({ location: location, label: l[i].label })
         }
       } else {
-        for (let i = l.length - 1; i >= 0; i--) {
-          location = 100 - this.sectionScale(l[i].value)
-          labels.push({ location: location, label: l[i].label })
+        for (let i = tickCount - 1; i >= 0; i--) {
+          if (this._domainType.includes('interval')) {
+            location = 100 - this.sectionScale(l[i].value)
+          } else {
+            if (i === 0) {
+              end += this.sectionScale(l[i + 1].value)
+            } else {
+              start = this.sectionScale(l[i].value)
+              end = this.sectionScale(l[i + 1].value)
+            }
+            location = (start + end) / 2
+          }
+
+          ticks.push({ location: location, label: l[i].label })
         }
       }
-      console.log(labels)
-      return labels
+      console.log(ticks)
+      return ticks
+    }
+  },
+
+  methods: {
+    sectionScale () {
+      return scaleLinear().domain(this._domain).range([0, 100])
     }
   }
 }

@@ -177,7 +177,7 @@ export default {
     },
 
     fill: {
-      type: [Object, Array],
+      type: [String, Object, Array],
       default: function () { return { type: 'blues' } }
     },
 

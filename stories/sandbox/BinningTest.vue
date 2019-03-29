@@ -81,7 +81,7 @@
         />
 
         <!-- fix binning acccording to categorical order! -->
-
+<!-- 
         <vgg-discrete-legend
           :scale="'bins'"
           :font-size="10"
@@ -89,9 +89,9 @@
           title-font-weight="bold"
           title="Legend"
           position="tl"
-          :fill="{ domain: 'bins' }"
-        
-        />
+          fill="blue"
+          :fill-opacity="{ domain: 'bins' }"
+        /> -->
 
         <vgg-gradient-legend
           :scale="{ domain: 'bins' }"

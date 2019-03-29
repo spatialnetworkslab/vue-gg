@@ -544,7 +544,6 @@ export default {
   methods: {
     parseAttributes (symbol, value) {
       for (let item in this.scales) {
-        console.log(item, this.scales[item])
         if (this.scales[item].constructor === String || this.scales[item].constructor === Number) {
           symbol[item] = this.scales[item]
         } else if (this.scales[item].constructor === Function) {
@@ -571,7 +570,7 @@ export default {
           symbol[item] = this.scales[item](value)
         }
       }
-      console.log(symbol)
+
       return symbol
     }
   }
