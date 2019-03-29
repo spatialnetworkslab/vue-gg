@@ -57,7 +57,7 @@ The props passed to the `scale-x` and `scale-y` are [scaling options](../concept
 | axes       | false    | [Array, Object] | undefined | Which axes to add to the Section      |
 | grid-lines | false    | [Array, Object] | undefined | Which gridlines to add to the Section |
 
-Besides using the [axes](../axes/cartesian.md) and [gridline](../axes/gridlines.md)
+Besides using the [axes](../guides/cartesian.md) and [gridline](../guides/gridlines.md)
 components, it is also possible to add axes and gridlines by just providing
 a prop to the Section component. The axes and gridlines can be specified as an
 Array or as an Object. When using an Array, the Array can only contain the values

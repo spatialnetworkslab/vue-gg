@@ -1,6 +1,7 @@
 const mappableProps = [
   // Coordinate props
   'x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h',
+  'geometry', 'points',
 
   // Other aesthetic props
   'stroke', 'fill',

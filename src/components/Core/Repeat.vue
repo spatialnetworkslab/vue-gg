@@ -29,6 +29,11 @@ export default {
       validator: sides => sides.every(
         side => ['left', 'right', 'top', 'bottom'].includes(side)
       )
+    },
+    start: {
+      type: String,
+      default: 'b',
+      validator: s => ['b', 't'].includes(s)
     }
   },
 
@@ -46,7 +51,8 @@ export default {
     let { rows, cols } = calculateRowsCols(this.x, this.y)
     let options = this._props
     let ranges = this.parentBranch.domains
-    let layout = calculateGridLayout(rows, cols, options, ranges)
+    let start = this.start
+    let layout = calculateGridLayout(rows, cols, options, ranges, undefined, start)
     let sides = this.sides
 
     let slot = this.$scopedSlots.default
