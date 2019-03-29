@@ -11,7 +11,7 @@
         :hjust="'center'"
         :font-size="50"/>
 
-      <vgg-section
+      <!-- <vgg-section
         :x1="sectionX[0]"
         :x2="sectionX[1]"
         :y1="sectionY[0]"
@@ -19,16 +19,16 @@
         :scale-x="[0, 1]"
         :scale-y="[0, 10]"
         type="polar"
-      >
+      > -->
 
-        <!-- <vgg-section
+      <vgg-section
         :x1="sectionX[0]"
         :x2="sectionX[1]"
         :y1="sectionY[0]"
         :y2="sectionY[1]/2"
         :scale-x="[0, 1]"
         :scale-y="[0, 10]"
-      > -->
+      >
 
         <g v-for="category, i in bikeCategories.slice(0, dimensions[0])">
           <vgg-y-axis
@@ -42,7 +42,7 @@
           />
 
           <g v-for="segment, i in segments(dimensions[0], options[0])">
-            <vgg-multi-line
+            <!-- <vgg-multi-line
               :x="segment.x"
               :y="segment.y"
               :opacity="0.1"
@@ -50,15 +50,15 @@
               :close="true"
               stroke-linecap="round"
               @hover="handleHover($event, row, i)"
-            />
-            <!-- <vgg-multi-line
+            /> -->
+            <vgg-multi-line
               :x="segment.x"
               :y="segment.y"
               :opacity="0.1"
               :stroke="hoverI === i ? 'red' : 'steelblue'"
               stroke-linecap="round"
               @hover="handleHover($event, row, i)"
-            /> -->
+            />
           </g>
         </g>
       </vgg-section>
@@ -99,8 +99,8 @@ export default {
       carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower', 'Length', 'ForwardGears', 'Torque'],
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
-      dimensions: [10],
-      options: [5],
+      dimensions: [6],
+      options: [25],
       height: 1500,
       width: 5000,
       baseX: 300,
@@ -264,7 +264,7 @@ export default {
       if (domain[0].constructor === String) {
         let range = []
         let delta = 10 / domain.length
-        for (let i = delta; i <= domain.length; i++) {
+        for (let i = 0.5; i <= domain.length; i++) {
           range.push(delta * (i))
         }
         scale = scaleOrdinal().domain(domain).range(range)
@@ -329,7 +329,7 @@ export default {
       this.title = 'Motorcycle Performance 2014'
       this.colorScale = 'reds'
       // change name of csv
-      csv('../../static/mcn_performance_index14_5.csv').then((data) => {
+      csv('../../static/mcn_performance_index14_25.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
             Name: d['Make and Model'],
