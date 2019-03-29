@@ -67,7 +67,7 @@ export default function (data, binningObj) {
   }
 
   ranges = pairRange(ranges)
-  
+
   let newData = bin(data, key, ranges)
   return newData
 }

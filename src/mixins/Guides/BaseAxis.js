@@ -1,5 +1,5 @@
 import { ticks as arrayTicks } from 'd3-array'
-import { scaleTime, scaleLinear } from 'd3-scale'
+import { scaleTime } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../Marks/Rectangular.js'
@@ -266,7 +266,8 @@ export default {
         let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
 
         return newTickValues.map(value => {
-                 return { value: this.parsedScale(value), label: format(value) } })
+          return { value: this.parsedScale(value), label: format(value) }
+        })
       } else {
         let ticks
         let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
@@ -366,6 +367,6 @@ export default {
   methods: {
     getJust (lowerBound, width, just) {
       return lowerBound + (width * just)
-    },
+    }
   }
 }

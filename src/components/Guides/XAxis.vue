@@ -234,6 +234,6 @@ export default {
     parsedScale () {
       return createScale('x', this.context, this.scale)
     }
-  },
+  }
 }
 </script>
