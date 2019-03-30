@@ -31,7 +31,6 @@ export default function (data, binningObj) {
   if (!variableData) {
     throw new Error(`groupBy variable ${key} does not exist`)
   }
-  // let geoStat = new Geostats(variableData)
   let geoStat = new Geostats(variableData)
 
   let ranges
