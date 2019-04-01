@@ -5,12 +5,19 @@
     :data="fruits_data"
   >
 
-    <vgg-plot-title text="Mean Fruit Sizes" :vjust="0.95" />
+    <vgg-plot-title text="Distribution of Fruit Sizes" :vjust="0.95" />
+
+    <vgg-scales :scales="{ diameterScale: 'diameter' }" />
+    <vgg-scales :scales="{ colorScale: { ranges: ['#ffc300', '#ff9d26', '#c70039', '#900c3f', '#581845'], domain: 'fruit' } }" />
 
     <vgg-data
       :transform="[
         { groupBy: 'fruit' },
-        { summarise: { meanDiameter: { diameter: 'mean' } } }
+        { summarise: { meanDiameter: { diameter: 'mean' },
+                       q1Diameter: { diameter: getQ1 },
+                       q3Diameter: { diameter: getQ3 },
+                       minDiameter: {diameter: 'min' },
+                       maxDiameter: {diameter: 'max' } } }
       ]"
     >
 
@@ -23,11 +30,33 @@
 
         <vgg-map v-slot="{ row }">
 
-          <vgg-point
+          <vgg-line
+            :x1="{ val: row.fruit, scale: 'fruit' }"
+            :x2="{ val: row.fruit, scale: 'fruit' }"
+            :y1="{ val: row.minDiameter, scale: '#diameterScale' }"
+            :y2="{ val: row.maxDiameter, scale: '#diameterScale' }"
+            :stroke-width="1"
+          />
+
+          <vgg-rectangle
             :x="{ val: row.fruit, scale: 'fruit' }"
-            :y="{ val: row.meanDiameter, scale: 'meanDiameter' }"
-            fill="#63a5d8"
-            :radius="4"
+            :w="50"
+            :y1="{ val: row.meanDiameter, scale: '#diameterScale' }"
+            :y2="{ val: row.q3Diameter, scale: '#diameterScale' }"
+            :fill="{ val: row.fruit, scale: '#colorScale' }"
+            stroke="black"
+            :stroke-width="1"
+          />
+
+          <vgg-rectangle
+            :x="{ val: row.fruit, scale: 'fruit' }"
+            :w="50"
+            :y1="{ val: row.q1Diameter, scale: '#diameterScale' }"
+            :y2="{ val: row.meanDiameter, scale: '#diameterScale' }"
+            :fill="{ val: row.fruit, scale: '#colorScale' }"
+            stroke="black"
+            :stroke-width="1"
+            :opacity="{ val: row.meanDiameter, scale: 'meanDiameter' }"
           />
 
         </vgg-map>
@@ -37,8 +66,11 @@
         />
 
         <vgg-y-axis
-          scale="meanDiameter"
+          scale="#diameterScale"
+          title="diameter/cm"
           :tickCount="4"
+          title-hjust="center"
+          :title-vjust="1.07"
         />
 
       </vgg-section>
@@ -48,6 +80,8 @@
 </template>
 
 <script>
+import * as d3 from 'd3-array'
+
 export default {
 
   computed: {
@@ -76,6 +110,18 @@ export default {
                     { fruit: 'grapefruit', diameter: 9.4},]
       return result
     }
+  },
+
+  methods: {
+    getQ1 (values) {
+      let sorted = values.sort((a, b) => a - b)
+      return d3.quantile(sorted, 0.25)
+    },
+
+    getQ3 (values) {
+      let sorted = values.sort((a, b) => a - b)
+      return d3.quantile(sorted, 0.75)
+    },
   }
 }
 </script>

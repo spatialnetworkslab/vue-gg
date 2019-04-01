@@ -23,7 +23,7 @@ export default function (data, summariseInstructions) {
   } else {
     newData = summariseGroup(data, summariseInstructions, newData)
   }
-
+  console.log(newData)
   return newData
 }
 
