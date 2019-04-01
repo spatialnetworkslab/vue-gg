@@ -41,6 +41,8 @@
               { groupBy: 'flat_type'},
               { summarise: { total_sales: { resale_price: 'count' } } }
             ]"
+            :scale-x="'#totalScale'"
+            :scale-y="'#typeScale'"
           >
 
             <vgg-plot-title
@@ -51,9 +53,9 @@
             <vgg-map v-slot="{ row }">
 
               <vgg-rectangle
-                :y="{ val: row.flat_type, scale: '#typeScale' }"
-                :x1="{ val: 0, scale: '#totalScale' }"
-                :x2="{ val: row.total_sales, scale: '#totalScale' }"
+                :y="row.flat_type"
+                :x1="0"
+                :x2="row.total_sales"
                 :h="20"
               />
 
