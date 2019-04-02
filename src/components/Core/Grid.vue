@@ -5,6 +5,7 @@ import {
   validateGridOptions,
   updateGridComponents
 } from './utils/grid.js'
+import isSquareComponent from './utils/isSquareComponent.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
@@ -63,16 +64,7 @@ export default {
   },
 
   methods: {
-    isSquareComponent (component) {
-      let props = component.componentOptions.Ctor.options.props
-      let squareProps = ['x1', 'x2', 'y1', 'y2']
-      for (let prop of squareProps) {
-        if (!props[prop]) {
-          return false
-        }
-      }
-      return true
-    }
+    isSquareComponent
   },
 
   provide () {

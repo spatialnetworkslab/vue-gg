@@ -42,6 +42,7 @@
         </vgg-map>
 
       </vgg-section>
+      <!-- <vgg-rectangle /> -->
 
     </vgg-repeat>
 

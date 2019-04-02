@@ -1,7 +1,8 @@
 import { updateComponent } from './grid.js'
+import isSquareComponent from './isSquareComponent.js'
 
-export function repeatSections (createElement, slot, layout, xValues, yValues, sides) {
-  let newSections = []
+export function repeatComponents (slot, layout, xValues, yValues, sides) {
+  let newComponents = []
 
   let rowLength = yValues.length
   let colLength = xValues.length
@@ -12,26 +13,26 @@ export function repeatSections (createElement, slot, layout, xValues, yValues, s
       let x = xValues[colIndex]
 
       let slotContent = slot({ x, y })
-      let sections = validateSlotContent(slotContent)
+      let components = validateSlotContent(slotContent)
 
       let layoutIndex = (rowIndex * colLength) + colIndex
       let currentLayout = layout[layoutIndex]
 
-      let updatedSections = sections.map(section => {
+      let updatedComponents = components.map(section => {
         return updateComponent(section, currentLayout)
       })
 
       let currentSides = getSides(rowIndex, colIndex, rowLength, colLength)
 
-      updatedSections = updatedSections.map(section => {
+      updatedComponents = updatedComponents.map(section => {
         return hideSectionAxes(section, currentSides, sides)
       })
 
-      newSections.push(...updatedSections)
+      newComponents.push(...updatedComponents)
     }
   }
 
-  return newSections
+  return newComponents
 }
 
 export function calculateRowsCols (x, y) {
@@ -52,8 +53,8 @@ export function createAxesProps (axis, axisOptions, range, repeatVals) {
 
 function validateSlotContent (slotContent) {
   let definedElements = slotContent.filter(c => c.tag !== undefined)
-  if (definedElements.some(c => c.componentOptions.tag !== 'vgg-section')) {
-    throw new Error(`vgg-repeat can only contain sections`)
+  if (definedElements.some(c => !isSquareComponent(c))) {
+    throw new Error(`vgg-repeat can only contain 'square' components`)
   }
   return definedElements
 }

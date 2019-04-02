@@ -1,6 +1,6 @@
 <script>
 import { calculateGridLayout } from './utils/grid.js'
-import { calculateRowsCols, repeatSections } from './utils/repeat.js'
+import { calculateRowsCols, repeatComponents } from './utils/repeat.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 
 export default {
@@ -56,7 +56,7 @@ export default {
     let sides = this.sides
 
     let slot = this.$scopedSlots.default
-    let newSections = repeatSections(createElement, slot, layout, this.x, this.y, sides)
+    let newSections = repeatComponents(slot, layout, this.x, this.y, sides)
 
     return createElement('g', { class: 'layout-repeat' }, newSections)
   }
