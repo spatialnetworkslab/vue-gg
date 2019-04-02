@@ -200,6 +200,10 @@ export default {
       return this.axisCoords.y1 + (this.widthY / 2)
     },
 
+    valueRange () {
+      return [this.axisCoords.x1, this.axisCoords.x2]
+    },
+
     titleCoords () {
       let coords = {}
 
