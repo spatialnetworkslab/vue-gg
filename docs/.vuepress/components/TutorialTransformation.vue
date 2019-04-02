@@ -56,7 +56,6 @@
             :fill="{ val: row.fruit, scale: '#colorScale' }"
             stroke="black"
             :stroke-width="1"
-            :opacity="{ val: row.meanDiameter, scale: 'meanDiameter' }"
           />
 
         </vgg-map>

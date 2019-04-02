@@ -56,6 +56,11 @@ export default {
       default: 'Helvetica'
     },
 
+    rotation: {
+      type: Number,
+      default: 0
+    },
+
     anchorPoint: {
       type: String,
       default: 'center',
@@ -120,6 +125,10 @@ export default {
   },
 
   methods: {
+    calcTransform (rotation, cx, cy) {
+      return `rotate(${rotation}, ${cx}, ${cy})`
+    },
+
     renderSVG (createElement) {
       let [x, y] = this.screenCoords
 
@@ -131,13 +140,16 @@ export default {
 
       let anchorPoint = textAnchorPoint(this.anchorPoint)
 
+      let transform = this.calcTransform(this.rotation, x, y)
+
       let el = createElement('text', {
         attrs: {
           'x': x,
           'y': y,
           'fill': color,
           'text-anchor': anchorPoint.textAnchor,
-          'dominant-baseline': anchorPoint.dominantBaseline
+          'dominant-baseline': anchorPoint.dominantBaseline,
+          'transform': transform,
         },
         style: {
           'font-size': size + 'px',

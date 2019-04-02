@@ -19,6 +19,7 @@ module.exports = {
                 children: [
                     'tutorials/basic',
                     'tutorials/transformTutorial',
+                    'tutorials/interactionTutorial',
                 ]
             },
             {
