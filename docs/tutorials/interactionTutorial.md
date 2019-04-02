@@ -101,7 +101,7 @@ Instead, what we want to do is to define new scales using the `<vgg-scale>` comp
 <vgg-repeat
 	v-slot="{ x, y }"
 	:x="['sepal length', 'sepal width', 'species']"
-	:y="['sepal length', 'sepal width', 'species']"
+	:y="['petal length', 'petal width', 'species']"
 	:cell-padding="10"
 	:sides="['right', 'bottom']"
 >
