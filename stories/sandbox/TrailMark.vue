@@ -44,7 +44,6 @@
     <vgg-symbol-legend
       :scale="'#rainfallScale'"
       :font-size="10"
-      :title-font-size="16"
       :size="15"
       :x="600"
       :y="300"
@@ -59,8 +58,7 @@
     <vgg-symbol-legend
       :scale="'colors'"
       :font-size="10"
-      :title-font-size="16"
-      :stroke-width="15"
+      :stroke-width="8"
       :stroke="['red', 'green', 'blue', 'purple']"
       :x="600"
       :y="0"
@@ -70,7 +68,6 @@
     <vgg-symbol-legend
       :scale="'rainfall'"
       :font-size="10"
-      :title-font-size="16"
       :size="15"
       :x="0"
       :y="520"

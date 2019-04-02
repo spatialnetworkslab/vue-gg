@@ -47,8 +47,7 @@
           :title-padding="5"
           title="Bins"
           title-font-weight="bold"
-          orientation="horizontal"
-          flip
+          :h="120"
         />
 
       </vgg-data>

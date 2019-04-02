@@ -86,6 +86,7 @@
           :y1="100"
           :y2="500"
           :scale="{ domain: 'binCount', domainMin: 0 }"
+          :tick-count="15"
         />
 
         <!-- fill binning -->
@@ -93,9 +94,8 @@
         <vgg-discrete-legend
           :scale="'bins'"
           :font-size="10"
-          :title-font-size="16"
-          title-font-weight="bold"
-          title="Legend"
+          :title-padding="2"
+          title="Discrete"
           position="tl"
         />
 
@@ -105,6 +105,7 @@
           :scale="{ domain: 'bins' }"
           position="tr"
           title="Gradient"
+          :title-padding="2"
           fill="blue"
           :fill-opacity="{domain: 'bins'}"
         />

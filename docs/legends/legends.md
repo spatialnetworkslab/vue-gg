@@ -6,7 +6,7 @@ title: Legends
 
 Legends are used to show scale mappings for values like color, shape, size, opacity. Each legend is typically mapped to a single dimension or variable. Vue Graphics Grammar supports three (3) types of legends – gradient, discrete, and symbol legends.
 
-`vgg-gradient-legend` maps the given scale to a continuous gradient of two (2) or more colors housed in a rectangular section. The progression of the gradient is dictated by the outcome of the tick value when it is fed to the scale derived from the `fill` prop.
+`vgg-gradient-legend` maps the domain given to `scale` to a continuous gradient of two (2) or more colors housed in a rectangular section. The progression of the gradient is dictated by the spread of the tick values derived from `scale`.
 
 <CodeDemoLayout>
 
@@ -22,6 +22,7 @@ Legends are used to show scale mappings for values like color, shape, size, opac
   :title-padding="5"
   title-font-weight="bold"
   title="Bins"
+  :h="120"
 />
 ```
 
@@ -29,7 +30,7 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 
 </CodeDemoLayout>
 
-`vgg-discrete-legend` maps the domain given in `scale` to a rectangular section composed of discrete colors pertaining to the value of the label on the color scale generated from the `fill` prop.
+`vgg-discrete-legend` maps the domain given to `scale` to a rectangular section composed of discrete colors. The progression of the colors is dictated by the spread of the tick values derived from `scale`.
 
 <CodeDemoLayout>
 
@@ -38,25 +39,24 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 <CodeLayout>
 
 ```html
-<vgg-map
-  v-slot="{ dataframe }"
-  unit="dataframe">
-
-  <vgg-area
-    :x="dataframe.year"
-    :y="dataframe.population"
-    :y2="[0]"
-    fill="#c66366"
-  />
-
-</vgg-map>
+<vgg-discrete-legend
+  :scale="'bins'"
+  :font-size="10"
+  :title-font-size="12"
+  :title-padding="5"
+  title="Bins"
+  title-font-weight="bold"
+  :h="120"
+/>
 ```
 
 </CodeLayout>
 
 </CodeDemoLayout>
 
-`vgg-symbol-legend` maps `scale` to a series of symbols, which are based on those available in the `symbol` mark. At least one of the `size`, `shape`, `fill`, `stroke`, `stroke-width` `stroke-opacity`, or `fill-opacity` properties must be specified. All properties used for this legend must have the same input domain as `scale` (but each property can have its own range). If different domains are given per property, the legend will follow that which is given to `scale`.
+For gradient and discrete legends, either the `fill` or `fill-opacity` props may be used to encode `scale`. Applying transformations onto the data fed to `scale`, such as `binning`, will alter the placement of ticks and progression of colors to match the transformations.
+
+`vgg-symbol-legend` maps `scale` to a series of symbols, which are based on those available in the `symbol` mark. At least one of the `size`, `shape`, `fill`, `stroke`, `stroke-width` `stroke-opacity`, or `fill-opacity` properties must be specified. All properties used for this legend follow the same input domain as `scale` (but each property can have its own range). If different domains are given per property, the legend will follow that which is given to `scale`.
 
 <CodeDemoLayout>
 
@@ -121,20 +121,20 @@ If left empty, then the default position of the x-axis is `position = 'left'` (c
 
 | Prop | Required | Types | Default   | Description                             | Unit(s)           |
 | ---- | -------- | ----- | --------- | --------------------------------------- | ----------------- |
-| h   | false | Number | if `vertical`, 30% of parent section height + title font size (screen pixels) + 2 x title padding (screen pixels); if `horizontal`, 10% of parent section height | height of legend section | Screen pixels |
-| w   | false | Number | if `vertical`, 30% of parent section width + title font size (screen pixels) + 2 x title padding (screen pixels); if `horizontal`, 10% of parent section width   | width of legend section | Screen pixels |
+| h   | false | Number | If `vertical`, automatically computed according to  parent section height, title font size (screen pixels), title padding (screen pixels), and number of tick; if `horizontal`, 10% of parent section height | height of legend section | Screen pixels |
+| w   | false | Number | If `horizontal`, automatically computed according to  parent section width, title font size (screen pixels), title padding (screen pixels), and number of tick; if `vertical`, 10% of parent section width   | width of legend section | Screen pixels |
 | legend-stroke | false | String | none | stroke color surrounding legend section | Named color, hex, rgb, hsl |
 | legend-fill | false | String | none | fill color of legend section | Named color, hex, rgb, hsl |
 | legend-stroke-width | false    | Number | 0  | stroke width of rectangle surrounding legend section | Named color, hex, rgb, hsl |
 
-`legend-stroke`, `legend-fill`, and `legend-stroke-width` are analogous to the CSS properties of the same names and affect the body of the legend section.
+`legend-stroke`, `legend-fill`, and `legend-stroke-width` are analogous to the CSS properties of the same names and affect the body of the legend section that surrounds the ticks, rectangular section, and title.
 
 ### Title
 
 The title can be found at the top of the legend section. It is located outside the bounding rectangle of the legend, should the legend section have `stroke`, `fill`, or `strokeWidth` properties specified.
 
 | Prop            | Required | Regular types    | Default     | Description                             | Unit(s)                    |
-| --------------- | -------- | ---------------- | ----------- | --------------------------------------- | -------------------------- |
+| --------------- | -------- | ---------------- | ----------- | --------------------------------------- | --------------------------|
 | title           | false    | String         | ''          | text to render as axis title            |                           |
 | title-anchor-point | false    | String         | 'center'    | baseline and alignment of title text    | left, right, top, bottom, tl, tr, bl, br, center                          |
 | title-font     | false    | String         | 'Helvetica'     | font family of title                          | Named font |
@@ -171,27 +171,16 @@ These properties control the number of ticks or labels, and the minimum interval
 
 ## Events
 
-| Event     | Description                                   |
-| --------- | --------------------------------------------- |
-| click     | Triggered when user clicks on mark            |
-| hover     | Triggered when user hovers over mark          |
-| mouseover | Triggered when user's mouse is above mark     |
-| mouseout  | Triggered when user's mouse leaves mark       |
-| select    | Triggered when mark is selected               |
-| deselect  | Triggered when mark is removed from selection |
-
-For more information on these events, see the [Interactivity](../concepts/interactivity.md)
-documentation.
+Coming soon!
 
 ## Gradient and discrete legends
 
 | Prop           | Required | Regular types    | Default     | Description                                    | Unit(s)                    |
 | -------------- | -------- | ---------------- | ----------- | ---------------------------------------------- | -------------------------- |
 | fill          | false    | [Object, Array]        | { type: 'blues '}        | color scale to which the gradient section/discrete colors is/are mapped | See [Scales > Color](./scales/color.md) |
+| fill-opacity          | false    | [Number, Object, Array]        | 1        | fill opacity of color in `fill` | Number between 0 and 1 or `scale` |
 
-The progression of the colors in the gradient section for `vgg-gradient-legend` is dictated by the label values next to it.
-
-The color of the corresponding rectangle for `vgg-discrete-legend` is mapped to the value of the label on the scale specified in the `fill` property.
+The progression of the colors in the gradient/discrete colors section for `vgg-gradient-legend`/ `vgg-discrete-legend` is dictated by the spread of the legend's labels (as provided to `scale`).
 
 ## Symbol legends
 
@@ -210,6 +199,8 @@ These properties can be mapped to show scaling with respect to a specific variab
 | symbol-padding          | false    | Number        | 0.05        | space between symbol and label | Number between 0 and 1 |
 | columns          | false    | Number        | undefined        | Max. number of columns the legend can have | Integer |
 | rows          | false    | Number        | undefined        | Max. number of rows the legend can have | Integer |
+| col-padding          | false    | Number        | 0.5       | space between columns | Screen pixels |
+| row-padding          | false    | Number        | 0.5       | space between rows | Screen pixels |
 
 `shape`, aside from the options in `vgg-symbol`, accepts the input 'line'. This will generate a legend where the symbols are line segments. Only when `shape` is set to 'line', will to input to `linecap` have any effect. When `shape = 'line'`, use `stroke-opacity` and `stroke` to change the symbols' opacity and color, respectively.
 
@@ -217,6 +208,107 @@ These properties can be mapped to show scaling with respect to a specific variab
 
 
 ## Usage
+
+### Rendering
+
+To render a legend, at bare minimum the `scale` prop must be provided. For all legend types, the default encoding is set to `fill`, using the 'blues' color scale. For `vgg-symbol-legend`, the default shape is `circle`.
+
+<CodeDemoLayout>
+
+<LegendBasic/>
+
+<CodeLayout>
+```html
+<vgg-discrete-legend
+  :scale="'bins'"
+  :h="90"
+/>
+
+<vgg-gradient-legend
+  :scale="'bins'"
+  position="center"
+  :h="90"
+/>
+
+<vgg-symbol-legend
+  :scale="'bins'"
+  :fill="'bins'"
+  stroke='none'
+  position="right"
+  :h="90"
+/>
+```
+</CodeLayout>
+
+</CodeDemoLayout>
+
+### Discrete and gradient legends
+
+Discrete and gradient legends support two types of encoding:
+
+| Combination      | Explanation         |
+|------------------|----------------------|
+| `fill` as scale, `fillOpacity` as fixed value | Manually positions the legend within the section   |
+| `fillOpacity` as scale, `fill` as fixed value | Automatically computes the exact x-y coordinates to position the legend within the parent section, according to its input |
+
+#### `fill` as scale
+
+When `fill` is set as the encoding, then `fillOpacity` does not need to be specified – the default `fillOpacity` is 1. An error will be raised if both encodings are set to `scale.`
+
+<CodeDemoLayout>
+
+<LegendFill/>
+
+<CodeLayout>
+```html
+<vgg-discrete-legend
+  :scale="'bins'"
+  :h="90"
+  :fill="{type: 'viridis'}"
+/>
+
+<vgg-symbol-legend
+  :scale="'bins'"
+  :fill="{type: 'viridis'}"
+  stroke='none'
+  position="center"
+  :h="90"
+/>
+```
+</CodeLayout>
+
+</CodeDemoLayout>
+
+#### `fillOpacity` as scale
+
+When `fillOpacity` is set as the encoding, then `fill` must be set to a single color. An error will be raised if both encodings are set to `scale.`
+
+<CodeDemoLayout>
+
+<LegendFillOpacity/>
+
+<CodeLayout>
+```html
+<vgg-discrete-legend
+  :scale="'bins'"
+  fill="blue"
+  :fill-opacity="{domain: 'bins'}"
+  :h="90"
+/>
+
+<vgg-gradient-legend
+  :scale="{ domain: 'bins' }"
+  :position="'center'"
+  fill="blue"
+  :fill-opacity="{domain: 'bins'}"
+  :h="90"
+/>
+```
+</CodeLayout>
+
+</CodeDemoLayout>
+
+### Symbol legends
 
 ## Examples
 

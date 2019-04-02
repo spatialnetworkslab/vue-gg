@@ -365,7 +365,7 @@ export default {
     // sizeScale
     size: {
       type: [Number, Object, Array],
-      default: 16
+      default: 12
     },
 
     strokeWidth: {

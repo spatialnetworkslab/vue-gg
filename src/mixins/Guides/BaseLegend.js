@@ -211,7 +211,7 @@ export default {
       default: undefined
     },
 
-    makeNice: {
+    nice: {
       type: Boolean,
       default: true
     },
@@ -314,6 +314,8 @@ export default {
         let p = this.position
         if (p === 'right' || p === 'tr' || p === 'br' || p === 'cr') {
           return (this.plotWidth - this.sectionWidth) * 0.95
+        } else if (p === 'center') {
+          return this.plotWidth * 0.45
         } else {
           return this.plotWidth * 0.01
         }
@@ -385,7 +387,7 @@ export default {
             if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
               return { value, label: '' }
             } else {
-              return { value, label: this.makeNice ? format(value) : format(value) }
+              return { value, label: this.nice ? format(value, 1) : format(value) }
             }
           })
         }
@@ -432,11 +434,11 @@ export default {
 
           // ticks = intervals.map((value, i) => {
           //   let mean = (value[0] + value[1]) / 2
-          //   return { value: mean, label: this.makeNice ? format(this.round(mean, 1)) : format(mean) }
+          //   return { value: mean, label: this.nice ? format(this.round(mean, 1)) : format(mean) }
           // })
 
           ticks = ticksFromIntervals(intervals).map(value => {
-            return { value: value, label: this.makeNice ? format(value, 0.1) : format(value) }
+            return { value: value, label: this.nice ? format(value, 1) : format(value) }
           })
         }
 
@@ -463,7 +465,8 @@ export default {
         if (this.orientation === 'vertical') {
           return this.plotWidth * 0.1 + this.rowPadding
         } else {
-          return this.plotWidth * 0.3 + this.titleFontSize + this.colPadding
+          let width = this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
+          return (width / this.tickCount * this.legendLabels.length >= width ? width / this.tickCount * this.legendLabels.length : width)
         }
       } else {
         return this.w
@@ -473,7 +476,9 @@ export default {
     sectionHeight () {
       if (!this.h) {
         if (this.orientation === 'vertical') {
-          return this.plotHeight * 0.3 + this.titleFontSize + this.colPadding
+          // return this.plotHeight * 0.3 + this.titleFontSize + this.colPadding
+          let height = this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
+          return (height / this.tickCount * this.legendLabels.length >= height ? height / this.tickCount * this.legendLabels.length : height)
         } else {
           return this.plotHeight * 0.1 + this.rowPadding
         }
