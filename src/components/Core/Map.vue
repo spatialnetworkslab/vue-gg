@@ -6,7 +6,7 @@ import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 import {
   calculateGridLayout,
   calculateRowsCols,
-  updateGridSections
+  updateGridComponents
 } from './utils/grid.js'
 
 import { initMappingTree, extractMappings, mapRow } from './utils/mappings.js'
@@ -70,15 +70,29 @@ export default {
       return mappedElements
     },
 
-    validateSections (elements) {
+    validateComponents (elements) {
+      let wrongUseError = new Error(`'vgg-grid' can have in its slot:
+        1. any number of 'square' (with x1, x2, y1 and y2 props) components
+        2. a single 'vgg-map' component that only contains other 'square' components
+      `)
+
       elements = elements.filter(el => el.tag !== undefined)
-      if (!elements.every(el => el.componentOptions.tag === 'vgg-section')) {
-        throw new Error(`'vgg-grid' can have in its slot:
-          1. any number of 'vgg-section' components
-          2. a single 'vgg-map' component that only contains other 'vgg-section' components
-        `)
+      if (elements.some(c => !this.isSquareComponent(c))) {
+        throw wrongUseError
+      } else {
+        return elements
       }
-      return elements
+    },
+
+    isSquareComponent (component) {
+      let props = component.componentOptions.Ctor.options.props
+      let squareProps = ['x1', 'x2', 'y1', 'y2']
+      for (let prop of squareProps) {
+        if (!props[prop]) {
+          return false
+        }
+      }
+      return true
     }
   },
 
@@ -102,16 +116,16 @@ export default {
     })
 
     if (this.$$grid !== false) {
-      let sections = this.validateSections(elements)
+      let squareComponents = this.validateComponents(elements)
       let options = this.$$grid
 
-      let numberOfSections = sections.length
-      let { rows, cols } = calculateRowsCols(options, numberOfSections)
+      let numberOfSquareComponents = squareComponents.length
+      let { rows, cols } = calculateRowsCols(options, numberOfSquareComponents)
       let ranges = this.parentBranch.domains
       let start = this.$$grid.start
       let layout = calculateGridLayout(rows, cols, options, ranges, undefined, start)
 
-      elements = updateGridSections(createElement, sections, layout)
+      elements = updateGridComponents(squareComponents, layout)
     }
 
     return createElement('g', { class: 'map' }, elements)

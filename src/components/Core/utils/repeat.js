@@ -1,4 +1,4 @@
-import { updateSection } from './grid.js'
+import { updateComponent } from './grid.js'
 
 export function repeatSections (createElement, slot, layout, xValues, yValues, sides) {
   let newSections = []
@@ -18,7 +18,7 @@ export function repeatSections (createElement, slot, layout, xValues, yValues, s
       let currentLayout = layout[layoutIndex]
 
       let updatedSections = sections.map(section => {
-        return updateSection(createElement, section, currentLayout)
+        return updateComponent(section, currentLayout)
       })
 
       let currentSides = getSides(rowIndex, colIndex, rowLength, colLength)

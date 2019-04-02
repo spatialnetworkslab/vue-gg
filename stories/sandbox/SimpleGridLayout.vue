@@ -10,7 +10,7 @@
       :cell-padding="{ l: 7, r: 20, b: 4 }"
     >
 
-      <vgg-section
+      <!-- <vgg-section
         v-for="s in range(5)"
         :key="s"
         :scale-x="[0, 1]"
@@ -25,7 +25,12 @@
           :fill="randomColor()"
         />
 
-      </vgg-section>
+      </vgg-section> -->
+      <vgg-rectangle
+        v-for="s in range(s)"
+        :key="s"
+        :fill="randomColor()"
+      />
 
     </vgg-grid>
 
