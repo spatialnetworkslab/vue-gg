@@ -1,8 +1,8 @@
 <template>
   <div>
     <vgg-graphic
-      :width="180"
-      :height="180"
+      :width="350"
+      :height="260"
       :data="data"
     >
       <vgg-data
@@ -13,16 +13,39 @@
         ]"
       >
 
-        <vgg-discrete-legend
-          :scale="'bins'"
-          :fill="'plasma'"
-          :h="100"
-        />
+        <vgg-section
+        :x1="100"
+        :x2="300"
+        :y1="0"
+        :y2="200"
+          :scale-x="'bins'"
+          :scale-y="{ domain: 'binCount', domainMin: 0 }"
+        >
+
+          <vgg-map v-slot="{ row }">
+
+            <vgg-rectangle
+              :x1="{ val: row.bins[0] }"
+              :x2="{ val: row.bins[1] }"
+              :y1="0"
+              :y2="{ val: row.binCount }"
+              :fill="{ val: row.bins, scale: { type: 'viridis', domain: 'bins' } }"
+            />
+
+          </vgg-map>
+
+        </vgg-section>
+
         <vgg-gradient-legend
           :scale="'bins'"
-          :fill="'plasma'"
+          :fill="{type:'viridis'}"
           :h="100"
-          position="center"
+        />
+
+        <vgg-discrete-legend
+          :scale="'bins'"
+          :fill="{type:'viridis'}"
+          position="bl"
         />
 
       </vgg-data>

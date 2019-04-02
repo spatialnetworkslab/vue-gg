@@ -334,7 +334,11 @@ export default {
             return -(this.plotHeight - this.sectionHeight) * 0.9
           }
         } else if (p === 'bottom' || p === 'bl' || p === 'br') {
-          return 0
+          if (this.plotHeight < 0) {
+            return this.plotHeight * 0.01
+          } else {
+            return -this.plotHeight * 0.01
+          }
         } else {
           if (this.plotHeight < 0) {
             return this.plotHeight * 0.45

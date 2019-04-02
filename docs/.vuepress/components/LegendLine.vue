@@ -1,13 +1,13 @@
 <template>
   <vgg-graphic
-    :width="900"
+    :width="400"
     :height="600"
     :data="data">
     <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
     <vgg-section
       :x1="0"
-      :x2="400"
+      :x2="350"
       :y1="150"
       :y2="500"
       :scale-x="'xValues'"
@@ -39,6 +39,7 @@
       shape="line"
       :x="10"
       :y="500"
+      :w="250"
       title="Stroke width, opacity"
       title-font-weight="bold"
       :title-font-size="12"
@@ -52,6 +53,7 @@
       :stroke="['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']"
       :x="10"
       :y="50"
+      :w="250"
       shape="line"
       title="Stroke color"
       title-font-weight="bold"

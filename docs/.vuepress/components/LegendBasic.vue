@@ -15,13 +15,15 @@
 
         <vgg-discrete-legend
           :scale="'bins'"
-          :h="100"
+          :h="110"
+          :w="50"
         />
 
         <vgg-gradient-legend
           :scale="'bins'"
           position="center"
-          :h="100"
+          :h="110"
+          :w="50"
         />
 
         <vgg-symbol-legend
@@ -29,7 +31,8 @@
           :fill="'bins'"
           stroke='none'
           position="right"
-          :h="100"
+          :h="110"
+          :w="50"
         />
 
       </vgg-data>

@@ -172,22 +172,22 @@ Coming soon!
 
 | Prop           | Required | Regular types    | Default     | Description                                    | Unit(s)                    |
 | -------------- | -------- | ---------------- | ----------- | ---------------------------------------------- | -------------------------- |
-| fill          | false    | [Object, Array]        | { type: 'blues '}        | color scale to which the gradient section/discrete colors is/are mapped | See [Scales > Color](./scales/color.md) |
+| fill          | false    | [Object, Array]        | { type: 'blues '}        | color scale to which the gradient section/discrete colors is/are mapped | See [Scales > Color](../scales/color.md) |
 | fill-opacity          | false    | [Number, Object, Array]        | 1        | fill opacity of color in `fill` | Number between 0 and 1 or `scale` |
 
-The progression of the colors in the gradient/discrete colors section for `vgg-gradient-legend`/ `vgg-discrete-legend` is dictated by the spread of the legend's labels (as provided to `scale`). For more information on potential inputs to `scale`, see [Concepts > Scaling](./concepts/scaling.md).
+The progression of the colors in the gradient/discrete colors section for `vgg-gradient-legend`/ `vgg-discrete-legend` is dictated by the spread of the legend's labels (as provided to `scale`). For more information on potential inputs to `scale`, see [Concepts > Scaling](../concepts/scaling.md).
 
 ## Symbol legends
 
 These properties can be mapped to show scaling with respect to a specific variable in the symbol legend. The `shape` prop is set to the default for the Symbol mark, `circle`.
 
-For more information on potential inputs to `scale` and other aesthetic properties to the legends, see [Concepts > Scaling](./concepts/scaling.md).
+For more information on potential inputs to `scale` and other aesthetic properties to the legends, see [Concepts > Scaling](../concepts/scaling.md).
 
 | Prop           | Required | Regular types    | Default     | Description | Unit(s) |
 | -------------- | -------- | ---------------- | ----------- | ----------- | ------- |
 | fill          | false    | [Object, Array, String]        | { type: 'blues '}        |  symbol fill color | Named color, hex, rgb, hsl |
 | fill-opacity          | false    | [Number, Object, Array]        | 1        | symbol fill opacity | Number between 0 and 1 |
-| shape          | false    | [String, Array]        | circle        | symbol shape | See [Marks > Symbol](./marks/symbol.md); an additional shape value called `line` is also available for the symbol legend |
+| shape          | false    | [String, Array]        | circle        | symbol shape | See [Marks > Symbol](docs/marks/symbol.md); an additional shape value called `line` is also available for the symbol legend |
 | linecap          | false    | String      | round        | stroke line cap of symbol when `shape` is set to `line`| round, butt, square |
 | size          | false    | [Number, Object, Array]        | 16        | symbol size | Screen pixel |
 | stroke-width          | false    | [Number, Object, Array]        | 2        | symbol stroke width| Screen pixel |
@@ -248,7 +248,7 @@ Discrete and gradient legends support two types of encoding:
 | `fill` as scale, `fillOpacity` as fixed value | Input to `fill` is an object, `fillOpacity` may be left unstated   |
 | `fillOpacity` as scale, `fill` as fixed value | Input to `fillOpacity` is an object, `fill` must be specified as a color (rgb, hsl, hex value) |
 
-For more information on potential inputs to these props, see [Concepts > Scaling](./concepts/scaling.md).
+For more information on potential inputs to these props, see [Concepts > Scaling](../concepts/scaling.md).
 
 #### `fill` as scale
 
@@ -260,16 +260,16 @@ When `fill` is set as the encoding, then `fillOpacity` does not need to be speci
 
 <CodeLayout>
 ```html
-<vgg-discrete-legend
-  :scale="'bins'"
-  :fill="'plasma'"
-  :h="100"
-/>
 <vgg-gradient-legend
   :scale="'bins'"
-  :fill="'plasma'"
+  :fill="{type:'viridis'}"
   :h="100"
-  position="center"
+/>
+
+<vgg-discrete-legend
+  :scale="'bins'"
+  :fill="{type:'viridis'}"
+  position="bl"
 />
 ```
 </CodeLayout>
@@ -286,19 +286,17 @@ When `fillOpacity` is set as the encoding, then `fill` must be set to a single c
 
 <CodeLayout>
 ```html
+<vgg-gradient-legend
+  :scale="'bins'"
+  fill="#c66366"
+  :fill-opacity="{ domain: 'bins' }"
+/>
+
 <vgg-discrete-legend
   :scale="'bins'"
   fill="#c66366"
-  :fill-opacity="{domain: 'bins'}"
-  :h="90"
-/>
-
-<vgg-gradient-legend
-  :scale="{ domain: 'bins' }"
-  :position="'center'"
-  fill="#c66366"
-  :fill-opacity="{domain: 'bins'}"
-  :h="90"
+  :fill-opacity="{ domain: 'bins' }"
+  position="bl"
 />
 ```
 </CodeLayout>
@@ -318,16 +316,16 @@ Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least 
 <vgg-symbol-legend
   :scale="'a'"
   stroke="none"
-  :size="{ range: [1, 20] }"
+  :size="{ range: [5, 12] }"
   :fill="{ type: 'plasma'}"
-  title="Size & Color"
-  :title-font-size=12
-  :title-padding="1"
-  position="tl"
-  :rows="3"
-  :symbol-padding="0.1"
-  :h="200"
+  title="Size, Color"
+  :title-font-size="12"
+  position="br"
   orientation="horizontal"
+  :symbol-padding="0.3"
+  :col-padding="0.1"
+  :title-padding="20"
+  :rows="2"
 />
 ```
 </CodeLayout>
@@ -336,9 +334,11 @@ Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least 
 
 ## Examples
 
+The symbol legend below makes use of a categorical color scale for `fill` and a continuous scale for `size`. The type of `shape`/`fill` scheme to use can specified as inputs, i.e. `{ type: ... }`.
+
 <CodeDemoLayout>
 
-<SymbolLegend/>
+<LegendSymbol/>
 
 <CodeLayout>
 
@@ -355,11 +355,11 @@ Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least 
   title="Fill, Shape"
   :title-font-size=12
   :title-padding="10"
-  position="tr"
+  position="tl"
   orientation="horizontal"
 />
 
-// symbol size
+// size
 <vgg-symbol-legend
   :scale="'a'"
   :size="{ range: [10, 20] }"
@@ -367,7 +367,7 @@ Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least 
   :title-font-size=12
   :title-padding="10"
   :w="350"
-  position="br"
+  position="bl"
   orientation="horizontal"
 />
 ```
@@ -376,9 +376,12 @@ Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least 
 
 </CodeDemoLayout>
 
+This legend uses the `stroke-width`, `opacity` and `fill` properties to elaborate on the values of the `trail` mark.
+Scales created using `vgg-scales` can be called as input to `scale`. Custom ranges for the output of the legend aesthetics can be set using `{ range: ... }`.
+
 <CodeDemoLayout>
 
-<LineLegend/>
+<LegendLine/>
 
 <CodeLayout>
 
@@ -394,11 +397,13 @@ Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least 
   shape="line"
   :x="10"
   :y="500"
+  :w="250"
   title="Stroke width, opacity"
   title-font-weight="bold"
   :title-font-size="12"
   orientation="horizontal"
 />
+
 // stroke color
 <vgg-symbol-legend
   :scale="'colors'"
@@ -407,12 +412,14 @@ Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least 
   :stroke="['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']"
   :x="10"
   :y="50"
+  :w="250"
   shape="line"
   title="Stroke color"
   title-font-weight="bold"
   :title-font-size="12"
   orientation="horizontal"
 />
+
 ```
 :::
 </CodeLayout>

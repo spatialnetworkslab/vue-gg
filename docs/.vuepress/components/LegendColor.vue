@@ -1,22 +1,44 @@
 <template>
   <vgg-graphic
-    :width="350"
-    :height="250"
+    :width="420"
+    :height="450"
     :data="data">
+
+    <vgg-section
+      :x1="20"
+      :x2="400"
+      :y1="50"
+      :y2="400"
+      :scale-x="'a'"
+      :scale-y="'b'"
+    >
+
+      <vgg-map v-slot="{ row }">
+
+        <vgg-symbol
+          :x="{ val: row.a, scale: 'a' }"
+          :y="{ val: row.b, scale: 'b' }"
+          :size="{ val: row.a, scale: { domain: 'a', range: [5, 12] } }"
+          :fill="{ val: row.b, scale: { type: 'plasma', domain: 'b' } }"
+        />
+
+      </vgg-map>
+
+    </vgg-section>
 
     <vgg-symbol-legend
       :scale="'a'"
       stroke="none"
-      :size="{ range: [1, 20] }"
+      :size="{ range: [5, 12] }"
       :fill="{ type: 'plasma'}"
-      title="Size & Color"
-      :title-font-size=12
-      :title-padding="1"
-      position="tl"
-      :rows="3"
-      :symbol-padding="0.1"
-      :h="200"
+      title="Size, Color"
+      :title-font-size="12"
+      position="br"
       orientation="horizontal"
+      :symbol-padding="0.3"
+      :col-padding="0.1"
+      :title-padding="20"
+      :rows="2"
     />
 
   </vgg-graphic>

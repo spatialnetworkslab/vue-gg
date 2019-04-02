@@ -1,14 +1,14 @@
 <template>
   <vgg-graphic
-    :width="600"
-    :height="600"
+    :width="400"
+    :height="500"
     :data="data">
 
     <vgg-section
       :x1="0"
-      :x2="400"
-      :y1="100"
-      :y2="450"
+      :x2="300"
+      :y1="50"
+      :y2="400"
       :scale-x="'a'"
       :scale-y="'b'"
     >
