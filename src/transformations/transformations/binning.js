@@ -1,5 +1,5 @@
-import * as Geostats from 'geostats'
 import dataLength from '../utils/dataLength.js'
+import Geostats from '../utils/geoStats.js'
 
 export default function (data, binningObj) {
   if (binningObj.constructor !== Object) {
@@ -12,13 +12,25 @@ export default function (data, binningObj) {
   }
 
   let method = binningObj.method
+  if (!method) {
+    console.warn('No binning method specified, defaulting to EqualInterval')
+    method = 'EqualInterval'
+  }
   if (method.constructor !== String) {
-    throw new Error('Please provide the classification method you will like to use')
+    console.warn('Binning method not recognized, defaulting to EqualInterval')
+    method = 'EqualInterval'
   }
 
   let numClasses = binningObj.numClasses
+  if (!numClasses) {
+    console.warn('numClasses not specified, defaulting to 5')
+    numClasses = 5
+  }
 
   let variableData = data[key]
+  if (!variableData) {
+    throw new Error(`groupBy variable ${key} does not exist`)
+  }
   let geoStat = new Geostats(variableData)
 
   let ranges
@@ -26,10 +38,17 @@ export default function (data, binningObj) {
   // Calculate ranges to obtain bins of a specified size
   if (method === 'IntervalSize') {
     let binSize = binningObj.binSize
+
     let domain = variableDomain(variableData)
+    if (!binSize) {
+      console.warn(`binSize not specified for IntervalSize binning, defaulting to ${(domain[1] - domain[0])}`)
+      binSize = domain[1] - domain[0]
+    }
     let binCount = Math.round((domain[1] - domain[0]) / binSize)
 
     ranges = rangeFromInterval(domain, binSize, binCount)
+    let newData = bin(data, key, ranges)
+    return newData
   } else if (method === 'EqualInterval') {
     ranges = geoStat.getClassEqInterval(numClasses)
   } else if (method === 'StandardDeviation') {
@@ -82,7 +101,6 @@ function rangeFromInterval (domain, interval, binCount) {
 
 function pairRange (ranges) {
   let l = ranges.length
-
   let newRange = []
 
   for (let i = 0; i < l - 1; i++) {
@@ -131,6 +149,5 @@ function bin (data, variable, ranges) {
 
   // Add new dataFrame column to newData
   newData.grouped = bins
-
   return newData
 }

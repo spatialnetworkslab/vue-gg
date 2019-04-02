@@ -25,6 +25,7 @@ export default function (prop, variableType, domain, scalingOptions) {
     } else if (scalingOptions.rangeMin || scalingOptions.rangeMax) {
       throw new Error(`Cannot use 'rangeMin' or 'rangeMax' with categorical color scales`)
     }
+  }
 
     if (scalingOptions.order) {
       // If we are dealing with ordinal data
