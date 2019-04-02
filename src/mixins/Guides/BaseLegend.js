@@ -162,7 +162,7 @@ export default {
       type: String,
       default: 'left',
       validator: function (value) {
-        return ['left', 'right', 'top', 'bottom', 'tl', 'tr', 'bl', 'br', 'cr', 'cl'].indexOf(value) !== -1
+        return ['left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'bl', 'br', 'cr', 'cl'].indexOf(value) !== -1
       }
     },
 
@@ -317,7 +317,7 @@ export default {
         } else if (p === 'center') {
           return this.plotWidth * 0.45
         } else {
-          return this.plotWidth * 0.01
+          return this.plotWidth * 0.02
         }
       } else {
         return this.x

@@ -6,9 +6,9 @@
     <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
     <vgg-section
-      :x1="100"
-      :x2="500"
-      :y1="100"
+      :x1="0"
+      :x2="400"
+      :y1="150"
       :y2="500"
       :scale-x="'xValues'"
       :scale-y="'yValues'"
@@ -34,28 +34,29 @@
       :scale="'#rainfallScale'"
       :font-size="10"
       :size="15"
-      :x="600"
-      :y="300"
       :stroke-width="{ range: [2, 12] }"
       :stroke-opacity="{ range: [0, 0.7] }"
       shape="line"
-      direction="vertical"
-      title="Stroke width & opacity"
+      :x="10"
+      :y="500"
+      title="Stroke width, opacity"
       title-font-weight="bold"
       :title-font-size="12"
+      orientation="horizontal"
     />
 
     <vgg-symbol-legend
       :scale="'colors'"
       :font-size="10"
-      :stroke-width="15"
+      :stroke-width="10"
       :stroke="['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']"
-      :x="600"
+      :x="10"
       :y="50"
       shape="line"
       title="Stroke color"
       title-font-weight="bold"
       :title-font-size="12"
+      orientation="horizontal"
     />
 
   </vgg-graphic>

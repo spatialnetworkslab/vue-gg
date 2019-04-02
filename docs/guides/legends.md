@@ -17,12 +17,7 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 ```html
 <vgg-gradient-legend
   :scale="'bins'"
-  :font-size="10"
-  :title-font-size="12"
-  :title-padding="5"
-  title-font-weight="bold"
-  title="Bins"
-  :h="120"
+  :h="100"
 />
 ```
 
@@ -180,11 +175,13 @@ Coming soon!
 | fill          | false    | [Object, Array]        | { type: 'blues '}        | color scale to which the gradient section/discrete colors is/are mapped | See [Scales > Color](./scales/color.md) |
 | fill-opacity          | false    | [Number, Object, Array]        | 1        | fill opacity of color in `fill` | Number between 0 and 1 or `scale` |
 
-The progression of the colors in the gradient/discrete colors section for `vgg-gradient-legend`/ `vgg-discrete-legend` is dictated by the spread of the legend's labels (as provided to `scale`).
+The progression of the colors in the gradient/discrete colors section for `vgg-gradient-legend`/ `vgg-discrete-legend` is dictated by the spread of the legend's labels (as provided to `scale`). For more information on potential inputs to `scale`, see [Concepts > Scaling](./concepts/scaling.md).
 
 ## Symbol legends
 
 These properties can be mapped to show scaling with respect to a specific variable in the symbol legend. The `shape` prop is set to the default for the Symbol mark, `circle`.
+
+For more information on potential inputs to `scale` and other aesthetic properties to the legends, see [Concepts > Scaling](./concepts/scaling.md).
 
 | Prop           | Required | Regular types    | Default     | Description | Unit(s) |
 | -------------- | -------- | ---------------- | ----------- | ----------- | ------- |
@@ -221,13 +218,13 @@ To render a legend, at bare minimum the `scale` prop must be provided. For all l
 ```html
 <vgg-discrete-legend
   :scale="'bins'"
-  :h="90"
+  :h="100"
 />
 
 <vgg-gradient-legend
   :scale="'bins'"
   position="center"
-  :h="90"
+  :h="100"
 />
 
 <vgg-symbol-legend
@@ -235,7 +232,7 @@ To render a legend, at bare minimum the `scale` prop must be provided. For all l
   :fill="'bins'"
   stroke='none'
   position="right"
-  :h="90"
+  :h="100"
 />
 ```
 </CodeLayout>
@@ -248,8 +245,10 @@ Discrete and gradient legends support two types of encoding:
 
 | Combination      | Explanation         |
 |------------------|----------------------|
-| `fill` as scale, `fillOpacity` as fixed value | Manually positions the legend within the section   |
-| `fillOpacity` as scale, `fill` as fixed value | Automatically computes the exact x-y coordinates to position the legend within the parent section, according to its input |
+| `fill` as scale, `fillOpacity` as fixed value | Input to `fill` is an object, `fillOpacity` may be left unstated   |
+| `fillOpacity` as scale, `fill` as fixed value | Input to `fillOpacity` is an object, `fill` must be specified as a color (rgb, hsl, hex value) |
+
+For more information on potential inputs to these props, see [Concepts > Scaling](./concepts/scaling.md).
 
 #### `fill` as scale
 
@@ -263,16 +262,14 @@ When `fill` is set as the encoding, then `fillOpacity` does not need to be speci
 ```html
 <vgg-discrete-legend
   :scale="'bins'"
-  :h="90"
-  :fill="{type: 'viridis'}"
+  :fill="'plasma'"
+  :h="100"
 />
-
-<vgg-symbol-legend
+<vgg-gradient-legend
   :scale="'bins'"
-  :fill="{type: 'viridis'}"
-  stroke='none'
+  :fill="'plasma'"
+  :h="100"
   position="center"
-  :h="90"
 />
 ```
 </CodeLayout>
@@ -291,7 +288,7 @@ When `fillOpacity` is set as the encoding, then `fill` must be set to a single c
 ```html
 <vgg-discrete-legend
   :scale="'bins'"
-  fill="blue"
+  fill="#c66366"
   :fill-opacity="{domain: 'bins'}"
   :h="90"
 />
@@ -299,7 +296,7 @@ When `fillOpacity` is set as the encoding, then `fill` must be set to a single c
 <vgg-gradient-legend
   :scale="{ domain: 'bins' }"
   :position="'center'"
-  fill="blue"
+  fill="#c66366"
   :fill-opacity="{domain: 'bins'}"
   :h="90"
 />
@@ -310,85 +307,114 @@ When `fillOpacity` is set as the encoding, then `fill` must be set to a single c
 
 ### Symbol legends
 
-## Examples
+Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least one encoding should be set, or else the legend will show up as a series of circles with black strokes.
 
-<SizeColorLegend/>
+<CodeDemoLayout>
 
-::: v-pre
+<LegendColor/>
+
+<CodeLayout>
 ```html
 <vgg-symbol-legend
   :scale="'a'"
-  :tickCount=10
-  :stroke="'none'"
+  stroke="none"
   :size="{ range: [1, 20] }"
   :fill="{ type: 'plasma'}"
   title="Size & Color"
-  title-font-weight="bold"
   :title-font-size=12
-  :title-padding="10"
+  :title-padding="1"
   position="tl"
-  :rows="2"
-  :symbol-padding="0.2"
-  :h="100"
+  :rows="3"
+  :symbol-padding="0.1"
+  :h="200"
   orientation="horizontal"
 />
 ```
-:::
+</CodeLayout>
+
+</CodeDemoLayout>
+
+## Examples
+
+<CodeDemoLayout>
 
 <SymbolLegend/>
 
+<CodeLayout>
+
 ::: v-pre
 ```html
+// fill, shape
 <vgg-symbol-legend
   :scale="'category'"
-  :size="{ range: [1, 30] }"
+  :size="16"
   :fill="{ type: 'paired'}"
   :shape="{ type: 'stars'}"
-  stroke="'none'"
-  :w="400"
-  title="Fill, Shape, Size"
-  title-font-weight="bold"
+  stroke="none"
+  :w="350"
+  title="Fill, Shape"
   :title-font-size=12
   :title-padding="10"
   position="tr"
   orientation="horizontal"
 />
+
+// symbol size
+<vgg-symbol-legend
+  :scale="'a'"
+  :size="{ range: [10, 20] }"
+  title="Size"
+  :title-font-size=12
+  :title-padding="10"
+  :w="350"
+  position="br"
+  orientation="horizontal"
+/>
 ```
 :::
+</CodeLayout>
 
+</CodeDemoLayout>
+
+<CodeDemoLayout>
 
 <LineLegend/>
 
+<CodeLayout>
+
 ::: v-pre
 ```html
-// stroke width and opacity
+// stroke width, opacity
 <vgg-symbol-legend
   :scale="'#rainfallScale'"
   :font-size="10"
   :size="15"
-  :x="600"
-  :y="300"
   :stroke-width="{ range: [2, 12] }"
   :stroke-opacity="{ range: [0, 0.7] }"
   shape="line"
-  direction="vertical"
-  title="Stroke width & opacity"
+  :x="10"
+  :y="500"
+  title="Stroke width, opacity"
   title-font-weight="bold"
   :title-font-size="12"
+  orientation="horizontal"
 />
-
 // stroke color
 <vgg-symbol-legend
   :scale="'colors'"
   :font-size="10"
-  :stroke-width="15"
+  :stroke-width="10"
   :stroke="['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']"
-  :x="600"
+  :x="10"
   :y="50"
   shape="line"
   title="Stroke color"
   title-font-weight="bold"
   :title-font-size="12"
+  orientation="horizontal"
 />
 ```
 :::
+</CodeLayout>
+
+</CodeDemoLayout>

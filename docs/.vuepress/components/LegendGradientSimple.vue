@@ -42,12 +42,7 @@
 
         <vgg-gradient-legend
           :scale="'bins'"
-          :font-size="10"
-          :title-font-size="12"
-          :title-padding="5"
-          title-font-weight="bold"
-          title="Bins"
-          :h="120"
+          :h="100"
         />
 
       </vgg-data>

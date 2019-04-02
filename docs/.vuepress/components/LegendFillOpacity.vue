@@ -1,8 +1,8 @@
 <template>
   <div>
     <vgg-graphic
-      :width="250"
-      :height="150"
+      :width="180"
+      :height="180"
       :data="data"
     >
       <vgg-data
@@ -15,17 +15,17 @@
 
         <vgg-discrete-legend
           :scale="'bins'"
-          fill="blue"
+          fill="#c66366"
           :fill-opacity="{domain: 'bins'}"
-          :h="90"
+          :h="100"
         />
 
         <vgg-gradient-legend
           :scale="{ domain: 'bins' }"
           :position="'center'"
-          fill="blue"
+          fill="#c66366"
           :fill-opacity="{domain: 'bins'}"
-          :h="90"
+          :h="100"
         />
 
       </vgg-data>

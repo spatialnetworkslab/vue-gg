@@ -2,7 +2,7 @@
   <div>
     <vgg-graphic
       :width="250"
-      :height="150"
+      :height="200"
       :data="data"
     >
       <vgg-data
@@ -15,13 +15,13 @@
 
         <vgg-discrete-legend
           :scale="'bins'"
-          :h="90"
+          :h="100"
         />
 
         <vgg-gradient-legend
           :scale="'bins'"
           position="center"
-          :h="90"
+          :h="100"
         />
 
         <vgg-symbol-legend
@@ -29,7 +29,7 @@
           :fill="'bins'"
           stroke='none'
           position="right"
-          :h="90"
+          :h="100"
         />
 
       </vgg-data>

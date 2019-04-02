@@ -69,17 +69,7 @@ module.exports = {
                 children: [
                     'guides/cartesian',
                     'guides/gridlines',
-                    'legends/legends',
-                    ]
-            },
-            {
-                title: 'Legends',
-                collapsable: true,
-                children: [
-                    'legends/legends',
-                    'legends/discrete',
-                    'legends/gradient',
-                    'legends/symbol'
+                    'guides/legends',
                     ]
             },
             {
