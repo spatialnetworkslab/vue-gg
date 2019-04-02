@@ -149,7 +149,7 @@ export default {
           'fill': color,
           'text-anchor': anchorPoint.textAnchor,
           'dominant-baseline': anchorPoint.dominantBaseline,
-          'transform': transform,
+          'transform': transform
         },
         style: {
           'font-size': size + 'px',
