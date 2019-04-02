@@ -26,8 +26,8 @@
         />
 
       </vgg-section> -->
-      <vgg-rectangle
-        v-for="s in range(s)"
+      <custom-square-component
+        v-for="s in range(5)"
         :key="s"
         :fill="randomColor()"
       />
@@ -38,7 +38,11 @@
 </template>
 
 <script>
+import CustomSquareComponent from './CustomSquareComponent.vue'
+
 export default {
+  components: { CustomSquareComponent },
+
   methods: {
     range (n) {
       return new Array(n).fill(0).map((v, i) => i)
