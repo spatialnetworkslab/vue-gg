@@ -1,5 +1,5 @@
 import { ticks as arrayTicks } from 'd3-array'
-import { scaleTime } from 'd3-scale'
+import { scaleTime, scaleLinear } from 'd3-scale'
 import { timeFormat } from 'd3-time-format'
 
 import Rectangular from '../Marks/Rectangular.js'
@@ -30,7 +30,7 @@ export default {
 
     titleFontSize: {
       type: Number,
-      default: 16
+      default: 14
     },
 
     titleFont: {
@@ -55,7 +55,7 @@ export default {
 
     titleFontWeight: {
       type: String,
-      default: 'normal'
+      default: 'bold'
     },
 
     scale: {
@@ -214,6 +214,16 @@ export default {
     makeNice: {
       type: Boolean,
       default: true
+    },
+
+    rowPadding: {
+      type: Number,
+      default: 0
+    },
+
+    colPadding: {
+      type: Number,
+      default: 0
     }
   },
 
@@ -451,9 +461,9 @@ export default {
     sectionWidth () {
       if (!this.w) {
         if (this.orientation === 'vertical') {
-          return this.plotWidth * 0.1
+          return this.plotWidth * 0.1 + this.rowPadding
         } else {
-          return this.plotWidth * 0.3 + this.titleFontSize
+          return this.plotWidth * 0.3 + this.titleFontSize + this.colPadding
         }
       } else {
         return this.w
@@ -463,9 +473,9 @@ export default {
     sectionHeight () {
       if (!this.h) {
         if (this.orientation === 'vertical') {
-          return this.plotHeight * 0.3 + this.titleFontSize
+          return this.plotHeight * 0.3 + this.titleFontSize + this.colPadding
         } else {
-          return this.plotHeight * 0.1
+          return this.plotHeight * 0.1 + this.rowPadding
         }
       } else {
         return this.h
@@ -494,8 +504,8 @@ export default {
         } else {
           title = 55
           if (!this.flipNumbers) {
-            rectangle = { x1: 0, x2: 100, y1: 15, y2: 85 }
-            label = 20 - this.labelPadding
+            rectangle = { x1: 0, x2: 100, y1: 20, y2: 90 }
+            label = 5 - this.labelPadding
           } else {
             rectangle = { x1: 0, x2: 100, y1: 0, y2: 70 }
             label = 80 + this.labelPadding
@@ -541,6 +551,10 @@ export default {
   },
 
   methods: {
+    sectionScale (domain) {
+      return scaleLinear().domain(domain).range([0, 100])
+    },
+
     generateScale (prop, scaleBasis) {
       let scaleOptions
 
@@ -549,8 +563,6 @@ export default {
       // } else if (scaleBasis.constructor === Array) { // FIX THIS
       //   return (index) => { return scaleBasis[index] }
       } else {
-        let scalingFunction
-
         if (prop === 'strokeOpacity' || prop === 'fillOpacity' || prop === 'opacity') {
           if (this._domainType === 'categorical') {
             scaleOptions = {
@@ -640,11 +652,11 @@ export default {
       if (color.constructor === Array) {
         return (index) => { return color[index] }
       } else {
-        if (this._domainType === 'categorical') {
+        if (this._domainType === 'categorical' || this._domainType.includes('interval')) {
           scaleOptions = {
             aestheticType: prop,
-            domain: color.domain ? color.domain : this._domain,
-            type: color.type,
+            domain: color.domain ? color.domain : this.scale.domain ? this.scale.domain : this.scale,
+            type: color.type ? color.type : color,
             ranges: color.ranges
           }
         } else {
@@ -653,7 +665,7 @@ export default {
             domain: color.domain ? color.domain : this._domain,
             domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1]) / 2,
             scaleArgs: [[0, this.tickCount]],
-            type: color.type,
+            type: color.type ? color.type : color,
             ranges: color.ranges
           }
         }

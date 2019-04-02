@@ -74,26 +74,35 @@
         :scale="'dependent'"
       />
 
-      <vgg-gradient-legend
+      <vgg-discrete-legend
         :scale="'dependent'"
         :font-size="10"
-        :title-font-size="16"
+        :title-font-size="12"
         title-font-weight="bold"
         title="Legend"
         position="tl"
-        :fill="{ type: 'viridis'}"
         :w="50"
-        flip
+        :fill="{ type: 'viridis'}"
+      />
+
+      <vgg-gradient-legend
+        :scale="'dependent'"
+        :font-size="10"
+        :title-font-size="12"
+        title-font-weight="bold"
+        :fill="{ type: 'viridis'}"
+        position="bl"
+        orientation="horizontal"
       />
 
       <!-- no title -->
       <vgg-symbol-legend
-        title=""
         :scale="{ domain: 'explanatory'}"
         :size="{ domain: 'explanatory'}"
         position="br"
         title="Size"
         flip-numbers
+        orientation = "horizontal"
       />
 
       <vgg-symbol-legend
@@ -101,6 +110,9 @@
         :stroke="'none'"
         :fill="{ type: 'viridis'}"
         title="Color"
+        :columns="2"
+        :w="100"
+        :colPadding='10'
         position="right"
         flip
       />

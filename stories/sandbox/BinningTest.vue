@@ -44,6 +44,14 @@
               :opacity="{ val: row.bins, scale: { domain: 'bins' } }"
             />
 
+            <!-- <vgg-rectangle
+              :x1="{ val: row.bins[0] }"
+              :x2="{ val: row.bins[1] }"
+              :y1="0"
+              :y2="{ val: row.binCount }"
+              :fill="{ val: row.bins, scale: { domain: 'bins', type: 'blues'} }"
+            /> -->
+
           </vgg-map>
 
           <!-- <vgg-x-axis
@@ -80,8 +88,8 @@
           :scale="{ domain: 'binCount', domainMin: 0 }"
         />
 
-        <!-- fix binning acccording to categorical order! -->
-<!-- 
+        <!-- fill binning -->
+
         <vgg-discrete-legend
           :scale="'bins'"
           :font-size="10"
@@ -89,17 +97,16 @@
           title-font-weight="bold"
           title="Legend"
           position="tl"
-          fill="blue"
-          :fill-opacity="{ domain: 'bins' }"
-        /> -->
+        />
+
+        <!-- fill opacity binning -->
 
         <vgg-gradient-legend
           :scale="{ domain: 'bins' }"
-          :font-size="10"
-          :title-font-size="16"
           position="tr"
           title="Gradient"
-          flip-numbers
+          fill="blue"
+          :fill-opacity="{domain: 'bins'}"
         />
 
       </vgg-data>

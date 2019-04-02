@@ -1,7 +1,6 @@
 <!-- fix positioning x and y -->
 <template>
   <g :transform="`translate(${legendLeft}, ${legendTop})`">
-
     <!-- Gradient definition -->
     <defs>
       <linearGradient
@@ -11,10 +10,10 @@
         x1="0%"
         y1="0%">
         <stop
-          v-for="(c, i) in colors"
+          v-for="(c,i) in colors"
           :key="i"
-          :offset="`${i * offset + '%'}`"
-          :style="`stop-color:${c}`" />
+          :offset="`${c.offset + '%'}`"
+          :style="`stop-color:${c.color};stop-opacity:${c.opacity}`" />
       </linearGradient>
     </defs>
 
@@ -50,7 +49,7 @@
         :x1="0"
         :x2="100"
         :y1="0"
-        :y2="90"
+        :y2="89"
         :scale-x="[0, 100]"
         :scale-y="[0, 100]"
       >
@@ -149,40 +148,95 @@ export default {
   },
 
   computed: {
-    offset () {
-      let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
-      return 100 / (ticks - 1)
+    domain () {
+      let domain = []
+      if (this._domainType.includes('interval')) {
+        let scale = this.scale.domain ? this.scale.domain : this.scale
+        for (let i = 0; i < this.$$dataInterface.getColumn(scale).length; i++) {
+          domain.push([this.legendLabels[i].value, this.legendLabels[i + 1].value])
+        }
+      } else {
+        domain = this.legendLabels
+      }
+      return domain
     },
 
     colors () {
-      let l = this.legendLabels
-      let colors = []
-      let colorScale = this.generateColorScale('fill', this.fill)
+      let l = this.domain; let fill; let fillOpacity; let colors = []
+
+      // create fill/fillOpacity scales for rectangles
+      if (!this.checkValidColor(this.fill)) {
+        fill = this.generateColorScale('fill', this.fill)
+        fillOpacity = 1
+      } else if (this.fillOpacity && this.checkValidColor(this.fill)) {
+        fill = this.fill
+        fillOpacity = this.generateScale('fillOpacity', this.fillOpacity)
+      } else {
+        throw new Error('If `fill` is set to a color (HSL, RGB or CSS value), then `fillOpacity` must be specified to create the legend')
+      }
+
+      let domain = this._domainType.includes('interval') ? [l[0][0], l[l.length - 1][1]] : this._domain
+      let sectionScale = this.sectionScale(domain)
+      let opacity = 1; let color
+
       if (!this.flip) {
         if (this.orientation === 'vertical') {
-          for (let i = l.length - 1; i >= 0; i--) {
-            let color = colorScale(l[i].value)
-            colors.push(color)
+          for (let i = l.length; i > 0; i--) {
+            if (fill.constructor === Function) {
+              color = this._domainType.includes('interval') ? fill(l[i - 1]) : fill(l[i - 1].value)
+              opacity = fillOpacity
+            } else if (fillOpacity.constructor === Function) {
+              color = fill
+              opacity = this._domainType.includes('interval') ? fillOpacity(l[i - 1]) : fillOpacity(l[i - 1].value)
+            }
+
+            let offset = 100 - (this._domainType.includes('interval') ? sectionScale(l[i - 1][0]) : sectionScale(l[i - 1].value))
+            colors.push({ color, offset, opacity })
           }
         } else {
           for (let i = 0; i < l.length; i++) {
-            let color = colorScale(l[i].value)
-            colors.push(color)
+            if (fill.constructor === Function) {
+              color = this._domainType.includes('interval') ? fill(l[i]) : fill(l[i].value)
+              opacity = fillOpacity
+            } else if (fillOpacity.constructor === Function) {
+              color = fill
+              opacity = this._domainType.includes('interval') ? fillOpacity(l[i]) : fillOpacity(l[i].value)
+            }
+
+            let offset = this._domainType.includes('interval') ? sectionScale(l[i][0]) : sectionScale(l[i].value)
+            colors.push({ color, offset, opacity })
           }
         }
       } else {
         if (this.orientation === 'vertical') {
           for (let i = 0; i < l.length; i++) {
-            let color = colorScale(l[i].value)
-            colors.push(color)
+            if (fill.constructor === Function) {
+              color = this._domainType.includes('interval') ? fill(l[i]) : fill(l[i].value)
+              opacity = fillOpacity
+            } else if (fillOpacity.constructor === Function) {
+              color = fill
+              opacity = this._domainType.includes('interval') ? fillOpacity(l[i]) : fillOpacity(l[i].value)
+            }
+
+            let offset = this._domainType.includes('interval') ? sectionScale(l[i][0]) : sectionScale(l[i].value)
+            colors.push({ color, offset, opacity })
           }
         } else {
-          for (let i = l.length - 1; i >= 0; i--) {
-            let color = colorScale(l[i].value)
-            colors.push(color)
+          for (let i = l.length; i > 0; i--) {
+            if (fill.constructor === Function) {
+              color = this._domainType.includes('interval') ? fill(l[i - 1]) : fill(l[i - 1].value)
+              opacity = fillOpacity
+            } else if (fillOpacity.constructor === Function) {
+              color = fill
+              opacity = this._domainType.includes('interval') ? fillOpacity(l[i - 1]) : fillOpacity(l[i - 1].value)
+            }
+
+            let offset = 100 - (this._domainType.includes('interval') ? sectionScale(l[i - 1][0]) : sectionScale(l[i - 1].value))
+            colors.push({ color, offset, opacity })
           }
         }
       }
+
       return colors
     },
 
@@ -201,9 +255,9 @@ export default {
     boxes () {
       let boxes = []
       let l = this.legendLabels
-      let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
-      let start = 1; let end = 0
-      let sectionScale = scaleLinear().domain(this._domain).range([0, 100])
+      let ticks = this.legendLabels.length
+      let domain = this._domainType.includes('interval') ? [this.legendLabels[0].value, this.legendLabels[this.legendLabels.length - 1].value] : this._domain
+      let sectionScale = scaleLinear().domain(domain).range([0, 100])
 
       if (!this.flip) {
         for (let i = 0; i < ticks; i++) {
@@ -218,6 +272,5 @@ export default {
       return boxes
     }
   }
-
 }
 </script>

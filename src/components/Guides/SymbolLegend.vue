@@ -43,7 +43,7 @@
           v-if="checkGrid.columns"
           :cols="checkGrid.columns"
           :layout-padding="0"
-          :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
+          :cell-padding="{ l: 0.5 + colPadding/2, r: 0.5 + colPadding/2, b: symbolPadding + 0.5}"
         >
           <vgg-section
             v-for="(s, i) in symbols"
@@ -105,7 +105,7 @@
           v-if="checkGrid.rows"
           :rows="checkGrid.rows"
           :layout-padding="0"
-          :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
+          :cell-padding="{ l: 0.5 + rowPadding/2, r: 0.5 + rowPadding/2,b: symbolPadding + 0.5}"
         >
           <vgg-section
             v-for="(s, i) in symbols"
@@ -207,7 +207,7 @@
           v-if="checkGrid.columns"
           :cols="checkGrid.columns"
           :layout-padding="0"
-          :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
+          :cell-padding="{ l: 0.5 + colPadding/2, r: 0.5 + colPadding/2, b: symbolPadding + 0.5 }"
         >
           <vgg-section
             v-for="(s, i) in symbols"
@@ -271,7 +271,7 @@
           v-if="checkGrid.rows"
           :rows="checkGrid.rows"
           :layout-padding="0"
-          :cell-padding="{ l: 0.5, r: 0.5, b: symbolPadding + 0.5}"
+          :cell-padding="{ l: 0.5 + rowPadding/2, r: 0.5 + rowPadding/2, b: symbolPadding + 0.5 }"
         >
           <vgg-section
             v-for="(s, i) in symbols"
@@ -338,7 +338,6 @@
 
 <script>
 import BaseLegend from '@/mixins/Guides/BaseLegend.js'
-import createScale from '@/scales/createScale.js'
 
 export default {
   name: 'SymbolLegend',
@@ -432,7 +431,7 @@ export default {
         scales.stroke = 'black'
       }
 
-      if (!this.checkValidColor(this.fill)) {
+      if (!this.checkValidColor(this.fill) && this.fill !== 'none') {
         let fillScale = this.generateScale('fill', this.fill)
         scales.fill = fillScale
       } else {
@@ -491,7 +490,7 @@ export default {
     symbols () {
       let symbols = []
       let l = this.legendLabels
-      let ticks = this.tickCount < this.legendLabels.length ? this.tickCount : this.legendLabels.length
+      let ticks = l.length
       let start = 0; let end = 0; let location; let symbol
       let segHeight = 100 / ticks
 
