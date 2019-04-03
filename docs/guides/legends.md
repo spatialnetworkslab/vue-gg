@@ -187,7 +187,7 @@ For more information on potential inputs to `scale` and other aesthetic properti
 | -------------- | -------- | ---------------- | ----------- | ----------- | ------- |
 | fill          | false    | [Object, Array, String]        | { type: 'blues '}        |  symbol fill color | Named color, hex, rgb, hsl |
 | fill-opacity          | false    | [Number, Object, Array]        | 1        | symbol fill opacity | Number between 0 and 1 |
-| shape          | false    | [String, Array]        | circle        | symbol shape | See [Marks > Symbol](docs/marks/symbol.md); an additional shape value called `line` is also available for the symbol legend |
+| shape          | false    | [String, Array]        | circle        | symbol shape | See [Marks > Symbol](../marks/symbol.md); an additional shape value called `line` is also available for the symbol legend |
 | linecap          | false    | String      | round        | stroke line cap of symbol when `shape` is set to `line`| round, butt, square |
 | size          | false    | [Number, Object, Array]        | 16        | symbol size | Screen pixel |
 | stroke-width          | false    | [Number, Object, Array]        | 2        | symbol stroke width| Screen pixel |
