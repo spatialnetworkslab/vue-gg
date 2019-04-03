@@ -11,15 +11,59 @@
         :hjust="'center'"
         :font-size="50"/>
 
-      <vgg-section
-        :x1="sectionX[0]"
-        :x2="sectionX[1]"
-        :y1="sectionY[0]"
-        :y2="sectionY[1]/2"
-        :scale-x="[0, 1]"
-        :scale-y="[0, 10]"
-        type="polar"
-      >
+      <g v-if="data">
+        <g
+          v-for="(d, i) in dimensionSections"
+          :key="i"
+        >
+          <g
+            v-for="(o, j) in optionSections"
+            :key="j"
+          >
+            <vgg-section
+              :x1="d[0]"
+              :x2="d[1]"
+              :y1="o[0]"
+              :y2="o[1]"
+              :scale-x="[0, 1]"
+              :scale-y="[0, 10]"
+            >
+
+              <!-- <vgg-rectangle
+                :x1="0"
+                :x2="1"
+                :y1="0"
+                :y2="10"
+                :opacity="0.2"
+                fill="blue"
+              /> -->
+
+              <g v-for="category, a in axes(dimensions[i], options[j])">
+                <vgg-y-axis
+                  :scale="category[1]"
+                  :hjust="axisInterval(dimensions[i]) * a"
+                  :title-vjust="1.05"
+                  :title-hjust="0.5"
+                  :tick-opacity="3"
+                  :title="category[0]"
+                  :tick-length="0.01"
+                  :tick-count="options[j]"
+                />
+              </g>
+
+              <g v-for="segment, i in segments(dimensions[i], options[j])">
+                <vgg-multi-line
+                  :x="segment.x"
+                  :y="segment.y"
+                  :stroke="hoverI === i ? 'black' : segment.color"
+                  stroke-linecap="round"
+                  @hover="handleHover($event, i)"
+                />
+              </g>
+            </vgg-section>
+          </g>
+        </g>
+      </g>
 
       <!-- <vgg-section
         :x1="sectionX[0]"
@@ -28,7 +72,17 @@
         :y2="sectionY[1]/2"
         :scale-x="[0, 1]"
         :scale-y="[0, 10]"
+        type="polar"
       > -->
+
+      <!-- <vgg-section
+        :x1="sectionX[0]"
+        :x2="sectionX[1]"
+        :y1="sectionY[0]"
+        :y2="sectionY[1]/2"
+        :scale-x="[0, 1]"
+        :scale-y="[0, 10]"
+      >
 
         <g v-for="category, i in bikeCategories.slice(0, dimensions[0])">
           <vgg-y-axis
@@ -41,8 +95,8 @@
             :tick-length="0.01"
           />
 
-          <g v-for="segment, i in segments(dimensions[0], options[0])">
-            <vgg-multi-line
+          <g v-for="segment, i in segments(dimensions[0], options[0])"> -->
+      <!-- <vgg-multi-line
               :x="segment.x"
               :y="segment.y"
               :opacity="0.1"
@@ -52,8 +106,8 @@
               :fill="hoverI === i ? 'red' : 'steelblue'"
               :fill-opacity="0.1"
               @hover="handleHover($event, row, i)"
-            />
-            <!-- <vgg-multi-line
+            /> -->
+      <!-- <vgg-multi-line
               :x="segment.x"
               :y="segment.y"
               :opacity="0.1"
@@ -61,10 +115,16 @@
               stroke-linecap="round"
               @hover="handleHover($event, row, i)"
             /> -->
+      <!-- <vgg-multi-line
+              :x="segment.x"
+              :y="segment.y"
+              :stroke="segment.color"
+              stroke-linecap="round"
+            />
           </g>
         </g>
       </vgg-section>
-      </vgg-section>
+      </vgg-section> -->
     </vgg-graphic>
 
   </div>
@@ -101,59 +161,50 @@ export default {
       carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower', 'Length', 'ForwardGears', 'Torque'],
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
-      dimensions: [6],
-      options: [25],
-      height: 1500,
-      width: 5000,
+      dimensions: [4, 6, 11],
+      options: [40, 20, 10, 5],
+      height: 2000,
+      width: 6000,
       baseX: 300,
       baseY: 100,
-      padX: 300,
+      padX: 200,
       padY: 200,
-      sectionX: [200, 2500],
-      sectionY: [200, 2500]
+      deltaX: 200,
+      deltaY: 20
     }
   },
   computed: {
-
-    // context () {
-    //   return {
-    //     dataInterface: this.$$dataInterface,
-    //     scaleManager: this.$$scaleManager
-    //   }
-    // },
-
     dimensionSections () {
       let sections = []
-      let delta = 200
       for (let d in this.dimensions) {
         let x1 = this.baseX; let x2
         if (d > 0) {
           for (let prevD in this.dimensions.slice(0, d)) {
-            x1 += this.dimensions[prevD] * delta
+            x1 += this.dimensions[prevD] * this.deltaX
           }
           x1 += this.padX * d
-          x2 = x1 + this.dimensions[d] * delta
+          x2 = x1 + this.dimensions[d] * this.deltaX
         } else {
-          x2 = this.baseX + this.dimensions[d] * delta
+          x2 = this.baseX + this.dimensions[d] * this.deltaX
         }
         sections.push([x1, x2])
       }
+
       return sections
     },
 
     optionSections () {
       let sections = []
-      let delta = 50
       for (let o in this.options) {
         let y1 = this.baseY; let y2
         if (o > 0) {
           for (let prevO in this.options.slice(0, o)) {
-            y1 += this.options[prevO] * delta
+            y1 += this.options[prevO] * this.deltaY
           }
           y1 += this.padY * o
-          y2 = y1 + this.options[o] * delta
+          y2 = y1 + this.options[o] * this.deltaY
         } else {
-          y2 = this.baseY + this.options[o] * delta
+          y2 = this.baseY + this.options[o] * this.deltaY
         }
         sections.push([y1, y2])
       }
@@ -169,13 +220,13 @@ export default {
     // this.cars()
   },
   methods: {
-    handleHover (e, row, i) {
+    handleHover (e, i) {
       if (e) {
         this.hoverI = i
-        this.hoverRow = row
+        // this.hoverRow = row
       } else {
         this.hoverI = null
-        this.hoverRow = null
+        // this.hoverRow = null
       }
     },
 
@@ -197,6 +248,61 @@ export default {
       return this.categories.slice(0, dimensions)
     },
 
+    axes (dimensions, options) {
+      let categories = this.categories
+
+      if (!isNaN(dimensions)) {
+        categories = categories.slice(0, dimensions)
+      }
+
+      if (!isNaN(options)) {
+        let options = this.data.length
+      }
+
+      let axes = {}; let newAxes = []
+      // let distanceDelta = this.axisInterval(this.dimensions[0])
+      // let x = this.dimensionSections[this.dimensions.indexOf(dimensions)][0]; let y = this.optionSections[this.options.indexOf(options)][0]
+
+      for (let i = 0; i < categories.length; i++) {
+        let macro = []
+        for (let j = 0; j < options; j++) {
+          macro.push(this.data[j][categories[i]])
+        }
+        axes[categories[i]] = macro
+      }
+
+      for (let name in categories) {
+        let domain = axes[categories[name]]
+
+        if (domain[0].constructor === String) {
+          newAxes.push([categories[name], domain])
+        } else {
+          // if Number
+          // find domain Min, Max
+          // feed to scale
+          let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
+
+          if (newDomain[0] > 1000 && newDomain[1] > 1000) {
+            rounder = 1000
+          } else if (newDomain[0] > 100 && newDomain[1] > 100) {
+            rounder = 100
+          } else if (newDomain[0] > 10 && newDomain[1] > 10) {
+            rounder = 10
+          } else if (newDomain[0] > 1 && newDomain[1] > 1) {
+            rounder = 1
+          }
+
+          newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
+          newAxes.push([categories[name], newDomain])
+        }
+      }
+
+      // for (let a in newAxes) {
+      //   console.log(a, newAxes[a])
+      // }
+      return newAxes
+    },
+
     segments (dimensions, options) {
       let categories = this.categories
 
@@ -205,9 +311,9 @@ export default {
           categories = categories.slice(0, dimensions)
         }
 
-        // if (isNaN(options)) {
-        //   let options = this.data.length
-        // }
+        if (!isNaN(options)) {
+          let options = this.data.length
+        }
 
         let segments = {}; let scaledSegments = []
         let distanceDelta = this.axisInterval(this.dimensions[0])
@@ -215,7 +321,7 @@ export default {
 
         for (let i = 0; i < categories.length; i++) {
           let macro = []
-          for (let j = 0; j < this.data.length; j++) {
+          for (let j = 0; j < options; j++) {
             macro.push(this.data[j][categories[i]])
           }
           segments[categories[i]] = macro
@@ -228,6 +334,7 @@ export default {
         //   }
         //   segments.push(macro)
         // }
+        // console.log(segments)
         for (let index in segments) {
           let scale = this.scales(segments[index], [0, 10], index)
           let attribute = segments[index]
@@ -255,8 +362,9 @@ export default {
           for (let index in plotSegments[item].y) {
             plotSegments[item].x.push(this.axisInterval(categories.length) * index)
           }
+          plotSegments[item].color = this.data[item].Color
         }
-
+        // console.log(plotSegments)
         return plotSegments
       }
     },
@@ -288,7 +396,7 @@ export default {
         }
 
         newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
-        console.log(newDomain, name)
+
         scale = scaleLinear().domain(newDomain).range(range)
         this.domains[name] = newDomain
       }
@@ -331,12 +439,12 @@ export default {
       this.title = 'Motorcycle Performance 2014'
       this.colorScale = 'reds'
       // change name of csv
-      csv('../../static/mcn_performance_index14_25.csv').then((data) => {
+      csv('../../static/mcn_performance_index14_40.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
             Name: d['Make and Model'],
             Price: parseInt(d['Base MSRP']),
-            PWRatio: parseInt(d.PWRatio),
+            PWRatio: parseFloat(d.PWRatio),
             MilesPG: parseInt(d['Average MPG']),
             RearWheelHorsepower: parseInt(d['Rear-Wheel HP']),
             RearWheelTQLbFt: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),

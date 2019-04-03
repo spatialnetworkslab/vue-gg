@@ -38,8 +38,8 @@
                   <vgg-rectangle
                     :x="row.attribute"
                     :y="row.name"
-                    :w="40"
-                    :h="40"
+                    :w="deltaX"
+                    :h="deltaY"
                     :fill="{val: row.value, scale: { type: row.colorScale, domain: 'value'}}"
                   />
                 </vgg-map>
@@ -97,13 +97,15 @@ export default {
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
       dimensions: [3, 5, 10],
-      options: [5, 10, 20, 40],
+      options: [40, 20, 10, 5],
       height: 4200,
       width: 2000,
       baseX: 300,
       baseY: 100,
       padX: 300,
-      padY: 200
+      padY: 200,
+      deltaX: 40,
+      deltaY: 25
     }
   },
   computed: {
@@ -113,16 +115,16 @@ export default {
         let x1 = this.baseX; let x2
         if (d > 0) {
           for (let prevD in this.dimensions.slice(0, d)) {
-            x1 += this.dimensions[prevD] * 40
+            x1 += this.dimensions[prevD] * this.deltaX
           }
           x1 += this.padX * d
-          x2 = x1 + this.dimensions[d] * 40
+          x2 = x1 + this.dimensions[d] * this.deltaX
         } else {
-          x2 = this.baseX + this.dimensions[d] * 40
+          x2 = this.baseX + this.dimensions[d] * this.deltaX
         }
         sections.push([x1, x2])
       }
-      console.log('dimensions', sections)
+
       return sections
     },
 
@@ -132,16 +134,16 @@ export default {
         let y1 = this.baseY; let y2
         if (o > 0) {
           for (let prevO in this.options.slice(0, o)) {
-            y1 += this.options[prevO] * 40
+            y1 += this.options[prevO] * this.deltaY
           }
           y1 += this.padY * o
-          y2 = y1 + this.options[o] * 40
+          y2 = y1 + this.options[o] * this.deltaY
         } else {
-          y2 = this.baseY + this.options[o] * 40
+          y2 = this.baseY + this.options[o] * this.deltaY
         }
         sections.push([y1, y2])
       }
-      console.log('options', sections)
+
       return sections
     }
   },
@@ -193,6 +195,10 @@ export default {
               // macro.x2 = x + widthDelta * (i + 1)
               // macro.y1 = y + heightDelta * j
               // macro.y2 = y + heightDelta * (j + 1)
+              if (categories[i] === 'PWRatio') {
+                console.log(this.data[j], this.data[j][categories[i]])
+              }
+
               macro.value = this.data[j][categories[i]]
               macro.attribute = categories[i]
               macro.name = this.data[j].Name
@@ -246,13 +252,13 @@ export default {
       this.title = 'Motorcycle Performance 2014'
       this.colorScale = 'reds'
       // change name of csv
-      csv('../../static/mcn_performance_index14_alphabetical.csv').then((data) => {
+      csv('../../static/mcn_performance_index14_100.csv').then((data) => {
         this.data = Object.freeze(data.map(d => {
           return {
             Name: d['Make and Model'],
             Price: parseInt(d['Base MSRP']),
             Rating: d['Rating Category'],
-            PWRatio: parseInt(d.PWRatio),
+            PWRatio: parseFloat(d.PWRatio),
             MilesPG: parseInt(d['Average MPG']),
             RearWheelHorsepower: parseInt(d['Rear-Wheel HP']),
             RearWheelTQLbFt: parseInt(d['Rear-Wheel TQ (lb.-ft.)']),
