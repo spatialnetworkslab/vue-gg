@@ -8,8 +8,11 @@ title: 'Repeat'
 
 # Description
 
-The Repeat component is used to quickly position and align [Section](./section.md)
-components in a 2d matrix format.
+The Repeat component is used to quickly position and align 'square' components
+in a 2d matrix format. 'Square' here refers to any component that has
+ `x1`, `x2`, `y1` and `y2` props. This includes the [Section](./section.md)
+ component, the [Rectangle](../marks/rectangle.md) mark, and any custom component
+ that you would want to create, given it has the props mentioned above.
 
 # Props
 

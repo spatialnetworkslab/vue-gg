@@ -3,8 +3,9 @@ import {
   calculateGridLayout,
   calculateRowsCols,
   validateGridOptions,
-  updateGridSections
+  updateGridComponents
 } from './utils/grid.js'
+import isSquareComponent from './utils/isSquareComponent.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
@@ -51,8 +52,8 @@ export default {
       let definedChildren = slotContent.filter(c => c.tag !== undefined)
 
       let wrongUseError = new Error(`'vgg-grid' can have in its slot:
-        1. any number of 'vgg-section' components
-        2. a single 'vgg-map' component that only contains other 'vgg-section' components
+        1. any number of 'square' (with x1, x2, y1 and y2 props) components
+        2. a single 'vgg-map' component that only contains other 'square' components
       `)
 
       if (definedChildren[0].componentOptions.tag === 'vgg-map') {
@@ -62,12 +63,16 @@ export default {
         return [definedChildren, 'map']
       }
 
-      if (definedChildren.some(c => c.componentOptions.tag !== 'vgg-section')) {
+      if (definedChildren.some(c => !this.isSquareComponent(c))) {
         throw wrongUseError
       } else {
-        return [definedChildren, 'section']
+        return [definedChildren, 'square']
       }
     }
+  },
+
+  methods: {
+    isSquareComponent
   },
 
   provide () {
@@ -86,18 +91,18 @@ export default {
     let slotContent = this.getSlotContent()
     let [children, childType] = this.children(slotContent)
 
-    if (childType === 'section') {
-      let sections = children
+    if (childType === 'square') {
+      let squareComponents = children
 
-      let numberOfSections = sections.length
-      let { rows, cols } = calculateRowsCols(options, numberOfSections)
+      let numberOfSquareComponents = squareComponents.length
+      let { rows, cols } = calculateRowsCols(options, numberOfSquareComponents)
       let ranges = this.parentBranch.domains
       let start = this.start
       let layout = calculateGridLayout(rows, cols, options, ranges, undefined, start)
 
-      let newSections = updateGridSections(createElement, sections, layout)
+      let newComponents = updateGridComponents(squareComponents, layout)
 
-      return createElement('g', { class: 'layout-grid' }, newSections)
+      return createElement('g', { class: 'layout-grid' }, newComponents)
     }
 
     if (childType === 'map') {

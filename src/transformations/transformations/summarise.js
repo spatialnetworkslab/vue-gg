@@ -1,5 +1,6 @@
 import aggregations from './aggregations'
 import checkKeyValuePair from '../utils/checkKeyValuePair.js'
+import * as lodash from 'lodash'
 
 export default function (data, summariseInstructions) {
   if (summariseInstructions.constructor !== Object) {
@@ -11,7 +12,7 @@ export default function (data, summariseInstructions) {
   if (data.hasOwnProperty('grouped')) {
     checkSummariseInstructions(summariseInstructions, data)
 
-    let dataClone = Object.assign({}, data)
+    let dataClone = lodash.cloneDeep(data)
     delete dataClone.grouped
     for (let col in dataClone) {
       newData[col] = dataClone[col]
