@@ -236,7 +236,6 @@ export default {
           }
         }
       }
-      console.log(this.fill, this.fillOpacity, colors)
       return colors
     },
 

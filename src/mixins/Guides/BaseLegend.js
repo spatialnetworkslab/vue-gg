@@ -240,32 +240,6 @@ export default {
       return this._parsedScalingOptions[1]
     },
 
-    _scalingOptions () {
-      return this._parsedScalingOptions[2]
-    },
-
-    _parentNodes () {
-      return this.getParents(this.parentBranch, [this.parentBranch])
-    },
-
-    parentDomains () {
-      return this.parentBranch.domains
-    },
-
-    parentDomainWidths () {
-      return {
-        x: this.parentDomains.x[1] - this.parentDomains.x[0],
-        y: this.parentDomains.y[1] - this.parentDomains.y[0]
-      }
-    },
-
-    ranges () {
-      return {
-        x: [this.legendLeft, this.legendLeft + this.sectionWidth],
-        y: [this.legendTop, this.legendTop + this.sectionHeight]
-      }
-    },
-
     context () {
       return {
         ranges: this.ranges,

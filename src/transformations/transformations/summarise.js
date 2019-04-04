@@ -11,7 +11,7 @@ export default function (data, summariseInstructions) {
   if (data.hasOwnProperty('grouped')) {
     checkSummariseInstructions(summariseInstructions, data)
 
-    let dataClone = JSON.parse(JSON.stringify(data))
+    let dataClone = Object.assign({}, data)
     delete dataClone.grouped
     for (let col in dataClone) {
       newData[col] = dataClone[col]
@@ -23,7 +23,6 @@ export default function (data, summariseInstructions) {
   } else {
     newData = summariseGroup(data, summariseInstructions, newData)
   }
-
   return newData
 }
 
