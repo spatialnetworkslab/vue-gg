@@ -162,7 +162,7 @@ export default {
       type: String,
       default: 'left',
       validator: function (value) {
-        return ['left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'bl', 'br', 'cr', 'cl'].indexOf(value) !== -1
+        return ['left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'].indexOf(value) !== -1
       }
     },
 
@@ -286,10 +286,10 @@ export default {
     legendLeft () {
       if (!this.x && !this.y) {
         let p = this.position
-        if (p === 'right' || p === 'tr' || p === 'br' || p === 'cr') {
+        if (p === 'right' || p === 'tr' || p === 'br') {
           return (this.plotWidth - this.sectionWidth) * 0.95
-        } else if (p === 'center') {
-          return this.plotWidth * 0.45
+        } else if (p === 'center' || p === 'tc' || p === 'bc') {
+          return this.plotWidth * 0.5 - this.sectionWidth / 2
         } else {
           return this.plotWidth * 0.02
         }
@@ -301,13 +301,13 @@ export default {
     legendTop () {
       if (!this.x && !this.y) {
         let p = this.position
-        if (p === 'top' || p === 'tl' || p === 'tr') {
+        if (p === 'top' || p === 'tl' || p === 'tr' || p === 'tc') {
           if (this.plotHeight - this.sectionHeight < 0) {
             return (this.plotHeight - this.sectionHeight) * 0.9
           } else {
             return -(this.plotHeight - this.sectionHeight) * 0.9
           }
-        } else if (p === 'bottom' || p === 'bl' || p === 'br') {
+        } else if (p === 'bottom' || p === 'bl' || p === 'br' || p === 'bc') {
           if (this.plotHeight < 0) {
             return this.plotHeight * 0.01
           } else {
@@ -315,9 +315,9 @@ export default {
           }
         } else {
           if (this.plotHeight < 0) {
-            return this.plotHeight * 0.45
+            return this.plotHeight * 0.5 - this.sectionHeight / 2
           } else {
-            return -this.plotHeight * 0.45
+            return -this.plotHeight * 0.45 + this.sectionHeight / 2
           }
         }
       } else {
@@ -539,72 +539,80 @@ export default {
     },
 
     generateScale (prop, scaleBasis) {
-      let scaleOptions
+      let scaleOptions = {}
 
       if (scaleBasis.constructor === Number) {
         return () => { return scaleBasis }
       // } else if (scaleBasis.constructor === Array) { // FIX THIS
       //   return (index) => { return scaleBasis[index] }
       } else {
+        // Domain is dependent on scale inputs
+        // Range is dependent on aesthetic inputs
+        if (this.scale.domainMin) {
+          scaleOptions.domainMin = this.scale.domainMin
+        }
+
+        if (this.scale.domainMax) {
+          scaleOptions.domainMax = this.scale.domainMax
+        }
+
+        if (this.scale.domainMid) {
+          scaleOptions.domainMid = this.scale.domainMid
+        }
+
+        if (this.scale.order && this._domainType.includes('categorical')) {
+          scaleOptions.order = this.scale.order
+        } else {
+          console.warn('Data must be categorical in order to include `order` in `scale`')
+        }
+
+        if (this.scale.absolute) {
+          scaleOptions.absolute = this.scale.absolute
+        }
+
+        if (this.scale.nice) {
+          scaleOptions.nice = this.scale.nice
+        }
+
+        if (this.scale.reverse) {
+          scaleOptions.reverse = this.scale.reverse
+        }
+
+        scaleOptions.domain = this.scale.domain ? this.scale.domain : this.scale
+
+        if (scaleBasis.rangeMin) {
+          scaleOptions.rangeMin = scaleBasis.rangeMin
+        }
+
+        if (scaleBasis.rangeMax) {
+          scaleOptions.rangeMax = scaleBasis.rangeMax
+        }
+
         if (prop === 'strokeOpacity' || prop === 'fillOpacity' || prop === 'opacity') {
-          if (this._domainType === 'categorical') {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 1]
-            }
-          } else {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              domainMid: (this._domain[0] + this._domain[1]) / 2,
-              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 1]
-            }
+          scaleOptions.range = scaleBasis.range ? scaleBasis.range : [0, 1]
+        } else if (prop === 'stroke' || prop === 'fill' || prop === 'shape') {
+          if (scaleBasis.type) {
+            scaleOptions.type = scaleBasis.type
           }
-        } else if (prop === 'stroke' || prop === 'fill') {
-          if (this._domainType === 'categorical') {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              type: scaleBasis.type,
-              ranges: scaleBasis.ranges
-            }
-          } else {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1]) / 2,
-              scaleArgs: [[0, this.tickCount]],
-              type: scaleBasis.type,
-              ranges: scaleBasis.ranges
+
+          if (scaleBasis.range) {
+            if (prop === 'stroke' || prop === 'fill') {
+              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
+            } else {
+              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
             }
           }
         } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {
-          if (this._domainType === 'categorical') {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: this._domain,
-              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 10]
-            }
-          } else {
-            scaleOptions = {
-              aestheticType: prop,
-              domain: this._domain,
-              domainMid: (this._domain[0] + this._domain[1]) / 2,
-              range: scaleBasis.range ? scaleBasis.range : this.scale.range ? this.scale.range : [0, 10]
-            }
-          }
-        } else if (prop === 'shape') {
-          if (scaleBasis.type) {
-            scaleOptions = {
-              domain: scaleBasis.domain ? scaleBasis.domain : this._domain,
-              type: scaleBasis.type
-            }
-          } else {
-            scaleOptions = {
-              domain: this._domain,
-              ranges: scaleBasis.ranges ? scaleBasis.ranges : ['circle', 'square']
-            }
+          scaleOptions.range = scaleBasis.range ? scaleBasis.range : [0, 10]
+        }
+
+        if (scaleOptions.domain.includes('#')) {
+          scaleOptions.domain = this.$$scaleManager.getScale(scaleOptions.domain)[0]
+        }
+
+        if (scaleOptions.range) {
+          if (scaleOptions.range.includes('#')) {
+            scaleOptions.range = this.$$scaleManager.getScale(scaleOptions.range)[0]
           }
         }
 
@@ -626,37 +634,6 @@ export default {
         return false
       }
       return true
-    },
-
-    generateColorScale (prop, colorBasis) {
-      let color = colorBasis || this.fill
-      let scaleOptions
-
-      if (color.constructor === Array) {
-        return (index) => { return color[index] }
-      } else {
-        if (this._domainType === 'categorical' || this._domainType.includes('interval')) {
-          scaleOptions = {
-            aestheticType: prop,
-            domain: color.domain ? color.domain : this.scale.domain ? this.scale.domain : this.scale,
-            type: color.type ? color.type : color,
-            ranges: color.ranges
-          }
-        } else {
-          scaleOptions = {
-            aestheticType: prop,
-            domain: color.domain ? color.domain : this._domain,
-            domainMid: (this._parsedScalingOptions[0][0] + this._parsedScalingOptions[0][1]) / 2,
-            scaleArgs: [[0, this.tickCount]],
-            type: color.type ? color.type : color,
-            ranges: color.ranges
-          }
-        }
-
-        let scalingFunction = createScale(prop, this.context, scaleOptions)
-        return scalingFunction
-      }
     }
-
   }
 }

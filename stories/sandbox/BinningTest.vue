@@ -59,7 +59,8 @@
           <vgg-y-axis
             :scale="{ domain: 'binCount', domainMin: 0 }"
             :tick-count="5"
-            :hjust="-0.05"
+            :hjust="1"
+            flip
           />
 
           <vgg-x-axis
@@ -69,7 +70,7 @@
           />
 
         </vgg-section>
-
+<!--
         <vgg-x-axis
           :x1="100"
           :x2="500"
@@ -86,7 +87,7 @@
           :y2="500"
           :scale="{ domain: 'binCount', domainMin: 0 }"
           :tick-count="15"
-        />
+        /> -->
 
         <!-- fill binning -->
 
@@ -106,8 +107,16 @@
           title="Gradient"
           :title-padding="2"
           fill="blue"
-          :fill-opacity="{domain: 'bins'}"
+          :fill-opacity="{ range: [0, 1]}"
         />
+
+        <!-- <vgg-gradient-legend
+          :scale="{ domain: 'bins' }"
+          position="tr"
+          title="Gradient"
+          :title-padding="2"
+
+        /> -->
 
       </vgg-data>
     </vgg-graphic>

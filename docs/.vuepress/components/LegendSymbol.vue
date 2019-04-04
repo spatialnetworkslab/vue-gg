@@ -5,10 +5,10 @@
     :data="data">
 
     <vgg-section
-      :x1="0"
+      :x1="50"
       :x2="300"
-      :y1="50"
-      :y2="400"
+      :y1="70"
+      :y2="420"
       :scale-x="'a'"
       :scale-y="'b'"
     >
@@ -18,7 +18,7 @@
         <vgg-symbol
           :x="{ val: row.a, scale: 'a' }"
           :y="{ val: row.b, scale: 'b' }"
-          :size="{ val: row.a, scale: { domain: 'a', range: [10, 20] } }"
+          :size="{ val: row.a, scale: { domain: 'a', range: [10, 15] } }"
           :fill="{ val: row.category, scale: { type: 'paired', domain: 'category' } }"
           :shape="{ val: row.category, scale: {type: 'stars', domain: 'category'}}"
         />
@@ -43,7 +43,7 @@
 
     <vgg-symbol-legend
       :scale="'a'"
-      :size="{ range: [10, 20] }"
+      :size="{ range: [10, 15] }"
       title="Size"
       :title-font-size=12
       :title-padding="10"

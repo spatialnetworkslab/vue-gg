@@ -41,6 +41,7 @@
           :scale="'bins'"
           fill="#c66366"
           :fill-opacity="{ domain: 'bins' }"
+          position="tl"
         />
 
         <vgg-discrete-legend

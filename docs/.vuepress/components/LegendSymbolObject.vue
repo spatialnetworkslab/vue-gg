@@ -25,7 +25,7 @@
         <vgg-symbol
           :x="{ val: row.year, scale: 'year' }"
           :y="{ val: row.population, scale: 'population' }"
-          :size="{ val: row.population, scale: { domain: 'population', range: [2, 12] } }"
+          :size="{ val: row.population, scale: { domain: 'population', domainMin: 150, range: [2, 12] } }"
           fill="#c66366"
         />
 
@@ -34,13 +34,12 @@
     </vgg-section>
 
     <vgg-symbol-legend
-      :scale="'population'"
+      :scale="{ domain: 'population', domainMin: 200 }"
       :size="{ range: [2, 12] }"
-      :h="140"
-      :stroke="'none'"
+      :tick-count="5"
+      stroke="#c66366"
       fill="#c66366"
       position="tr"
     />
-
   </vgg-graphic>
 </template>

@@ -59,7 +59,7 @@
       :scale="'colors'"
       :font-size="10"
       :stroke-width="8"
-      :stroke="['red', 'green', 'blue', 'purple']"
+      :stroke="{ range: ['red', 'green', 'blue', 'purple'] }"
       :x="600"
       :y="0"
       shape="line"

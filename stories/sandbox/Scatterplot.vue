@@ -9,8 +9,8 @@
       <vgg-plot-title text="Scatterplot" />
 
       <vgg-section
-        :x1="100"
-        :x2="500"
+        :x1="150"
+        :x2="550"
         :y1="100"
         :y2="500"
       >
@@ -33,6 +33,7 @@
           :title-hjust="1.1"
           :vjust="-.05"
           :tick-values="[0, 20, 60, 100]"
+          flip
         />
 
         <vgg-y-axis
@@ -43,16 +44,16 @@
       </vgg-section>
 
       <vgg-x-grid
-        :x1="100"
-        :x2="500"
+        :x1="150"
+        :x2="550"
         :y1="100"
         :y2="500"
         :scale="'explanatory'"
       />
 
       <vgg-y-grid
-        :x1="100"
-        :x2="500"
+        :x1="150"
+        :x2="550"
         :y1="100"
         :y2="500"
         :scale="'dependent'"
@@ -83,6 +84,7 @@
       <vgg-symbol-legend
         :scale="{ domain: 'explanatory'}"
         :size="{ domain: 'explanatory'}"
+        :tick-count="8"
         position="br"
         title="Size"
         flip-numbers

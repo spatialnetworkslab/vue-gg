@@ -27,9 +27,10 @@
         />
 
         <vgg-symbol-legend
-          :scale="'bins'"
-          :fill="'bins'"
-          stroke='none'
+          :scale="'binCount'"
+          :fill="{ type: 'blues' }"
+          stroke="none"
+          :tickCount="6"
           position="right"
           :h="110"
           :w="50"

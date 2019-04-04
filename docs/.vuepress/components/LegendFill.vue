@@ -38,13 +38,14 @@
 
         <vgg-gradient-legend
           :scale="'bins'"
-          :fill="{type:'viridis'}"
+          :fill="'viridis'"
           :h="100"
+          position="tl"
         />
 
         <vgg-discrete-legend
           :scale="'bins'"
-          :fill="{type:'viridis'}"
+          :fill="{ type: 'viridis' }"
           position="bl"
         />
 

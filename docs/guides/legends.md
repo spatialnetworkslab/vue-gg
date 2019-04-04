@@ -4,9 +4,13 @@ title: Legends
 
 # Legends
 
-Legends are used to show scale mappings for values like color, shape, size, opacity. Each legend is typically mapped to a single dimension or variable. Vue Graphics Grammar supports three (3) types of legends – gradient, discrete, and symbol legends.
+Legends are used to show mappings for aesthetics like color, shape, size,
+opacity to a given domain.Each legend is mapped to a single dimension or variable.
+Vue Graphics Grammar supports three (3)
+types of legends – gradient, discrete, and symbol legends.
 
-`vgg-gradient-legend` maps the domain given to `scale` to a continuous gradient of two (2) or more colors housed in a rectangular section. The progression of the gradient is dictated by the spread of the tick values derived from `scale`.
+`vgg-gradient-legend` maps the domain given to `scale` to a continuous gradient
+of two (2) or more colors housed in a rectangular section.
 
 <CodeDemoLayout>
 
@@ -25,7 +29,8 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 
 </CodeDemoLayout>
 
-`vgg-discrete-legend` maps the domain given to `scale` to a rectangular section composed of discrete colors. The progression of the colors is dictated by the spread of the tick values derived from `scale`.
+`vgg-discrete-legend` maps the domain given to `scale` to a rectangular section
+composed of discrete colors.
 
 <CodeDemoLayout>
 
@@ -36,11 +41,6 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 ```html
 <vgg-discrete-legend
   :scale="'bins'"
-  :font-size="10"
-  :title-font-size="12"
-  :title-padding="5"
-  title="Bins"
-  title-font-weight="bold"
   :h="120"
 />
 ```
@@ -49,9 +49,18 @@ Legends are used to show scale mappings for values like color, shape, size, opac
 
 </CodeDemoLayout>
 
-For gradient and discrete legends, either the `fill` or `fill-opacity` props may be used to encode `scale`. Applying transformations onto the data fed to `scale`, such as `binning`, will alter the placement of ticks and progression of colors to match the transformations.
+For gradient and discrete legends, either the `fill` or `fill-opacity` props may
+be used to encode the domain given to `scale`. Applying transformations onto the
+data fed to `scale`, such as `binning`, will alter the placement of ticks and
+the progression of colors to match the transformations. The progression of the
+colors for both legends is dictated by the spread of the tick values derived from `scale`.
 
-`vgg-symbol-legend` maps `scale` to a series of symbols, which are based on those available in the `symbol` mark. At least one of the `size`, `shape`, `fill`, `stroke`, `stroke-width` `stroke-opacity`, or `fill-opacity` properties must be specified. All properties used for this legend follow the same input domain as `scale` (but each property can have its own range). If different domains are given per property, the legend will follow that which is given to `scale`.
+`vgg-symbol-legend` maps `scale` to a series of symbols, which are based on
+those available in the `symbol` mark. At least one of the `size`, `shape`,
+`fill`, `stroke`, `stroke-width` `stroke-opacity`, or `fill-opacity` aesthetics
+must be specified. All aesthetics used for this legend follow the same input
+domain given to `scale`, but each aesthetic can have its own `range`.
+Even if different domains are given per aesthetic, the legend will follow that which is given to `scale`.
 
 <CodeDemoLayout>
 
@@ -64,12 +73,8 @@ For gradient and discrete legends, either the `fill` or `fill-opacity` props may
   :scale="'population'"
   :size="{ range: [2, 12] }"
   :h="140"
-  title="Population"
-  title-font-weight="bold"
-  :title-font-size="10"
   :stroke="'none'"
   fill="#c66366"
-  orientation='vertical'
   position="tr"
 />
 ```
@@ -78,20 +83,73 @@ For gradient and discrete legends, either the `fill` or `fill-opacity` props may
 
 </CodeDemoLayout>
 
-The number of 'ticks' or labels displayed is controlled by the prop `tickCount`, which is set to 10 by default.
-
-
 ## Properties
 
 ### Legend values
 
 | Prop   | Required | Regular types           | Default   | Description                                               |
 | ------ | -------- | ----------------------- | --------- | --------------------------------------------------------- |
-| scale  | true     | [Array, String, Object] | undefined | range of values visualized by the legend, can be variable name |
+| scale  | true     | [Array, String, Object] | undefined | Domain of values visualized by the legend, can be variable name |
 | orientation   | false    | String               | 'vertical'     | orientation of legend (vertical/horizontal)|
 | flip   | false    | Boolean               | false     | flip order of legend labels; if true, shows decreasing order                        |
 | flip-numbers   | false    | Boolean               | false     | flip placement of numbers and gradient section                        |
 | nice   | false    | Boolean             | true   | rounds off labels (if numerical) to closest ones digit                        |
+
+Note that any aspects to do with the `domain` mapped to the legend, such as
+`domainMin`, `absolute`, etc., should be handled in `scale`. The input to `scale`
+can be a String (the name of the column or a custom scale with the `#` tag) or
+an object. When stating other aspects of `domain` such as `domainMin`, `domainMax`,
+the input must be an object, and the target domain of the legend must be listed under `domain` in the object.
+
+```js
+:scale="'<data column name>'"
+
+// OR
+
+:scale="'#domainScale'"
+
+// OR
+
+:scale="{ domain: <data column name>, domainMin: <value>, domainMax: <value>, ... }"
+```
+
+On the other hand, `range`, `rangeMin`, etc. should be specified in the target
+aesthetic's input when giving the output of said aesthetic, such as the `range`
+of the `size` property in the symbol legend in the symbol legend example.
+
+```js
+:size="'#rangeScale'"
+
+// OR
+
+:size="{ range: [<value 1>, <value 2>, ...], rangeMin: <value>, rangeMax: <value>, ... }"
+```
+
+In general, the `scale` property in all three legends uses the same concepts and
+attributes for `domain` and `range`, as discussed in
+[Concepts > Scaling](../concepts/scaling.md). An example of using multiple `domain`
+attributes and a custom range for `size` can be found below.
+
+<CodeDemoLayout>
+
+<LegendSymbolObject />
+
+<CodeLayout>
+
+```html
+<vgg-symbol-legend
+  :scale="{ domain: 'population', domainMin: 200 }"
+  :size="{ range: [2, 12] }"
+  :tick-count="5"
+  stroke="#c66366"
+  fill="#c66366"
+  position="tr"
+/>
+```
+
+</CodeLayout>
+
+</CodeDemoLayout>
 
 ### Legend Positioning
 
@@ -101,16 +159,19 @@ A legend component can contain the following position properties.
 | ---- | -------- | ----- | --------- | --------------------------------------- | ----------------- |
 | x    | true     | Number | undefined | position of legend along section x-axis              | Local coordinates |
 | y    | true     | Number | undefined | position of legend along section y-axis              | Local coordinates |
-| position| false    | String | 'left'       | position of legend with respect to parent section                      | left, right, top, bottom, tl, tr, bl, br, center |
+| position| false    | String | 'left' | position of legend with respect to parent section | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
 
 #### Allowed combinations of positioning props
 
 | Combination      | Explanation         |
 |------------------|----------------------|
-| `x` + `y` | Manually positions the legend within the section   |
+| `x` only | Manually positions the legend within the section along the section's x axis   |
+| `y` only | Manually positions the legend within the section along the section's y axis |
+| `x` + `y` | Manually positions the legend within the section along the sections' x and y axes  |
 | `position` | Automatically computes the exact x-y coordinates to position the legend within the parent section, according to its input |
 
-If left empty, then the default position of the x-axis is `position = 'left'` (center leftmost of parent section).
+If left empty, then the default position of the x-axis is `position = 'left'`
+(center leftmost of parent section).
 
 ### Other aesthetics
 
@@ -122,11 +183,15 @@ If left empty, then the default position of the x-axis is `position = 'left'` (c
 | legend-fill | false | String | none | fill color of legend section | Named color, hex, rgb, hsl |
 | legend-stroke-width | false    | Number | 0  | stroke width of rectangle surrounding legend section | Named color, hex, rgb, hsl |
 
-`legend-stroke`, `legend-fill`, and `legend-stroke-width` are analogous to the CSS properties of the same names and affect the body of the legend section that surrounds the ticks, rectangular section, and title.
+`legend-stroke`, `legend-fill`, and `legend-stroke-width` are analogous to the
+CSS properties of the same names and affect the body of the legend section that
+surrounds the ticks, rectangular section, and title.
 
 ### Title
 
-The title can be found at the top of the legend section. It is located outside the bounding rectangle of the legend, should the legend section have `stroke`, `fill`, or `strokeWidth` properties specified.
+The title can be found at the top of the legend section. It is located outside
+the bounding rectangle of the legend, should the legend section have `stroke`,
+`fill`, or `strokeWidth` properties specified.
 
 | Prop            | Required | Regular types    | Default     | Description                             | Unit(s)                    |
 | --------------- | -------- | ---------------- | ----------- | --------------------------------------- | --------------------------|
@@ -141,11 +206,12 @@ The title can be found at the top of the legend section. It is located outside t
 
 ### Labels
 
-These refer to the text beside the legend intervals. Note that if a `Function` is passed to the `format` prop to format labels before rendering, the function output must be of type `String`.
+These refer to the text beside the legend intervals. Note that if a `Function`
+is passed to the `format` prop to format labels before rendering, the function
+output must be of type `String`.
 
 | Prop           | Required | Regular types      | Default     | Description                             | Unit(s)                    |
 | -------------- | -------- | ------------------ | ----------- | --------------------------------------- | -------------------------- |
-| labels         | false    | Array          | true        | array of labels to map legend to                   |                            |
 | format         | false    | [String, Function] | undefined   | formatting of axis labels               |                            |
 | label-color     | false    | String           | 'black'     | color of labels                         | Named color, hex, rgb, hsl |
 | label-font      | false    | String           | 'Helvetica' | font used for axis labels               | Named font                 |
@@ -157,7 +223,9 @@ These refer to the text beside the legend intervals. Note that if a `Function` i
 
 ### Ticks
 
-These properties control the number of ticks or labels, and the minimum interval between the labels (if they are `quantitative` data) of the legend.
+These properties control the number of ticks or labels, and the minimum interval
+between the labels (if they are `quantitative` data) of the legend. By default,
+all three legend types have ten (10) ticks drawn.
 
 | Prop           | Required | Regular types    | Default     | Description                                    | Unit(s)                    |
 | -------------- | -------- | ---------------- | ----------- | ---------------------------------------------- | -------------------------- |
@@ -175,13 +243,15 @@ Coming soon!
 | fill          | false    | [Object, Array]        | { type: 'blues '}        | color scale to which the gradient section/discrete colors is/are mapped | See [Scales > Color](../scales/color.md) |
 | fill-opacity          | false    | [Number, Object, Array]        | 1        | fill opacity of color in `fill` | Number between 0 and 1 or `scale` |
 
-The progression of the colors in the gradient/discrete colors section for `vgg-gradient-legend`/ `vgg-discrete-legend` is dictated by the spread of the legend's labels (as provided to `scale`). For more information on potential inputs to `scale`, see [Concepts > Scaling](../concepts/scaling.md).
+The progression of the colors in the gradient/discrete colors section for `vgg-gradient-legend`/ `vgg-discrete-legend` is dictated by the spread of the legend's labels (as provided to `scale`).
+
+For more information on how to construct `range` inputs to `fill` and `fillOpacity`, please refer to the documentation on `range` in [Concepts > Scaling](../concepts/scaling.md).
 
 ## Symbol legends
 
-These properties can be mapped to show scaling with respect to a specific variable in the symbol legend. The `shape` prop is set to the default for the Symbol mark, `circle`.
-
-For more information on potential inputs to `scale` and other aesthetic properties to the legends, see [Concepts > Scaling](../concepts/scaling.md).
+These properties can be mapped to show scaling based on the `scale` property,
+with respect to a specific aesthetic of the symbol legend. The `shape` prop is
+set to the default for the Symbol mark, `circle`.
 
 | Prop           | Required | Regular types    | Default     | Description | Unit(s) |
 | -------------- | -------- | ---------------- | ----------- | ----------- | ------- |
@@ -199,16 +269,25 @@ For more information on potential inputs to `scale` and other aesthetic properti
 | col-padding          | false    | Number        | 0.5       | space between columns | Screen pixels |
 | row-padding          | false    | Number        | 0.5       | space between rows | Screen pixels |
 
-`shape`, aside from the options in `vgg-symbol`, accepts the input 'line'. This will generate a legend where the symbols are line segments. Only when `shape` is set to 'line', will to input to `linecap` have any effect. When `shape = 'line'`, use `stroke-opacity` and `stroke` to change the symbols' opacity and color, respectively.
+`shape`, aside from the options in `vgg-symbol`, accepts the input `'line'`.
+This will generate a legend where the symbols are line segments. Only when `shape`
+is set to 'line', will to input to `linecap` have any effect. When `shape = 'line'`,
+use `stroke-opacity` and `stroke` to change the symbols' opacity and color, respectively.
 
-`columns` or `rows` instructs the component to draw the legend as a grid with the specified number of columns or rows. By default, the legend will draw ten (10) ticks.
+`columns` or `rows` instructs the component to draw the legend as a grid with the
+specified number of columns or rows.
 
+For more information on how to construct `range` inputs to aesthetic properties,
+see [Concepts > Scaling](../concepts/scaling.md).
 
 ## Usage
 
 ### Rendering
 
-To render a legend, at bare minimum the `scale` prop must be provided. For all legend types, the default encoding is set to `fill`, using the 'blues' color scale. For `vgg-symbol-legend`, the default shape is `circle`.
+To render a legend, at bare minimum the `scale` prop must be provided. For discrete
+and gradient legends, the default encoding is set to `fill`, using the `'blues'` color
+scale. For `vgg-symbol-legend` specifically, the default shape is `circle`, with `stroke`
+set to `'black'` and `fill` set to `'none'`.
 
 <CodeDemoLayout>
 
@@ -218,41 +297,43 @@ To render a legend, at bare minimum the `scale` prop must be provided. For all l
 ```html
 <vgg-discrete-legend
   :scale="'bins'"
-  :h="100"
+  :h="110"
+  :w="50"
 />
 
 <vgg-gradient-legend
   :scale="'bins'"
   position="center"
-  :h="100"
+  :h="110"
+  :w="50"
 />
 
 <vgg-symbol-legend
-  :scale="'bins'"
-  :fill="'bins'"
-  stroke='none'
+  :scale="'binCount'"
+  :fill="{ type: 'blues' }"
+  stroke="none"
+  :tickCount="6"
   position="right"
-  :h="100"
+  :h="110"
+  :w="50"
 />
 ```
 </CodeLayout>
 
 </CodeDemoLayout>
 
-### Discrete and gradient legends
+### Mappable aesthetics in discrete and gradient legends
 
-Discrete and gradient legends support two types of encoding:
+Discrete and gradient legends support two combinations of encoding.
 
 | Combination      | Explanation         |
 |------------------|----------------------|
 | `fill` as scale, `fillOpacity` as fixed value | Input to `fill` is an object, `fillOpacity` may be left unstated   |
 | `fillOpacity` as scale, `fill` as fixed value | Input to `fillOpacity` is an object, `fill` must be specified as a color (rgb, hsl, hex value) |
 
-For more information on potential inputs to these props, see [Concepts > Scaling](../concepts/scaling.md).
-
 #### `fill` as scale
 
-When `fill` is set as the encoding, then `fillOpacity` does not need to be specified – the default `fillOpacity` is 1. An error will be raised if both encodings are set to `scale.`
+When `fill` is set as the encoding, then `fillOpacity` does not need to be specified – the default `fillOpacity` is 1.
 
 <CodeDemoLayout>
 
@@ -262,13 +343,14 @@ When `fill` is set as the encoding, then `fillOpacity` does not need to be speci
 ```html
 <vgg-gradient-legend
   :scale="'bins'"
-  :fill="{type:'viridis'}"
+  :fill="'viridis'"
   :h="100"
+  position="tl"
 />
 
 <vgg-discrete-legend
   :scale="'bins'"
-  :fill="{type:'viridis'}"
+  :fill="{ type: 'viridis' }"
   position="bl"
 />
 ```
@@ -278,7 +360,7 @@ When `fill` is set as the encoding, then `fillOpacity` does not need to be speci
 
 #### `fillOpacity` as scale
 
-When `fillOpacity` is set as the encoding, then `fill` must be set to a single color. An error will be raised if both encodings are set to `scale.`
+When `fillOpacity` is set as the encoding, then `fill` must be set to a single color.
 
 <CodeDemoLayout>
 
@@ -290,6 +372,7 @@ When `fillOpacity` is set as the encoding, then `fill` must be set to a single c
   :scale="'bins'"
   fill="#c66366"
   :fill-opacity="{ domain: 'bins' }"
+  position="tl"
 />
 
 <vgg-discrete-legend
@@ -303,9 +386,13 @@ When `fillOpacity` is set as the encoding, then `fill` must be set to a single c
 
 </CodeDemoLayout>
 
-### Symbol legends
+An error will be thrown if both encodings are set used to encode `scale`.
 
-Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least one encoding should be set, or else the legend will show up as a series of circles with black strokes.
+### Mappable aesthetics in symbol legends
+
+Multiple encodings can be set in `vgg-symbol-gradient` simultaneously.
+At least one encoding should be set, or else the legend will show up as a
+series of circles with black strokes.
 
 <CodeDemoLayout>
 
@@ -334,7 +421,9 @@ Multiple encodings can be set in `vgg-symbol-gradient` simultaneously. At least 
 
 ## Examples
 
-The symbol legend below makes use of a categorical color scale for `fill` and a continuous scale for `size`. The type of `shape`/`fill` scheme to use can specified as inputs, i.e. `{ type: ... }`.
+The symbol legend below makes use of a categorical color scale for `fill`
+and a continuous scale for `size`. The type of `shape`/`fill` scheme to use
+can specified with objects or arrays, i.e. `{ type: ... }` or `[ red, green, blue ]`.
 
 <CodeDemoLayout>
 
@@ -362,7 +451,7 @@ The symbol legend below makes use of a categorical color scale for `fill` and a 
 // size
 <vgg-symbol-legend
   :scale="'a'"
-  :size="{ range: [10, 20] }"
+  :size="{ range: [10, 15] }"
   title="Size"
   :title-font-size=12
   :title-padding="10"
@@ -376,8 +465,10 @@ The symbol legend below makes use of a categorical color scale for `fill` and a 
 
 </CodeDemoLayout>
 
-This legend uses the `stroke-width`, `opacity` and `fill` properties to elaborate on the values of the `trail` mark.
-Scales created using `vgg-scales` can be called as input to `scale`. Custom ranges for the output of the legend aesthetics can be set using `{ range: ... }`.
+This legend uses the `stroke-width`, `opacity` and `fill` properties to elaborate
+on the values of the `trail` mark. Scales created using `vgg-scales` can be
+called as input to `scale` or as aesthetic ranges. Custom ranges for the output of the legend aesthetics
+can be set using objects or arrays (for categorical data), i.e. `{ range: ... }` or `[ <value 1>, <value 2>, <value 3>]`.
 
 <CodeDemoLayout>
 

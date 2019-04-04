@@ -173,7 +173,7 @@ export default {
 
       // create fill/fillOpacity scales for rectangles
       if (!this.checkValidColor(this.fill)) {
-        fill = this.generateColorScale('fill', this.fill)
+        fill = this.generateScale('fill', this.fill)
         fillOpacity = 1
       } else if (this.fillOpacity && this.checkValidColor(this.fill)) {
         fill = this.fill

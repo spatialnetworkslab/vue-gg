@@ -42,11 +42,6 @@
 
         <vgg-discrete-legend
           :scale="'bins'"
-          :font-size="10"
-          :title-font-size="12"
-          :title-padding="5"
-          title="Bins"
-          title-font-weight="bold"
           :h="120"
         />
 
