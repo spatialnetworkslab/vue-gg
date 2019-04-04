@@ -25,60 +25,100 @@
               :x2="d[1]"
               :y1="o[0]"
               :y2="o[1]"
-              :scale-x="[0, 1]"
-              :scale-y="[0, 10]"
+              :scale-x="[0, 100]"
+              :scale-y="[0, 100]"
             >
 
               <!-- <vgg-rectangle
                 :x1="0"
-                :x2="1"
+                :x2="100"
                 :y1="0"
-                :y2="10"
+                :y2="100"
                 :opacity="0.2"
                 fill="blue"
               /> -->
 
-              <g v-for="category, a in axes(dimensions[i], options[j])">
-                <!-- <vgg-y-axis
-                  :scale="category[1]"
-                  :hjust="axisInterval(dimensions[i]) * a"
-                  :title-vjust="1.07"
-                  :title-hjust="0.5"
-                  :tick-opacity="3"
-                  :title="category[0]"
-                  :tick-length="0.01"
-                  :tick-count="options[j]"
-                /> -->
-                <vgg-y-axis
-                  :scale="category[1]"
-                  :hjust="axisInterval(dimensions[i]) * a"
-                  :title-vjust="1.07"
-                  :title-hjust="0.5"
-                  :tick-opacity="3"
-                  :title="category[0]"
-                  :title-font-size="10"
-                  :tick-length="0.01"
-                  :tick-count="options[j]"
-                  :label-font-size="6"
-                  title-font-weight="bold"
-                />
-              </g>
+              <vgg-grid
+                :rows="4"
+                :cell-padding="{
+                  t: 15,
+                  l: 15,
+                  r: 5
+                }"
+              >
+                <vgg-section
+                  v-for="segment, a in segments(dimensions[i], options[j])"
+                  :key="a"
+                  :scale-x="[0, 1]"
+                  :scale-y="[0, 10]"
+                  :grid-lines="['x', 'y']"
+                  type="polar"
+                >
 
-              <g v-for="segment, i in segments(dimensions[i], options[j])">
-                <!-- <vgg-multi-line
+                  <vgg-rectangle
+                    :x1="0"
+                    :x2="1"
+                    :y1="0"
+                    :y2="10"
+                    :opacity="0.2"
+                    :fill="hoverI === a ? segment.color : 'black'"
+                    @hover="handleHover($event, a)"
+                  />
+                  <vgg-multi-line
+                    :x="segment.x"
+                    :y="segment.y"
+                    :stroke="hoverI === a ? 'black' : segment.color"
+                    :close="true"
+                    stroke-linecap="round"
+                    @hover="handleHover($event, a)"
+                  />
+                  <g v-for="category, b in axes(dimensions[i], options[j])">
+                    <!-- <vgg-y-axis
+                          :scale="category[1]"
+                          :hjust="axisInterval(dimensions[i]) * a"
+                          :title-vjust="1.07"
+                          :title-hjust="0.5"
+                          :tick-opacity="3"
+                          :title="category[0]"
+                          :tick-length="0.01"
+                          :tick-count="options[j]"
+                        /> -->
+                    <vgg-y-axis
+                      :scale="category[1]"
+                      :hjust="axisInterval(dimensions[i]) * b"
+                      :title-vjust="1.3"
+                      :title-hjust="0.5"
+                      :tick-opacity="3"
+                      :title="category[0]"
+                      :tick-length="0.01"
+                      :tick-count="2"
+                      :domain-opacity="0.5"
+                      :label-opacity="0.5"
+                      :label-font-size="8"
+                    />
+                  </g>
+                  <vgg-plot-title
+                    :text="segment.name"
+                    :hjust="'center'"
+                    :vjust="1.7"
+                    :font-size="24"/>
+                </vgg-section>
+              </vgg-grid>
+              <!-- <vgg-multi-line
                   :x="segment.x"
                   :y="segment.y"
                   :stroke="hoverI === i ? 'black' : segment.color"
                   stroke-linecap="round"
                   @hover="handleHover($event, i)"
                 /> -->
-                <vgg-multi-line
+              <!-- <vgg-multi-line
                   :x="segment.x"
                   :y="segment.y"
                   :stroke="hoverI === i ? 'black' : segment.color"
+                  stroke-linecap="round"
                   @hover="handleHover($event, i)"
                 />
-              </g>
+              </g> -->
             </vgg-section>
           </g>
         </g>
@@ -175,21 +215,21 @@ export default {
       yAxis: undefined,
       title: undefined,
       drinkCategories: ['Name', 'Sugars', 'Calories', 'Protein', 'Carbohydrates', 'SaturatedFat', 'TransFat', 'Cholesterol', 'Sodium', 'Fibre', 'Calcium', 'Iron', 'VitaminA', 'VitaminC'],
-      bikeCategories: ['Name', 'Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio'],
+      bikeCategories: ['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio'],
       cameraCategories: ['MaxRes', 'LowRes', 'EffectivePix', 'ZoomWide', 'ZoomTele', 'NormFocusRange', 'MacroFocusRange', 'StorageGB', 'Weight', 'Dimensions'],
       carCategories: ['CityMPG', 'Height', 'HighwayMPG', 'Horsepower', 'Length', 'ForwardGears', 'Torque'],
       colorScales: ['blues', 'reds', 'purples', 'oranges'],
       dataSets: ['Drinks', 'Motorbike Model', 'Camera Model', 'Car ID'],
-      dimensions: [4, 6, 11],
-      options: [40, 20, 10, 5],
+      dimensions: [6],
+      options: [40],
       height: 2500,
       width: 6000,
       baseX: 300,
       baseY: 100,
       padX: 200,
       padY: 100,
-      deltaX: 120,
-      deltaY: 15
+      deltaX: 600,
+      deltaY: 50
     }
   },
   computed: {
@@ -240,6 +280,7 @@ export default {
   },
   methods: {
     handleHover (e, i) {
+      console.log(e, i)
       if (e) {
         this.hoverI = i
         // this.hoverRow = row
@@ -382,6 +423,7 @@ export default {
             plotSegments[item].x.push(this.axisInterval(categories.length) * index)
           }
           plotSegments[item].color = this.data[item].Color
+          plotSegments[item].name = this.data[item].Name
         }
         // console.log(plotSegments)
         return plotSegments

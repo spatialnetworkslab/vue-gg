@@ -43,6 +43,7 @@ import IDCScatterLabel from './idc/idcScatterplotLabel.vue'
 import IDC100 from './idc/idcGraphs100.vue'
 import IDCScatterMotorbikes from './idc/idcScatterplotMatrixMotorbikes.vue'
 import IDCPCP from './idc/idcPCP.vue'
+import IDCRadar from './idc/idcRadar.vue'
 
 // IDC Heatmaps
 import Heatmap from './idc/Heatmap.vue'
@@ -92,6 +93,7 @@ storiesOf('idcSandbox', module)
   .add('Single Heatmap', () => (Heatmap))
   .add('Combinatorial Heatmap', () => (HeatmapCombinatorial))
   .add('PCP', () => (IDCPCP))
+  .add('Radar', () => (IDCRadar))
 
 storiesOf('Fun Graphs', module)
   .add('Minard', () => (Minard))
