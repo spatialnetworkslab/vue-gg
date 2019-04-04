@@ -41,8 +41,8 @@
               <vgg-grid
                 :rows="4"
                 :cell-padding="{
-                  t: 15,
-                  l: 15,
+                  t: 10,
+                  l: 14,
                   r: 5
                 }"
               >
@@ -51,24 +51,25 @@
                   :key="a"
                   :scale-x="[0, 1]"
                   :scale-y="[0, 10]"
-                  :grid-lines="['x', 'y']"
                   type="polar"
                 >
 
-                  <vgg-rectangle
+                  <!-- <vgg-rectangle
                     :x1="0"
                     :x2="1"
                     :y1="0"
                     :y2="10"
-                    :opacity="0.2"
-                    :fill="hoverI === a ? segment.color : 'black'"
+                    :opacity="0.05"
+                    :fill="hoverI === a ? segment.color : 'gray'"
                     @hover="handleHover($event, a)"
-                  />
+                  /> -->
                   <vgg-multi-line
                     :x="segment.x"
                     :y="segment.y"
-                    :stroke="hoverI === a ? 'black' : segment.color"
+                    :stroke="'black'"
                     :close="true"
+                    :fill="segment.color"
+                    :fill-opacity="0.4"
                     stroke-linecap="round"
                     @hover="handleHover($event, a)"
                   />
@@ -225,7 +226,7 @@ export default {
       height: 2500,
       width: 6000,
       baseX: 300,
-      baseY: 100,
+      baseY: 200,
       padX: 200,
       padY: 100,
       deltaX: 600,
@@ -280,7 +281,6 @@ export default {
   },
   methods: {
     handleHover (e, i) {
-      console.log(e, i)
       if (e) {
         this.hoverI = i
         // this.hoverRow = row
@@ -352,7 +352,8 @@ export default {
             rounder = 1
           }
 
-          newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
+          // newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
+          newDomain = [ 0, Math.ceil(newDomain[1] / rounder) * rounder]
           newAxes.push([categories[name], newDomain])
         }
       }
