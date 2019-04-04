@@ -513,7 +513,7 @@ export default {
           symbols.push(this.parseAttributes(symbol, l[i].value))
         }
       }
-      console.log(symbols)
+
       return symbols
     },
 
