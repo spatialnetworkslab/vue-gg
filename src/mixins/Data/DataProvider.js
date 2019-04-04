@@ -1,12 +1,9 @@
 import DataContainer from '../../classes/Data/DataContainer.js'
-import DataReceiver from './DataReceiver.js'
-
 import applyTransformations from '../../transformations/applyTransformations.js'
+import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
 
 export default {
-  mixins: [DataReceiver],
-
-  inject: ['$$dataManager'],
+  inject: ['$$dataManager', '$$dataScope'],
 
   props: {
     data: {
@@ -25,14 +22,20 @@ export default {
     }
   },
 
+  data () {
+    return {
+      dataProviderCache: createPropCache(this, ['transform'])
+    }
+  },
+
   computed: {
     dataContainer () {
       if (this.data) {
         let container = new DataContainer(this.data, this.format)
-        if (this.transform) {
+        if (this.dataProviderCache.transform) {
           let transformedData = applyTransformations(
             container.getDataset(),
-            this.transform
+            this.dataProviderCache.transform
           )
 
           return new DataContainer(transformedData)
@@ -41,11 +44,11 @@ export default {
         }
       }
 
-      if (!this.data && this.transform) {
-        let data = this.$$dataInterface.getDataset()
+      if (!this.data && this.dataProviderCache.transform) {
+        let data = this.parentDataInterface.getDataset()
         let transformedData = applyTransformations(
           data,
-          this.transform
+          this.dataProviderCache.transform
         )
 
         return new DataContainer(transformedData)
@@ -65,6 +68,20 @@ export default {
         id = '_' + this.uuid
       }
       return id
+    },
+
+    parentDataInterface () {
+      return this.$$dataManager.createInterface(this.$$dataScope)
+    },
+
+    $$dataInterface () {
+      if (this.data || this.dataProviderCache.transform) {
+        // use own scope
+        return this.$$dataManager.createInterface(this.dataScopeID)
+      } else {
+        // use parent scope
+        return this.parentDataInterface
+      }
     }
   },
 
@@ -74,6 +91,10 @@ export default {
 
   created () {
     this.$$dataManager.register(this.dataScopeID, this.dataContainer)
+  },
+
+  mounted () {
+    createWatchers(this, this.dataProviderCache)
   },
 
   watch: {

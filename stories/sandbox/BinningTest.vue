@@ -1,7 +1,7 @@
 <template>
   <div>
     <select v-model="selected">
-      <option value="EqualInterval">Equal Interval</option>
+      <option value="">Equal Interval</option>
       <option value="ArithmeticProgression">Arithmetic Progression</option>
       <option value="GeometricProgression">Geometric Progression</option>
       <option value="Quantile">Quantile</option>
@@ -42,44 +42,27 @@
               :x2="{ val: row.bins[1] }"
               :y1="0"
               :y2="{ val: row.binCount }"
-              :fill="{ val: row.bins[1], scale: { type: 'blues', domain: 'bins', domainMin: 0 } }"
+              :fill="'blue'"
+              :opacity="{ val: row.bins, scale: { domain: 'bins' } }"
             />
 
           </vgg-map>
 
-          <!-- <vgg-x-axis
-            scale="bins"
-            :titleHjust="1.1"
-            :vjust="-.05"
-            rotate-label
-          />
+          <vgg-x-grid :scale="'bins'" />
 
           <vgg-y-axis
             :scale="{ domain: 'binCount', domainMin: 0 }"
-            :hjust="-.05"
-            flip
-          /> -->
+            :tick-count="5"
+            :hjust="-0.05"
+          />
 
-          <vgg-x-grid :scale="'bins'" />
+          <vgg-x-axis
+            scale="bins"
+            :tick-values="[0, 50, 80]"
+            :vjust="-0.05"
+          />
 
         </vgg-section>
-
-        <vgg-x-axis
-          :x1="100"
-          :x2="500"
-          :y1="50"
-          :y2="100"
-          scale="bins"
-          rotate-label
-        />
-
-        <vgg-y-axis
-          :x1="500"
-          :x2="550"
-          :y1="100"
-          :y2="500"
-          :scale="{ domain: 'binCount', domainMin: 0 }"
-        />
 
       </vgg-data>
 
@@ -98,7 +81,7 @@ export default {
         c: this.generate(100),
         d: this.generate(100)
       },
-      selected: 'EqualInterval'
+      selected: ''
     }
   },
   computed: {

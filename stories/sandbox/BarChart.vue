@@ -31,16 +31,17 @@
           :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
-          :fill="hoverI === i ? 'green' : 'black'"
+          :fill="'red'"
+          :opacity="{ val: row.fruit, scale: 'fruit' }"
         />
 
-        <vgg-line
+        <!-- <vgg-line
           :x1="{ val: row.fruit, scale: 'fruit' }"
           :x2="{ val: row.fruit, scale: 'fruit' }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           stroke="#ced02d"
-        />
+        /> -->
 
         <vgg-section
           :x="{ val: row.fruit, scale: 'fruit' }"
@@ -61,7 +62,7 @@
           <vgg-point
             :x="0"
             :y="0"
-            :radius="10"
+            :radius="{ val: row.fruit, scale: 'fruit' }"
             fill="#8b0000"
           />
 
@@ -73,8 +74,11 @@
         :scale="'fruit'"
         :title-hjust="1.1"
         :vjust="-.05"
+        :tickCount="5"
         label-rotate
       />
+
+      <!-- :tick-values="['apple', 'guava', 'pomelo']" -->
 
       <vgg-y-axis
         :scale="{ domain: 'quantity', domainMin: 0 }"
