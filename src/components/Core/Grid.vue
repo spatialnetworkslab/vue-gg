@@ -37,6 +37,8 @@ export default {
   },
 
   methods: {
+    isSquareComponent,
+
     getSlotContent () {
       if (this.$scopedSlots.default) {
         return this.$scopedSlots.default()
@@ -69,10 +71,6 @@ export default {
         return [definedChildren, 'square']
       }
     }
-  },
-
-  methods: {
-    isSquareComponent
   },
 
   provide () {
