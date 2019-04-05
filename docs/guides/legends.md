@@ -459,6 +459,7 @@ can specified with objects or arrays, i.e. `{ type: ... }` or `[ red, green, blu
   :title-font-size=12
   :title-padding="10"
   :w="350"
+  :tick-count="5"
   position="bl"
   orientation="horizontal"
 />
