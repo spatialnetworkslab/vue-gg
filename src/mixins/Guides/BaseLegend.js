@@ -548,6 +548,8 @@ export default {
       } else {
         // Domain is dependent on scale inputs
         // Range is dependent on aesthetic inputs
+        scaleOptions.domain = this.scale.domain ? this.scale.domain : this.scale
+
         if (this.scale.domainMin) {
           scaleOptions.domainMin = this.scale.domainMin
         }
@@ -562,7 +564,7 @@ export default {
 
         if (this.scale.order && this._domainType.includes('categorical')) {
           scaleOptions.order = this.scale.order
-        } else {
+        } else if (this.scale.order && !this._domainType.includes('categorical')) {
           console.warn('Data must be categorical in order to include `order` in `scale`')
         }
 
@@ -577,8 +579,6 @@ export default {
         if (this.scale.reverse) {
           scaleOptions.reverse = this.scale.reverse
         }
-
-        scaleOptions.domain = this.scale.domain ? this.scale.domain : this.scale
 
         if (scaleBasis.rangeMin) {
           scaleOptions.rangeMin = scaleBasis.rangeMin
@@ -606,14 +606,9 @@ export default {
           scaleOptions.range = scaleBasis.range ? scaleBasis.range : [0, 10]
         }
 
+        // custom scales with # signs only apply to domains
         if (scaleOptions.domain.includes('#')) {
           scaleOptions.domain = this.$$scaleManager.getScale(scaleOptions.domain)[0]
-        }
-
-        if (scaleOptions.range) {
-          if (scaleOptions.range.includes('#')) {
-            scaleOptions.range = this.$$scaleManager.getScale(scaleOptions.range)[0]
-          }
         }
 
         return createScale(prop, this.context, scaleOptions)

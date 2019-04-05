@@ -151,6 +151,9 @@ attributes and a custom range for `size` can be found below.
 
 </CodeDemoLayout>
 
+See [Usage](#usage) for more
+examples on how to set inputs to `domain` and the legend's aesthetic properties.
+
 ### Legend Positioning
 
 A legend component can contain the following position properties.
@@ -386,7 +389,7 @@ When `fillOpacity` is set as the encoding, then `fill` must be set to a single c
 
 </CodeDemoLayout>
 
-An error will be thrown if both encodings are set used to encode `scale`.
+An error will be thrown if both aesthetics are set to scales.
 
 ### Mappable aesthetics in symbol legends
 
@@ -467,8 +470,9 @@ can specified with objects or arrays, i.e. `{ type: ... }` or `[ red, green, blu
 
 This legend uses the `stroke-width`, `opacity` and `fill` properties to elaborate
 on the values of the `trail` mark. Scales created using `vgg-scales` can be
-called as input to `scale` or as aesthetic ranges. Custom ranges for the output of the legend aesthetics
-can be set using objects or arrays (for categorical data), i.e. `{ range: ... }` or `[ <value 1>, <value 2>, <value 3>]`.
+called as input to `scale`. Custom ranges for the output of the legend aesthetics
+can be set using objects or arrays (for categorical data), i.e. `{ range: ... }`
+or `[ <value 1>, <value 2>, <value 3>]`.
 
 <CodeDemoLayout>
 
