@@ -8,7 +8,7 @@
       :x1="50"
       :x2="300"
       :y1="70"
-      :y2="420"
+      :y2="400"
       :scale-x="'a'"
       :scale-y="'b'"
     >
@@ -49,6 +49,7 @@
       :title-padding="10"
       :w="350"
       position="bl"
+      :tick-count="5"
       orientation="horizontal"
     />
 
