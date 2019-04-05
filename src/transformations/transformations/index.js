@@ -9,6 +9,7 @@ import groupBy from './groupBy.js'
 import binning from './binning.js'
 import dropNA from './dropNA.js'
 import reproject from './reproject.js'
+import transform from './transform.js'
 
 export default {
   filter,
@@ -24,5 +25,6 @@ export default {
   groupBy,
   binning,
   dropNA,
-  reproject
+  reproject,
+  transform
 }
