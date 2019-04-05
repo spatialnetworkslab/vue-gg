@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import BaseLegend from '@/mixins/Guides/BaseLegend.js'
+import BaseLegend from '../../mixins/Guides/BaseLegend.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 
 export default {

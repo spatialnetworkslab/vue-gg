@@ -38,7 +38,7 @@
 
         <vgg-gradient-legend
           :scale="'bins'"
-          :fill="'viridis'"
+          :fill="{ type: 'viridis' }"
           :h="100"
           position="tl"
         />

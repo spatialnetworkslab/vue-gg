@@ -1,92 +1,87 @@
 <template>
-  <vgg-graphic :width="800" :height="850" :data="resaleData">
-    <!-- bar chart per flat type -->
-    <vgg-section
-      :x1="100"
-      :x2="400"
-      :y1="100"
-      :y2="400"
-      :transform="[
-        { groupBy: 'flat_type'},
-        { summarise: { total_sales: { resale_price: 'count' } } }
-      ]"
+  <div>
+    <vgg-graphic
+      :width="350"
+      :height="260"
+      :data="data"
     >
-      <vgg-scales
-        :scales="{ typeScale: {domain: 'flat_type', order: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'] }}"
-      />
-      <vgg-scales :scales="{ countScale: { domain: 'total_sales', domainMin: 0 } }"/>
+      <vgg-data
+        :transform="[
+          { rename: { a: 'apple', b: 'banana', d: 'durian' } },
+          { binning: { groupBy: 'apple', method: selected, numClasses: 5 } },
+          { summarise: { binCount: { apple: 'count' } } }
+        ]"
+      >
 
-      <vgg-map v-slot="{ row }">
-        <vgg-rectangle
-          :y="{ val: row.flat_type, scale: '#typeScale' }"
-          :x1="{ val: 0, scale: '#countScale' }"
-          :x2="{ val: row.total_sales, scale: '#countScale' }"
-          :h="20"
+        <vgg-section
+        :x1="100"
+        :x2="300"
+        :y1="0"
+        :y2="200"
+          :scale-x="'bins'"
+          :scale-y="{ domain: 'binCount', domainMin: 0 }"
+        >
+
+          <vgg-map v-slot="{ row }">
+
+            <vgg-rectangle
+              :x1="{ val: row.bins[0] }"
+              :x2="{ val: row.bins[1] }"
+              :y1="0"
+              :y2="{ val: row.binCount }"
+              :fill="{ val: row.bins, scale: { type: 'viridis', domain: 'bins' } }"
+            />
+
+          </vgg-map>
+
+        </vgg-section>
+
+        <vgg-gradient-legend
+          :scale="'bins'"
+          :fill="{ type: 'viridis' }"
+          :h="100"
+          position="tl"
         />
-      </vgg-map>
 
-      <vgg-x-axis :scale="'#countScale'" :tick-count="4" rotate-label/>
-      <vgg-y-axis :scale="'#typeScale'" :hjust="0"/>
-    </vgg-section>
-
-    <!-- red -->
-    <vgg-section
-      :x1="500"
-      :x2="800"
-      :y1="100"
-      :y2="400"
-      :scale-x="'floor_area_sqm'"
-      :scale-y="'resale_price'"
-    >
-      <vgg-map v-slot="{ row }">
-        <vgg-point :x="row.floor_area_sqm" :y="row.resale_price"/>
-      </vgg-map>
-      <vgg-x-axis :scale="'floor_area_sqm'" :tick-count="4" rotate-label/>
-      <vgg-y-axis :scale="'resale_price'" :hjust="0"/>
-    </vgg-section>
-
-    <!-- green -->
-    <vgg-section
-      :x1="100"
-      :x2="400"
-      :y1="500"
-      :y2="800"
-      :transform="[
-      { binning: { groupBy: 'resale_price', method: 'EqualInterval', numClasses: 10 } },
-      { summarise: { count: { resale_price: 'count' } } }
-      ]"
-    >
-      <vgg-scales :scales="{ myBins: { domain: 'bins' } }"/>
-      <vgg-scales :scales="{ binCount: { domain: 'count', domainMin: 0 } }"/>
-
-      <vgg-map v-slot="{ row }">
-        <vgg-rectangle
-          :y1="{ val: row.bins[0], scale: '#myBins' }"
-          :y2="{ val: row.bins[1], scale: '#myBins' }"
-          :x1="{ val: 0, scale: '#binCount' }"
-          :x2="{ val: row.count, scale: '#binCount' }"
+        <vgg-discrete-legend
+          :scale="'bins'"
+          :fill="{ type: 'viridis' }"
+          position="bl"
         />
-      </vgg-map>
 
-      <vgg-x-axis :scale="'#binCount'" />
-      <vgg-y-axis :scale="'#myBins'" :hjust="0"/>
-    </vgg-section>
+      </vgg-data>
+    </vgg-graphic>
 
-    <!-- blue -->
-    <vgg-section :x1="500" :x2="800" :y1="500" :y2="800" :scale-x="[0, 1]" :scale-y="[0, 1]">
-      <vgg-rectangle :y1="0" :y2="1" :x1="0" :x2="1" fill="blue"/>
-    </vgg-section>
-  </vgg-graphic>
+  </div>
 </template>
 
 <script>
-import resaleData from './resale_sample.json'
-
 export default {
-  name: 'app',
   data () {
     return {
-      resaleData: resaleData
+      data: {
+        a: this.generate(100),
+        b: this.generate(10, true),
+        c: this.generate(100),
+        d: this.generate(100)
+      },
+      selected: 'EqualInterval'
+    }
+  },
+  methods: {
+    generate (spread, str) {
+      const N = 100
+      let col = new Array(N)
+      for (let i = 0; i < N; i++) {
+        let randInt = Math.floor(Math.random() * spread)
+        if (randInt === 0) { randInt = 1 }
+        if (!str) { col[i] = randInt }
+        if (str) {
+          let alphabet = 'abcdefghijklmnopqrstuvwxyz'
+          col[i] = alphabet[randInt]
+        }
+      }
+      return col
     }
   }
 }

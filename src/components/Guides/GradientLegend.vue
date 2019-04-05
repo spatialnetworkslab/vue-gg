@@ -126,7 +126,7 @@
 </template>
 
 <script>
-import BaseLegend from '@/mixins/Guides/BaseLegend.js'
+import BaseLegend from '../../mixins/Guides/BaseLegend.js'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 import { scaleLinear } from 'd3-scale'
 

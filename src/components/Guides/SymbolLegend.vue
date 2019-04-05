@@ -337,7 +337,7 @@
 </template>
 
 <script>
-import BaseLegend from '@/mixins/Guides/BaseLegend.js'
+import BaseLegend from '../../mixins/Guides/BaseLegend.js'
 
 export default {
   name: 'SymbolLegend',

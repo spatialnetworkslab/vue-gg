@@ -7,7 +7,7 @@ import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
-import createScale from '@/scales/createScale.js'
+import createScale from '../../scales/createScale.js'
 import defaultFormat from './utils/defaultFormat.js'
 import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
