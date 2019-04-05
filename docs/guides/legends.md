@@ -5,7 +5,7 @@ title: Legends
 # Legends
 
 Legends are used to show mappings for aesthetics like color, shape, size,
-opacity to a given domain.Each legend is mapped to a single dimension or variable.
+opacity to a given domain. Each legend is mapped to a single dimension or variable.
 Vue Graphics Grammar supports three (3)
 types of legends – gradient, discrete, and symbol legends.
 
