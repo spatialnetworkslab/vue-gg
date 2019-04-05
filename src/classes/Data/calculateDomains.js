@@ -5,7 +5,7 @@ import { bboxFeatures } from '../../utils/geojson.js'
 export default function (data, length) {
   let domains = {}
   let types = {}
-
+  // console.log(data)
   if (length === 0) {
     // Warn user if an empty dataframe was supplied
     console.warn('Empty dataframe: ')

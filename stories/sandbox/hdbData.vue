@@ -1,0 +1,249 @@
+<template>
+  <vgg-graphic
+    :width="totalX"
+    :height="totalY"
+    :data="resaleData">
+
+    <vgg-grid
+      :cols="6"
+      :cell-padding="{
+        t: 10,
+        l: 5,
+        r: 5
+      }"
+    >
+
+      <vgg-section
+        v-for="ft, i in flat_types"
+        :key="i"
+        :scale-x="[0, 100]"
+        :scale-y="[0, 100]"
+        :transform="[
+          { filter: row => row.flat_type === ft },
+          { arrange: { month: 'ascending' } },
+          { arrange: { town: 'ascending' } },
+          { arrange: { remaining_lease: 'ascending' } }
+        ]"
+      >
+
+        <vgg-grid
+          :cols="2"
+          :cell-padding="{
+            t: 0.1,
+            l: 0.1,
+            r: 1
+          }"
+        >
+
+          <vgg-section
+            v-for="town, j in towns"
+            :key="j"
+            :scale-x="[0, 100]"
+            :scale-y="[0, 100]"
+            :transform="[
+              { filter: row => row.town === town },
+              { mutarise: { remaining_lease_count: { remaining_lease: 'count' } } },
+              { mutarise: { month_count: { month: 'count' } } },
+              { transform: df => { log(i, totalX, totalY, df); return df } },
+            ]"
+          >
+
+            <vgg-map v-slot="{ row }">
+              <vgg-rectangle
+                :y="{ val: row.month, scale: { domain: 'month'} }"
+                :x="{ val: row.remaining_lease, scale: { domain: 'remaining_lease'} }"
+                :w="3"
+                :h="2.5"
+                :fill="{ val: row.resale_price, scale: { type: 'reds', domain: 'resale_price'} }"
+              />
+
+            </vgg-map>
+
+            <vgg-plot-title
+              :text="towns[j]"
+              :font-size="12"
+              :opacity="0.7"
+            />
+
+            <vgg-rectangle
+              :x1="0"
+              :x2="100"
+              :y1="0"
+              :y2="100"
+              :opacity="0.05"
+              :fill="'black'"/>
+
+          </vgg-section>
+        </vgg-grid>
+
+        <vgg-plot-title
+          :text="flat_types[i]"
+          :font-size="40"
+          :opacity="0.3"
+        />
+
+        <vgg-rectangle
+          :x1="0"
+          :x2="100"
+          :y1="0"
+          :y2="100"
+          :opacity="0.05"
+          fill="grey"/>
+      </vgg-section>
+    </vgg-grid>
+    <!-- <vgg-section
+      v-for="section, i in sections(flat_models, 4)"
+      :key="i"
+      :x1="section.x1"
+      :x2="section.x2"
+      :y1="section.y1"
+      :y2="section.y2"
+      :scale-x="'month'"
+      :scale-y="'town'"
+    >
+      <vgg-data
+        :transform="[
+          { filter: row => row.flat_model === flat_models[i] },
+          { arrange: { month: 'ascending' } },
+          { arrange: { town: 'ascending' } },
+          { groupBy: ['town', 'month']},
+          { summarise: { total_sales: { resale_price: 'count' } } }
+        ]"
+      >
+        <vgg-map v-slot="{ row }">
+          <vgg-rectangle
+            :x="{ val: row.month, scale: { domain: 'month'} }"
+            :y="{ val: row.town, scale: { domain: 'town'} }"
+            :w="10"
+            :h="10"
+            :fill="{ val: row.total_sales, scale: { type: 'reds', domain: 'total_sales'} }"
+          />
+
+        </vgg-map>
+
+        <vgg-y-axis
+          :scale="'town'"
+          :vjust="0"
+          :label-font-size="10"
+          label-rotate
+          flip
+        />
+        <vgg-plot-title
+          :text="flat_models[i]"
+          :font-size="50"
+          :opacity="0.3"
+        />
+      </vgg-data>
+    </vgg-section> -->
+
+    <!-- <vgg-data
+      :transform="[
+        { arrange: { month: 'ascending' } },
+        { groupBy: ['flat_type', 'town', 'month']},
+        { summarise: { total_sales: { resale_price: 'count' } } },
+      ]"
+    >
+
+      <vgg-section
+        :x1="100"
+        :x2="900"
+        :y1="100"
+        :y2="900"
+        :scale-x="'town'"
+        :scale-y="'month'"
+        :axes="['left']"
+      >
+        <vgg-map v-slot="{ row }">
+          <vgg-rectangle
+          :x="row.town"
+          :y="row.month"
+          :w="700 / 26"
+          :h="20"
+          :fill="{val: row.total_sales, scale: { type: 'blues', domain: 'total_sales'}}"
+          />
+
+        </vgg-map>
+
+        <vgg-x-axis
+          :scale="'town'"
+          :tick-length="7"
+          title="Town"
+          label-rotate
+        />
+      </vgg-section>
+
+    </vgg-data> -->
+  </vgg-graphic>
+</template>
+
+<script>
+import resaleData from './resale_sample.json'
+
+export default {
+  name: 'HdbData',
+  data () {
+    return {
+      resaleData: resaleData,
+      flat_types: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'],
+      flat_models: ['New Generation', 'Simplified', 'Terrace', 'Standard', 'Model A2', 'Type S1', 'Model A', 'Improved', 'DBSS', 'Premium Apartment', 'Type S2', 'Improved-Maisonette', 'Model A-Maisonette', 'Apartment', 'Maisonette', 'Multi Generation'],
+      towns: ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN'],
+      totalX: 2500,
+      totalY: 2500
+    }
+  },
+
+  methods: {
+    log: console.log,
+
+    sections (basis, rows) {
+      let sections = []
+      let startX = 400; let startY = 100
+      let delta = 50
+      let sectionX = 600
+      let sectionY = 400
+
+      if (!rows) {
+        for (let i = 0; i < basis.length; i++) {
+          let section = {}
+          section.x1 = startX
+          section.x2 = startX + sectionX
+
+          section.y1 = startY
+          section.y2 = startY + sectionY
+
+          startX = section.x2 + delta
+          sections.push(section)
+        }
+      } else {
+        let cols = Math.ceil(basis.length / rows); let index = 0
+        for (let i = 0; i < rows; i++) {
+          let startX = 100; let endX = startX + sectionX
+          for (let j = 0; j < cols; j++) {
+            sections[index] = {}
+            sections[index].x1 = startX
+            sections[index].x2 = startX + sectionX
+
+            sections[index].y1 = startY
+            sections[index].y2 = startY + sectionY
+
+            startX = sections[index].x2 + delta
+
+            console.log(sections)
+            index++
+          }
+          startY = sections[index - 1].y2 + delta
+        }
+      }
+
+      console.log(sections)
+      console.log(towns.length)
+      // this.totalX = sections[sections.length - 1].x2
+
+      return sections
+    }
+  }
+}
+</script>
+
+<style>
+</style>
