@@ -36,22 +36,12 @@ export default {
     }
   },
 
-  methods: {
-    isSquareComponent,
+  computed: {
+    children () {
+      let children = this.$slots.default
 
-    getSlotContent () {
-      if (this.$scopedSlots.default) {
-        return this.$scopedSlots.default()
-      } else if (this.$slots.default) {
-        return this.$slots.default
-      } else {
-        return []
-      }
-    },
-
-    children (slotContent) {
       // Filter out undefined components (whitespace, v-if="false")
-      let definedChildren = slotContent.filter(c => c.tag !== undefined)
+      let definedChildren = children.filter(c => c.tag !== undefined)
 
       let wrongUseError = new Error(`'vgg-grid' can have in its slot:
         1. any number of 'square' (with x1, x2, y1 and y2 props) components
@@ -73,9 +63,12 @@ export default {
     }
   },
 
+  methods: {
+    isSquareComponent
+  },
+
   provide () {
-    let slotContent = this.getSlotContent()
-    let [, childType] = this.children(slotContent)
+    let [, childType] = this.children
     if (childType === 'map') {
       let $$grid = this._props
       return { $$grid }
@@ -86,8 +79,7 @@ export default {
     let options = this._props
     validateGridOptions(options)
 
-    let slotContent = this.getSlotContent()
-    let [children, childType] = this.children(slotContent)
+    let [children, childType] = this.children
 
     if (childType === 'square') {
       let squareComponents = children
@@ -107,5 +99,4 @@ export default {
       return createElement('g', { class: 'layout-grid' }, children)
     }
   }
-}
-</script>
+}</script>
