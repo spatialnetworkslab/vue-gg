@@ -4,7 +4,7 @@
     <!-- Gradient definition -->
     <defs>
       <linearGradient
-        id="grad1"
+        :id="uuid"
         :x2="composeGradient.endX"
         :y2="composeGradient.endY"
         x1="0%"
@@ -59,7 +59,7 @@
             :x2="positionElements.rectangle.x2"
             :y1="positionElements.rectangle.y1"
             :y2="positionElements.rectangle.y2"
-            :fill="'url(#grad1)'"
+            :fill="`url(#${uuid})`"
             :opacity="legendOpacity"
           />
           <g v-if="orientation === 'vertical' ">
