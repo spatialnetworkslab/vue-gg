@@ -1,58 +1,51 @@
 <template>
-  <div>
-    <vgg-graphic
-      :width="350"
-      :height="260"
-      :data="data"
+  <vgg-graphic
+    :width="800"
+    :height="850"
+    :data="resaleData"
+  >
+    <!-- bar chart per flat type -->
+
+    <vgg-section
+      :x1="0"
+      :x2="500"
+      :y1="0"
+      :y2="500"
+      :transform="[
+        { mutate: { price_per_sqm: (row) => row.resale_price / row.floor_area_sqm } },
+        { groupBy: ['month', 'flat_type'] },
+        { arrange: { month: 'ascending' } },
+        { summarise: { mean_price: { price_per_sqm: 'mean' } } },
+        { mutate: { month_date: (row) => new Date(row.month) } }
+      ]"
     >
+
+      <vgg-scales :scales="{ date: { domain: 'month_date' } }"/>
+      <vgg-scales :scales="{ price: { domain: 'mean_price' } }"/>
+      <vgg-scales :scales="{ flatTypeColorScale: { domain: 'flat_type' } }"/>
+
       <vgg-data
-        :transform="[
-          { rename: { a: 'apple', b: 'banana', d: 'durian' } },
-          { binning: { groupBy: 'apple', method: selected, numClasses: 5 } },
-          { summarise: { binCount: { apple: 'count' } } }
-        ]"
+        :transform="{ groupBy: 'flat_type' }"
       >
 
-        <vgg-section
-        :x1="100"
-        :x2="300"
-        :y1="0"
-        :y2="200"
-          :scale-x="'bins'"
-          :scale-y="{ domain: 'binCount', domainMin: 0 }"
-        >
+        <vgg-map v-slot="{ row }">
 
-          <vgg-map v-slot="{ row }">
+          <vgg-multi-line
+            :x="{ val: row.grouped.month_date, scale: '#date' }"
+            :y="{ val: row.grouped.mean_price, scale: '#price' }"
+            :stroke="{ val: row.grouped.flat_type, scale: '#flatTypeColorScale' }"
+          />
 
-            <vgg-rectangle
-              :x1="{ val: row.bins[0] }"
-              :x2="{ val: row.bins[1] }"
-              :y1="0"
-              :y2="{ val: row.binCount }"
-              :fill="{ val: row.bins, scale: { type: 'viridis', domain: 'bins' } }"
-            />
-
-          </vgg-map>
-
-        </vgg-section>
-
-        <vgg-gradient-legend
-          :scale="'bins'"
-          :fill="{ type: 'viridis' }"
-          :h="100"
-          position="tl"
-        />
-
-        <vgg-discrete-legend
-          :scale="'bins'"
-          :fill="{ type: 'viridis' }"
-          position="bl"
-        />
+        </vgg-map>
 
       </vgg-data>
-    </vgg-graphic>
 
-  </div>
+      <vgg-x-axis :scale="'#date'" :tick-count="4" :tick-extra="false"/>
+      <vgg-y-axis :scale="'#price'" :hjust="0" :tick-count="8"/>
+
+    </vgg-section>
+
+  </vgg-graphic>
 </template>
 
 <script>
