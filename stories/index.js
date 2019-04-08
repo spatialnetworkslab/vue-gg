@@ -29,7 +29,8 @@ import MultipleSelections from './sandbox/MultipleSelections.vue'
 import NestedSelection from './sandbox/NestedSelection.vue'
 import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
 import Facets from './sandbox/Facets.vue'
-import HdbData from './sandbox/hdbData.vue'
+import FlatTown from './sandbox/FlatTown.vue'
+import TownFlat from './sandbox/TownFlat.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -62,4 +63,5 @@ storiesOf('Sandbox', module)
   .add('Nested selection', () => (NestedSelection))
   .add('Ate axis scale bug', () => (AteAxisScaleBug))
   .add('Facets', () => (Facets))
-  .add('Hdb Data', () => (HdbData))
+  .add('Hdb Data - Flat x Town', () => (FlatTown))
+  .add('Hdb Data - Town x Flat', () => (TownFlat))

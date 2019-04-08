@@ -2,7 +2,10 @@
   <vgg-graphic
     :width="totalX"
     :height="totalY"
-    :data="resaleData">
+    :data="resaleData"
+    :transform="[
+      { mutate: { price_sqm: (row, i, prevRow, nextRow) => row.resale_price/row.floor_area_sqm } },
+    ]">
 
     <vgg-grid
       :cols="flat_types.length"
@@ -24,7 +27,7 @@
           { arrange: { remaining_lease: 'ascending' } },
           { mutate: { year_date: row => row.month.split('-')[0] } },
           { mutate: { month_date: row => row.month.split('-')[1] } },
-          { arrange: { year_date: 'ascending' } },
+          { arrange: { year_date: 'descending' } },
           { arrange: { month_date: 'ascending' } },
         ]"
       >
@@ -42,12 +45,13 @@
           <vgg-section
             v-for="town, j in towns"
             :key="j"
-            :scale-x="{ domain: 'year_date' }"
-            :scale-y="{ domain: 'month_date' }"
+            :scale-x="'year_date'"
+            :scale-y="'month_date'"
             :transform="[
               { filter: row => row.town === town },
+              { mutate: { price_sq_m: row => row.resale_price / row.floor_area_sqm } },
               { groupBy: ['month_date', 'year_date'] },
-              { mutate: { price_sqm: (row, i, prevRow, nextRow) => row.grouped.resale_price/row.grouped.floor_area_sqm } },
+              { summarise: { mean_price_sq_m: { price_sq_m: 'mean' } } },
               { transform: df => { log(i, totalX, totalY, df); return df } },
             ]"
           >
@@ -60,27 +64,29 @@
                 :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
                 :w="{ band: { domain: 'year_date' } }"
                 :h="{ band: { domain: 'month_date' } }"
-                :fill="{ val: row.price_sqm, scale: { type: 'reds', domain: 'price_sqm'} }"
+                :fill="{ val: row.mean_price_sq_m, scale: { type: 'reds', domain: 'mean_price_sq_m'} }"
               />
             </vgg-map>
 
             <vgg-plot-title
               :text="towns[j]"
-              :font-size="12"
+              :font-size="30"
               :opacity="0.3"
-              :vjust="'b'"
+              :vjust="'center'"
+              :hjust="'center'"
             />
 
             <vgg-x-axis
               :scale="'year_date'"
               :vjust="0"
-              :label-font-size="6"
+              :label-font-size="4"
             />
 
             <vgg-y-axis
               :scale="'month_date'"
               :vjust="0"
-              :label-font-size="6"
+              :label-font-size="4"
+              flip
             />
             <!--
             <vgg-rectangle
@@ -96,7 +102,7 @@
 
         <vgg-plot-title
           :text="flat_types[i]"
-          :font-size="40"
+          :font-size="30"
           :opacity="0.3"
           :vjust="'center'"
           :hjust="'center'"
@@ -108,7 +114,7 @@
           :y1="0"
           :y2="100"
           :opacity="0.05"
-          fill="grey"/>
+          fill="'rgb(255, 245, 240)'"/>
       </vgg-section>
     </vgg-grid>
 
@@ -202,7 +208,7 @@
 import resaleData from './resale_sample.json'
 
 export default {
-  name: 'HdbData',
+  name: 'FlatTown',
   data () {
     return {
       resaleData: resaleData,
@@ -210,7 +216,7 @@ export default {
       // flat_types: ['3 ROOM', '4 ROOM', '5 ROOM', 'EXECUTIVE'],
       flat_models: ['New Generation', 'Simplified', 'Terrace', 'Standard', 'Model A2', 'Type S1', 'Model A', 'Improved', 'DBSS', 'Premium Apartment', 'Type S2', 'Improved-Maisonette', 'Model A-Maisonette', 'Apartment', 'Maisonette', 'Multi Generation'],
       towns: ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN'],
-      totalX: 2000,
+      totalX: 1500,
       totalY: 4000
     }
   },
