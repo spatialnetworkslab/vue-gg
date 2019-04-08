@@ -21,7 +21,7 @@
       <vgg-data
         :transform="[
           { rename: { a: 'apple', b: 'banana', d: 'durian' } },
-          { binning: { groupBy: 'apple', method: selected, numClasses: 5 } },
+          { binning: { groupBy: 'apple', method: 'IntervalSize', binSize: 3 } },
           { summarise: { binCount: { apple: 'count' } } }
         ]"
       >

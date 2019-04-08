@@ -40,14 +40,16 @@ export default function (data, binningObj) {
     let binSize = binningObj.binSize
 
     let domain = variableDomain(variableData)
+    console.log(domain)
     if (!binSize) {
       console.warn(`binSize not specified for IntervalSize binning, defaulting to ${(domain[1] - domain[0])}`)
       binSize = domain[1] - domain[0]
     }
-    let binCount = Math.round((domain[1] - domain[0]) / binSize)
+    let binCount = Math.floor((domain[1] - domain[0]) / binSize)
 
     ranges = rangeFromInterval(domain, binSize, binCount)
     let newData = bin(data, key, ranges)
+    console.log(newData)
     return newData
   } else if (method === 'EqualInterval') {
     ranges = geoStat.getClassEqInterval(numClasses)
@@ -77,7 +79,7 @@ function variableDomain (column) {
 
   let domain = []
   domain.push(asc[0])
-  domain.push(asc.pop())
+  domain.push(asc[asc.length-1])
 
   return domain
 }
@@ -95,7 +97,10 @@ function rangeFromInterval (domain, interval, binCount) {
 
     lowerBound = upperBound
   }
-
+  if (lowerBound < domain[1]) {
+    ranges.push([lowerBound, domain[1]])
+  }
+  console.log(ranges)
   return ranges
 }
 
@@ -125,7 +130,12 @@ function bin (data, variable, ranges) {
     let instance = data[variable][ix]
 
     // Find index of bin in which the instance belongs
-    let binIndex = ranges.findIndex(el => instance >= el[0] && instance <= el[1])
+    let binIndex = ranges.findIndex(function (el, i) {
+                                      if (i === ranges.length-1) {
+                                        return instance >= el[0] && instance <= el[1]
+                                      } else {
+                                        return instance >= el[0] && instance < el[1] }
+                                    })
 
     let newRow = bins[binIndex]
 
