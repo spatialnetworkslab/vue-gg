@@ -39,6 +39,10 @@
           :scale="'dependent'"
           :hjust="-.05"
         />
+        <!-- <vgg-plot-title
+          :x="100"
+          :y="100"
+          :text="text"/> -->
 
       </vgg-section>
 
@@ -73,7 +77,8 @@ export default {
   name: 'Scatterplot',
   data () {
     return {
-      xy: xy('explanatory', 'dependent')
+      xy: xy('explanatory', 'dependent'),
+      text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
     }
   },
   methods: {

@@ -5,7 +5,7 @@
     :data="resaleData">
 
     <vgg-grid
-      :cols="6"
+      :cols="flat_types.length"
       :cell-padding="{
         t: 10,
         l: 5,
@@ -20,58 +20,76 @@
         :scale-y="[0, 100]"
         :transform="[
           { filter: row => row.flat_type === ft },
-          { arrange: { month: 'ascending' } },
-          { arrange: { town: 'ascending' } },
-          { arrange: { remaining_lease: 'ascending' } }
+          { arrange: { town: 'descending' } },
+          { arrange: { remaining_lease: 'ascending' } },
+          { mutate: { year_date: row => row.month.split('-')[0] } },
+          { mutate: { month_date: row => row.month.split('-')[1] } },
+          { arrange: { year_date: 'ascending' } },
+          { arrange: { month_date: 'ascending' } },
         ]"
       >
 
         <vgg-grid
-          :cols="2"
+          :rows="towns.length"
           :cell-padding="{
             t: 0.1,
-            l: 0.1,
-            r: 1
+            b: 0.1,
+            l: 0.5,
+            r: 0.5
           }"
         >
 
           <vgg-section
             v-for="town, j in towns"
             :key="j"
-            :scale-x="[0, 100]"
-            :scale-y="[0, 100]"
+            :scale-x="{ domain: 'year_date' }"
+            :scale-y="{ domain: 'month_date' }"
             :transform="[
               { filter: row => row.town === town },
-              { mutarise: { remaining_lease_count: { remaining_lease: 'count' } } },
-              { mutarise: { month_count: { month: 'count' } } },
+              { groupBy: ['month_date', 'year_date'] },
+              { mutate: { price_sqm: (row, i, prevRow, nextRow) => row.grouped.resale_price/row.grouped.floor_area_sqm } },
               { transform: df => { log(i, totalX, totalY, df); return df } },
             ]"
           >
+            <!-- { mutarise: { remaining_lease_count: { remaining_lease: 'count' } } },
+          { mutarise: { month_count: { month: 'count' } } }, -->
 
             <vgg-map v-slot="{ row }">
               <vgg-rectangle
-                :y="{ val: row.month, scale: { domain: 'month'} }"
-                :x="{ val: row.remaining_lease, scale: { domain: 'remaining_lease'} }"
-                :w="3"
-                :h="2.5"
-                :fill="{ val: row.resale_price, scale: { type: 'reds', domain: 'resale_price'} }"
+                :x="{ val: row.year_date, scale: { domain: 'year_date'} }"
+                :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
+                :w="{ band: { domain: 'year_date' } }"
+                :h="{ band: { domain: 'month_date' } }"
+                :fill="{ val: row.price_sqm, scale: { type: 'reds', domain: 'price_sqm'} }"
               />
-
             </vgg-map>
 
             <vgg-plot-title
               :text="towns[j]"
               :font-size="12"
-              :opacity="0.7"
+              :opacity="0.3"
+              :vjust="'b'"
             />
 
+            <vgg-x-axis
+              :scale="'year_date'"
+              :vjust="0"
+              :label-font-size="6"
+            />
+
+            <vgg-y-axis
+              :scale="'month_date'"
+              :vjust="0"
+              :label-font-size="6"
+            />
+            <!--
             <vgg-rectangle
               :x1="0"
               :x2="100"
               :y1="0"
               :y2="100"
               :opacity="0.05"
-              :fill="'black'"/>
+              :fill="'black'"/> -->
 
           </vgg-section>
         </vgg-grid>
@@ -80,6 +98,8 @@
           :text="flat_types[i]"
           :font-size="40"
           :opacity="0.3"
+          :vjust="'center'"
+          :hjust="'center'"
         />
 
         <vgg-rectangle
@@ -91,6 +111,8 @@
           fill="grey"/>
       </vgg-section>
     </vgg-grid>
+
+    <!-- old version -->
     <!-- <vgg-section
       v-for="section, i in sections(flat_models, 4)"
       :key="i"
@@ -185,10 +207,11 @@ export default {
     return {
       resaleData: resaleData,
       flat_types: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'],
+      // flat_types: ['3 ROOM', '4 ROOM', '5 ROOM', 'EXECUTIVE'],
       flat_models: ['New Generation', 'Simplified', 'Terrace', 'Standard', 'Model A2', 'Type S1', 'Model A', 'Improved', 'DBSS', 'Premium Apartment', 'Type S2', 'Improved-Maisonette', 'Model A-Maisonette', 'Apartment', 'Maisonette', 'Multi Generation'],
       towns: ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN'],
-      totalX: 2500,
-      totalY: 2500
+      totalX: 2000,
+      totalY: 4000
     }
   },
 
@@ -199,7 +222,7 @@ export default {
       let sections = []
       let startX = 400; let startY = 100
       let delta = 50
-      let sectionX = 600
+      let sectionX = 300
       let sectionY = 400
 
       if (!rows) {
