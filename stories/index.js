@@ -30,6 +30,7 @@ import NestedSelection from './sandbox/NestedSelection.vue'
 import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
 import Facets from './sandbox/Facets.vue'
 import FlatTown from './sandbox/FlatTown.vue'
+import FlatTownGrouped from './sandbox/FlatTownGrouped.vue'
 import TownFlat from './sandbox/TownFlat.vue'
 
 storiesOf('Charts', module)
@@ -65,3 +66,4 @@ storiesOf('Sandbox', module)
   .add('Facets', () => (Facets))
   .add('Hdb Data - Flat x Town', () => (FlatTown))
   .add('Hdb Data - Town x Flat', () => (TownFlat))
+  .add('Hdb Data - Town x Flat (Grouped)', () => (FlatTownGrouped))
