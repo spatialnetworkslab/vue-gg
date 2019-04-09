@@ -17,11 +17,11 @@
 
     <vgg-discrete-legend
       :scale="'#sqmScale'"
-      title="Resale Price per SqM"
       :title-font-size="30"
       :fill="{type: 'reds'}"
       :label-font-size="30"
       :w="120"
+      title="Resale Price per SqM"
       position="tr"
     />
 
@@ -49,26 +49,6 @@
         :font-size="44"
         :opacity="0.2"
       />
-      <!-- <vgg-label
-        v-for="town, i in towns"
-        :key="i"
-        :y="100"
-        :x="100/towns.length * (i + 0.5)"
-        :text="town"
-        :font-size="14"
-        :opacity="0.7"
-      />
-
-      <vgg-label
-        v-for="ft, j in flat_types"
-        :key="towns.length + j"
-        :y="100/flat_types.length * (j + 0.5)"
-        :x="-0.3"
-        :text="ft"
-        :font-size="14"
-        :opacity="0.7"
-        anchor-point="r"
-      /> -->
 
       <vgg-grid
         :rows="3"
@@ -130,7 +110,10 @@
                 /> -->
               </vgg-map>
 
-              <!-- <vgg-map unit="dataframe" v-slot="{ dataframe }">
+              <!-- THIS PART -->
+              <vgg-map
+                v-slot="{ dataframe }"
+                unit="dataframe">
                 <template v-if="dataframe.month_date.length > 0">
 
                   <vgg-x-axis
@@ -146,7 +129,7 @@
                   />
 
                 </template>
-              </vgg-map> -->
+              </vgg-map>
 
               <vgg-x-axis
                 :scale="'#yearScale'"
@@ -201,7 +184,6 @@ export default {
     return {
       resaleData: resaleData,
       flat_types: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'],
-      // flat_types: ['3 ROOM', '4 ROOM', '5 ROOM', 'EXECUTIVE'],
       flat_models: ['New Generation', 'Simplified', 'Terrace', 'Standard', 'Model A2', 'Type S1', 'Model A', 'Improved', 'DBSS', 'Premium Apartment', 'Type S2', 'Improved-Maisonette', 'Model A-Maisonette', 'Apartment', 'Maisonette', 'Multi Generation'],
       towns: ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN'],
       totalX: 3700,
@@ -214,6 +196,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>
