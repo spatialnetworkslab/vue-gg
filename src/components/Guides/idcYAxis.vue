@@ -46,7 +46,7 @@
 
         <vgg-line
           :x1="midX"
-          :x2="flip ? midX - _tickLength : midX + _tickLength"
+          :x2="flip ? midX + _tickLength : midX - _tickLength"
           :y1="tick.value"
           :y2="tick.value"
           :stroke="tickColor"
@@ -55,7 +55,7 @@
         />
 
         <vgg-symbol
-          :x="flip ? midX + _tickLength * 1.5 : midX - _tickLength * 1.5"
+          :x="flip ? midX + _tickLength * 1.7 : midX - _tickLength * 1.7"
           :y="tick.value"
           :fill="tick.color"
           :size="12"
@@ -137,6 +137,7 @@ export default {
         coloredTicks.push(this.generatedTicks[i])
         coloredTicks[i].color = this.labelColor[i]
       }
+
       return coloredTicks
     },
 

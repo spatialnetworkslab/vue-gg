@@ -32,6 +32,7 @@ import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
 import Facets from './sandbox/Facets.vue'
 
 // IDC Scatterplot Matrices
+import IDCScatterInt from './idc/idcScatterplotInteractive.vue'
 import IDCScatter40 from './idc/idcScatterplotMatrix40.vue'
 import IDCScatter10 from './idc/idcScatterplotMatrix10.vue'
 import IDCScatter1010 from './idc/idcScatterplotMatrix10-10.vue'
@@ -43,6 +44,7 @@ import IDCScatterLabel from './idc/idcScatterplotLabel.vue'
 import IDC100 from './idc/idcGraphs100.vue'
 import IDCScatterMotorbikes from './idc/idcScatterplotMatrixMotorbikes.vue'
 import IDCPCP from './idc/idcPCP.vue'
+import PCP from './idc/PCP.vue'
 import IDCRadar from './idc/idcRadar.vue'
 
 // IDC Heatmaps
@@ -80,6 +82,7 @@ storiesOf('Sandbox', module)
   .add('Section axes', () => (SectionAxesTest))
 
 storiesOf('idcSandbox', module)
+  .add('Scatterplot Matrix Interactive', () => (IDCScatterInt))
   .add('Scatterplot Matrix 40', () => (IDCScatter40))
   .add('Scatterplot Matrix 10', () => (IDCScatter10))
   .add('Scatterplot Matrix 10 10', () => (IDCScatter1010))
@@ -93,6 +96,7 @@ storiesOf('idcSandbox', module)
   .add('Single Heatmap', () => (Heatmap))
   .add('Combinatorial Heatmap', () => (HeatmapCombinatorial))
   .add('PCP', () => (IDCPCP))
+  .add('Single PCP', () => (PCP))
   .add('Radar', () => (IDCRadar))
 
 storiesOf('Fun Graphs', module)
