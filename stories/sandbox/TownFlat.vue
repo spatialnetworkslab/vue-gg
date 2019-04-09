@@ -15,11 +15,21 @@
     <vgg-scales :scales="{ monthScale: { domain: 'month_date' } }"/>
     <vgg-scales :scales="{ yearScale: { domain: 'year_date' } }"/>
 
+    <vgg-discrete-legend
+      :scale="'#sqmScale'"
+      title="Resale Price per SqM"
+      :title-font-size="30"
+      :fill="{type: 'reds'}"
+      :label-font-size="30"
+      :w="120"
+      position="tr"
+    />
+
     <vgg-section
-      :x1="150"
-      :x2="totalX - 50"
-      :y1="150"
-      :y2="totalY - 50"
+      :x1="50"
+      :x2="totalX - 200"
+      :y1="50"
+      :y2="totalY - 200"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
