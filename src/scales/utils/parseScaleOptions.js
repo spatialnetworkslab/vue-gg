@@ -8,10 +8,12 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
   let scaleOptions
 
   // Check if no invalid options were passed
+  if (!passedScaleOptions) {
+    throw new Error('Input to `passedScaleOptions` is undefined')
+  }
   if (![Array, String, Object].includes(passedScaleOptions.constructor)) {
     throw new Error('Invalid scale options: only Array, String or Object allowed')
   }
-
   if (passedScaleOptions.constructor === String) {
     if (passedScaleOptions.startsWith('#')) {
       return scaleManager.getScale(passedScaleOptions)
@@ -32,6 +34,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
   if (domainConstructor === String) {
     // If the domain was specified as a String, we will have to check the
     // availability of the data
+
     if (dataInterface.ready()) {
       if (!dataInterface.hasColumn(scaleOptions.domain)) {
         throw new Error(`Invalid scale options: domain '${domain}' not found`)

@@ -8,12 +8,16 @@ import Scales from './Core/Scales.vue'
 import Grid from './Core/Grid.vue'
 import Repeat from './Core/Repeat.vue'
 
+// Elements
 import PlotTitle from './Elements/PlotTitle.vue'
 
 // Glyphs
 import Piechart from './Glyphs/Piechart.vue'
 
 // Guides
+import DiscreteLegend from './Guides/DiscreteLegend.vue'
+import GradientLegend from './Guides/GradientLegend.vue'
+import SymbolLegend from './Guides/SymbolLegend.vue'
 import XAxis from './Guides/XAxis.vue'
 import YAxis from './Guides/YAxis.vue'
 import XGrid from './Guides/XGrid.vue'
@@ -47,6 +51,9 @@ export default {
   Grid,
   Repeat,
 
+  DiscreteLegend,
+  GradientLegend,
+  SymbolLegend,
   PlotTitle,
 
   Piechart,
