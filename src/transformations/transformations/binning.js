@@ -100,7 +100,6 @@ function rangeFromInterval (domain, interval, binCount) {
   if (lowerBound < domain[1]) {
     ranges.push([lowerBound, domain[1]])
   }
-  console.log(ranges)
   return ranges
 }
 
@@ -123,6 +122,15 @@ function bin (data, variable, ranges) {
   // Create an empty array to store new dataFrames divided by range
   let bins = Array(ranges.length)
 
+  for (let b = 0; b < bins.length; b++) {
+    bins[b] = {}
+
+    for (let col in data) {
+      // If data key does not exist, create it
+      bins[b][col] = []
+    }
+  }
+
   let length = dataLength(data)
 
   // Loop through data
@@ -139,16 +147,8 @@ function bin (data, variable, ranges) {
 
     let newRow = bins[binIndex]
 
-    // If dataFrame does not exist, create it
-    if (!newRow) { newRow = {} }
-
     for (let col in data) {
-      // If data key does not exist, create it
-      if (!newRow[col]) {
-        newRow[col] = [data[col][ix]]
-      } else {
-        newRow[col].push(data[col][ix])
-      }
+      newRow[col].push(data[col][ix])
     }
 
     // Update the bins column with new dataFrame
