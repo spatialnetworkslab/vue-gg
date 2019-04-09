@@ -5,9 +5,15 @@
     :data="resaleData"
     :transform="[
       { mutate: { price_sqm: (row, i, prevRow, nextRow) => row.resale_price/row.floor_area_sqm } },
+      { mutate: { year_date: row => row.month.split('-')[0] } },
+      { mutate: { month_date: row => row.month.split('-')[1] } },
+      { arrange: { year_date: 'descending' } },
+      { arrange: { month_date: 'descending' } },
   ]">
 
-    <vgg-scales :scales="{ sqmScale: {domain: 'price_sqm', type: 'reds'} }"/>
+    <vgg-scales :scales="{ sqmScale: { domain: 'price_sqm', type: 'reds' } }"/>
+    <vgg-scales :scales="{ monthScale: { domain: 'month_date' } }"/>
+    <vgg-scales :scales="{ yearScale: { domain: 'year_date' } }"/>
 
     <vgg-section
       :x1="150"
@@ -52,27 +58,25 @@
           :scale-x="[0, 100]"
           :scale-y="[0, 100]"
           :transform="[
-            { filter: row => row.town === town },
-            { mutate: { year_date: row => row.month.split('-')[0] } },
-            { mutate: { month_date: row => row.month.split('-')[1] } }
+            { filter: row => row.town === town }
           ]"
         >
 
           <vgg-grid
             :cols="3"
             :cell-padding="{
-              t: 0.6,
-              b: 0.6,
-              l: 0.3,
-              r: 0.3
+              t: 1.7,
+              b: 1.7,
+              l: 1.5,
+              r: 1.5
             }"
           >
 
             <vgg-section
               v-for="flat_type, j in flat_types"
               :key="j"
-              :scale-x="'year_date'"
-              :scale-y="'month_date'"
+              :scale-x="'#yearScale'"
+              :scale-y="'#monthScale'"
               :transform="[
                 { filter: row => row.flat_type === flat_type },
                 { mutate: { price_sq_m: row => row.resale_price / row.floor_area_sqm } },
@@ -84,10 +88,10 @@
 
               <vgg-map v-slot="{ row }">
                 <vgg-rectangle
-                  :x="{ val: row.year_date, scale: { domain: 'year_date'} }"
-                  :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
-                  :w="{ band: { domain: 'year_date' } }"
-                  :h="{ band: { domain: 'month_date' } }"
+                  :x="{ val: row.year_date, scale: '#yearScale' }"
+                  :y="{ val: row.month_date, scale: '#monthScale' }"
+                  :w="{ band: '#yearScale' }"
+                  :h="{ band: '#monthScale' }"
                   :fill="{ val: row.mean_price_sq_m, scale: '#sqmScale' }"
                 />
 
@@ -100,22 +104,40 @@
                 /> -->
               </vgg-map>
 
+              <!-- <vgg-map unit="dataframe" v-slot="{ dataframe }">
+                <template v-if="dataframe.month_date.length > 0">
+
+                  <vgg-x-axis
+                    :scale="'year_date'"
+                    :vjust="0"
+                    :label-font-size="6"
+                  />
+
+                  <vgg-y-axis
+                    :scale="'month_date'"
+                    :label-font-size="6"
+                    :hjust="0"
+                  />
+
+                </template>
+              </vgg-map> -->
+
               <vgg-x-axis
-                :scale="'year_date'"
+                :scale="'#yearScale'"
                 :vjust="0"
                 :label-font-size="6"
               />
 
               <vgg-y-axis
-                :scale="'month_date'"
+                :scale="'#monthScale'"
                 :label-font-size="6"
                 :hjust="0"
               />
 
               <vgg-plot-title
                 :text="flat_type"
-                :font-size="14"
-                :opacity="0.3"
+                :font-size="12"
+                :opacity="0.2"
                 vjust="center"
                 hjust="center"
               />
@@ -123,12 +145,13 @@
             </vgg-section>
           </vgg-grid>
 
-          <vgg-plot-title
+          <vgg-label
+            :x="50"
+            :y="50"
             :text="town"
-            :font-size="40"
+            :font-size="30"
             :opacity="0.5"
-            vjust="center"
-            hjust="center"
+            :font-weight="'bold'"
           />
           <vgg-rectangle
             :x1="0"

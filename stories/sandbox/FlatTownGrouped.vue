@@ -5,9 +5,15 @@
     :data="resaleData"
     :transform="[
       { mutate: { price_sqm: (row, i, prevRow, nextRow) => row.resale_price/row.floor_area_sqm } },
+      { mutate: { year_date: row => row.month.split('-')[0] } },
+      { mutate: { month_date: row => row.month.split('-')[1] } },
+      { arrange: { year_date: 'descending' } },
+      { arrange: { month_date: 'descending' } },
   ]">
 
     <vgg-scales :scales="{ sqmScale: {domain: 'price_sqm', type: 'reds'} }"/>
+    <vgg-scales :scales="{ monthScale: { domain: 'month_date' } }"/>
+    <vgg-scales :scales="{ yearScale: { domain: 'year_date' } }"/>
 
     <vgg-section
       :x1="120"
@@ -54,20 +60,16 @@
           :transform="[
             { filter: row => row.flat_type === ft },
             { arrange: { town: 'descending' } },
-            { mutate: { year_date: row => row.month.split('-')[0] } },
-            { mutate: { month_date: row => row.month.split('-')[1] } },
-            { arrange: { year_date: 'descending' } },
-            { arrange: { month_date: 'ascending' } },
           ]"
         >
 
           <vgg-grid
             :rows="4"
             :cell-padding="{
-              t: 0.2,
-              b: 0.2,
-              l: 0.5,
-              r: 0.5
+              t: 0.7,
+              b: 0.7,
+              l: 0.8,
+              r: 0.8
             }"
           >
 
@@ -87,10 +89,10 @@
 
               <vgg-map v-slot="{ row }">
                 <vgg-rectangle
-                  :x="{ val: row.year_date, scale: { domain: 'year_date'} }"
-                  :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
-                  :w="{ band: { domain: 'year_date' } }"
-                  :h="{ band: { domain: 'month_date' } }"
+                  :x="{ val: row.year_date, scale: '#yearScale' }"
+                  :y="{ val: row.month_date, scale: '#monthScale' }"
+                  :w="{ band: '#yearScale' }"
+                  :h="{ band: '#monthScale' }"
                   :fill="{ val: row.mean_price_sq_m, scale: '#sqmScale' }"
                 />
 
@@ -104,14 +106,14 @@
               </vgg-map>
 
               <vgg-x-axis
-                :scale="'year_date'"
+                :scale="'#yearScale'"
                 :vjust="1"
                 :label-font-size="6"
                 flip
               />
 
               <vgg-y-axis
-                :scale="'month_date'"
+                :scale="'#monthScale'"
                 :label-font-size="6"
                 :hjust="0"
               />
@@ -119,7 +121,7 @@
               <vgg-plot-title
                 :text="town"
                 :font-size="12"
-                :opacity="0.3"
+                :opacity="0.2"
                 vjust="center"
                 hjust="center"
               />
@@ -127,12 +129,13 @@
             </vgg-section>
           </vgg-grid>
 
-          <vgg-plot-title
+          <vgg-label
+            :x="50"
+            :y="50"
             :text="ft"
-            :font-size="60"
+            :font-size="50"
             :opacity="0.5"
-            vjust="center"
-            hjust="center"
+            :font-weight="'bold'"
           />
 
           <vgg-rectangle
