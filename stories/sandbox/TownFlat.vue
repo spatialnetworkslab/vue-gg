@@ -23,6 +23,22 @@
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
+      <vgg-label
+        :x="50"
+        :y="106"
+        :text="'Resale Price per SqM vs. Month (y) vs. Year (x)'"
+        :font-size="90"
+        :font-weight="700"
+        :opacity="0.2"
+      />
+
+      <vgg-label
+        :x="50"
+        :y="101"
+        :text="'Grouped by (1) Town, (2) Flat Type'"
+        :font-size="44"
+        :opacity="0.2"
+      />
       <!-- <vgg-label
         v-for="town, i in towns"
         :key="i"
