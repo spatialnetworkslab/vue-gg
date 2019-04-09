@@ -1,5 +1,3 @@
-import Section from '../Section.vue'
-
 export function validateGridOptions (options) {
   let hasRows = options.rows !== undefined
   let hasCols = options.cols !== undefined
@@ -74,15 +72,15 @@ export function calculateGridLayout (rows, cols, options, ranges, axes, start) {
   return cells
 }
 
-export function updateGridSections (createElement, sections, gridLayout) {
-  let newSections = []
-  for (let i = 0; i < sections.length; i++) {
-    let section = sections[i]
+export function updateGridComponents (components, gridLayout) {
+  let newComponents = []
+  for (let i = 0; i < components.length; i++) {
+    let component = components[i]
     let layout = gridLayout[i]
-    newSections.push(updateSection(createElement, section, layout))
+    newComponents.push(updateComponent(component, layout))
   }
 
-  return newSections
+  return newComponents
 }
 
 function getPadding (padding) {
@@ -106,11 +104,11 @@ function getPadding (padding) {
   return paddings
 }
 
-export function updateSection (createElement, section, layout) {
-  let props = mergeProps(layout, section.componentOptions.propsData)
-  let slots = section.componentOptions.children
-  let newSection = createElement(Section, { props }, slots)
-  return newSection
+export function updateComponent (component, layout) {
+  let clonedComponent = component
+  let props = mergeProps(layout, component.componentOptions.propsData)
+  clonedComponent.componentOptions.propsData = props
+  return clonedComponent
 }
 
 function mergeProps (coords, other) {

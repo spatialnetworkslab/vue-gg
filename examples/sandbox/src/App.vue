@@ -1,81 +1,50 @@
 <template>
-  <vgg-graphic :width="800" :height="850" :data="resaleData">
+  <vgg-graphic
+    :width="800"
+    :height="850"
+    :data="resaleData"
+  >
     <!-- bar chart per flat type -->
+
     <vgg-section
-      :x1="100"
-      :x2="400"
-      :y1="100"
-      :y2="400"
+      :x1="0"
+      :x2="500"
+      :y1="0"
+      :y2="500"
       :transform="[
-        { groupBy: 'flat_type'},
-        { summarise: { total_sales: { resale_price: 'count' } } }
+        { mutate: { price_per_sqm: (row) => row.resale_price / row.floor_area_sqm } },
+        { groupBy: ['month', 'flat_type'] },
+        { arrange: { month: 'ascending' } },
+        { summarise: { mean_price: { price_per_sqm: 'mean' } } },
+        { mutate: { month_date: (row) => new Date(row.month) } }
       ]"
     >
-      <vgg-scales
-        :scales="{ typeScale: {domain: 'flat_type', order: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'] }}"
-      />
-      <vgg-scales :scales="{ countScale: { domain: 'total_sales', domainMin: 0 } }"/>
 
-      <vgg-map v-slot="{ row }">
-        <vgg-rectangle
-          :y="{ val: row.flat_type, scale: '#typeScale' }"
-          :x1="{ val: 0, scale: '#countScale' }"
-          :x2="{ val: row.total_sales, scale: '#countScale' }"
-          :h="20"
-        />
-      </vgg-map>
+      <vgg-scales :scales="{ date: { domain: 'month_date' } }"/>
+      <vgg-scales :scales="{ price: { domain: 'mean_price' } }"/>
+      <vgg-scales :scales="{ flatTypeColorScale: { domain: 'flat_type' } }"/>
 
-      <vgg-x-axis :scale="'#countScale'" :tick-count="4" rotate-label/>
-      <vgg-y-axis :scale="'#typeScale'" :hjust="0"/>
+      <vgg-data
+        :transform="{ groupBy: 'flat_type' }"
+      >
+
+        <vgg-map v-slot="{ row }">
+
+          <vgg-multi-line
+            :x="{ val: row.grouped.month_date, scale: '#date' }"
+            :y="{ val: row.grouped.mean_price, scale: '#price' }"
+            :stroke="{ val: row.grouped.flat_type, scale: '#flatTypeColorScale' }"
+          />
+
+        </vgg-map>
+
+      </vgg-data>
+
+      <vgg-x-axis :scale="'#date'" :tick-count="4" :tick-extra="false"/>
+      <vgg-y-axis :scale="'#price'" :hjust="0" :tick-count="8"/>
+
     </vgg-section>
 
-    <!-- red -->
-    <vgg-section
-      :x1="500"
-      :x2="800"
-      :y1="100"
-      :y2="400"
-      :scale-x="'floor_area_sqm'"
-      :scale-y="'resale_price'"
-    >
-      <vgg-map v-slot="{ row }">
-        <vgg-point :x="row.floor_area_sqm" :y="row.resale_price"/>
-      </vgg-map>
-      <vgg-x-axis :scale="'floor_area_sqm'" :tick-count="4" rotate-label/>
-      <vgg-y-axis :scale="'resale_price'" :hjust="0"/>
-    </vgg-section>
-
-    <!-- green -->
-    <vgg-section
-      :x1="100"
-      :x2="400"
-      :y1="500"
-      :y2="800"
-      :transform="[
-      { binning: { groupBy: 'resale_price', method: 'EqualInterval', numClasses: 10 } },
-      { summarise: { count: { resale_price: 'count' } } }
-      ]"
-    >
-      <vgg-scales :scales="{ myBins: { domain: 'bins' } }"/>
-      <vgg-scales :scales="{ binCount: { domain: 'count', domainMin: 0 } }"/>
-
-      <vgg-map v-slot="{ row }">
-        <vgg-rectangle
-          :y1="{ val: row.bins[0], scale: '#myBins' }"
-          :y2="{ val: row.bins[1], scale: '#myBins' }"
-          :x1="{ val: 0, scale: '#binCount' }"
-          :x2="{ val: row.count, scale: '#binCount' }"
-        />
-      </vgg-map>
-
-      <vgg-x-axis :scale="'#binCount'" />
-      <vgg-y-axis :scale="'#myBins'" :hjust="0"/>
-    </vgg-section>
-
-    <!-- blue -->
-    <vgg-section :x1="500" :x2="800" :y1="500" :y2="800" :scale-x="[0, 1]" :scale-y="[0, 1]">
-      <vgg-rectangle :y1="0" :y2="1" :x1="0" :x2="1" fill="blue"/>
-    </vgg-section>
   </vgg-graphic>
 </template>
 

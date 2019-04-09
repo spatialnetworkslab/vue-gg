@@ -38,7 +38,7 @@ export default class ItemCache {
   }
 
   updateItem (uid, args, item, listeners, selectable) {
-    this.removeItem(uid)
+    this.deleteItem(uid)
     this.addItem(uid, args, item, listeners)
   }
 

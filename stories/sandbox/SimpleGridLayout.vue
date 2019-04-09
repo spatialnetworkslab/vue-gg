@@ -10,7 +10,7 @@
       :cell-padding="{ l: 7, r: 20, b: 4 }"
     >
 
-      <vgg-section
+      <!-- <vgg-section
         v-for="s in range(5)"
         :key="s"
         :scale-x="[0, 1]"
@@ -25,7 +25,12 @@
           :fill="randomColor()"
         />
 
-      </vgg-section>
+      </vgg-section> -->
+      <custom-square-component
+        v-for="s in range(5)"
+        :key="s"
+        :fill="randomColor()"
+      />
 
     </vgg-grid>
 
@@ -33,7 +38,11 @@
 </template>
 
 <script>
+import CustomSquareComponent from './CustomSquareComponent.vue'
+
 export default {
+  components: { CustomSquareComponent },
+
   methods: {
     range (n) {
       return new Array(n).fill(0).map((v, i) => i)
