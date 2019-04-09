@@ -40,7 +40,6 @@ export default function (data, binningObj) {
     let binSize = binningObj.binSize
 
     let domain = variableDomain(variableData)
-    console.log(domain)
     if (!binSize) {
       console.warn(`binSize not specified for IntervalSize binning, defaulting to ${(domain[1] - domain[0])}`)
       binSize = domain[1] - domain[0]
@@ -49,7 +48,6 @@ export default function (data, binningObj) {
 
     ranges = rangeFromInterval(domain, binSize, binCount)
     let newData = bin(data, key, ranges)
-    console.log(newData)
     return newData
   } else if (method === 'EqualInterval') {
     ranges = geoStat.getClassEqInterval(numClasses)

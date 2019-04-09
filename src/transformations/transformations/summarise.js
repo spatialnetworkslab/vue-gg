@@ -6,9 +6,9 @@ export default function (data, summariseInstructions) {
   if (summariseInstructions.constructor !== Object) {
     throw new Error('summarise must be an object')
   }
-  console.log(data)
+
   let newData = initNewData(summariseInstructions, data)
-  console.log(newData)
+
   if (data.hasOwnProperty('grouped')) {
     checkSummariseInstructions(summariseInstructions, data)
 
@@ -17,7 +17,7 @@ export default function (data, summariseInstructions) {
     for (let col in dataClone) {
       newData[col] = dataClone[col]
     }
-    console.log(data.grouped)
+
     for (let group of data.grouped) {
       newData = summariseGroup(group, summariseInstructions, newData)
     }
