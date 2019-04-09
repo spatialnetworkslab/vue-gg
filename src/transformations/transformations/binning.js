@@ -77,7 +77,7 @@ function variableDomain (column) {
 
   let domain = []
   domain.push(asc[0])
-  domain.push(asc[asc.length-1])
+  domain.push(asc[asc.length - 1])
 
   return domain
 }
@@ -137,11 +137,12 @@ function bin (data, variable, ranges) {
 
     // Find index of bin in which the instance belongs
     let binIndex = ranges.findIndex(function (el, i) {
-                                      if (i === ranges.length-1) {
-                                        return instance >= el[0] && instance <= el[1]
-                                      } else {
-                                        return instance >= el[0] && instance < el[1] }
-                                    })
+      if (i === ranges.length - 1) {
+        return instance >= el[0] && instance <= el[1]
+      } else {
+        return instance >= el[0] && instance < el[1]
+      }
+    })
 
     let newRow = bins[binIndex]
 
