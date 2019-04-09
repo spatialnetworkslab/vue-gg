@@ -1,7 +1,8 @@
 import applyTranformation from './applyTransformation.js'
+import cloneDeep from 'lodash.clonedeep'
 
 export default function (inputData, transform) {
-  let data = JSON.parse(JSON.stringify(inputData))
+  let data = cloneDeep(inputData)
 
   if (transform.constructor === Array) {
     for (let transformation of transform) {
