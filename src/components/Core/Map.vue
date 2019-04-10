@@ -46,7 +46,7 @@ export default {
       this.$$dataInterface.forEachRow(scope => {
         let slotContent = this.$scopedSlots.default(scope)
 
-        if (!slotContent.every(el => el.tag === undefined)) {
+        if (slotContent && slotContent.every(el => el.tag !== undefined)) {
           if (mappings === null) { mappings = initMappingTree(slotContent) }
           mappings = extractMappings(mappings, slotContent, context)
 
@@ -65,7 +65,7 @@ export default {
       let scope = { dataframe }
 
       let slotContent = this.$scopedSlots.default(scope)
-      if (!slotContent.every(el => el.tag === undefined)) {
+      if (slotContent && slotContent.every(el => el.tag !== undefined)) {
         let mappings = initMappingTree(slotContent)
         mappings = extractMappings(mappings, slotContent, context)
 
