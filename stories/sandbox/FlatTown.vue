@@ -18,8 +18,8 @@
       :scale-y="[0, 100]"
     >
       <vgg-label
-        v-for="ft, i in flat_types"
-        :key="i"
+        v-for="(ft, i) in flat_types"
+        :key="'typelabel' + i"
         :y="100"
         :x="100/flat_types.length * (i + 0.5)"
         :text="ft"
@@ -28,8 +28,8 @@
       />
 
       <vgg-label
-        v-for="town, j in towns"
-        :key="j"
+        v-for="(town, j) in towns"
+        :key="'townlabel' + j"
         :y="100/towns.length * (j + 0.25)"
         :x="102"
         :text="town"
@@ -47,8 +47,8 @@
         }"
       >
         <vgg-section
-          v-for="ft, i in flat_types"
-          :key="i"
+          v-for="(ft, i) in flat_types"
+          :key="'type' + i"
           :scale-x="[0, 100]"
           :scale-y="[0, 100]"
           :transform="[
@@ -72,16 +72,15 @@
           >
 
             <vgg-section
-              v-for="town, j in towns"
-              :key="j"
+              v-for="(town, j) in towns"
+              :key="'town' + j"
               :scale-x="'year_date'"
               :scale-y="'month_date'"
               :transform="[
                 { filter: row => row.town === town },
                 { mutate: { price_sq_m: row => row.resale_price / row.floor_area_sqm } },
                 { groupBy: ['month_date', 'year_date'] },
-                { summarise: { mean_price_sq_m: { price_sq_m: 'mean' } } },
-                { transform: df => { log(i, totalX, totalY, df); return df } }
+                { summarise: { mean_price_sq_m: { price_sq_m: 'mean' } } }
               ]"
             >
 
