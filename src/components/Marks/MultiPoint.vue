@@ -52,7 +52,7 @@ export default {
     },
 
     points: {
-      type: undefined,
+      type: [Array, undefined],
       default: undefined
     }
   },
