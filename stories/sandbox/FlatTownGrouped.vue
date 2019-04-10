@@ -17,19 +17,19 @@
 
     <vgg-discrete-legend
       :scale="'#sqmScale'"
-      title="Resale Price per SqM"
       :title-font-size="30"
       :fill="{type: 'reds'}"
       :label-font-size="30"
       :w="120"
+      title="Resale Price per SqM"
       position="tr"
     />
 
     <vgg-section
       :x1="50"
-      :x2="totalX - 200"
-      :y1="50"
-      :y2="totalY - 200"
+      :x2="totalX - 300"
+      :y1="100"
+      :y2="totalY - 100"
       :scale-x="[0, 100]"
       :scale-y="[0, 100]"
     >
@@ -49,27 +49,6 @@
         :font-size="50"
         :opacity="0.2"
       />
-
-      <!-- <vgg-label
-        v-for="ft, i in flat_types"
-        :key="i"
-        :y="100"
-        :x="100/flat_types.length * (i + 0.5)"
-        :text="ft"
-        :font-size="20"
-        :opacity="0.7"
-      />
-
-      <vgg-label
-        v-for="town, j in towns"
-        :key="j"
-        :y="100/towns.length * (j + 0.25)"
-        :x="102"
-        :text="town"
-        :font-size="14"
-        :opacity="0.7"
-        anchor-point="l"
-      /> -->
 
       <vgg-grid
         :cols="3"
@@ -113,38 +92,42 @@
                 { transform: df => { log(i, totalX, totalY, df); return df } }
               ]"
             >
+              <vgg-map
+                v-slot="{ dataframe }"
+                unit="dataframe">
+                <template v-if="dataframe.month_date.length > 0">
+                  <vgg-map v-slot="{ row }">
+                    <vgg-rectangle
+                      :x="{ val: row.year_date, scale: '#yearScale' }"
+                      :y="{ val: row.month_date, scale: '#monthScale' }"
+                      :w="{ band: '#yearScale' }"
+                      :h="{ band: '#monthScale' }"
+                      :fill="{ val: row.mean_price_sq_m, scale: '#sqmScale' }"
+                    />
 
-              <vgg-map v-slot="{ row }">
-                <vgg-rectangle
-                  :x="{ val: row.year_date, scale: '#yearScale' }"
-                  :y="{ val: row.month_date, scale: '#monthScale' }"
-                  :w="{ band: '#yearScale' }"
-                  :h="{ band: '#monthScale' }"
-                  :fill="{ val: row.mean_price_sq_m, scale: '#sqmScale' }"
-                />
+                    <!-- <vgg-rectangle
+                      :x="{ val: row.year_date, scale: { domain: 'year_date'} }"
+                      :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
+                      :w="{ band: { domain: 'year_date' } }"
+                      :h="{ band: { domain: 'month_date' } }"
+                      :fill="{ val: row.mean_price_sq_m, scale: {type: 'reds', domain: 'mean_price_sq_m' } }"
+                    /> -->
+                  </vgg-map>
 
-                <!-- <vgg-rectangle
-                  :x="{ val: row.year_date, scale: { domain: 'year_date'} }"
-                  :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
-                  :w="{ band: { domain: 'year_date' } }"
-                  :h="{ band: { domain: 'month_date' } }"
-                  :fill="{ val: row.mean_price_sq_m, scale: {type: 'reds', domain: 'mean_price_sq_m' } }"
-                /> -->
+                  <vgg-x-axis
+                    :scale="'#yearScale'"
+                    :vjust="1"
+                    :label-font-size="6"
+                    flip
+                  />
+
+                  <vgg-y-axis
+                    :scale="'#monthScale'"
+                    :label-font-size="6"
+                    :hjust="0"
+                  />
+                </template>
               </vgg-map>
-
-              <vgg-x-axis
-                :scale="'#yearScale'"
-                :vjust="1"
-                :label-font-size="6"
-                flip
-              />
-
-              <vgg-y-axis
-                :scale="'#monthScale'"
-                :label-font-size="6"
-                :hjust="0"
-              />
-
               <vgg-plot-title
                 :text="town"
                 :font-size="12"
@@ -160,7 +143,7 @@
             :x="50"
             :y="50"
             :text="ft"
-            :font-size="50"
+            :font-size="70"
             :opacity="0.5"
             :font-weight="'bold'"
           />
@@ -190,7 +173,7 @@ export default {
       // flat_types: ['3 ROOM', '4 ROOM', '5 ROOM', 'EXECUTIVE'],
       flat_models: ['New Generation', 'Simplified', 'Terrace', 'Standard', 'Model A2', 'Type S1', 'Model A', 'Improved', 'DBSS', 'Premium Apartment', 'Type S2', 'Improved-Maisonette', 'Model A-Maisonette', 'Apartment', 'Maisonette', 'Multi Generation'],
       towns: ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN'],
-      totalX: 2500,
+      totalX: 3200,
       totalY: 2500
     }
   },
