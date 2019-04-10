@@ -44,7 +44,7 @@ export default {
       let mappedElements = []
 
       this.$$dataInterface.forEachRow(scope => {
-        let slotContent = this.$scopedSlots.default(scope)
+        let slotContent = this.$scopedSlots.default(scope) || []
         slotContent = slotContent.filter(el => el.tag !== undefined)
 
         if (slotContent.length > 0) {
@@ -65,7 +65,7 @@ export default {
       let dataframe = this.$$dataInterface.getDataset()
       let scope = { dataframe }
 
-      let slotContent = this.$scopedSlots.default(scope)
+      let slotContent = this.$scopedSlots.default(scope) || []
       slotContent = slotContent.filter(el => el.tag !== undefined)
 
       if (slotContent.length > 0) {
