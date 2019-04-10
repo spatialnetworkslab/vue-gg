@@ -27,7 +27,7 @@
 
     <vgg-section
       :x1="50"
-      :x2="totalX - 200"
+      :x2="totalX - 300"
       :y1="50"
       :y2="totalY - 200"
       :scale-x="[0, 100]"
@@ -51,7 +51,7 @@
       />
 
       <vgg-grid
-        :rows="3"
+        :rows="4"
         :cell-padding="{
           t: 1,
           l: 0.3,
@@ -111,7 +111,7 @@
               </vgg-map>
 
               <!-- THIS PART -->
-              <vgg-map
+              <!-- <vgg-map
                 v-slot="{ dataframe }"
                 unit="dataframe">
                 <template v-if="dataframe.month_date.length > 0">
@@ -129,9 +129,9 @@
                   />
 
                 </template>
-              </vgg-map>
+              </vgg-map> -->
 
-              <vgg-x-axis
+              <!-- <vgg-x-axis
                 :scale="'#yearScale'"
                 :vjust="0"
                 :label-font-size="6"
@@ -141,7 +141,7 @@
                 :scale="'#monthScale'"
                 :label-font-size="6"
                 :hjust="0"
-              />
+              /> -->
 
               <vgg-plot-title
                 :text="flat_type"
@@ -186,8 +186,8 @@ export default {
       flat_types: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'],
       flat_models: ['New Generation', 'Simplified', 'Terrace', 'Standard', 'Model A2', 'Type S1', 'Model A', 'Improved', 'DBSS', 'Premium Apartment', 'Type S2', 'Improved-Maisonette', 'Model A-Maisonette', 'Apartment', 'Maisonette', 'Multi Generation'],
       towns: ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN'],
-      totalX: 3700,
-      totalY: 1500
+      totalX: 3000,
+      totalY: 2000
     }
   },
 
