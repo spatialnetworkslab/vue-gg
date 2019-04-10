@@ -232,7 +232,7 @@ export default {
     },
 
     parsedScale () {
-      return createScale('y', this.context, this.scale)
+      return createScale('y', this.context, this.axisCache.scale)
     }
   }
 }

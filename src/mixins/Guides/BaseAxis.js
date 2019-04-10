@@ -6,6 +6,8 @@ import Rectangular from '../Marks/Rectangular.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
+import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
+
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import defaultFormat from './utils/defaultFormat.js'
 import ticksFromIntervals from './utils/ticksFromIntervals.js'
@@ -198,13 +200,14 @@ export default {
 
   data () {
     return {
-      justLookup: { l: 0, b: 0, r: 1, t: 1, center: 0.5 }
+      justLookup: { l: 0, b: 0, r: 1, t: 1, center: 0.5 },
+      axisCache: createPropCache(this, ['scale'])
     }
   },
 
   computed: {
     parsedScalingOptions () {
-      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
+      return parseScaleOptions(this.axisCache.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {
@@ -362,6 +365,10 @@ export default {
         })
       }
     }
+  },
+
+  mounted () {
+    createWatchers(this, this.axisCache)
   },
 
   methods: {
