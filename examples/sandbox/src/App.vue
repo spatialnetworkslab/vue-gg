@@ -10,7 +10,6 @@
       { arrange: { year_date: 'descending' } },
       { arrange: { month_date: 'descending' } },
   ]">
-
     <vgg-scales :scales="{ sqmScale: { domain: 'price_sqm', type: 'reds' } }"/>
     <vgg-scales :scales="{ monthScale: { domain: 'month_date' } }"/>
     <vgg-scales :scales="{ yearScale: { domain: 'year_date' } }"/>
@@ -47,6 +46,7 @@
         :font-size="44"
         :opacity="0.2"
       />
+
       <vgg-grid
         :rows="3"
         :cell-padding="{
@@ -120,7 +120,6 @@
                   />
                 </template>
               </vgg-map>
-
               <!-- <vgg-x-axis
                 :scale="'#yearScale'"
                 :vjust="0"
@@ -131,7 +130,6 @@
                 :label-font-size="6"
                 :hjust="0"
               /> -->
-
               <vgg-plot-title
                 :text="flat_type"
                 :font-size="12"
@@ -163,11 +161,9 @@
     </vgg-section>
   </vgg-graphic>
 </template>
-
 <script>
 
 import resaleData from './resale_sample.json'
-
 export default {
   name: 'TownFlat',
   data () {

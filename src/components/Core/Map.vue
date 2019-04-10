@@ -46,11 +46,13 @@ export default {
       this.$$dataInterface.forEachRow(scope => {
         let slotContent = this.$scopedSlots.default(scope)
 
-        if (mappings === null) { mappings = initMappingTree(slotContent) }
-        mappings = extractMappings(mappings, slotContent, context)
+        if (!slotContent.every(el => el.tag === undefined)) {
+          if (mappings === null) { mappings = initMappingTree(slotContent) }
+          mappings = extractMappings(mappings, slotContent, context)
 
-        let mappedContent = mapRow(mappings, slotContent, scope.i)
-        mappedElements.push(...mappedContent)
+          let mappedContent = mapRow(mappings, slotContent, scope.i)
+          mappedElements.push(...mappedContent)
+        }
       })
 
       return mappedElements
@@ -63,12 +65,15 @@ export default {
       let scope = { dataframe }
 
       let slotContent = this.$scopedSlots.default(scope)
+      if (!slotContent.every(el => el.tag === undefined)) {
+        let mappings = initMappingTree(slotContent)
+        mappings = extractMappings(mappings, slotContent, context)
 
-      let mappings = initMappingTree(slotContent)
-      mappings = extractMappings(mappings, slotContent, context)
-
-      let mappedElements = mapRow(mappings, slotContent, 0)
-      return mappedElements
+        let mappedElements = mapRow(mappings, slotContent, 0)
+        return mappedElements
+      } else {
+        return []
+      }
     },
 
     validateComponents (elements) {
