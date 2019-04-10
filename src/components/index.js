@@ -41,6 +41,10 @@ import IdcLabel from './Marks/idcLabel.vue'
 import IdcXAxis from './Guides/idcXAxis.vue'
 import IdcYAxis from './Guides/idcYAxis.vue'
 
+import Heatmap from './Charts/Heatmap.vue'
+import ParallelCoordinates from './Charts/ParallelCoordinates.vue'
+import ScatterplotMatrix from './Charts/ScatterplotMatrix.vue'
+
 export default {
   Glyph,
   Graphic,
@@ -78,6 +82,10 @@ export default {
   IdcRectangle,
   IdcLabel,
   IdcXAxis,
-  IdcYAxis
+  IdcYAxis,
+
+  Heatmap,
+  ScatterplotMatrix,
+  ParallelCoordinates
 
 }

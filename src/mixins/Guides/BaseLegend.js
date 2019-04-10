@@ -166,16 +166,6 @@ export default {
       }
     },
 
-    w: {
-      type: Number,
-      default: undefined
-    },
-
-    h: {
-      type: Number,
-      default: undefined
-    },
-
     fill: {
       type: [String, Object, Array],
       default: function () { return { type: 'blues' } }
@@ -184,16 +174,6 @@ export default {
     fillOpacity: {
       type: [Number, Object, Array],
       default: 1
-    },
-
-    x: {
-      type: [Number, Object, Array],
-      default: undefined
-    },
-
-    y: {
-      type: [Number, Object, Array],
-      default: undefined
     },
 
     tickCount: {

@@ -46,7 +46,7 @@
 
         <vgg-line
           :x1="midX"
-          :x2="flip ? midX - _tickLength : midX + _tickLength"
+          :x2="flip ? midX + _tickLength : midX - _tickLength"
           :y1="tick.value"
           :y2="tick.value"
           :stroke="tickColor"
