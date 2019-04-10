@@ -1,5 +1,7 @@
 import { interpolate } from 'd3-interpolate'
-import { line, curveCardinal } from 'd3-shape'
+import * as d3 from 'd3-shape'
+import regression from 'regression'
+
 import { geoPath } from 'd3-geo'
 
 import { transform } from '../../../utils/geojson.js'
@@ -51,13 +53,71 @@ export function transformPoints (points, transformer, precision = 2) {
 export const transformFeature = transform
 
 // Step 3: Path creation
-const lineGenerator = line()
+const lineGenerator = d3.line()
 export const createPath = lineGenerator
 
 const path = geoPath(null)
 export const createGeoPath = path
 
-export const arcGenerator = line().curve(curveCardinal.tension(0.96))
+export function getGenerator (generator, curveSpec) {
+  let allGenerators = {
+    'curveBasis': d3.curveBasis,
+    'curveBasisClosed': d3.curveBasisClosed,
+    'curveBundle': d3.curveBundle.beta(curveSpec.beta),
+    'curveCardinal': d3.curveCardinal.tension(curveSpec.tension),
+    'curveCatmullRom': d3.curveCatmullRom.alpha(curveSpec.alpha),
+    'curveMonotoneX': d3.curveMonotoneX,
+    'curveMonotoneY': d3.curveMonotoneY,
+    'curveNatural': d3.curveNatural,
+    'curveStep': d3.curveStep,
+    'curveStepAfter': d3.curveStepAfter,
+    'curveStepBefore': d3.curveStepBefore
+  }
+
+  if (generator === true) {
+    return d3.line().curve(d3.curveBasis)
+  } else if (generator.constructor === String) {
+    return d3.line().curve(allGenerators[generator])
+  } else {
+    console.warn('Curved paths must be specified as string, defaulting to d3.curveCardinal()')
+    return d3.line().curve(d3.curveCardinal.tension(0))
+  }
+}
+
+// export const arcGenerator = d3.line().curve(d3.curveCardinal.tension(0.96))
+
+export function createArc(points, generator, curveSpec) {
+  let arcGenerator = getGenerator(generator, curveSpec)
+  return arcGenerator(points)
+}
+
+export function createRegress(points, regress, regressSpec) {
+
+  let transformedPoints
+  
+  if (regress === 'linear') {
+    transformedPoints = regression.linear(points, regressSpec).points
+  } else if (regress === 'exponential') {
+    transformedPoints = regression.exponential(points, regressSpec).points
+  } else if (regress === 'logarithmic') {
+    transformedPoints = regression.logarithmic(points, regressSpec).points
+  } else if (regress === 'power') {
+    transformedPoints = regression.power(points, regressSpec).points
+  } else if (regress === 'polynomial') {
+    transformedPoints = regression.polynomial(points, regressSpec).points
+  } else if (regress) {
+    transformedPoints = regression.linear(points, regressSpec).points
+  } else {
+    console.warn('Regression must be specified as string, defaulting to linear regression.')
+    transformedPoints = regression.linear(points, regressSpec).points
+  }
+
+  let lineGenerator = d3.line().curve(d3.curveBasis)
+  let path = lineGenerator(transformedPoints)
+
+  return path
+
+}
 
 // Helpers
 function round (input, precision) {
