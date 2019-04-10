@@ -155,7 +155,7 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
     createWatchers(this, this.gridCache)
   }
 }

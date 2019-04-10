@@ -90,11 +90,8 @@ export default {
   },
 
   created () {
-    this.$$dataManager.register(this.dataScopeID, this.dataContainer)
-  },
-
-  mounted () {
     createWatchers(this, this.dataProviderCache)
+    this.$$dataManager.register(this.dataScopeID, this.dataContainer)
   },
 
   watch: {

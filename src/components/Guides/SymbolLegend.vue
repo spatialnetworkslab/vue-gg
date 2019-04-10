@@ -431,11 +431,12 @@ export default {
         scales.stroke = 'black'
       }
 
-      if (!this.checkValidColor(this.legendCache.fill) && this.legendCache.fill !== 'none') {
-        let fillScale = this.generateScale('fill', this.legendCache.fill)
+      let fill = this.legendCache.fill || 'none'
+      if (!this.checkValidColor(fill) && fill !== 'none') {
+        let fillScale = this.generateScale('fill', fill)
         scales.fill = fillScale
       } else {
-        scales.fill = this.legendCache.fill
+        scales.fill = fill
       }
 
       if (this.size) {

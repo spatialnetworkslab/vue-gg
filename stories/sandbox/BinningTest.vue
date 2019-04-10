@@ -91,23 +91,26 @@
 
         <!-- fill binning -->
 
-        <vgg-discrete-legend
+        <!-- <vgg-discrete-legend
           :scale="'bins'"
           :font-size="10"
           :title-padding="2"
           title="Discrete"
           position="tl"
-        />
+        /> -->
 
         <!-- fill opacity binning -->
 
         <vgg-gradient-legend
           :scale="{ domain: 'bins' }"
-          position="tr"
-          title="Gradient"
           :title-padding="2"
+          :fill-opacity="{ range: [0, 1] }"
+          :x1="0"
+          :x2="20"
+          :y1="0"
+          :y2="200"
+          title="Gradient"
           fill="blue"
-          :fill-opacity="{ range: [0, 1]}"
         />
 
         <!-- <vgg-gradient-legend
