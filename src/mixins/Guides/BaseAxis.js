@@ -201,7 +201,7 @@ export default {
   data () {
     return {
       justLookup: { l: 0, b: 0, r: 1, t: 1, center: 0.5 },
-      axisCache: createPropCache(this, ['scale'])
+      axisCache: createPropCache(this, ['scale', 'tickValues'])
     }
   },
 
@@ -263,8 +263,8 @@ export default {
       let firstValue = this._domain[0]
       let newTickValues
 
-      if (this.tickValues) {
-        newTickValues = this.tickValues
+      if (this.axisCache.tickValues) {
+        newTickValues = this.axisCache.tickValues
 
         let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
 
