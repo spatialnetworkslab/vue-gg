@@ -284,7 +284,7 @@ export default {
     },
 
     legendLeft () {
-      if (!this.x && !this.y) {
+      if (isNaN(this.x)) {
         let p = this.position
         if (p === 'right' || p === 'tr' || p === 'br') {
           return (this.plotWidth - this.sectionWidth) * 0.95
@@ -294,12 +294,15 @@ export default {
           return this.plotWidth * 0.02
         }
       } else {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `x` input ' + this.x)
+        }
         return this.x
       }
     },
 
     legendTop () {
-      if (!this.x && !this.y) {
+      if (isNaN(this.y)) {
         let p = this.position
         if (p === 'top' || p === 'tl' || p === 'tr' || p === 'tc') {
           if (this.plotHeight - this.sectionHeight < 0) {
@@ -324,6 +327,7 @@ export default {
         if (this.position && this.position !== 'left') {
           console.warn('Ignoring position value `' + this.position + '` because of `x` and `y` inputs')
         }
+
         return -this.y
       }
     },
@@ -565,7 +569,7 @@ export default {
         if (this.scale.order && this._domainType.includes('categorical')) {
           scaleOptions.order = this.scale.order
         } else if (this.scale.order && !this._domainType.includes('categorical')) {
-          console.warn('Data must be categorical in order to include `order` in `scale`')
+          console.warn('Data must be categorical to include `order` in `scale`')
         }
 
         if (this.scale.absolute) {

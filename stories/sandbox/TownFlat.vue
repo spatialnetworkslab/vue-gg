@@ -77,81 +77,71 @@
               r: 1.5
             }"
           >
+          <!-- <vgg-map
+            v-slot="{ dataframe }"
+            unit="dataframe">
+            <template v-if="dataframe.month_date.length > 0"> -->
 
-            <vgg-section
-              v-for="flat_type, j in flat_types"
-              :key="j"
-              :scale-x="'#yearScale'"
-              :scale-y="'#monthScale'"
-              :transform="[
-                { filter: row => row.flat_type === flat_type },
-                { mutate: { price_sq_m: row => row.resale_price / row.floor_area_sqm } },
-                { groupBy: ['month_date', 'year_date'] },
-                { summarise: { mean_price_sq_m: { price_sq_m: 'mean' } } },
-                { transform: df => { log(i, totalX, totalY, df); return df } }
-              ]"
-            >
+              <vgg-section
+                v-for="flat_type, j in flat_types"
+                :key="j"
+                :scale-x="'#yearScale'"
+                :scale-y="'#monthScale'"
+                :transform="[
+                  { transform: df => { log(flat_type, town, df); return df } },
+                  { filter: row => row.flat_type === flat_type },
+                  { mutate: { price_sq_m: row => row.resale_price / row.floor_area_sqm } },
+                  { groupBy: ['month_date', 'year_date'] },
+                  { summarise: { mean_price_sq_m: { price_sq_m: 'mean' } } },
+                  { transform: df => { log(flat_type, town, df); return df } }
+                ]"
+              >
+                <vgg-map v-slot="{ row }">
+                  <vgg-rectangle
+                    :x="{ val: row.year_date, scale: '#yearScale' }"
+                    :y="{ val: row.month_date, scale: '#monthScale' }"
+                    :w="{ band: '#yearScale' }"
+                    :h="{ band: '#monthScale' }"
+                    :fill="{ val: row.mean_price_sq_m, scale: '#sqmScale' }"
+                  />
 
-              <vgg-map v-slot="{ row }">
-                <vgg-rectangle
-                  :x="{ val: row.year_date, scale: '#yearScale' }"
-                  :y="{ val: row.month_date, scale: '#monthScale' }"
-                  :w="{ band: '#yearScale' }"
-                  :h="{ band: '#monthScale' }"
-                  :fill="{ val: row.mean_price_sq_m, scale: '#sqmScale' }"
+                  <!-- <vgg-rectangle
+                    :x="{ val: row.year_date, scale: { domain: 'year_date'} }"
+                    :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
+                    :w="{ band: { domain: 'year_date' } }"
+                    :h="{ band: { domain: 'month_date' } }"
+                    :fill="{ val: row.mean_price_sq_m, scale: {type: 'reds', domain: 'mean_price_sq_m' } }"
+                  /> -->
+                </vgg-map>
+
+                <vgg-map
+                  v-slot="{ dataframe }"
+                  unit="dataframe">
+                  <template v-if="dataframe.month_date.length > 0">
+                    <vgg-x-axis
+                      :scale="'#yearScale'"
+                      :vjust="0"
+                      :label-font-size="6"
+                    />
+
+                    <vgg-y-axis
+                      :scale="'#monthScale'"
+                      :label-font-size="6"
+                      :hjust="0"
+                    />
+                  </template>
+                </vgg-map>
+                <vgg-plot-title
+                  :text="flat_type"
+                  :font-size="12"
+                  :opacity="0.2"
+                  vjust="center"
+                  hjust="center"
                 />
 
-                <!-- <vgg-rectangle
-                  :x="{ val: row.year_date, scale: { domain: 'year_date'} }"
-                  :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
-                  :w="{ band: { domain: 'year_date' } }"
-                  :h="{ band: { domain: 'month_date' } }"
-                  :fill="{ val: row.mean_price_sq_m, scale: {type: 'reds', domain: 'mean_price_sq_m' } }"
-                /> -->
-              </vgg-map>
-
-              <!-- THIS PART -->
-              <!-- <vgg-map
-                v-slot="{ dataframe }"
-                unit="dataframe">
-                <template v-if="dataframe.month_date.length > 0">
-
-                  <vgg-x-axis
-                    :scale="'year_date'"
-                    :vjust="0"
-                    :label-font-size="6"
-                  />
-
-                  <vgg-y-axis
-                    :scale="'month_date'"
-                    :label-font-size="6"
-                    :hjust="0"
-                  />
-
-                </template>
-              </vgg-map> -->
-
-              <!-- <vgg-x-axis
-                :scale="'#yearScale'"
-                :vjust="0"
-                :label-font-size="6"
-              />
-
-              <vgg-y-axis
-                :scale="'#monthScale'"
-                :label-font-size="6"
-                :hjust="0"
-              /> -->
-
-              <vgg-plot-title
-                :text="flat_type"
-                :font-size="12"
-                :opacity="0.2"
-                vjust="center"
-                hjust="center"
-              />
-
-            </vgg-section>
+              </vgg-section>
+            <!-- </template>
+          </vgg-map> -->
           </vgg-grid>
 
           <vgg-label
