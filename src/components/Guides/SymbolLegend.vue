@@ -431,11 +431,12 @@ export default {
         scales.stroke = 'black'
       }
 
-      if (!this.checkValidColor(this.fill) && this.fill !== 'none') {
-        let fillScale = this.generateScale('fill', this.fill)
+      let fill = this.legendCache.fill || 'none'
+      if (!this.checkValidColor(fill) && fill !== 'none') {
+        let fillScale = this.generateScale('fill', fill)
         scales.fill = fillScale
       } else {
-        scales.fill = this.fill
+        scales.fill = fill
       }
 
       if (this.size) {
@@ -457,13 +458,13 @@ export default {
         }
       }
 
-      if (this.fillOpacity) {
-        if (this.fillOpacity.constructor !== Number) {
-          let fillOpacityScale = this.generateScale('fillOpacity', this.fillOpacity)
+      if (this.legendCache.fillOpacity) {
+        if (this.legendCache.fillOpacity.constructor !== Number) {
+          let fillOpacityScale = this.generateScale('fillOpacity', this.legendCache.fillOpacity)
           scales.fillOpacity = fillOpacityScale
         } else {
-          if (this.fillOpacity.constructor === Number) {
-            scales.fillOpacity = this.fillOpacity
+          if (this.legendCache.fillOpacity.constructor === Number) {
+            scales.fillOpacity = this.legendCache.fillOpacity
           } else {
             scales.fillOpacity = 1
           }

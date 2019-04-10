@@ -40,21 +40,6 @@ export default {
       default: undefined
     },
 
-    data: {
-      type: [Array, Object, undefined],
-      default: undefined
-    },
-
-    format: {
-      type: [String, undefined],
-      default: undefined
-    },
-
-    transform: {
-      type: [Array, Object, undefined],
-      default: undefined
-    },
-
     axes: {
       type: [Array, Object, undefined],
       default: undefined
@@ -255,7 +240,7 @@ export default {
     this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
   },
 
-  mounted () {
+  created () {
     this.setCoordinateTreeBranch()
     createWatchers(this, this.props)
     this.ready = true

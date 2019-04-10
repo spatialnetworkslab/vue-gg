@@ -44,6 +44,7 @@ export default {
   },
 
   created () {
+    createWatchers(this, this.scaleCache)
     for (let scaleName in this.scaleCache.scales) {
       let scale = this.scaleCache.scales[scaleName]
 
@@ -53,10 +54,6 @@ export default {
 
       this.$$scaleManager.storeScale(scaleName, parsedScale)
     }
-  },
-
-  mounted () {
-    createWatchers(this, this.scaleCache)
   },
 
   methods: {
