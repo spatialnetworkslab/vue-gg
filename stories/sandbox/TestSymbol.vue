@@ -2,8 +2,8 @@
   <div>
 
     <vgg-graphic
-      :width="600"
-      :height="600"
+      :width="sectionWidth"
+      :height="sectionHeight"
       :data="xy">
 
       <vgg-plot-title text="Scatterplot" />
@@ -39,19 +39,37 @@
           :scale="'dependent'"
           :hjust="-.05"
           :tick-extra-label="false"
-          flip
         />
 
         <vgg-x-grid
           :scale="'explanatory'"
         />
 
-        <vgg-y-grid
-          :scale="'dependent'"
-        />
+      <vgg-x-grid
+        :x1="100"
+        :x2="500"
+        :y1="100"
+        :y2="500"
+        :scale="[0, 150]"
+      />
+
+      <vgg-y-grid
+        :scale="'dependent'"
+      />
 
       </vgg-section>
-
+      <vgg-symbol-legend
+        :scale="{ domain: 'categorical'}"
+        :title-font-size="20"
+        :size="{ range: [5, 20] }"
+        :x="sectionWidth * 0.6"
+        :y="sectionHeight * 0.5"
+        :label-padding="-0.2"
+        :stroke="colorLegend(colorScheme)"
+        :shape="shapeLegend(shapeScheme)"
+        fill="none"
+        title="Fruits"
+      />
     </vgg-graphic>
 
     <p>Shape Scheme:
@@ -90,7 +108,9 @@ export default {
     return {
       xy: this.generateNewData(),
       shapeScheme: 'shape8',
-      colorScheme: 'category10'
+      colorScheme: 'category10',
+      sectionWidth: 900,
+      sectionHeight: 600
     }
   },
 
@@ -115,23 +135,33 @@ export default {
         newData[i].categorical = fruits[Math.floor(i / 12)]
         newData[i].dependent = newData[i].dependent + Math.random() * 100
       }
-
       return newData
     },
-
     color (value) {
       if (this.colorScheme === 'custom') {
         return { val: value, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }
       }
-
       return { val: value, scale: { type: this.colorScheme, domain: 'categorical' } }
     },
-
     shape (value) {
       if (this.shapeScheme === 'custom') {
         return { val: value, scale: { ranges: ['circle', 'square'], domain: 'categorical' } }
       }
       return { val: value, scale: { type: this.shapeScheme, domain: 'categorical' } }
+    },
+
+    colorLegend (colorScheme) {
+      if (this.colorScheme === 'custom') {
+        return { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'] }
+      }
+      return { type: colorScheme }
+    },
+
+    shapeLegend () {
+      if (this.shapeScheme === 'custom') {
+        return { ranges: ['circle', 'square'] }
+      }
+      return { type: this.shapeScheme }
     }
   }
 }

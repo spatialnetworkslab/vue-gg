@@ -13,6 +13,7 @@
     <vgg-scales :scales="{ sqmScale: { domain: 'price_sqm', type: 'reds' } }"/>
     <vgg-scales :scales="{ monthScale: { domain: 'month_date' } }"/>
     <vgg-scales :scales="{ yearScale: { domain: 'year_date' } }"/>
+    
     <vgg-discrete-legend
       :scale="'#sqmScale'"
       :title-font-size="30"
@@ -45,6 +46,7 @@
         :font-size="44"
         :opacity="0.2"
       />
+
       <vgg-grid
         :rows="3"
         :cell-padding="{
@@ -137,6 +139,7 @@
               />
             </vgg-section>
           </vgg-grid>
+
           <vgg-label
             :x="50"
             :y="50"
@@ -152,12 +155,14 @@
             :y2="100"
             :opacity="0.05"
             fill="'rgb(255, 245, 240)'"/>
+
         </vgg-section>
       </vgg-grid>
     </vgg-section>
   </vgg-graphic>
 </template>
 <script>
+
 import resaleData from './resale_sample.json'
 export default {
   name: 'TownFlat',
@@ -172,4 +177,5 @@ export default {
     }
   }
 }
+
 </script>

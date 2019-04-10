@@ -11,13 +11,11 @@
     <br>
 
     <vgg-graphic
-      :width="600"
-      :height="600"
+      :width="650"
+      :height="650"
       :data="data"
     >
-
       <vgg-plot-title :text="title" />
-
       <vgg-data
         :transform="[
           { rename: { a: 'apple', b: 'banana', d: 'durian' } },
@@ -46,6 +44,14 @@
               :opacity="{ val: row.bins, scale: { domain: 'bins' } }"
             />
 
+            <!-- <vgg-rectangle
+              :x1="{ val: row.bins[0] }"
+              :x2="{ val: row.bins[1] }"
+              :y1="0"
+              :y2="{ val: row.binCount }"
+              :fill="{ val: row.bins, scale: { domain: 'bins', type: 'blues'} }"
+            /> -->
+
           </vgg-map>
 
           <vgg-x-grid :scale="'bins'" />
@@ -53,7 +59,8 @@
           <vgg-y-axis
             :scale="{ domain: 'binCount', domainMin: 0 }"
             :tick-count="5"
-            :hjust="-0.05"
+            :hjust="1"
+            flip
           />
 
           <vgg-x-axis
@@ -63,9 +70,55 @@
           />
 
         </vgg-section>
+<!--
+        <vgg-x-axis
+          :x1="100"
+          :x2="500"
+          :y1="50"
+          :y2="100"
+          scale="bins"
+          rotate-label
+        />
+
+        <vgg-y-axis
+          :x1="500"
+          :x2="550"
+          :y1="100"
+          :y2="500"
+          :scale="{ domain: 'binCount', domainMin: 0 }"
+          :tick-count="15"
+        /> -->
+
+        <!-- fill binning -->
+
+        <vgg-discrete-legend
+          :scale="'bins'"
+          :font-size="10"
+          :title-padding="2"
+          title="Discrete"
+          position="tl"
+        />
+
+        <!-- fill opacity binning -->
+
+        <vgg-gradient-legend
+          :scale="{ domain: 'bins' }"
+          position="tr"
+          title="Gradient"
+          :title-padding="2"
+          fill="blue"
+          :fill-opacity="{ range: [0, 1]}"
+        />
+
+        <!-- <vgg-gradient-legend
+          :scale="{ domain: 'bins' }"
+          position="tr"
+          title="Gradient"
+          :title-padding="2"
+
+        /> -->
 
       </vgg-data>
-
     </vgg-graphic>
 
   </div>
