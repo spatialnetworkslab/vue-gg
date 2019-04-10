@@ -2,25 +2,25 @@
   <div>
 
     <vgg-graphic
-      :width="600"
+      :width="700"
       :height="600"
       :data="xy">
 
       <vgg-plot-title text="Scatterplot" />
 
       <vgg-section
-        :x1="100"
-        :x2="500"
+        :x1="150"
+        :x2="550"
         :y1="100"
         :y2="500"
       >
 
         <vgg-map v-slot="{ row }">
 
-          <vgg-point
+          <vgg-symbol
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
-            :radius="{ val: row.dependent, scale: { domain: 'dependent' } }"
+            :size="{ val: row.dependent, scale: { domain: 'dependent' } }"
             :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
             @click="log($event)"
             @mouseover="log(row)"
@@ -33,6 +33,7 @@
           :title-hjust="1.1"
           :vjust="-.05"
           :tick-values="[0, 20, 60, 100]"
+          flip
         />
 
         <vgg-y-axis
@@ -43,19 +44,63 @@
       </vgg-section>
 
       <vgg-x-grid
-        :x1="100"
-        :x2="500"
+        :x1="150"
+        :x2="550"
         :y1="100"
         :y2="500"
         :scale="'explanatory'"
       />
 
       <vgg-y-grid
-        :x1="100"
-        :x2="500"
+        :x1="150"
+        :x2="550"
         :y1="100"
         :y2="500"
         :scale="'dependent'"
+      />
+
+      <vgg-discrete-legend
+        :scale="'dependent'"
+        :font-size="10"
+        :title-font-size="12"
+        title-font-weight="bold"
+        title="Legend"
+        position="tl"
+        :w="50"
+        :fill="{ type: 'viridis'}"
+      />
+
+      <vgg-gradient-legend
+        :scale="'dependent'"
+        :font-size="10"
+        :title-font-size="12"
+        title-font-weight="bold"
+        :fill="{ type: 'viridis'}"
+        position="bl"
+        orientation="horizontal"
+      />
+
+      <!-- no title -->
+      <vgg-symbol-legend
+        :scale="{ domain: 'explanatory'}"
+        :size="{ domain: 'explanatory'}"
+        :tick-count="8"
+        position="br"
+        title="Size"
+        flip-numbers
+        orientation = "horizontal"
+      />
+
+      <vgg-symbol-legend
+        :scale="{ domain: 'dependent'}"
+        :stroke="'none'"
+        :fill="{ type: 'viridis'}"
+        title="Color"
+        :columns="2"
+        :w="100"
+        :colPadding='10'
+        position="right"
+        flip
       />
 
     </vgg-graphic>

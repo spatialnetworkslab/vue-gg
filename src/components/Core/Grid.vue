@@ -99,5 +99,4 @@ export default {
       return createElement('g', { class: 'layout-grid' }, children)
     }
   }
-}
-</script>
+}</script>

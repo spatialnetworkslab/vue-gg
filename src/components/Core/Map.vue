@@ -44,13 +44,16 @@ export default {
       let mappedElements = []
 
       this.$$dataInterface.forEachRow(scope => {
-        let slotContent = this.$scopedSlots.default(scope)
+        let slotContent = this.$scopedSlots.default(scope) || []
+        slotContent = slotContent.filter(el => el.tag !== undefined)
 
-        if (mappings === null) { mappings = initMappingTree(slotContent) }
-        mappings = extractMappings(mappings, slotContent, context)
+        if (slotContent.length > 0) {
+          if (mappings === null) { mappings = initMappingTree(slotContent) }
+          mappings = extractMappings(mappings, slotContent, context)
 
-        let mappedContent = mapRow(mappings, slotContent, scope.i)
-        mappedElements.push(...mappedContent)
+          let mappedContent = mapRow(mappings, slotContent, scope.i)
+          mappedElements.push(...mappedContent)
+        }
       })
 
       return mappedElements
@@ -62,13 +65,18 @@ export default {
       let dataframe = this.$$dataInterface.getDataset()
       let scope = { dataframe }
 
-      let slotContent = this.$scopedSlots.default(scope)
+      let slotContent = this.$scopedSlots.default(scope) || []
+      slotContent = slotContent.filter(el => el.tag !== undefined)
 
-      let mappings = initMappingTree(slotContent)
-      mappings = extractMappings(mappings, slotContent, context)
+      if (slotContent.length > 0) {
+        let mappings = initMappingTree(slotContent)
+        mappings = extractMappings(mappings, slotContent, context)
 
-      let mappedElements = mapRow(mappings, slotContent, 0)
-      return mappedElements
+        let mappedElements = mapRow(mappings, slotContent, 0)
+        return mappedElements
+      } else {
+        return []
+      }
     },
 
     validateComponents (elements) {
