@@ -165,11 +165,12 @@ export default {
       let l = this.domain; let fill; let fillOpacity; let colors = []
 
       // create fill/fillOpacity scales for rectangles
-      if (!this.checkValidColor(this.legendCache.fill)) {
-        fill = this.generateScale('fill', this.legendCache.fill)
+      let _fill = this.legendCache.fill || 'none'
+      if (!this.checkValidColor(_fill)) {
+        fill = this.generateScale('fill', _fill)
         fillOpacity = 1
-      } else if (this.legendCache.fillOpacity && this.checkValidColor(this.legendCache.fill)) {
-        fill = this.legendCache.fill
+      } else if (this.legendCache.fillOpacity && this.checkValidColor(_fill)) {
+        fill = _fill
         fillOpacity = this.generateScale('fillOpacity', this.legendCache.fillOpacity)
       } else {
         throw new Error('If `fill` is set to a color (HSL, RGB or CSS value), then `fillOpacity` must be specified to create the legend')
