@@ -5,7 +5,7 @@
   >
 
     <vgg-data
-      id="original"
+      :dataID="original"
       :data="testData"
     >
 
@@ -27,7 +27,7 @@
     <!-- <vgg-data :data="testData">
 
       <vgg-data
-        id="transformed"
+        dataID="transformed"
         :transform="{ filter: row => row.a > 2 }"
       />
 
