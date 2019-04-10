@@ -21,6 +21,7 @@ components should be used outside of the Graphic component.
 | data      | false    | [Array, Object] | undefined | Some supported data structure                 |
 | format    | false    | String          | undefined | Format of data structure                      |
 | transform | false    | [Array, Object] | undefined | Transformation(s) to be applied               |
+| dataID    | false    | String          | undefined | ID for referencing from other data scope      |
 
 # Usage
 
