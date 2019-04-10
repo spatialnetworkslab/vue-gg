@@ -70,7 +70,6 @@ export default {
     },
 
     $$dataInterface () {
-      console.log('retrigger $$dataInterface')
       if (this.data || this.dataProviderCache.transform) {
         // use own scope
         return this.$$dataManager.createInterface(this.dataScopeID)

@@ -41,7 +41,7 @@
 
     <vgg-data
       :transform="[
-        { filter: row => row.town === 'ANG MO KIO'},
+        { filter: row => row.town === 'ANG MO KIO' },
         { groupBy: 'flat_type'},
         { summarise: { total_sales: { resale_price: 'count' } } }
       ]"

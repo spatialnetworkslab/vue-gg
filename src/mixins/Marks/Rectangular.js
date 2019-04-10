@@ -56,7 +56,6 @@ export default {
     },
 
     coordinateSpecification () {
-      console.log('retrigger coordinateSpecification')
       if (this.invalidX || this.invalidY) {
         throw new Error('Invalid combination of props')
       }
