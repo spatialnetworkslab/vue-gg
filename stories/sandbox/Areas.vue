@@ -25,7 +25,7 @@
               :y2="prevRow ? prevRow.grouped.yValues : [0]"
               :opacity="0.5"
               :fill="row.colors"
-              @click="log(row)"
+              :curve="selected"
             />
 
           </vgg-map>
@@ -36,22 +36,30 @@
         <vgg-x-axis
           :scale="'xValues'"
           :title-hjust="1.1"
-          :vjust="-.05"
         />
 
         <vgg-y-axis
           :scale="'yValues'"
-          :hjust="-.05"
-          flip
+          :hjust="0"
         />
 
       </vgg-section>
 
     </vgg-graphic>
 
-    <div>
-      <button @click="hide()">Hide</button>
-    </div>
+    <select v-model="selected">
+      <option value="curveBasis">curveBasis</option>
+      <option value="curveBasisClosed">curveBasisClosed</option>
+      <option value="curveBundle">curveBundle</option>
+      <option value="curveCardinal">curveCardinal</option>
+      <option value="curveCatmullRom">curveCatmullRom</option>
+      <option value="curveMonotoneX">curveMonotoneX</option>
+      <option value="curveMonotoneY">curveMonotoneY</option>
+      <option value="curveNatural">curveNatural</option>
+      <option value="curveStep">curveStep</option>
+      <option value="curveStepAfter">curveStepAfter</option>
+      <option value="curveStepBefore">curveStepBefore</option>
+    </select>
   </div>
 </template>
 
@@ -59,6 +67,7 @@
 export default {
   data () {
     return {
+      selected: 'curveBasis',
       hidden: false
     }
   },
@@ -83,9 +92,6 @@ export default {
     }
   },
 
-  methods: {
-    log: console.log,
-    hide () { this.hidden = !this.hidden }
-  }
+  methods: {}
 }
 </script>

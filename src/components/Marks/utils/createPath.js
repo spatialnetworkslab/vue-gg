@@ -93,24 +93,26 @@ export function createArc(points, generator, curveSpec) {
 
 export function createRegress(points, regress, regressSpec) {
 
-  let transformedPoints
-  
-  if (regress === 'linear') {
-    transformedPoints = regression.linear(points, regressSpec).points
-  } else if (regress === 'exponential') {
-    transformedPoints = regression.exponential(points, regressSpec).points
-  } else if (regress === 'logarithmic') {
-    transformedPoints = regression.logarithmic(points, regressSpec).points
-  } else if (regress === 'power') {
-    transformedPoints = regression.power(points, regressSpec).points
-  } else if (regress === 'polynomial') {
-    transformedPoints = regression.polynomial(points, regressSpec).points
-  } else if (regress) {
-    transformedPoints = regression.linear(points, regressSpec).points
+  let allRegression = {
+    'linear': regression.linear,
+    'exponential': regression.exponential,
+    'logarithmic': regression.logarithmic,
+    'power': regression.power,
+    'polynomial': regression.polynomial
+  }
+
+  let regressionFunc
+
+  if (regress === true) {
+    regressionFunc = regression.linear
+  } else if (regress.constructor === String) {
+    regressionFunc = allRegression[regress]
   } else {
     console.warn('Regression must be specified as string, defaulting to linear regression.')
-    transformedPoints = regression.linear(points, regressSpec).points
+    regressionFunc = regression.linear
   }
+
+  let transformedPoints = regressionFunc(points, regressSpec).points
 
   let lineGenerator = d3.line().curve(d3.curveBasis)
   let path = lineGenerator(transformedPoints)

@@ -95,38 +95,13 @@ export default {
     },
 
     curve: {
-      type: [Boolean, String, undefined],
+      type: [Boolean, String, Object, undefined],
       default: false
-    },
-
-    curveBeta: {
-      type: Number,
-      default: undefined
-    },
-
-    curveTension: {
-      type: Number,
-      default: undefined
-    },
-
-    curveAlpha: {
-      type: Number,
-      default: undefined
     },
 
     regression: {
-      type: [Boolean, String, undefined],
+      type: [Boolean, String, Object, undefined],
       default: false
-    },
-
-    regressionOrder: {
-      type: Number,
-      default: 2
-    },
-
-    regressionPrecision: {
-      type: Number,
-      default: 2
     },
 
     interpolate: {
@@ -141,18 +116,49 @@ export default {
       return false
     },
 
-    curveSpec () {
-      let beta = this.curveBeta ? this.curveBeta : 0
-      let tension = this.curveTension ? this.curveTension : 0
-      let alpha = this.curveAlpha ? this.curveAlpha : 0
-      return { beta: beta, tension: tension, alpha: alpha }
-    },
+    // curveType () {
+    //   if (this.curve && this.curve.constructor === String) {
+    //     return this.curve
+    //   } else if (this.curve && this.curve.constructor === Object) {
+    //     return this.curve['type']
+    //   } else if (this.curve === true) {
+    //     return true
+    //   } else {
+    //     return undefined
+    //   }
+    // },
 
-    regressSpec () {
-      let order = this.regressionOrder
-      let precision = this.regressionPrecision
-      return { order: order, precision: precision }
-    },
+    // regressType () {
+    //   if (this.regression && this.regression.constructor === String) {
+    //     return this.regression
+    //   } else if (this.regression && this.regression.constructor === Object) {
+    //     return this.regression.type
+    //   } else if (this.regression === true) {
+    //     return true
+    //   } else {
+    //     return undefined
+    //   }
+    // },
+
+    // curveSpec () {
+    //   if (this.curve && this.curve.constructor === Object) {
+    //     let beta = this.curve.curveBeta ? this.curve.curveBeta : 0
+    //     let tension = this.curve.curveTension ? this.curve.curveTension : 0
+    //     let alpha = this.curve.curveAlpha ? this.curve.curveAlpha : 0
+
+    //     return { beta: beta, tension: tension, alpha: alpha }
+    //   }
+    //   return { beta: 0, tension: 0, alpha: 0 }
+    // },
+
+    // regressSpec () {
+    //   if (this.regression && this.regression.constructor === Object) {
+    //     let order = this.regression.regressionOrder ? this.regression.regressionOrder : 2
+    //     let precision = this.regression.regressionPrecision ? this.regression.regressionPrecision : 2
+    //     return { order: order, precision: precision }
+    //   }
+    //   return { order: 2, precision: 2}
+    // },
 
   },
 
@@ -164,6 +170,57 @@ export default {
   },
 
   methods: {
+    getCurve (c) {
+      let spec
+      if (c.constructor === Object) {
+        let beta = c.curveBeta ? c.curveBeta : 0
+        let tension = c.curveTension ? c.curveTension : 0
+        let alpha = c.curveAlpha ? c.curveAlpha : 0
+
+        spec = { beta: beta, tension: tension, alpha: alpha }
+      } else {
+        spec = { beta: 0, tension: 0, alpha: 0 }
+      }
+
+      let t
+      if (c.constructor === String) {
+        t = c
+      } else if (c.constructor === Object) {
+        t = c['type']
+      } else if (c === true) {
+        t = true
+      } else {
+        t = undefined
+      }
+
+      return { type: t, curveSpec: spec}
+    },
+
+    getRegress (r) {
+      let spec
+      if (r.constructor === Object) {
+        let order = r.regressionOrder ? r.regressionOrder : 2
+        let precision = r.regressionPrecision ? r.regressionPrecision : 2
+
+        spec = { order: order, precision: precision }
+      } else {
+        spec = { order: 2, precision: 2 }
+      }
+
+      let t
+      if (r.constructor === String) {
+        t = r
+      } else if (r.constructor === Object) {
+        t = r['type']
+      } else if (r === true) {
+        t = true
+      } else {
+        t = undefined
+      }
+
+      return { type: t, regressSpec: spec}
+    },
+
     generatePoints (x, y) {
       let points = []
       if (x.length !== y.length) {
@@ -234,14 +291,17 @@ export default {
 
       if (this.curve) {
         transformedPoints = transformPoints(points, this.$$transform)
-        path = createArc(transformedPoints, this.curve, this.curveSpec)
+        let curveDef = this.getCurve(this.curve)
+        console.log(this.curve)
+        path = createArc(transformedPoints, curveDef['type'], curveDef.curveSpec)
 
         return path
       }
 
       if (this.regression) {
         transformedPoints = transformPoints(points, this.$$transform)
-        path = createRegress(transformedPoints, this.regression, this.regressSpec)
+        let regressDef = this.getRegress(this.regression)
+        path = createRegress(transformedPoints, regressDef['type'], regressDef.regressSpec)
 
         return path
       }
@@ -268,6 +328,7 @@ export default {
     renderSVG (createElement) {
       let area = this.pathType === 'area'
       checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, area)
+      console.log(this, this.x, this.y)
       let aesthetics = this._props
 
       if (this.geometry) {
@@ -297,30 +358,25 @@ export default {
             points = this.sortPoints(points)
           }
 
+          let path
+
           if (area) {
-            let points2
+            let points2 = this.getOtherPoints()
 
-            if (aesthetics.x2 && !aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x2, aesthetics.y)
+            let start1 = transformPoints([points[0]], this.$$transform)[0]
+            let start2 = transformPoints([points2[0]], this.$$transform)[0]
+
+            let path1 = this.createPath(points)
+            let path2 = this.createPath(points2)
+
+            path = path1 + `L ${start2[0]} ${start2[1]}` + path2 + `L ${start1[0]} ${start1[1]} Z`
+          } else {
+            if (this.close) {
+              points = this.closePoints(points)
             }
 
-            if (!aesthetics.x2 && aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x, aesthetics.y2)
-            }
-
-            if (aesthetics.x2 && aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x2, aesthetics.y2)
-            }
-
-            if (this.sort) { points2 = this.sortPoints(points2) }
-            points = points.concat(points2.reverse())
+            path = this.createPath(points)
           }
-
-          if (this.close) {
-            points = this.closePoints(points)
-          }
-
-          let path = this.createPath(points)
 
           let element = createElement('path', {
             attrs: {
