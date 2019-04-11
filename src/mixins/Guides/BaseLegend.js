@@ -6,6 +6,8 @@ import Rectangular from '../Marks/Rectangular.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
+import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
+
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '../../scales/createScale.js'
 import defaultFormat from './utils/defaultFormat.js'
@@ -102,11 +104,6 @@ export default {
       default: 0
     },
 
-    labels: {
-      type: [Array],
-      default: undefined
-    },
-
     labelFontSize: {
       type: Number,
       default: 10
@@ -166,16 +163,6 @@ export default {
       }
     },
 
-    w: {
-      type: Number,
-      default: undefined
-    },
-
-    h: {
-      type: Number,
-      default: undefined
-    },
-
     fill: {
       type: [String, Object, Array],
       default: function () { return { type: 'blues' } }
@@ -184,16 +171,6 @@ export default {
     fillOpacity: {
       type: [Number, Object, Array],
       default: 1
-    },
-
-    x: {
-      type: [Number, Object, Array],
-      default: undefined
-    },
-
-    y: {
-      type: [Number, Object, Array],
-      default: undefined
     },
 
     tickCount: {
@@ -227,9 +204,15 @@ export default {
     }
   },
 
+  data () {
+    return {
+      legendCache: createPropCache(this, ['scale', 'fill', 'fillOpacity', 'tickValues'])
+    }
+  },
+
   computed: {
     _parsedScalingOptions () {
-      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
+      return parseScaleOptions(this.legendCache.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {
@@ -336,10 +319,10 @@ export default {
       let firstValue = this._domain[0]
       let newTickValues
 
-      if (this.tickValues) {
-        newTickValues = this.tickValues
+      if (this.legendCache.tickValues) {
+        newTickValues = this.legendCache.tickValues
 
-        if (this.tickExtra && this.tickValues[0] !== firstValue) {
+        if (this.tickExtra && this.legendCache.tickValues[0] !== firstValue) {
           newTickValues.unshift(firstValue)
         }
 
@@ -351,12 +334,12 @@ export default {
         let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
         let domain = this._domain
 
-        if (this.scale.domainMin) {
-          domain = [this.scale.domainMin, this._domain[this._domain.length - 1]]
+        if (this.legendCache.scale.domainMin) {
+          domain = [this.legendCache.scale.domainMin, this._domain[this._domain.length - 1]]
         }
 
-        if (this.scale.domainMax) {
-          domain = [this._domain[0], this.scale.domainMax]
+        if (this.legendCache.scale.domainMax) {
+          domain = [this._domain[0], this.legendCache.scale.domainMax]
         }
 
         if (this._domainType === 'quantitative') {
@@ -408,10 +391,10 @@ export default {
 
         if (this._domainType === 'interval:quantitative') {
           let intervals
-          if (this.scale.constructor === String) {
-            intervals = this.$$dataInterface.getColumn(this.scale)
-          } else if (this.scale.constructor === Object) {
-            intervals = this.$$dataInterface.getColumn(this.scale.domain)
+          if (this.legendCache.scale.constructor === String) {
+            intervals = this.$$dataInterface.getColumn(this.legendCache.scale)
+          } else if (this.legendCache.scale.constructor === Object) {
+            intervals = this.$$dataInterface.getColumn(this.legendCache.scale.domain)
           }
 
           // ticks = intervals.map((value, i) => {
@@ -431,7 +414,7 @@ export default {
             format = timeFormat('%d/%m/%Y')
           }
 
-          let intervals = this.$$dataInterface.getColumn(this.scale)
+          let intervals = this.$$dataInterface.getColumn(this.legendCache.scale)
           ticks = ticksFromIntervals(intervals).map(value => {
             let date = new Date(value)
             return { value: date, label: format(date) }
@@ -537,6 +520,10 @@ export default {
     }
   },
 
+  created () {
+    createWatchers(this, this.legendCache)
+  },
+
   methods: {
     sectionScale (domain) {
       return scaleLinear().domain(domain).range([0, 100])
@@ -552,36 +539,36 @@ export default {
       } else {
         // Domain is dependent on scale inputs
         // Range is dependent on aesthetic inputs
-        scaleOptions.domain = this.scale.domain ? this.scale.domain : this.scale
+        scaleOptions.domain = this.legendCache.scale.domain ? this.legendCache.scale.domain : this.legendCache.scale
 
-        if (this.scale.domainMin) {
-          scaleOptions.domainMin = this.scale.domainMin
+        if (this.legendCache.scale.domainMin) {
+          scaleOptions.domainMin = this.legendCache.scale.domainMin
         }
 
-        if (this.scale.domainMax) {
-          scaleOptions.domainMax = this.scale.domainMax
+        if (this.legendCache.scale.domainMax) {
+          scaleOptions.domainMax = this.legendCache.scale.domainMax
         }
 
-        if (this.scale.domainMid) {
-          scaleOptions.domainMid = this.scale.domainMid
+        if (this.legendCache.scale.domainMid) {
+          scaleOptions.domainMid = this.legendCache.scale.domainMid
         }
 
-        if (this.scale.order && this._domainType.includes('categorical')) {
-          scaleOptions.order = this.scale.order
-        } else if (this.scale.order && !this._domainType.includes('categorical')) {
+        if (this.legendCache.scale.order && this._domainType.includes('categorical')) {
+          scaleOptions.order = this.legendCache.scale.order
+        } else if (this.legendCache.scale.order && !this._domainType.includes('categorical')) {
           console.warn('Data must be categorical to include `order` in `scale`')
         }
 
-        if (this.scale.absolute) {
-          scaleOptions.absolute = this.scale.absolute
+        if (this.legendCache.scale.absolute) {
+          scaleOptions.absolute = this.legendCache.scale.absolute
         }
 
-        if (this.scale.nice) {
-          scaleOptions.nice = this.scale.nice
+        if (this.legendCache.scale.nice) {
+          scaleOptions.nice = this.legendCache.scale.nice
         }
 
-        if (this.scale.reverse) {
-          scaleOptions.reverse = this.scale.reverse
+        if (this.legendCache.scale.reverse) {
+          scaleOptions.reverse = this.legendCache.scale.reverse
         }
 
         if (scaleBasis.rangeMin) {
