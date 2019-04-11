@@ -88,23 +88,23 @@ Suppose that we want to expand the numerical scales such that they start from 0,
 Instead, what we want to do is to define new scales using the `<vgg-scale>` component. This should be done before the `<vgg-repeat>` component is created.
 
 ```html{1-9}
-<vgg-scales :scales="{ 'sepal length scale': { domain: 'sepal length',
-											   domainMin: 0 } }" />
-<vgg-scales :scales="{ 'sepal width scale': { domain: 'sepal width',
-											  domainMin: 0 } }" />
-<vgg-scales :scales="{ 'petal length scale': { domain: 'petal length',
-											   domainMin: 0 } }" />
-<vgg-scales :scales="{ 'petal width scale': { domain: 'petal width',
-											  domainMin: 0 } }" />
-<vgg-scales :scales="{ 'species scale': { domain: 'species' } }" />
+<vgg-scales :scales="{  'sepal length scale': { domain: 'sepal length',
+											   domainMin: 0 },
+						'sepal width scale': { domain: 'sepal width',
+											  domainMin: 0 },
+						'petal length scale': { domain: 'petal length',
+											   domainMin: 0 },
+						'petal width scale': { domain: 'petal width',
+											  domainMin: 0 },
+						'species scale': { domain: 'species' } }" />
 
-<vgg-repeat
-	v-slot="{ x, y }"
-	:x="['sepal length', 'sepal width', 'species']"
-	:y="['petal length', 'petal width', 'species']"
-	:cell-padding="10"
-	:sides="['right', 'bottom']"
->
+	<vgg-repeat
+		v-slot="{ x, y }"
+		:x="['sepal length', 'sepal width', 'species']"
+		:y="['petal length', 'petal width', 'species']"
+		:cell-padding="10"
+		:sides="['right', 'bottom']"
+	>
 
 	/* details omitted */...
 
@@ -115,10 +115,12 @@ Notice that the numerical scales are different from the `species` scale. Further
 
 It is now possible to use these custom scales with the appropriate use of [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).
 
-```html{5,7,14-18}
+```html{4-5,7,9}
 /* vgg-repeat specification omitted */...
 
 <vgg-section
+	:scale-x="`#${x} scale`"
+    :scale-y="`#${y} scale`"
 	:axes="{
 		right: { scale: `#${y} scale`, flip: true, tickCount: 5,
 				 title: y, titleAngle: -90, titleHjust: 4.5 },
@@ -130,8 +132,8 @@ It is now possible to use these custom scales with the appropriate use of [templ
 	<vgg-map v-slot="{ row }">
 
 		<vgg-point
-			:x="{ val: row[x], scale: `#${x} scale` }"
-			:y="{ val: row[y], scale: `#${y} scale` }"
+			:x="row[x]"
+			:y="row[y]"
 			:radius="3"
 		/>
 
@@ -153,8 +155,8 @@ In order to do this we can attach the `@hover` event to the `<vgg-point>` mark.
 
 	<vgg-point
 		@hover="handleHover($event, row)"
-		:x="{ val: row[x], scale: `#${x} scale` }"
-		:y="{ val: row[y], scale: `#${y} scale` }"
+		:x="row[x]"
+		:y="row[y]"
 		:radius="3"
 	/>
 
@@ -194,10 +196,12 @@ methods: {
 
 Lastly, we want to add a `<vgg-point>` mark to the template that renders a single point only when `hoverRow !== undefined`. That is to say, when hovering is taking place, an extra point is rendered on each graph at the position of the corresponding point.
 
-```html{21-27}
+```html{25-31}
 /* vgg-repeat specification omitted */...
 
 <vgg-section
+	:scale-x="`#${x} scale`"
+    :scale-y="`#${y} scale`"
 	:axes="{
 		right: { scale: `#${y} scale`, flip: true, tickCount: 5,
 				 title: y, titleAngle: -90, titleHjust: 4.5 },
@@ -210,20 +214,20 @@ Lastly, we want to add a `<vgg-point>` mark to the template that renders a singl
 
 		<vgg-point
 			@hover="handleHover($event, row)"
-			:x="{ val: row[x], scale: `#${x} scale` }"
-			:y="{ val: row[y], scale: `#${y} scale` }"
-			:radius="3"
-		/>
-
-		<vgg-point
-			v-if="hoverRow"
-			:x="{ val: hoverRow[x], scale: `#${x} scale` }"
-			:y="{ val: hoverRow[y], scale: `#${y} scale` }"
-			fill="red"
+			:x="row[x]"
+			:y="row[y]"
 			:radius="3"
 		/>
 
 	</vgg-map>
+
+	<vgg-point
+		v-if="hoverRow"
+		:x="hoverRow[x]"
+		:y="hoverRow[y]"
+		fill="red"
+		:radius="3"
+	/>
 
 </vgg-section>
 ```

@@ -28,6 +28,8 @@
       >
 
         <vgg-section
+          :scale-x="`#${x} scale`"
+          :scale-y="`#${y} scale`"
           :axes="{
             right: { scale: `#${y} scale`, flip: true, tickCount: 5, title: y, titleAngle: -90, titleHjust: 4.5 },
             bottom: { scale: `#${x} scale`, labelRotate: true, tickCount: 5, title: x, titleVjust: -3 }
@@ -36,22 +38,22 @@
 
           <vgg-map v-slot="{ row }">
 
-            <vgg-point
-              @hover="handleHover($event, row)"
-              :x="{ val: row[x], scale: `#${x} scale` }"
-              :y="{ val: row[y], scale: `#${y} scale` }"
-              :radius="3"
-            />
+              <vgg-point
+                @hover="handleHover($event, row)"
+                :x="row[x]"
+                :y="row[y]"
+                :radius="3"
+              />
 
-            <vgg-point
-              v-if="hoverRow"
-              :x="{ val: hoverRow[x], scale: `#${x} scale` }"
-              :y="{ val: hoverRow[y], scale: `#${y} scale` }"
-              fill="red"
-              :radius="3"
-            />
+            </vgg-map>
 
-          </vgg-map>
+          <vgg-point
+            v-if="hoverRow"
+            :x="hoverRow[x]"
+            :y="hoverRow[y]"
+            fill="red"
+            :radius="3"
+          />
 
         </vgg-section>
 
