@@ -267,3 +267,4 @@ export default {
   }
 }
 </script>
+this.legendCache.fillOpacity

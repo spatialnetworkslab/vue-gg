@@ -267,7 +267,7 @@ export default {
     },
 
     legendLeft () {
-      if (this.position != 'left' && (!isNaN(this.x) || !isNaN(this.x1) || !isNaN(this.x2))) {
+      if (this.position !== 'left' && (!isNaN(this.x) || !isNaN(this.x1) || !isNaN(this.x2))) {
         throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y` or `position`')
       } else if (isNaN(this.x) && isNaN(this.x1) && isNaN(this.x2)) {
         let p = this.position
@@ -305,7 +305,7 @@ export default {
     },
 
     legendTop () {
-      if (this.position != 'left' && (!isNaN(this.y) || !isNaN(this.y1) || !isNaN(this.y2))) {
+      if (this.position !== 'left' && (!isNaN(this.y) || !isNaN(this.y1) || !isNaN(this.y2))) {
         throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y` or `position`')
       } else if (isNaN(this.y) && isNaN(this.y1) && isNaN(this.y2)) {
         let p = this.position
