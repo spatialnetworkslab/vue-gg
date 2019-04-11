@@ -240,7 +240,7 @@ export default {
     this.$$coordinateTree.removeBranch(this.coordinateTreeBranchID)
   },
 
-  created () {
+  mounted () {
     this.setCoordinateTreeBranch()
     createWatchers(this, this.props)
     this.ready = true

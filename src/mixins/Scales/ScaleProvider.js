@@ -20,8 +20,14 @@ export default {
     }
   },
 
+  computed: {
+    _scales () {
+      return this.scaleCache.scales
+    }
+  },
+
   watch: {
-    scales: {
+    _scales: {
       handler (newScales, oldScales) {
         let newScaleKeys = this.difference(newScales, oldScales)
         for (let scaleName of newScaleKeys) {

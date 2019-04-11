@@ -39,14 +39,16 @@ for an in-depth explanation.
 
 ### Other props
 
-| Prop            | Required | Types                   | Default   | Description                     |
-| --------------- | -------- | ----------------------- | --------- | ------------------------------- |
-| data            | false    | [Array, Object]         | undefined | Some supported data structure   |
-| type            | false    | String                  | 'scale'   | Type of local coordinate system |
-| scale-x         | false    | [String, Array, Object] | undefined | Scaling of x dimension          |
-| scale-y         | false    | [String, Array, Object] | undefined | Scaling of y dimension          |
-| format          | false    | String                  | undefined | Format of data structure        |
-| transform       | false    | [Array, Object]         | undefined | Transformation(s) to be applied |
+| Prop      | Required | Types                   | Default   | Description                              |
+| --------- | -------- | ----------------------- | --------- | ---------------------------------------- |
+| data      | false    | [Array, Object]         | undefined | Some supported data structure            |
+| type      | false    | String                  | 'scale'   | Type of local coordinate system          |
+| scale-x   | false    | [String, Array, Object] | undefined | Scaling of x dimension                   |
+| scale-y   | false    | [String, Array, Object] | undefined | Scaling of y dimension                   |
+| format    | false    | String                  | undefined | Format of data structure                 |
+| transform | false    | [Array, Object]         | undefined | Transformation(s) to be applied          |
+| dataID    | false    | String                  | undefined | ID for referencing from other data scope |
+
 
 The props passed to the `scale-x` and `scale-y` are [scaling options](../concepts/scaling.md) props.
 
