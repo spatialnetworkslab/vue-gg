@@ -169,19 +169,19 @@ export default class {
 
     let row = new Proxy({}, { get: (obj, prop) => {
       if (prop in data) { return data[prop][i] }
-      throw new Error(`Invalid column name ${prop}`)
+      throw invalidColumnError(prop)
     } })
 
     let prevRow = new Proxy({}, { get: (obj, prop) => {
       if (i === 0) { return undefined }
       if (prop in data) { return data[prop][i - 1] }
-      throw new Error(`Invalid column name ${prop}`)
+      throw invalidColumnError(prop)
     } })
 
     let nextRow = new Proxy({}, { get: (obj, prop) => {
       if (i === this._length - 1) { return undefined }
       if (prop in data) { return data[prop][i + 1] }
-      throw new Error(`Invalid column name ${prop}`)
+      throw invalidColumnError(prop)
     } })
 
     for (i = 0; i < this._length; i++) {
@@ -248,3 +248,5 @@ function extractGeometry (feat) {
 function extractAttributes (feat) {
   return feat.properties
 }
+
+const invalidColumnError = prop => new Error(`Invalid column name '${prop}'`)
