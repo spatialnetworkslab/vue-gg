@@ -70,7 +70,7 @@ export default {
       let beta0 = Math.random() * 100
       let beta1 = 0.25 + Math.random() * 2
       let range = Math.random() * 1000
-      for (let i = 0; i < 10000; i++) {
+      for (let i = 0; i < 100; i++) {
         let a = Math.random() * range
         let error = Math.random() * range
         let b = beta0 + a * beta1 + error
