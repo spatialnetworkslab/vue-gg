@@ -40,6 +40,10 @@ export default {
     children () {
       let children = this.$slots.default
 
+      if (!children || children.length === 0) {
+        return [undefined, undefined]
+      }
+
       // Filter out undefined components (whitespace, v-if="false")
       let definedChildren = children.filter(c => c.tag !== undefined)
 
@@ -80,6 +84,10 @@ export default {
     validateGridOptions(options)
 
     let [children, childType] = this.children
+
+    if (children === undefined) {
+      return createElement('g', { class: 'layout-grid' })
+    }
 
     if (childType === 'square') {
       let squareComponents = children
