@@ -6,7 +6,7 @@ import {
   createPath,
   createGeoPath,
   createArc,
-  createRegress,
+  createRegress
 } from '../../components/Marks/utils/createPath.js'
 
 import checkPoints from './utils/checkPoints.js'
@@ -124,7 +124,7 @@ export default {
     _interpolate () {
       if (this.interpolate !== undefined) { return this.interpolate }
       return false
-    },
+    }
   },
 
   beforeDestroy () {
@@ -158,7 +158,7 @@ export default {
         t = undefined
       }
 
-      return { type: t, curveSpec: spec}
+      return { type: t, curveSpec: spec }
     },
 
     getRegress (r) {
@@ -183,7 +183,7 @@ export default {
         t = undefined
       }
 
-      return { type: t, regressSpec: spec}
+      return { type: t, regressSpec: spec }
     },
 
     generatePoints (x, y) {

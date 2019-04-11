@@ -34,7 +34,7 @@ export default {
     geometry: {
       type: undefined,
       default: undefined
-    },
+    }
   },
 
   data () {
@@ -84,7 +84,7 @@ export default {
       if (!aesthetics.x2 && !aesthetics.y2) {
         let yMin = this.parentBranch.domains.y[0]
         points = this.generatePoints([yMin], aesthetics.y)
-      } 
+      }
 
       if (aesthetics.x2 && !aesthetics.y2) {
         points = this.generatePoints(aesthetics.x2, aesthetics.y)

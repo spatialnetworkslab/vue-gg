@@ -86,13 +86,12 @@ export function getGenerator (generator, curveSpec) {
 
 // export const arcGenerator = d3.line().curve(d3.curveCardinal.tension(0.96))
 
-export function createArc(points, generator, curveSpec) {
+export function createArc (points, generator, curveSpec) {
   let arcGenerator = getGenerator(generator, curveSpec)
   return arcGenerator(points)
 }
 
-export function createRegress(points, regress, regressSpec) {
-
+export function createRegress (points, regress, regressSpec) {
   let allRegression = {
     'linear': regression.linear,
     'exponential': regression.exponential,
@@ -118,7 +117,6 @@ export function createRegress(points, regress, regressSpec) {
   let path = lineGenerator(transformedPoints)
 
   return path
-
 }
 
 // Helpers
