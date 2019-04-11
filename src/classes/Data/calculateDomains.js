@@ -6,12 +6,6 @@ export default function (data, length) {
   let domains = {}
   let types = {}
 
-  if (length === 0) {
-    // Warn user if an empty dataframe was supplied
-    console.warn('Empty dataframe: ')
-    console.warn(JSON.stringify(data))
-  }
-
   for (let key in data) {
     // We will try to guess the type from the first VALID value of each column.
     // If the dataframe has < 2 valid values, we will set a dummy domain.

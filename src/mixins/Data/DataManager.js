@@ -2,6 +2,8 @@ import DataContainer from '../../classes/Data/DataContainer.js'
 import DataInterface from '../../classes/Data/DataInterface.js'
 import applyTransformations from '../../transformations/applyTransformations.js'
 
+import isEmptyDataframe from '../../utils/isEmptyDataframe.js'
+
 export default {
   props: {
     data: {
@@ -17,6 +19,11 @@ export default {
     transform: {
       type: [Array, Object, undefined],
       default: undefined
+    },
+
+    dataID: {
+      type: [String, undefined],
+      default: undefined
     }
   },
 
@@ -29,12 +36,20 @@ export default {
   computed: {
     dataContainer () {
       if (this.data) {
+        if (isEmptyDataframe(this.data)) {
+          return false
+        }
+
         let container = new DataContainer(this.data, this.format)
         if (this.transform) {
           let transformedData = applyTransformations(
             container.getDataset(),
             this.transform
           )
+
+          if (transformedData === false) {
+            return false
+          }
 
           return Object.freeze(new DataContainer(transformedData))
         } else {
@@ -44,18 +59,8 @@ export default {
     },
 
     dataScopeID () {
-      let id
-      if (this.$attrs.id) {
-        // use id if given
-        id = this.$attrs.id
-      } else if (this.$vnode.data.staticClass) {
-        // fall back on class if no id is given
-        let elClass = this.$vnode.data.staticClass.replace(/\s+/g, '_')
-        id = elClass + '_' + this.uuid
-      } else {
-        id = '_' + this.uuid
-      }
-      return id
+      if (this.dataID) { return this.dataID }
+      return '_' + this.uuid
     }
   },
 
