@@ -67,6 +67,13 @@ export default {
     }
   },
 
+  data () {
+    return {
+      markType: 'symbol',
+      validGeomTypes: ['Point']
+    }
+  },
+
   computed: {
     pathAlias () {
       return {
@@ -101,13 +108,6 @@ export default {
     let uid = this.uuid
     if (this.events.length > 0) {
       this.$$interactionManager.removeItem(uid)
-    }
-  },
-
-  data () {
-    return {
-      markType: 'symbol',
-      validGeomTypes: ['Point']
     }
   },
 
