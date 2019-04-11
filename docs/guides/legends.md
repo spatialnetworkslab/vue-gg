@@ -156,22 +156,34 @@ examples on how to set inputs to `domain` and the legend's aesthetic properties.
 
 ### Legend Positioning
 
-A legend component can contain the following position properties.
+A legend component can take the following position properties. These take after [Marks > Rectangle](../marks/rectangle.md).
 
-| Prop | Required | Types | Default   | Description                             | Unit(s)           |
-| ---- | -------- | ----- | --------- | --------------------------------------- | ----------------- |
-| x    | true     | Number | undefined | position of legend along section x-axis              | Local coordinates |
-| y    | true     | Number | undefined | position of legend along section y-axis              | Local coordinates |
-| position| false    | String | 'left' | position of legend with respect to parent section | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
+| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
+| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
+| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinates |
+| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinates |
+| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
+| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
+| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinates |
+| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates |
+| w    | depends  | Number                 | undefined | Width                | Local coordinates |
+| h    | depends  | Number                 | undefined | Height               | Local coordinates |
+| position| false | String | 'left' | position of legend with respect to parent section | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
 
 #### Allowed combinations of positioning props
 
-| Combination      | Explanation         |
-|------------------|----------------------|
-| `x` only | Manually positions the legend within the section along the section's x axis   |
-| `y` only | Manually positions the legend within the section along the section's y axis |
-| `x` + `y` | Manually positions the legend within the section along the sections' x and y axes  |
-| `position` | Automatically computes the exact x-y coordinates to position the legend within the parent section, according to its input |
+The positioning properties of the legend can only be used in certain combinations.
+
+| Combination | Explanation    |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `x1` + `x2` | `x1` refers to x-coordinate of the left side of the rectangle, `x2` refers to x-coordinate of the right side of the rectangle. |
+| `x` + `w`   | `x` is the center of the rectangle in the x-dimension, `w` is the width. Here, `x1 = x - w / 2`, and `x2 = x + w / 2`.         |
+| `x1` + `w`  | `x2 = x1 + w`|
+| `x2` + `w`  | `x1 = x2 - w`|
+| `y1` + `y2` | `y1` refers to y-coordinate of the bottom side of the rectangle, `y2` refers to y-coordinate of the top side of the rectangle. |
+| `y` + `h`   | `y` is the center of the rectangle in the x-dimension, `h` is the width. Here, `y1 = y - h / 2`, and `y2 = y + h / 2`.         |
+| `y1` + `h`  | `y2 = y1 + h`|
+| `y2` + `h`  | `y1 = y2 - h`|
 
 If left empty, then the default position of the x-axis is `position = 'left'`
 (center leftmost of parent section).
