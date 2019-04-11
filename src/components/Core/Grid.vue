@@ -37,7 +37,7 @@ export default {
   },
 
   computed: {
-    children () {
+    childType () {
       let children = this.$slots.default
 
       if (!children || children.length === 0) {
@@ -56,13 +56,13 @@ export default {
         if (definedChildren.length > 1) {
           throw wrongUseError
         }
-        return [definedChildren, 'map']
+        return 'map'
       }
 
       if (definedChildren.some(c => !this.isSquareComponent(c))) {
         throw wrongUseError
       } else {
-        return [definedChildren, 'square']
+        return 'square'
       }
     }
   },
@@ -72,7 +72,7 @@ export default {
   },
 
   provide () {
-    let [, childType] = this.children
+    let childType = this.childType
     if (childType === 'map') {
       let $$grid = this._props
       return { $$grid }
@@ -83,7 +83,9 @@ export default {
     let options = this._props
     validateGridOptions(options)
 
-    let [children, childType] = this.children
+    // let [children, childType] = this.children
+    let children = this.$slots.default.filter(c => c.tag !== undefined)
+    let childType = 'square'
 
     if (children === undefined) {
       return createElement('g', { class: 'layout-grid' })
