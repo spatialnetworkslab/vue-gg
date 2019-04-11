@@ -19,6 +19,11 @@ export default {
     transform: {
       type: [Array, Object, undefined],
       default: undefined
+    },
+
+    dataID: {
+      type: [String, undefined],
+      default: undefined
     }
   },
 
@@ -56,18 +61,8 @@ export default {
     },
 
     dataScopeID () {
-      let id
-      if (this.$attrs.id) {
-        // use id if given
-        id = this.$attrs.id
-      } else if (this.$vnode.data.staticClass) {
-        // fall back on class if no id is given
-        let elClass = this.$vnode.data.staticClass.replace(/\s+/g, '_')
-        id = elClass + '_' + this.uuid
-      } else {
-        id = '_' + this.uuid
-      }
-      return id
+      if (this.dataID) { return this.dataID }
+      return '_' + this.uuid
     },
 
     parentDataInterface () {
@@ -90,11 +85,8 @@ export default {
   },
 
   created () {
-    this.$$dataManager.register(this.dataScopeID, this.dataContainer)
-  },
-
-  mounted () {
     createWatchers(this, this.dataProviderCache)
+    this.$$dataManager.register(this.dataScopeID, this.dataContainer)
   },
 
   watch: {

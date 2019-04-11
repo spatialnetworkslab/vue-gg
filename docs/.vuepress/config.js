@@ -68,7 +68,8 @@ module.exports = {
                 collapsable: true,
                 children: [
                     'guides/cartesian',
-                    'guides/gridlines'
+                    'guides/gridlines',
+                    'guides/legends',
                     ]
             },
             {

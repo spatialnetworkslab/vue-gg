@@ -2,11 +2,12 @@
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
+import isSquareComponent from './utils/isSquareComponent.js'
 
 import {
   calculateGridLayout,
   calculateRowsCols,
-  updateGridSections
+  updateGridComponents
 } from './utils/grid.js'
 
 import { initMappingTree, extractMappings, mapRow } from './utils/mappings.js'
@@ -43,13 +44,16 @@ export default {
       let mappedElements = []
 
       this.$$dataInterface.forEachRow(scope => {
-        let slotContent = this.$scopedSlots.default(scope)
+        let slotContent = this.$scopedSlots.default(scope) || []
+        slotContent = slotContent.filter(el => el.tag !== undefined)
 
-        if (mappings === null) { mappings = initMappingTree(slotContent) }
-        mappings = extractMappings(mappings, slotContent, context)
+        if (slotContent.length > 0) {
+          if (mappings === null) { mappings = initMappingTree(slotContent) }
+          mappings = extractMappings(mappings, slotContent, context)
 
-        let mappedContent = mapRow(mappings, slotContent, scope.i)
-        mappedElements.push(...mappedContent)
+          let mappedContent = mapRow(mappings, slotContent, scope.i)
+          mappedElements.push(...mappedContent)
+        }
       })
 
       return mappedElements
@@ -61,25 +65,35 @@ export default {
       let dataframe = this.$$dataInterface.getDataset()
       let scope = { dataframe }
 
-      let slotContent = this.$scopedSlots.default(scope)
+      let slotContent = this.$scopedSlots.default(scope) || []
+      slotContent = slotContent.filter(el => el.tag !== undefined)
 
-      let mappings = initMappingTree(slotContent)
-      mappings = extractMappings(mappings, slotContent, context)
+      if (slotContent.length > 0) {
+        let mappings = initMappingTree(slotContent)
+        mappings = extractMappings(mappings, slotContent, context)
 
-      let mappedElements = mapRow(mappings, slotContent, 0)
-      return mappedElements
+        let mappedElements = mapRow(mappings, slotContent, 0)
+        return mappedElements
+      } else {
+        return []
+      }
     },
 
-    validateSections (elements) {
+    validateComponents (elements) {
+      let wrongUseError = new Error(`'vgg-grid' can have in its slot:
+        1. any number of 'square' (with x1, x2, y1 and y2 props) components
+        2. a single 'vgg-map' component that only contains other 'square' components
+      `)
+
       elements = elements.filter(el => el.tag !== undefined)
-      if (!elements.every(el => el.componentOptions.tag === 'vgg-section')) {
-        throw new Error(`'vgg-grid' can have in its slot:
-          1. any number of 'vgg-section' components
-          2. a single 'vgg-map' component that only contains other 'vgg-section' components
-        `)
+      if (elements.some(c => !this.isSquareComponent(c))) {
+        throw wrongUseError
+      } else {
+        return elements
       }
-      return elements
-    }
+    },
+
+    isSquareComponent
   },
 
   provide () {
@@ -102,16 +116,16 @@ export default {
     })
 
     if (this.$$grid !== false) {
-      let sections = this.validateSections(elements)
+      let squareComponents = this.validateComponents(elements)
       let options = this.$$grid
 
-      let numberOfSections = sections.length
-      let { rows, cols } = calculateRowsCols(options, numberOfSections)
+      let numberOfSquareComponents = squareComponents.length
+      let { rows, cols } = calculateRowsCols(options, numberOfSquareComponents)
       let ranges = this.parentBranch.domains
       let start = this.$$grid.start
       let layout = calculateGridLayout(rows, cols, options, ranges, undefined, start)
 
-      elements = updateGridSections(createElement, sections, layout)
+      elements = updateGridComponents(squareComponents, layout)
     }
 
     return createElement('g', { class: 'map' }, elements)

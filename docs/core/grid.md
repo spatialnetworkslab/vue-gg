@@ -8,8 +8,11 @@ title: 'Grid'
 
 # Description
 
-The Grid component is used to quickly position and align [Section](./section.md)
-components in a grid format.
+The Grid component is used to quickly position and align 'square'
+components in a grid format. 'Square' here refers to any component that has
+ `x1`, `x2`, `y1` and `y2` props. This includes the [Section](./section.md)
+ component, the [Rectangle](../marks/rectangle.md) mark, and any custom component
+ that you would want to create, given it has the props mentioned above.
 
 # Props
 
@@ -19,7 +22,7 @@ components in a grid format.
 | cols           | depends  | Number           | undefined | Max. number olf columns the grid can have    |
 | layout-padding | false    | [Number, Object] | 0         | Padding with respect to parent element       |
 | cell-padding   | false    | [Number, Object] | 0         | Padding between child elements               |
-| start          | false    | String           | 'b'       | Start filling from top ('t') or bottom ('b') | 
+| start          | false    | String           | 'b'       | Start filling from top ('t') or bottom ('b') |
 
 The Grid component requires either the `rows`, _or_ the `cols` prop. If you use both,
 or neither, the component will throw an error. The number given to `rows` or `cols`

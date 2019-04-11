@@ -56,16 +56,15 @@ export default {
     },
 
     coordinateSpecification () {
-      let aes = this._props
-
       if (this.invalidX || this.invalidY) {
         throw new Error('Invalid combination of props')
       }
 
-      let [x1, x2] = this.convertSpecification(aes.x1, aes.x2, aes.x, aes.w, this.parentBranch, 'x')
-      let [y1, y2] = this.convertSpecification(aes.y1, aes.y2, aes.y, aes.h, this.parentBranch, 'y')
+      let [x1, x2] = this.convertSpecification(this.x1, this.x2, this.x, this.w, this.parentBranch, 'x')
+      let [y1, y2] = this.convertSpecification(this.y1, this.y2, this.y, this.h, this.parentBranch, 'y')
 
       let newCoords = { x1, x2, y1, y2 }
+
       return newCoords
     }
   },
