@@ -196,6 +196,8 @@ methods: {
 
 Lastly, we want to add a `<vgg-point>` mark to the template that renders a single point only when `hoverRow !== undefined`. That is to say, when hovering is taking place, an extra point is rendered on each graph at the position of the corresponding point.
 
+**Ensure that the new `<vgg-point>` component is outside the map component.** We only want to render a single highlighted point per section, there is thus no need to map all the rows. Placing the new `<vgg-point>` within the map component may cause significant lagging.
+
 ```html{25-31}
 /* vgg-repeat specification omitted */...
 
