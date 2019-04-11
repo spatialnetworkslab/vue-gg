@@ -24,6 +24,11 @@ export default {
     dataID: {
       type: [String, undefined],
       default: undefined
+    },
+
+    allowEmpty: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -36,7 +41,7 @@ export default {
   computed: {
     dataContainer () {
       if (this.data) {
-        if (isEmptyDataframe(this.data)) {
+        if (!this.allowEmpty && isEmptyDataframe(this.data)) {
           return false
         }
 
@@ -44,7 +49,8 @@ export default {
         if (this.transform) {
           let transformedData = applyTransformations(
             container.getDataset(),
-            this.transform
+            this.transform,
+            this.allowEmpty
           )
 
           if (transformedData === false) {
