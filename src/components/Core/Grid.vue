@@ -41,7 +41,7 @@ export default {
       let children = this.$slots.default
 
       if (!children || children.length === 0) {
-        return [undefined, undefined]
+        return undefined
       }
 
       // Filter out undefined components (whitespace, v-if="false")
@@ -83,11 +83,10 @@ export default {
     let options = this._props
     validateGridOptions(options)
 
-    // let [children, childType] = this.children
     let children = this.$slots.default.filter(c => c.tag !== undefined)
-    let childType = 'square'
+    let childType = this.childType
 
-    if (children === undefined) {
+    if (childType === undefined) {
       return createElement('g', { class: 'layout-grid' })
     }
 
