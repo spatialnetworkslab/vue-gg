@@ -354,7 +354,7 @@ export default {
       }
     },
 
-    legendLabels () {
+    legendTicks () {
       let firstValue = this._domain[0]
       let newTickValues
 
@@ -365,9 +365,19 @@ export default {
           newTickValues.unshift(firstValue)
         }
 
-        return newTickValues.map(value => {
-          return { value }
-        })
+        if (this._domainType.includes('interval')) {
+          let processedTicks = []; let i = 0
+          while (i < newTickValues.length) {
+            processedTicks.push({ value: newTickValues[i][0], label: newTickValues[i][0] })
+            i++
+          }
+          processedTicks.push({ value: newTickValues[i - 1][1], label: newTickValues[i - 1][1] })
+          return processedTicks
+        } else {
+          return newTickValues.map(value => {
+            return { value }
+          })
+        }
       } else {
         let ticks
         let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
@@ -382,7 +392,8 @@ export default {
         }
 
         if (this._domainType === 'quantitative') {
-          newTickValues = arrayTicks(...domain, this.tickCount)
+          let numTicks = this.tickCount ? this.tickCount : 10
+          newTickValues = arrayTicks(...domain, numTicks)
           if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
@@ -436,11 +447,6 @@ export default {
             intervals = this.$$dataInterface.getColumn(this.legendCache.scale.domain)
           }
 
-          // ticks = intervals.map((value, i) => {
-          //   let mean = (value[0] + value[1]) / 2
-          //   return { value: mean, label: this.nice ? format(this.round(mean, 1)) : format(mean) }
-          // })
-
           ticks = ticksFromIntervals(intervals).map(value => {
             return { value: value, label: this.nice ? format(value, 1) : format(value) }
           })
@@ -458,6 +464,11 @@ export default {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })
+
+          if (this.tickCount) {
+            let step = Math.floor(ticks.length / this.tickCount)
+            ticks = ticks.filter((value, i) => (i % step) === 0)
+          }
         }
 
         return ticks
@@ -472,7 +483,8 @@ export default {
           return this.plotWidth * 0.1 + this.rowPadding
         } else {
           let width = this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
-          return (width / this.tickCount * this.legendLabels.length >= width ? width / this.tickCount * this.legendLabels.length : width)
+          // return (width / this.tickCount * this.legendTicks.length >= width ? width / this.tickCount * this.legendTicks.length : width)
+          return width
         }
       } else if (this.x1 && this.x2 && this.w) {
         throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
@@ -490,7 +502,8 @@ export default {
         if (this.orientation === 'vertical') {
           // return this.plotHeight * 0.3 + this.titleFontSize + this.colPadding
           let height = this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
-          return (height / this.tickCount * this.legendLabels.length >= height ? height / this.tickCount * this.legendLabels.length : height)
+          // return (height / this.tickCount * this.legendTicks.length >= height ? height / this.tickCount * this.legendTicks.length : height)
+          return height
         } else {
           return this.plotHeight * 0.1 + this.rowPadding
         }

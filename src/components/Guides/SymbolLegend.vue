@@ -490,7 +490,7 @@ export default {
     // work on categorical scales - shapes, colors, sizes, stroke widths
     symbols () {
       let symbols = []
-      let l = this.legendLabels
+      let l = this.legendTicks
       let ticks = l.length
       let start = 0; let end = 0; let location; let symbol
       let segHeight = 100 / ticks

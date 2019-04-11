@@ -153,10 +153,10 @@ export default {
       if (this._domainType.includes('interval')) {
         let scale = this.legendCache.scale.domain ? this.legendCache.scale.domain : this.legendCache.scale
         for (let i = 0; i < this.$$dataInterface.getColumn(scale).length; i++) {
-          domain.push([this.legendLabels[i].value, this.legendLabels[i + 1].value])
+          domain.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
         }
       } else {
-        domain = this.legendLabels
+        domain = this.legendTicks
       }
       return domain
     },
@@ -254,9 +254,9 @@ export default {
 
     boxes () {
       let boxes = []
-      let l = this.legendLabels
-      let ticks = this.legendLabels.length
-      let domain = this._domainType.includes('interval') ? [this.legendLabels[0].value, this.legendLabels[this.legendLabels.length - 1].value] : this._domain
+      let l = this.legendTicks
+      let ticks = this.legendTicks.length
+      let domain = this._domainType.includes('interval') ? [this.legendTicks[0].value, this.legendTicks[this.legendTicks.length - 1].value] : this._domain
       let sectionScale = scaleLinear().domain(domain).range([0, 100])
 
       if (!this.flip) {

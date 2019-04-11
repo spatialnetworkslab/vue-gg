@@ -503,8 +503,8 @@ or `[ <value 1>, <value 2>, <value 3>]`.
   :stroke-width="{ range: [2, 12] }"
   :stroke-opacity="{ range: [0, 0.7] }"
   shape="line"
-  :x="10"
-  :y="500"
+  :x="150"
+  :y="520"
   :w="250"
   title="Stroke width, opacity"
   title-font-weight="bold"
@@ -518,7 +518,7 @@ or `[ <value 1>, <value 2>, <value 3>]`.
   :font-size="10"
   :stroke-width="10"
   :stroke="['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']"
-  :x="10"
+  :x="150"
   :y="50"
   :w="250"
   shape="line"
@@ -527,7 +527,6 @@ or `[ <value 1>, <value 2>, <value 3>]`.
   :title-font-size="12"
   orientation="horizontal"
 />
-
 ```
 :::
 </CodeLayout>

@@ -159,17 +159,17 @@ export default {
       // create section length scale and format valueDomain from legend labels, depending on if interval domain type or not
       if (this._domainType.includes('interval')) {
         let scale = this.legendCache.scale.domain ? this.legendCache.scale.domain : this.legendCache.scale
-        for (let i = 0; i < this.$$dataInterface.getColumn(scale).length; i++) {
-          valueDomain.push([this.legendLabels[i].value, this.legendLabels[i + 1].value])
+        for (let i = 0; i < this.legendTicks.length - 1; i++) {
+          valueDomain.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
         }
         domain = [valueDomain[0][0], valueDomain[valueDomain.length - 1][1]]
       } else {
-        valueDomain = this.legendLabels
+        valueDomain = this.legendTicks
         domain = [0, valueDomain.length - 1]
       }
 
-      sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / this.legendLabels.length
-
+      sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / this.legendTicks.length
+      console.log(valueDomain)
       // create fill/fillOpacity scales for rectangles
       let _fill = this.legendCache.fill || 'none'
       if (!this.checkValidColor(_fill)) {
@@ -228,10 +228,10 @@ export default {
 
     ticks () {
       let ticks = []
-      let l = this.legendLabels
-      let tickCount = this.legendLabels.length
+      let l = this.legendTicks
+      let tickCount = this.legendTicks.length
       let start = 0; let end = 0; let location
-      let domain = this._domainType.includes('interval') ? [this.legendLabels[0].value, this.legendLabels[this.legendLabels.length - 1].value] : this._domain
+      let domain = this._domainType.includes('interval') ? [this.legendTicks[0].value, this.legendTicks[this.legendTicks.length - 1].value] : this._domain
       let sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / (tickCount)
 
       if (!this.flip) {

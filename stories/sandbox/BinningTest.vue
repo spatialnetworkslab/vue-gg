@@ -64,13 +64,13 @@
           />
 
           <vgg-x-axis
-            scale="bins"
             :tick-values="[0, 50, 80]"
             :vjust="-0.05"
+            scale="bins"
           />
 
         </vgg-section>
-<!--
+        <!--
         <vgg-x-axis
           :x1="100"
           :x2="500"
@@ -93,6 +93,7 @@
 
         <vgg-discrete-legend
           :scale="'bins'"
+          :tickValues="[[0, 10], [10, 20], [20, 99]]"
           :font-size="10"
           :title-padding="2"
           title="Discrete"
@@ -100,7 +101,7 @@
         />
 
         <!-- fill opacity binning -->
-
+        <!--
         <vgg-gradient-legend
           :scale="{ domain: 'bins' }"
           position="tr"
@@ -108,7 +109,7 @@
           :title-padding="2"
           fill="blue"
           :fill-opacity="{ range: [0, 1]}"
-        />
+        /> -->
 
         <!-- <vgg-gradient-legend
           :scale="{ domain: 'bins' }"
