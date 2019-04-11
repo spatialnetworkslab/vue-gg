@@ -45,14 +45,13 @@
       :scale="'#rainfallScale'"
       :font-size="10"
       :size="15"
-      :x="600"
-      :y="300"
       :stroke-width="{ range: [2, 12] }"
-      :h="200"
       shape="line"
       stroke="orange"
       direction="vertical"
       title="Stroke width"
+      :x="600"
+      :y="400"
     />
 
     <vgg-symbol-legend
@@ -60,22 +59,24 @@
       :font-size="10"
       :stroke-width="8"
       :stroke="{ range: ['red', 'green', 'blue', 'purple'] }"
-      :x="600"
-      :y="0"
       shape="line"
       title="Stroke color"
+      :x="600"
+      :y="100"
     />
     <vgg-symbol-legend
       :scale="'rainfall'"
       :font-size="10"
       :size="15"
-      :x="0"
-      :y="520"
       :stroke-width="10"
       :stroke-opacity="{ range: [0, 0.7] }"
       shape="line"
       title="Opacity test"
       orientation="horizontal"
+      :y="540"
+      :h="80"
+      :x="180"
+      :w="300"
     />
     <vgg-x-grid
       :x1="100"

@@ -267,7 +267,9 @@ export default {
     },
 
     legendLeft () {
-      if (isNaN(this.x)) {
+      if (this.position != 'left' && (!isNaN(this.x) || !isNaN(this.x1) || !isNaN(this.x2))) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y` or `position`')
+      } else if (isNaN(this.x) && isNaN(this.x1) && isNaN(this.x2)) {
         let p = this.position
         if (p === 'right' || p === 'tr' || p === 'br') {
           return (this.plotWidth - this.sectionWidth) * 0.95
@@ -276,16 +278,36 @@ export default {
         } else {
           return this.plotWidth * 0.02
         }
-      } else {
+      } else if (!isNaN(this.x) && isNaN(this.x1) && isNaN(this.x2)) {
         if (this.position && this.position !== 'left') {
           console.warn('Ignoring position value `' + this.position + '` because of `x` input ' + this.x)
         }
-        return this.x
+        return (this.x - this.sectionWidth / 2)
+      } else if (!isNaN(this.x1) && !isNaN(this.x2) && isNaN(this.x)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `x1` input ' + this.x1 + ' and `x2` input ' + this.x2)
+        }
+        return this.x1
+      } else if ((!isNaN(this.x1) || !isNaN(this.x2)) && isNaN(this.x)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `x1`, `x2`, `x` inputs')
+        }
+        if (!isNaN(this.x1)) {
+          return this.x1
+        }
+
+        if (!isNaN(this.x2)) {
+          return this.x2 - this.sectionWidth
+        }
+      } else if (!isNaN(this.x) && !isNaN(this.x1) && !isNaN(this.x2)) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
       }
     },
 
     legendTop () {
-      if (isNaN(this.y)) {
+      if (this.position != 'left' && (!isNaN(this.y) || !isNaN(this.y1) || !isNaN(this.y2))) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y` or `position`')
+      } else if (isNaN(this.y) && isNaN(this.y1) && isNaN(this.y2)) {
         let p = this.position
         if (p === 'top' || p === 'tl' || p === 'tr' || p === 'tc') {
           if (this.plotHeight - this.sectionHeight < 0) {
@@ -306,12 +328,29 @@ export default {
             return -this.plotHeight * 0.45 + this.sectionHeight / 2
           }
         }
-      } else {
+      } else if (!isNaN(this.y) && isNaN(this.y1) && isNaN(this.y2)) {
         if (this.position && this.position !== 'left') {
-          console.warn('Ignoring position value `' + this.position + '` because of `x` and `y` inputs')
+          console.warn('Ignoring position value `' + this.position + '` because of `x` input ' + this.y)
+        }
+        return (-this.y + this.sectionHeight / 2)
+      } else if (!isNaN(this.y1) && !isNaN(this.y2) && isNaN(this.y)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `y1` input ' + this.y1 + ' and `y2` input ' + this.y2)
+        }
+        return -this.y1
+      } else if ((!isNaN(this.y1) || !isNaN(this.y2)) && isNaN(this.y)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `y1`, `y2`, `y` inputs')
+        }
+        if (!isNaN(this.y1)) {
+          return -this.y1
         }
 
-        return -this.y
+        if (!isNaN(this.y2)) {
+          return this.sectionHeight - this.y2
+        }
+      } else if (!isNaN(this.y) && !isNaN(this.y1) && !isNaN(this.y2)) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
       }
     },
 
@@ -425,21 +464,29 @@ export default {
       }
     },
 
+    // w
+    // x1, x2
     sectionWidth () {
-      if (!this.w) {
+      if (!this.w && !this.x1 && !this.x2) {
         if (this.orientation === 'vertical') {
           return this.plotWidth * 0.1 + this.rowPadding
         } else {
           let width = this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
           return (width / this.tickCount * this.legendLabels.length >= width ? width / this.tickCount * this.legendLabels.length : width)
         }
-      } else {
+      } else if (this.x1 && this.x2 && this.w) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
+      } else if (this.x1 && this.x2 && !this.w) {
+        return (this.x2 - this.x1)
+      } else if (this.w && !this.x1 && !this.x2) {
         return this.w
       }
     },
 
+    // h
+    // y1, y2
     sectionHeight () {
-      if (!this.h) {
+      if (!this.h && !this.y1 && !this.y2) {
         if (this.orientation === 'vertical') {
           // return this.plotHeight * 0.3 + this.titleFontSize + this.colPadding
           let height = this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
@@ -447,7 +494,11 @@ export default {
         } else {
           return this.plotHeight * 0.1 + this.rowPadding
         }
-      } else {
+      } else if (this.y1 && this.y2 && this.h) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
+      } else if (this.y1 && this.y2 && !this.h) {
+        return (this.y2 - this.y1)
+      } else if (this.h && !this.y1 && !this.y2) {
         return this.h
       }
     },
