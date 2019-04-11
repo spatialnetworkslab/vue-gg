@@ -51,6 +51,7 @@ export default {
       default: undefined
     },
 
+    // Unmappable
     points: {
       type: [Array, undefined],
       default: undefined

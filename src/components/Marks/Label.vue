@@ -1,6 +1,7 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
 import { textAnchorPoint } from '../../utils/anchorPoint.js'
+import checkGeometry from '../../mixins/Marks/utils/checkGeometry.js'
 
 export default {
   mixins: [Mark],
@@ -13,12 +14,14 @@ export default {
 
     x: {
       type: [Number, String, Date],
-      required: true
+      // required: true
+      required: undefined
     },
 
     y: {
       type: [Number, String, Date],
-      required: true
+      // required: true
+      required: undefined
     },
 
     fill: {
@@ -71,6 +74,11 @@ export default {
       default: 0
     },
 
+    geometry: {
+      type: undefined,
+      default: undefined
+    },
+  
     // Unmappable
     anchorPoint: {
       type: String,
@@ -81,7 +89,8 @@ export default {
 
   data () {
     return {
-      markType: 'label-mark'
+      markType: 'label-mark',
+      validGeomTypes: ['Point']
     }
   },
 
@@ -93,7 +102,15 @@ export default {
     renderSVG (createElement) {
       let aesthetics = this._props
 
-      let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
+      if (this.geometry) {
+        checkGeometry(this.markType, this.validGeomTypes, this.geometry)
+      }
+
+      let xy = this.geometry
+        ? aesthetics.geometry.coordinates
+        : [aesthetics.x, aesthetics.y]
+      
+      let [cx, cy] = this.$$transform(xy)
 
       let anchorPoint = textAnchorPoint(this.anchorPoint)
 
