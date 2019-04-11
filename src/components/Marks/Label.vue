@@ -14,14 +14,12 @@ export default {
 
     x: {
       type: [Number, String, Date],
-      // required: true
-      required: undefined
+      default: undefined
     },
 
     y: {
       type: [Number, String, Date],
-      // required: true
-      required: undefined
+      default: undefined
     },
 
     fill: {
@@ -78,7 +76,7 @@ export default {
       type: undefined,
       default: undefined
     },
-  
+
     // Unmappable
     anchorPoint: {
       type: String,
@@ -109,7 +107,7 @@ export default {
       let xy = this.geometry
         ? aesthetics.geometry.coordinates
         : [aesthetics.x, aesthetics.y]
-      
+
       let [cx, cy] = this.$$transform(xy)
 
       let anchorPoint = textAnchorPoint(this.anchorPoint)
