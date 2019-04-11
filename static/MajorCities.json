@@ -14,7 +14,7 @@
         "name": "Lagos",
         "population": "21 million",
         "anchor": "rb",
-        "fill": "white"
+        "fill": "#f2e5d7"
       }
     },
     {
@@ -30,7 +30,7 @@
         "name": "Cairo",
         "population": "20.4 million",
         "anchor": "rt",
-        "fill": "white"
+        "fill": "#f2e5d7"
       }
     },
     {
@@ -46,7 +46,7 @@
         "name": "Kinshansa",
         "population": "13.3 million",
         "anchor": "lt",
-        "fill": "white"
+        "fill": "#f2e5d7"
       }
     },
     {
@@ -62,7 +62,7 @@
         "name": "Luanda",
         "population": "6.5 million",
         "anchor": "lt",
-        "fill": "white"
+        "fill": "#f2e5d7"
       }
     },
     {
@@ -78,7 +78,7 @@
         "name": "Nairobi",
         "population": "3.5 million",
         "anchor": "rt",
-        "fill": "white"
+        "fill": "#f2e5d7"
       }
     },
     {
@@ -94,7 +94,7 @@
         "name": "Mogadishu",
         "population": "2.1 million",
         "anchor": "rb",
-        "fill": "white"
+        "fill": "#f2e5d7"
       }
     },
     {
@@ -110,7 +110,7 @@
         "name": "Abidjan",
         "population": "4.707 million",
         "anchor": "t",
-        "fill": "black"
+        "fill": "#335c67"
       }
     },
     {
@@ -126,7 +126,7 @@
         "name": "Alexandria",
         "population": "4.7 million",
         "anchor": "b",
-        "fill": "black"
+        "fill": "#335c67"
       }
     },
     {
@@ -143,7 +143,7 @@
         "name": "Addis Ababa",
         "population": "3.4 million",
         "anchor": "r",
-        "fill": "white"
+        "fill": "#f2e5d7"
       }
     },
     {
@@ -159,7 +159,7 @@
         "name": "Johannesburg",
         "population": "4.4 million",
         "anchor": "r",
-        "fill": "white"
+        "fill": "#f2e5d7"
       }
     }
   ]

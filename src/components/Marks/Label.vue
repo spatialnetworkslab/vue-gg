@@ -87,7 +87,7 @@ export default {
 
   data () {
     return {
-      markType: 'label-mark',
+      markType: 'label',
       validGeomTypes: ['Point']
     }
   },

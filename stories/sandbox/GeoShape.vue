@@ -23,7 +23,6 @@
 
       <vgg-map v-slot="{ row, i }">
 
-          <!-- :geometry="{ val: row.geometry, scaleGeo: {} }" -->
         <vgg-polygon
           :geometry="row.geometry"
           :fill="selected[i] ? '#7f6504' : { val: row.value, scale: { type: 'oranges', domain: 'value', reverse: true } }"
@@ -31,7 +30,7 @@
           @select="handleSelect(i, true)"
           @deselect="handleSelect(i, false)"
           stroke="#d3d3d3"
-          :stroke-width="0.2"
+          :stroke-width="0.05"
         />
 
       </vgg-map>
@@ -40,21 +39,28 @@
 
         <vgg-map v-slot="{ row, i }">
 
-          <vgg-point
+          <!-- <vgg-point
             :geometry="row.geometry"
             :radius="5"
             fill="#008000"
             :opacity="0.5"
+          /> -->
+
+          <vgg-symbol
+            :geometry="row.geometry"
+            :shape="'star'"
+            :size="15"
+            :fill="'#e09f3e'"
           />
 
           <vgg-label
             :geometry="row.geometry"
             :radius="7"
             :text="row.name"
-            :fill="row.fill"
-            :font-size="11"
-            font-family="Verdana"
             :anchor-point="row.anchor"
+            :fill="row.fill"
+            :font-size="12"
+            font-family="Verdana"
           />
 
         </vgg-map>

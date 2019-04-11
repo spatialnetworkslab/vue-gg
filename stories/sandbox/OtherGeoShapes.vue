@@ -1,8 +1,10 @@
 <template>
 
   <vgg-graphic
+    v-if="dataLoaded"
     :width="600"
     :height="600"
+    :data="polygons"
   >
 
     <vgg-section
@@ -10,80 +12,48 @@
       :x2="500"
       :y1="100"
       :y2="500"
-      :data="polygons"
+      :scale-geo="{}"
     >
 
       <vgg-map v-slot="{ row }">
-
         <vgg-polygon
-          :geometry="{ val: row.geometry, scaleGeo: {} }"
+          :geometry="row.geometry"
           fill="white"
         />
-
       </vgg-map>
+
+      <vgg-data :data="linestrings">
+        <vgg-map v-slot="{ row }">
+          <vgg-multi-line
+            :geometry="row.geometry"
+          />
+        </vgg-map>
+      </vgg-data>
+
+      <vgg-data :data="points">
+        <vgg-map v-slot="{ row }">
+          <vgg-point
+            :geometry="row.geometry"
+            :radius="5"
+          />
+        </vgg-map>
+      </vgg-data>
+
+      <vgg-data :data="multipoints">
+        <vgg-map v-slot="{ row }">
+          <vgg-multi-point
+            :geometry="row.geometry"
+            :radius="5"
+          />
+        </vgg-map>
+      </vgg-data>
 
     </vgg-section>
-
-    <vgg-section
-      :x1="100"
-      :x2="500"
-      :y1="100"
-      :y2="500"
-      :data="linestrings"
-    > 
-
-      <vgg-map v-slot="{ row }">
-
-        <vgg-multi-line
-          :geometry="{ val: row.geometry, scaleGeo: {} }"
-        />
-
-      </vgg-map>
-    
-    </vgg-section>
-
-    <vgg-section
-      :x1="100"
-      :x2="500"
-      :y1="100"
-      :y2="500"
-      :data="points"
-    >
-
-      <vgg-map v-slot="{ row }">
-
-        <vgg-point
-          :geometry="{ val: row.geometry, scaleGeo: {} }"
-          :radius="5"
-        />
-
-      </vgg-map>
-
-    </vgg-section>
-
-    <vgg-section
-      :x1="100"
-      :x2="500"
-      :y1="100"
-      :y2="500"
-      :data="multipoints"
-    >
-
-      <vgg-map v-slot="{ row }">
-
-        <vgg-multi-point
-          :geometry="{ val: row.geometry, scaleGeo: {} }"
-          :radius="5"
-        />
-
-      </vgg-map>
 
       <!-- <vgg-multi-point
         :points="[ [100.0, 100.0], [233.33, 300], [366.66, 400], [500, 500] ]"
         :radius="5"
       /> -->
-
-    </vgg-section>
 
   </vgg-graphic>
 
@@ -105,6 +75,12 @@ export default {
       linestrings: {},
       points: {},
       multipoints: {}
+    }
+  },
+
+  computed: {
+    dataLoaded () {
+      return this.polygons && Object.keys(this.polygons).length !== 0
     }
   },
 
