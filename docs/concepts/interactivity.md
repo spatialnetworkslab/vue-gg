@@ -201,7 +201,7 @@ TODO
 
 TODO
 
-## An Important Note
+## A Caveat on Mapping
 
 Generally, if rendering an additional mark when an interaction is performed, it is best to place the new mark component outside of any `<vgg-map>` components.
 

@@ -2,14 +2,14 @@
 title: Data loading
 ---
 
-# Introduction
+# Data Loading
 
 To load data into `vue-gg`, pass data in a supported format to the `:data` prop
 of any [Graphic](../core/graphic.md), [Data](../core/data.md) or
 [Section](../core/section.md) component. This will create a [data scope](#data-scope)
 for its child components.
 
-# Data types
+## Data types
 
 `vue-gg` supports 6 different data types: quantitative, categorical, temporal,
 interval, geometry and nested. `vue-gg` will decide what data type your data is based on
@@ -25,7 +25,7 @@ it has.
 | geometry     | Object [(GeoJSON feature)](http://geojson.org/) | -                                    |
 | nested       | Object (of Arrays)                              | -                                    |
 
-# Data formats
+## Data formats
 
 While it is possible to load data in various formats into `vue-gg`, there are some
 requirements that all data must adhere to:
@@ -72,7 +72,7 @@ will be converted to a column-oriented format. For every feature, the `geometry`
 will be stored in a column called `geometry`, and all properties get their own
 column.
 
-# Data scope
+## Data scope
 
 ### Using data scopes
 

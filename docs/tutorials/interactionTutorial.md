@@ -30,7 +30,7 @@ The `<vgg-repeat>` component provides a quick and easy way to arrange graphs in 
 
 <tutorial-layout />
 
-## Adding Graphs to Matrix
+## Adding Graphs
 
 Adding graphs to the matrix is as simple as defining sections and marks in the usual syntax with one caveat:
 
@@ -144,7 +144,7 @@ It is now possible to use these custom scales with the appropriate use of [templ
 
 <tutorial-layout :scaleSpecial="true" :showCombi="false" />
 
-## Interactions
+## Interaction Handlers
 
 The graph looks pretty nice as is, but it is hard to identify which points are from the same data observation across different graphs. It would be nice to add some interactions such that hovering over a single point highlights the corresponding points on all other graphs.
 
@@ -163,9 +163,11 @@ In order to do this we can attach the `@hover` event to the `<vgg-point>` mark.
 </vgg-map>
 ```
 
-The `@hover` event calls the `handleHover` function each time a point is being hovered over. Notice that we pass `($event, row)` to the `handleHover` function. This provides information about the event (such as screen coordinates) and allows us to keep track of the data row that corresponds to the point being hovered over.
+Here, we have specified that the `@hover` event should call the `handleHover` method each time a point is being hovered over. Notice that we pass `($event, row)` to the `handleHover` function. This provides information about the event (such as screen coordinates) and allows us to keep track of the data row that corresponds to the point being hovered over.
 
-In the script, we can thus create the `hovered` and `hoverRow` variables that keep track of whether a hover is taking place, and if so, which the data point that is triggering the hover.
+## Tracking Interactions
+
+In the script, we can create the `hovered` and `hoverRow` variables that keep track of whether a hover is taking place, and if so, which the data point that is triggering the hover.
 
 This is not prescriptive, you can define and keep track of any number of variables relevant to the interaction event.
 
@@ -178,7 +180,9 @@ data () {
 },
 ```
 
-We also want to create the `handleHover` event that changes these variables when hovering is taking place.
+## Interaction Methods
+
+We now want to create the `handleHover` method that changes these variables when hovering is taking place.
 
 ```js
 methods: {
@@ -194,7 +198,9 @@ methods: {
 }
 ```
 
-Lastly, we want to add a `<vgg-point>` mark to the template that renders a single point only when `hoverRow !== undefined`. That is to say, when hovering is taking place, an extra point is rendered on each graph at the position of the corresponding point.
+## Interaction Rendering
+
+Lastly, we want to add a `<vgg-point>` mark to the template that renders a single point only when `hoverRow !== undefined`. That is to say, when hovering is taking place, an extra point is rendered on each graph at the position of the corresponding points.
 
 **Ensure that the new `<vgg-point>` component is outside the map component.** We only want to render a single highlighted point per section, there is thus no need to map all the rows. Placing the new `<vgg-point>` within the map component may cause significant lagging.
 
