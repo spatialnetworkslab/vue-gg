@@ -4,6 +4,8 @@ import { scaleTime } from 'd3-scale'
 import Rectangular from '../../mixins/Marks/Rectangular.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 
+import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
+
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import { isnt } from '../../utils/equals.js'
 import ticksFromIntervals from './utils/ticksFromIntervals.js'
@@ -28,9 +30,15 @@ export default {
     }
   },
 
+  data () {
+    return {
+      gridCache: createPropCache(this, ['scale', 'gridLines'])
+    }
+  },
+
   computed: {
     parsedScalingOptions () {
-      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
+      return parseScaleOptions(this.gridCache.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     domain () {
@@ -99,8 +107,8 @@ export default {
     },
 
     cells () {
-      if (this.gridLines) {
-        return this.gridLines.map(value => {
+      if (this.gridCache.gridLines) {
+        return this.gridCache.gridLines.map(value => {
           return { value }
         })
       } else {
@@ -128,14 +136,14 @@ export default {
         }
 
         if (this.domainType === 'interval:quantitative') {
-          let intervals = this.$$dataInterface.getColumn(this.scale)
+          let intervals = this.$$dataInterface.getColumn(this.gridCache.scale)
           cells = ticksFromIntervals(intervals).map(value => {
             return { value }
           })
         }
 
         if (this.domainType === 'interval:temporal') {
-          let intervals = this.$$dataInterface.getColumn(this.scale)
+          let intervals = this.$$dataInterface.getColumn(this.gridCache.scale)
           cells = ticksFromIntervals(intervals).map(value => {
             let date = new Date(value)
             return { value: date }
@@ -145,5 +153,9 @@ export default {
         return cells
       }
     }
+  },
+
+  created () {
+    createWatchers(this, this.gridCache)
   }
 }

@@ -1,181 +1,148 @@
 <template>
-  <vgg-graphic
-    :width="totalX"
-    :height="totalY"
-    :data="resaleData"
-    :transform="[
-      { mutate: { price_sqm: (row, i, prevRow, nextRow) => row.resale_price/row.floor_area_sqm } },
-      { mutate: { year_date: row => row.month.split('-')[0] } },
-      { mutate: { month_date: row => row.month.split('-')[1] } },
-      { arrange: { year_date: 'descending' } },
-      { arrange: { month_date: 'descending' } },
-  ]">
-    <vgg-scales :scales="{ sqmScale: { domain: 'price_sqm', type: 'reds' } }"/>
-    <vgg-scales :scales="{ monthScale: { domain: 'month_date' } }"/>
-    <vgg-scales :scales="{ yearScale: { domain: 'year_date' } }"/>
-    
-    <vgg-discrete-legend
-      :scale="'#sqmScale'"
-      :title-font-size="30"
-      :fill="{type: 'reds'}"
-      :label-font-size="30"
-      :w="120"
-      title="Resale Price per SqM"
-      position="tr"
-    />
-    <vgg-section
-      :x1="50"
-      :x2="totalX - 200"
-      :y1="50"
-      :y2="totalY - 200"
-      :scale-x="[0, 100]"
-      :scale-y="[0, 100]"
-    >
-      <vgg-label
-        :x="50"
-        :y="106"
-        :text="'Resale Price per SqM vs. Month (y) vs. Year (x)'"
-        :font-size="90"
-        :font-weight="700"
-        :opacity="0.2"
-      />
-      <vgg-label
-        :x="50"
-        :y="101"
-        :text="'Grouped by (1) Town, (2) Flat Type'"
-        :font-size="44"
-        :opacity="0.2"
-      />
-
-      <vgg-grid
-        :rows="3"
-        :cell-padding="{
-          t: 1,
-          l: 0.3,
-          r: 0.3
+  <div>
+    <div class="field-selector">
+      <label>Select Town</label>
+      <multiselect
+      v-model="selectedTown"
+      :options="uniqueTowns"
+      placeholder="Choose a town" />
+    </div>
+    <vgg-graphic :width="850" :height="450" :data="resaleData">
+      <vgg-data
+        :transform="{ filter: row => {
+          if (selectedTown === null) return true // if no towns selected, include all data
+          else {
+            return row.town === selectedTown
+          }
+        }
         }"
       >
+      <!-- bar chart per flat type -->
         <vgg-section
-          v-for="(town, i) in towns"
-          :key="i"
-          :scale-x="[0, 100]"
-          :scale-y="[0, 100]"
+          :x1="100"
+          :x2="400"
+          :y1="100"
+          :y2="400"
           :transform="[
-            { filter: row => row.town === town }
+            { groupBy: 'flat_type'},
+            { summarise: { total_sales: { resale_price: 'count' } } }
           ]"
         >
-          <vgg-grid
-            :cols="3"
-            :cell-padding="{
-              t: 1.7,
-              b: 1.7,
-              l: 1.5,
-              r: 1.5
-            }"
-          >
-            <vgg-section
-              v-for="(flat_type, j) in flat_types"
-              :key="j"
-              :scale-x="'#yearScale'"
-              :scale-y="'#monthScale'"
-              :transform="[
-                { filter: row => row.flat_type === flat_type },
-                { mutate: { price_sq_m: row => row.resale_price / row.floor_area_sqm } },
-                { groupBy: ['month_date', 'year_date'] },
-                { summarise: { mean_price_sq_m: { price_sq_m: 'mean' } } }
-              ]"
-            >
-              <vgg-map v-slot="{ row }">
-
-                <vgg-rectangle
-                  :x="{ val: row.year_date, scale: '#yearScale' }"
-                  :y="{ val: row.month_date, scale: '#monthScale' }"
-                  :w="{ band: '#yearScale' }"
-                  :h="{ band: '#monthScale' }"
-                  :fill="{ val: row.mean_price_sq_m, scale: '#sqmScale' }"
-                />
-                <!-- <vgg-rectangle
-                  :x="{ val: row.year_date, scale: { domain: 'year_date'} }"
-                  :y="{ val: row.month_date, scale: { domain: 'month_date'} }"
-                  :w="{ band: { domain: 'year_date' } }"
-                  :h="{ band: { domain: 'month_date' } }"
-                  :fill="{ val: row.mean_price_sq_m, scale: {type: 'reds', domain: 'mean_price_sq_m' } }"
-                /> -->
-              </vgg-map>
-
-              <!-- THIS PART -->
-              <vgg-map
-                v-slot="{ dataframe }"
-                unit="dataframe">
-                <template v-if="dataframe.month_date.length > 0">
-                  <vgg-x-axis
-                    :scale="'year_date'"
-                    :vjust="0"
-                    :label-font-size="6"
-                  />
-                  <vgg-y-axis
-                    :scale="'month_date'"
-                    :label-font-size="6"
-                    :hjust="0"
-                  />
-                </template>
-              </vgg-map>
-              <!-- <vgg-x-axis
-                :scale="'#yearScale'"
-                :vjust="0"
-                :label-font-size="6"
-              />
-              <vgg-y-axis
-                :scale="'#monthScale'"
-                :label-font-size="6"
-                :hjust="0"
-              /> -->
-              <vgg-plot-title
-                :text="flat_type"
-                :font-size="12"
-                :opacity="0.2"
-                vjust="center"
-                hjust="center"
-              />
-            </vgg-section>
-          </vgg-grid>
-
-          <vgg-label
-            :x="50"
-            :y="50"
-            :text="town"
-            :font-size="30"
-            :opacity="0.5"
-            :font-weight="'bold'"
+          <vgg-scales
+            :scales="{ typeScale: {domain: 'flat_type', order: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'] }}"
           />
-          <vgg-rectangle
-            :x1="0"
-            :x2="100"
-            :y1="0"
-            :y2="100"
-            :opacity="0.05"
-            fill="'rgb(255, 245, 240)'"/>
 
+          <vgg-map v-slot="{ row, i }">
+            <vgg-rectangle
+              :y="{ val: row.flat_type, scale: '#typeScale' }"
+              :x1="{ val: 0, scale: { domain: 'total_sales', domainMin: 0 } }"
+              :x2="{ val: row.total_sales, scale: { domain: 'total_sales', domainMin: 0 } }"
+              :h="20"
+              :fill="{ val: row.total_sales, scale: { domain: 'total_sales', type: 'blues' } }"
+              :stroke="row.flat_type === selectedFlatType ? 'yellow' : 'none'"
+              @click="handleClick(row)"
+            />
+          </vgg-map>
+
+          <vgg-x-axis :scale="{ domain: 'total_sales', domainMin: 0 }" :tick-count="4" rotate-label />
+          <vgg-y-axis :scale="'#typeScale'" :hjust="0"/>
         </vgg-section>
-      </vgg-grid>
-    </vgg-section>
-  </vgg-graphic>
-</template>
-<script>
 
+        <!-- price histogram -->
+        <vgg-section
+          :x1="500"
+          :x2="800"
+          :y1="100"
+          :y2="400"
+          :transform="[
+          { filter: row => {
+            if (selectedFlatType === null) return true // if no towns selected, include all data
+            else {
+              return row.flat_type === selectedFlatType
+            }
+          }
+          },
+          { binning: { groupBy: 'resale_price', method: 'EqualInterval', numClasses: 10 } },
+          { summarise: { count: { resale_price: 'count' } } }
+          ]"
+          :select="'swipeX'"
+          :selection-bounds.sync="histoSelection"
+        >
+          <vgg-scales :scales="{ bins: { domain: [0, 1000000] } }"/>
+
+          <vgg-map v-slot="{ row, i }">
+            <vgg-rectangle
+              :x1="{ val: row.bins[0], scale: '#bins' }"
+              :x2="{ val: row.bins[1], scale: '#bins' }"
+              :y1="{ val: 0, scale: { domain: 'count', domainMin: 0 } }"
+              :y2="{ val: row.count, scale: { domain: 'count', domainMin: 0 } }"
+              :fill="selectedPoints[i] ? 'blue' : 'black'"
+              @select="handleSelect(i, true)"
+              @deselect="handleSelect(i, false)"
+            />
+          </vgg-map>
+
+          <vgg-y-axis :scale="{ domain: 'count', domainMin: 0 }" :hjust="0" :tick-count="8"/>
+          <vgg-x-axis :scale="'#bins'"/>
+          <!-- <vgg-polygon
+            v-if="histoSelection.length > 1"
+            :points="histoSelection"
+            :fill="'red'"
+            :opacity="0.2"
+          /> -->
+        </vgg-section>
+
+      </vgg-data>
+    </vgg-graphic>
+  </div>
+</template>
+
+<script>
 import resaleData from './resale_sample.json'
+import Multiselect from 'vue-multiselect'
+
 export default {
-  name: 'TownFlat',
+  name: 'app',
+  components: { Multiselect },
   data () {
     return {
       resaleData: resaleData,
-      flat_types: ['2 ROOM', '3 ROOM', '4 ROOM', '5 ROOM', 'MULTI-GENERATION', 'EXECUTIVE'],
-      flat_models: ['New Generation', 'Simplified', 'Terrace', 'Standard', 'Model A2', 'Type S1', 'Model A', 'Improved', 'DBSS', 'Premium Apartment', 'Type S2', 'Improved-Maisonette', 'Model A-Maisonette', 'Apartment', 'Maisonette', 'Multi Generation'],
-      towns: ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH', 'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG', 'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST', 'KALLANG/WHAMPOA', 'MARINE PARADE', 'PASIR RIS', 'PUNGGOL', 'QUEENSTOWN', 'SEMBAWANG', 'SENGKANG', 'SERANGOON', 'TAMPINES', 'TOA PAYOH', 'WOODLANDS', 'YISHUN'],
-      totalX: 3700,
-      totalY: 1500
+      selectedTown: null,
+      towns: ['BEDOK', 'TAMPINES', 'PUNGGOL'],
+      selectedFlatType: null,
+      histoSelection: [],
+      selectedPoints: {}
+    }
+  },
+  computed: {
+    uniqueTowns () {
+      let towns = resaleData.map(row => row.town)
+      return [...new Set(towns)].sort()
+    }
+  },
+  methods: {
+    handleClick (row) {
+      if (this.selectedFlatType === row.flat_type) {
+        this.selectedFlatType = null
+      } else {
+        this.selectedFlatType = row.flat_type
+      }
+    },
+    handleSelect (i, add) {
+      // console.log(this.histoSelection)
+      if (add) {
+        this.$set(this.selectedPoints, i, true)
+      } else {
+        this.$delete(this.selectedPoints, i)
+      }
     }
   }
 }
-
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style>
+.field-selector {
+  width: 300px;
+}
+</style>
