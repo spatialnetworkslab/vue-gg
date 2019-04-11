@@ -34,7 +34,7 @@ export default {
     geometry: {
       type: undefined,
       default: undefined
-    }
+    },
   },
 
   data () {
@@ -44,6 +44,37 @@ export default {
   },
 
   methods: {
+    getAreaRegress () {
+      if (this.regression1 ^ this.regression2) {
+        console.warn('Please specify both regression1 and regression2 props, otherwise area mark may not render as expected')
+      }
+
+      let areaRegress1 = this.regression1 ? this.regression1 : this.regression
+      let areaRegress2 = this.regression2 ? this.regression2 : this.regression
+
+      return { areaRegress1, areaRegress2 }
+    },
+
+    getAreaCurves () {
+      if (this.curve1 ^ this.curve2) {
+        console.warn('Please specify both curve1 and curve2 props, otherwise area mark may not render as expected')
+      }
+      let areaCurve1 = this.curve1 ? this.curve1 : this.curve
+      let areaCurve2 = this.curve2 ? this.curve2 : this.curve
+
+      if (areaCurve2 === 'curveStepAfter') {
+        areaCurve2 = 'curveStepBefore'
+      } else if (areaCurve2 === 'curveStepBefore') {
+        areaCurve2 = 'curveStepAfter'
+      } else if (areaCurve2['type'] === 'curveStepAfter') {
+        areaCurve2['type'] = 'curveStepBefore'
+      } else if (areaCurve2['type'] === 'curveStepBefore') {
+        areaCurve2['type'] = 'curveStepAfter'
+      }
+
+      return { areaCurve1, areaCurve2 }
+    },
+
     getOtherPoints () {
       let points
 

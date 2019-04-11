@@ -104,6 +104,16 @@ export default {
       default: false
     },
 
+    curve1: {
+      type: [Boolean, String, Object, undefined],
+      default: false
+    },
+
+    curve2: {
+      type: [Boolean, String, Object, undefined],
+      default: false
+    },
+
     interpolate: {
       type: Boolean,
       default: false
@@ -115,51 +125,6 @@ export default {
       if (this.interpolate !== undefined) { return this.interpolate }
       return false
     },
-
-    // curveType () {
-    //   if (this.curve && this.curve.constructor === String) {
-    //     return this.curve
-    //   } else if (this.curve && this.curve.constructor === Object) {
-    //     return this.curve['type']
-    //   } else if (this.curve === true) {
-    //     return true
-    //   } else {
-    //     return undefined
-    //   }
-    // },
-
-    // regressType () {
-    //   if (this.regression && this.regression.constructor === String) {
-    //     return this.regression
-    //   } else if (this.regression && this.regression.constructor === Object) {
-    //     return this.regression.type
-    //   } else if (this.regression === true) {
-    //     return true
-    //   } else {
-    //     return undefined
-    //   }
-    // },
-
-    // curveSpec () {
-    //   if (this.curve && this.curve.constructor === Object) {
-    //     let beta = this.curve.curveBeta ? this.curve.curveBeta : 0
-    //     let tension = this.curve.curveTension ? this.curve.curveTension : 0
-    //     let alpha = this.curve.curveAlpha ? this.curve.curveAlpha : 0
-
-    //     return { beta: beta, tension: tension, alpha: alpha }
-    //   }
-    //   return { beta: 0, tension: 0, alpha: 0 }
-    // },
-
-    // regressSpec () {
-    //   if (this.regression && this.regression.constructor === Object) {
-    //     let order = this.regression.regressionOrder ? this.regression.regressionOrder : 2
-    //     let precision = this.regression.regressionPrecision ? this.regression.regressionPrecision : 2
-    //     return { order: order, precision: precision }
-    //   }
-    //   return { order: 2, precision: 2}
-    // },
-
   },
 
   beforeDestroy () {
@@ -285,22 +250,19 @@ export default {
       return points
     },
 
-    createPath (points) {
+    createPath (points, curveDef, regressDef) {
       let transformedPoints
       let path
 
-      if (this.curve) {
+      if (curveDef) {
         transformedPoints = transformPoints(points, this.$$transform)
-        let curveDef = this.getCurve(this.curve)
-        console.log(this.curve)
         path = createArc(transformedPoints, curveDef['type'], curveDef.curveSpec)
 
         return path
       }
 
-      if (this.regression) {
+      if (regressDef) {
         transformedPoints = transformPoints(points, this.$$transform)
-        let regressDef = this.getRegress(this.regression)
         path = createRegress(transformedPoints, regressDef['type'], regressDef.regressSpec)
 
         return path
@@ -328,7 +290,6 @@ export default {
     renderSVG (createElement) {
       let area = this.pathType === 'area'
       checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, area)
-      console.log(this, this.x, this.y)
       let aesthetics = this._props
 
       if (this.geometry) {
@@ -369,13 +330,26 @@ export default {
             let path1 = this.createPath(points)
             let path2 = this.createPath(points2)
 
+            if (this.curve || this.curve1 || this.curve2) {
+              let curveDefs = this.getAreaCurves()
+
+              path1 = this.createPath(points, this.getCurve(curveDefs.areaCurve1))
+              path2 = this.createPath(points2, this.getCurve(curveDefs.areaCurve2))
+            }
+
             path = path1 + `L ${start2[0]} ${start2[1]}` + path2 + `L ${start1[0]} ${start1[1]} Z`
           } else {
             if (this.close) {
               points = this.closePoints(points)
             }
 
-            path = this.createPath(points)
+            if (this.curve) {
+              path = this.createPath(points, this.getCurve(this.curve))
+            } else if (this.regression) {
+              path = this.createPath(points, undefined, (this.getRegress(this.regression)))
+            } else {
+              path = this.createPath(points)
+            }
           }
 
           let element = createElement('path', {

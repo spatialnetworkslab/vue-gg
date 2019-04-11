@@ -89,7 +89,7 @@ export default {
         35, 40, 65
       ]
       return { colors: colors, xValues: xValues, yValues: yValues }
-    }
+    },
   },
 
   methods: {}
