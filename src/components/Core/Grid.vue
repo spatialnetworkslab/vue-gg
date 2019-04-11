@@ -40,12 +40,16 @@ export default {
     childType () {
       let children = this.$slots.default
 
-      if (!children || children.length === 0) {
+      if (!children) {
         return undefined
       }
 
       // Filter out undefined components (whitespace, v-if="false")
       let definedChildren = children.filter(c => c.tag !== undefined)
+
+      if (definedChildren.length === 0) {
+        return undefined
+      }
 
       let wrongUseError = new Error(`'vgg-grid' can have in its slot:
         1. any number of 'square' (with x1, x2, y1 and y2 props) components
