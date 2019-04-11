@@ -144,20 +144,47 @@ export default class {
     return this._dataset[colName]
   }
 
+  // forEachRow (fn) {
+  //   let data = this._dataset
+  //
+  //   for (let i = 0; i < this._length; i++) {
+  //     let row = {}
+  //     let prevRow = {}
+  //     let nextRow = {}
+  //     for (let colName in data) {
+  //       row[colName] = data[colName][i]
+  //       prevRow[colName] = data[colName][i - 1]
+  //       nextRow[colName] = data[colName][i + 1]
+  //     }
+  //     if (i === 0) prevRow = undefined
+  //     if (i === this._length - 1) nextRow = undefined
+  //     fn({ row, i, prevRow, nextRow })
+  //   }
+  //
+  // }
+
   forEachRow (fn) {
     let data = this._dataset
+    let i
 
-    for (let i = 0; i < this._length; i++) {
-      let row = {}
-      let prevRow = {}
-      let nextRow = {}
-      for (let colName in data) {
-        row[colName] = data[colName][i]
-        prevRow[colName] = data[colName][i - 1]
-        nextRow[colName] = data[colName][i + 1]
-      }
-      if (i === 0) prevRow = undefined
-      if (i === this._length - 1) nextRow = undefined
+    let row = new Proxy({}, { get: (obj, prop) => {
+      if (prop in data) { return data[prop][i] }
+      throw new Error(`Invalid column name ${prop}`)
+    } })
+
+    let prevRow = new Proxy({}, { get: (obj, prop) => {
+      if (i === 0) { return undefined }
+      if (prop in data) { return data[prop][i - 1] }
+      throw new Error(`Invalid column name ${prop}`)
+    } })
+
+    let nextRow = new Proxy({}, { get: (obj, prop) => {
+      if (i === this._length - 1) { return undefined }
+      if (prop in data) { return data[prop][i + 1] }
+      throw new Error(`Invalid column name ${prop}`)
+    } })
+
+    for (i = 0; i < this._length; i++) {
       fn({ row, i, prevRow, nextRow })
     }
   }
