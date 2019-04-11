@@ -158,7 +158,6 @@ export default {
 
       // create section length scale and format valueDomain from legend labels, depending on if interval domain type or not
       if (this._domainType.includes('interval')) {
-        let scale = this.legendCache.scale.domain ? this.legendCache.scale.domain : this.legendCache.scale
         for (let i = 0; i < this.legendTicks.length - 1; i++) {
           valueDomain.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
         }
