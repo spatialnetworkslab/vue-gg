@@ -1,6 +1,7 @@
 <template>
 
   <vgg-graphic
+    v-if="dataLoaded(polygons)"
     :width="600"
     :height="600"
     :data="polygons"
