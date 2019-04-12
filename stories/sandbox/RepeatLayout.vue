@@ -22,6 +22,7 @@
           bottom: { scale: x, labelRotate: true },
           right: { scale: y, flip: true }
         }"
+        :background="{ color: 'grey', opacity: 0.5 }"
       >
 
         <vgg-plot-title
@@ -42,7 +43,6 @@
         </vgg-map>
 
       </vgg-section>
-      <!-- <vgg-rectangle /> -->
 
     </vgg-repeat>
 

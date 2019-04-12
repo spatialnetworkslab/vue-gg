@@ -63,7 +63,12 @@ export default {
     gridLines: {
       type: [Array, Object, undefined],
       default: undefined
-    }
+    },
+
+    background: {
+      type: [Object, undefined],
+      default: undefined
+    },
   },
 
   data () {
@@ -220,7 +225,7 @@ export default {
       const forbiddenProps = [
         'x1', 'x2', 'x', 'w',
         'y1', 'y2', 'y', 'h',
-        'axes'
+        'axes', 'background'
       ]
 
       for (let prop in this._props) {
@@ -355,6 +360,40 @@ export default {
       return gridLines
     },
 
+    createBackground (createElement) {
+      let coords = this.coordinateSpecification
+      let bg = this.background
+
+      let bgColor
+      if (bg.color) {
+        bgColor = bg.color
+      } else {
+        console.warn('Please provide a section background color, defaulting to grey.')
+        bgColor = 'grey'
+      }
+
+      let bgOpacity = bg.opacity ? bg.opacity : 1
+      let bgStroke = bg.stroke ? bg.stroke : 'none'
+      let bgStrokeWidth = bg.strokeWidth ? bg.strokeWidth : 1
+      let bgStyle = { 'fill': bgColor,
+                      'fill-opacity': bgOpacity,
+                      'stroke': bgStroke,
+                      'stroke-width': bgStrokeWidth }
+
+      let background = createElement('rect', {
+        attrs: {
+          'x': coords.x1,
+          'y': coords.y1,
+          'width': coords.x2 - coords.x1,
+          'height': coords.y2 - coords.y1
+        },
+        style: bgStyle,
+        class: 'rectangle'
+      })
+
+      return background
+    },
+
     getSlotContent () {
       if (this.$scopedSlots.default) {
         return this.$scopedSlots.default()
@@ -395,6 +434,11 @@ export default {
           slotContent.push(...gridLines)
         }
 
+        if (this.background) {
+          let bg = this.createBackground(createElement)
+          slotContent.push(bg)
+        }
+
         return createElement('g', { class: 'section' }, slotContent)
       }
 
@@ -402,6 +446,11 @@ export default {
         let section = this.createSection(createElement)
         let axes = this.createAxes(createElement)
         let content = [section, ...axes]
+
+        if (this.background) {
+          let bg = this.createBackground(createElement)
+          content.push(bg)
+        }
 
         return createElement('g', { class: 'section-with-axes' }, content)
       }

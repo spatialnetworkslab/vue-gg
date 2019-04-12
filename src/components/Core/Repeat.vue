@@ -57,7 +57,7 @@ export default {
 
     let slot = this.$scopedSlots.default
     let newSections = repeatComponents(slot, layout, this.x, this.y, sides)
-
+    console.log(newSections)
     return createElement('g', { class: 'layout-repeat' }, newSections)
   }
 }
