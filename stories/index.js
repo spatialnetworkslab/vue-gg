@@ -29,6 +29,7 @@ import MultipleSelections from './sandbox/MultipleSelections.vue'
 import NestedSelection from './sandbox/NestedSelection.vue'
 import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
 import Facets from './sandbox/Facets.vue'
+import DomainError from './sandbox/DomainError.vue'
 import EmptyData from './sandbox/EmptyData.vue'
 import DuplicateScales from './sandbox/DuplicateScales.vue'
 
@@ -63,5 +64,6 @@ storiesOf('Sandbox', module)
   .add('Nested selection', () => (NestedSelection))
   .add('Ate axis scale bug', () => (AteAxisScaleBug))
   .add('Facets', () => (Facets))
+  .add('DomainError', () => (DomainError))
   .add('Empty data', () => (EmptyData))
   .add('Duplicate scales', () => (DuplicateScales))

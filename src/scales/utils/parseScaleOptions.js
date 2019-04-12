@@ -37,7 +37,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
     if (dataInterface.ready()) {
       if (!dataInterface.hasColumn(scaleOptions.domain)) {
-        throw new Error(`Invalid scale options: domain '${domain}' not found`)
+        throw new Error(`Invalid scale options: domain '${scaleOptions.domain}' not found`)
       }
 
       if (scaleOptions.absolute) {
