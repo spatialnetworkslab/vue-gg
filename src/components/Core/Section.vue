@@ -68,7 +68,7 @@ export default {
     background: {
       type: [Object, undefined],
       default: undefined
-    },
+    }
   },
 
   data () {
@@ -381,9 +381,9 @@ export default {
       let bgStroke = bg.stroke ? bg.stroke : 'none'
       let bgStrokeWidth = bg.strokeWidth ? bg.strokeWidth : 1
       let bgStyle = { 'fill': bgColor,
-                      'fill-opacity': bgOpacity,
-                      'stroke': bgStroke,
-                      'stroke-width': bgStrokeWidth }
+        'fill-opacity': bgOpacity,
+        'stroke': bgStroke,
+        'stroke-width': bgStrokeWidth }
 
       let background = createElement('rect', {
         attrs: {

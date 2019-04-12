@@ -3,7 +3,8 @@ import { calculateGridLayout } from './utils/grid.js'
 import { calculateRowsCols, repeatComponents } from './utils/repeat.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 
-import { calculateWidths, createAxisProps } from './utils/section.js'
+// import { calculateWidths, createAxisProps } from './utils/section.js'
+import { calculateWidths } from './utils/section.js'
 
 export default {
   mixins: [CoordinateTreeUser],
@@ -115,7 +116,7 @@ export default {
           layout.x1 = layout.x1 - axisWidths.left
         }
 
-        if (i >= (cols * (rows - 1 ))) {
+        if (i >= (cols * (rows - 1))) {
           layout.y2 = layout.y2 + axisWidths.top
         }
 
@@ -137,7 +138,7 @@ export default {
     let options = this._props
     let ranges = this.ranges
     // console.log(calculateRowsCols(this.x, this.y), ranges, this.axisWidths)
-    let bottomAxisWidth = this.axisWidths
+    // let bottomAxisWidth = this.axisWidths
     let start = this.start
     let layout = calculateGridLayout(rows, cols, options, ranges, undefined, start)
     layout = this.nudgeLayout(layout)

@@ -73,7 +73,7 @@ function addSectionAxes (section, rowIndex, colIndex, rowLength, colLength, curr
   let newAxes = {}
 
   if (rowIndex === 0) {
-    if (axes.bottom) { 
+    if (axes.bottom) {
       newAxes.bottom = axes.bottom
       newAxes.bottom.scale = axes.bottom.scale[colIndex]
     }
@@ -105,7 +105,7 @@ function addSectionAxes (section, rowIndex, colIndex, rowLength, colLength, curr
 
   return section
   // section.componentOptions.propsData[axes] = { scale: 'a', flip: true }
-  
+
   // if (axesProp) {
   //   if (axesProp.constructor === Array) {
   //     let axesPropObj = {}

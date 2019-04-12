@@ -6,8 +6,13 @@
     class="graphic"
   >
 
-    <rect v-if="background" x="0" y="0"
-          :width="width" :height="height" :style="bgStyle" />
+    <rect
+      v-if="background"
+      :width="width"
+      :height="height"
+      :style="bgStyle"
+      x="0"
+      y="0" />
 
     <slot />
 
@@ -27,7 +32,7 @@ export default {
     background: {
       type: [Object, undefined],
       default: undefined
-    },
+    }
   },
 
   computed: {
@@ -48,9 +53,9 @@ export default {
       let bgStroke = bg.stroke ? bg.stroke : 'none'
       let bgStrokeWidth = bg.strokeWidth ? bg.strokeWidth : 1
       let bgStyle = { 'fill': bgColor,
-                      'fill-opacity': bgOpacity,
-                      'stroke': bgStroke,
-                      'stroke-width': bgStrokeWidth }
+        'fill-opacity': bgOpacity,
+        'stroke': bgStroke,
+        'stroke-width': bgStrokeWidth }
 
       return bgStyle
     }
