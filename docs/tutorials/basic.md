@@ -36,16 +36,22 @@ grapefruit| 11.1     | | orange   | 8.9      |
 
 ## Formatting Data
 
-The data accepted by the library components takes the form of an array of objects, where each object contains the `column_name`:`value` pairs per instance (row).
+The data accepted by the library components can either be organized by row or by column.
 
-The above data, for example, should be pre-processed into the following structure:
+To pass in data by row, the data should take the form of an array of objects, where each object contains the `column_name`:`value` pairs per instance (row).
+
+To pass in data by column, the data should be a single object of `column_name`:`[ value1, value2, value3 ...]` where all the values in a column are included in an array accessible by column name.
+
+**Passing in data by column is the preferred format as it reduces the amount of pre-processing needed.** The above data, for example, should be pre-processed into the following structure:
 
 ```js
-let fruits_data = [{ fruit: 'lime', diameter: 4.7 },
-	 			   { fruit: 'lemon', diameter: 6.1 },
-	 			   { fruit: 'grapefruit', diameter: 7.9 },
-	 			   ...
-	 			   { fruit: 'grapefruit', diameter: 9.4 }]
+data () {
+	return {
+		fruits_data: {	fruit: ['lime', 'lemon', 'grapefruit', ..., 'grapefruit'],
+						diameter: [4.7, 6.1, 7.9, ..., 9.4] }
+	}
+	
+}
 ```
 
 For further details on data loading and formatting, refer to the [documentation](../concepts/data-loading.md).
