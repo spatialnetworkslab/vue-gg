@@ -9,34 +9,55 @@
       from: '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
       to: 'WGS84'
     } }"
-    >
+  >
 
     <vgg-section
       :x1="0"
-      :x2="550"
+      :x2="500"
       :y1="0"
-      :y2="550"
+      :y2="500"
       :scale-geo="{}"
     >
 
       <vgg-map v-slot="{ row, i }">
+
         <vgg-polygon
           :geometry="row.geometry"
-          fill="#6ba292"
+          :fill="'#7f2704'"
+          :opacity="0.9"
           stroke="#d3d3d3"
-          :strokeWidth="0.05"
+          :stroke-width="0.05"
         />
+
       </vgg-map>
 
-      <vgg-data :data="multipoints">
+      <vgg-data :data="points">
 
         <vgg-map v-slot="{ row, i }">
-          <vgg-multi-point
+
+          <!-- <vgg-point
             :geometry="row.geometry"
-            :radius="{ val: row.wealth, scale: { range: [6, 30], domain: 'wealth' } }"
-            fill="#bcd8b7"
+            :radius="5"
+            fill="#008000"
             :opacity="0.5"
+          /> -->
+
+          <vgg-symbol
+            :geometry="row.geometry"
+            :shape="'star'"
+            :size="15"
+            :fill="'#e09f3e'"
           />
+
+          <vgg-label
+            :geometry="row.geometry"
+            :text="row.name"
+            :anchor-point="row.anchor"
+            :fill="row.fill"
+            :font-size="12"
+            font-family="Verdana"
+          />
+
         </vgg-map>
 
       </vgg-data>
@@ -47,18 +68,19 @@
 
 </template>
 
-
 <script>
 import { africa } from './africa.js'
-import { cities } from './wealthiestCities.js'
+import { points } from './populousCities.js'
 
 export default {
-  name: 'MarkMultiPointGeo',
+  name: 'GeoShape',
 
   data () {
     return {
       polygons: {},
-      multipoints: {},
+      points: {},
+      selectionBounds: [],
+      selected: {}
     }
   },
 
@@ -77,8 +99,8 @@ export default {
       africa().then(data => {
         this.polygons = Object.freeze(data)
       })
-      cities().then(data => {
-        this.multipoints = Object.freeze(data)
+      points().then(data =>{
+        this.points = Object.freeze(data)
       })
     }
   }

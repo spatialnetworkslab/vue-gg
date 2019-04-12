@@ -25,7 +25,7 @@
         ]
       },
       "properties": {
-        "wealth": "value000"
+        "wealth": "cat1"
       }
     },
     {
@@ -60,7 +60,7 @@
         ]
       },
       "properties": {
-        "wealth": "value00"
+        "wealth": "cat2"
       }
     },
     {
@@ -83,7 +83,7 @@
         ]
       },
       "properties": {
-        "wealth": "value0"
+        "wealth": "cat3"
       }
     },
     {
@@ -98,7 +98,7 @@
         ]
       },
       "properties": {
-        "wealth": "value1"
+        "wealth": "cat4"
       }
     },
     {
@@ -129,7 +129,7 @@
         ]
       },
       "properties": {
-        "wealth": "value2"
+        "wealth": "cat5"
       }
     },
     {
@@ -144,7 +144,7 @@
         ]
       },
       "properties": {
-        "wealth": "value3"
+        "wealth": "cat6"
       }
     },
     {
@@ -163,7 +163,7 @@
         ]
       },
       "properties": {
-        "wealth": "value4"
+        "wealth": "cat7"
       }
     },
     {
@@ -178,7 +178,7 @@
         ]
       },
       "properties": {
-        "wealth": "value5"
+        "wealth": "cat8"
       }
     }
   ]

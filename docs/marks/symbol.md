@@ -31,10 +31,11 @@ The Symbol mark is used for plotting point data, with each data instance being r
 
 ### Positioning
 
-| Prop | Required | Types                  | Default   | Description                            | Unit(s)           |
-| ---- | -------- | ---------------------- | --------- | -------------------------------------- | ----------------- |
-| x    | true     | [Number, String, Date] | undefined | x-coordinate of center of each symbol | Local coordinates |
-| y    | true     | [Number, String, Date] | undefined | y-coordinate of center of each symbol | Local coordinates |
+| Prop     | Input                        | Required            | Types                  | Default   | Unit(s)           |
+|--------- | ---------------------------- | ------------------- | ---------------------- | --------- | ----------------- |
+| x        | x coordinate                 | see [Usage](#usage) | [Number, String, Date] | undefined | Local coordinates |
+| y        | y coordinate                 | see [Usage](#usage) | [Number, String, Date] | undefined | Local coordinates |
+| geometry | GeoJSON object of type Point | see [Usage](#usage) | Object                 | undefined | Local coordinates |
 
 ### Other aesthetics
 
@@ -75,9 +76,8 @@ documentation.
 
 ### Positioning
 
-To render the Symbol mark, you will need to provide the `x` and `y` props.
-These can be of type `Number`, `String` and `Date`, depending what kind of domain type
-the parent Section has.
+To render the Symbol mark, you will need to provide the `x` and `y` props or the `geometry` mark.
+`x` and `y` can be used with data types `Number`, `String` and `Date`, depending on what kind of domain type the parent Section has. `geometry` should be used when working with geographic data involving [GeoJSON Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects.
 
 ### Other aesthetics
 

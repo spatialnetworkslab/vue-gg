@@ -55,7 +55,6 @@
 
           <vgg-label
             :geometry="row.geometry"
-            :radius="7"
             :text="row.name"
             :anchor-point="row.anchor"
             :fill="row.fill"
@@ -83,7 +82,7 @@
 
 <script>
 import { geo } from './geoData.js'
-import { points } from './MajorCities.js'
+import { points } from './populousCities.js'
 import { equijoin } from '../../src/utils/join.js'
 
 export default {
