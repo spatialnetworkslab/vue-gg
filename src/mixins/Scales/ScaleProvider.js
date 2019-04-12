@@ -37,7 +37,7 @@ export default {
             scale, this.$$dataInterface, this.$$scaleManager
           )
 
-          this.$$scaleManager.storeScale(name, parsedScale)
+          this.$$scaleManager.storeScale(name, parsedScale, this.uuid)
         }
 
         let oldScaleKeys = this.difference(oldScales, newScales)
@@ -58,7 +58,7 @@ export default {
         scale, this.$$dataInterface, this.$$scaleManager
       )
 
-      this.$$scaleManager.storeScale(scaleName, parsedScale)
+      this.$$scaleManager.storeScale(scaleName, parsedScale, this.uuid)
     }
   },
 

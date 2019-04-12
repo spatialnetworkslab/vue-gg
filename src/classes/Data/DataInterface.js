@@ -13,7 +13,7 @@ export default class DataInterface {
   ready (id) {
     let containerID = id || this._scope
     return this._manager.hasContainer(containerID) &&
-           this._manager.getContainer(containerID) !== undefined
+           this._manager.getContainer(containerID)
   }
 
   // Interface functions to DataContainer
