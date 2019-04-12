@@ -1,10 +1,42 @@
+<!--
+SAMPLE COMPONENT DEFINITION
+
+<vgg-heatmap
+  :x1="200"
+  :x2="800"
+  :y1="100"
+  :y2="900"
+  :width="1000"
+  :height="1000"
+  :csvURL="'../../static/motorbikes_40_clean.csv'"
+  :extract-variables="{
+    'Base MSRP': 'Price',
+    'Wet Weight': 'WetWeight',
+    '0–60 mph sec': 'ZeroTo60',
+    'Rear-Wheel HP':'RearWheelHorsepower',
+    'Top Speed': 'TopSpeed',
+    'Average MPG': 'MilesPG',
+    '0–60 mph sec': 'ZeroTo60',
+    'Braking 60 to 0 mph (feet)': 'Stop60',
+    'Rear-Wheel TQ Lb-Ft': 'RearWheelTQLbFt',
+    'Quartermile Sec':'QuartermileSec'}"
+  :color="'Color'"
+  :dimensions="['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']"
+  :options="'Name'"
+
+/> -->
+
 <template>
+
+  <!-- If changing the size of the chart, change total chart size here first -->
   <vgg-graphic
     v-if="myData"
     :width="width"
     :height="height"
     :data="myData"
   >
+
+    <!-- If changing the size of the chart, remember to change x1, x2, y1 and y2 values as well -->
     <vgg-section
       :x1="x1"
       :x2="x2"
@@ -56,7 +88,6 @@
         :stroke="'red'"
         :stroke-width="5"
       />
-
 
       <vgg-x-axis
         :scale="dimensions"
@@ -171,6 +202,7 @@ export default {
     }
 
   },
+
   // hovered keeps track of whether a point is being hovered over (i.e. true or false)
   // hoverRow keeps track of the details of the point being hovered over (e.g. x, y values)
   // Currently, corresponding points are highlighted across scatterplots on hover
@@ -270,7 +302,6 @@ export default {
         this.clickRow = undefined
       }
     }
-
   }
 }
 </script>

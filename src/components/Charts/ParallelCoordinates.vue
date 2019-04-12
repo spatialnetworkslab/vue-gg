@@ -2,44 +2,59 @@
   <div>
     <br>
     <vgg-graphic
-      :width="1400"
-      :height="600"
+      :width="width"
+      :height="height"
       :data="myData"
     >
       <g v-if="myData">
         <vgg-section
-          :x1="50"
-          :x2="1300"
-          :y1="150"
-          :y2="550"
-          :scale-x="[0, 1]"
+          :x1="x1"
+          :x2="x2"
+          :y1="y1"
+          :y2="y2"
+          :scale-x="[0, 10]"
           :scale-y="[0, 10]"
           :transform="[
             { rename: extractVariables }
           ]"
         >
-          <vgg-y-axis
-            v-for="dim, d in axes(dimensions, options)"
-            :key="d"
-            :scale="dim[1]"
-            :hjust="1/ dimensions.length * d"
-            :title-vjust="1.02"
-            :title-hjust="0.5"
-            :tick-opacity="3"
-            :title="dim[0]"
-            :title-font-size="10"
-            :tick-length="0.01"
-            :label-font-size="8"
-            :title-font-weight="700"
-          />
 
-          <!-- <g v-for="segment, i in segments(10, 40)">
+          <vgg-map
+            v-slot="{ dataframe }"
+            unit="dataframe">
+            <vgg-y-axis
+              v-for="dim, d in axes(dataframe, dimensions, options)"
+              :key="d"
+              :scale="{domain: dim.domain}"
+              :hjust="1/ dimensions.length * d"
+              :title="dim.dimension"
+              :title-vjust="1.05"
+              :title-hjust="0.5"
+              :tick-opacity="3"
+              :title-font-size="12"
+              :tick-length="0.01"
+              :label-font-size="10"
+              :title-font-weight="700"
+            />
+
             <vgg-multi-line
+              v-for="segment, i in segments(dataframe, dimensions, options)"
+              :key="i + dimensions.length"
               :x="segment.x"
               :y="segment.y"
               :stroke="segment.color"
+              stroke-linecap="round"
+              @hover="handleHover($event, segment, dataframe[options][i], i)"
             />
-          </g> -->
+          </vgg-map>
+          <vgg-multi-line
+            v-if="hoverRow"
+            :x="hoverRow.x"
+            :y="hoverRow.y"
+            :stroke-width="5"
+            stroke="black"
+          />
+
         </vgg-section>
       </g>
 
@@ -98,6 +113,36 @@ export default {
     options: {
       type: String,
       default: undefined
+    },
+
+    x1: {
+      type: Number,
+      default: undefined
+    },
+
+    x2: {
+      type: Number,
+      default: undefined
+    },
+
+    y1: {
+      type: Number,
+      default: undefined
+    },
+
+    y2: {
+      type: Number,
+      default: undefined
+    },
+
+    width: {
+      type: Number,
+      default: undefined
+    },
+
+    height: {
+      type: Number,
+      default: undefined
     }
   },
   // hovered keeps track of whether a point is being hovered over (i.e. true or false)
@@ -110,7 +155,8 @@ export default {
     return {
       myData: undefined,
       hovered: undefined,
-      hoverRow: undefined
+      hoverRow: undefined,
+      axesScales: undefined
     }
   },
 
@@ -123,14 +169,25 @@ export default {
       return renamedVars
     },
 
-    colors () {
-      let colors = []
-
-      for (let i = 0; i < this.myData.length; i++) {
-        colors.push(this.myData[this.color][i])
+    newScales () {
+      let scales = {}
+      if (this.axesScales) {
+        for (let a in this.axesScales) {
+          let aScale = this.axesScales[a]; let scale
+          if (isNaN(parseFloat(aScale.domain[0]))) {
+            let range = []
+            let delta = 10 / aScale.domain.length
+            for (let i = 0.5; i <= aScale.domain.length; i++) {
+              range.push(delta * (i))
+            }
+            scale = scaleOrdinal().domain(aScale.domain).range(range)
+          } else {
+            scale = scaleLinear().domain(aScale.domain).range([0, 10])
+          }
+          scales[aScale.dimension] = scale
+        }
       }
-
-      return colors
+      return scales
     }
   },
 
@@ -176,159 +233,64 @@ export default {
     },
 
     // Customize as needed
-    handleHover (e, r, i) {
+    handleHover (e, s, r, i) {
       this.hovered = e ? { r, i } : undefined
       if (this.hovered) {
-        this.hoverRow = r
+        this.hoverRow = s
       } else {
         this.hovered = undefined
         this.hoverRow = undefined
       }
-      // console.log(this.hoverRow)
     },
 
-    axes (dimensions, options) {
-      let axes = {}; let newAxes = []
-      // let distanceDelta = this.axisInterval(this.dimensions[0])
-      // let x = this.dimensionSections[this.dimensions.indexOf(dimensions)][0]; let y = this.optionSections[this.options.indexOf(options)][0]
-      console.log(this.myData)
-      for (let i = 0; i < dimensions.length; i++) {
-        let macro = []
-        for (let j = 0; j < this.myData.length; j++) {
-          macro.push(this.data[j][dimensions[i]])
-        }
-        axes[dimensions[i]] = macro
+    createDomain (domain) {
+      let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
+
+      if (newDomain[0] > 1000 && newDomain[1] > 1000) {
+        rounder = 1000
+      } else if (newDomain[0] > 100 && newDomain[1] > 100) {
+        rounder = 100
+      } else if (newDomain[0] > 10 && newDomain[1] > 10) {
+        rounder = 10
+      } else if (newDomain[0] > 1 && newDomain[1] > 1) {
+        rounder = 1
       }
 
-      for (let name in categories) {
-        let domain = axes[categories[name]]
+      newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
 
-        if (domain[0].constructor === String) {
-          newAxes.push([categories[name], domain])
+      return newDomain
+    },
+
+    // Manually creates scales per dimension axes
+    axes (dataframe, dimensions, options) {
+      let newAxes = []
+      for (let dim = 0; dim < dimensions.length; dim++) {
+        let domain = dataframe[dimensions[dim]]
+
+        if (isNaN(parseFloat(domain[0]))) {
+          newAxes.push({ dimension: dimensions[dim], domain })
         } else {
-          // if Number
-          // find domain Min, Max
-          // feed to scale
-          let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
-
-          if (newDomain[0] > 1000 && newDomain[1] > 1000) {
-            rounder = 1000
-          } else if (newDomain[0] > 100 && newDomain[1] > 100) {
-            rounder = 100
-          } else if (newDomain[0] > 10 && newDomain[1] > 10) {
-            rounder = 10
-          } else if (newDomain[0] > 1 && newDomain[1] > 1) {
-            rounder = 1
-          }
-
-          newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
-          newAxes.push([categories[name], newDomain])
+          newAxes.push({ dimension: dimensions[dim], domain: this.createDomain(domain) })
         }
       }
-
+      this.axesScales = newAxes
       return newAxes
     },
 
-    segments (dimensions, options) {
-      let categories = this.categories
+    segments (dataframe, dimensions, options) {
+      let segments = []
+      for (let d = 0; d < dataframe[this.options].length; d++) {
+        let y = []; let x = []
+        let deltaX = 10 / dimensions.length
 
-      if (this.data) {
-        if (!isNaN(dimensions)) {
-          categories = categories.slice(0, dimensions)
+        for (let i = 0; i < dimensions.length; i++) {
+          x.push(deltaX * i)
+          y.push(this.newScales[dimensions[i]](dataframe[dimensions[i]][d]))
         }
-
-        if (!isNaN(options)) {
-          let options = this.data.length
-        }
-
-        let segments = {}; let scaledSegments = []
-        let distanceDelta = 1 / this.categories.length
-        // let x = this.dimensionSections[this.dimensions.indexOf(dimensions)][0]; let y = this.optionSections[this.options.indexOf(options)][0]
-
-        for (let i = 0; i < categories.length; i++) {
-          let macro = []
-          for (let j = 0; j < options; j++) {
-            macro.push(this.data[j][categories[i]])
-          }
-          segments[categories[i]] = macro
-        }
-        // for (let i = 0; i < this.data.length; i++) {
-        //   let macro = { x: [], y: [] }
-        //   for (let j = 0; j < categories.length; j++) {
-        //     macro.y.push(this.data[i][categories[j]])
-        //     macro.x.push(1 * j * distanceDelta)
-        //   }
-        //   segments.push(macro)
-        // }
-        // console.log(segments)
-        for (let index in segments) {
-          let scale = this.scales(segments[index], [0, 10], index)
-          let attribute = segments[index]
-          let att = []
-          for (let item in attribute) {
-            att.push(scale(attribute[item]))
-          }
-          scaledSegments.push(att)
-        }
-
-        let plotSegments = []
-        for (let category in scaledSegments) {
-          for (let segment in scaledSegments[category]) {
-            if (!plotSegments[segment]) {
-              let y = [scaledSegments[category][segment]]
-              plotSegments[segment] = { y }
-            } else {
-              plotSegments[segment].y.push(scaledSegments[category][segment])
-            }
-          }
-        }
-
-        for (let item in plotSegments) {
-          plotSegments[item].x = []
-          for (let index in plotSegments[item].y) {
-            plotSegments[item].x.push(1 / categories.length * index)
-          }
-          plotSegments[item].color = this.data[item].Color
-        }
-        // console.log(plotSegments)
-        return plotSegments
+        segments.push({ x, y, color: this.myData[this.color][d] })
       }
-    },
 
-    scales (domain, range, name) {
-      let scale
-
-      if (domain[0].constructor === String) {
-        let range = []
-        let delta = 10 / domain.length
-        for (let i = 0.5; i <= domain.length; i++) {
-          range.push(delta * (i))
-        }
-        scale = scaleOrdinal().domain(domain).range(range)
-        this.domains[name] = domain
-      } else {
-        // if Number
-        // find domain Min, Max
-        // feed to scale
-        let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
-
-        if (newDomain[0] > 1000 && newDomain[1] > 1000) {
-          rounder = 1000
-        } else if (newDomain[0] > 100 && newDomain[1] > 100) {
-          rounder = 100
-        } else if (newDomain[0] > 10 && newDomain[1] > 10) {
-          rounder = 10
-        } else if (newDomain[0] > 1 && newDomain[1] > 1) {
-          rounder = 1
-        }
-
-        newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
-
-        scale = scaleLinear().domain(newDomain).range(range)
-        this.domains[name] = newDomain
-      }
-      console.log(scale)
-      return scale
+      return segments
     }
   }
 }

@@ -1,11 +1,11 @@
 <template>
   <vgg-parallel-coordinates
-    :x1="50"
-    :x2="1300"
-    :y1="150"
-    :y2="550"
-    :width="1400"
-    :height="600"
+    :x1="100"
+    :x2="1500"
+    :y1="100"
+    :y2="700"
+    :width="1600"
+    :height="800"
     :csvURL="'../../static/motorbikes_40_clean.csv'"
     :extract-variables="{
       'Base MSRP': 'Price',
