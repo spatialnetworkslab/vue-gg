@@ -4,9 +4,9 @@
     <vgg-graphic
       :width="1400"
       :height="600"
-      :data="data"
+      :data="myData"
     >
-      <g v-if="data">
+      <g v-if="myData">
         <vgg-section
           :x1="50"
           :x2="1300"
@@ -14,29 +14,32 @@
           :y2="550"
           :scale-x="[0, 1]"
           :scale-y="[0, 10]"
+          :transform="[
+            { rename: extractVariables }
+          ]"
         >
           <vgg-y-axis
-            v-for="category, c in axes(10, 40)"
-            :key="c"
-            :scale="category[1]"
-            :hjust="1/ categories.length * c"
+            v-for="dim, d in axes(dimensions, options)"
+            :key="d"
+            :scale="dim[1]"
+            :hjust="1/ dimensions.length * d"
             :title-vjust="1.02"
             :title-hjust="0.5"
             :tick-opacity="3"
-            :title="category[0]"
+            :title="dim[0]"
             :title-font-size="10"
             :tick-length="0.01"
             :label-font-size="8"
             :title-font-weight="700"
           />
 
-          <g v-for="segment, i in segments(10, 40)">
+          <!-- <g v-for="segment, i in segments(10, 40)">
             <vgg-multi-line
               :x="segment.x"
               :y="segment.y"
               :stroke="segment.color"
             />
-          </g>
+          </g> -->
         </vgg-section>
       </g>
 
@@ -135,6 +138,8 @@ export default {
     this.getData()
   },
   methods: {
+    log: console.log,
+
     getData () {
       if (this.data) {
         this.myData = this.data
@@ -183,26 +188,16 @@ export default {
     },
 
     axes (dimensions, options) {
-      let categories = this.categories
-
-      if (!isNaN(dimensions)) {
-        categories = categories.slice(0, dimensions)
-      }
-
-      if (!isNaN(options)) {
-        let options = this.data.length
-      }
-
       let axes = {}; let newAxes = []
       // let distanceDelta = this.axisInterval(this.dimensions[0])
       // let x = this.dimensionSections[this.dimensions.indexOf(dimensions)][0]; let y = this.optionSections[this.options.indexOf(options)][0]
-
-      for (let i = 0; i < categories.length; i++) {
+      console.log(this.myData)
+      for (let i = 0; i < dimensions.length; i++) {
         let macro = []
-        for (let j = 0; j < options; j++) {
-          macro.push(this.data[j][categories[i]])
+        for (let j = 0; j < this.myData.length; j++) {
+          macro.push(this.data[j][dimensions[i]])
         }
-        axes[categories[i]] = macro
+        axes[dimensions[i]] = macro
       }
 
       for (let name in categories) {

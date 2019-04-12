@@ -1,16 +1,15 @@
 <template>
   <vgg-graphic
     v-if="myData"
-    :width="1000"
-    :height="1000"
+    :width="width"
+    :height="height"
     :data="myData"
   >
-
     <vgg-section
-      :x1="200"
-      :x2="900"
-      :y1="150"
-      :y2="900"
+      :x1="x1"
+      :x2="x2"
+      :y1="y1"
+      :y2="y2"
       :scale-x="dimensions"
       :scale-y="options"
       :transform="[
@@ -19,7 +18,10 @@
       ]"
     >
       <!-- { transform: df => { log(df, colors); return df } } -->
-      <g v-for="dim, d in dimensions">
+      <g
+        v-for="dim, d in dimensions"
+        :key="d"
+      >
         <vgg-map v-slot="{ row, i }">
           <vgg-rectangle
             :x="dim"
@@ -28,26 +30,33 @@
             :h="{ band: { domain: options } }"
             :fill="{val: row[dim], scale: { type: 'blues', domain: dim}}"
             @hover="handleHover($event, row, i)"
+            @click="handleClick($event, row, i)"
           />
-          <!-- <vgg-rectangle
-            v-if="hoverRow"
-            :x="hoverRow[dim]"
-            :y="hoverRow.Name"
-            :w="{ band: { domain: dimensions } }"
-            :h="{ band: { domain: options } }"
-            stroke="black"
-          /> -->
-          <!-- <vgg-rectangle
-            v-if="hoverRow"
-            :x="dim"
-            :y="row.Name"
-            :w="{ band: { domain: dimensions } }"
-            :h="{ band: { domain: options } }"
-            :fill="{val: row[dim], scale: { type: 'blues', domain: dim}}"
-            stroke="black"
-          /> -->
         </vgg-map>
       </g>
+
+      <vgg-rectangle
+        v-if="hoverRow"
+        :x1="x1"
+        :x2="x2"
+        :y="hovered.r[options]"
+        :h="(y2 - y1)/myData[options].length"
+        :fill="'none'"
+        :stroke="'red'"
+        :stroke-width="5"
+      />
+
+      <vgg-rectangle
+        v-if="clickRow"
+        :x1="x1"
+        :x2="x2"
+        :y="clicked.r[options]"
+        :h="(y2 - y1)/myData[options].length"
+        :fill="'none'"
+        :stroke="'red'"
+        :stroke-width="5"
+      />
+
 
       <vgg-x-axis
         :scale="dimensions"
@@ -129,7 +138,38 @@ export default {
     options: {
       type: String,
       default: undefined
+    },
+
+    x1: {
+      type: Number,
+      default: undefined
+    },
+
+    x2: {
+      type: Number,
+      default: undefined
+    },
+
+    y1: {
+      type: Number,
+      default: undefined
+    },
+
+    y2: {
+      type: Number,
+      default: undefined
+    },
+
+    width: {
+      type: Number,
+      default: undefined
+    },
+
+    height: {
+      type: Number,
+      default: undefined
     }
+
   },
   // hovered keeps track of whether a point is being hovered over (i.e. true or false)
   // hoverRow keeps track of the details of the point being hovered over (e.g. x, y values)
@@ -141,7 +181,9 @@ export default {
     return {
       myData: undefined,
       hovered: undefined,
-      hoverRow: undefined
+      hoverRow: undefined,
+      clicked: undefined,
+      clickRow: undefined
     }
   },
 
@@ -216,7 +258,17 @@ export default {
         this.hovered = undefined
         this.hoverRow = undefined
       }
-      // console.log(this.hoverRow)
+    },
+
+    // Customize as needed
+    handleClick (e, r, i) {
+      this.clicked = e ? { r, i } : undefined
+      if (this.clicked) {
+        this.clickRow = r
+      } else {
+        this.clicked = undefined
+        this.clickRow = undefined
+      }
     }
 
   }

@@ -1,5 +1,11 @@
 <template>
   <vgg-heatmap
+    :x1="200"
+    :x2="800"
+    :y1="100"
+    :y2="900"
+    :width="1000"
+    :height="1000"
     :csvURL="'../../static/motorbikes_40_clean.csv'"
     :extract-variables="{
       'Base MSRP': 'Price',

@@ -1,48 +1,68 @@
 <template>
-  <div>
-    <br>
-    <vgg-graphic
-      :width="1400"
-      :height="600"
-      :data="data"
-    >
-      <g v-if="data">
-        <vgg-section
-          :x1="50"
-          :x2="1300"
-          :y1="150"
-          :y2="550"
-          :scale-x="[0, 1]"
-          :scale-y="[0, 10]"
-        >
-          <vgg-y-axis
-            v-for="category, c in axes(10, 40)"
-            :key="c"
-            :scale="category[1]"
-            :hjust="1/ categories.length * c"
-            :title-vjust="1.02"
-            :title-hjust="0.5"
-            :tick-opacity="3"
-            :title="category[0]"
-            :title-font-size="10"
-            :tick-length="0.01"
-            :label-font-size="8"
-            :title-font-weight="700"
+  <vgg-parallel-coordinates
+    :x1="50"
+    :x2="1300"
+    :y1="150"
+    :y2="550"
+    :width="1400"
+    :height="600"
+    :csvURL="'../../static/motorbikes_40_clean.csv'"
+    :extract-variables="{
+      'Base MSRP': 'Price',
+      'Wet Weight': 'WetWeight',
+      '0–60 mph sec': 'ZeroTo60',
+      'Rear-Wheel HP':'RearWheelHorsepower',
+      'Top Speed': 'TopSpeed',
+      'Average MPG': 'MilesPG',
+      '0–60 mph sec': 'ZeroTo60',
+      'Braking 60 to 0 mph (feet)': 'Stop60',
+      'Rear-Wheel TQ Lb-Ft': 'RearWheelTQLbFt',
+      'Quartermile Sec':'QuartermileSec'}"
+    :color="'Color'"
+    :dimensions="['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']"
+    :options="'Name'"
+  />
+  <!-- <vgg-graphic
+    :width="1400"
+    :height="600"
+    :data="data"
+  >
+    <g v-if="data">
+      <vgg-section
+        :x1="50"
+        :x2="1300"
+        :y1="150"
+        :y2="550"
+        :scale-x="[0, 1]"
+        :scale-y="[0, 10]"
+      >
+        <vgg-y-axis
+          v-for="category, c in axes(10, 40)"
+          :key="c"
+          :scale="category[1]"
+          :hjust="1/ categories.length * c"
+          :title-vjust="1.02"
+          :title-hjust="0.5"
+          :tick-opacity="3"
+          :title="category[0]"
+          :title-font-size="10"
+          :tick-length="0.01"
+          :label-font-size="8"
+          :title-font-weight="700"
+        />
+
+        <g v-for="segment, i in segments(10, 40)">
+          <vgg-multi-line
+            :x="segment.x"
+            :y="segment.y"
+            :stroke="segment.color"
           />
+        </g>
+      </vgg-section>
+    </g>
 
-          <g v-for="segment, i in segments(10, 40)">
-            <vgg-multi-line
-              :x="segment.x"
-              :y="segment.y"
-              :stroke="segment.color"
-            />
-          </g>
-        </vgg-section>
-      </g>
+  </vgg-graphic> -->
 
-    </vgg-graphic>
-
-  </div>
 </template>
 
 <script>
