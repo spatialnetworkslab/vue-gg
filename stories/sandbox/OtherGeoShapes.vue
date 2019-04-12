@@ -1,7 +1,6 @@
 <template>
 
   <vgg-graphic
-    v-if="dataLoaded"
     :width="600"
     :height="600"
     :data="polygons"
@@ -22,7 +21,10 @@
         />
       </vgg-map>
 
-      <vgg-data :data="linestrings">
+      <vgg-data 
+        v-if="dataLoaded(linestrings)"
+        :data="linestrings"
+      >
         <vgg-map v-slot="{ row }">
           <vgg-multi-line
             :geometry="row.geometry"
@@ -30,7 +32,10 @@
         </vgg-map>
       </vgg-data>
 
-      <vgg-data :data="points">
+      <vgg-data 
+        v-if="dataLoaded(points)"
+        :data="points"
+      >
         <vgg-map v-slot="{ row }">
           <vgg-point
             :geometry="row.geometry"
@@ -39,7 +44,10 @@
         </vgg-map>
       </vgg-data>
 
-      <vgg-data :data="multipoints">
+      <vgg-data 
+        v-if="dataLoaded(multipoints)"
+        :data="multipoints"
+      >
         <vgg-map v-slot="{ row }">
           <vgg-multi-point
             :geometry="row.geometry"
@@ -49,11 +57,6 @@
       </vgg-data>
 
     </vgg-section>
-
-      <!-- <vgg-multi-point
-        :points="[ [100.0, 100.0], [233.33, 300], [366.66, 400], [500, 500] ]"
-        :radius="5"
-      /> -->
 
   </vgg-graphic>
 
@@ -78,12 +81,6 @@ export default {
     }
   },
 
-  computed: {
-    dataLoaded () {
-      return this.polygons && Object.keys(this.polygons).length !== 0
-    }
-  },
-
   mounted () {
     this.loadData()
   },
@@ -102,6 +99,9 @@ export default {
       multipoints().then(data => {
         this.multipoints = Object.freeze(data)
       })
+    },
+    dataLoaded (geom) {
+      return geom && Object.keys(geom).length !== 0
     }
   }
 }

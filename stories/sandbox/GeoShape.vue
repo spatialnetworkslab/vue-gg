@@ -37,7 +37,7 @@
 
       <vgg-data :data="points">
 
-        <vgg-map v-slot="{ row, i }">
+        <vgg-map v-slot="{ row }">
 
           <!-- <vgg-point
             :geometry="row.geometry"
