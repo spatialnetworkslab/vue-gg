@@ -10,6 +10,10 @@
       :x="['a', 'b', 'c']"
       :y="['a', 'b', 'c']"
       :cell-padding="12"
+      :axes="{
+        bottom: { scale: ['a', 'b', 'c'], labelRotate: true },
+        right: { scale: ['a', 'b', 'c'], flip: true }
+      }"
       :sides="['bottom', 'right']"
     >
 
@@ -17,19 +21,13 @@
         :grid-lines="{
           x: { scale: x },
           y: { scale: y }
-        }"
-        :axes="{
-          bottom: { scale: x, labelRotate: true },
-          right: { scale: y, flip: true }
-        }"
-        :background="{ color: 'grey', opacity: 0.5 }"
+        }"    
       >
 
         <vgg-plot-title
           :margin="0"
-          :v-margin="-20"
+          :v-margin="5"
           text="Subsection"
-          hjust="l"
         />
 
         <vgg-map v-slot="{ row }">

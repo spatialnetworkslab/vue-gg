@@ -222,6 +222,11 @@ export default {
       props.y1 = coordinateSpecification.y1 + axisWidths.bottom
       props.y2 = coordinateSpecification.y2 - axisWidths.top
 
+      // props.x1 = coordinateSpecification.x1
+      // props.x2 = coordinateSpecification.x2
+      // props.y1 = coordinateSpecification.y1
+      // props.y2 = coordinateSpecification.y2
+
       const forbiddenProps = [
         'x1', 'x2', 'x', 'w',
         'y1', 'y2', 'y', 'h',
@@ -309,7 +314,6 @@ export default {
 
         if (['top', 'bottom'].includes(axis)) {
           let props = createAxisProps(axis, axisOptions, coords, widths, scales)
-
           let axisElement = createElement(XAxis, { props })
           elements.push(axisElement)
         }
@@ -362,6 +366,7 @@ export default {
 
     createBackground (createElement) {
       let coords = this.coordinateSpecification
+      // console.log(coords)
       let bg = this.background
 
       let bgColor

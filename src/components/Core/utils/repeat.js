@@ -1,7 +1,7 @@
 import { updateComponent } from './grid.js'
 import isSquareComponent from './isSquareComponent.js'
 
-export function repeatComponents (slot, layout, xValues, yValues, sides) {
+export function repeatComponents (slot, layout, xValues, yValues, sides, axes) {
   let newComponents = []
 
   let rowLength = yValues.length
@@ -25,7 +25,7 @@ export function repeatComponents (slot, layout, xValues, yValues, sides) {
       let currentSides = getSides(rowIndex, colIndex, rowLength, colLength)
 
       updatedComponents = updatedComponents.map(section => {
-        return hideSectionAxes(section, currentSides, sides)
+        return addSectionAxes(section, rowIndex, colIndex, rowLength, colLength, currentSides, axes)
       })
 
       newComponents.push(...updatedComponents)
@@ -68,25 +68,61 @@ function getSides (r, c, rLen, cLen) {
   return sides
 }
 
-function hideSectionAxes (section, currentSides, sides) {
-  let axesProp = section.componentOptions.propsData.axes
-  if (axesProp) {
-    if (axesProp.constructor === Array) {
-      let axesPropObj = {}
-      for (let axis of axesProp) {
-        axesPropObj[axis] = {}
-      }
-      axesProp = axesPropObj
-    }
+function addSectionAxes (section, rowIndex, colIndex, rowLength, colLength, currentSides, axes) {
+  axes = JSON.parse(JSON.stringify(axes))
+  let newAxes = {}
 
-    for (let axis in axesProp) {
-      if (!currentSides[axis] && sides.includes(axis)) {
-        axesProp[axis].hide = true
-      }
+  if (rowIndex === 0) {
+    if (axes.bottom) { 
+      newAxes.bottom = axes.bottom
+      newAxes.bottom.scale = axes.bottom.scale[colIndex]
     }
-
-    section.componentOptions.propsData.axes = axesProp
   }
 
+  if (colIndex === 0) {
+    if (axes.left) {
+      newAxes.left = axes.left
+      newAxes.left.scale = axes.left.scale[rowIndex]
+    }
+  }
+
+  if (colIndex === colLength - 1) {
+    if (axes.right) {
+      newAxes.right = axes.right
+      newAxes.right.scale = axes.right.scale[rowIndex]
+    }
+  }
+
+  if (rowIndex === rowLength - 1) {
+    if (axes.top) {
+      newAxes.top = axes.top
+      newAxes.top.scale = axes.top.scale[colIndex]
+    }
+  }
+  console.log(newAxes)
+
+  section.componentOptions.propsData.axes = newAxes
+
   return section
+  // section.componentOptions.propsData[axes] = { scale: 'a', flip: true }
+  
+  // if (axesProp) {
+  //   if (axesProp.constructor === Array) {
+  //     let axesPropObj = {}
+  //     for (let axis of axesProp) {
+  //       axesPropObj[axis] = {}
+  //     }
+  //     axesProp = axesPropObj
+  //   }
+
+  //   for (let axis in axesProp) {
+  //     if (!currentSides[axis] && sides.includes(axis)) {
+  //       axesProp[axis].hide = true
+  //     }
+  //   }
+
+  //   section.componentOptions.propsData.axes = axesProp
+  // }
+
+  // return section
 }
