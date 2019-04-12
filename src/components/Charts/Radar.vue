@@ -1,13 +1,14 @@
 <!--
 SAMPLE COMPONENT DEFINITION
 
- <vgg-parallel-coordinates
+<vgg-radar
   :x1="100"
-  :x2="1500"
+  :x2="1100"
   :y1="100"
-  :y2="700"
-  :width="1600"
-  :height="800"
+  :y2="1900"
+  :width="1200"
+  :height="2000"
+  :rows="8"
   :csvURL="'../../static/motorbikes_40_clean.csv'"
   :extract-variables="{
     'Base MSRP': 'Price',
@@ -24,7 +25,6 @@ SAMPLE COMPONENT DEFINITION
   :dimensions="['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']"
   :options="'Name'"
 />
-
 -->
 <template>
   <div>
@@ -34,58 +34,132 @@ SAMPLE COMPONENT DEFINITION
       :height="height"
       :data="myData"
     >
+
       <g v-if="myData">
         <vgg-section
           :x1="x1"
           :x2="x2"
           :y1="y1"
           :y2="y2"
-          :scale-x="[0, 10]"
-          :scale-y="[0, 10]"
+          :scale-x="[0, 100]"
+          :scale-y="[0, 100]"
           :transform="[
             { rename: extractVariables }
           ]"
         >
+          <vgg-grid
+            :rows="rows"
+            :cell-padding="{
+              t: 2.5,
+              l: 2,
+              r: 2.5
+            }"
+          >
+            <!-- <vgg-map
+              v-slot="{ dataframe }"
+              unit="dataframe"> -->
+            <vgg-map v-slot="{ row, i }">
+              <!-- <vgg-section
+                v-for="s in dataframe[options].length"
+                :key="s"
+                :scale-x="[0, 10]"
+                :scale-y="[0, 10]"
+                type="polar"
+              > -->
 
-          <vgg-map
-            v-slot="{ dataframe }"
-            unit="dataframe">
-            <vgg-y-axis
-              v-for="dim, d in axes(dataframe, dimensions, options)"
-              :key="d"
-              :scale="{domain: dim.domain}"
-              :hjust="1/ dimensions.length * d"
-              :title="dim.dimension"
-              :title-vjust="1.05"
-              :title-hjust="0.5"
-              :tick-opacity="3"
-              :title-font-size="12"
-              :tick-length="0.01"
-              :label-font-size="10"
-              :title-font-weight="700"
-            />
+              <vgg-section
+                :scale-x="[0, 10]"
+                :scale-y="[0, 10]"
+                :grid-lines="['x', 'y']"
+                type="polar"
+              >
+                <vgg-rectangle
+                  v-if="hoverRow"
+                  :x1="0"
+                  :x2="10"
+                  :y1="0"
+                  :y2="10"
+                  :stroke="hoverRow.Name === row.Name ? 'black' : 'none'"
+                  :stroke-width="5"
+                  :fill="'none'"
+                />
 
-            <vgg-multi-line
-              v-for="segment, i in segments(dataframe, dimensions, options)"
-              :key="i + dimensions.length"
-              :x="segment.x"
-              :y="segment.y"
-              :stroke="segment.color"
-              stroke-linecap="round"
-              @hover="handleHover($event, segment, dataframe[options][i], i)"
-            />
-          </vgg-map>
-          <vgg-multi-line
-            v-if="hoverRow"
-            :x="hoverRow.x"
-            :y="hoverRow.y"
-            :stroke-width="5"
-            stroke="black"
-          />
+                <vgg-rectangle
+                  v-if="clickRow"
+                  :x1="0"
+                  :x2="10"
+                  :y1="0"
+                  :y2="10"
+                  :stroke="clickRow.Name === row.Name ? 'red' : 'none'"
+                  :stroke-width="5"
+                  :fill="'none'"
+                />
 
+                <vgg-map
+                  v-slot="{ dataframe }"
+                  unit="dataframe">
+
+                  <vgg-label
+                    v-for="dim, d in dimensions"
+                    :key="d"
+                    :text="dim"
+                    :x="10/dimensions.length * d"
+                    :y="11"
+                    :opacity="0.5"
+                    :font-size="6"
+                    :font-weight="700"
+                    :rotation="360/(dimensions.length-1) * (d % 5)"
+                  />
+
+                  <vgg-y-axis
+                    v-for="dim, d in axes(dataframe, dimensions,options)"
+                    :key="d + dimensions.length"
+                    :scale="{domain: dim.domain, domainMin: 0}"
+                    :hjust="1/ dimensions.length * d"
+                    :tick-length="0.01"
+                    :domain-opacity="0.2"
+                    :label-font-size="6"
+                    :label-opacity="0.4"
+                    :title-font-weight="700"
+                    :tick-count="2"
+                  />
+
+                  <vgg-rectangle
+                    :key="100+i"
+                    :x1="0"
+                    :x2="10"
+                    :y1="0"
+                    :y2="10"
+                    :fill-opacity="0.1"
+                    fill="grey"
+                    @hover="handleHover($event, row, i)"
+                    @click="handleClick($event, row, i)"
+                  />
+
+                  <vgg-multi-line
+                    :x="scaleCoords(dataframe, i).x"
+                    :y="scaleCoords(dataframe, i).y"
+                    :stroke="'black'"
+                    :close="true"
+                    :fill-opacity="0.4"
+                    :fill="dataframe[color][i]"
+                    stroke-linecap="round"
+                  />
+                </vgg-map>
+                <!--
+                <vgg-label
+                  :text="dataframe[options][s-1]"
+                  :x="5"
+                  :y="0"
+                  :opacity="0.2"
+                  :font-size="20"
+                  :font-weight="700"/> -->
+
+              </vgg-section>
+            </vgg-map>
+          </vgg-grid>
         </vgg-section>
       </g>
-
     </vgg-graphic>
 
   </div>
@@ -96,7 +170,7 @@ import { csv } from 'd3-fetch'
 import { scaleOrdinal, scaleLinear } from 'd3-scale'
 
 export default {
-  name: 'ParallelCoordinates',
+  name: 'Radar',
   props: {
     // Use either data or csvURL
     // For data, format as [ { variable1: , variable2: }, { variable1: , variable2: } ]
@@ -171,6 +245,11 @@ export default {
     height: {
       type: Number,
       default: undefined
+    },
+
+    rows: {
+      type: Number,
+      default: undefined
     }
   },
   // hovered keeps track of whether a point is being hovered over (i.e. true or false)
@@ -184,7 +263,10 @@ export default {
       myData: undefined,
       hovered: undefined,
       hoverRow: undefined,
-      axesScales: undefined
+      clicked: undefined,
+      clickRow: undefined,
+      axesScales: undefined,
+      dataframe: undefined
     }
   },
 
@@ -261,18 +343,29 @@ export default {
     },
 
     // Customize as needed
-    handleHover (e, s, r, i) {
+    handleHover (e, r, i) {
       this.hovered = e ? { r, i } : undefined
       if (this.hovered) {
-        this.hoverRow = s
+        this.hoverRow = r
       } else {
         this.hovered = undefined
         this.hoverRow = undefined
       }
     },
 
+    // Customize as needed
+    handleClick (e, r, i) {
+      this.clicked = e ? { r, i } : undefined
+      if (this.clicked) {
+        this.clickRow = r
+      } else {
+        this.clicked = undefined
+        this.clickRow = undefined
+      }
+    },
+
     createDomain (domain) {
-      let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
+      let newDomain = [ 0, Math.max(...domain)]; let rounder = 1
 
       if (newDomain[0] > 1000 && newDomain[1] > 1000) {
         rounder = 1000
@@ -284,13 +377,13 @@ export default {
         rounder = 1
       }
 
-      newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
+      newDomain = [Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
 
       return newDomain
     },
 
     // Manually creates scales per dimension axes
-    axes (dataframe, dimensions, options) {
+    axes (dataframe, dimensions, options, s) {
       let newAxes = []
       for (let dim = 0; dim < dimensions.length; dim++) {
         let domain = dataframe[dimensions[dim]]
@@ -302,23 +395,40 @@ export default {
         }
       }
       this.axesScales = newAxes
+      this.dataframe = dataframe
+
       return newAxes
     },
 
     segments (dataframe, dimensions, options) {
       let segments = []
+
       for (let d = 0; d < dataframe[this.options].length; d++) {
-        let y = []; let x = []
+        let y = []; let x = []; name
         let deltaX = 10 / dimensions.length
 
         for (let i = 0; i < dimensions.length; i++) {
           x.push(deltaX * i)
-          y.push(this.newScales[dimensions[i]](dataframe[dimensions[i]][d]))
+          // y.push(this.newScales[dimensions[i]](dataframe[dimensions[i]][d]))
+          y.push(dataframe[dimensions[i]][d])
+          name = dataframe[this.options][d]
         }
-        segments.push({ x, y, color: this.myData[this.color][d] })
+        segments.push({ name, x, y, color: this.myData[this.color][d] })
       }
 
       return segments
+    },
+
+    scaleCoords (dataframe, s) {
+      let x = []; let y = []
+      let deltaX = 10 / this.dimensions.length
+      let name = dataframe[this.options][s]
+      for (let d = 0; d < this.dimensions.length; d++) {
+        y.push(this.newScales[this.dimensions[d]](dataframe[this.dimensions[d]][s]))
+        x.push(deltaX * d)
+      }
+
+      return { x, y, name }
     }
   }
 }

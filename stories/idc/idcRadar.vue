@@ -1,193 +1,107 @@
 <template>
-  <div>
-    <br>
-    <vgg-graphic
-      :width="width"
-      :height="height"
-      :data="data"
-    >
-      <vgg-plot-title
-        :text="title"
-        :hjust="'center'"
-        :font-size="50"/>
+  <vgg-radar
+    :x1="100"
+    :x2="1100"
+    :y1="100"
+    :y2="1900"
+    :width="1200"
+    :height="2000"
+    :rows="8"
+    :csvURL="'../../static/motorbikes_40_clean.csv'"
+    :extract-variables="{
+      'Base MSRP': 'Price',
+      'Wet Weight': 'WetWeight',
+      '0–60 mph sec': 'ZeroTo60',
+      'Rear-Wheel HP':'RearWheelHorsepower',
+      'Top Speed': 'TopSpeed',
+      'Average MPG': 'MilesPG',
+      '0–60 mph sec': 'ZeroTo60',
+      'Braking 60 to 0 mph (feet)': 'Stop60',
+      'Rear-Wheel TQ Lb-Ft': 'RearWheelTQLbFt',
+      'Quartermile Sec':'QuartermileSec'}"
+    :color="'Color'"
+    :dimensions="['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']"
+    :options="'Name'"
+  />
+  <!-- <vgg-graphic
+    :width="width"
+    :height="height"
+    :data="data"
+  >
+    <vgg-plot-title
+      :text="title"
+      :hjust="'center'"
+      :font-size="50"/>
 
-      <g v-if="data">
+    <g v-if="data">
+      <g
+        v-for="(d, i) in dimensionSections"
+        :key="i"
+      >
         <g
-          v-for="(d, i) in dimensionSections"
-          :key="i"
+          v-for="(o, j) in optionSections"
+          :key="j"
         >
-          <g
-            v-for="(o, j) in optionSections"
-            :key="j"
+          <vgg-section
+            :x1="d[0]"
+            :x2="d[1]"
+            :y1="o[0]"
+            :y2="o[1]"
+            :scale-x="[0, 100]"
+            :scale-y="[0, 100]"
           >
-            <vgg-section
-              :x1="d[0]"
-              :x2="d[1]"
-              :y1="o[0]"
-              :y2="o[1]"
-              :scale-x="[0, 100]"
-              :scale-y="[0, 100]"
+            <vgg-grid
+              :rows="4"
+              :cell-padding="{
+                t: 10,
+                l: 14,
+                r: 5
+              }"
             >
-
-              <!-- <vgg-rectangle
-                :x1="0"
-                :x2="100"
-                :y1="0"
-                :y2="100"
-                :opacity="0.2"
-                fill="blue"
-              /> -->
-
-              <vgg-grid
-                :rows="4"
-                :cell-padding="{
-                  t: 10,
-                  l: 14,
-                  r: 5
-                }"
+              <vgg-section
+                v-for="segment, a in segments(dimensions[i], options[j])"
+                :key="a"
+                :scale-x="[0, 1]"
+                :scale-y="[0, 10]"
+                type="polar"
               >
-                <vgg-section
-                  v-for="segment, a in segments(dimensions[i], options[j])"
-                  :key="a"
-                  :scale-x="[0, 1]"
-                  :scale-y="[0, 10]"
-                  type="polar"
-                >
-
-                  <!-- <vgg-rectangle
-                    :x1="0"
-                    :x2="1"
-                    :y1="0"
-                    :y2="10"
-                    :opacity="0.05"
-                    :fill="hoverI === a ? segment.color : 'gray'"
-                    @hover="handleHover($event, a)"
-                  /> -->
-                  <vgg-multi-line
-                    :x="segment.x"
-                    :y="segment.y"
-                    :stroke="'black'"
-                    :close="true"
-                    :fill="segment.color"
-                    :fill-opacity="0.4"
-                    stroke-linecap="round"
-                    @hover="handleHover($event, a)"
-                  />
-                  <g v-for="category, b in axes(dimensions[i], options[j])">
-                    <!-- <vgg-y-axis
-                          :scale="category[1]"
-                          :hjust="axisInterval(dimensions[i]) * a"
-                          :title-vjust="1.07"
-                          :title-hjust="0.5"
-                          :tick-opacity="3"
-                          :title="category[0]"
-                          :tick-length="0.01"
-                          :tick-count="options[j]"
-                        /> -->
-                    <vgg-y-axis
-                      :scale="category[1]"
-                      :hjust="axisInterval(dimensions[i]) * b"
-                      :title-vjust="1.3"
-                      :title-hjust="0.5"
-                      :tick-opacity="3"
-                      :title="category[0]"
-                      :tick-length="0.01"
-                      :tick-count="2"
-                      :domain-opacity="0.5"
-                      :label-opacity="0.5"
-                      :label-font-size="8"
-                    />
-                  </g>
-                  <vgg-plot-title
-                    :text="segment.name"
-                    :hjust="'center'"
-                    :vjust="1.7"
-                    :font-size="24"/>
-                </vgg-section>
-              </vgg-grid>
-              <!-- <vgg-multi-line
+                <vgg-multi-line
                   :x="segment.x"
                   :y="segment.y"
-                  :stroke="hoverI === i ? 'black' : segment.color"
+                  :stroke="'black'"
+                  :close="true"
+                  :fill="segment.color"
+                  :fill-opacity="0.4"
                   stroke-linecap="round"
-                  @hover="handleHover($event, i)"
-                /> -->
-              <!-- <vgg-multi-line
-                  :x="segment.x"
-                  :y="segment.y"
-                  :stroke="hoverI === i ? 'black' : segment.color"
-                  stroke-linecap="round"
-                  @hover="handleHover($event, i)"
+                  @hover="handleHover($event, a)"
                 />
-              </g> -->
-            </vgg-section>
-          </g>
+                <g v-for="category, b in axes(dimensions[i], options[j])">
+                  <vgg-y-axis
+                    :scale="category[1]"
+                    :hjust="axisInterval(dimensions[i]) * b"
+                    :title-vjust="1.3"
+                    :title-hjust="0.5"
+                    :tick-opacity="3"
+                    :title="category[0]"
+                    :tick-length="0.01"
+                    :tick-count="2"
+                    :domain-opacity="0.5"
+                    :label-opacity="0.5"
+                    :label-font-size="8"
+                  />
+                </g>
+                <vgg-plot-title
+                  :text="segment.name"
+                  :hjust="'center'"
+                  :vjust="1.7"
+                  :font-size="24"/>
+              </vgg-section>
+            </vgg-grid>
+          </vgg-section>
         </g>
       </g>
-
-      <!-- <vgg-section
-        :x1="sectionX[0]"
-        :x2="sectionX[1]"
-        :y1="sectionY[0]"
-        :y2="sectionY[1]/2"
-        :scale-x="[0, 1]"
-        :scale-y="[0, 10]"
-        type="polar"
-      > -->
-
-      <!-- <vgg-section
-        :x1="sectionX[0]"
-        :x2="sectionX[1]"
-        :y1="sectionY[0]"
-        :y2="sectionY[1]/2"
-        :scale-x="[0, 1]"
-        :scale-y="[0, 10]"
-      >
-
-        <g v-for="category, i in bikeCategories.slice(0, dimensions[0])">
-          <vgg-y-axis
-            :scale="category"
-            :hjust="axisInterval(dimensions[0]) * i"
-            :title-vjust="1.05"
-            :title-hjust="0.5"
-            :title="category"
-            :tick-opacity="3"
-            :tick-length="0.01"
-          />
-
-          <g v-for="segment, i in segments(dimensions[0], options[0])"> -->
-      <!-- <vgg-multi-line
-              :x="segment.x"
-              :y="segment.y"
-              :opacity="0.1"
-              :stroke="hoverI === i ? 'red' : 'steelblue'"
-              :close="true"
-              stroke-linecap="round"
-              :fill="hoverI === i ? 'red' : 'steelblue'"
-              :fill-opacity="0.1"
-              @hover="handleHover($event, row, i)"
-            /> -->
-      <!-- <vgg-multi-line
-              :x="segment.x"
-              :y="segment.y"
-              :opacity="0.1"
-              :stroke="hoverI === i ? 'red' : 'steelblue'"
-              stroke-linecap="round"
-              @hover="handleHover($event, row, i)"
-            /> -->
-      <!-- <vgg-multi-line
-              :x="segment.x"
-              :y="segment.y"
-              :stroke="segment.color"
-              stroke-linecap="round"
-            />
-          </g>
-        </g>
-      </vgg-section>
-      </vgg-section> -->
-    </vgg-graphic>
-
-  </div>
+    </g>
+  </vgg-graphic> -->
 </template>
 
 <script>
