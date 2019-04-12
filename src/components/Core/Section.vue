@@ -371,7 +371,7 @@ export default {
   },
 
   render (createElement) {
-    if (this.ready && this.allowScales) {
+    if (this.dataContainer !== false && this.ready && this.allowScales) {
       if (!this._axes) {
         let slotContent = this.getSlotContent()
 

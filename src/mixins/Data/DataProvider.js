@@ -2,6 +2,8 @@ import DataContainer from '../../classes/Data/DataContainer.js'
 import applyTransformations from '../../transformations/applyTransformations.js'
 import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
 
+import isEmptyDataframe from '../../utils/isEmptyDataframe.js'
+
 export default {
   inject: ['$$dataManager', '$$dataScope'],
 
@@ -24,6 +26,11 @@ export default {
     dataID: {
       type: [String, undefined],
       default: undefined
+    },
+
+    allowEmpty: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -36,12 +43,21 @@ export default {
   computed: {
     dataContainer () {
       if (this.data) {
+        if (!this.allowEmpty && isEmptyDataframe(this.data)) {
+          return false
+        }
+
         let container = new DataContainer(this.data, this.format)
         if (this.dataProviderCache.transform) {
           let transformedData = applyTransformations(
             container.getDataset(),
-            this.dataProviderCache.transform
+            this.dataProviderCache.transform,
+            this.allowEmpty
           )
+
+          if (transformedData === false) {
+            return false
+          }
 
           return new DataContainer(transformedData)
         } else {
@@ -53,8 +69,13 @@ export default {
         let data = this.parentDataInterface.getDataset()
         let transformedData = applyTransformations(
           data,
-          this.dataProviderCache.transform
+          this.dataProviderCache.transform,
+          this.allowEmpty
         )
+
+        if (transformedData === false) {
+          return false
+        }
 
         return new DataContainer(transformedData)
       }
