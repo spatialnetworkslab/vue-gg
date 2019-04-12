@@ -30,6 +30,7 @@ import NestedSelection from './sandbox/NestedSelection.vue'
 import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
 import Facets from './sandbox/Facets.vue'
 import EmptyData from './sandbox/EmptyData.vue'
+import DuplicateScales from './sandbox/DuplicateScales.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -63,3 +64,4 @@ storiesOf('Sandbox', module)
   .add('Ate axis scale bug', () => (AteAxisScaleBug))
   .add('Facets', () => (Facets))
   .add('Empty data', () => (EmptyData))
+  .add('Duplicate scales', () => (DuplicateScales))
