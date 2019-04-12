@@ -56,14 +56,15 @@ These are analogous to the CSS properties of the same names.
 
 ## Usage
 
-To render the Label mark, you will need to provide the `x` and `y` or the `geometry` prop.
-`x` and `y` accept data of types Number, String or Date, depending on the parent Section's domain type. `geometry` should be used when working with geographic data involving [GeoJSON Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects. Both `x`/`y` and `geometry` are [mapped with row](../core/map.html#description), where each row of the dataframe outputs a single label. 
+To render the Label mark, you will need to provide one of the following props:
+- `x` and `y` or
+- `geometry`
 
-For the `x` and `y` props, `row` refers simply to a single data point in the dataset. For example, data defined in the format on the left would be accessed by its keys like in the format on the right:
+`x` and `y` can be used with data of types Number, String or Date, depending on the parent Section's domain type. `geometry` should be used when working with geographic data involving [GeoJSON Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects. 
 
-<CodeDemoLayout>
+Both `x`/`y` and `geometry` are mapped with row. For a more in-depth explanation of how the mapping works, see the [Map](../core/map.html#description) section under Core components. 
 
-<CodeLayout width="45%">
+For the `x` and `y` props, `row` refers simply to a single data point in the dataset. Given the following dataset,
 
 ```html
 <vgg-data
@@ -75,9 +76,36 @@ For the `x` and `y` props, `row` refers simply to a single data point in the dat
 </vgg-data>
 ```
 
-</CodeLayout>
+you can think of this data as being represented in a table format, with rows and columns:
 
-<CodeLayout width="45%">
+<table>
+  <thead>
+    <tr>
+      <th>year</th>
+      <th>population</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2000</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <td>2005</td>
+      <td>110</td>
+    </tr>
+    <tr>
+      <td>2010</td>
+      <td>130</td>
+    </tr>
+    <tr>
+      <td>2015</td>
+      <td>180</td>
+    </tr>
+  </tbody>
+</table>
+
+Consequently, one accesses the data by its key / column names:
 
 ```html
 <vgg-map v-slot="{ row }">
@@ -88,32 +116,13 @@ For the `x` and `y` props, `row` refers simply to a single data point in the dat
 </vgg-map>
 ```
 
-</CodeLayout>
-
 </CodeDemoLayout>
 
-A row for the `geometry` prop on the other hand refers to a single GeoJSON feature. GeoJSON data generally comprises two parts - geographic coordinates (defined under geometry) and attributes (defined under properties). Geographic coordinates are passed into the `geometry` [positioning prop](#positioning), and *must* be accessed with `row.geometry`, while attributes are passed into various [aesthetic props](#other-aesthetics) and are accessed through `row.someproperty`, where `someproperty` can refer to any user-defined attribute within a feature's properties object:
-
-<CodeDemoLayout>
-
-<CodeLayout width="45%">
-
-```html
-<vgg-map v-slot="{ row }">
-  <vgg-label
-    :geometry="row.geometry"
-    :text="row.name"
-    :anchor-point="row.anchor"
-    :fill="row.fill"
-  />
-</vgg-map>
-```
-
-</CodeLayout>
-
-<CodeLayout width="45%">
-
-```json{6-12,14-17}
+A row for the `geometry` prop on the other hand refers to a single GeoJSON feature. GeoJSON data generally comprises two parts:
+ - geographic coordinates (defined under geometry)
+ - attributes (defined under properties)
+ 
+```json{6,13}
 {
   "type": "FeatureCollection",
   "features": [
@@ -137,17 +146,83 @@ A row for the `geometry` prop on the other hand refers to a single GeoJSON featu
 }
 ```
 
-</CodeLayout>
+ Geographic coordinates are passed into the `geometry` [positioning prop](#positioning), and *must* be accessed with `row.geometry`: 
 
-</CodeDemoLayout>
+```html{3}
+<vgg-map v-slot="{ row }">
+  <vgg-label
+    :geometry="row.geometry"
+    :text="row.name"
+    :anchor-point="row.anchor"
+    :fill="row.fill"
+  />
+</vgg-map>
+```
 
+Attributes are passed into various [aesthetic props](#other-aesthetics) and are accessed through `row.someproperty`, where `someproperty` can refer to any user-defined attribute within a feature's properties object:
 
+```html{4-6}
+<vgg-map v-slot="{ row }">
+  <vgg-label
+    :geometry="row.geometry"
+    :text="row.name"
+    :anchor-point="row.anchor"
+    :fill="row.fill"
+  />
+</vgg-map>
+```
 
 ## Examples
 
-The graphic below shows the 10 most populous cities on the African continent according to [World Atlas](https://www.worldatlas.com/articles/15-biggest-cities-in-africa.html) and demonstrates how `vgg-label` can be used with GeoJSON Point objects. In the GeoJSON snippet below the graphic, each city coordinate is given the properties 'name', 'anchor' and 'fill', which are passed into the Label mark's `text`, `anchor-point` and `fill` properties in the Vue snippet to the right.
+The graphic below shows the 10 most populous cities on the African continent according to [World Atlas](https://www.worldatlas.com/articles/15-biggest-cities-in-africa.html) and demonstrates how `vgg-label` can be used with GeoJSON Point objects. In the GeoJSON snippet below the graphic, each city coordinate is given the properties 'name', 'anchor' and 'fill', which are passed into the Label mark's `text`, `anchor-point` and `fill` properties in the Vue snippet.
 
 <MarkLabelGeo />
+
+Here's a single point from the GeoJSON corresponding to one city
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.384082,
+          6.455027
+        ]
+      },
+      "properties": {
+        "name": "Lagos",
+        "anchor": "rb",
+        "fill": "#f2e5d7"
+      }
+    }
+  ]
+}
+```
+
+Here's the relevant segment of Vue code which does the mapping
+```html
+<vgg-data :data="points">
+
+  <vgg-map v-slot="{ row }">
+
+    <vgg-label
+      :geometry="row.geometry"
+      :text="row.name"
+      :anchor-point="row.anchor"
+      :fill="row.fill"
+      :font-size="12"
+      :font-family="'Verdana'"
+    />
+
+  </vgg-map>
+
+</vgg-data>
+```
+
+And here are both code blocks in full context, with all other props required to generate the map
 
 <CodeDemoLayout>
 
@@ -345,7 +420,7 @@ The graphic below shows the 10 most populous cities on the African continent acc
     :scale-geo="{}"
   >
 
-    <vgg-map v-slot="{ row, i }">
+    <vgg-map v-slot="{ row }">
 
       <vgg-polygon
         :geometry="row.geometry"
@@ -374,7 +449,7 @@ The graphic below shows the 10 most populous cities on the African continent acc
           :anchor-point="row.anchor"
           :fill="row.fill"
           :font-size="12"
-          font-family="Verdana"
+          :font-family="'Verdana'"
         />
 
       </vgg-map>
