@@ -32,6 +32,7 @@ import Facets from './sandbox/Facets.vue'
 import FlatTown from './sandbox/FlatTown.vue'
 import FlatTownGrouped from './sandbox/FlatTownGrouped.vue'
 import TownFlat from './sandbox/TownFlat.vue'
+import EmptyData from './sandbox/EmptyData.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -67,3 +68,4 @@ storiesOf('Sandbox', module)
   .add('Hdb Data - Flat x Town', () => (FlatTown))
   .add('Hdb Data - Town x Flat', () => (TownFlat))
   .add('Hdb Data - Flat x Town (Grouped)', () => (FlatTownGrouped))
+  .add('Empty data', () => (EmptyData))
