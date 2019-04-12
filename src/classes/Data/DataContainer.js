@@ -144,28 +144,9 @@ export default class {
     return this._dataset[colName]
   }
 
-  // forEachRow (fn) {
-  //   let data = this._dataset
-  //
-  //   for (let i = 0; i < this._length; i++) {
-  //     let row = {}
-  //     let prevRow = {}
-  //     let nextRow = {}
-  //     for (let colName in data) {
-  //       row[colName] = data[colName][i]
-  //       prevRow[colName] = data[colName][i - 1]
-  //       nextRow[colName] = data[colName][i + 1]
-  //     }
-  //     if (i === 0) prevRow = undefined
-  //     if (i === this._length - 1) nextRow = undefined
-  //     fn({ row, i, prevRow, nextRow })
-  //   }
-  //
-  // }
-
   forEachRow (fn) {
     let data = this._dataset
-    let i
+    let i = 0
 
     let row = new Proxy({}, { get: (obj, prop) => {
       if (prop in data) { return data[prop][i] }
