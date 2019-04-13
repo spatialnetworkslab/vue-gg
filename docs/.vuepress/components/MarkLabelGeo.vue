@@ -35,13 +35,6 @@
 
         <vgg-map v-slot="{ row, i }">
 
-          <!-- <vgg-point
-            :geometry="row.geometry"
-            :radius="5"
-            fill="#008000"
-            :opacity="0.5"
-          /> -->
-
           <vgg-symbol
             :geometry="row.geometry"
             :shape="'star'"

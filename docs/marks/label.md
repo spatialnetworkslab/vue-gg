@@ -56,15 +56,15 @@ These are analogous to the CSS properties of the same names.
 
 ## Usage
 
-To render the Label mark, you will need to provide one of the following props:
+To render the Label mark, you will need to provide one of the following positioning props:
 - `x` and `y` or
 - `geometry`
 
-`x` and `y` can be used with data of types Number, String or Date, depending on the parent Section's domain type. `geometry` should be used when working with geographic data involving [GeoJSON Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects. 
+`x` and `y` can be used with data of types Number, String or Date, while `geometry` should be used only for geographic data involving [GeoJSON Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects. 
 
-Both `x`/`y` and `geometry` are mapped with row. For a more in-depth explanation of how the mapping works, see the [Map](../core/map.html#description) section under Core components. 
+Data is passed to the `x`, `y` and `geometry` props via row mapping, which renders one mark per data row. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components. 
 
-For the `x` and `y` props, `row` refers simply to a single data point in the dataset. Given the following dataset,
+Recall that data provided (regardless of row or column format) -
 
 ```html
 <vgg-data
@@ -76,8 +76,7 @@ For the `x` and `y` props, `row` refers simply to a single data point in the dat
 </vgg-data>
 ```
 
-you can think of this data as being represented in a table format, with rows and columns:
-
+is represented internally as
 <table>
   <thead>
     <tr>
@@ -105,7 +104,7 @@ you can think of this data as being represented in a table format, with rows and
   </tbody>
 </table>
 
-Consequently, one accesses the data by its key / column names:
+To pass data into the `x` and `y` props, one needs simply to access each data row's column name: 
 
 ```html
 <vgg-map v-slot="{ row }">
@@ -118,10 +117,12 @@ Consequently, one accesses the data by its key / column names:
 
 </CodeDemoLayout>
 
-A row for the `geometry` prop on the other hand refers to a single GeoJSON feature. GeoJSON data generally comprises two parts:
+To pass data to the `geometry` prop, one needs to supply the entire GeoJSON geometry object. Here it is useful to consider the makeup of geodata.
+
+ GeoJSON data generally comprises two parts:
  - geographic coordinates (defined under geometry)
  - attributes (defined under properties)
- 
+
 ```json{6,13}
 {
   "type": "FeatureCollection",
@@ -146,7 +147,7 @@ A row for the `geometry` prop on the other hand refers to a single GeoJSON featu
 }
 ```
 
- Geographic coordinates are passed into the `geometry` [positioning prop](#positioning), and *must* be accessed with `row.geometry`: 
+ Geographic coordinates relate to [positional properties](#positioning) and *must* be accessed with `row.geometry`: 
 
 ```html{3}
 <vgg-map v-slot="{ row }">
@@ -159,7 +160,7 @@ A row for the `geometry` prop on the other hand refers to a single GeoJSON featu
 </vgg-map>
 ```
 
-Attributes are passed into various [aesthetic props](#other-aesthetics) and are accessed through `row.someproperty`, where `someproperty` can refer to any user-defined attribute within a feature's properties object:
+Attributes relate to [aesthetic properties](#other-aesthetics) and are accessed through `row.someproperty`, where `someproperty` can refer to any user-defined attribute within a feature's properties object:
 
 ```html{4-6}
 <vgg-map v-slot="{ row }">
@@ -174,11 +175,12 @@ Attributes are passed into various [aesthetic props](#other-aesthetics) and are 
 
 ## Examples
 
-The graphic below shows the 10 most populous cities on the African continent according to [World Atlas](https://www.worldatlas.com/articles/15-biggest-cities-in-africa.html) and demonstrates how `vgg-label` can be used with GeoJSON Point objects. In the GeoJSON snippet below the graphic, each city coordinate is given the properties 'name', 'anchor' and 'fill', which are passed into the Label mark's `text`, `anchor-point` and `fill` properties in the Vue snippet.
+The graphic below shows the 10 most populous cities on the African continent according to [World Atlas](https://www.worldatlas.com/articles/15-biggest-cities-in-africa.html) and demonstrates how `vgg-label` can be used to annotate cities on a map. 
 
 <MarkLabelGeo />
 
-Here's a single point from the GeoJSON corresponding to one city
+First, we need geodata supplied as a json indicating the geographical coordinates of each city and their attributes. Here is a single data point describing the city of Lagos.
+
 ```json
 {
   "type": "FeatureCollection",
@@ -193,17 +195,18 @@ Here's a single point from the GeoJSON corresponding to one city
         ]
       },
       "properties": {
-        "name": "Lagos",
-        "anchor": "rb",
-        "fill": "#f2e5d7"
+        "name": "Lagos", // text to be displayed
+        "anchor": "rb", // position of coordinates with respect to text
+        "fill": "#f2e5d7" // color of text
       }
     }
   ]
 }
 ```
 
-Here's the relevant segment of Vue code which does the mapping
-```html
+Next we will define the mark using the `vgg-label` component. Each prop serves to instruct the component on how the label should be rendered. Our coordinates tell us where the label would be anchored as though our text were a point, anchor at 'rb' that the anchor point will be to the right-bottom of the text, name that our label will display the text 'Lagos', and fill that it should be a light grayish orange color.
+
+```vue
 <vgg-data :data="points">
 
   <vgg-map v-slot="{ row }">
@@ -222,244 +225,19 @@ Here's the relevant segment of Vue code which does the mapping
 </vgg-data>
 ```
 
-And here are both code blocks in full context, with all other props required to generate the map
+Finally we are left with rendering the continent itself, which can be drawn with the [Polygon](polygon.md) mark. Here are the earlier code blocks in full context, with all other props required to generate the map:
 
 <CodeDemoLayout>
 
 <CodeLayout width="45%">
 
-```json
-{
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          3.384082,
-          6.455027
-        ]
-      },
-      "properties": {
-        "name": "Lagos",
-        "population": "21 million",
-        "anchor": "rb",
-        "fill": "#f2e5d7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          31.233333,
-          30.033333
-        ]
-      },
-      "properties": {
-        "name": "Cairo",
-        "population": "20.4 million",
-        "anchor": "rt",
-        "fill": "#f2e5d7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          15.322222,
-          -4.325
-        ]
-      },
-      "properties": {
-        "name": "Kinshansa",
-        "population": "13.3 million",
-        "anchor": "lt",
-        "fill": "#f2e5d7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          13.234444,
-          -8.838333
-        ]
-      },
-      "properties": {
-        "name": "Luanda",
-        "population": "6.5 million",
-        "anchor": "lt",
-        "fill": "#f2e5d7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          36.817222,
-          -1.286389
-        ]
-      },
-      "properties": {
-        "name": "Nairobi",
-        "population": "3.5 million",
-        "anchor": "rt",
-        "fill": "#f2e5d7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          45.333333,
-          2.033333
-        ]
-      },
-      "properties": {
-        "name": "Mogadishu",
-        "population": "2.1 million",
-        "anchor": "rb",
-        "fill": "#f2e5d7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -4.033333,
-          5.316667
-        ]
-      },
-      "properties": {
-        "name": "Abidjan",
-        "population": "4.707 million",
-        "anchor": "t",
-        "fill": "#335c67"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          29.916667,
-          31.2
-        ]
-      },
-      "properties": {
-        "name": "Alexandria",
-        "population": "4.7 million",
-        "anchor": "b",
-        "fill": "#335c67"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          38.74,
-          9.03
+<<< @/docs/.vuepress/public/wealthiest_cities.json
 
-        ]
-      },
-      "properties": {
-        "name": "Addis Ababa",
-        "population": "3.4 million",
-        "anchor": "r",
-        "fill": "#f2e5d7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          28.045556,
-          -26.204444
-        ]
-      },
-      "properties": {
-        "name": "Johannesburg",
-        "population": "4.4 million",
-        "anchor": "r",
-        "fill": "#f2e5d7"
-      }
-    }
-  ]
-}
-```
 </CodeLayout>
 
 <CodeLayout width="45%">
 
-```html{43-50}
-<vgg-graphic
-  v-if="dataLoaded"
-  :width="600"
-  :height="600"
-  :data="polygons"
-  :transform="{ reproject: {
-    from: '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
-    to: 'WGS84'
-  } }"
->
-
-  <vgg-section
-    :x1="0"
-    :x2="500"
-    :y1="0"
-    :y2="500"
-    :scale-geo="{}"
-  >
-
-    <vgg-map v-slot="{ row }">
-
-      <vgg-polygon
-        :geometry="row.geometry"
-        :fill="'#7f2704'"
-        :opacity="0.9"
-        stroke="#d3d3d3"
-        :stroke-width="0.05"
-      />
-
-    </vgg-map>
-
-    <vgg-data :data="points">
-
-      <vgg-map v-slot="{ row, i }">
-
-        <vgg-symbol
-          :geometry="row.geometry"
-          :shape="'star'"
-          :size="15"
-          :fill="'#e09f3e'"
-        />
-
-        <vgg-label
-          :geometry="row.geometry"
-          :text="row.name"
-          :anchor-point="row.anchor"
-          :fill="row.fill"
-          :font-size="12"
-          :font-family="'Verdana'"
-        />
-
-      </vgg-map>
-
-    </vgg-data>
-
-  </vgg-section>
-
-</vgg-graphic>
-```
+<<< @/docs/.vuepress/components/MarkLabelGeo.vue
 
 </CodeLayout>
 
