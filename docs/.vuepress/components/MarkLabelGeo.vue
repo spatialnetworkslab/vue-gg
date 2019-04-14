@@ -19,7 +19,7 @@
       :scale-geo="{}"
     >
 
-      <vgg-map v-slot="{ row, i }">
+      <vgg-map v-slot="{ row }">
 
         <vgg-polygon
           :geometry="row.geometry"
@@ -33,7 +33,7 @@
 
       <vgg-data :data="points">
 
-        <vgg-map v-slot="{ row, i }">
+        <vgg-map v-slot="{ row }">
 
           <vgg-symbol
             :geometry="row.geometry"

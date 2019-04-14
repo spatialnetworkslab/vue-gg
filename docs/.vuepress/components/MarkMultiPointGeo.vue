@@ -19,7 +19,7 @@
       :scale-geo="{}"
     >
 
-      <vgg-map v-slot="{ row, i }">
+      <vgg-map v-slot="{ row }">
         <vgg-polygon
           :geometry="row.geometry"
           fill="#6ba292"
@@ -30,10 +30,17 @@
 
       <vgg-data :data="multipoints">
 
-        <vgg-map v-slot="{ row, i }">
+        <vgg-map v-slot="{ row }">
           <vgg-multi-point
             :geometry="row.geometry"
-            :radius="{ val: row.wealth, scale: { range: [6, 30], domain: 'wealth' } }"
+            :radius="{
+              val: row.wealth,
+              scale: {
+                range: [6, 30],
+                domain: 'wealth',
+                order: ['cat1', 'cat2', 'cat3', 'cat4', 'cat5', 'cat6', 'cat7', 'cat8' ]
+              }
+            }"
             fill="#bcd8b7"
             :opacity="0.5"
           />

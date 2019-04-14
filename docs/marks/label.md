@@ -201,7 +201,7 @@ Finally we are left with rendering the continent itself, which can be drawn with
 
 <CodeLayout width="45%">
 
-<<< @/docs/.vuepress/public/wealthiest_cities.json
+<<< @/docs/.vuepress/public/populous_cities.json
 
 </CodeLayout>
 
