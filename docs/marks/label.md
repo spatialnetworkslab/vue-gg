@@ -10,14 +10,14 @@ The `vgg-label` mark is used to plot text elements.
 
 <CodeLayout>
 
-```html
+```vue
  <vgg-label
-    :x="row.year"
-    :y="row.population"
-    :text="row.population"
-    :font-size="12"
-    font-family="Comic Sans MS"
-    fill="#c66366"
+  :x="row.year"
+  :y="row.population"
+  :text="row.population"
+  :font-size="12"
+  font-family="Comic Sans MS"
+  fill="#c66366"
 />
 ```
 
@@ -29,42 +29,44 @@ The `vgg-label` mark is used to plot text elements.
 
 ### Positioning
 
-| Prop     | Input                | Required            | Types                  | Default   | Unit(s)           |
-|--------- | -------------------- | ------------------- | ---------------------- | --------- | ----------------- |
-| x        | x coordinate         | see [Usage](#usage) | [Number, String, Date] | undefined | Local coordinates |
-| y        | y coordinate         | see [Usage](#usage) | [Number, String, Date] | undefined | Local coordinates |
-| geometry | GeoJSON Point object | see [Usage](#usage) | Object                 | undefined | Local coordinates |
+| Prop     | Input                | Required            | Types                     | Default   | Unit(s)           |
+|--------- | -------------------- | ------------------- | ------------------------- | --------- | ----------------- |
+| x        | x coordinate         | see [Usage](#usage) | Number <br>\| String <br>\| Date | undefined | Local coordinates |
+| y        | y coordinate         | see [Usage](#usage) | Number <br>\| String <br>\| Date | undefined | Local coordinates |
+| geometry | GeoJSON Point object | see [Usage](#usage) | Object                    | undefined | Local coordinates |
 
 ### Other aesthetics
 
-| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
-| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
-| text  | false  | [String, Number] | undefined | Text to display    | NA |
-| font-size  | false  | Number | 16 | Font size    | Screen pixel |
-| font-weight  | false  | [String, Number] | 'normal' | Font weight    | Either a number between 0 and 1000, or 'normal', 'bold', etc. |
-| font-family  | false  | String | 'Helvetica' | Font family    | Name of font family |
-| rotation  | false  | Number | 0 | Degrees with which to rotate the mark    | Degrees |
-| anchor-point  | false  | String | 'center' | Anchor point for x/y coordinate    | One of ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'] |
-| stroke         | false    | String | 'none'    | Stroke color   | Named color, hex, rgb, hsl |
-| stroke-width   | false    | Number | 0         | Stroke width   | Screen pixel               |
-| stroke-opacity | false    | Number | 1         | Stroke opacity | Number between 0 and 1     |
-| fill           | false    | String | '#000000' | Fill color     | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number | 1         | Fill opacity   | Number between 0 and 1     |
-| opacity        | false    | Number | 1         | Mark opacity   | Number between 0 and 1     |
+| Prop           | Required | Types            | Default    | Description          | Unit(s)           |
+| -------------- | -------- | ---------------- | ---------- | -------------------- | ----------------- |
+| text           | false    | Number <br>\| String | undefined  | Text to display    | NA |
+| font-size      | false    | Number               | 16         | Font size    | Screen pixel |
+| font-weight    | false    | Number <br>\| String | 'normal'   | Font weight    | Either a number between 0 and 1000, or 'normal', 'bold', etc. |
+| font-family    | false    | String               | 'Helvetica' | Font family    | Name of font family |
+| rotation       | false    | Number               | 0           | Degrees with which to rotate the mark    | Degrees |
+| anchor-point   | false    | String               | 'center'    | Anchor point for x/y coordinate    | One of ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'] |
+| stroke         | false    | String               | 'none'      | Stroke color   | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number               | 0           | Stroke width   | Screen pixel               |
+| stroke-opacity | false    | Number               | 1           | Stroke opacity | Number between 0 and 1     |
+| fill           | false    | String               | '#000000'   | Fill color     | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number               | 1           | Fill opacity   | Number between 0 and 1     |
+| opacity        | false    | Number               | 1           | Mark opacity   | Number between 0 and 1     |
 
 These are analogous to the CSS properties of the same names.
 
 ## Usage
 
+### Positioning
+
 To render the Label mark, you will need to provide one of the following positioning props:
 - `x` and `y` or
 - `geometry`
 
-`x` and `y` can be used with data of types Number, String or Date, while `geometry` should be used only for geographic data involving [GeoJSON Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects. 
+`x` and `y` can be used with data of types Number, String or Date, while `geometry` should be used only for geographic data containing [GeoJSON Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects. 
 
 Data is passed to the `x`, `y` and `geometry` props via row mapping, which renders one mark per data row. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components. 
 
-Recall that data provided (regardless of row or column format) -
+Recall that input data (whether in row or column oriented format)
 
 ```html
 <vgg-data
@@ -76,35 +78,18 @@ Recall that data provided (regardless of row or column format) -
 </vgg-data>
 ```
 
-is represented internally as
-<table>
-  <thead>
-    <tr>
-      <th>year</th>
-      <th>population</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>2000</td>
-      <td>100</td>
-    </tr>
-    <tr>
-      <td>2005</td>
-      <td>110</td>
-    </tr>
-    <tr>
-      <td>2010</td>
-      <td>130</td>
-    </tr>
-    <tr>
-      <td>2015</td>
-      <td>180</td>
-    </tr>
-  </tbody>
-</table>
+is represented internally in [tabular form](../concepts/data-loading.md#tabular-data-column-oriented-vs-row-oriented), with each row representing a single data instance
 
-To pass data into the `x` and `y` props, one needs simply to access each data row's column name: 
+```md
+| year 	| population 	|
+|------	|------------	|
+| 2000 	| 100        	|
+| 2005 	| 110        	|
+| 2010 	| 130        	|
+| 2015 	| 180        	|
+```
+
+To pass data into the `x` and `y` props, simply access each data row's column name: 
 
 ```html
 <vgg-map v-slot="{ row }">
@@ -117,13 +102,9 @@ To pass data into the `x` and `y` props, one needs simply to access each data ro
 
 </CodeDemoLayout>
 
-To pass data to the `geometry` prop, one needs to supply the entire GeoJSON geometry object. Here it is useful to consider the makeup of geodata.
+GeoJSON input
 
- GeoJSON data generally comprises two parts:
- - geographic coordinates (defined under geometry)
- - attributes (defined under properties)
-
-```json{6,13}
+```json
 {
   "type": "FeatureCollection",
   "features": [
@@ -147,28 +128,21 @@ To pass data to the `geometry` prop, one needs to supply the entire GeoJSON geom
 }
 ```
 
- Geographic coordinates relate to [positional properties](#positioning) and *must* be accessed with `row.geometry`: 
+is similarly [tabularized](../concepts/data-loading.md#geojson), with each row representing one feature
 
-```html{3}
-<vgg-map v-slot="{ row }">
-  <vgg-label
-    :geometry="row.geometry"
-    :text="row.name"
-    :anchor-point="row.anchor"
-    :fill="row.fill"
-  />
-</vgg-map>
+```md
+| geometry        	| name    	| anchor 	| fill      	|
+|-----------------	|---------	|--------	|-----------	|
+| geometry Object 	| 'Lagos' 	| 'rb'   	| '#f2e5d7' 	|
+| ...             	| ...     	| ...    	| ...       	|
 ```
 
-Attributes relate to [aesthetic properties](#other-aesthetics) and are accessed through `row.someproperty`, where `someproperty` can refer to any user-defined attribute within a feature's properties object:
+To pass data to the `geometry` prop, simply access the geometry column of each feature with `row.geometry`: 
 
-```html{4-6}
+```vue
 <vgg-map v-slot="{ row }">
   <vgg-label
     :geometry="row.geometry"
-    :text="row.name"
-    :anchor-point="row.anchor"
-    :fill="row.fill"
   />
 </vgg-map>
 ```
@@ -179,7 +153,7 @@ The graphic below shows the 10 most populous cities on the African continent acc
 
 <MarkLabelGeo />
 
-First, we need geodata supplied as a json indicating the geographical coordinates of each city and their attributes. Here is a single data point describing the city of Lagos.
+First, we need geodata supplied as a json indicating the geographical coordinates of each city and its attributes. Shown here is a single data point describing the city of Lagos.
 
 ```json
 {
@@ -204,7 +178,7 @@ First, we need geodata supplied as a json indicating the geographical coordinate
 }
 ```
 
-Next we will define the mark using the `vgg-label` component. Each prop serves to instruct the component on how the label should be rendered. Our coordinates tell us where the label would be anchored as though our text were a point, anchor at 'rb' that the anchor point will be to the right-bottom of the text, name that our label will display the text 'Lagos', and fill that it should be a light grayish orange color.
+Next we will define the mark using the `vgg-label` component. Each prop serves to instruct the component on how the label should be rendered. The coordinates tell us where the label should be positioned, the anchor at 'rb' that the coordinates should be positioned at the right-bottom of the text element, name that our label will display the text 'Lagos', and fill that it should be a light grayish orange color.
 
 ```vue
 <vgg-data :data="points">
