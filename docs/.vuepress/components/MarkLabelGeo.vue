@@ -71,9 +71,7 @@ export default {
   data () {
     return {
       polygons: {},
-      points: {},
-      selectionBounds: [],
-      selected: {}
+      points: {}
     }
   },
 
