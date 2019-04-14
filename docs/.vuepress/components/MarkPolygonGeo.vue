@@ -17,29 +17,18 @@
       :y1="100"
       :y2="500"
       :scale-geo="{}"
-      :select="'polygon'"
-      :selection-bounds.sync="selectionBounds"
     >
 
-      <vgg-map v-slot="{ row, i }">
+      <vgg-map v-slot="{ row }">
 
         <vgg-polygon
           :geometry="row.geometry"
-          :fill="selected[i] ? 'yellow' : { val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
-          @select="handleSelect(i, true)"
-          @deselect="handleSelect(i, false)"
+          :fill="{ val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
         />
 
       </vgg-map>
 
     </vgg-section>
-
-    <vgg-polygon
-      v-if="selectionBounds.length > 1"
-      :points="selectionBounds"
-      :fill="'red'"
-      :opacity="0.6"
-    />
 
   </vgg-graphic>
 
@@ -83,16 +72,6 @@ export default {
         )
         this.data = Object.freeze(joinedData)
       })
-    },
-
-    log (row) { console.log(row) },
-
-    handleSelect (i, add) {
-      if (add) {
-        this.$set(this.selected, i, true)
-      } else {
-        this.$delete(this.selected, i)
-      }
     }
   }
 }

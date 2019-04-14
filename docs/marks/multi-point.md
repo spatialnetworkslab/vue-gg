@@ -176,7 +176,7 @@ Each MultiPoint object defines a collection of cities given by their coordinates
 }
 ```
 
-The `vgg-multi-point` mark definition then instructs the component that we want to scale the radius of each collection of points according to their wealth category, and in order of increasing wealth:
+The `vgg-multi-point` mark definition then instructs the component to scale the radius of each collection of points according to their wealth category, and in order of increasing wealth:
 
 ```vue
 <vgg-map v-slot="{ row }">
