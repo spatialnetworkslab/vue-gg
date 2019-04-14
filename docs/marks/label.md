@@ -78,16 +78,14 @@ Recall that input data (whether in row or column oriented format)
 </vgg-data>
 ```
 
-is represented internally in [tabular form](../concepts/data-loading.md#tabular-data-column-oriented-vs-row-oriented), with each row representing a single data instance
+is represented internally in [tabular form](../concepts/data-loading.md#tabular-data-column-oriented-vs-row-oriented), with each row corresponding to a single data instance
 
-```md
 | year 	| population 	|
 |------	|------------	|
 | 2000 	| 100        	|
 | 2005 	| 110        	|
 | 2010 	| 130        	|
 | 2015 	| 180        	|
-```
 
 To pass data into the `x` and `y` props, simply access each data row's column name: 
 
@@ -102,7 +100,7 @@ To pass data into the `x` and `y` props, simply access each data row's column na
 
 </CodeDemoLayout>
 
-GeoJSON input
+GeoJSON input such as
 
 ```json
 {
@@ -130,12 +128,10 @@ GeoJSON input
 
 is similarly [tabularized](../concepts/data-loading.md#geojson), with each row representing one feature
 
-```md
 | geometry        	| name    	| anchor 	| fill      	|
 |-----------------	|---------	|--------	|-----------	|
 | geometry Object 	| 'Lagos' 	| 'rb'   	| '#f2e5d7' 	|
 | ...             	| ...     	| ...    	| ...       	|
-```
 
 To pass data to the `geometry` prop, simply access the geometry column of each feature with `row.geometry`: 
 
@@ -170,7 +166,7 @@ First, we need geodata supplied as a json indicating the geographical coordinate
       },
       "properties": {
         "name": "Lagos", // text to be displayed
-        "anchor": "rb", // position of coordinates with respect to text
+        "anchor": "rb", // relative position of coordinates with respect to text
         "fill": "#f2e5d7" // color of text
       }
     }
@@ -178,7 +174,7 @@ First, we need geodata supplied as a json indicating the geographical coordinate
 }
 ```
 
-Next we will define the mark using the `vgg-label` component. Each prop serves to instruct the component on how the label should be rendered. The coordinates tell us where the label should be positioned, the anchor at 'rb' that the coordinates should be positioned at the right-bottom of the text element, name that our label will display the text 'Lagos', and fill that it should be a light grayish orange color.
+Next we will define the mark using the `vgg-label` component. Each prop serves to instruct the component on how the label should be rendered. The `coordinates` tell us where the label should be positioned at [ 3.384082, 6.455027 ], `anchor` that the coordinates should be positioned at 'rb' (right-bottom of the text element), `name` that our label will display the text 'Lagos', and `fill` that it should be a light grayish orange color.
 
 ```vue
 <vgg-data :data="points">
