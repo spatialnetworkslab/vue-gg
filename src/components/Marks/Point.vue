@@ -66,22 +66,9 @@ export default {
 
   methods: {
     renderSVG (createElement) {
-      let aesthetics = this._props
-      let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
-
-      let events = this.events
-      if (events.length > 0) {
-        this.addToSpatialIndex([cx, cy], events)
-      }
-
-      return createElement('circle', {
-        attrs: {
-          'cx': cx,
-          'cy': cy,
-          'r': aesthetics.radius
-        },
-        style: createSVGStyle(aesthetics)
-      })
+      return renderSVG(
+        createElement, this.$$transform, this._props, this.events, this.addToSpatialIndex
+      )
     },
 
     addToSpatialIndex (coordinates, events) {
@@ -90,7 +77,20 @@ export default {
   }
 }
 
-export function renderSVG (createElement) {
-  // TODO
+export function renderSVG (createElement, $$transform, props, events, addToSpatialIndex) {
+  let [cx, cy] = $$transform([props.x, props.y])
+
+  if (events.length > 0) {
+    addToSpatialIndex([cx, cy], events)
+  }
+
+  return createElement('circle', {
+    attrs: {
+      'cx': cx,
+      'cy': cy,
+      'r': props.radius
+    },
+    style: createSVGStyle(props)
+  })
 }
 </script>
