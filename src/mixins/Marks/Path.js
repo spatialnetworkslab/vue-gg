@@ -115,166 +115,175 @@ export default {
   },
 
   methods: {
-    generatePoints (x, y) {
-      let points = []
-      if (x.length !== y.length) {
-        // x and y arrays should have equal length
-        // if not we throw an error EXCEPT when one of the two arrays
-        // has length 1, in which case we reuse that value for all points
-        if (x.length === 1 || y.length === 1) {
-          if (x.length === 1) {
-            for (let i = 0; i < y.length; ++i) {
-              points.push([x[0], y[i]])
-            }
-          } else if (y.length === 1) {
-            for (let i = 0; i < x.length; ++i) {
-              points.push([x[i], y[0]])
-            }
-          }
-        } else {
-          throw new Error(`'x' and 'y' coordinate sets have different lengths`)
-        }
-      } else {
-        for (let i = 0; i < x.length; ++i) {
-          points.push([x[i], y[i]])
-        }
-      }
-
-      return this.filterInvalid(points)
-    },
-
-    filterInvalid (points) {
-      let filtered = []
-      for (let i = 0; i < points.length; i++) {
-        let point = points[i]
-        if (invalidPoint(point)) {
-          console.warn(`Skipped invalid point ${JSON.stringify(point)} at index ${i}`)
-        } else {
-          filtered.push(point)
-        }
-      }
-
-      return filtered
-    },
-
-    sortPoints (points) {
-      if (this.sort === 'x') {
-        return points.sort((a, b) => a[0] - b[0])
-      }
-      if (this.sort === 'y') {
-        return points.sort((a, b) => a[1] - b[1])
-      }
-    },
-
-    closePoints (points) {
-      // Check if polygon is closed
-      let lastID = points.length - 1
-
-      if (points[0][0] !== points[lastID][0] ||
-        points[0][1] !== points[lastID][1]) {
-        // If not, close
-        points.push(points[0])
-      }
-
-      return points
-    },
-
-    createPath (points) {
-      let transformedPoints
-      let path
-
-      if (this._interpolate) {
-        let interpolatedPoints = interpolatePoints(points)
-        transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
-        path = createPath(transformedPoints)
-      }
-
-      if (!this._interpolate) {
-        transformedPoints = transformPoints(points, this.$$transform)
-        path = createPath(transformedPoints)
-      }
-
-      let events = this.events
-      if (events.length > 0) {
-        this.addToSpatialIndex(transformedPoints, events)
-      }
-
-      return path
-    },
-
     renderSVG (createElement) {
-      let area = this.pathType === 'area'
-      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, area)
-      let aesthetics = this._props
-
-      if (this.geometry) {
-        let tranformedFeature = transformFeature(aesthetics.geometry, this.$$transform)
-
-        let events = this.events
-        if (events.length > 0) {
-          this.addToSpatialIndex(tranformedFeature, events)
-        }
-
-        let path = createGeoPath(tranformedFeature)
-        return createElement('path', {
-          attrs: {
-            'd': path
-          },
-          style: createSVGStyle(aesthetics)
-        })
-      } else {
-        let points = []
-        if (aesthetics.points) {
-          points = this.filterInvalid(aesthetics.points)
-        } else {
-          points = this.generatePoints(aesthetics.x, aesthetics.y)
-        }
-        if (points.length > 1) {
-          if (this.sort) {
-            points = this.sortPoints(points)
-          }
-
-          if (area) {
-            let points2
-
-            if (aesthetics.x2 && !aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x2, aesthetics.y)
-            }
-
-            if (!aesthetics.x2 && aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x, aesthetics.y2)
-            }
-
-            if (aesthetics.x2 && aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x2, aesthetics.y2)
-            }
-
-            if (this.sort) { points2 = this.sortPoints(points2) }
-            points = points.concat(points2.reverse())
-          }
-
-          if (this.close) {
-            points = this.closePoints(points)
-          }
-
-          let path = this.createPath(points)
-
-          let element = createElement('path', {
-            attrs: {
-              'd': path
-            },
-            style: createSVGStyle(aesthetics)
-          })
-
-          return element
-        } else {
-          console.warn('Not enough valid points to draw Mark')
-        }
-      }
+      return renderSVG(
+        createElement, this.$$transform, this._props,
+        this.pathType, this._interpolate,
+        this.events, this.addToSpatialIndex
+      )
     },
 
     addToSpatialIndex (coordinates, events) {
       this.$$interactionManager.addItem(this.uuid, this.pathType, coordinates, this, events, this.sectionParentChain)
     }
   }
+}
+
+export function renderSVG (
+  createElement, $$transform, props,
+  pathType, interpolate,
+  events, addToSpatialIndex
+) {
+  let area = pathType === 'area'
+  checkPoints(props.points, props.geometry, props.x, props.y, props.x2, props.y2, area)
+
+  if (props.geometry) {
+    let tranformedFeature = transformFeature(props.geometry, $$transform)
+
+    if (events.length > 0) {
+      addToSpatialIndex(tranformedFeature, events)
+    }
+
+    let path = createGeoPath(tranformedFeature)
+    return createElement('path', {
+      attrs: {
+        'd': path
+      },
+      style: createSVGStyle(props)
+    })
+  } else {
+    let points = []
+    if (props.points) {
+      points = filterInvalid(props.points)
+    } else {
+      points = generatePoints(props.x, props.y)
+    }
+    if (points.length > 1) {
+      if (props.sort) {
+        points = sortPoints(points, props.sort)
+      }
+
+      if (area) {
+        let points2
+
+        if (props.x2 && !props.y2) {
+          points2 = generatePoints(props.x2, props.y)
+        }
+
+        if (!props.x2 && props.y2) {
+          points2 = generatePoints(props.x, props.y2)
+        }
+
+        if (props.x2 && props.y2) {
+          points2 = generatePoints(props.x2, props.y2)
+        }
+
+        if (props.sort) { points2 = sortPoints(points2, props.sort) }
+        points = points.concat(points2.reverse())
+      }
+
+      if (props.close) {
+        points = closePoints(points)
+      }
+
+      let path = generatePath(points, $$transform, interpolate, events, addToSpatialIndex)
+
+      let element = createElement('path', {
+        attrs: {
+          'd': path
+        },
+        style: createSVGStyle(props)
+      })
+
+      return element
+    } else {
+      console.warn('Not enough valid points to draw Mark')
+    }
+  }
+}
+
+function generatePoints (x, y) {
+  let points = []
+  if (x.length !== y.length) {
+    // x and y arrays should have equal length
+    // if not we throw an error EXCEPT when one of the two arrays
+    // has length 1, in which case we reuse that value for all points
+    if (x.length === 1 || y.length === 1) {
+      if (x.length === 1) {
+        for (let i = 0; i < y.length; ++i) {
+          points.push([x[0], y[i]])
+        }
+      } else if (y.length === 1) {
+        for (let i = 0; i < x.length; ++i) {
+          points.push([x[i], y[0]])
+        }
+      }
+    } else {
+      throw new Error(`'x' and 'y' coordinate sets have different lengths`)
+    }
+  } else {
+    for (let i = 0; i < x.length; ++i) {
+      points.push([x[i], y[i]])
+    }
+  }
+
+  return filterInvalid(points)
+}
+
+function filterInvalid (points) {
+  let filtered = []
+  for (let i = 0; i < points.length; i++) {
+    let point = points[i]
+    if (invalidPoint(point)) {
+      console.warn(`Skipped invalid point ${JSON.stringify(point)} at index ${i}`)
+    } else {
+      filtered.push(point)
+    }
+  }
+
+  return filtered
+}
+
+function sortPoints (points, sortDimension) {
+  if (sortDimension === 'x') {
+    return points.sort((a, b) => a[0] - b[0])
+  }
+  if (sortDimension === 'y') {
+    return points.sort((a, b) => a[1] - b[1])
+  }
+}
+
+function closePoints (points) {
+  // Check if polygon is closed
+  let lastID = points.length - 1
+
+  if (points[0][0] !== points[lastID][0] ||
+    points[0][1] !== points[lastID][1]) {
+    // If not, close
+    points.push(points[0])
+  }
+
+  return points
+}
+
+function generatePath (points, $$transform, interpolate, events, addToSpatialIndex) {
+  let transformedPoints
+  let path
+
+  if (interpolate) {
+    let interpolatedPoints = interpolatePoints(points)
+    transformedPoints = transformPoints(interpolatedPoints, $$transform)
+    path = createPath(transformedPoints)
+  }
+
+  if (!interpolate) {
+    transformedPoints = transformPoints(points, $$transform)
+    path = createPath(transformedPoints)
+  }
+
+  if (events.length > 0) {
+    addToSpatialIndex(transformedPoints, events)
+  }
+
+  return path
 }
