@@ -133,7 +133,7 @@ Each hexagonal bin is defined by a GeoJSON Polygon or Multipolygon object. Shown
 }
 ```
 
-To load the data, we will use `d3.csv` and `d3.json` from the d3-fetch module. The `geo` function returns a Promise object containing both the attributes (defined in the csv) and the geometries (defined in the json), which is then exported for use in a Vue component.
+To load the data, we will use `d3.csv` and `d3.json` from the d3-fetch module. The `geo` function defined below returns a Promise object containing both the attributes (defined in the csv) and the geometries (defined in the json), which is then exported for use in a Vue component.
 
 ```js
 import { csv, json } from 'd3-fetch'
@@ -168,11 +168,11 @@ export function geo () {
 }
 ```
 
-In a Vue component, the `geo` function above is imported and the Promise object containing our attributes and geometries is loaded within the `loadData` method. Using a join utility provided by `vue-gg`, attribute data is merged into the properties section of the geometries and passed to the Vue component's `data` prop.
+In a Vue component, the `geo` function above is imported and the Promise object containing our attributes and geometries is loaded within the `loadData` method. Using a join utility, attribute data is merged into the properties section of the geometries and passed to the Vue component's `data` prop.
 
 ```vue
 <script>
-import { geo } from './geoData.js' // imports the loaded geojson
+import { geo } from './geoData.js' // imports function containing the Promise object
 import { equijoin } from './geoData.js' // imports the join utility
 
 export default {
@@ -224,7 +224,7 @@ As a result of the join, the geodata acquires a new property `value` (total coun
 | ...             	| ...     	| ...   	|
 
 
-Finally, we define the mark using the `vgg-polygon` component. The following instructs the component to scale the fill of the hexagonal bins by total count as defined under the 'value' column.
+Finally, we define the mark using the `vgg-polygon` component. The following instructs the component to scale the fill of the hexagonal bins by total count as defined under the 'value' column, according to the [redYellowGreen](../scales/color.html#redyellowgreen) default color scale.
 
 ```vue
 <vgg-map v-slot="{ row }">
