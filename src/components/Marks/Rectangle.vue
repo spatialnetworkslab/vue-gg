@@ -1,5 +1,5 @@
 <script>
-import Rectangular from '../../mixins/Marks/Rectangular.js'
+import Rectangular, { getCoordinateSpecification, invalidCombination } from '../../mixins/Marks/Rectangular.js'
 import {
   interpolatePoints,
   transformPoints,
@@ -56,47 +56,61 @@ export default {
 
   methods: {
     renderSVG (createElement) {
-      let aesthetics = this._props
-      let coords = this.coordinateSpecification
-
-      let points = [
-        [coords.x1, coords.y1],
-        [coords.x1, coords.y2],
-        [coords.x2, coords.y2],
-        [coords.x2, coords.y1],
-        [coords.x1, coords.y1]
-      ]
-
-      let transformedPoints
-      let path
-
-      if (this._interpolate) {
-        let interpolatedPoints = interpolatePoints(points)
-        transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
-        path = createPath(transformedPoints)
-      }
-
-      if (!this._interpolate) {
-        transformedPoints = transformPoints(points, this.$$transform)
-        path = createPath(transformedPoints)
-      }
-
-      let events = this.events
-      if (events.length > 0) {
-        this.addToSpatialIndex(transformedPoints, events)
-      }
-
-      return createElement('path', {
-        attrs: {
-          'd': path
-        },
-        style: createSVGStyle(aesthetics)
-      })
+      return renderSVG(
+        createElement, this.$$transform, this._props, this.parentBranch, this._interpolate,
+        this.events, this.addToSpatialIndex
+      )
     },
 
     addToSpatialIndex (coordinates, events) {
       this.$$interactionManager.addItem(this.uuid, 'rectangle', coordinates, this, events, this.sectionParentChain)
     }
   }
+}
+
+export function renderSVG (
+  createElement, $$transform, props, parentBranch, interpolate, events, addToSpatialIndex
+) {
+  let invalidX = invalidCombination(props.x1, props.x2, props.x, props.w)
+  let invalidY = invalidCombination(props.y1, props.y2, props.y, props.h)
+
+  if (invalidX || invalidY) {
+    throw new Error('Invalid combination of props')
+  }
+
+  let coords = getCoordinateSpecification(props, parentBranch)
+
+  let points = [
+    [coords.x1, coords.y1],
+    [coords.x1, coords.y2],
+    [coords.x2, coords.y2],
+    [coords.x2, coords.y1],
+    [coords.x1, coords.y1]
+  ]
+
+  let transformedPoints
+  let path
+
+  if (interpolate) {
+    let interpolatedPoints = interpolatePoints(points)
+    transformedPoints = transformPoints(interpolatedPoints, $$transform)
+    path = createPath(transformedPoints)
+  }
+
+  if (!interpolate) {
+    transformedPoints = transformPoints(points, $$transform)
+    path = createPath(transformedPoints)
+  }
+
+  if (events.length > 0) {
+    addToSpatialIndex(transformedPoints, events)
+  }
+
+  return createElement('path', {
+    attrs: {
+      'd': path
+    },
+    style: createSVGStyle(props)
+  })
 }
 </script>
