@@ -31,7 +31,10 @@
 
       </vgg-map>
 
-      <vgg-data :data="points">
+      <vgg-data
+        v-if="points"
+        :data="points"
+      >
 
         <vgg-map v-slot="{ row }">
 
@@ -71,7 +74,7 @@ export default {
   data () {
     return {
       polygons: {},
-      points: {}
+      points: null
     }
   },
 

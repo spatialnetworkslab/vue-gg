@@ -28,7 +28,10 @@
         />
       </vgg-map>
 
-      <vgg-data :data="multipoints">
+      <vgg-data
+        v-if="multipoints"
+        :data="multipoints"
+      >
 
         <vgg-map v-slot="{ row }">
           <vgg-multi-point
@@ -65,7 +68,7 @@ export default {
   data () {
     return {
       polygons: {},
-      multipoints: {},
+      multipoints: null,
     }
   },
 
