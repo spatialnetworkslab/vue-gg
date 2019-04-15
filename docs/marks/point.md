@@ -14,8 +14,9 @@ The `vgg-point` mark is used to plot simple point elements. It is a special case
 
 ```html
 <vgg-point
-  :x="row.x"
-  :y="row.y"
+  :x="row.xValue"
+  :y="row.yValue"
+  fill="#c66366"
 />
 ```
 </CodeLayout>

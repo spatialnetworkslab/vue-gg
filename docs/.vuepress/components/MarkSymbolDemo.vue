@@ -28,14 +28,13 @@
         </vgg-map>
 
         <vgg-x-axis
-          :scale="[0, 150]"
+          :scale="'explanatory'"
           :vjust="-.05"
         />
 
         <vgg-y-axis
           :scale="'dependent'"
           :hjust="-.05"
-          flip
         />
 
       </vgg-section>
