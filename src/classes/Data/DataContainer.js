@@ -221,5 +221,3 @@ function extractGeometry (feat) {
 function extractAttributes (feat) {
   return feat.properties
 }
-
-const invalidColumnError = prop => new Error(`Invalid column name '${prop}'`)
