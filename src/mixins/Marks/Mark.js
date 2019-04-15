@@ -1,5 +1,4 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
-import createSVGStyle from './utils/createSVGStyle.js'
 
 export default {
   mixins: [CoordinateTreeUser],
@@ -48,8 +47,6 @@ export default {
   },
 
   methods: {
-    createSVGStyle,
-
     interpolationNecessary (id) {
       let currentLocation = this.$$coordinateTree.getBranch(id)
       if (currentLocation.type !== 'scale') { return true }

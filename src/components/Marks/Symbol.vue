@@ -1,5 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -114,7 +115,7 @@ export default {
           'cy': cy,
           'r': r
         },
-        style: this.createSVGStyle(aesthetics)
+        style: createSVGStyle(aesthetics)
       })
     },
 
@@ -137,7 +138,7 @@ export default {
           'x': x,
           'y': y
         },
-        style: this.createSVGStyle(aesthetics)
+        style: createSVGStyle(aesthetics)
       })
     },
 
@@ -149,7 +150,7 @@ export default {
         this.addToSpatialIndex([cx, cy], events)
       }
 
-      let s = this.createSVGStyle(aesthetics)
+      let s = createSVGStyle(aesthetics)
       let scale = aesthetics.size / 2
       s.strokeWidth = s.strokeWidth / scale
       s.transform = 'translateX(' + cx + 'px) translateY(' + cy + 'px) scale(' + scale + ', ' + scale + ') '

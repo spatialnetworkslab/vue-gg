@@ -6,6 +6,7 @@ import {
   transformPoints,
   createPath
 } from './utils/createPath.js'
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -127,7 +128,7 @@ export default {
         attrs: {
           'd': path
         },
-        style: this.createSVGStyle(aesthetics)
+        style: createSVGStyle(aesthetics)
       })
     },
 

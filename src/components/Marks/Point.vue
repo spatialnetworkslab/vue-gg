@@ -1,5 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
 
 export default {
   mixins: [Mark],
@@ -79,7 +80,7 @@ export default {
           'cy': cy,
           'r': aesthetics.radius
         },
-        style: this.createSVGStyle(aesthetics)
+        style: createSVGStyle(aesthetics)
       })
     },
 
@@ -87,5 +88,9 @@ export default {
       this.$$interactionManager.addItem(this.uuid, 'point', coordinates, this, events, this.sectionParentChain)
     }
   }
+}
+
+export function renderSVG (createElement) {
+  // TODO
 }
 </script>

@@ -7,6 +7,8 @@ import {
   createGeoPath
 } from '../../components/Marks/utils/createPath.js'
 
+import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
+
 import checkPoints from './utils/checkPoints.js'
 import { invalidPoint } from '../../utils/equals.js'
 
@@ -218,7 +220,7 @@ export default {
           attrs: {
             'd': path
           },
-          style: this.createSVGStyle(aesthetics)
+          style: createSVGStyle(aesthetics)
         })
       } else {
         let points = []
@@ -261,7 +263,7 @@ export default {
             attrs: {
               'd': path
             },
-            style: this.createSVGStyle(aesthetics)
+            style: createSVGStyle(aesthetics)
           })
 
           return element
