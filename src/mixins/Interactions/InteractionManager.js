@@ -203,9 +203,9 @@ export default {
           listenerTracker.hovering[uid] = true
           listenerTracker.hoverItems++
 
-          let events = hits.eventsPerListener.mousemove
+          let events = hit.eventsPerListener.mousemove
 
-          for (let event of events) {
+          for (let event in events) {
             if (event === 'mouseover' || event === 'hover') {
               let invoker = events[event]
               invoker(e)
@@ -221,7 +221,7 @@ export default {
           let cache = this.interactionManager.markCache
           let events = cache.getItem(uid).eventsPerListener.mousemove
 
-          for (let event of events) {
+          for (let event in events) {
             if (event === 'mouseout') {
               let invoker = events[event]
               invoker(e)
@@ -231,7 +231,7 @@ export default {
           // If this is the last one, and it is just about to be deleted:
           // emit 'null'
           if (listenerTracker.hoverItems === 1) {
-            let invoker = events['hover']
+            let invoker = cache.getItem(uid).eventsPerListener.mousemove.hover
             invoker(null)
           }
 
