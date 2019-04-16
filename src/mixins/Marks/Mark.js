@@ -27,18 +27,21 @@ export default {
     },
 
     events () {
-      let events = []
-      if (!this.$options._parentListeners) { return events }
+      if (!this.$options._parentListeners) { return undefined }
 
       const allowedEvents = ['click', 'hover', 'mouseover', 'mouseout', 'select', 'deselect']
 
+      let events = {}
+      let moreThanZeroAllowedEvents = false
+
       for (let event of allowedEvents) {
         if (this.$options._parentListeners.hasOwnProperty(event)) {
-          events.push(event)
+          events[event] = this.$options._parentListeners[event]
+          moreThanZeroAllowedEvents = true
         }
       }
 
-      return events
+      return moreThanZeroAllowedEvents ? events : undefined
     },
 
     sectionParentChain () {
