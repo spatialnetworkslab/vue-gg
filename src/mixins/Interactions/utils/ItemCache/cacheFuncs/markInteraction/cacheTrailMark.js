@@ -1,7 +1,7 @@
 import findBoundingBoxPath from '../../../geometry/findBoundingBoxPath.js'
 import { syncListenerTrackers, updateListenerTrackers } from './syncListenerTrackers.js'
 
-export default function (uid, type, coords, instance, cache, listeners, listenerTrackers) {
+export default function (uid, type, coords, props, cache, listeners, listenerTrackers) {
   let args = [coords]
   let hasnt = !cache.hasItem(uid)
   let nonIdentical = !cache.itemIsIdentical(uid, args)
@@ -25,7 +25,7 @@ export default function (uid, type, coords, instance, cache, listeners, listener
       pathType
     }
 
-    let item = { uid, geometry, instance, minX, minY, maxX, maxY }
+    let item = { uid, geometry, minX, minY, maxX, maxY }
 
     updateListenerTrackers(listenerTrackers, oldListeners, listeners, oldItem, item)
 

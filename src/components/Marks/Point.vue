@@ -70,7 +70,7 @@ export default {
     addToSpatialIndex (coordinates) {
       if (this.events) {
         this.$$interactionManager.addItem(
-          this.uuid, 'point', coordinates, this, this.events, this.sectionParentChain
+          this.uuid, 'point', coordinates, this._props, this.events, this.sectionParentChain
         )
       }
     }

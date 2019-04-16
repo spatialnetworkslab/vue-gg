@@ -9,57 +9,57 @@ import cacheRectangleSelectable from './selections/cacheRectangleSelectable.js'
 import cacheLineSelectable from './selections/cacheLineSelectable.js'
 import cachePathSelectable from './selections/cachePathSelectable.js'
 
-export default function (uid, type, coordinates, instance, markCache, selectableCache, events, listenerTrackers, parentSectionChain) {
+export default function (uid, type, coordinates, props, markCache, selectableCache, events, listenerTrackers, parentSectionChain) {
   let listeners = getListeners(events)
   let selectable = isSelectable(events)
 
   if (['point', 'symbol'].includes(type)) {
     if (events.length > 0) {
-      cachePointMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+      cachePointMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
     }
 
     if (selectable) {
-      cachePointSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
+      cachePointSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 
   if (type === 'rectangle') {
     if (events.length > 0) {
-      cacheRectangleMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+      cacheRectangleMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
     }
 
     if (selectable) {
-      cacheRectangleSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
+      cacheRectangleSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 
   if (type === 'line') {
     if (events.length > 0) {
-      cacheLineMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+      cacheLineMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
     }
 
     if (selectable) {
-      cacheLineSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
+      cacheLineSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 
   if (type === 'trail') {
     if (events.length > 0) {
-      cacheTrailMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+      cacheTrailMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
     }
 
     if (selectable) {
-      cachePathSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
+      cachePathSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 
   if (['polygon', 'multiline', 'path', 'area'].includes(type)) {
     if (events.length > 0) {
-      cachePathMark(uid, type, coordinates, instance, markCache, listeners, listenerTrackers)
+      cachePathMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
     }
 
     if (selectable) {
-      cachePathSelectable(uid, type, coordinates, instance, selectableCache, listenerTrackers, parentSectionChain)
+      cachePathSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
     }
   }
 }

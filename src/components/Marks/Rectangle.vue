@@ -54,7 +54,9 @@ export default {
 
     addToSpatialIndex (coordinates) {
       if (this.events) {
-        this.$$interactionManager.addItem(this.uuid, 'rectangle', coordinates, this, this.events, this.sectionParentChain)
+        this.$$interactionManager.addItem(
+          this.uuid, 'rectangle', coordinates, this._props, this.events, this.sectionParentChain
+        )
       }
     }
   }

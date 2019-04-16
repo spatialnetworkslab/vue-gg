@@ -85,8 +85,8 @@ export default {
 
   methods: {
     // These functions are exposed to other components
-    addItem (uid, type, coordinates, instance, events, parentSectionChain) {
-      this._cacheItem(uid, type, coordinates, instance, events, parentSectionChain)
+    addItem (uid, type, coordinates, props, events, parentSectionChain) {
+      this._cacheItem(uid, type, coordinates, props, events, parentSectionChain)
     },
 
     removeItem (uid) {
@@ -114,12 +114,12 @@ export default {
     },
 
     // These functions are all for internal use only
-    _cacheItem (uid, type, coordinates, instance, events, parentSectionChain) {
+    _cacheItem (uid, type, coordinates, props, events, parentSectionChain) {
       let markCache = this.interactionManager.markCache
       let selectableCache = this.interactionManager.selectableCache
       let listenerTrackers = this.interactionManager.listenerTrackers
 
-      cacheItem(uid, type, coordinates, instance, markCache, selectableCache, events, listenerTrackers, parentSectionChain)
+      cacheItem(uid, type, coordinates, props, markCache, selectableCache, events, listenerTrackers, parentSectionChain)
 
       this._updateListeners()
     },

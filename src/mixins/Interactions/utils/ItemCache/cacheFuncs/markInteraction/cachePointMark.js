@@ -1,4 +1,4 @@
-export default function (uid, type, coordinates, instance, cache, listeners, listenerTrackers) {
+export default function (uid, type, coordinates, props, cache, listeners, listenerTrackers) {
   // The point calculation is so fast that the cache logic is probably slower.
   // So we will just always update the point
   if (cache.hasItem(uid)) {
@@ -15,8 +15,8 @@ export default function (uid, type, coordinates, instance, cache, listeners, lis
   }
 
   let radius
-  if (type === 'point') { radius = instance.radius }
-  if (type === 'symbol') { radius = instance.size / 2 }
+  if (type === 'point') { radius = props.radius }
+  if (type === 'symbol') { radius = props.size / 2 }
 
   let minX = coordinates[0] - radius
   let maxX = coordinates[0] + radius
@@ -30,7 +30,7 @@ export default function (uid, type, coordinates, instance, cache, listeners, lis
     type
   }
 
-  let item = { uid, geometry, instance, minX, maxX, minY, maxY }
+  let item = { uid, geometry, minX, maxX, minY, maxY }
 
   cache.addItem(uid, [], item, listeners)
 

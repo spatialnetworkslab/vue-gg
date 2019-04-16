@@ -1,4 +1,4 @@
-export default function (uid, type, coordinates, instance, cache, listenerTrackers, parentSectionChain) {
+export default function (uid, type, coordinates, cache, listenerTrackers, parentSectionChain) {
   let listenerTracker = listenerTrackers.mousemove
 
   if (cache.hasItem(uid)) {
@@ -14,7 +14,7 @@ export default function (uid, type, coordinates, instance, cache, listenerTracke
   let minY = coordinates[1]
   let maxY = coordinates[1]
 
-  let item = { uid, instance, minX, maxX, minY, maxY, parentSectionChain }
+  let item = { uid, minX, maxX, minY, maxY, parentSectionChain }
 
   cache.addItem(uid, [], item)
 
