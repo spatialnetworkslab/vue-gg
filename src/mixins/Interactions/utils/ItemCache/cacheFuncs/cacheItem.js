@@ -19,7 +19,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
     }
 
     if (selectable) {
-      cachePointSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
+      cachePointSelectable(uid, type, coordinates, selectableCache, events, listenerTrackers, parentSectionChain)
     }
   }
 
@@ -29,7 +29,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
     }
 
     if (selectable) {
-      cacheRectangleSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
+      cacheRectangleSelectable(uid, type, coordinates, selectableCache, events, listenerTrackers, parentSectionChain)
     }
   }
 
@@ -39,7 +39,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
     }
 
     if (selectable) {
-      cacheLineSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
+      cacheLineSelectable(uid, type, coordinates, selectableCache, events, listenerTrackers, parentSectionChain)
     }
   }
 
@@ -49,7 +49,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
     }
 
     if (selectable) {
-      cachePathSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
+      cachePathSelectable(uid, type, coordinates, selectableCache, events, listenerTrackers, parentSectionChain)
     }
   }
 
@@ -59,7 +59,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
     }
 
     if (selectable) {
-      cachePathSelectable(uid, type, coordinates, selectableCache, listenerTrackers, parentSectionChain)
+      cachePathSelectable(uid, type, coordinates, selectableCache, events, listenerTrackers, parentSectionChain)
     }
   }
 }
