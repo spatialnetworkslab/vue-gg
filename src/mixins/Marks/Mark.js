@@ -48,16 +48,21 @@ export default {
       return JSON.stringify(this.$$sectionParentChain)
     },
 
-    _renderOptions () {
+    _renderContext () {
       return {
         $$transform: this.$$transform,
-        props: this._props,
-        addToSpatialIndex: this.addToSpatialIndex,
-        interpolate: this._interpolate,
-        pathType: this.pathType,
         $$coordinateTreeParent: this.$$coordinateTreeParent,
         $$coordinateTree: this.$$coordinateTree,
         parentBranch: this.parentBranch
+      }
+    },
+
+    _renderOptions () {
+      return {
+        props: this._props,
+        addToSpatialIndex: this.addToSpatialIndex,
+        interpolate: this._interpolate,
+        pathType: this.pathType
       }
     }
   },
@@ -78,7 +83,7 @@ export default {
 
   render (createElement) {
     if (this.__update) {
-      return this.renderSVG(createElement, this._renderOptions)
+      return this.renderSVG(createElement, this._renderContext, this._renderOptions)
     }
   }
 }

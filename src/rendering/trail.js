@@ -3,7 +3,7 @@ import checkPoints from './utils/checkPoints.js'
 import createSVGStyle from './utils/createSVGStyle.js'
 import * as d3 from 'd3-path'
 
-export function renderSVG (createElement, { $$transform, props, addToSpatialIndex }) {
+export function renderSVG (createElement, { $$transform }, { props, addToSpatialIndex }) {
   checkPoints(props.points, props.geometry, props.x, props.y, props.x2, props.y2, props._area)
 
   if (props.points || (props.x && props.y)) {
