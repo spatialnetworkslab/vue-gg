@@ -1,4 +1,4 @@
-import { is } from '../../../utils/equals.js'
+import { is } from '../../utils/equals.js'
 
 export default function (points, geometry, x, y, x2, y2, area) {
   if (area) {

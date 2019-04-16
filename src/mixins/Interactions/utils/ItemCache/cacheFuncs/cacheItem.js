@@ -14,7 +14,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
   let selectable = isSelectable(events)
 
   if (['point', 'symbol'].includes(type)) {
-    if (events.length > 0) {
+    if (length(events) > 0) {
       cachePointMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
@@ -24,7 +24,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
   }
 
   if (type === 'rectangle') {
-    if (events.length > 0) {
+    if (length(events) > 0) {
       cacheRectangleMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
@@ -34,7 +34,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
   }
 
   if (type === 'line') {
-    if (events.length > 0) {
+    if (length(events) > 0) {
       cacheLineMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
@@ -44,7 +44,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
   }
 
   if (type === 'trail') {
-    if (events.length > 0) {
+    if (length(events) > 0) {
       cacheTrailMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
@@ -54,7 +54,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
   }
 
   if (['polygon', 'multiline', 'path', 'area'].includes(type)) {
-    if (events.length > 0) {
+    if (length(events) > 0) {
       cachePathMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
@@ -80,7 +80,8 @@ function getEventsPerListener (events) {
   let listeners = {}
 
   for (let eventName in events) {
-    let listener = listenerLookup[event]
+    let listener = listenerLookup[eventName]
+
     if (listener) {
       listeners[listener] = listeners[listener] || {}
       let invoker = events[eventName]
@@ -93,7 +94,11 @@ function getEventsPerListener (events) {
 
 function isSelectable (events) {
   for (let event of selectEvents) {
-    if (events.includes(event)) { return true }
+    if (events.hasOwnProperty(event)) { return true }
   }
   return false
+}
+
+function length (obj) {
+  return Object.keys(obj).length
 }

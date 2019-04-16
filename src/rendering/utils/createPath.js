@@ -2,7 +2,7 @@ import { interpolate } from 'd3-interpolate'
 import { line, curveCardinal } from 'd3-shape'
 import { geoPath } from 'd3-geo'
 
-import { transform } from '../../../utils/geojson.js'
+import { transform } from '../../utils/geojson.js'
 
 // Step 1: interpolation
 export function interpolatePoints (corners, resolution = 100) {
