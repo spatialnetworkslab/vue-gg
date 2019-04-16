@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       pathType: 'polygon',
-      validGeomTypes: ['Polygon', 'MultiPolygon']
+      validGeomTypes: ['Polygon', 'MultiPolygon', 'LineString', 'MultiLineString']
     }
   }
 }

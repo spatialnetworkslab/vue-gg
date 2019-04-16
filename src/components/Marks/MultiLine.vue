@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       pathType: 'multi-line',
-      validGeomTypes: ['LineString', 'MultiLineString']
+      validGeomTypes: ['LineString', 'MultiLineString', 'Polygon', 'MultiPolygon']
     }
   }
 }
