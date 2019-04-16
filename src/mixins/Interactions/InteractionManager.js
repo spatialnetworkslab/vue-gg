@@ -163,12 +163,9 @@ export default {
       let hits = collisionTest(coords, listenerTracker.spatialIndex)
 
       for (let hit of hits) {
-        let uid = hit.uid
-
-        let events = this.interactionManager.markCache.getListeners(uid)['click']
-
-        for (let event of events) {
-          hit.instance.$emit(event, e)
+        for (let event in hit.eventsPerListener.click) {
+          let invoker = hit.eventsPerListener.click[event]
+          invoker(e)
         }
       }
     },
@@ -206,11 +203,12 @@ export default {
           listenerTracker.hovering[uid] = true
           listenerTracker.hoverItems++
 
-          let events = this.interactionManager.markCache.getListeners(uid)['mousemove']
+          let events = hits.eventsPerListener.mousemove
 
           for (let event of events) {
             if (event === 'mouseover' || event === 'hover') {
-              hit.instance.$emit(event, e)
+              let invoker = events[event]
+              invoker(e)
             }
           }
         }
@@ -221,19 +219,20 @@ export default {
       for (let uid in listenerTracker.hovering) {
         if (!newHits[uid]) {
           let cache = this.interactionManager.markCache
-          let events = cache.getListeners(uid)['mousemove']
-          let instance = cache.getItem(uid).instance
+          let events = cache.getItem(uid).eventsPerListener.mousemove
 
           for (let event of events) {
             if (event === 'mouseout') {
-              instance.$emit('mouseout', e)
+              let invoker = events[event]
+              invoker(e)
             }
           }
 
           // If this is the last one, and it is just about to be deleted:
           // emit 'null'
           if (listenerTracker.hoverItems === 1) {
-            instance.$emit('hover', null)
+            let invoker = events['hover']
+            invoker(null)
           }
 
           delete listenerTracker.hovering[uid]

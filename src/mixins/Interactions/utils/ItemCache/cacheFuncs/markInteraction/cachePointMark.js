@@ -1,4 +1,4 @@
-export default function (uid, type, coordinates, props, cache, listeners, listenerTrackers) {
+export default function (uid, type, coordinates, props, cache, eventsPerListener, listenerTrackers) {
   // The point calculation is so fast that the cache logic is probably slower.
   // So we will just always update the point
   if (cache.hasItem(uid)) {
@@ -30,11 +30,11 @@ export default function (uid, type, coordinates, props, cache, listeners, listen
     type
   }
 
-  let item = { uid, geometry, minX, maxX, minY, maxY }
+  let item = { uid, eventsPerListener, geometry, minX, maxX, minY, maxY }
 
-  cache.addItem(uid, [], item, listeners)
+  cache.addItem(uid, [], item, eventsPerListener)
 
-  for (let listener in listeners) {
+  for (let listener in eventsPerListener) {
     let listenerTracker = listenerTrackers[listener]
     listenerTracker.spatialIndex.insert(item)
     listenerTracker.trackedItems++

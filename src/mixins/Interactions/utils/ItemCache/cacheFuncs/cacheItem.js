@@ -10,12 +10,12 @@ import cacheLineSelectable from './selections/cacheLineSelectable.js'
 import cachePathSelectable from './selections/cachePathSelectable.js'
 
 export default function (uid, type, coordinates, props, markCache, selectableCache, events, listenerTrackers, parentSectionChain) {
-  let listeners = getListeners(events)
+  let eventsPerListener = getEventsPerListener(events)
   let selectable = isSelectable(events)
 
   if (['point', 'symbol'].includes(type)) {
     if (events.length > 0) {
-      cachePointMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
+      cachePointMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
     if (selectable) {
@@ -25,7 +25,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
 
   if (type === 'rectangle') {
     if (events.length > 0) {
-      cacheRectangleMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
+      cacheRectangleMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
     if (selectable) {
@@ -35,7 +35,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
 
   if (type === 'line') {
     if (events.length > 0) {
-      cacheLineMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
+      cacheLineMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
     if (selectable) {
@@ -45,7 +45,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
 
   if (type === 'trail') {
     if (events.length > 0) {
-      cacheTrailMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
+      cacheTrailMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
     if (selectable) {
@@ -55,7 +55,7 @@ export default function (uid, type, coordinates, props, markCache, selectableCac
 
   if (['polygon', 'multiline', 'path', 'area'].includes(type)) {
     if (events.length > 0) {
-      cachePathMark(uid, type, coordinates, props, markCache, listeners, listenerTrackers)
+      cachePathMark(uid, type, coordinates, props, markCache, eventsPerListener, listenerTrackers)
     }
 
     if (selectable) {
@@ -76,14 +76,15 @@ const selectEvents = ['select', 'deselect']
 // Creates an object with listeners (click, mousemove) as keys, and arrays of
 // events (click, hover, mouseenter, mouseout...) as values.
 // Used to trigger the appriopriate events when the listeners register a collision
-function getListeners (events) {
+function getEventsPerListener (events) {
   let listeners = {}
 
-  for (let event of events) {
+  for (let eventName in events) {
     let listener = listenerLookup[event]
     if (listener) {
-      listeners[listener] = listeners[listener] || []
-      listeners[listener].push(event)
+      listeners[listener] = listeners[listener] || {}
+      let invoker = events[eventName]
+      listeners[listener][eventName] = invoker
     }
   }
 
