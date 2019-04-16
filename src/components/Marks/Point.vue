@@ -65,11 +65,7 @@ export default {
   },
 
   methods: {
-    renderSVG (createElement) {
-      return renderSVG(
-        createElement, this.$$transform, this._props, this.events, this.addToSpatialIndex
-      )
-    },
+    renderSVG,
 
     addToSpatialIndex (coordinates, events) {
       this.$$interactionManager.addItem(this.uuid, 'point', coordinates, this, events, this.sectionParentChain)

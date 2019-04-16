@@ -76,13 +76,7 @@ export default {
   },
 
   methods: {
-    renderSVG (createElement) {
-      return renderSVG(
-        createElement, this.$$transform, this._props,
-        this.$$coordinateTreeParent, this.$$coordinateTree, this._interpolate,
-        this.events, this.addToSpatialIndex
-      )
-    },
+    renderSVG,
 
     addToSpatialIndex (coordinates, events) {
       this.$$interactionManager.addItem(this.uuid, 'line', coordinates, this, events, this.sectionParentChain)

@@ -86,9 +86,7 @@ export default {
   },
 
   methods: {
-    renderSVG (createElement) {
-      return renderSVG(createElement, this.$$transform, this._props)
-    }
+    renderSVG
   }
 }
 

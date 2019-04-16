@@ -46,6 +46,20 @@ export default {
 
     sectionParentChain () {
       return JSON.stringify(this.$$sectionParentChain)
+    },
+
+    _renderOptions () {
+      return {
+        $$transform: this.$$transform,
+        props: this._props,
+        events: this.events,
+        addToSpatialIndex: this.addToSpatialIndex,
+        interpolate: this._interpolate,
+        pathType: this.pathType,
+        $$coordinateTreeParent: this.$$coordinateTreeParent,
+        $$coordinateTree: this.$$coordinateTree,
+        parentBranch: this.parentBranch
+      }
     }
   },
 
@@ -65,7 +79,7 @@ export default {
 
   render (createElement) {
     if (this.__update) {
-      return this.renderSVG(createElement)
+      return this.renderSVG(createElement, this._renderOptions)
     }
   }
 }

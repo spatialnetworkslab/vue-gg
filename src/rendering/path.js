@@ -11,11 +11,11 @@ import checkPoints from './utils/checkPoints.js'
 
 import { invalidPoint } from '../utils/equals.js'
 
-export function renderSVG (
-  createElement, $$transform, props,
+export function renderSVG (createElement, {
+  $$transform, props,
   pathType, interpolate,
   events, addToSpatialIndex
-) {
+}) {
   let area = pathType === 'area'
   checkPoints(props.points, props.geometry, props.x, props.y, props.x2, props.y2, area)
 

@@ -50,12 +50,7 @@ export default {
   },
 
   methods: {
-    renderSVG (createElement) {
-      return renderSVG(
-        createElement, this.$$transform, this._props, this.parentBranch, this._interpolate,
-        this.events, this.addToSpatialIndex
-      )
-    },
+    renderSVG,
 
     addToSpatialIndex (coordinates, events) {
       this.$$interactionManager.addItem(this.uuid, 'rectangle', coordinates, this, events, this.sectionParentChain)

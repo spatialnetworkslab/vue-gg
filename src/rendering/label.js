@@ -1,7 +1,7 @@
 import { textAnchorPoint } from '../utils/anchorPoint.js'
 import createSVGStyle from './utils/createSVGStyle.js'
 
-export function renderSVG (createElement, $$transform, props) {
+export function renderSVG (createElement, { $$transform, props }) {
   let [cx, cy] = $$transform([props.x, props.y])
   let anchorPoint = textAnchorPoint(props.anchorPoint)
   let transform = calcTransform(props.rotation, cx, cy)

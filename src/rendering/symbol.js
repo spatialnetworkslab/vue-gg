@@ -1,6 +1,8 @@
 import createSVGStyle from './utils/createSVGStyle.js'
 
-export function renderSVG (createElement, $$transform, props, events, addToSpatialIndex) {
+export function renderSVG (createElement,
+  { $$transform, props, events, addToSpatialIndex }
+) {
   if (props.shape === 'circle') {
     return createCircle(createElement, $$transform, props, events, addToSpatialIndex)
   } else if (props.shape === 'square') {

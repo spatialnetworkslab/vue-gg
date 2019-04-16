@@ -1,5 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
+import { renderSVG } from '../../rendering/symbol.js'
 
 export default {
   mixins: [Mark],
@@ -69,12 +70,7 @@ export default {
   },
 
   methods: {
-    renderSVG (createElement) {
-      return renderSVG(
-        createElement, this.$$transform, this._props,
-        this.events, this.addToSpatialIndex
-      )
-    },
+    renderSVG,
 
     addToSpatialIndex (coordinates, events) {
       this.$$interactionManager.addItem(this.uuid, 'symbol', coordinates, this, events, this.sectionParentChain)

@@ -6,8 +6,8 @@ import {
 } from './utils/createPath.js'
 import createSVGStyle from './utils/createSVGStyle.js'
 
-export function renderSVG (
-  createElement, $$transform, props, parentBranch, interpolate, events, addToSpatialIndex
+export function renderSVG (createElement,
+  { $$transform, props, parentBranch, interpolate, events, addToSpatialIndex }
 ) {
   let invalidX = invalidCombination(props.x1, props.x2, props.x, props.w)
   let invalidY = invalidCombination(props.y1, props.y2, props.y, props.h)

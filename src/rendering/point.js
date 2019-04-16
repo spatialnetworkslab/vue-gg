@@ -1,6 +1,6 @@
 import createSVGStyle from './utils/createSVGStyle.js'
 
-export function renderSVG (createElement, $$transform, props, events, addToSpatialIndex) {
+export function renderSVG (createElement, { $$transform, props, events, addToSpatialIndex }) {
   let [cx, cy] = $$transform([props.x, props.y])
 
   if (events) {

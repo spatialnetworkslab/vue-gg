@@ -6,11 +6,11 @@ import {
 } from './utils/createPath.js'
 import createSVGStyle from './utils/createSVGStyle.js'
 
-export function renderSVG (
-  createElement, $$transform, props,
+export function renderSVG (createElement, {
+  $$transform, props,
   $$coordinateTreeParent, $$coordinateTree, interpolate,
   events, addToSpatialIndex
-) {
+}) {
   let coords = [
     [props.x1, props.y1],
     [props.x2, props.y2]
