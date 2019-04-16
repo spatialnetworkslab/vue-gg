@@ -1,6 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
+import { renderSVG } from '../../rendering/point.js'
 
 export default {
   mixins: [Mark],
@@ -75,22 +75,5 @@ export default {
       this.$$interactionManager.addItem(this.uuid, 'point', coordinates, this, events, this.sectionParentChain)
     }
   }
-}
-
-export function renderSVG (createElement, $$transform, props, events, addToSpatialIndex) {
-  let [cx, cy] = $$transform([props.x, props.y])
-
-  if (events) {
-    addToSpatialIndex([cx, cy], events)
-  }
-
-  return createElement('circle', {
-    attrs: {
-      'cx': cx,
-      'cy': cy,
-      'r': props.radius
-    },
-    style: createSVGStyle(props)
-  })
 }
 </script>

@@ -1,12 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import {
-  interpolatePoints,
-  interpolatePointsFromFunc,
-  transformPoints,
-  createPath
-} from './utils/createPath.js'
-import createSVGStyle from '../../mixins/Marks/utils/createSVGStyle.js'
+import { renderSVG } from '../../rendering/line.js'
 
 export default {
   mixins: [Mark],
@@ -82,40 +76,6 @@ export default {
   },
 
   methods: {
-    createPath (func, coords) {
-      let transformedPoints
-      let path
-
-      if (func) {
-        let parentId = this.$$coordinateTreeParent
-        let domains = this.$$coordinateTree.getBranch(parentId).domains
-
-        let points = interpolatePointsFromFunc(this.func, domains)
-        transformedPoints = transformPoints(points, this.$$transform)
-        path = createPath(transformedPoints)
-      }
-
-      if (!func) {
-        if (this._interpolate) {
-          let points = interpolatePoints(coords)
-          transformedPoints = transformPoints(points, this.$$transform)
-          path = createPath(transformedPoints)
-        }
-
-        if (!this._interpolate) {
-          transformedPoints = transformPoints(coords, this.$$transform)
-          path = createPath(transformedPoints)
-        }
-      }
-
-      let events = this.events
-      if (events.length > 0) {
-        this.addToSpatialIndex(transformedPoints, events)
-      }
-
-      return path
-    },
-
     renderSVG (createElement) {
       return renderSVG(
         createElement, this.$$transform, this._props,
@@ -128,64 +88,5 @@ export default {
       this.$$interactionManager.addItem(this.uuid, 'line', coordinates, this, events, this.sectionParentChain)
     }
   }
-}
-
-export function renderSVG (
-  createElement, $$transform, props,
-  $$coordinateTreeParent, $$coordinateTree, interpolate,
-  events, addToSpatialIndex
-) {
-  let coords = [
-    [props.x1, props.y1],
-    [props.x2, props.y2]
-  ]
-
-  let path = createLinePath(
-    props.func, coords, $$transform, $$coordinateTreeParent, $$coordinateTree,
-    interpolate, events, addToSpatialIndex
-  )
-
-  return createElement('path', {
-    attrs: {
-      'd': path
-    },
-    style: createSVGStyle(props)
-  })
-}
-
-function createLinePath (
-  func, coords, $$transform, $$coordinateTreeParent, $$coordinateTree,
-  interpolate, events, addToSpatialIndex
-) {
-  let transformedPoints
-  let path
-
-  if (func) {
-    let parentId = $$coordinateTreeParent
-    let domains = $$coordinateTree.getBranch(parentId).domains
-
-    let points = interpolatePointsFromFunc(func, domains)
-    transformedPoints = transformPoints(points, $$transform)
-    path = createPath(transformedPoints)
-  }
-
-  if (!func) {
-    if (interpolate) {
-      let points = interpolatePoints(coords)
-      transformedPoints = transformPoints(points, $$transform)
-      path = createPath(transformedPoints)
-    }
-
-    if (!interpolate) {
-      transformedPoints = transformPoints(coords, $$transform)
-      path = createPath(transformedPoints)
-    }
-  }
-
-  if (events) {
-    addToSpatialIndex(transformedPoints, events)
-  }
-
-  return path
 }
 </script>
