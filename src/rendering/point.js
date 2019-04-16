@@ -1,11 +1,9 @@
 import createSVGStyle from './utils/createSVGStyle.js'
 
-export function renderSVG (createElement, { $$transform, props, events, addToSpatialIndex }) {
+export function renderSVG (createElement, { $$transform, props, addToSpatialIndex }) {
   let [cx, cy] = $$transform([props.x, props.y])
 
-  if (events) {
-    addToSpatialIndex([cx, cy], events)
-  }
+  addToSpatialIndex([cx, cy])
 
   return createElement('circle', {
     attrs: {

@@ -14,7 +14,7 @@ import { invalidPoint } from '../utils/equals.js'
 export function renderSVG (createElement, {
   $$transform, props,
   pathType, interpolate,
-  events, addToSpatialIndex
+  addToSpatialIndex
 }) {
   let area = pathType === 'area'
   checkPoints(props.points, props.geometry, props.x, props.y, props.x2, props.y2, area)
@@ -22,9 +22,7 @@ export function renderSVG (createElement, {
   if (props.geometry) {
     let tranformedFeature = transformFeature(props.geometry, $$transform)
 
-    if (events > 0) {
-      addToSpatialIndex(tranformedFeature, events)
-    }
+    addToSpatialIndex(tranformedFeature)
 
     let path = createGeoPath(tranformedFeature)
     return createElement('path', {
@@ -68,7 +66,7 @@ export function renderSVG (createElement, {
         points = closePoints(points)
       }
 
-      let path = generatePath(points, $$transform, interpolate, events, addToSpatialIndex)
+      let path = generatePath(points, $$transform, interpolate, addToSpatialIndex)
 
       let element = createElement('path', {
         attrs: {
@@ -152,7 +150,7 @@ function closePoints (points) {
   return points
 }
 
-function generatePath (points, $$transform, interpolate, events, addToSpatialIndex) {
+function generatePath (points, $$transform, interpolate, addToSpatialIndex) {
   let transformedPoints
   let path
 
@@ -167,9 +165,7 @@ function generatePath (points, $$transform, interpolate, events, addToSpatialInd
     path = createPath(transformedPoints)
   }
 
-  if (events) {
-    addToSpatialIndex(transformedPoints, events)
-  }
+  addToSpatialIndex(transformedPoints)
 
   return path
 }

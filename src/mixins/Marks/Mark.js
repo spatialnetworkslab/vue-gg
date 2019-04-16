@@ -52,7 +52,6 @@ export default {
       return {
         $$transform: this.$$transform,
         props: this._props,
-        events: this.events,
         addToSpatialIndex: this.addToSpatialIndex,
         interpolate: this._interpolate,
         pathType: this.pathType,

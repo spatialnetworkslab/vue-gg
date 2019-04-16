@@ -52,8 +52,10 @@ export default {
   methods: {
     renderSVG,
 
-    addToSpatialIndex (coordinates, events) {
-      this.$$interactionManager.addItem(this.uuid, 'rectangle', coordinates, this, events, this.sectionParentChain)
+    addToSpatialIndex (coordinates) {
+      if (this.events) {
+        this.$$interactionManager.addItem(this.uuid, 'rectangle', coordinates, this, this.events, this.sectionParentChain)
+      }
     }
   }
 }

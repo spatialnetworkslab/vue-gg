@@ -28,8 +28,10 @@ export default {
   methods: {
     renderSVG,
 
-    addToSpatialIndex (points, events) {
-      this.$$interactionManager.addItem(this.uuid, 'trail', points, this, events, this.sectionParentChain)
+    addToSpatialIndex (points) {
+      if (this.events) {
+        this.$$interactionManager.addItem(this.uuid, 'trail', points, this, this.events, this.sectionParentChain)
+      }
     }
   }
 }

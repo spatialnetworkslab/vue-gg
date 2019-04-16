@@ -9,7 +9,7 @@ import createSVGStyle from './utils/createSVGStyle.js'
 export function renderSVG (createElement, {
   $$transform, props,
   $$coordinateTreeParent, $$coordinateTree, interpolate,
-  events, addToSpatialIndex
+  addToSpatialIndex
 }) {
   let coords = [
     [props.x1, props.y1],
@@ -18,7 +18,7 @@ export function renderSVG (createElement, {
 
   let path = createLinePath(
     props.func, coords, $$transform, $$coordinateTreeParent, $$coordinateTree,
-    interpolate, events, addToSpatialIndex
+    interpolate, addToSpatialIndex
   )
 
   return createElement('path', {
@@ -31,7 +31,7 @@ export function renderSVG (createElement, {
 
 function createLinePath (
   func, coords, $$transform, $$coordinateTreeParent, $$coordinateTree,
-  interpolate, events, addToSpatialIndex
+  interpolate, addToSpatialIndex
 ) {
   let transformedPoints
   let path
@@ -58,9 +58,7 @@ function createLinePath (
     }
   }
 
-  if (events) {
-    addToSpatialIndex(transformedPoints, events)
-  }
+  addToSpatialIndex(transformedPoints)
 
   return path
 }
