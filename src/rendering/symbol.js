@@ -1,4 +1,4 @@
-import createSVGStyle from '../mixins/Marks/utils/createSVGStyle.js'
+import createSVGStyle from './utils/createSVGStyle.js'
 
 export function renderSVG (createElement, $$transform, props, events, addToSpatialIndex) {
   if (props.shape === 'circle') {

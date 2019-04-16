@@ -4,11 +4,11 @@ import {
   transformFeature,
   createPath,
   createGeoPath
-} from '../components/Marks/utils/createPath.js'
+} from './utils/createPath.js'
 
-import createSVGStyle from '../mixins/Marks/utils/createSVGStyle.js'
+import createSVGStyle from './utils/createSVGStyle.js'
+import checkPoints from './utils/checkPoints.js'
 
-import checkPoints from '../mixins/Marks/utils/checkPoints.js'
 import { invalidPoint } from '../utils/equals.js'
 
 export function renderSVG (

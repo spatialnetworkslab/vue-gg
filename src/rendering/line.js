@@ -3,8 +3,8 @@ import {
   interpolatePointsFromFunc,
   transformPoints,
   createPath
-} from '../components/Marks/utils/createPath.js'
-import createSVGStyle from '../mixins/Marks/utils/createSVGStyle.js'
+} from './utils/createPath.js'
+import createSVGStyle from './utils/createSVGStyle.js'
 
 export function renderSVG (
   createElement, $$transform, props,

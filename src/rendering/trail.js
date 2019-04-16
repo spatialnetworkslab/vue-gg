@@ -1,6 +1,6 @@
-import checkPoints from '../mixins/Marks/utils/checkPoints.js'
 import { invalidPoint } from '../utils/equals.js'
-import createSVGStyle from '../mixins/Marks/utils/createSVGStyle.js'
+import checkPoints from './utils/checkPoints.js'
+import createSVGStyle from './utils/createSVGStyle.js'
 import * as d3 from 'd3-path'
 
 export function renderSVG (

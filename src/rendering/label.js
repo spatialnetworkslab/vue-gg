@@ -1,5 +1,5 @@
 import { textAnchorPoint } from '../utils/anchorPoint.js'
-import createSVGStyle from '../mixins/Marks/utils/createSVGStyle.js'
+import createSVGStyle from './utils/createSVGStyle.js'
 
 export function renderSVG (createElement, $$transform, props) {
   let [cx, cy] = $$transform([props.x, props.y])
