@@ -47,8 +47,14 @@ import IDCRadar from './idc/idcRadar.vue'
 import PCP from './idc/PCP.vue'
 
 // IDC Heatmaps
-import Heatmap from './idc/Heatmap.vue'
+import HeatmapSingle from './idc/Heatmap.vue'
 import HeatmapCombinatorial from './idc//HeatmapCombinatorial.vue'
+
+// IDC Shortlist
+import SPLOM from './idcShortlist/ScatterplotMatrix.vue'
+import ParCoords from './idcShortlist/PCP.vue'
+import Heatmap from './idcShortlist/Heatmap.vue'
+import Radar from './idcShortlist/Radar.vue'
 
 // Fun graphs
 import Minard from './funGraphs/Minard.vue'
@@ -81,7 +87,6 @@ storiesOf('Sandbox', module)
   .add('Section axes', () => (SectionAxesTest))
 
 storiesOf('idcSandbox', module)
-  .add('Scatterplot Matrix 40', () => (IDCScatter40))
   .add('Scatterplot Matrix 10', () => (IDCScatter10))
   .add('Scatterplot Matrix 10 10', () => (IDCScatter1010))
   .add('Scatterplot Matrix 5', () => (IDCScatter5))
@@ -91,11 +96,15 @@ storiesOf('idcSandbox', module)
   .add('Scatterplot Labels', () => (IDCScatterLabel))
   .add('Scatterplot Matrix 5 10 Motorbikes', () => (IDCScatter510motorbikes))
   .add('Scatterplot Matrix General Motorbikes', () => (IDCScatterMotorbikes))
-  .add('Single Heatmap', () => (Heatmap))
+
   .add('Combinatorial Heatmap', () => (HeatmapCombinatorial))
   .add('PCP', () => (IDCPCP))
-  .add('Single PCP', () => (PCP))
-  .add('Radar', () => (IDCRadar))
+
+storiesOf('IDC Shortlist', module)
+  .add('Parallel Coordinates', () => (ParCoords))
+  .add('Radar', () => (Radar))
+  .add('Heatmap', () => (Heatmap))
+  .add('Scatterplot Matrix', () => (SPLOM))
 
 storiesOf('Fun Graphs', module)
   .add('Minard', () => (Minard))

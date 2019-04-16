@@ -1,11 +1,11 @@
 <template>
-  <vgg-parallel-coordinates
-    :x1="100"
-    :x2="1500"
+  <vgg-heatmap
+    :x1="200"
+    :x2="800"
     :y1="100"
-    :y2="700"
-    :width="1600"
-    :height="800"
+    :y2="900"
+    :width="1000"
+    :height="1000"
     :csvURL="'../../static/motorbikes_40_clean.csv'"
     :extract-variables="{
       'Base MSRP': 'Price',
@@ -21,7 +21,27 @@
     :color="'Color'"
     :dimensions="['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']"
     :options="'Name'"
-    :flip-scale="['MilesPG', 'ZeroTo60', 'Stop60']"
-    :option-count="40"
   />
 </template>
+
+<script>
+import { csv } from 'd3-fetch'
+
+export default {
+  name: 'IdcHeatmap',
+
+  data () {
+    return {
+    }
+  },
+  computed: {
+  },
+
+  mounted () {
+  },
+
+  methods: {
+    log: console.log
+  }
+}
+</script>

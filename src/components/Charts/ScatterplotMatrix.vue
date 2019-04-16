@@ -28,9 +28,11 @@
           :axes="{
             bottom: { scale: x,
                       labelRotate: true,
+                      tickExtra: false,
                       tickCount: 5, },
             right: { scale: y,
                      flip: true,
+                     tickExtra: false,
                      tickCount: 5, },
           }"
         >

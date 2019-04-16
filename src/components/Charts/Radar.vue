@@ -50,9 +50,9 @@ SAMPLE COMPONENT DEFINITION
           <vgg-grid
             :rows="rows"
             :cell-padding="{
-              t: 2.5,
-              l: 2,
-              r: 2.5
+              t: 4.7,
+              l: 5,
+              r: 5
             }"
           >
             <!-- <vgg-map
@@ -73,27 +73,6 @@ SAMPLE COMPONENT DEFINITION
                 :grid-lines="['x', 'y']"
                 type="polar"
               >
-                <vgg-rectangle
-                  v-if="hoverRow"
-                  :x1="0"
-                  :x2="10"
-                  :y1="0"
-                  :y2="10"
-                  :stroke="hoverRow.Name === row.Name ? 'black' : 'none'"
-                  :stroke-width="5"
-                  :fill="'none'"
-                />
-
-                <vgg-rectangle
-                  v-if="clickRow"
-                  :x1="0"
-                  :x2="10"
-                  :y1="0"
-                  :y2="10"
-                  :stroke="clickRow.Name === row.Name ? 'red' : 'none'"
-                  :stroke-width="5"
-                  :fill="'none'"
-                />
 
                 <vgg-map
                   v-slot="{ dataframe }"
@@ -104,24 +83,26 @@ SAMPLE COMPONENT DEFINITION
                     :key="d"
                     :text="dim"
                     :x="10/dimensions.length * d"
-                    :y="11"
-                    :opacity="0.5"
-                    :font-size="6"
-                    :font-weight="700"
-                    :rotation="360/(dimensions.length-1) * (d % 5)"
+                    :y="15"
+                    :opacity="0.7"
+                    :font-size="10"
+                    :font-weight="600"
+
                   />
 
                   <vgg-y-axis
                     v-for="dim, d in axes(dataframe, dimensions,options)"
                     :key="d + dimensions.length"
                     :scale="{domain: dim.domain, domainMin: 0}"
+                    :tick-values="[dim.domain[0], dim.domain[1]]"
                     :hjust="1/ dimensions.length * d"
                     :tick-length="0.01"
-                    :domain-opacity="0.2"
-                    :label-font-size="6"
+                    :domain-opacity="0.3"
+                    :label-font-size="8"
                     :label-opacity="0.4"
                     :title-font-weight="700"
-                    :tick-count="2"
+                    :tick-count="3"
+                    label-rotate
                   />
 
                   <vgg-rectangle
@@ -146,6 +127,28 @@ SAMPLE COMPONENT DEFINITION
                     stroke-linecap="round"
                   />
                 </vgg-map>
+
+                <vgg-multi-line
+                  v-if="hoverRow"
+                  :x="[0, 1, 2, 3, 4, 5, 6, 7, 8,9, 10 ]"
+                  :y="[10]"
+                  :stroke="hoverRow.Name === row.Name ? 'red' : 'none'"
+                  :stroke-width="5"
+                  :fill="hoverRow.Name === row.Name ? 'red' : 'none'"
+                  :fill-opacity="0.2"
+                  close
+                />
+
+                <vgg-multi-line
+                  v-if="clickRow"
+                  :x="[0, 1, 2, 3, 4, 5, 6, 7, 8 , 9, 0]"
+                  :y="[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]"
+                  :stroke="clickRow.Name === row.Name ? 'red' : 'none'"
+                  :stroke-width="5"
+                  :fill="clickRow.Name === row.Name ? 'red' : 'none'"
+                  :fill-opacity="0.2"
+                  close
+                />
                 <!--
                 <vgg-label
                   :text="dataframe[options][s-1]"
@@ -171,6 +174,8 @@ import { scaleOrdinal, scaleLinear } from 'd3-scale'
 
 export default {
   name: 'Radar',
+
+  // rotation code :rotation="360/(dimensions.length-1) * (d % 5)"
   props: {
     // Use either data or csvURL
     // For data, format as [ { variable1: , variable2: }, { variable1: , variable2: } ]
@@ -365,16 +370,18 @@ export default {
     },
 
     createDomain (domain) {
-      let newDomain = [ 0, Math.max(...domain)]; let rounder = 1
+      let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
 
       if (newDomain[0] > 1000 && newDomain[1] > 1000) {
-        rounder = 1000
+        rounder = 500
       } else if (newDomain[0] > 100 && newDomain[1] > 100) {
-        rounder = 100
+        rounder = 50
       } else if (newDomain[0] > 10 && newDomain[1] > 10) {
-        rounder = 10
+        rounder = 5
       } else if (newDomain[0] > 1 && newDomain[1] > 1) {
-        rounder = 1
+        rounder = 0.5
+      } else if (newDomain[0] < 1 && newDomain[1] < 1) {
+        rounder = 0.01
       }
 
       newDomain = [Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
@@ -398,25 +405,6 @@ export default {
       this.dataframe = dataframe
 
       return newAxes
-    },
-
-    segments (dataframe, dimensions, options) {
-      let segments = []
-
-      for (let d = 0; d < dataframe[this.options].length; d++) {
-        let y = []; let x = []; name
-        let deltaX = 10 / dimensions.length
-
-        for (let i = 0; i < dimensions.length; i++) {
-          x.push(deltaX * i)
-          // y.push(this.newScales[dimensions[i]](dataframe[dimensions[i]][d]))
-          y.push(dataframe[dimensions[i]][d])
-          name = dataframe[this.options][d]
-        }
-        segments.push({ name, x, y, color: this.myData[this.color][d] })
-      }
-
-      return segments
     },
 
     scaleCoords (dataframe, s) {

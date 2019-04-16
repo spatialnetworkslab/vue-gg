@@ -1,7 +1,7 @@
 <!--
 SAMPLE COMPONENT DEFINITION
 
- <vgg-parallel-coordinates
+<vgg-parallel-coordinates
   :x1="100"
   :x2="1500"
   :y1="100"
@@ -23,17 +23,26 @@ SAMPLE COMPONENT DEFINITION
   :color="'Color'"
   :dimensions="['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']"
   :options="'Name'"
+  :flip-scale="['MilesPG', 'ZeroTo60', 'Stop60']"
+  :option-count="40"
 />
 
 -->
 <template>
   <div>
-    <br>
     <vgg-graphic
       :width="width"
       :height="height"
       :data="myData"
     >
+      <!-- <vgg-rectangle
+        :x1="x1"
+        :x2="x2"
+        :y1="y1"
+        :y2="y2"
+        :fill-opacity="0.15"
+        fill="gray"
+      /> -->
       <g v-if="myData">
         <vgg-section
           :x1="x1"
@@ -46,22 +55,21 @@ SAMPLE COMPONENT DEFINITION
             { rename: extractVariables }
           ]"
         >
-
           <vgg-map
             v-slot="{ dataframe }"
             unit="dataframe">
             <vgg-y-axis
               v-for="dim, d in axes(dataframe, dimensions, options)"
               :key="d"
-              :scale="{domain: dim.domain}"
-              :hjust="1/ dimensions.length * d"
+              :scale="{domain: dim.domain, reverse: (flipScale.includes(dim.dimension) ? true : false)}"
+              :hjust="1/ dimensions.length * (d+0.5)"
               :title="dim.dimension"
               :title-vjust="1.05"
               :title-hjust="0.5"
               :tick-opacity="3"
-              :title-font-size="12"
-              :tick-length="0.01"
-              :label-font-size="10"
+              :title-font-size="14"
+              :tick-length="0.1"
+              :label-font-size="14"
               :title-font-weight="700"
             />
 
@@ -73,12 +81,21 @@ SAMPLE COMPONENT DEFINITION
               :stroke="segment.color"
               stroke-linecap="round"
               @hover="handleHover($event, segment, dataframe[options][i], i)"
+              @click="handleClick($event, segment, dataframe[options][i], i)"
             />
           </vgg-map>
           <vgg-multi-line
             v-if="hoverRow"
             :x="hoverRow.x"
             :y="hoverRow.y"
+            :stroke-width="5"
+            stroke="black"
+          />
+
+          <vgg-multi-line
+            v-if="clickRow"
+            :x="clickRow.x"
+            :y="clickRow.y"
             :stroke-width="5"
             stroke="black"
           />
@@ -143,6 +160,11 @@ export default {
       default: undefined
     },
 
+    optionCount: {
+      type: Number,
+      default: undefined
+    },
+
     x1: {
       type: Number,
       default: undefined
@@ -171,6 +193,16 @@ export default {
     height: {
       type: Number,
       default: undefined
+    },
+
+    setZero: {
+      type: Boolean,
+      default: false
+    },
+
+    flipScale: {
+      type: Array,
+      default: undefined
     }
   },
   // hovered keeps track of whether a point is being hovered over (i.e. true or false)
@@ -184,6 +216,8 @@ export default {
       myData: undefined,
       hovered: undefined,
       hoverRow: undefined,
+      clicked: undefined,
+      clickRow: undefined,
       axesScales: undefined
     }
   },
@@ -210,12 +244,14 @@ export default {
             }
             scale = scaleOrdinal().domain(aScale.domain).range(range)
           } else {
-            scale = scaleLinear().domain(aScale.domain).range([0, 10])
+            if (this.flipScale) {
+              scale = scaleLinear().domain(aScale.domain).range([0, 10])
+            }
+            scales[aScale.dimension] = scale
           }
-          scales[aScale.dimension] = scale
         }
+        return scales
       }
-      return scales
     }
   },
 
@@ -271,17 +307,35 @@ export default {
       }
     },
 
+    // Customize as needed
+    handleClick (e, s, r, i) {
+      this.clicked = e ? { r, i } : undefined
+      if (this.clicked) {
+        this.clickRow = s
+      } else {
+        this.clicked = undefined
+        this.clickRow = undefined
+      }
+    },
+
     createDomain (domain) {
-      let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
+      let newDomain; let rounder = 1
+      if (this.setZero) {
+        newDomain = [ 0, Math.max(...domain)]
+      } else {
+        newDomain = [ Math.min(...domain), Math.max(...domain)]
+      }
 
       if (newDomain[0] > 1000 && newDomain[1] > 1000) {
-        rounder = 1000
+        rounder = 500
       } else if (newDomain[0] > 100 && newDomain[1] > 100) {
-        rounder = 100
+        rounder = 50
       } else if (newDomain[0] > 10 && newDomain[1] > 10) {
-        rounder = 10
+        rounder = 5
       } else if (newDomain[0] > 1 && newDomain[1] > 1) {
-        rounder = 1
+        rounder = 0.5
+      } else if (newDomain[0] < 1 && newDomain[1] < 1) {
+        rounder = 0.05
       }
 
       newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
@@ -302,17 +356,19 @@ export default {
         }
       }
       this.axesScales = newAxes
+
       return newAxes
     },
 
     segments (dataframe, dimensions, options) {
       let segments = []
-      for (let d = 0; d < dataframe[this.options].length; d++) {
+      let length = this.optionCount ? this.optionCount : dataframe[this.options].length
+      for (let d = 0; d < length; d++) {
         let y = []; let x = []
         let deltaX = 10 / dimensions.length
 
         for (let i = 0; i < dimensions.length; i++) {
-          x.push(deltaX * i)
+          x.push(deltaX * (i + 0.5))
           y.push(this.newScales[dimensions[i]](dataframe[dimensions[i]][d]))
         }
         segments.push({ x, y, color: this.myData[this.color][d] })
