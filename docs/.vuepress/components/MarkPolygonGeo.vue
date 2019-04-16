@@ -5,16 +5,18 @@
     :width="600"
     :height="600"
     :data="data"
-    :transform="{ reproject: {
-      from: '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
-      to: 'WGS84'
-    } }"
+    :transform="{
+      reproject: {
+        from: '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+        to: 'WGS84'
+      }
+    }"
   >
 
     <vgg-section
-      :x1="100"
+      :x1="0"
       :x2="500"
-      :y1="100"
+      :y1="0"
       :y2="500"
       :scale-geo="{}"
     >
@@ -23,7 +25,12 @@
 
         <vgg-polygon
           :geometry="row.geometry"
-          :fill="{ val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
+          :fill="{
+            val: row.value,
+            scale: { type: 'blues', domain: 'value', domainMax: 5000, NA: 1 }
+          }"
+          :stroke="'#d3d3d3'"
+          :stroke-width="0.2"
         />
 
       </vgg-map>
@@ -42,9 +49,7 @@ export default {
 
   data () {
     return {
-      data: {},
-      selectionBounds: [],
-      selected: {}
+      data: {}
     }
   },
 

@@ -224,13 +224,16 @@ As a result of the join, the geodata acquires a new property `value` (total coun
 | ...             	| ...     	| ...   	|
 
 
-Finally, we define the mark using the `vgg-polygon` component. The following instructs the component to scale the fill of the hexagonal bins by total count as defined under the 'value' column, according to the [redYellowGreen](../scales/color.html#redyellowgreen) default color scale.
+Finally, we define the mark using the `vgg-polygon` component. The following instructs the component to scale the fill of the hexagonal bins by total count as defined under the 'value' column, according to the [blues](../scales/color.html#blues) default color scale. Domain is capped at a count of 5000, where `NA: 1` indicates that all values greater than 5000 are mapped to the range's upperbound of 1.
 
 ```vue
 <vgg-map v-slot="{ row }">
   <vgg-polygon
     :geometry="row.geometry"
-    :fill="{ val: row.value, scale: { type: 'redYellowGreen', domain: 'value' } }"
+    :fill="{
+      val: row.value,
+      scale: { type: 'blues', domain: 'value', domainMax: 5000, NA: 1 }
+    }"
   />
 </vgg-map>
 ```
