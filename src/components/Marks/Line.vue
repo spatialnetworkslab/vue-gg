@@ -76,7 +76,7 @@ export default {
 
   beforeDestroy () {
     let uid = this.uuid
-    if (this.events.length > 0) {
+    if (this.events) {
       this.$$interactionManager.removeItem(uid)
     }
   },
@@ -182,7 +182,7 @@ function createLinePath (
     }
   }
 
-  if (events.length > 0) {
+  if (events) {
     addToSpatialIndex(transformedPoints, events)
   }
 

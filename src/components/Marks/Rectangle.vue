@@ -49,7 +49,7 @@ export default {
 
   beforeDestroy () {
     let uid = this.uuid
-    if (this.events.length > 0) {
+    if (this.events) {
       this.$$interactionManager.removeItem(uid)
     }
   },
@@ -102,7 +102,7 @@ export function renderSVG (
     path = createPath(transformedPoints)
   }
 
-  if (events.length > 0) {
+  if (events) {
     addToSpatialIndex(transformedPoints, events)
   }
 

@@ -64,7 +64,7 @@ export default {
 
   beforeDestroy () {
     let uid = this.uuid
-    if (this.events.length > 0) {
+    if (this.events) {
       this.$$interactionManager.removeItem(uid)
     }
   },
@@ -100,7 +100,7 @@ function createCircle (createElement, $$transform, props, events, addToSpatialIn
   let [cx, cy] = $$transform([props.x, props.y])
   let r = props.size / 2
 
-  if (events.length > 0) {
+  if (events) {
     addToSpatialIndex([cx, cy], events)
   }
 
@@ -121,7 +121,7 @@ function createSquare (createElement, $$transform, props, events, addToSpatialIn
   let x = cx - (l / 2)
   let y = cy - (l / 2)
 
-  if (events.length > 0) {
+  if (events) {
     addToSpatialIndex([x, y], events)
   }
 
@@ -139,7 +139,7 @@ function createSquare (createElement, $$transform, props, events, addToSpatialIn
 function createPath (createElement, $$transform, props, d, events, addToSpatialIndex) {
   let [cx, cy] = $$transform([props.x, props.y])
 
-  if (events.length > 0) {
+  if (events) {
     addToSpatialIndex([cx, cy], events)
   }
 
