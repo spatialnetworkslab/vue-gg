@@ -18,13 +18,13 @@
         :x2="1"
         :y1="-1"
         :y2="1"
-        stroke="green"
+        stroke="#008080"
       />
 
-      <vgg-line :func="x => x ** 2" stroke="blue" />
+      <vgg-line :func="x => x ** 2" stroke="#c66366" />
 
-      <vgg-x-axis :scale="[-1, 1]" :vjust="0.5" />
-      <vgg-y-axis :scale="[-1, 1]" :hjust="0.5" />
+      <vgg-x-axis :scale="[-1, 1]" :vjust="0.5" :tickCount="5" />
+      <vgg-y-axis :scale="[-1, 1]" :hjust="0.5" :tickCount="5" />
 
     </vgg-section>
 

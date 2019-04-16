@@ -17,9 +17,9 @@ module.exports = {
       title: 'Tutorials',
       collapsable: true,
       children: [
-        'tutorials/templates',
-        'tutorials/custom2',
-        'tutorials/customColor'
+        'tutorials/basic',
+        'tutorials/transformTutorial',
+        'tutorials/interactionTutorial',
       ]
     },
     {
@@ -57,7 +57,6 @@ module.exports = {
         'marks/multi-line',
         'marks/path',
         'marks/point',
-        'marks/multi-point',
         'marks/polygon',
         'marks/rectangle',
         'marks/symbol',

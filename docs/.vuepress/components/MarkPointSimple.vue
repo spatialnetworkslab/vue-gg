@@ -2,27 +2,35 @@
   <div>
     <vgg-graphic
       :width="300"
-      :height="300"
+      :height="250"
       :data="data">
 
       <vgg-section
-        :x1="40"
-        :x2="280"
-        :y1="40"
-        :y2="280"
+        :x1="30"
+        :x2="275"
+        :y1="25"
+        :y2="225"
         scale-x="x"
         scale-y="y"
-        :axes="{
-          left: {'tick-count': 5},
-          bottom: {'tick-count': 5}
-        }"
       >
+
+        <vgg-x-axis
+          scale="x"
+          :tickCount="5"
+        />
+
+        <vgg-y-axis
+          scale="y"
+          :hjust="0"
+          :tickCount="5"
+        />
 
         <vgg-map v-slot="{ row }">
 
           <vgg-point
             :x="row.x"
             :y="row.y"
+            fill="#c66366"
           />
 
         </vgg-map>
@@ -54,7 +62,7 @@ export default {
   methods: {
     getData () {
       let points = []
-      for (let i = 0; i < 50; ++i) {
+      for (let i = 0; i < 25; ++i) {
         let x = Math.random() * 1000 + 200
         let y = Math.random() * 200
 

@@ -138,7 +138,7 @@ set `sort` to `'y'`.
 
 <MarkAreaStacked />
 
-<CodeLayout width="60%" style="margin-top: 25px;">
+<CodeLayout style="margin-top: 25px;">
 
 ```html
 <vgg-graphic
@@ -154,8 +154,9 @@ set `sort` to `'y'`.
       200, 310, 430, 480
     ],
     color: [
-      '#c66366', '#c66366', '#c66366', '#c66366',
-      '#7CAE00', '#7CAE00', '#7CAE00', '#7CAE00'
+      '#c66366', '#c66366', '#c66366',
+      '#c66366', '#008080', '#008080',
+      '#008080', '#008080'
     ]
   }">
 
