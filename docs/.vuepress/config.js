@@ -57,6 +57,7 @@ module.exports = {
         'marks/multi-line',
         'marks/path',
         'marks/point',
+        'marks/multi-point',
         'marks/polygon',
         'marks/rectangle',
         'marks/symbol',

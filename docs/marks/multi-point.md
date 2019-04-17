@@ -28,7 +28,7 @@ The `vgg-multi-point` mark is used to plot multiple points. While visually indis
 
 </CodeDemoLayout>
 
-# Properties
+## Properties
 
 ### Positioning
 
@@ -51,13 +51,13 @@ The `vgg-multi-point` mark is used to plot multiple points. While visually indis
 
 These are analogous to the CSS properties of the same names.
 
-### Other props
+### Other properties
 
 | Prop       | Required | Types  | Default | Description                                                   |
 | ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
 | transition | false    | Number | 0       | Time taken to animate changes to each point when data changes |
 
-# Events
+## Events
 
 | Event     | Description                                   |
 | --------- | --------------------------------------------- |
@@ -71,7 +71,7 @@ These are analogous to the CSS properties of the same names.
 For more information on these events, see the [Interactivity](../concepts/interactivity.md)
 documentation.
 
-# Usage
+## Usage
 
 ### Positioning
 
@@ -132,7 +132,7 @@ would result in
 </vgg-map>
 ```
 
-# Example
+## Example
 
 The graphic below adapted from [Big Think](https://bigthink.com/strange-maps/richest-cities-in-africa) depicts the estimated total wealth of African cities in 2017 in USD billions, and demonstrates how `vgg-multi-point` can be used with GeoJSON MultiPoint objects. 
 
