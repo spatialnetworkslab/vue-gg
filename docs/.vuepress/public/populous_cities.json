@@ -43,9 +43,9 @@
         ]
       },
       "properties": {
-        "name": "Kinshansa",
+        "name": "Kinshasa",
         "population": "13.3 million",
-        "anchor": "lt",
+        "anchor": "b",
         "fill": "#f2e5d7"
       }
     },
@@ -61,8 +61,8 @@
       "properties": {
         "name": "Luanda",
         "population": "6.5 million",
-        "anchor": "lt",
-        "fill": "#f2e5d7"
+        "anchor": "rt",
+        "fill": "#335c67"
       }
     },
     {
@@ -77,7 +77,7 @@
       "properties": {
         "name": "Nairobi",
         "population": "3.5 million",
-        "anchor": "rt",
+        "anchor": "t",
         "fill": "#f2e5d7"
       }
     },

@@ -61,7 +61,8 @@ module.exports = {
         'marks/polygon',
         'marks/rectangle',
         'marks/symbol',
-        'marks/trail'
+        'marks/trail',
+        'marks/geomarks'
       ]
     },
     {
