@@ -69,6 +69,7 @@
         :title-font-size="12"
         :w="50"
         :fill="{ type: 'viridis'}"
+        :tick-count="8"
         title-font-weight="bold"
         title="Legend"
         position="tl"
@@ -85,8 +86,8 @@
       />
 
       <vgg-symbol-legend
-        :scale="{ domain: 'explanatory'}"
-        :size="{ domain: 'explanatory'}"
+        :scale="{ domain: 'dependent'}"
+        :size="{ range: [0, 10] }"
         :tick-count="8"
         position="br"
         title="Size"

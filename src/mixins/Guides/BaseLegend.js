@@ -190,7 +190,7 @@ export default {
 
     nice: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     rowPadding: {
@@ -201,6 +201,16 @@ export default {
     colPadding: {
       type: Number,
       default: 0
+    },
+
+    showLast: {
+      type: Boolean,
+      default: true
+    },
+
+    showFirst: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -354,7 +364,7 @@ export default {
       }
     },
 
-    legendLabels () {
+    legendTicks () {
       let firstValue = this._domain[0]
       let newTickValues
 
@@ -365,12 +375,22 @@ export default {
           newTickValues.unshift(firstValue)
         }
 
-        return newTickValues.map(value => {
-          return { value }
-        })
+        if (this._domainType.includes('interval')) {
+          let processedTicks = []; let i = 0
+          while (i < newTickValues.length) {
+            processedTicks.push({ value: newTickValues[i][0], label: newTickValues[i][0] })
+            i++
+          }
+          processedTicks.push({ value: newTickValues[i - 1][1], label: newTickValues[i - 1][1] })
+          return processedTicks
+        } else {
+          return newTickValues.map(value => {
+            return { value }
+          })
+        }
       } else {
         let ticks
-        let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
+        let format = this.format ? this.format : defaultFormat
         let domain = this._domain
 
         if (this.legendCache.scale.domainMin) {
@@ -382,7 +402,8 @@ export default {
         }
 
         if (this._domainType === 'quantitative') {
-          newTickValues = arrayTicks(...domain, this.tickCount)
+          let numTicks = this.tickCount ? this.tickCount : 10
+          newTickValues = arrayTicks(...domain, numTicks)
           if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
@@ -391,7 +412,7 @@ export default {
             if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
               return { value, label: '' }
             } else {
-              return { value, label: this.nice ? format(value, 1) : format(value) }
+              return { value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
             }
           })
         }
@@ -430,19 +451,17 @@ export default {
 
         if (this._domainType === 'interval:quantitative') {
           let intervals
+
           if (this.legendCache.scale.constructor === String) {
             intervals = this.$$dataInterface.getColumn(this.legendCache.scale)
           } else if (this.legendCache.scale.constructor === Object) {
             intervals = this.$$dataInterface.getColumn(this.legendCache.scale.domain)
+          } else if (this.legendCache.scale.constructor === Array) {
+            intervals = this.legendCache.scale
           }
 
-          // ticks = intervals.map((value, i) => {
-          //   let mean = (value[0] + value[1]) / 2
-          //   return { value: mean, label: this.nice ? format(this.round(mean, 1)) : format(mean) }
-          // })
-
           ticks = ticksFromIntervals(intervals).map(value => {
-            return { value: value, label: this.nice ? format(value, 1) : format(value) }
+            return { value: value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
           })
         }
 
@@ -458,6 +477,11 @@ export default {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })
+
+          if (this.tickCount) {
+            let step = Math.floor(ticks.length / this.tickCount)
+            ticks = ticks.filter((value, i) => (i % step) === 0)
+          }
         }
 
         return ticks
@@ -471,8 +495,7 @@ export default {
         if (this.orientation === 'vertical') {
           return this.plotWidth * 0.1 + this.rowPadding
         } else {
-          let width = this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
-          return (width / this.tickCount * this.legendLabels.length >= width ? width / this.tickCount * this.legendLabels.length : width)
+          return this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
         }
       } else if (this.x1 && this.x2 && this.w) {
         throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
@@ -489,8 +512,7 @@ export default {
       if (!this.h && !this.y1 && !this.y2) {
         if (this.orientation === 'vertical') {
           // return this.plotHeight * 0.3 + this.titleFontSize + this.colPadding
-          let height = this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
-          return (height / this.tickCount * this.legendLabels.length >= height ? height / this.tickCount * this.legendLabels.length : height)
+          return this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
         } else {
           return this.plotHeight * 0.1 + this.rowPadding
         }
@@ -590,7 +612,11 @@ export default {
       } else {
         // Domain is dependent on scale inputs
         // Range is dependent on aesthetic inputs
-        scaleOptions.domain = this.legendCache.scale.domain ? this.legendCache.scale.domain : this.legendCache.scale
+        if (this.legendCache.scale.domain) {
+          scaleOptions.domain = this.legendCache.scale.domain
+        } else {
+          scaleOptions.domain = this.legendCache.scale
+        }
 
         if (this.legendCache.scale.domainMin) {
           scaleOptions.domainMin = this.legendCache.scale.domainMin

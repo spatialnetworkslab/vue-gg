@@ -297,8 +297,10 @@ export default {
           })
 
           if (this.tickCount) {
-            let step = Math.floor(ticks.length / this.tickCount)
-            ticks = ticks.filter((value, i) => (i % step) === 0)
+            if (ticks.length > this.tickCount) {
+              let step = Math.floor(ticks.length / this.tickCount)
+              ticks = ticks.filter((value, i) => (i % step) === 0)
+            }
           }
         }
 
@@ -335,8 +337,10 @@ export default {
           })
 
           if (this.tickCount) {
-            let step = Math.floor(ticks.length / this.tickCount)
-            ticks = ticks.filter((value, i) => (i % step) === 0)
+            if (ticks.length > this.tickCount) {
+              let step = Math.floor(ticks.length / this.tickCount)
+              ticks = ticks.filter((value, i) => (i % step) === 0)
+            }
           }
         }
 
@@ -354,8 +358,10 @@ export default {
           })
 
           if (this.tickCount) {
-            let step = Math.floor(ticks.length / this.tickCount)
-            ticks = ticks.filter((value, i) => (i % step) === 0)
+            if (ticks.length > this.tickCount) {
+              let step = Math.floor(ticks.length / this.tickCount)
+              ticks = ticks.filter((value, i) => (i % step) === 0)
+            }
           }
         }
 
