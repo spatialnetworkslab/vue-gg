@@ -8,6 +8,7 @@ import {
 } from '../../components/Marks/utils/createPath.js'
 
 import checkPoints from './utils/checkPoints.js'
+import checkGeometry from './utils/checkGeometry.js'
 import { invalidPoint } from '../../utils/equals.js'
 
 export default {
@@ -206,6 +207,7 @@ export default {
       let aesthetics = this._props
 
       if (this.geometry) {
+        checkGeometry(this.pathType, this.validGeomTypes, this.geometry)
         let tranformedFeature = transformFeature(aesthetics.geometry, this.$$transform)
 
         let events = this.events
