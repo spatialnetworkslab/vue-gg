@@ -3,8 +3,8 @@
     :width="900"
     :height="600"
     :data="data">
-    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
+    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
     <vgg-section
       :x1="100"
       :x2="500"
@@ -14,7 +14,6 @@
       :scale-y="'yValues'"
       :transform="{transform: df => {log(df); return df;}}"
     >
-
       <vgg-trail
         :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
         :stroke-width="[1, 5, 5, 3, 4, 2]"
@@ -29,7 +28,7 @@
           <vgg-trail
             :x="row.grouped.xValues"
             :y="row.grouped.yValues"
-            :stroke-width="{val: row.grouped.xValues, scale: '#rainfallScale'}"
+            :stroke-width="{val: row.grouped.rainfall}"
             :fill="row.colors"
             :fill-opacity="0.7"
             :sort="'x'"
@@ -39,7 +38,6 @@
         </vgg-map>
       </vgg-data>
       </vgg-data>
-
     </vgg-section>
 
     <vgg-symbol-legend

@@ -52,7 +52,6 @@ export default function (prop, context, passedScalingOptions) {
     'opacity', 'strokeOpacity', 'fillOpacity',
     'radius'
   ].includes(prop)) {
-    console.log(prop, scalingOptions.domain, context.dataInterface)
     if (scalingOptions.domain.constructor === String) {
       domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
       domain.sort((a, b) => a[0] - b[0])
