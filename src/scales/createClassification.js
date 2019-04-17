@@ -21,7 +21,8 @@ export default function (prop, context, classificationOptions) {
     console.warn(`groupBy value '${binning.groupBy}' ignored. Don't use groupBy in classifications.`)
   }
 
-  let binningCopy = Object.assign(binning, { groupBy: column })
+  let binningCopy = JSON.parse(JSON.stringify(binning))
+  binningCopy.groupBy = column
 
   let intervalBounds = getIntervalBounds(data, binningCopy)
   let intervals = intervalBounds.length - 1
@@ -54,8 +55,8 @@ export default function (prop, context, classificationOptions) {
 
   return input => {
     if (input < intervalBounds[0] || input > intervalBounds[intervals]) { return null }
-    for (let i = 0; i < intervals - 1; i++) {
-      if (input > intervalBounds[i]) {
+    for (let i = 0; i < intervals; i++) {
+      if (input >= intervalBounds[i] && input <= intervalBounds[i + 1]) {
         if (propType === 'shape') { return scale(i.toString()) }
         if (propType !== 'shape') { return scale(i) }
       }
