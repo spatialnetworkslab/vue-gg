@@ -32,13 +32,20 @@ export default function (prop, context, passedScalingOptions) {
     return createCoordsScale(prop, domainType, domain, range, scalingOptions)
   }
 
+  // for interval data, either continuous or ordinal behavior
   // Color props
   if (['stroke', 'fill'].includes(prop)) {
-    if (domainType === 'interval:quantitative') {
-      domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
-      domain.sort((a, b) => a[0] - b[0])
+    // current fix: when the domain type is interval:quantitative
+    // either the whole data column is retrieved to serve as domain
+    // or a section of the domain is given as an array
+    if (domainType.includes('interval')) {
+      if (scalingOptions.domain.constructor === String) {
+        domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
+        domain.sort((a, b) => a[0] - b[0])
+      } else if (scalingOptions.domain.constructor === Array) {
+        domain = scalingOptions.domain
+      }
     }
-
     return createColorScale(prop, domainType, domain, scalingOptions, context)
   }
 
@@ -48,9 +55,16 @@ export default function (prop, context, passedScalingOptions) {
     'opacity', 'strokeOpacity', 'fillOpacity',
     'radius'
   ].includes(prop)) {
-    if (domainType === 'interval:quantitative') {
-      domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
-      domain.sort((a, b) => a[0] - b[0])
+    // current fix: when the domain type is interval:quantitative
+    // either the whole data column is retrieved to serve as domain
+    // or a section of the domain is given as an array
+    if (domainType.includes('interval')) {
+      if (scalingOptions.domain.constructor === String) {
+        domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
+        domain.sort((a, b) => a[0] - b[0])
+      } else if (scalingOptions.domain.constructor === Array) {
+        domain = scalingOptions.domain
+      }
     }
     return createNumericScale(prop, domainType, domain, scalingOptions)
   }

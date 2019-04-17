@@ -1,6 +1,6 @@
 <template>
   <vgg-graphic
-    :width="420"
+    :width="450"
     :height="450"
     :data="data">
 
