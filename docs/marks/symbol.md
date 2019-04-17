@@ -80,7 +80,7 @@ To render the Symbol mark, you will need to provide the `x` and `y` props or the
 
 `x` and `y` can be used with data types `Number`, `String` and `Date`, depending on the parent Section's domain type. `geometry` should be used for geographic data containing GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects only. To render other geometry types, see the overview on [Geo marks](geomarks.md).
 
-Data is passed to the `x`, `y` and `geometry` props via row mapping, which renders one mark per data row. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components. 
+Data is passed to the `x`, `y` and `geometry` props via row mapping, which renders one mark per data row. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components.
 
 ### Other aesthetics
 

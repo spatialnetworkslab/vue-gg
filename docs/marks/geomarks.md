@@ -22,7 +22,7 @@ The map above shows the continent of Africa and its most populous cities, couple
 
 ### Positioning
 
-In addition to mark-specific positioning props, all geo marks possess the `geometry` prop, which confers the ability to render geographic elements. 
+In addition to mark-specific positioning props, all geo marks possess the `geometry` prop, which confers the ability to render geographic elements.
 
 | Prop     | Required  |  Input                                | Unit(s)           |
 | -------- | --------- | ------------------------------------- |  ---------------- |
@@ -98,7 +98,7 @@ Geometries are passed to the `geometry` prop, and are accessed with `row.geometr
 </vgg-map>
 ```
 
- Since we are rendering one mark per data row - here a single feature in the GeoJSON file - row mapping must be used. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components. 
+ Since we are rendering one mark per data row - here a single feature in the GeoJSON file - row mapping must be used. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components.
 
 ### Aesthetics
 

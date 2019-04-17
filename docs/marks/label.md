@@ -66,10 +66,86 @@ To render the Label mark, you will need to provide one of the following position
 
 Data is passed to the `x`, `y` and `geometry` props via row mapping, which renders one mark per data row. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components. 
 
+Recall that input data (whether in row or column oriented format)
+
+```html
+<vgg-data
+  :data="{
+    year: [2000, 2005, 2010, 2015],
+    population: [100, 110, 130, 180]
+  }"
+>
+</vgg-data>
+```
+
+is represented internally in [tabular form](../concepts/data-loading.md#tabular-data-column-oriented-vs-row-oriented), with each row corresponding to a single data instance
+
+| year 	| population 	|
+|------	|------------	|
+| 2000 	| 100        	|
+| 2005 	| 110        	|
+| 2010 	| 130        	|
+| 2015 	| 180        	|
+
+To pass data into the `x` and `y` props, simply access each data row's column name:
+
+```html
+<vgg-map v-slot="{ row }">
+  <vgg-label
+    :x="row.year"
+    :y="row.population"
+  />
+</vgg-map>
+```
+
+</CodeDemoLayout>
+
+GeoJSON input such as
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.384082,
+          6.455027
+        ]
+      },
+      "properties": {
+        "name": "Lagos",
+        "anchor": "rb",
+        "fill": "#f2e5d7"
+      }
+    }
+    ...
+  ]
+}
+```
+
+is similarly [tabularized](../concepts/data-loading.md#geojson), with each row representing one feature
+
+| geometry        	| name    	| anchor 	| fill      	|
+|-----------------	|---------	|--------	|-----------	|
+| geometry Object 	| 'Lagos' 	| 'rb'   	| '#f2e5d7' 	|
+| ...             	| ...     	| ...    	| ...       	|
+
+To pass data to the `geometry` prop, simply access the geometry column of each feature with `row.geometry`:
+
+```vue
+<vgg-map v-slot="{ row }">
+  <vgg-label
+    :geometry="row.geometry"
+  />
+</vgg-map>
+```
 
 ## Examples
 
-The graphic below shows the 10 most populous cities on the African continent according to [World Atlas](https://www.worldatlas.com/articles/15-biggest-cities-in-africa.html) and demonstrates how `vgg-label` can be used to annotate cities on a map. 
+The graphic below shows the 10 most populous cities on the African continent according to [World Atlas](https://www.worldatlas.com/articles/15-biggest-cities-in-africa.html) and demonstrates how `vgg-label` can be used to annotate cities on a map.
 
 <MarkLabelGeo />
 

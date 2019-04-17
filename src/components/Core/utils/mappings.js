@@ -1,6 +1,7 @@
 import createScale from '../../../scales/createScale.js'
 import createGeoScale from '../../../scales/createGeoScale.js'
 import createBand from '../../../scales/createBand.js'
+import createClassification from '../../../scales/createClassification.js'
 
 import mappableProps from '../../../scales/utils/mappableProps.js'
 
@@ -26,6 +27,7 @@ function createNode (element) {
     scales: {},
     geoScales: {},
     bands: {},
+    classifications: {},
     children: []
   }
 
@@ -102,6 +104,18 @@ function updateMapping (mapping, element, context) {
             mapping.bands[propKey][bandStr] = bandWidth
           }
         }
+
+        if (prop.hasOwnProperty('classification')) {
+          let classOptions = prop.classification
+          let classStr = JSON.stringify(classOptions)
+
+          mapping.classifications[propKey] = mapping.classifications[propKey] || {}
+
+          if (!mapping.classifications[propKey].hasOwnProperty(classStr)) {
+            let compiledClassifier = createClassification(propKey, context, classOptions)
+            mapping.classifications[propKey][classStr] = compiledClassifier
+          }
+        }
       }
     }
   }
@@ -157,6 +171,13 @@ function mapElement (mapping, element, rowNumber) {
         if (prop.hasOwnProperty('scaleGeo')) {
           let scaleKey = JSON.stringify(prop.scaleGeo)
           let scale = mapping.geoScales[propKey][scaleKey]
+
+          value = applyScale(value, scale, propKey)
+        }
+
+        if (prop.hasOwnProperty('classification')) {
+          let scaleKey = JSON.stringify(prop.classification)
+          let scale = mapping.classifications[propKey][scaleKey]
 
           value = applyScale(value, scale, propKey)
         }
@@ -265,6 +286,12 @@ function validateMapping (mapping) {
   if (mapping.hasOwnProperty('val')) {
     if (['scale', 'scaleGeo'].every(key => mapping.hasOwnProperty(key))) {
       throw new Error(`Cannot combine 'scale' and 'scaleGeo'`)
+    }
+
+    if (mapping.hasOwnProperty('classification')) {
+      if (['scale', 'scaleGeo', 'band'].some(key => mapping.hasOwnProperty(key))) {
+        throw new Error(`Cannot combine 'classification' with 'scale', 'scaleGeo', or 'band'`)
+      }
     }
   } else {
     if (mapping.hasOwnProperty('NA')) {

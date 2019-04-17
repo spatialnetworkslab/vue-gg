@@ -2,6 +2,14 @@ import dataLength from '../utils/dataLength.js'
 import Geostats from '../utils/geoStats.js'
 
 export default function (data, binningObj) {
+  let intervalBounds = getIntervalBounds(data, binningObj)
+  let ranges = pairRange(intervalBounds)
+
+  let newData = bin(data, binningObj.groupBy, ranges)
+  return newData
+}
+
+export function getIntervalBounds (data, binningObj) {
   if (binningObj.constructor !== Object) {
     throw new Error('Binning only accepts an Object')
   }
@@ -65,10 +73,7 @@ export default function (data, binningObj) {
     ranges = binningObj.manualClasses
   }
 
-  ranges = pairRange(ranges)
-
-  let newData = bin(data, key, ranges)
-  return newData
+  return ranges
 }
 
 // Extract domain of variable of interest
