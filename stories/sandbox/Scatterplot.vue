@@ -81,8 +81,8 @@
       />
 
       <vgg-symbol-legend
-        :scale="{ domain: 'explanatory'}"
-        :size="{ domain: 'explanatory'}"
+        :scale="{ domain: 'dependent'}"
+        :size="{ range: [0, 10] }"
         :tick-count="8"
         position="br"
         title="Size"

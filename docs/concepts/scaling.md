@@ -2,13 +2,13 @@
 title: Scaling
 ---
 
-# Introduction
+# Scaling
 
 Scaling options are used to quickly create scales in various places, like the
 [Scale](../core/scales.md) component, the [Section](../core/section.md) component
 and inside the [mapping object](../core/map.md#the-mapping-object).
 
-# Options
+## Options
 
 ### Defining and reusing
 
@@ -132,7 +132,7 @@ which types.
 | radius     | squareRoot   | fullExtent  | NA       | fullExtent             |
 | other      | linear       | fullExtent  | NA       | fullExtent             | 
 
-# Usage
+## Usage
 
 ### Column name shorthand
 

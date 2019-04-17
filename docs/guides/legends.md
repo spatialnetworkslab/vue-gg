@@ -192,8 +192,8 @@ If left empty, then the default position of the x-axis is `position = 'left'`
 
 | Prop | Required | Types | Default   | Description                             | Unit(s)           |
 | ---- | -------- | ----- | --------- | --------------------------------------- | ----------------- |
-| h   | false | Number | If `vertical`, automatically computed according to  parent section height, title font size (screen pixels), title padding (screen pixels), and number of tick; if `horizontal`, 10% of parent section height | height of legend section | Screen pixels |
-| w   | false | Number | If `horizontal`, automatically computed according to  parent section width, title font size (screen pixels), title padding (screen pixels), and number of tick; if `vertical`, 10% of parent section width   | width of legend section | Screen pixels |
+| h   | false | Number | If `vertical`, automatically computed according to  parent section height, title font size (screen pixels), and title padding (screen pixels); if `horizontal`, 10% of parent section height | height of legend section | Screen pixels |
+| w   | false | Number | If `horizontal`, automatically computed according to  parent section width, title font size (screen pixels), and title padding (screen pixels); if `vertical`, 10% of parent section width   | width of legend section | Screen pixels |
 | legend-stroke | false | String | none | stroke color surrounding legend section | Named color, hex, rgb, hsl |
 | legend-fill | false | String | none | fill color of legend section | Named color, hex, rgb, hsl |
 | legend-stroke-width | false    | Number | 0  | stroke width of rectangle surrounding legend section | Named color, hex, rgb, hsl |
@@ -210,12 +210,12 @@ the bounding rectangle of the legend, should the legend section have `stroke`,
 
 | Prop            | Required | Regular types    | Default     | Description                             | Unit(s)                    |
 | --------------- | -------- | ---------------- | ----------- | --------------------------------------- | --------------------------|
-| title           | false    | String         | ''          | text to render as axis title            |                           |
+| title           | false    | String         | ''          | text to render as legend title            |                           |
 | title-anchor-point | false    | String         | 'center'    | baseline and alignment of title text    | left, right, top, bottom, tl, tr, bl, br, center                          |
 | title-font     | false    | String         | 'Helvetica'     | font family of title                          | Named font |
 | title-font-color      | false    | String         | 'black'     | color of title                          | Named color, hex, rgb, hsl |
 | title-font-size   | false    | Number         | 16          | size of font used for legend title        | Screen pixels              |
-| title-font-weight | false    | [String, Number] | 'normal'    | weight of font used for axis title      | Any valid css font weight  |
+| title-font-weight | false    | [String, Number] | 'normal'    | weight of font used for legend title      | Any valid css font weight  |
 | title-opacity    | false    | Number         | 1           | opacity of title                        | Number between 0 and 1     |
 | title-padding    | false    | Number         | 0           | space between title and legend labels + gradient section                     | Screen pixels     |
 
@@ -227,11 +227,11 @@ output must be of type `String`.
 
 | Prop           | Required | Regular types      | Default     | Description                             | Unit(s)                    |
 | -------------- | -------- | ------------------ | ----------- | --------------------------------------- | -------------------------- |
-| format         | false    | [String, Function] | undefined   | formatting of axis labels               |                            |
+| format         | false    | [String, Function] | undefined   | formatting of legend labels, i.e. rounding off/down               |                            |
 | label-color     | false    | String           | 'black'     | color of labels                         | Named color, hex, rgb, hsl |
-| label-font      | false    | String           | 'Helvetica' | font used for axis labels               | Named font                 |
-| label-font-size  | false    | Number           | 10          | size of font used for axis labels       | Screen pixels              |
-| label-font-weight| false    | [String, Number]   | 'normal'    | weight of font used for axis labels     | Any valid css font weight  |
+| label-font      | false    | String           | 'Helvetica' | font used for legend labels               | Named font                 |
+| label-font-size  | false    | Number           | 10          | size of font used for legend labels       | Screen pixels              |
+| label-font-weight| false    | [String, Number]   | 'normal'    | weight of font used for legend labels     | Any valid css font weight  |
 | label-opacity   | false    | Number           | 1           | opacity of labels                       | Number between 0 and 1     |
 | label-rotate    | false    | Boolean          | false       | if true rotate labels                   | Degrees                   |
 | label-padding    | false    | Number        | 0        | space between symbol and label | Number between 0 and 1 |
@@ -239,12 +239,16 @@ output must be of type `String`.
 ### Ticks
 
 These properties control the number of ticks or labels, and the minimum interval
-between the labels (if they are `quantitative` data) of the legend. By default,
+between the labels (unless they are `categorical` or `interval` data) of the legend. By default,
 all three legend types have ten (10) ticks drawn.
 
-| Prop           | Required | Regular types    | Default     | Description                                    | Unit(s)                    |
-| -------------- | -------- | ---------------- | ----------- | ---------------------------------------------- | -------------------------- |
+If the data fed to the legend is `categorical` or `interval` and the number of ticks needs to be controlled, then
+the values of the legend ticks to be shown must be specified as an `Array` in `tick-values`. Each value in the array given to `tick-values` must correspond to values in the domain derived from the input to `scale`.
+
+| Prop           | Required | Regular types    | Default     | Description  | Unit(s)                    |
+| -------------- | -------- | ---------------- | ----------- | ------------ | -------------------------- |
 | tick-count          | false    | Object        | 10        | number of ticks/labels to render                         | Any integer greater than 0                           |
+| tick-values          | false    | Array        | undefined        | actual tick values to render                         | Any integer greater than 0                           |
 | tick-min-step          | false    | Object        | undefined        | minimum interval between ticks/labels                           | Any positive rational number                           |
 
 ## Events

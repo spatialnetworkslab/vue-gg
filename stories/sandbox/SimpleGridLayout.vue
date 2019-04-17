@@ -1,40 +1,47 @@
 <template>
-  <vgg-graphic
-    :width="500"
-    :height="500"
-  >
-
-    <vgg-grid
-      :cols="2"
-      :layout-padding="20"
-      :cell-padding="{ l: 7, r: 20, b: 4 }"
+  <div>
+    <vgg-graphic
+      :width="500"
+      :height="500"
     >
 
-      <!-- <vgg-section
-        v-for="s in range(5)"
-        :key="s"
-        :scale-x="[0, 1]"
-        :scale-y="[0, 1]"
+      <vgg-grid
+        :cols="2"
+        :layout-padding="20"
+        :cell-padding="{ l: 7, r: 20, b: 4 }"
       >
 
-        <vgg-rectangle
-          :x1="0"
-          :x2="1"
-          :y1="0"
-          :y2="1"
-          :fill="randomColor()"
+        <!-- <vgg-section
+          v-for="s in range(5)"
+          :key="s"
+          :scale-x="[0, 1]"
+          :scale-y="[0, 1]"
+        >
+
+          <vgg-rectangle
+            :x1="0"
+            :x2="1"
+            :y1="0"
+            :y2="1"
+            :fill="randomColor()"
+          />
+
+        </vgg-section> -->
+        <custom-square-component
+          v-for="s in range(5)"
+          :key="s"
+          :fill="dummy === 'a' ? randomColor() : 'green'"
         />
 
-      </vgg-section> -->
-      <custom-square-component
-        v-for="s in range(5)"
-        :key="s"
-        :fill="randomColor()"
-      />
+      </vgg-grid>
 
-    </vgg-grid>
+    </vgg-graphic>
 
-  </vgg-graphic>
+    <select v-model="dummy">
+      <option value="a">A</option>
+      <option value="b">B</option>
+    </select>
+  </div>
 </template>
 
 <script>
@@ -42,6 +49,12 @@ import CustomSquareComponent from './CustomSquareComponent.vue'
 
 export default {
   components: { CustomSquareComponent },
+
+  data () {
+    return {
+      dummy: 'a'
+    }
+  },
 
   methods: {
     range (n) {

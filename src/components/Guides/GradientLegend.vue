@@ -149,10 +149,19 @@ export default {
 
   computed: {
     domain () {
-      let domain = []
+      let domain = []; let scale
       if (this._domainType.includes('interval')) {
-        let scale = this.legendCache.scale.domain ? this.legendCache.scale.domain : this.legendCache.scale
-        for (let i = 0; i < this.$$dataInterface.getColumn(scale).length; i++) {
+        if (this.legendCache.scale.constructor === Object) {
+          scale = this.$$dataInterface.getColumn(this.legendCache.scale.domain)
+        } else if (this.legendCache.scale.constructor === String) {
+          scale = this.$$dataInterface.getColumn(this.legendCahce.scale)
+        } else if (this.legendCache.scale.constructor === Array) {
+          scale = this.legendCache.scale
+        } else {
+          throw new Error('The input to `scale` must be either an Object, String, or Array')
+        }
+
+        for (let i = 0; i < scale.length - 1; i++) {
           domain.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
         }
       } else {
@@ -237,6 +246,7 @@ export default {
           }
         }
       }
+
       return colors
     },
 

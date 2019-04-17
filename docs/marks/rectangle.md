@@ -96,7 +96,7 @@ Instead, the coordinate system of the first parent component that has a quantita
 coordinate system will be used. For example:
 
 ::: v-pre
-```html{14}
+```html{13}
 <vgg-graphic :width="500" :height="500">
   <vgg-section
     :x1="50"

@@ -1,5 +1,8 @@
 <template>
-  <g class="transform">
+  <g
+    v-if="dataContainer !== false"
+    class="transform"
+  >
     <slot />
   </g>
 </template>

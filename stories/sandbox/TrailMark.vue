@@ -12,6 +12,7 @@
       :y2="500"
       :scale-x="'xValues'"
       :scale-y="'yValues'"
+      :transform="{transform: df => {log(df); return df;}}"
     >
 
       <vgg-trail
@@ -23,12 +24,12 @@
         @click="log('test')"
       />
 
-      <vgg-data :transform="{ groupBy: 'colors' }">
+      <vgg-data :transform="[{ groupBy: 'colors' }, {transform: df => {log(df); return df;}}]">
         <vgg-map v-slot="{ row }">
           <vgg-trail
             :x="row.grouped.xValues"
             :y="row.grouped.yValues"
-            :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
+            :stroke-width="{val: row.grouped.xValues, scale: '#rainfallScale'}"
             :fill="row.colors"
             :fill-opacity="0.7"
             :sort="'x'"
@@ -46,12 +47,12 @@
       :font-size="10"
       :size="15"
       :stroke-width="{ range: [2, 12] }"
+      :x="600"
+      :y="400"
       shape="line"
       stroke="orange"
       direction="vertical"
       title="Stroke width"
-      :x="600"
-      :y="400"
     />
 
     <vgg-symbol-legend
@@ -59,24 +60,24 @@
       :font-size="10"
       :stroke-width="8"
       :stroke="{ range: ['red', 'green', 'blue', 'purple'] }"
-      shape="line"
-      title="Stroke color"
       :x="600"
       :y="100"
+      shape="line"
+      title="Stroke color"
     />
     <vgg-symbol-legend
-      :scale="'rainfall'"
+      :scale="'#rainfallScale'"
       :font-size="10"
       :size="15"
       :stroke-width="10"
       :stroke-opacity="{ range: [0, 0.7] }"
-      shape="line"
-      title="Opacity test"
-      orientation="horizontal"
       :y="540"
       :h="80"
       :x="180"
       :w="300"
+      shape="line"
+      title="Opacity test"
+      orientation="horizontal"
     />
     <vgg-x-grid
       :x1="100"
@@ -132,6 +133,10 @@ export default {
 
       return data
     }
+  },
+  methods: {
+    log: console.log
+
   },
 
   methods: { log: console.log }

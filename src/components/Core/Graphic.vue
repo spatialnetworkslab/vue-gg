@@ -1,6 +1,6 @@
 <template>
   <svg
-    v-if="ready"
+    v-if="ready && dataContainer !== false"
     :width="width"
     :height="height"
     class="graphic"

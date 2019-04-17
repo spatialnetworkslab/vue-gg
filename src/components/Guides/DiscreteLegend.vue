@@ -154,13 +154,14 @@ export default {
   computed: {
     aesthetics () {
       // fix to allow for both binned and non-binned data
-      let aesthetics = []; let fillOpacity; let fill; let domain = []; let valueDomain = []; let sectionScale
+      let aesthetics = []; let fillOpacity; let fill; let _fill; let domain = []; let valueDomain = []; let sectionScale
 
       // create section length scale and format valueDomain from legend labels, depending on if interval domain type or not
       if (this._domainType.includes('interval')) {
         for (let i = 0; i < this.legendTicks.length - 1; i++) {
           valueDomain.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
         }
+        // valueDomain = this.tickValues
         domain = [valueDomain[0][0], valueDomain[valueDomain.length - 1][1]]
       } else {
         valueDomain = this.legendTicks
@@ -168,9 +169,10 @@ export default {
       }
 
       sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / this.legendTicks.length
-      console.log(valueDomain)
+
       // create fill/fillOpacity scales for rectangles
-      let _fill = this.legendCache.fill || 'none'
+      _fill = this.legendCache.fill || 'none'
+
       if (!this.checkValidColor(_fill)) {
         fill = this.generateScale('fill', _fill)
         fillOpacity = 1

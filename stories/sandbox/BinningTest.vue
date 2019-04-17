@@ -19,7 +19,7 @@
       <vgg-data
         :transform="[
           { rename: { a: 'apple', b: 'banana', d: 'durian' } },
-          { binning: { groupBy: 'apple', method: selected, numClasses: 100 } },
+          { binning: { groupBy: 'apple', method: selected, numClasses: 20 } },
           { summarise: { binCount: { apple: 'count' } } }
         ]"
       >
@@ -89,35 +89,25 @@
           :tick-count="15"
         /> -->
 
-        <!-- fill binning -->
-
         <vgg-discrete-legend
           :scale="'bins'"
-          :tickValues="[[0, 10], [10, 20], [20, 99]]"
           :font-size="10"
           :title-padding="2"
           title="Discrete"
           position="tl"
+          fill="blue"
+          :fill-opacity="{ range: [0, 1]}"
+          :h="400"
         />
 
-        <!-- fill opacity binning -->
-        <!--
         <vgg-gradient-legend
-          :scale="{ domain: 'bins' }"
+          :scale="[[0, 10], [10, 20], [20, 40], [40, 60], [60, 100]]"
           position="tr"
           title="Gradient"
           :title-padding="2"
           fill="blue"
           :fill-opacity="{ range: [0, 1]}"
-        /> -->
-
-        <!-- <vgg-gradient-legend
-          :scale="{ domain: 'bins' }"
-          position="tr"
-          title="Gradient"
-          :title-padding="2"
-
-        /> -->
+        />
 
       </vgg-data>
     </vgg-graphic>
