@@ -33,6 +33,7 @@ import Facets from './sandbox/Facets.vue'
 import DomainError from './sandbox/DomainError.vue'
 import EmptyData from './sandbox/EmptyData.vue'
 import DuplicateScales from './sandbox/DuplicateScales.vue'
+import ClassificationTest from './sandbox/ClassificationTest.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -69,3 +70,4 @@ storiesOf('Sandbox', module)
   .add('DomainError', () => (DomainError))
   .add('Empty data', () => (EmptyData))
   .add('Duplicate scales', () => (DuplicateScales))
+  .add('Classification test', () => ClassificationTest)
