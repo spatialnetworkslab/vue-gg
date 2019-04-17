@@ -26,7 +26,7 @@ In addition to mark-specific positioning props, all geo marks possess the `geome
 
 | Prop     | Required  |  Input                                | Unit(s)           |
 | -------- | --------- | ------------------------------------- |  ---------------- |
-| geometry | true      |  GeoJSON object(http://geojson.org/)  | Local coordinates |
+| geometry | true      |  [GeoJSON object](http://geojson.org/)  | Local coordinates |
 
 
 The type of GeoJSON object accepted by `geometry` depends on the mark in which it is used:
