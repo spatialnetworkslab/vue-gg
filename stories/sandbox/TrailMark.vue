@@ -28,7 +28,7 @@
           <vgg-trail
             :x="row.grouped.xValues"
             :y="row.grouped.yValues"
-            :stroke-width="{val: row.grouped.rainfall}"
+            :stroke-width="{val: row.grouped.rainfall, scale: '#rainfallScale'}"
             :fill="row.colors"
             :fill-opacity="0.7"
             :sort="'x'"

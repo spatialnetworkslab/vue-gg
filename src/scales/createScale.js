@@ -35,6 +35,9 @@ export default function (prop, context, passedScalingOptions) {
   // for interval data, either continuous or ordinal behavior
   // Color props
   if (['stroke', 'fill'].includes(prop)) {
+    // current fix: when the domain type is interval:quantitative
+    // either the whole data column is retrieved to serve as domain
+    // or a section of the domain is given as an array
     if (domainType === 'interval:quantitative') {
       if (scalingOptions.domain.constructor === String) {
         domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
@@ -52,11 +55,16 @@ export default function (prop, context, passedScalingOptions) {
     'opacity', 'strokeOpacity', 'fillOpacity',
     'radius'
   ].includes(prop)) {
-    if (scalingOptions.domain.constructor === String) {
-      domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
-      domain.sort((a, b) => a[0] - b[0])
-    } else if (scalingOptions.domain.constructor === Array) {
-      domain = scalingOptions.domain
+    // current fix: when the domain type is interval:quantitative
+    // either the whole data column is retrieved to serve as domain
+    // or a section of the domain is given as an array
+    if (domainType === 'interval:quantitative') {
+      if (scalingOptions.domain.constructor === String) {
+        domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
+        domain.sort((a, b) => a[0] - b[0])
+      } else if (scalingOptions.domain.constructor === Array) {
+        domain = scalingOptions.domain
+      }
     }
     return createNumericScale(prop, domainType, domain, scalingOptions)
   }

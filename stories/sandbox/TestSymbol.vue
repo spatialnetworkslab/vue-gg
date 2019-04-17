@@ -20,7 +20,7 @@
           <vgg-symbol
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
-            :size="{ val: row.dependent, scale: {domain: 'dependent', range:[0,10]} }"
+            :size="{ val: row.dependent, scale: {domain: 'dependent', range:[5, 20]} }"
             :stroke="color(row.categorical)"
             :stroke-width="2"
             :shape="shape(row.categorical)"
@@ -61,11 +61,11 @@
       <vgg-symbol-legend
         :scale="{ domain: 'categorical'}"
         :title-font-size="20"
-        :x="sectionWidth * 0.6"
-        :y="sectionHeight * 0.5"
+        :x="600"
         :label-padding="-0.2"
         :stroke="colorLegend(colorScheme)"
         :shape="shapeLegend(shapeScheme)"
+        :size="15"
         fill="none"
         title="Fruits"
       />
