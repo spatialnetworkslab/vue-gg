@@ -38,7 +38,7 @@ export default function (prop, context, passedScalingOptions) {
     // current fix: when the domain type is interval:quantitative
     // either the whole data column is retrieved to serve as domain
     // or a section of the domain is given as an array
-    if (domainType === 'interval:quantitative') {
+    if (domainType.includes('interval')) {
       if (scalingOptions.domain.constructor === String) {
         domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
         domain.sort((a, b) => a[0] - b[0])
@@ -58,7 +58,7 @@ export default function (prop, context, passedScalingOptions) {
     // current fix: when the domain type is interval:quantitative
     // either the whole data column is retrieved to serve as domain
     // or a section of the domain is given as an array
-    if (domainType === 'interval:quantitative') {
+    if (domainType.includes('interval')) {
       if (scalingOptions.domain.constructor === String) {
         domain = JSON.parse(JSON.stringify(context.dataInterface.getColumn(scalingOptions.domain)))
         domain.sort((a, b) => a[0] - b[0])

@@ -202,6 +202,8 @@ export default {
             aesthetics[i].fill = fill
             aesthetics[i].fillOpacity = this._domainType.includes('interval') ? fillOpacity(valueDomain[i]) : fillOpacity(valueDomain[i].value)
           }
+
+          this.checkValidity([aesthetics[i].fill, aesthetics[i].fillOpacity], valueDomain[i])
         }
       } else {
         for (let i = valueDomain.length - 1; i >= 0; i--) {
@@ -221,6 +223,8 @@ export default {
             aesthetics[i].fill = fill
             aesthetics[i].fillOpacity = this._domainType.includes('interval') ? fillOpacity(valueDomain[i]) : fillOpacity(valueDomain[i].value)
           }
+
+          this.checkValidity([aesthetics[i].fill, aesthetics[i].fillOpacity], valueDomain[i])
         }
       }
 
@@ -230,13 +234,20 @@ export default {
     ticks () {
       let ticks = []
       let l = this.legendTicks
-      let tickCount = this.legendTicks.length
       let start = 0; let end = 0; let location
       let domain = this._domainType.includes('interval') ? [this.legendTicks[0].value, this.legendTicks[this.legendTicks.length - 1].value] : this._domain
-      let sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / (tickCount)
+      let sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / l.length
+
+      if (!this.showFirst) {
+        l.shift()
+      }
+
+      if (!this.showLast) {
+        l.pop()
+      }
 
       if (!this.flip) {
-        for (let i = 0; i < tickCount; i++) {
+        for (let i = 0; i < l.length; i++) {
           start = end
           if (this._domainType.includes('interval')) {
             end = sectionScale(l[i].value)
@@ -264,6 +275,16 @@ export default {
       }
 
       return ticks
+    }
+  },
+
+  methods: {
+    checkValidity (objects, indexItem) {
+      for (let i = 0; i < objects.length; i++) {
+        if (!objects[i]) {
+          throw new Error('The tick value(s) ' + indexItem + ' is/are not part of the domain given to the gradient legend')
+        }
+      }
     }
   }
 }

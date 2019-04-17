@@ -203,9 +203,14 @@ export default {
       default: 0
     },
 
-    _scale: {
-      type: Array,
-      default: undefined
+    showLast: {
+      type: Boolean,
+      default: true
+    },
+
+    showFirst: {
+      type: Boolean,
+      default: true
     }
   },
 

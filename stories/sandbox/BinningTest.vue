@@ -93,20 +93,21 @@
           :scale="'bins'"
           :font-size="10"
           :title-padding="2"
+          :fill-opacity="{ range: [0, 1]}"
+          :h="400"
           title="Discrete"
           position="tl"
           fill="blue"
-          :fill-opacity="{ range: [0, 1]}"
-          :h="400"
         />
 
         <vgg-gradient-legend
-          :scale="[[0, 10], [10, 20], [20, 40], [40, 60], [60, 100]]"
+          :scale="[[0, 10], [10, 20], [20, 40], [40, 45], [45, 60], [60, 100]]"
+          :tick-values="[[0, 10], [10, 20], [20, 40], [40, 45], [45, 60]]"
+          :title-padding="2"
+          :fill-opacity="{ range: [0, 1]}"
           position="tr"
           title="Gradient"
-          :title-padding="2"
           fill="blue"
-          :fill-opacity="{ range: [0, 1]}"
         />
 
       </vgg-data>

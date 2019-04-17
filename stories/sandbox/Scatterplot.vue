@@ -65,6 +65,7 @@
         :title-font-size="12"
         :w="50"
         :fill="{ type: 'viridis'}"
+        :tick-count="8"
         title-font-weight="bold"
         title="Legend"
         position="tl"
