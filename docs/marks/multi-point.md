@@ -121,16 +121,19 @@ would result in
 
 <MarkMultiPointDemo />
 
+`geometry` should be used for geographic data containing GeoJSON [MultiPoint](https://tools.ietf.org/html/rfc7946#section-3.1.3) objects only. To render other geometry types, see the overview on [Geo marks](geomarks.md).
 
-`geometry` should be used when working with geographic data containing [GeoJSON MultiPoint](https://tools.ietf.org/html/rfc7946#section-3.1.3) objects. Like other graphics where each row of the dataframe renders one mark, it is mapped with `row`. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components.
+Like other graphics where each row of the dataframe renders one mark, it is mapped with `row`. 
 
-```html
+```vue
 <vgg-map v-slot="{ row }">
   <vgg-multi-point
     :geometry="row.geometry"
   />
 </vgg-map>
 ```
+
+For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components.
 
 ## Example
 

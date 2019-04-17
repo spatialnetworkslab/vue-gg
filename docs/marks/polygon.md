@@ -71,7 +71,12 @@ To render the Polygon mark, you will need to provide one of the following props:
 - `points` or
 - `geometry` 
 
-`geometry` accepts GeoJSON [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6) and [MultiPolygon](https://tools.ietf.org/html/rfc7946#section-3.1.7) objects only. To render other geometry types, see documentation on the [Point](point.md) and [Multi-line](multi-line.md) marks.
+`geometry` accepts GeoJSON [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6), [MultiPolygon](https://tools.ietf.org/html/rfc7946#section-3.1.7), [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.4) and [MultiLineString](https://tools.ietf.org/html/rfc7946#section-3.1.5) objects only. To render other geometry types, see the overview on [Geo marks](geomarks.md). 
+
+Data is passed to the `x`, `y` and `geometry` props via row mapping, which renders one mark per data row. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components. 
+
+`points` may not be used with [`vgg-map`](../core/map.html#description) and can only be scaled with the `scale-x` and `scale-y` props of its parent [Section](../core/section.html#defining-a-local-coordinate-system). 
+ 
 
 ## Example
 
