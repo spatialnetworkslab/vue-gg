@@ -8,6 +8,7 @@ import parseRange from './utils/parseRange.js'
 import getPrimitive from './utils/getPrimitive.js'
 
 import mappableProps from './utils/mappableProps.js'
+import getPropType from './utils/getPropType.js'
 
 import getDimension from '../utils/getDimension.js'
 
@@ -22,8 +23,10 @@ export default function (prop, context, passedScalingOptions) {
     context.scaleManager
   )
 
+  let propType = getPropType(prop)
+
   // Coordinate props
-  if (['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(prop)) {
+  if (propType === 'coord') {
     domainType = getPrimitive(domainType)
     let dimension = getDimension(prop)
     let range = context.ranges[dimension]
@@ -34,7 +37,7 @@ export default function (prop, context, passedScalingOptions) {
 
   // for interval data, either continuous or ordinal behavior
   // Color props
-  if (['stroke', 'fill'].includes(prop)) {
+  if (propType === 'color') {
     // current fix: when the domain type is interval:quantitative
     // either the whole data column is retrieved to serve as domain
     // or a section of the domain is given as an array
@@ -50,11 +53,7 @@ export default function (prop, context, passedScalingOptions) {
   }
 
   // Numeric props
-  if ([
-    'width', 'height', 'fontSize', 'strokeWidth', 'size',
-    'opacity', 'strokeOpacity', 'fillOpacity',
-    'radius'
-  ].includes(prop)) {
+  if (propType === 'numeric') {
     // current fix: when the domain type is interval:quantitative
     // either the whole data column is retrieved to serve as domain
     // or a section of the domain is given as an array
@@ -69,7 +68,7 @@ export default function (prop, context, passedScalingOptions) {
     return createNumericScale(prop, domainType, domain, scalingOptions)
   }
 
-  if (['shape'].includes(prop)) {
+  if (propType === 'shape') {
     return createShapeScale(prop, domainType, domain, scalingOptions)
   }
 }
