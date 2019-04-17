@@ -48,7 +48,6 @@
       :title-font-size=12
       :title-padding="10"
       :w="350"
-      :tick-count="5"
       position="bl"
       orientation="horizontal"
     />
