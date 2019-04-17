@@ -274,8 +274,8 @@ all three legend types have ten (10) ticks drawn.
 | tick-count          | false    | Object        | 10        | number of ticks/labels to render                         | Any integer greater than 0                           |
 | tick-values          | false    | Array        | undefined        | actual tick values to render                         | Any integer greater than 0                           |
 | tick-min-step          | false    | Object        | undefined        | minimum interval between ticks/labels                           | Any positive rational number                           |
-| show-last         | false    | Object        | undefined        | minimum interval between ticks/labels                           | Any positive rational number                           |
-| show-first         | false    | Object        | undefined        | minimum interval between ticks/labels                           | Any positive rational number                           |
+| show-last         | false    | Boolean        | true        | show last legend tick   |                         |
+| show-first         | false    | Boolean        | true        | show first legend tick                           |                           |
 
 If the data fed to the legend is `categorical` or `interval` and the user needs to control the exact ticks to be rendered, then the values of the legend ticks to be shown must be specified as an `Array` input to `tick-values`. Each value in the array given to `tick-values` must correspond to values in the domain derived from the input to `scale`.
 
