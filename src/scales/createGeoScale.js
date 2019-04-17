@@ -17,16 +17,16 @@ export default function ({ ranges, dataInterface }) {
   let scaleY
 
   if (scalingFactorX < scalingFactorY) {
-    let fromMidX = rangeDeltaX / 2
-    let newRangeY = [midY - fromMidX, midY + fromMidX]
+    let fromMidY = (domainY[1] - domainY[0]) / 2 * scalingFactorX
+    let newRangeY = [midY - fromMidY, midY + fromMidY]
 
     scaleX = createCoordsScale('x', 'quantitative', domainX, ranges.x, {})
     scaleY = createCoordsScale('y', 'quantitative', domainY, newRangeY, {})
   }
 
-  if (scalingFactorX > scalingFactorY) {
-    let fromMidY = rangeDeltaY / 2
-    let newRangeX = [midX - fromMidY, midX + fromMidY]
+  if (scalingFactorX >= scalingFactorY) {
+    let fromMidX = (domainX[1] - domainX[0]) / 2 * scalingFactorY
+    let newRangeX = [midX - fromMidX, midX + fromMidX]
 
     scaleX = createCoordsScale('x', 'quantitative', domainX, newRangeX, {})
     scaleY = createCoordsScale('y', 'quantitative', domainY, ranges.y, {})
