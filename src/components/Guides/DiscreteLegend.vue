@@ -259,7 +259,7 @@ export default {
           ticks.push({ location: location, label: l[i].label })
         }
       } else {
-        for (let i = tickCount - 1; i >= 0; i--) {
+        for (let i = l.length - 1; i >= 0; i--) {
           start = end
 
           if (this._domainType.includes('interval')) {

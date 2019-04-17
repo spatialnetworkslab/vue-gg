@@ -95,6 +95,8 @@
           :title-padding="2"
           :fill-opacity="{ range: [0, 1]}"
           :h="400"
+          :show-first="false"
+          :show-last="false"
           title="Discrete"
           position="tl"
           fill="blue"
