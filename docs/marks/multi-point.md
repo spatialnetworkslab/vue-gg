@@ -77,8 +77,8 @@ documentation.
 
 The Multi-point mark can be rendered with either the `points` or `geometry` prop.
 
- `points` affords a quick way to plot a collection of circles. It may not be used with [`vgg-map`](../core/map.html#description) and can only be scaled with the `scale-x` and `scale-y` props of its parent [Section](../core/section.html#defining-a-local-coordinate-system). 
- 
+ `points` affords a quick way to plot a collection of circles. It may not be used with [`vgg-map`](../core/map.html#description) and can only be scaled with the `scale-x` and `scale-y` props of its parent [Section](../core/section.html#defining-a-local-coordinate-system).
+
  For instance, an input of
 
 ```vue
@@ -91,7 +91,7 @@ The Multi-point mark can be rendered with either the `points` or `geometry` prop
   :scale-y="[-50, 50]"
   >
   <!-- use the scale definitions above if scaling is desired -->
-  
+
   <!-- vgg-map cannot be used here -->
   <vgg-multi-point
     :points="[
@@ -121,10 +121,11 @@ would result in
 
 <MarkMultiPointDemo />
 
+`geometry` should be used for geographic data containing GeoJSON [MultiPoint](https://tools.ietf.org/html/rfc7946#section-3.1.3) objects only. To render other geometry types, see the overview on [Geo marks](geomarks.md).
 
-`geometry` should be used when working with geographic data containing [GeoJSON MultiPoint](https://tools.ietf.org/html/rfc7946#section-3.1.3) objects. Like other graphics where each row of the dataframe renders one mark, it is mapped with `row`. For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components.
+Like other graphics where each row of the dataframe renders one mark, it is mapped with `row`.
 
-```html
+```vue
 <vgg-map v-slot="{ row }">
   <vgg-multi-point
     :geometry="row.geometry"
@@ -132,9 +133,11 @@ would result in
 </vgg-map>
 ```
 
+For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components.
+
 ## Example
 
-The graphic below adapted from [Big Think](https://bigthink.com/strange-maps/richest-cities-in-africa) depicts the estimated total wealth of African cities in 2017 in USD billions, and demonstrates how `vgg-multi-point` can be used with GeoJSON MultiPoint objects. 
+The graphic below adapted from [Big Think](https://bigthink.com/strange-maps/richest-cities-in-africa) depicts the estimated total wealth of African cities in 2017 in USD billions, and demonstrates how `vgg-multi-point` can be used with GeoJSON MultiPoint objects.
 
 <MarkMultiPointGeo />
 
