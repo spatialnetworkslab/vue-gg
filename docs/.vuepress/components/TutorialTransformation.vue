@@ -8,7 +8,7 @@
     <vgg-plot-title text="Distribution of Fruit Sizes" :vjust="0.95" />
 
     <vgg-scales :scales="{ diameterScale: 'diameter' }" />
-    <vgg-scales :scales="{ colorScale: { ranges: ['#ffc300', '#ff9d26', '#c70039', '#900c3f', '#581845'], domain: 'fruit' } }" />
+    <vgg-scales :scales="{ colorScale: { range: ['#ffc300', '#ff9d26', '#c70039', '#900c3f', '#581845'], domain: 'fruit' } }" />
 
     <vgg-data
       :transform="[

@@ -21,7 +21,7 @@ export default function (prop, variableType, domain, scalingOptions) {
 
   if (variableType === 'categorical') {
     if (scalingOptions.range) {
-      return scaleFromRange(domain, scalingOptions.ranges)
+      return scaleFromRange(domain, scalingOptions.range)
     } else if (scalingOptions.rangeMin || scalingOptions.rangeMax) {
       throw new Error(`Cannot use 'rangeMin' or 'rangeMax' with categorical color scales`)
     }
