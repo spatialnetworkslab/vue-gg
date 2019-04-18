@@ -1,5 +1,6 @@
 import DataContainer from '../../classes/Data/DataContainer.js'
 import createScale from '../../scales/createScale.js'
+import getPropType from '.../../scales/utils/getPropType.js'
 const slashRegex = /\//g
 
 export default function (data, instructions, scaleManager) {
@@ -28,8 +29,10 @@ export default function (data, instructions, scaleManager) {
       throw new Error(`'scale' must be an Object`)
     }
 
-    if (!scalingOptions.range) {
-      throw new Error(`'range' option required when using 'scale' transformation`)
+    let propType = getPropType(prop)
+
+    if (propType === 'coord' && !scalingOptions.range) {
+      throw new Error(`'range' option required when using 'scale' transformation with a coordinate prop`)
     }
 
     if (instructions[newColName].column.match(slashRegex)) {
