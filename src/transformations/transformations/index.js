@@ -10,6 +10,7 @@ import binning from './binning.js'
 import dropNA from './dropNA.js'
 import reproject from './reproject.js'
 import transform from './transform.js'
+import scale from './scale.js'
 
 export default {
   filter,
@@ -26,5 +27,6 @@ export default {
   binning,
   dropNA,
   reproject,
-  transform
+  transform,
+  scale
 }
