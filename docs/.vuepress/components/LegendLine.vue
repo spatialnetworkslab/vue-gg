@@ -50,7 +50,7 @@
       :scale="'colors'"
       :font-size="10"
       :stroke-width="10"
-      :stroke="{range: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']}"
+      :stroke="['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']"
       :x="150"
       :y="50"
       :w="250"
@@ -60,7 +60,7 @@
       :title-font-size="12"
       orientation="horizontal"
     />
-    
+
   </vgg-graphic>
 </template>
 
