@@ -133,6 +133,7 @@ export default {
   computed: {
     coloredTicks () {
       let coloredTicks = []
+
       for (let i = 0; i < this.generatedTicks.length; i++) {
         coloredTicks.push(this.generatedTicks[i])
         coloredTicks[i].color = this.labelColor[i]
