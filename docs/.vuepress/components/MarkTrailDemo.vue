@@ -6,8 +6,8 @@
     >
 
       <vgg-data
-        id="original"
         :data="xy"
+        :dataID="'original'"
       >
 
       <vgg-section
