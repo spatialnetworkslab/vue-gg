@@ -1,6 +1,6 @@
 import DataContainer from '../../classes/Data/DataContainer.js'
 import createScale from '../../scales/createScale.js'
-import getPropType from '.../../scales/utils/getPropType.js'
+import getPropType from '../../scales/utils/getPropType.js'
 const slashRegex = /\//g
 
 export default function (data, instructions, scaleManager) {
