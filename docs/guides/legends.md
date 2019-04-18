@@ -527,7 +527,7 @@ can specified with objects or arrays, i.e. `{ type: ... }` or `[ red, green, blu
 // size
 <vgg-symbol-legend
   :scale="'a'"
-  :size="{ range: [10, 15] }"
+  :size="[10, 15]"
   title="Size"
   :title-font-size=12
   :title-padding="10"
@@ -544,8 +544,8 @@ can specified with objects or arrays, i.e. `{ type: ... }` or `[ red, green, blu
 This legend uses the `stroke-width`, `opacity` and `fill` properties to elaborate
 on the values of the `trail` mark. Scales created using `vgg-scales` can be
 called as input to `scale`. Custom ranges for the output of the legend aesthetics
-can be set using objects or arrays (for categorical data), i.e. `{ range: ... }`
-or `[ <value 1>, <value 2>, <value 3>]`.
+can be set using objects, i.e. `{ range: ..., rangeMin: ... }`
+or `{ range: [ <value 1>, <value 2>, <value 3>] }`, or as arrays: `[ <value 1>, <value 2>, <value 3>]`.
 
 <CodeDemoLayout>
 
