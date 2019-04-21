@@ -138,27 +138,27 @@ export default {
     },
     color (value) {
       if (this.colorScheme === 'custom') {
-        return { val: value, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }
+        return { val: value, scale: { range: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }
       }
       return { val: value, scale: { type: this.colorScheme, domain: 'categorical' } }
     },
     shape (value) {
       if (this.shapeScheme === 'custom') {
-        return { val: value, scale: { ranges: ['circle', 'square'], domain: 'categorical' } }
+        return { val: value, scale: { range: ['circle', 'square'], domain: 'categorical' } }
       }
       return { val: value, scale: { type: this.shapeScheme, domain: 'categorical' } }
     },
 
     colorLegend (colorScheme) {
       if (this.colorScheme === 'custom') {
-        return { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'] }
+        return { range: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'] }
       }
       return { type: colorScheme }
     },
 
     shapeLegend () {
       if (this.shapeScheme === 'custom') {
-        return { ranges: ['circle', 'square'] }
+        return { range: ['circle', 'square'] }
       }
       return { type: this.shapeScheme }
     }

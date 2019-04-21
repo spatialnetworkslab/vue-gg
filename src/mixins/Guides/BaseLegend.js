@@ -665,9 +665,9 @@ export default {
 
           if (scaleBasis.range) {
             if (prop === 'stroke' || prop === 'fill') {
-              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
             } else {
-              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
             }
           }
         } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {

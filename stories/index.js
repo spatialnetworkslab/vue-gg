@@ -34,6 +34,7 @@ import DomainError from './sandbox/DomainError.vue'
 import EmptyData from './sandbox/EmptyData.vue'
 import DuplicateScales from './sandbox/DuplicateScales.vue'
 import ClassificationTest from './sandbox/ClassificationTest.vue'
+import ScaleTransformation from './sandbox/ScaleTransformation.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -71,3 +72,4 @@ storiesOf('Sandbox', module)
   .add('Empty data', () => (EmptyData))
   .add('Duplicate scales', () => (DuplicateScales))
   .add('Classification test', () => ClassificationTest)
+  .add('Scale transformation', () => (ScaleTransformation))

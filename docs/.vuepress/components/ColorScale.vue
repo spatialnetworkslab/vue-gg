@@ -10,7 +10,7 @@
         :x="{ val: row.name, scale: 'name' }"
         :size="20"
         :shape="row.name"
-        :fill="{ val: row.name, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'name' } }"
+        :fill="{ val: row.name, scale: { range: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'name' } }"
       />
     </vgg-map>
 
