@@ -2,6 +2,14 @@ import dataLength from '../utils/dataLength.js'
 import Geostats from '../utils/geoStats.js'
 
 export default function (data, binningObj) {
+  let intervalBounds = getIntervalBounds(data, binningObj)
+  let ranges = pairRange(intervalBounds)
+
+  let newData = bin(data, binningObj.groupBy, ranges)
+  return newData
+}
+
+export function getIntervalBounds (data, binningObj) {
   if (binningObj.constructor !== Object) {
     throw new Error('Binning only accepts an Object')
   }
@@ -44,7 +52,7 @@ export default function (data, binningObj) {
       console.warn(`binSize not specified for IntervalSize binning, defaulting to ${(domain[1] - domain[0])}`)
       binSize = domain[1] - domain[0]
     }
-    let binCount = Math.round((domain[1] - domain[0]) / binSize)
+    let binCount = Math.floor((domain[1] - domain[0]) / binSize)
 
     ranges = rangeFromInterval(domain, binSize, binCount)
     let newData = bin(data, key, ranges)
@@ -65,10 +73,7 @@ export default function (data, binningObj) {
     ranges = binningObj.manualClasses
   }
 
-  ranges = pairRange(ranges)
-
-  let newData = bin(data, key, ranges)
-  return newData
+  return ranges
 }
 
 // Extract domain of variable of interest
@@ -77,7 +82,7 @@ function variableDomain (column) {
 
   let domain = []
   domain.push(asc[0])
-  domain.push(asc.pop())
+  domain.push(asc[asc.length - 1])
 
   return domain
 }
@@ -95,7 +100,9 @@ function rangeFromInterval (domain, interval, binCount) {
 
     lowerBound = upperBound
   }
-
+  if (lowerBound < domain[1]) {
+    ranges.push([lowerBound, domain[1]])
+  }
   return ranges
 }
 
@@ -118,6 +125,15 @@ function bin (data, variable, ranges) {
   // Create an empty array to store new dataFrames divided by range
   let bins = Array(ranges.length)
 
+  for (let b = 0; b < bins.length; b++) {
+    bins[b] = {}
+
+    for (let col in data) {
+      // If data key does not exist, create it
+      bins[b][col] = []
+    }
+  }
+
   let length = dataLength(data)
 
   // Loop through data
@@ -125,20 +141,18 @@ function bin (data, variable, ranges) {
     let instance = data[variable][ix]
 
     // Find index of bin in which the instance belongs
-    let binIndex = ranges.findIndex(el => instance >= el[0] && instance <= el[1])
+    let binIndex = ranges.findIndex(function (el, i) {
+      if (i === ranges.length - 1) {
+        return instance >= el[0] && instance <= el[1]
+      } else {
+        return instance >= el[0] && instance < el[1]
+      }
+    })
 
     let newRow = bins[binIndex]
 
-    // If dataFrame does not exist, create it
-    if (!newRow) { newRow = {} }
-
     for (let col in data) {
-      // If data key does not exist, create it
-      if (!newRow[col]) {
-        newRow[col] = [data[col][ix]]
-      } else {
-        newRow[col].push(data[col][ix])
-      }
+      newRow[col].push(data[col][ix])
     }
 
     // Update the bins column with new dataFrame

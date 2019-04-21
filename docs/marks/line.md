@@ -17,11 +17,11 @@ The `vgg-line` mark plots a simple line element by taking either a start and end
     :x2="1"
     :y1="-1"
     :y2="1"
-    stroke="green"
+    stroke="#008080"
 />
 <vgg-line 
     :func="x => x ** 2" 
-    stroke="blue" 
+    stroke="#c66366" 
 />
 ```
 

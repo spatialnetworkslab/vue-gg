@@ -1,7 +1,7 @@
 <template>
 
   <vgg-graphic
-    :width="200"
+    :width="300"
     :height="250"
     :data="{
       year: [2000, 2005, 2010, 2015],
@@ -9,17 +9,24 @@
     }">
 
     <vgg-section
-      :x1="25"
-      :x2="175"
+      :x1="30"
+      :x2="275"
       :y1="25"
       :y2="225"
       scale-x="year"
-      scale-y="population"
-      :axes="{
-        left: {'tick-count': 4, 'w': 30},
-        bottom: {'tick-count': 4}
-      }"
+      :scale-y="{domain: 'population', domainMin: 50}"
     >
+
+      <vgg-x-axis
+        scale="year"
+        :tickCount="4"
+      />
+
+      <vgg-y-axis
+        :scale="{domain: 'population', domainMin: 50}"
+        :hjust="0"
+        :tickCount="4"
+      />
 
       <vgg-map v-slot="{ dataframe }"
       unit="dataframe">

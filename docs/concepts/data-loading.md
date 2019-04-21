@@ -2,14 +2,14 @@
 title: Data loading
 ---
 
-# Introduction
+# Data Loading
 
 To load data into `vue-gg`, pass data in a supported format to the `:data` prop
 of any [Graphic](../core/graphic.md), [Data](../core/data.md) or
 [Section](../core/section.md) component. This will create a [data scope](#data-scope)
 for its child components.
 
-# Data types
+## Data types
 
 `vue-gg` supports 6 different data types: quantitative, categorical, temporal,
 interval, geometry and nested. `vue-gg` will decide what data type your data is based on
@@ -25,7 +25,7 @@ it has.
 | geometry     | Object [(GeoJSON feature)](http://geojson.org/) | -                                    |
 | nested       | Object (of Arrays)                              | -                                    |
 
-# Data formats
+## Data formats
 
 While it is possible to load data in various formats into `vue-gg`, there are some
 requirements that all data must adhere to:
@@ -72,7 +72,7 @@ will be converted to a column-oriented format. For every feature, the `geometry`
 will be stored in a column called `geometry`, and all properties get their own
 column.
 
-# Data scope
+## Data scope
 
 ### Using data scopes
 
@@ -136,15 +136,15 @@ Besides loading new data, another way to create a new data scope is using the
 
 In some cases, it can be handy to have access to columns from a different scope. To
 access a different data scope, give the component that creates the scope you
-are interested in an ID with the `id` prop. The data scope can then be accessed
-from other data scopes using the `id` of the component, followed by `/`, and the
+are interested in an ID with the `dataID` prop. The data scope can then be accessed
+from other data scopes using the `dataID` of the component, followed by `/`, and the
 column name:
 
 ::: v-pre
 ```html
 <vgg-graphic
-  id="parentData"
   :data="{ a: [1, 2, 3, 4], b: [5, 6, 7, 8] }"
+  dataID="parentData"
 />
 
   <vgg-data
@@ -178,7 +178,7 @@ before the scope in question. For example:
 
 ::: v-pre
 ```html
-<vgg-data id="before" :data="someData" />
+<vgg-data dataID="before" :data="someData" />
 
 <vgg-data :data="someOtherData" />
   <vgg-map v-slot="{ row }">
@@ -198,7 +198,7 @@ is allowed, but
   </vgg-map>
 </vgg-data>
 
-<vgg-data id="after" :data="someData" />
+<vgg-data dataID="after" :data="someData" />
 ```
 :::
 

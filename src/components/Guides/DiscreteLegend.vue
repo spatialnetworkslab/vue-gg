@@ -152,32 +152,33 @@ export default {
   },
 
   computed: {
-
     aesthetics () {
       // fix to allow for both binned and non-binned data
-      let aesthetics = []; let fillOpacity; let fill; let domain = []; let valueDomain = []; let sectionScale
+      let aesthetics = []; let fillOpacity; let fill; let _fill; let domain = []; let valueDomain = []; let sectionScale
 
       // create section length scale and format valueDomain from legend labels, depending on if interval domain type or not
       if (this._domainType.includes('interval')) {
-        let scale = this.scale.domain ? this.scale.domain : this.scale
-        for (let i = 0; i < this.$$dataInterface.getColumn(scale).length; i++) {
-          valueDomain.push([this.legendLabels[i].value, this.legendLabels[i + 1].value])
+        for (let i = 0; i < this.legendTicks.length - 1; i++) {
+          valueDomain.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
         }
+        // valueDomain = this.tickValues
         domain = [valueDomain[0][0], valueDomain[valueDomain.length - 1][1]]
       } else {
-        valueDomain = this.legendLabels
+        valueDomain = this.legendTicks
         domain = [0, valueDomain.length - 1]
       }
 
-      sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / this.legendLabels.length
+      sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / this.legendTicks.length
 
       // create fill/fillOpacity scales for rectangles
-      if (!this.checkValidColor(this.fill)) {
-        fill = this.generateScale('fill', this.fill)
+      _fill = this.legendCache.fill || 'none'
+
+      if (!this.checkValidColor(_fill)) {
+        fill = this.generateScale('fill', _fill)
         fillOpacity = 1
-      } else if (this.fillOpacity && this.checkValidColor(this.fill)) {
-        fill = this.fill
-        fillOpacity = this.generateScale('fillOpacity', this.fillOpacity)
+      } else if (this.legendCache.fillOpacity && this.checkValidColor(_fill)) {
+        fill = _fill
+        fillOpacity = this.generateScale('fillOpacity', this.legendCache.fillOpacity)
       } else {
         throw new Error('If `fill` is set to a color (HSL, RGB or CSS value), then `fillOpacity` must be specified to create the legend')
       }
@@ -201,6 +202,8 @@ export default {
             aesthetics[i].fill = fill
             aesthetics[i].fillOpacity = this._domainType.includes('interval') ? fillOpacity(valueDomain[i]) : fillOpacity(valueDomain[i].value)
           }
+
+          this.checkValidity([aesthetics[i].fill, aesthetics[i].fillOpacity], valueDomain[i])
         }
       } else {
         for (let i = valueDomain.length - 1; i >= 0; i--) {
@@ -220,6 +223,8 @@ export default {
             aesthetics[i].fill = fill
             aesthetics[i].fillOpacity = this._domainType.includes('interval') ? fillOpacity(valueDomain[i]) : fillOpacity(valueDomain[i].value)
           }
+
+          this.checkValidity([aesthetics[i].fill, aesthetics[i].fillOpacity], valueDomain[i])
         }
       }
 
@@ -228,14 +233,21 @@ export default {
 
     ticks () {
       let ticks = []
-      let l = this.legendLabels
-      let tickCount = this.legendLabels.length
+      let l = this.legendTicks
       let start = 0; let end = 0; let location
-      let domain = this._domainType.includes('interval') ? [this.legendLabels[0].value, this.legendLabels[this.legendLabels.length - 1].value] : this._domain
-      let sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / (tickCount)
+      let domain = this._domainType.includes('interval') ? [this.legendTicks[0].value, this.legendTicks[this.legendTicks.length - 1].value] : this._domain
+      let sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / l.length
+
+      if (!this.showFirst) {
+        l.shift()
+      }
+
+      if (!this.showLast) {
+        l.pop()
+      }
 
       if (!this.flip) {
-        for (let i = 0; i < tickCount; i++) {
+        for (let i = 0; i < l.length; i++) {
           start = end
           if (this._domainType.includes('interval')) {
             end = sectionScale(l[i].value)
@@ -247,7 +259,7 @@ export default {
           ticks.push({ location: location, label: l[i].label })
         }
       } else {
-        for (let i = tickCount - 1; i >= 0; i--) {
+        for (let i = l.length - 1; i >= 0; i--) {
           start = end
 
           if (this._domainType.includes('interval')) {
@@ -264,6 +276,17 @@ export default {
 
       return ticks
     }
+  },
+
+  methods: {
+    checkValidity (objects, indexItem) {
+      for (let i = 0; i < objects.length; i++) {
+        if (!objects[i]) {
+          throw new Error('The tick value(s) ' + indexItem + ' is/are not part of the domain given to the gradient legend')
+        }
+      }
+    }
   }
 }
 </script>
+this.legendCache.fillOpacity

@@ -19,7 +19,7 @@
       <vgg-data
         :transform="[
           { rename: { a: 'apple', b: 'banana', d: 'durian' } },
-          { binning: { groupBy: 'apple', method: selected, numClasses: 5 } },
+          { binning: { groupBy: 'apple', method: selected, numClasses: 20 } },
           { summarise: { binCount: { apple: 'count' } } }
         ]"
       >
@@ -64,13 +64,13 @@
           />
 
           <vgg-x-axis
-            scale="bins"
             :tick-values="[0, 50, 80]"
             :vjust="-0.05"
+            scale="bins"
           />
 
         </vgg-section>
-<!--
+        <!--
         <vgg-x-axis
           :x1="100"
           :x2="500"
@@ -89,34 +89,28 @@
           :tick-count="15"
         /> -->
 
-        <!-- fill binning -->
-
         <vgg-discrete-legend
           :scale="'bins'"
           :font-size="10"
           :title-padding="2"
+          :fill-opacity="{ range: [0, 1]}"
+          :h="400"
+          :show-first="false"
+          :show-last="false"
           title="Discrete"
           position="tl"
+          fill="blue"
         />
-
-        <!-- fill opacity binning -->
 
         <vgg-gradient-legend
-          :scale="{ domain: 'bins' }"
-          position="tr"
-          title="Gradient"
+          :scale="[[0, 10], [10, 20], [20, 40], [40, 45], [45, 60], [60, 100]]"
+          :tick-values="[[0, 10], [10, 20], [20, 40], [40, 45], [45, 60]]"
           :title-padding="2"
-          fill="blue"
           :fill-opacity="{ range: [0, 1]}"
-        />
-
-        <!-- <vgg-gradient-legend
-          :scale="{ domain: 'bins' }"
           position="tr"
           title="Gradient"
-          :title-padding="2"
-
-        /> -->
+          fill="blue"
+        />
 
       </vgg-data>
     </vgg-graphic>

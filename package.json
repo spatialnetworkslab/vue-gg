@@ -1,6 +1,6 @@
 {
   "name": "vue-gg",
-  "version": "0.0.5-beta.4",
+  "version": "0.0.5-beta.9",
   "main": "dist/vue-gg.cjs.js",
   "module": "dist/vue-gg.esm.js",
   "browser": "dist/vue-gg.js",

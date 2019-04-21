@@ -100,7 +100,7 @@ export default {
   props: {
     hjust: {
       type: [Number, String, undefined],
-      default: 'r',
+      default: 'l',
       validator: v => v.constructor === String
         ? ['l', 'r', 'center'].includes(v)
         : true
@@ -232,7 +232,7 @@ export default {
     },
 
     parsedScale () {
-      return createScale('y', this.context, this.scale)
+      return createScale('y', this.context, this.axisCache.scale)
     }
   }
 }

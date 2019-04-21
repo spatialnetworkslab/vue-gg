@@ -112,11 +112,13 @@ export function updateComponent (component, layout) {
 }
 
 function mergeProps (coords, other) {
+  let props = Object.assign({}, coords)
+
   for (let key in other) {
     if (!['x1', 'x2', 'y1', 'y2', 'x', 'y', 'w', 'h'].includes(key)) {
-      coords[key] = other[key]
+      props[key] = other[key]
     }
   }
 
-  return coords
+  return props
 }

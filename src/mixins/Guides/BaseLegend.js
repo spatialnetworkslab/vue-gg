@@ -6,6 +6,8 @@ import Rectangular from '../Marks/Rectangular.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
+import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
+
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '../../scales/createScale.js'
 import defaultFormat from './utils/defaultFormat.js'
@@ -102,11 +104,6 @@ export default {
       default: 0
     },
 
-    labels: {
-      type: [Array],
-      default: undefined
-    },
-
     labelFontSize: {
       type: Number,
       default: 10
@@ -193,7 +190,7 @@ export default {
 
     nice: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     rowPadding: {
@@ -204,12 +201,28 @@ export default {
     colPadding: {
       type: Number,
       default: 0
+    },
+
+    showLast: {
+      type: Boolean,
+      default: true
+    },
+
+    showFirst: {
+      type: Boolean,
+      default: true
+    }
+  },
+
+  data () {
+    return {
+      legendCache: createPropCache(this, ['scale', 'fill', 'fillOpacity', 'tickValues'])
     }
   },
 
   computed: {
     _parsedScalingOptions () {
-      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
+      return parseScaleOptions(this.legendCache.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {
@@ -264,7 +277,9 @@ export default {
     },
 
     legendLeft () {
-      if (!this.x && !this.y) {
+      if (this.position !== 'left' && (!isNaN(this.x) || !isNaN(this.x1) || !isNaN(this.x2))) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y` or `position`')
+      } else if (isNaN(this.x) && isNaN(this.x1) && isNaN(this.x2)) {
         let p = this.position
         if (p === 'right' || p === 'tr' || p === 'br') {
           return (this.plotWidth - this.sectionWidth) * 0.95
@@ -273,13 +288,36 @@ export default {
         } else {
           return this.plotWidth * 0.02
         }
-      } else {
-        return this.x
+      } else if (!isNaN(this.x) && isNaN(this.x1) && isNaN(this.x2)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `x` input ' + this.x)
+        }
+        return (this.x - this.sectionWidth / 2)
+      } else if (!isNaN(this.x1) && !isNaN(this.x2) && isNaN(this.x)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `x1` input ' + this.x1 + ' and `x2` input ' + this.x2)
+        }
+        return this.x1
+      } else if ((!isNaN(this.x1) || !isNaN(this.x2)) && isNaN(this.x)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `x1`, `x2`, `x` inputs')
+        }
+        if (!isNaN(this.x1)) {
+          return this.x1
+        }
+
+        if (!isNaN(this.x2)) {
+          return this.x2 - this.sectionWidth
+        }
+      } else if (!isNaN(this.x) && !isNaN(this.x1) && !isNaN(this.x2)) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
       }
     },
 
     legendTop () {
-      if (!this.x && !this.y) {
+      if (this.position !== 'left' && (!isNaN(this.y) || !isNaN(this.y1) || !isNaN(this.y2))) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y` or `position`')
+      } else if (isNaN(this.y) && isNaN(this.y1) && isNaN(this.y2)) {
         let p = this.position
         if (p === 'top' || p === 'tl' || p === 'tr' || p === 'tc') {
           if (this.plotHeight - this.sectionHeight < 0) {
@@ -300,43 +338,72 @@ export default {
             return -this.plotHeight * 0.45 + this.sectionHeight / 2
           }
         }
-      } else {
+      } else if (!isNaN(this.y) && isNaN(this.y1) && isNaN(this.y2)) {
         if (this.position && this.position !== 'left') {
-          console.warn('Ignoring position value `' + this.position + '` because of `x` and `y` inputs')
+          console.warn('Ignoring position value `' + this.position + '` because of `x` input ' + this.y)
         }
-        return -this.y
+        return (-this.y + this.sectionHeight / 2)
+      } else if (!isNaN(this.y1) && !isNaN(this.y2) && isNaN(this.y)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `y1` input ' + this.y1 + ' and `y2` input ' + this.y2)
+        }
+        return -this.y1
+      } else if ((!isNaN(this.y1) || !isNaN(this.y2)) && isNaN(this.y)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `y1`, `y2`, `y` inputs')
+        }
+        if (!isNaN(this.y1)) {
+          return -this.y1
+        }
+
+        if (!isNaN(this.y2)) {
+          return this.sectionHeight - this.y2
+        }
+      } else if (!isNaN(this.y) && !isNaN(this.y1) && !isNaN(this.y2)) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
       }
     },
 
-    legendLabels () {
+    legendTicks () {
       let firstValue = this._domain[0]
       let newTickValues
 
-      if (this.tickValues) {
-        newTickValues = this.tickValues
+      if (this.legendCache.tickValues) {
+        newTickValues = this.legendCache.tickValues
 
-        if (this.tickExtra && this.tickValues[0] !== firstValue) {
+        if (this.tickExtra && this.legendCache.tickValues[0] !== firstValue) {
           newTickValues.unshift(firstValue)
         }
 
-        return newTickValues.map(value => {
-          return { value }
-        })
+        if (this._domainType.includes('interval')) {
+          let processedTicks = []; let i = 0
+          while (i < newTickValues.length) {
+            processedTicks.push({ value: newTickValues[i][0], label: newTickValues[i][0] })
+            i++
+          }
+          processedTicks.push({ value: newTickValues[i - 1][1], label: newTickValues[i - 1][1] })
+          return processedTicks
+        } else {
+          return newTickValues.map(value => {
+            return { value }
+          })
+        }
       } else {
         let ticks
-        let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
+        let format = this.format ? this.format : defaultFormat
         let domain = this._domain
 
-        if (this.scale.domainMin) {
-          domain = [this.scale.domainMin, this._domain[this._domain.length - 1]]
+        if (this.legendCache.scale.domainMin) {
+          domain = [this.legendCache.scale.domainMin, this._domain[this._domain.length - 1]]
         }
 
-        if (this.scale.domainMax) {
-          domain = [this._domain[0], this.scale.domainMax]
+        if (this.legendCache.scale.domainMax) {
+          domain = [this._domain[0], this.legendCache.scale.domainMax]
         }
 
         if (this._domainType === 'quantitative') {
-          newTickValues = arrayTicks(...domain, this.tickCount)
+          let numTicks = this.tickCount ? this.tickCount : 10
+          newTickValues = arrayTicks(...domain, numTicks)
           if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
@@ -345,7 +412,7 @@ export default {
             if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
               return { value, label: '' }
             } else {
-              return { value, label: this.nice ? format(value, 1) : format(value) }
+              return { value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
             }
           })
         }
@@ -384,19 +451,17 @@ export default {
 
         if (this._domainType === 'interval:quantitative') {
           let intervals
-          if (this.scale.constructor === String) {
-            intervals = this.$$dataInterface.getColumn(this.scale)
-          } else if (this.scale.constructor === Object) {
-            intervals = this.$$dataInterface.getColumn(this.scale.domain)
+
+          if (this.legendCache.scale.constructor === String) {
+            intervals = this.$$dataInterface.getColumn(this.legendCache.scale)
+          } else if (this.legendCache.scale.constructor === Object) {
+            intervals = this.$$dataInterface.getColumn(this.legendCache.scale.domain)
+          } else if (this.legendCache.scale.constructor === Array) {
+            intervals = this.legendCache.scale
           }
 
-          // ticks = intervals.map((value, i) => {
-          //   let mean = (value[0] + value[1]) / 2
-          //   return { value: mean, label: this.nice ? format(this.round(mean, 1)) : format(mean) }
-          // })
-
           ticks = ticksFromIntervals(intervals).map(value => {
-            return { value: value, label: this.nice ? format(value, 1) : format(value) }
+            return { value: value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
           })
         }
 
@@ -407,40 +472,55 @@ export default {
             format = timeFormat('%d/%m/%Y')
           }
 
-          let intervals = this.$$dataInterface.getColumn(this.scale)
+          let intervals = this.$$dataInterface.getColumn(this.legendCache.scale)
           ticks = ticksFromIntervals(intervals).map(value => {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })
+
+          if (this.tickCount) {
+            let step = Math.floor(ticks.length / this.tickCount)
+            ticks = ticks.filter((value, i) => (i % step) === 0)
+          }
         }
 
         return ticks
       }
     },
 
+    // w
+    // x1, x2
     sectionWidth () {
-      if (!this.w) {
+      if (!this.w && !this.x1 && !this.x2) {
         if (this.orientation === 'vertical') {
           return this.plotWidth * 0.1 + this.rowPadding
         } else {
-          let width = this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
-          return (width / this.tickCount * this.legendLabels.length >= width ? width / this.tickCount * this.legendLabels.length : width)
+          return this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
         }
-      } else {
+      } else if (this.x1 && this.x2 && this.w) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
+      } else if (this.x1 && this.x2 && !this.w) {
+        return (this.x2 - this.x1)
+      } else if (this.w && !this.x1 && !this.x2) {
         return this.w
       }
     },
 
+    // h
+    // y1, y2
     sectionHeight () {
-      if (!this.h) {
+      if (!this.h && !this.y1 && !this.y2) {
         if (this.orientation === 'vertical') {
           // return this.plotHeight * 0.3 + this.titleFontSize + this.colPadding
-          let height = this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
-          return (height / this.tickCount * this.legendLabels.length >= height ? height / this.tickCount * this.legendLabels.length : height)
+          return this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
         } else {
           return this.plotHeight * 0.1 + this.rowPadding
         }
-      } else {
+      } else if (this.y1 && this.y2 && this.h) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
+      } else if (this.y1 && this.y2 && !this.h) {
+        return (this.y2 - this.y1)
+      } else if (this.h && !this.y1 && !this.y2) {
         return this.h
       }
     },
@@ -513,6 +593,10 @@ export default {
     }
   },
 
+  created () {
+    createWatchers(this, this.legendCache)
+  },
+
   methods: {
     sectionScale (domain) {
       return scaleLinear().domain(domain).range([0, 100])
@@ -528,36 +612,40 @@ export default {
       } else {
         // Domain is dependent on scale inputs
         // Range is dependent on aesthetic inputs
-        scaleOptions.domain = this.scale.domain ? this.scale.domain : this.scale
-
-        if (this.scale.domainMin) {
-          scaleOptions.domainMin = this.scale.domainMin
+        if (this.legendCache.scale.domain) {
+          scaleOptions.domain = this.legendCache.scale.domain
+        } else {
+          scaleOptions.domain = this.legendCache.scale
         }
 
-        if (this.scale.domainMax) {
-          scaleOptions.domainMax = this.scale.domainMax
+        if (this.legendCache.scale.domainMin) {
+          scaleOptions.domainMin = this.legendCache.scale.domainMin
         }
 
-        if (this.scale.domainMid) {
-          scaleOptions.domainMid = this.scale.domainMid
+        if (this.legendCache.scale.domainMax) {
+          scaleOptions.domainMax = this.legendCache.scale.domainMax
         }
 
-        if (this.scale.order && this._domainType.includes('categorical')) {
-          scaleOptions.order = this.scale.order
-        } else if (this.scale.order && !this._domainType.includes('categorical')) {
-          console.warn('Data must be categorical in order to include `order` in `scale`')
+        if (this.legendCache.scale.domainMid) {
+          scaleOptions.domainMid = this.legendCache.scale.domainMid
         }
 
-        if (this.scale.absolute) {
-          scaleOptions.absolute = this.scale.absolute
+        if (this.legendCache.scale.order && this._domainType.includes('categorical')) {
+          scaleOptions.order = this.legendCache.scale.order
+        } else if (this.legendCache.scale.order && !this._domainType.includes('categorical')) {
+          console.warn('Data must be categorical to include `order` in `scale`')
         }
 
-        if (this.scale.nice) {
-          scaleOptions.nice = this.scale.nice
+        if (this.legendCache.scale.absolute) {
+          scaleOptions.absolute = this.legendCache.scale.absolute
         }
 
-        if (this.scale.reverse) {
-          scaleOptions.reverse = this.scale.reverse
+        if (this.legendCache.scale.nice) {
+          scaleOptions.nice = this.legendCache.scale.nice
+        }
+
+        if (this.legendCache.scale.reverse) {
+          scaleOptions.reverse = this.legendCache.scale.reverse
         }
 
         if (scaleBasis.rangeMin) {
@@ -577,9 +665,9 @@ export default {
 
           if (scaleBasis.range) {
             if (prop === 'stroke' || prop === 'fill') {
-              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
             } else {
-              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
             }
           }
         } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {

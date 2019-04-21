@@ -40,21 +40,6 @@ export default {
       default: undefined
     },
 
-    data: {
-      type: [Array, Object, undefined],
-      default: undefined
-    },
-
-    format: {
-      type: [String, undefined],
-      default: undefined
-    },
-
-    transform: {
-      type: [Array, Object, undefined],
-      default: undefined
-    },
-
     axes: {
       type: [Array, Object, undefined],
       default: undefined
@@ -386,7 +371,7 @@ export default {
   },
 
   render (createElement) {
-    if (this.ready && this.allowScales) {
+    if (this.dataContainer !== false && this.ready && this.allowScales) {
       if (!this._axes) {
         let slotContent = this.getSlotContent()
 

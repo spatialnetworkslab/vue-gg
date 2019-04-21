@@ -12,6 +12,7 @@ import TestAbsolute from './sandbox/TestAbsolute.vue'
 import TransformTest from './sandbox/TransformTest.vue'
 import BinningTest from './sandbox/BinningTest.vue'
 import GeoShape from './sandbox/GeoShape.vue'
+import OtherGeoShapes from './sandbox/OtherGeoShapes.vue'
 import MissingInvalidData from './sandbox/MissingInvalidData.vue'
 import MultiLines from './sandbox/MultiLines.vue'
 import Areas from './sandbox/Areas.vue'
@@ -30,6 +31,11 @@ import MultipleSelections from './sandbox/MultipleSelections.vue'
 import NestedSelection from './sandbox/NestedSelection.vue'
 import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
 import Facets from './sandbox/Facets.vue'
+import DomainError from './sandbox/DomainError.vue'
+import EmptyData from './sandbox/EmptyData.vue'
+import DuplicateScales from './sandbox/DuplicateScales.vue'
+import ClassificationTest from './sandbox/ClassificationTest.vue'
+import ScaleTransformation from './sandbox/ScaleTransformation.vue'
 
 // IDC Scatterplot Matrices
 import IDCScatter40 from './idc/idcScatterplotMatrix40.vue'
@@ -73,6 +79,7 @@ storiesOf('Sandbox', module)
   .add('Test: transform', () => (TransformTest))
   .add('Test: binning', () => (BinningTest))
   .add('Test: GeoShape', () => (GeoShape))
+  .add('Test: Error handling for invalid geometries', () => (OtherGeoShapes))
   .add('Test: missing', () => (MissingInvalidData))
   .add('Test: Area Mark', () => (Areas))
   .add('MultiLines', () => (MultiLines))
@@ -113,3 +120,8 @@ storiesOf('Fun Graphs', module)
   .add('Nested selection', () => (NestedSelection))
   .add('Ate axis scale bug', () => (AteAxisScaleBug))
   .add('Facets', () => (Facets))
+  .add('DomainError', () => (DomainError))
+  .add('Empty data', () => (EmptyData))
+  .add('Duplicate scales', () => (DuplicateScales))
+  .add('Classification test', () => ClassificationTest)
+  .add('Scale transformation', () => (ScaleTransformation))
