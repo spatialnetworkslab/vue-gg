@@ -7,22 +7,6 @@
     :x2="1600"
     :width="1700"
     :rows="8"
-    :csvURL="'../../static/motorbikes_40_clean.csv'"
-    :extract-variables="{
-      'Base MSRP': 'Price',
-      'Wet Weight': 'WetWeight',
-      '0–60 mph sec': 'ZeroTo60',
-      'Rear-Wheel HP':'RWHP',
-      'Top Speed': 'TopSpeed',
-      'Average MPG': 'MilesPG',
-      '0–60 mph sec': 'ZeroTo60',
-      'Braking 60 to 0 mph (feet)': 'Stop60',
-      'Rear-Wheel TQ Lb-Ft': 'RWTQPF',
-      'Quartermile Sec':'QtrmileSec'}"
-    :color="'Color'"
-    :dimensions="['Price', 'WetWeight', 'RWHP', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RWTQPF', 'QtrmileSec', 'PWRatio']"
-    :options="'Name'"
-    :option-count="10"
   />
   <!-- <vgg-graphic
     :width="width"

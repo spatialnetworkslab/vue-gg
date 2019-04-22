@@ -19,7 +19,7 @@
         v-slot="{ x, y, sides }"
         :x="dimensions"
         :y="dimensions"
-        :cell-padding="1"
+        :cell-padding="1.3"
         :sides="['bottom', 'right']"
       >
 
@@ -60,6 +60,8 @@
           <vgg-plot-title
             v-if="x === y"
             :text="x"
+            :font-size="dimensions.length === 10 ? 12 : (dimensions.length === 5 ? 16 : 20 )"
+            :font-weight="700"
             :vjust="0.5" />
 
           <vgg-x-grid
@@ -118,7 +120,9 @@ export default {
 
     dimensions: {
       type: [Object, Array],
-      default: () => ['Price', 'WetWeight', 'RearWheelHP', 'TopSpeed', 'MeanMPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']
+      default: () => // ['Price', 'WetWeight', 'RearWheelHP', 'TopSpeed', 'MeanMPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']
+      //  ['Price', 'WetWeight', 'RearWheelHP', 'TopSpeed', 'MeanMPG']
+        ['Price', 'WetWeight', 'RearWheelHP']
     }
   },
   // hovered keeps track of whether a point is being hovered over (i.e. true or false)
@@ -233,77 +237,77 @@ export default {
           'Stop60': 117.5,
           'Color': '#8DD3C7',
           'Price': 8999
-        },
-        {
-          'MeanMPG': 45.6,
-          'RearWheelHP': 46.21,
-          'RearWheelTQLbFt': 35.65,
-          'PWRatio': 0.14,
-          'ZeroTo60': 4.56,
-          'TopSpeed': 107.5,
-          'QuartermileSec': 13.12,
-          'Name': 'Motorbike 6',
-          'WetWeight': 336.5,
-          'Stop60': 144.2,
-          'Color': '#FED9A6',
-          'Price': 10298
-        },
-        {
-          'MeanMPG': 29.4,
-          'RearWheelHP': 104.5,
-          'RearWheelTQLbFt': 110.2,
-          'PWRatio': 0.16,
-          'ZeroTo60': 3.88,
-          'TopSpeed': 130,
-          'QuartermileSec': 11.91,
-          'Name': 'Motorbike 7',
-          'WetWeight': 668,
-          'Stop60': 120.4,
-          'Color': '#FFFF99',
-          'Price': 13399
-        },
-        {
-          'MeanMPG': 41.1,
-          'RearWheelHP': 118.08,
-          'RearWheelTQLbFt': 62.68,
-          'PWRatio': 0.27,
-          'ZeroTo60': 3.24,
-          'TopSpeed': 152.3,
-          'QuartermileSec': 10.88,
-          'Name': 'Motorbike 8',
-          'WetWeight': 444.5,
-          'Stop60': 112.9,
-          'Color': '#8DA0CB',
-          'Price': 12995
-        },
-        {
-          'MeanMPG': 45,
-          'RearWheelHP': 74.7,
-          'RearWheelTQLbFt': 55.3,
-          'PWRatio': 0.17,
-          'ZeroTo60': 3.64,
-          'TopSpeed': 139,
-          'QuartermileSec': 11.74,
-          'Name': 'Motorbike 9',
-          'WetWeight': 451,
-          'Stop60': 114.4,
-          'Color': '#B3CDE3',
-          'Price': 10995
-        },
-        {
-          'MeanMPG': 37.3,
-          'RearWheelHP': 85.2,
-          'RearWheelTQLbFt': 60.4,
-          'PWRatio': 0.17,
-          'ZeroTo60': 3.22,
-          'TopSpeed': 139,
-          'QuartermileSec': 11.18,
-          'Name': 'Motorbike 10',
-          'WetWeight': 498,
-          'Stop60': 128.5,
-          'Color': '#FDDAEC',
-          'Price': 11998
         }]
+      // {
+      //   'MeanMPG': 45.6,
+      //   'RearWheelHP': 46.21,
+      //   'RearWheelTQLbFt': 35.65,
+      //   'PWRatio': 0.14,
+      //   'ZeroTo60': 4.56,
+      //   'TopSpeed': 107.5,
+      //   'QuartermileSec': 13.12,
+      //   'Name': 'Motorbike 6',
+      //   'WetWeight': 336.5,
+      //   'Stop60': 144.2,
+      //   'Color': '#FED9A6',
+      //   'Price': 10298
+      // },
+      // {
+      //   'MeanMPG': 29.4,
+      //   'RearWheelHP': 104.5,
+      //   'RearWheelTQLbFt': 110.2,
+      //   'PWRatio': 0.16,
+      //   'ZeroTo60': 3.88,
+      //   'TopSpeed': 130,
+      //   'QuartermileSec': 11.91,
+      //   'Name': 'Motorbike 7',
+      //   'WetWeight': 668,
+      //   'Stop60': 120.4,
+      //   'Color': '#FFFF99',
+      //   'Price': 13399
+      // },
+      // {
+      //   'MeanMPG': 41.1,
+      //   'RearWheelHP': 118.08,
+      //   'RearWheelTQLbFt': 62.68,
+      //   'PWRatio': 0.27,
+      //   'ZeroTo60': 3.24,
+      //   'TopSpeed': 152.3,
+      //   'QuartermileSec': 10.88,
+      //   'Name': 'Motorbike 8',
+      //   'WetWeight': 444.5,
+      //   'Stop60': 112.9,
+      //   'Color': '#8DA0CB',
+      //   'Price': 12995
+      // },
+      // {
+      //   'MeanMPG': 45,
+      //   'RearWheelHP': 74.7,
+      //   'RearWheelTQLbFt': 55.3,
+      //   'PWRatio': 0.17,
+      //   'ZeroTo60': 3.64,
+      //   'TopSpeed': 139,
+      //   'QuartermileSec': 11.74,
+      //   'Name': 'Motorbike 9',
+      //   'WetWeight': 451,
+      //   'Stop60': 114.4,
+      //   'Color': '#B3CDE3',
+      //   'Price': 10995
+      // },
+      // {
+      //   'MeanMPG': 37.3,
+      //   'RearWheelHP': 85.2,
+      //   'RearWheelTQLbFt': 60.4,
+      //   'PWRatio': 0.17,
+      //   'ZeroTo60': 3.22,
+      //   'TopSpeed': 139,
+      //   'QuartermileSec': 11.18,
+      //   'Name': 'Motorbike 10',
+      //   'WetWeight': 498,
+      //   'Stop60': 128.5,
+      //   'Color': '#FDDAEC',
+      //   'Price': 11998
+      // },
       // {
       //   'MeanMPG': 37.1,
       //   'RearWheelHP': 92.2,

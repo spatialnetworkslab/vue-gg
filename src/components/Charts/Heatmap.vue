@@ -1,17 +1,17 @@
 <!--
 SAMPLE COMPONENT DEFINITION
 
-<vgg-heatmap
-  :x1="200"
-  :x2="800"
-  :y1="100"
-  :y2="900"
-  :width="1000"
-  :height="1000"
-  :csvURL="'../../static/motorbikes_40_clean.csv'"
-  :color="'Color'"
-  :options="'Name'"
-/>
+When changing number of dimensions:
+
+1. Change dimensions prop (see commented out props)
+
+When changing number of options:
+
+1. Comment out parts of JSON in getData() as needed (this file has 40 objects by default)
+
+When changing which dimensions have their domains flipped
+
+1. Go to `flipScale`, add name of dimension accdg to specification in JSON
 
 -->
 
@@ -56,7 +56,7 @@ SAMPLE COMPONENT DEFINITION
             :y="row.Name"
             :w="{ band: { domain: dimensions } }"
             :h="{ band: { domain: options } }"
-            :fill="{val: row[dim], scale: { type: 'blues', domain: dim}}"
+            :fill="{val: row[dim], scale: { type: 'blues', domain: dim, reverse: flipScale.includes(dim) ? true : false}}"
             @hover="handleHover($event, row, i)"
             @click="handleClick($event, row, i)"
           />
@@ -157,9 +157,16 @@ export default {
       default: 'blues'
     },
 
+    flipScale: {
+      type: Array,
+      default: () => ['MeanMPG', 'ZeroTo60', 'Stop60']
+    },
+
     dimensions: {
       type: [Object, Array],
       default: () => ['Price', 'WetWeight', 'RearWheelHP', 'TopSpeed', 'MeanMPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']
+      //  ['Price', 'WetWeight', 'RearWheelHP', 'TopSpeed', 'MeanMPG']
+      //  ['Price', 'WetWeight', 'RearWheelHP']
     },
 
     options: {
@@ -169,34 +176,33 @@ export default {
 
     x1: {
       type: Number,
-      default: undefined
+      default: 200
     },
 
     x2: {
       type: Number,
-      default: undefined
+      default: 800
     },
 
     y1: {
       type: Number,
-      default: undefined
+      default: 100
     },
 
     y2: {
       type: Number,
-      default: undefined
+      default: 1000
     },
 
     width: {
       type: Number,
-      default: undefined
+      default: 1000
     },
 
     height: {
       type: Number,
-      default: undefined
+      default: 1100
     }
-
   },
 
   // hovered keeps track of whether a point is being hovered over (i.e. true or false)
@@ -820,31 +826,6 @@ export default {
       if (!this.dimensions) {
         this.dimensions = Object.keys(this.myData[0])
       }
-    },
-
-    processCSV (url) {
-      csv(url).then((data) => {
-        let allVariables = Object.keys(data[0])
-        let dimensions = {}
-        for (let i of allVariables) {
-          dimensions[i] = []
-        }
-        for (let i in data) {
-          let row = data[i]
-          if (row.constructor === Array) {
-            continue
-          }
-          for (let j of allVariables) {
-            let value = parseFloat(row[j])
-            if (isNaN(value)) {
-              dimensions[j].push(row[j])
-            } else {
-              dimensions[j].push(value)
-            }
-          }
-        }
-        this.myData = dimensions
-      })
     },
 
     // Customize as needed
