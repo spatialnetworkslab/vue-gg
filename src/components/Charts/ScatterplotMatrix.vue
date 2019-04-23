@@ -13,6 +13,7 @@
       :x2="950"
       :y1="50"
       :y2="950"
+      :transform="{ rename: extractVariables }"
     >
 
       <vgg-repeat
@@ -98,18 +99,18 @@ export default {
     // Pass the string to the .csv file
     // e.g. '../../../static/idcDrinksDemoClean.csv'
     // More likely than not, the .csv dataset should be in the static folder
-    // csvURL: {
-    //   type: String,
-    //   default: undefined
-    // },
+    csvURL: {
+      type: String,
+      default: undefined
+    },
     // Pass in an object of variables to extract from the dataset
     // The variables should be defined as such:
     // { 'original variable name 1':'NEW NAME 1', 'original variable name 2':'NEW NAME 2' }
     // The new names will be used to vary the x and y columns of the matrix
-    // extractVariables: {
-    //   type: Object,
-    //   default: undefined
-    // },
+    extractVariables: {
+      type: Object,
+      default: undefined
+    },
     // The name of the column in the dataset that encodes the color of the points
     // Since we have been using the col 'Color2', this is the current default
     // This can be changed if we ever define a new color column in the datasets
@@ -138,16 +139,15 @@ export default {
       hoverRow: undefined
     }
   },
-  // computed: {
-  //   newVariables () {
-  //     let renamedVars = []
-  //     for (let i of Object.keys(this.extractVariables)) {
-  //       renamedVars.push(this.extractVariables[i])
-  //     }
-  //
-  //     return renamedVars
-  //   }
-  // },
+  computed: {
+    newVariables () {
+      let renamedVars = []
+      for (let i of Object.keys(this.extractVariables)) {
+        renamedVars.push(this.extractVariables[i])
+      }
+      return renamedVars
+    }
+  },
 
   mounted () {
     this.getData()
@@ -734,30 +734,30 @@ export default {
         this.dimensions = Object.keys(this.myData[0])
       }
     },
-    // processCSV (url) {
-    //   csv(url).then((data) => {
-    //     let allVariables = Object.keys(data[0])
-    //     let categories = {}
-    //     for (let i of allVariables) {
-    //       categories[i] = []
-    //     }
-    //     for (let i in data) {
-    //       let row = data[i]
-    //       if (row.constructor === Array) {
-    //         continue
-    //       }
-    //       for (let j of allVariables) {
-    //         let value = parseFloat(row[j])
-    //         if (isNaN(value)) {
-    //           categories[j].push(row[j])
-    //         } else {
-    //           categories[j].push(value)
-    //         }
-    //       }
-    //     }
-    //     this.myData = categories
-    //   })
-    // },
+    processCSV (url) {
+      csv(url).then((data) => {
+        let allVariables = Object.keys(data[0])
+        let categories = {}
+        for (let i of allVariables) {
+          categories[i] = []
+        }
+        for (let i in data) {
+          let row = data[i]
+          if (row.constructor === Array) {
+            continue
+          }
+          for (let j of allVariables) {
+            let value = parseFloat(row[j])
+            if (isNaN(value)) {
+              categories[j].push(row[j])
+            } else {
+              categories[j].push(value)
+            }
+          }
+        }
+        this.myData = categories
+      })
+    },
     // Customize as needed
     handleHover (e, r, i) {
       this.hovered = e ? { r, i } : undefined
