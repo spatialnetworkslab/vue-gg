@@ -12,7 +12,7 @@ import {
 
 import { initMappingTree, extractMappings, mapRow } from './utils/mappings.js'
 
-import { createRenderOptions } from './utils/batchRenderer.js'
+import { createRenderOptions, renderMark } from './utils/batchRenderer.js'
 
 export default {
   mixins: [DataReceiver, CoordinateTreeUser, ScaleReceiver],
@@ -48,11 +48,15 @@ export default {
         $$coordinateTree: this.$$coordinateTree,
         parentBranch: this.parentBranch
       }
+    },
+
+    __interpolationNecessary () {
+      return this.interpolationNecessary(this.$$coordinateTreeParent)
     }
   },
 
   methods: {
-    mapRows () {
+    mapRows (createElement) {
       let mappings = null
       let context = this.context
 
@@ -67,8 +71,15 @@ export default {
           mappings = extractMappings(mappings, slotContent, context)
 
           let mappedContent = mapRow(mappings, slotContent, scope.i)
-          console.log(mappedContent)
-          mappedElements.push(...mappedContent)
+
+          let renderOptions = mappedContent.map(entry => createRenderOptions(entry, this.__interpolationNecessary))
+          let tags = mappedContent.map(entry => entry.componentOptions.tag)
+
+          let renderedEntries = renderOptions.map((options, i) => {
+            return renderMark(tags[i], createElement, this._renderContext, options)
+          })
+
+          mappedElements.push(...renderedEntries)
         }
       })
 
@@ -109,7 +120,19 @@ export default {
       }
     },
 
-    isSquareComponent
+    isSquareComponent,
+
+    interpolationNecessary (id) {
+      let currentLocation = this.$$coordinateTree.getBranch(id)
+      if (currentLocation.type !== 'scale') { return true }
+
+      while (currentLocation.parentID) {
+        currentLocation = this.$$coordinateTree.getBranch(currentLocation.parentID)
+        if (currentLocation.type !== 'scale') { return true }
+      }
+
+      return false
+    }
   },
 
   provide () {
@@ -120,7 +143,7 @@ export default {
     let elements
 
     if (this.unit === 'row') {
-      elements = this.mapRows()
+      elements = this.mapRows(createElement)
     }
 
     if (this.unit === 'dataframe') {

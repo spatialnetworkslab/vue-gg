@@ -7,12 +7,14 @@ import { renderSVG as renderSymbolSVG } from '../../../rendering/symbol.js'
 import { renderSVG as renderTrailSVG } from '../../../rendering/trail.js'
 
 import componentPropDefaults from './componentPropDefaults.js'
+import componentInterpolateDefaults from './componentInterpolateDefaults.js'
 
-export function createRenderOptions (tag, slotEntry) {
+export function createRenderOptions (slotEntry, interpolationNecessary) {
+  let tag = slotEntry.componentOptions.tag
   let props = generateProps(tag, slotEntry.componentOptions.propsData)
-  let interpolate
+  let interpolate = generateInterpolate(tag, slotEntry.componentOptions.propsData.interpolate, interpolationNecessary)
   let addToSpatialIndex = createIndexFunction(tag)
-  let pathType
+  let pathType = getPathType(tag)
 
   return { props, interpolate, addToSpatialIndex, pathType }
 }
@@ -23,9 +25,18 @@ function generateProps (tag, props) {
   return Object.assign(newDefaults, props)
 }
 
+function generateInterpolate (tag, interpolateProp, interpolationNecessary) {
+  let getInterpolate = componentInterpolateDefaults[tag]
+  return getInterpolate(interpolateProp, interpolationNecessary)
+}
+
 function createIndexFunction (tag) {
   // TODO
   return coords => coords
+}
+
+function getPathType (tag) {
+  return pathTypeLookup[tag]
 }
 
 export function renderMark (tag, createElement, renderContext, renderOptions) {
@@ -46,8 +57,10 @@ const renderFuncLookup = {
   'vgg-trail': renderTrailSVG
 }
 
-function extractDefaults (propsDefinition) {
-  for (let propName in propsDefinition) {
-
-  }
+const pathTypeLookup = {
+  'vgg-area': 'area',
+  'vgg-multi-line': 'multiline',
+  'vgg-path': 'path',
+  'vgg-polygon': 'polygon',
+  'vgg-trail': 'trail'
 }
