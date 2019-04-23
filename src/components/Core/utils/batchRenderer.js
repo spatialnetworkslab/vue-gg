@@ -4,15 +4,23 @@ import { renderSVG as renderPathSVG } from '../../../rendering/path.js'
 import { renderSVG as renderPointSVG } from '../../../rendering/point.js'
 import { renderSVG as renderRectangleSVG } from '../../../rendering/rectangle.js'
 import { renderSVG as renderSymbolSVG } from '../../../rendering/symbol.js'
-import { renderSVG as renderTrailSVG } from '../../../rendering/trial.js'
+import { renderSVG as renderTrailSVG } from '../../../rendering/trail.js'
+
+import componentPropDefaults from './componentPropDefaults.js'
 
 export function createRenderOptions (tag, slotEntry) {
-  let props = slotEntry.componentOptions.propsData
+  let props = generateProps(tag, slotEntry.componentOptions.propsData)
   let interpolate
   let addToSpatialIndex = createIndexFunction(tag)
   let pathType
 
   return { props, interpolate, addToSpatialIndex, pathType }
+}
+
+function generateProps (tag, props) {
+  let defaults = componentPropDefaults[tag]
+  let newDefaults = Object.assign({}, defaults)
+  return Object.assign(newDefaults, props)
 }
 
 function createIndexFunction (tag) {
@@ -36,4 +44,10 @@ const renderFuncLookup = {
   'vgg-rectangle': renderRectangleSVG,
   'vgg-symbol': renderSymbolSVG,
   'vgg-trail': renderTrailSVG
+}
+
+function extractDefaults (propsDefinition) {
+  for (let propName in propsDefinition) {
+
+  }
 }

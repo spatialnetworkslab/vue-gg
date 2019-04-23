@@ -12,6 +12,8 @@ import {
 
 import { initMappingTree, extractMappings, mapRow } from './utils/mappings.js'
 
+import { createRenderOptions } from './utils/batchRenderer.js'
+
 export default {
   mixins: [DataReceiver, CoordinateTreeUser, ScaleReceiver],
 
