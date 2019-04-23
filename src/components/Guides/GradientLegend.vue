@@ -151,8 +151,12 @@ export default {
     colors () {
       let fill; let fillOpacity; let colors = []; let l = []
 
-      for (let i = 0; i < this.legendTicks.length - 1; i++) {
-        l.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
+      if (this._domainType.includes('interval')) {
+        for (let i = 0; i < this.legendTicks.length - 1; i++) {
+          l.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
+        }
+      } else {
+        l = this.legendTicks
       }
 
       // create fill/fillOpacity scales for rectangles

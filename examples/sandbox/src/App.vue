@@ -130,6 +130,10 @@ export default {
       // console.log(timetable)
       return timetable
     }
+  },
+
+  methods: {
+    log: console.log
   }
 }
 </script>
@@ -144,3 +148,4 @@ export default {
   float: left;
 }
 </style>
+

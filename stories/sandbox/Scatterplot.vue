@@ -83,7 +83,7 @@
 
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
-        :size="{ range: [0, 10] }"
+        :size="[0, 10]"
         :tick-count="8"
         position="br"
         title="Size"
