@@ -44,6 +44,7 @@ import IdcYAxis from './Guides/idcYAxis.vue'
 
 import Heatmap from './Charts/Heatmap.vue'
 import ParallelCoordinates from './Charts/ParallelCoordinates.vue'
+import ParallelCoordinatesUnscaled from './Charts/ParallelCoordinatesUnscaled.vue'
 import ScatterplotMatrix from './Charts/ScatterplotMatrix.vue'
 import Radar from './Charts/Radar.vue'
 
@@ -90,5 +91,6 @@ export default {
   Heatmap,
   ScatterplotMatrix,
   ParallelCoordinates,
+  ParallelCoordinatesUnscaled,
   Radar
 }

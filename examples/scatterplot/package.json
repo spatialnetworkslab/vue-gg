@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "vue": "^2.6.6",
-    "vue-gg": "git://github.com/spatialnetworkslab/vue-gg#6afd2586d01d705245598da2edd5fa697761e4ea"
+    "vue-gg": "git://github.com/spatialnetworkslab/vue-gg#6afd2586d01d705245598da2edd5fa697761e4ea",
+    "vue-multiselect": "^2.1.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

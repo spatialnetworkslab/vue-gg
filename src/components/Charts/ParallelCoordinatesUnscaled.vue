@@ -1,14 +1,13 @@
 <!--
 SAMPLE COMPONENT DEFINITION
 
-<vgg-radar
+ <vgg-parallel-coordinates
   :x1="100"
-  :x2="1100"
+  :x2="1500"
   :y1="100"
-  :y2="1900"
-  :width="1200"
-  :height="2000"
-  :rows="8"
+  :y2="700"
+  :width="1600"
+  :height="800"
   :csvURL="'../../static/motorbikes_40_clean.csv'"
   :extract-variables="{
     'Base MSRP': 'Price',
@@ -25,6 +24,7 @@ SAMPLE COMPONENT DEFINITION
   :dimensions="['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']"
   :options="'Name'"
 />
+
 -->
 <template>
   <div>
@@ -34,202 +34,55 @@ SAMPLE COMPONENT DEFINITION
       :height="height"
       :data="myData"
     >
-
       <g v-if="myData">
         <vgg-section
           :x1="x1"
           :x2="x2"
           :y1="y1"
           :y2="y2"
-          :scale-x="[0, 100]"
-          :scale-y="[0, 100]"
-          :transform="[
-          ]"
+          :scale-x="[0, 10]"
+          :scale-y="[0, 10]"
         >
-          <vgg-grid
-            :rows="rows"
-            :cell-padding="{
-              t: 4.7,
-              l: 5,
-              r: 5
-            }"
-          >
-            <!-- <vgg-map
-              v-slot="{ dataframe }"
-              unit="dataframe"> -->
-            <vgg-map v-slot="{ row, i }">
-              <!-- 3 dim -->
-              <vgg-section
-                :scale-x="dimensions"
-                :key="i"
-                :scale-y="[0, 10]"
-                :grid-lines="['x', 'y']"
-                :transform="[
-                  { scale: {
-                    scaledPrice: { prop: 'y', column: 'Price', scale: { domain: 'Price', reverse: true, range: [0, 10] } },
-                    scaledWW: { prop: 'y', column: 'Weight', scale: { domain: 'Weight', range: [0, 10] } },
-                    scaledHP: { prop: 'y', column: 'Horsepower', scale: { domain: 'Horsepower', range: [0, 10] } },
-                    scaledSpeed: { prop: 'y', column: 'Top Speed', scale: { domain: 'Top Speed', range: [0, 10] } },
-                    scaledMiles: { prop: 'y', column: 'Miles per Gallon', scale: { domain: 'Miles per Gallon', range: [0, 10] } },
-                  }
-                  },
-                  { transform: df => { log(dimensions, df); return df; }}
-                ]"
-                type="polar"
-              >
 
-                <!-- 5 dim -->
-                <!-- <vgg-section
-                :scale-x="dimensions"
-                :key="i"
-                :scale-y="[0, 10]"
-                :grid-lines="['x', 'y']"
-                :transform="[
-                  { scale: {
-                    scaledPrice: { prop: 'y', column: 'Price', scale: { domain: 'Price', reverse: true, range: [0, 10] } },
-                    scaledWW: { prop: 'y', column: 'WetWeight', scale: { domain: 'WetWeight', range: [0, 10] } },
-                    scaledHP: { prop: 'y', column: 'RearWheelHP', scale: { domain: 'RearWheelHP', range: [0, 10] } },
-                    scaledSpeed: { prop: 'y', column: 'TopSpeed', scale: { domain: 'TopSpeed', range: [0, 10] } },
-                    scaledMiles: { prop: 'y', column: 'MeanMPG', scale: { domain: 'MeanMPG', reverse: true, range: [0, 10] } },
-                  }
-                  },
-                ]"
-                type="polar"
-              > -->
+          <vgg-map
+            v-slot="{ dataframe }"
+            unit="dataframe">
+            <vgg-y-axis
+              v-for="dim, d in axes(dataframe, dimensions, options)"
+              :key="d"
+              :scale="{domain: dim.domain, domainMin: dim.domain[0], domainMax: dim.domain[1]}"
+              :hjust="1/ dimensions.length * d"
+              :title="dim.dimension"
+              :title-vjust="1.05"
+              :title-hjust="0.5"
+              :tick-opacity="3"
+              :title-font-size="12"
+              :tick-length="0.1"
+              :label-font-size="10"
+              :title-font-weight="700"
+            />
 
-                <!-- 10 dim -->
-                <!-- <vgg-section
-                :scale-x="dimensions"
-                :key="i"
-                :scale-y="[0, 10]"
-                :grid-lines="['x', 'y']"
-                :transform="[
-                  { scale: {
-                    scaledPrice: { prop: 'y', column: 'Price', scale: { domain: 'Price', reverse: true, range: [0, 10] } },
-                    scaledWW: { prop: 'y', column: 'WetWeight', scale: { domain: 'WetWeight', range: [0, 10] } },
-                    scaledHP: { prop: 'y', column: 'RearWheelHP', scale: { domain: 'RearWheelHP', range: [0, 10] } },
-                    scaledSpeed: { prop: 'y', column: 'TopSpeed', scale: { domain: 'TopSpeed', range: [0, 10] } },
-                    scaledMiles: { prop: 'y', column: 'MeanMPG', scale: { domain: 'MeanMPG', reverse: true, range: [0, 10] } },
-                    scaledZero60: { prop: 'y', column: 'ZeroTo60', scale: { domain: 'ZeroTo60', reverse: true, range: [0, 10] } },
-                    scaledStop60: { prop: 'y', column: 'Stop60', scale: { domain: 'Stop60', reverse: true, range: [0, 10] } },
-                    scaledRwtq: { prop: 'y', column: 'RearWheelTQLbFt', scale: { domain: 'RearWheelTQLbFt', reverse: true, range: [0, 10] } },
-                    scaledQuartersec: { prop: 'y', column: 'QuartermileSec', scale: { domain: 'QuartermileSec', reverse: true, range: [0, 10] } },
-                    scaledPwr: { prop: 'y', column: 'PWRatio', scale: { domain: 'PWRatio', reverse: true, range: [0, 10] } }
-                  }
-                  },
-                ]"
-                type="polar"
-              > -->
+            <vgg-multi-line
+              v-for="segment, i in segments(dataframe, dimensions, options)"
+              :key="i + dimensions.length"
+              :x="segment.x"
+              :y="segment.y"
+              :stroke="segment.color"
+              stroke-linecap="round"
+              @hover="handleHover($event, segment, dataframe[options][i], i)"
+            />
+          </vgg-map>
+          <vgg-multi-line
+            v-if="hoverRow"
+            :x="hoverRow.x"
+            :y="hoverRow.y"
+            :stroke-width="5"
+            stroke="black"
+          />
 
-                <vgg-label
-                  v-for="dim, d in dimensions"
-                  :key="d + dimensions.length"
-                  :text="dim"
-                  :x="10/dimensions.length * d"
-                  :y="15"
-                  :opacity="0.7"
-                  :font-size="12"
-                  :font-weight="600"
-
-                />
-                <!--
-                  <vgg-y-axis
-                    v-for="dim, d in dimensions"
-                    :key="d + dimensions.length"
-                    :scale="dim"
-                    :x="dim"
-                    :tick-length="0.01"
-                    :domain-opacity="0.3"
-                    :label-font-size="8"
-                    :label-opacity="0.4"
-                    :title-font-weight="700"
-                    :tick-count="3"
-                    label-rotate
-                  /> -->
-
-                <vgg-y-axis
-                  v-for="(v, i) in dimensions"
-                  :key="i + dimensions.length * 2 + 1"
-                  :x="v"
-                  :w="20"
-                  :y1="0"
-                  :y2="10"
-                  :scale="flipScale.includes(v) ? {domain: v, reverse: true, domainMin: 0} : {domain: v, domainMin: 0}"
-                  :tick-count="2"
-                  :title-vjust="1.05"
-                  :title-hjust="0.5"
-                  :tick-opacity="0.6"
-                  :title-font-size="14"
-                  :tick-length="0.3"
-                  :label-font-size="14"
-                  :label-opacity="0.7"
-                  :title-font-weight="700"
-                />
-
-                <vgg-map
-                  v-slot ="{ dataframe }"
-                  unit ="dataframe">
-
-                  <!-- 5 dim -->
-                  <vgg-multi-line
-                    :x="dimensions"
-                    :y="[dataframe.scaledPrice[i], dataframe.scaledWW[i], dataframe.scaledHP[i], dataframe.scaledSpeed[i], dataframe.scaledMiles[i]]"
-                    :stroke="'black'"
-                    :close="true"
-                    :fill-opacity="0.4"
-                    :fill="row.Color"
-                    stroke-linecap="round"
-                    @hover="handleHover($event, row, i)"
-                  />
-
-                </vgg-map>
-
-                <vgg-multi-line
-                  v-if="hoverRow"
-                  :x="[0, 1, 2, 3, 4, 5, 6, 7, 8,9, 10 ]"
-                  :y="[10]"
-                  :stroke="hoverRow.Name === row.Name ? 'red' : 'none'"
-                  :stroke-width="5"
-                  :fill="hoverRow.Name === row.Name ? 'red' : 'none'"
-                  :fill-opacity="0.2"
-                  close
-                />
-
-                <!--<vgg-multi-line
-                  v-if="hoverRow"
-                  :x="[0, 1, 2, 3, 4, 5, 6, 7, 8,9, 10 ]"
-                  :y="[10]"
-                  :stroke="hoverRow.Name === row.Name ? 'red' : 'none'"
-                  :stroke-width="5"
-                  :fill="hoverRow.Name === row.Name ? 'red' : 'none'"
-                  :fill-opacity="0.2"
-                  close
-                />
-
-                <vgg-multi-line
-                  v-if="clickRow"
-                  :x="[0, 1, 2, 3, 4, 5, 6, 7, 8 , 9, 0]"
-                  :y="[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]"
-                  :stroke="clickRow.Name === row.Name ? 'red' : 'none'"
-                  :stroke-width="5"
-                  :fill="clickRow.Name === row.Name ? 'red' : 'none'"
-                  :fill-opacity="0.2"
-                  close
-                /> -->
-                <!--
-                <vgg-label
-                  :text="dataframe[options][s-1]"
-                  :x="5"
-                  :y="0"
-                  :opacity="0.2"
-                  :font-size="20"
-                  :font-weight="700"/> -->
-
-              </vgg-section>
-            </vgg-map>
-          </vgg-grid>
         </vgg-section>
       </g>
+
     </vgg-graphic>
 
   </div>
@@ -240,9 +93,7 @@ import { csv } from 'd3-fetch'
 import { scaleOrdinal, scaleLinear } from 'd3-scale'
 
 export default {
-  name: 'Radar',
-
-  // rotation code :rotation="360/(dimensions.length-1) * (d % 5)"
+  name: 'ParallelCoordinates',
   props: {
     // Use either data or csvURL
     // For data, format as [ { variable1: , variable2: }, { variable1: , variable2: } ]
@@ -277,6 +128,11 @@ export default {
     colorScale: {
       type: String,
       default: 'blues'
+    },
+
+    dimensions: {
+      type: [Object, Array],
+      default: () => ['Price', 'Weight', 'Horsepower', 'Top Speed', 'Miles per Gallon']
     },
 
     options: {
@@ -314,19 +170,9 @@ export default {
       default: undefined
     },
 
-    rows: {
-      type: Number,
-      default: 5
-    },
-
     flipScale: {
       type: Array,
-      default: () => ['MeanMPG', 'ZeroTo60', 'Stop60']
-    },
-
-    dimensions: {
-      type: [Object, Array],
-      default: () => ['Price', 'Weight', 'Horsepower', 'Top Speed', 'Miles per Gallon']
+      default: () => ['Miles per Gallon']
     }
   },
   // hovered keeps track of whether a point is being hovered over (i.e. true or false)
@@ -340,10 +186,7 @@ export default {
       myData: undefined,
       hovered: undefined,
       hoverRow: undefined,
-      clicked: undefined,
-      clickRow: undefined,
-      axesScales: undefined,
-      dataframe: undefined
+      axesScales: undefined
     }
   },
 
@@ -392,9 +235,6 @@ export default {
       // } else {
       //   this.processCSV(this.csvURL)
       // }
-
-      // JSON samples are in `static` folder (motorbikes, drinks, cameras, cars)
-      // to change data inside myData, load the relevant JSON here
 
       this.myData =
       [
@@ -787,50 +627,40 @@ export default {
     },
 
     // Customize as needed
-    handleHover (e, r, i) {
+    handleHover (e, s, r, i) {
+      console.log('!!!', e, s, r, i)
       this.hovered = e ? { r, i } : undefined
       if (this.hovered) {
-        this.hoverRow = r
+        this.hoverRow = s
       } else {
         this.hovered = undefined
         this.hoverRow = undefined
       }
-      console.log(e, r, i)
     },
 
-    // Customize as needed
-    handleClick (e, r, i) {
-      this.clicked = e ? { r, i } : undefined
-      if (this.clicked) {
-        this.clickRow = r
-      } else {
-        this.clicked = undefined
-        this.clickRow = undefined
-      }
-    },
-
-    createDomain (domain) {
-      let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
+    createDomain (dimension, domain) {
+      let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 10
 
       if (newDomain[0] > 1000 && newDomain[1] > 1000) {
-        rounder = 500
+        rounder = 100
       } else if (newDomain[0] > 100 && newDomain[1] > 100) {
-        rounder = 50
+        rounder = 10
       } else if (newDomain[0] > 10 && newDomain[1] > 10) {
-        rounder = 5
+        rounder = 1
       } else if (newDomain[0] > 1 && newDomain[1] > 1) {
-        rounder = 0.5
-      } else if (newDomain[0] < 1 && newDomain[1] < 1) {
-        rounder = 0.01
+        rounder = 0.1
       }
 
-      newDomain = [Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
-
+      if (this.flipScale.includes(dimension)) {
+        newDomain = [ Math.ceil(newDomain[1] / rounder) * rounder, Math.floor(newDomain[0] / rounder) * rounder]
+      } else {
+        newDomain = [ Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
+      }
       return newDomain
     },
 
     // Manually creates scales per dimension axes
-    axes (dataframe, dimensions, options, s) {
+    axes (dataframe, dimensions, options) {
       let newAxes = []
       for (let dim = 0; dim < dimensions.length; dim++) {
         let domain = dataframe[dimensions[dim]]
@@ -838,25 +668,29 @@ export default {
         if (isNaN(parseFloat(domain[0]))) {
           newAxes.push({ dimension: dimensions[dim], domain })
         } else {
-          newAxes.push({ dimension: dimensions[dim], domain: this.createDomain(domain) })
+          newAxes.push({ dimension: dimensions[dim], domain: this.createDomain(dimensions[dim], domain) })
         }
       }
-      this.axesScales = newAxes
-      this.dataframe = dataframe
 
+      this.axesScales = newAxes
       return newAxes
     },
 
-    scaleCoords (dataframe, s) {
-      let x = []; let y = []
-      let deltaX = 10 / this.dimensions.length
-      let name = dataframe[this.options][s]
-      for (let d = 0; d < this.dimensions.length; d++) {
-        y.push(this.newScales[this.dimensions[d]](dataframe[this.dimensions[d]][s]))
-        x.push(deltaX * d)
+    segments (dataframe, dimensions, options) {
+      let segments = []
+      for (let d = 0; d < dataframe[this.options].length; d++) {
+        let y = []; let x = []
+        let deltaX = 10 / dimensions.length
+
+        for (let i = 0; i < dimensions.length; i++) {
+          x.push(deltaX * i)
+          y.push(this.newScales[dimensions[i]](dataframe[dimensions[i]][d]))
+        }
+
+        segments.push({ x, y, color: this.myData[d][this.color] })
       }
 
-      return { x, y, name }
+      return segments
     }
   }
 }
