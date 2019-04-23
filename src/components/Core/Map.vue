@@ -15,7 +15,7 @@ import { initMappingTree, extractMappings, mapRow } from './utils/mappings.js'
 export default {
   mixins: [DataReceiver, CoordinateTreeUser, ScaleReceiver],
 
-  inject: ['$$grid'],
+  inject: ['$$grid', '$$transform', '$$interactionManager', '$$sectionParentChain'],
 
   props: {
     unit: {
@@ -32,6 +32,19 @@ export default {
         parentBranch: this.parentBranch,
         dataInterface: this.$$dataInterface,
         scaleManager: this.$$scaleManager
+      }
+    },
+
+    sectionParentChain () {
+      return JSON.stringify(this.$$sectionParentChain)
+    },
+
+    _renderContext () {
+      return {
+        $$transform: this.$$transform,
+        $$coordinateTreeParent: this.$$coordinateTreeParent,
+        $$coordinateTree: this.$$coordinateTree,
+        parentBranch: this.parentBranch
       }
     }
   },
@@ -52,6 +65,7 @@ export default {
           mappings = extractMappings(mappings, slotContent, context)
 
           let mappedContent = mapRow(mappings, slotContent, scope.i)
+          console.log(mappedContent)
           mappedElements.push(...mappedContent)
         }
       })
