@@ -67,8 +67,6 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
   domain = updateDomain(domain, domainType, scaleOptions)
 
-  console.log(domain)
-
   return [domain, domainType, scaleOptions]
 }
 

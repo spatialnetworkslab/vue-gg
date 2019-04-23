@@ -264,6 +264,8 @@ export default {
         return domain.hasOwnProperty('domain')
       } else if (domain.constructor === Array) {
         return true
+      } else if (domain.constructor === String && domain.startsWith('#')) {
+        return true
       } else {
         return false
       }

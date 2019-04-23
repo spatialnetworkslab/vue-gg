@@ -2,31 +2,20 @@
   <vgg-graphic
     :width="600"
     :height="600"
-    :data="[
-      { date: new Date('November 16, 2018') },
-      { date: new Date('November 17, 2018') },
-      { date: new Date('November 18, 2018') }
-    ]"
   >
+
+    <vgg-scales
+      :scales="{ temp: [new Date('November 16, 2018'), new Date('November 18, 2018')] }"
+    />
 
     <vgg-section
       :x1="100"
       :x2="500"
       :y1="100"
       :y2="500"
-      :scale-x="'date'"
+      :scale-x="'#temp'"
       :scale-y="[0, 100]"
     >
-
-      <vgg-map v-slot="{ row, i }">
-
-        <vgg-point
-          :x="{ val: row.date }"
-          :y="50"
-          :size="14"
-        />
-
-      </vgg-map>
 
       <vgg-polygon
         :points="[
@@ -38,7 +27,7 @@
 
       <vgg-x-axis
         :tick-count="3"
-        scale="date"
+        scale="#temp"
       />
 
     </vgg-section>
