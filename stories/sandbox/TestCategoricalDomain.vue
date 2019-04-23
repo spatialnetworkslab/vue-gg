@@ -1,5 +1,5 @@
 <template>
-  <!-- <vgg-graphic
+  <vgg-graphic
     :width="600"
     :height="600"
     :data="[
@@ -16,9 +16,6 @@
       :y2="500"
       :scale-x="'date'"
       :scale-y="[0, 100]"
-      :select="'rectangle'"
-      :selection-bounds.sync="selectionBounds"
-      @selectionDone="log($event)"
     >
 
       <vgg-map v-slot="{ row, i }">
@@ -45,67 +42,6 @@
       />
 
     </vgg-section>
-
-    <vgg-polygon
-      v-if="selectionBounds.length > 1"
-      :points="selectionBounds"
-      :fill="'green'"
-      :opacity="0.3"
-    />
-
-  </vgg-graphic> -->
-  <vgg-graphic
-    :width="600"
-    :height="600"
-    :data="{
-      a: ['apple', 'banana', 'coconut', 'banana', 'coconut', 'apple', 'durian'],
-      b: [0, 32, 67, 34, 23, 12, 9]
-    }"
-  >
-
-    <vgg-section
-      :x1="100"
-      :x2="500"
-      :y1="100"
-      :y2="500"
-      :scale-x="'a'"
-      :scale-y="'b'"
-      :select="'rectangle'"
-      :selection-bounds.sync="selectionBounds"
-      @selectionDone="log($event)"
-    >
-
-      <vgg-map v-slot="{ row, i }">
-
-        <vgg-point
-          :x="row.a"
-          :y="row.b"
-          :size="14"
-        />
-
-      </vgg-map>
-
-      <vgg-polygon
-        :points="[
-          ['apple', 25],
-          ['coconut', 55],
-          ['durian', 20]
-        ]"
-      />
-
-      <vgg-x-axis
-        :tick-count="3"
-        scale="a"
-      />
-
-    </vgg-section>
-
-    <vgg-polygon
-      v-if="selectionBounds.length > 1"
-      :points="selectionBounds"
-      :fill="'green'"
-      :opacity="0.3"
-    />
 
   </vgg-graphic>
 </template>
