@@ -63,6 +63,8 @@ export default {
       let mappedElements = []
 
       this.$$dataInterface.forEachRow(scope => {
+        let rowUUID = `${this.uuid}_${scope.i}`
+
         let slotContent = this.$scopedSlots.default(scope) || []
         slotContent = slotContent.filter(el => el.tag !== undefined)
 
@@ -72,7 +74,12 @@ export default {
 
           let mappedContent = mapRow(mappings, slotContent, scope.i)
 
-          let renderOptions = mappedContent.map(entry => createRenderOptions(entry, this.__interpolationNecessary))
+          let renderOptions = mappedContent.map((entry, i) => {
+            return createRenderOptions(
+              entry, this.__interpolationNecessary, this.$$interactionManager,
+              `${rowUUID}_${i}`, this.sectionParentChain
+            )
+          })
           let tags = mappedContent.map(entry => entry ? entry.componentOptions.tag : undefined)
 
           let renderedEntries = renderOptions.map((options, i) => {

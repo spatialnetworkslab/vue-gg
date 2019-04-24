@@ -11,12 +11,24 @@ import Section from '../Section.vue'
 import componentPropDefaults from './componentPropDefaults.js'
 import componentInterpolateDefaults from './componentInterpolateDefaults.js'
 
-export function createRenderOptions (slotEntry, interpolationNecessary) {
+export function createRenderOptions (slotEntry, interpolationNecessary, interactionManager, uuid, sectionParentChain) {
   if (!slotEntry) return
+
   let tag = slotEntry.componentOptions.tag
+
   let props = generateProps(tag, slotEntry.componentOptions.propsData)
-  let interpolate = generateInterpolate(tag, slotEntry.componentOptions.propsData.interpolate, interpolationNecessary)
-  let addToSpatialIndex = createIndexFunction(tag)
+
+  let interpolate = generateInterpolate(
+    tag, slotEntry.componentOptions.propsData.interpolate, interpolationNecessary
+  )
+
+  let listeners = slotEntry.componentOptions.listeners
+  let events = parseEvents(listeners)
+
+  let addToSpatialIndex = createIndexFunction(
+    tag, interactionManager, props, events, uuid, sectionParentChain
+  )
+
   let pathType = getPathType(tag)
 
   return { props, interpolate, addToSpatialIndex, pathType }
@@ -33,9 +45,30 @@ function generateInterpolate (tag, interpolateProp, interpolationNecessary) {
   return getInterpolate(interpolateProp, interpolationNecessary)
 }
 
-function createIndexFunction (tag) {
-  // TODO
-  return coords => coords
+function createIndexFunction (tag, interactionManager, props, events, uuid, sectionParentChain) {
+  return coords => {
+    if (events) {
+      interactionManager.addItem(uuid, 'point', coords, props, events, sectionParentChain)
+    }
+  }
+}
+
+function parseEvents (listeners) {
+  if (!listeners) { return undefined }
+
+  const allowedEvents = ['click', 'hover', 'mouseover', 'mouseout', 'select', 'deselect']
+
+  let events = {}
+  let moreThanZeroAllowedEvents = false
+
+  for (let event of allowedEvents) {
+    if (listeners.hasOwnProperty(event)) {
+      events[event] = listeners[event]
+      moreThanZeroAllowedEvents = true
+    }
+  }
+
+  return moreThanZeroAllowedEvents ? events : undefined
 }
 
 function getPathType (tag) {
