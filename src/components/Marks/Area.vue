@@ -22,8 +22,8 @@ export default {
     },
 
     stroke: {
-      type: [String, undefined],
-      default: undefined
+      type: String,
+      default: 'none'
     },
 
     points: {

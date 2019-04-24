@@ -71,7 +71,7 @@ function extractDefaults (component) {
 }
 
 function mergeDefaults (mixin, component) {
-  return Object.assign(mixin, component)
+  return Object.assign(JSON.parse(JSON.stringify(mixin)), component)
 }
 
 extractAllDefaults()
