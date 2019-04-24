@@ -2195,7 +2195,7 @@ d3-interpolate@1, d3-interpolate@^1.3.2:
   dependencies:
     d3-color "1"
 
-d3-path@1:
+d3-path@1, d3-path@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.7.tgz#8de7cd693a75ac0b5480d3abaccd94793e58aae8"
 
@@ -3191,10 +3191,6 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-geostats@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/geostats/-/geostats-1.7.0.tgz#a1a8e5aa033cef0588059a03d0cc04c061c8ad33"
-
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
@@ -4135,6 +4131,11 @@ lodash.clonedeep@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
 lodash.defaultsdeep@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.defaultsdeep/-/lodash.defaultsdeep-4.6.0.tgz#bec1024f85b1bd96cbea405b23c14ad6443a6f81"
@@ -4458,10 +4459,6 @@ mute-stream@0.0.7:
 nan@^2.9.2:
   version "2.12.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.12.1.tgz#7b1aa193e9aa86057e3c7bbd0ac448e770925552"
-
-nanoid@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-2.0.1.tgz#deb55cac196e3f138071911dabbc3726eb048864"
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -5438,6 +5435,11 @@ querystringify@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.0.tgz#7ded8dfbf7879dcc60d0a644ac6754b283ad17ef"
 
+quickselect@^1.0.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/quickselect/-/quickselect-1.1.1.tgz#852e412ce418f237ad5b660d70cffac647ae94c2"
+  integrity sha512-qN0Gqdw4c4KGPsBOQafj6yj/PA6c/L63f6CaZ/DCF/xF4Esu3jVmKLUDYxghFx8Kb/O7y9tI7x2RjTSXwdK1iQ==
+
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
@@ -5463,6 +5465,13 @@ raw-body@2.3.3:
     http-errors "1.6.3"
     iconv-lite "0.4.23"
     unpipe "1.0.0"
+
+rbush@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/rbush/-/rbush-2.0.2.tgz#bb6005c2731b7ba1d5a9a035772927d16a614605"
+  integrity sha512-XBOuALcTm+O/H8G90b6pzu6nX6v2zCKiFG4BJho8a+bY6AER6t8uQUZdi5bomQc0AprCWhEGa7ncAbbRap0bRA==
+  dependencies:
+    quickselect "^1.0.1"
 
 rc@^1.2.7:
   version "1.2.8"
@@ -6686,24 +6695,26 @@ vue-eslint-parser@^5.0.0:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
-"vue-gg@git://github.com/spatialnetworkslab/vue-gg#6afd2586d01d705245598da2edd5fa697761e4ea":
-  version "0.1.0"
-  resolved "git://github.com/spatialnetworkslab/vue-gg#6afd2586d01d705245598da2edd5fa697761e4ea"
+vue-gg@^0.0.5-beta.9:
+  version "0.0.5-beta.9"
+  resolved "https://registry.yarnpkg.com/vue-gg/-/vue-gg-0.0.5-beta.9.tgz#2df5411b82d96b29e1e47cfcd657f4937d5eb462"
+  integrity sha512-tIMsMX1U7SQ+ml+s90HJEAcioTx/sT9tLqs6JO9SKF9tqYpBWW1msHq+Bz0TzwokCNK0lZ22wzYeqg7ufTuKgw==
   dependencies:
     "@turf/meta" "^6.0.2"
     d3-array "^2.0.2"
     d3-geo "^1.11.3"
     d3-interpolate "^1.3.2"
+    d3-path "^1.0.7"
     d3-scale "^2.1.2"
     d3-scale-chromatic "^1.3.3"
     d3-shape "^1.2.2"
     d3-time-format "^2.1.3"
-    geostats "^1.7.0"
     lodash.clonedeep "^4.5.0"
-    nanoid "^2.0.1"
+    lodash.debounce "^4.0.8"
     proj4 "^2.5.0"
-    vue "2.6.1"
-    vue-server-renderer "2.6.1"
+    rbush "^2.0.2"
+    vue "^2.6.1"
+    vue-server-renderer "^2.6.1"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.3"
@@ -6724,9 +6735,10 @@ vue-multiselect@^2.1.4:
   resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.4.tgz#2a7b4958b75881ed34db45532974c36f9abfbc67"
   integrity sha512-ryd2Ybl56LE81IxlwbZUo4gAWnUSG45iUGX4KgVwsteitK2R+cOLwJaJescobpIDJnVlVorRUnX5u7my1vBu2w==
 
-vue-server-renderer@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.6.1.tgz#a5076076ea1b1cd517e8556ea5362232d042606f"
+vue-server-renderer@^2.6.1:
+  version "2.6.10"
+  resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.6.10.tgz#cb2558842ead360ae2ec1f3719b75564a805b375"
+  integrity sha512-UYoCEutBpKzL2fKCwx8zlRtRtwxbPZXKTqbl2iIF4yRZUNO/ovrHyDAJDljft0kd+K0tZhN53XRHkgvCZoIhug==
   dependencies:
     chalk "^1.1.3"
     hash-sum "^1.0.2"
@@ -6755,9 +6767,10 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
 
-vue@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.1.tgz#2167a19e6489ff8082388f7c5f5caf56a32ddba9"
+vue@^2.6.1:
+  version "2.6.10"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
+  integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
 vue@^2.6.6:
   version "2.6.8"

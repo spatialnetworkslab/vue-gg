@@ -1,0 +1,8 @@
+#Edits
+ - removed originStation and destinationStation fields
+ - changed departure and arrival time and station to "time" and "station"
+ - removed odpt prefix
+ - !! got nextTrainTimetable!!
+
+#Edits in Station.json
+ - removed odpt prefix

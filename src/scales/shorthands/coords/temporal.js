@@ -5,5 +5,6 @@ export default {
 }
 
 function temporal (domain, range) {
+  console.log(domain)
   return d3.scaleTime().domain(domain).nice().range(range)
 }

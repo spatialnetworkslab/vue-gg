@@ -207,6 +207,7 @@ export default {
 
   computed: {
     parsedScalingOptions () {
+      console.log('1234', this.axisCache.scale)
       return parseScaleOptions(this.axisCache.scale, this.$$dataInterface, this.$$scaleManager)
     },
 

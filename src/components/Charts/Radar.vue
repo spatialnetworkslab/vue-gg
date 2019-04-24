@@ -1,30 +1,5 @@
 <!--
-SAMPLE COMPONENT DEFINITION
 
-<vgg-radar
-  :x1="100"
-  :x2="1100"
-  :y1="100"
-  :y2="1900"
-  :width="1200"
-  :height="2000"
-  :rows="8"
-  :csvURL="'../../static/motorbikes_40_clean.csv'"
-  :extract-variables="{
-    'Base MSRP': 'Price',
-    'Wet Weight': 'WetWeight',
-    '0–60 mph sec': 'ZeroTo60',
-    'Rear-Wheel HP':'RearWheelHorsepower',
-    'Top Speed': 'TopSpeed',
-    'Average MPG': 'MilesPG',
-    '0–60 mph sec': 'ZeroTo60',
-    'Braking 60 to 0 mph (feet)': 'Stop60',
-    'Rear-Wheel TQ Lb-Ft': 'RearWheelTQLbFt',
-    'Quartermile Sec':'QuartermileSec'}"
-  :color="'Color'"
-  :dimensions="['Price', 'WetWeight', 'RearWheelHorsepower', 'TopSpeed', 'MilesPG', 'ZeroTo60', 'Stop60', 'RearWheelTQLbFt', 'QuartermileSec', 'PWRatio']"
-  :options="'Name'"
-/>
 -->
 <template>
   <div>
@@ -73,53 +48,11 @@ SAMPLE COMPONENT DEFINITION
                     scaledMiles: { prop: 'y', column: 'Miles per Gallon', scale: { domain: 'Miles per Gallon', range: [0, 10] } },
                   }
                   },
-                  { transform: df => { log(dimensions, df); return df; }}
+
+                  {transform: df => { log(row, df); return df;}}
                 ]"
                 type="polar"
               >
-
-                <!-- 5 dim -->
-                <!-- <vgg-section
-                :scale-x="dimensions"
-                :key="i"
-                :scale-y="[0, 10]"
-                :grid-lines="['x', 'y']"
-                :transform="[
-                  { scale: {
-                    scaledPrice: { prop: 'y', column: 'Price', scale: { domain: 'Price', reverse: true, range: [0, 10] } },
-                    scaledWW: { prop: 'y', column: 'WetWeight', scale: { domain: 'WetWeight', range: [0, 10] } },
-                    scaledHP: { prop: 'y', column: 'RearWheelHP', scale: { domain: 'RearWheelHP', range: [0, 10] } },
-                    scaledSpeed: { prop: 'y', column: 'TopSpeed', scale: { domain: 'TopSpeed', range: [0, 10] } },
-                    scaledMiles: { prop: 'y', column: 'MeanMPG', scale: { domain: 'MeanMPG', reverse: true, range: [0, 10] } },
-                  }
-                  },
-                ]"
-                type="polar"
-              > -->
-
-                <!-- 10 dim -->
-                <!-- <vgg-section
-                :scale-x="dimensions"
-                :key="i"
-                :scale-y="[0, 10]"
-                :grid-lines="['x', 'y']"
-                :transform="[
-                  { scale: {
-                    scaledPrice: { prop: 'y', column: 'Price', scale: { domain: 'Price', reverse: true, range: [0, 10] } },
-                    scaledWW: { prop: 'y', column: 'WetWeight', scale: { domain: 'WetWeight', range: [0, 10] } },
-                    scaledHP: { prop: 'y', column: 'RearWheelHP', scale: { domain: 'RearWheelHP', range: [0, 10] } },
-                    scaledSpeed: { prop: 'y', column: 'TopSpeed', scale: { domain: 'TopSpeed', range: [0, 10] } },
-                    scaledMiles: { prop: 'y', column: 'MeanMPG', scale: { domain: 'MeanMPG', reverse: true, range: [0, 10] } },
-                    scaledZero60: { prop: 'y', column: 'ZeroTo60', scale: { domain: 'ZeroTo60', reverse: true, range: [0, 10] } },
-                    scaledStop60: { prop: 'y', column: 'Stop60', scale: { domain: 'Stop60', reverse: true, range: [0, 10] } },
-                    scaledRwtq: { prop: 'y', column: 'RearWheelTQLbFt', scale: { domain: 'RearWheelTQLbFt', reverse: true, range: [0, 10] } },
-                    scaledQuartersec: { prop: 'y', column: 'QuartermileSec', scale: { domain: 'QuartermileSec', reverse: true, range: [0, 10] } },
-                    scaledPwr: { prop: 'y', column: 'PWRatio', scale: { domain: 'PWRatio', reverse: true, range: [0, 10] } }
-                  }
-                  },
-                ]"
-                type="polar"
-              > -->
 
                 <vgg-label
                   v-for="dim, d in dimensions"
@@ -132,20 +65,6 @@ SAMPLE COMPONENT DEFINITION
                   :font-weight="600"
 
                 />
-                <!--
-                  <vgg-y-axis
-                    v-for="dim, d in dimensions"
-                    :key="d + dimensions.length"
-                    :scale="dim"
-                    :x="dim"
-                    :tick-length="0.01"
-                    :domain-opacity="0.3"
-                    :label-font-size="8"
-                    :label-opacity="0.4"
-                    :title-font-weight="700"
-                    :tick-count="3"
-                    label-rotate
-                  /> -->
 
                 <vgg-y-axis
                   v-for="(v, i) in dimensions"
@@ -156,14 +75,11 @@ SAMPLE COMPONENT DEFINITION
                   :y2="10"
                   :scale="flipScale.includes(v) ? {domain: v, reverse: true, domainMin: 0} : {domain: v, domainMin: 0}"
                   :tick-count="2"
-                  :title-vjust="1.05"
-                  :title-hjust="0.5"
                   :tick-opacity="0.6"
-                  :title-font-size="14"
+                  :title-font-size="6"
                   :tick-length="0.3"
-                  :label-font-size="14"
+                  :label-font-size="10"
                   :label-opacity="0.7"
-                  :title-font-weight="700"
                 />
 
                 <vgg-map
@@ -184,7 +100,7 @@ SAMPLE COMPONENT DEFINITION
 
                 </vgg-map>
 
-                <vgg-multi-line
+                <!-- <vgg-multi-line
                   v-if="hoverRow"
                   :x="[0, 1, 2, 3, 4, 5, 6, 7, 8,9, 10 ]"
                   :y="[10]"
@@ -193,9 +109,9 @@ SAMPLE COMPONENT DEFINITION
                   :fill="hoverRow.Name === row.Name ? 'red' : 'none'"
                   :fill-opacity="0.2"
                   close
-                />
+                /> -->
 
-                <!--<vgg-multi-line
+                <vgg-multi-line
                   v-if="hoverRow"
                   :x="[0, 1, 2, 3, 4, 5, 6, 7, 8,9, 10 ]"
                   :y="[10]"
@@ -215,15 +131,7 @@ SAMPLE COMPONENT DEFINITION
                   :fill="clickRow.Name === row.Name ? 'red' : 'none'"
                   :fill-opacity="0.2"
                   close
-                /> -->
-                <!--
-                <vgg-label
-                  :text="dataframe[options][s-1]"
-                  :x="5"
-                  :y="0"
-                  :opacity="0.2"
-                  :font-size="20"
-                  :font-weight="700"/> -->
+                />
 
               </vgg-section>
             </vgg-map>

@@ -1,0 +1,569 @@
+[
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C46B9",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.672104,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "赤坂",
+    "geo:long": 139.736413,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Akasaka",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C06",
+    "stationTitle": {
+      "en": "Akasaka",
+      "ja": "赤坂"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Akasaka"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Akasaka.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Akasaka.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Akasaka.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Akasaka.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C46BE",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.762285,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "綾瀬",
+    "geo:long": 139.82489,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Ayase",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C19",
+    "stationTitle": {
+      "en": "Ayase",
+      "ja": "綾瀬"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Ayase"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Ayase.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Ayase.TokyoMetro.YoyogiUehara.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Ayase.TokyoMetro.KitaAyase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Ayase.TokyoMetro.KitaAyase.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:JR-East.JobanLocal"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C4749",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.673955,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "日比谷",
+    "geo:long": 139.758765,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Hibiya",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C09",
+    "stationTitle": {
+      "en": "Hibiya",
+      "ja": "日比谷"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Hibiya"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Hibiya.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Hibiya.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Hibiya.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Hibiya.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:Toei.Mita",
+      "odpt.Railway:TokyoMetro.Hibiya"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C46E2",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.67256,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "霞ケ関",
+    "geo:long": 139.75177,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Kasumigaseki",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C08",
+    "stationTitle": {
+      "en": "Kasumigaseki",
+      "ja": "霞ケ関"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Kasumigaseki"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Kasumigaseki.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Kasumigaseki.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Kasumigaseki.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Kasumigaseki.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:TokyoMetro.Marunouchi",
+      "odpt.Railway:TokyoMetro.Hibiya"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C46E9",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.77689,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "北綾瀬",
+    "geo:long": 139.832095,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.KitaAyase",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C20",
+    "stationTitle": {
+      "en": "Kita-Ayase",
+      "ja": "北綾瀬"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.KitaAyase"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KitaAyase.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KitaAyase.TokyoMetro.Ayase.SaturdayHoliday"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C46EC",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.7492,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "北千住",
+    "geo:long": 139.804403,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.KitaSenju",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C18",
+    "stationTitle": {
+      "en": "Kita-Senju",
+      "ja": "北千住"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Chiyoda.KitaSenju"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KitaSenju.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KitaSenju.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KitaSenju.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KitaSenju.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:JR-East.JobanRapid",
+      "odpt.Railway:MIR.TsukubaExpress",
+      "odpt.Railway:Tobu.TobuSkytree",
+      "odpt.Railway:TokyoMetro.Hibiya"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C4762",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.669017,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "代々木上原",
+    "geo:long": 139.679884,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.YoyogiUehara",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C01",
+    "stationTitle": {
+      "en": "Yoyogi-Uehara",
+      "ja": "代々木上原"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.YoyogiUehara"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.YoyogiUehara.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.YoyogiUehara.TokyoMetro.Ayase.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:Odakyu.Odawara"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C473F",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.666592,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "乃木坂",
+    "geo:long": 139.726229,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Nogizaka",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C05",
+    "stationTitle": {
+      "en": "Nogizaka",
+      "ja": "乃木坂"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Nogizaka"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nogizaka.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nogizaka.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nogizaka.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nogizaka.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C46FF",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.673566,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "国会議事堂前",
+    "geo:long": 139.743188,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.KokkaiGijidomae",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C07",
+    "stationTitle": {
+      "en": "Kokkai-Gijidomae",
+      "ja": "国会議事堂前"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.KokkaiGijidomae"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KokkaiGijidomae.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KokkaiGijidomae.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KokkaiGijidomae.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.KokkaiGijidomae.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:TokyoMetro.Ginza",
+      "odpt.Railway:TokyoMetro.Marunouchi",
+      "odpt.Railway:TokyoMetro.Namboku"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C474F",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.742068,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "町屋",
+    "geo:long": 139.780047,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Machiya",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C17",
+    "stationTitle": {
+      "en": "Machiya",
+      "ja": "町屋"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Machiya"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Machiya.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Machiya.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Machiya.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Machiya.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:Keisei.Main",
+      "odpt.Railway:Toei.Arakawa"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C4759",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.669123,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "明治神宮前〈原宿〉",
+    "geo:long": 139.703944,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.MeijiJingumae",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C03",
+    "stationTitle": {
+      "en": "Meiji-Jingumae",
+      "ja": "明治神宮前〈原宿〉"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.MeijiJingumae"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.MeijiJingumae.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.MeijiJingumae.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.MeijiJingumae.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.MeijiJingumae.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:TokyoMetro.Fukutoshin"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C473E",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.717325,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "根津",
+    "geo:long": 139.76575,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Nezu",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C14",
+    "stationTitle": {
+      "en": "Nezu",
+      "ja": "根津"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Nezu"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nezu.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nezu.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nezu.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nezu.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C473A",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.680505,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "二重橋前",
+    "geo:long": 139.76178,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Nijubashimae",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C10",
+    "stationTitle": {
+      "en": "Nijubashimae",
+      "ja": "二重橋前"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Nijubashimae"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nijubashimae.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nijubashimae.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nijubashimae.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Nijubashimae.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C4737",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.732355,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "西日暮里",
+    "geo:long": 139.76689,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.NishiNippori",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C16",
+    "stationTitle": {
+      "en": "Nishi-Nippori",
+      "ja": "西日暮里"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.NishiNippori"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.NishiNippori.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.NishiNippori.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.NishiNippori.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.NishiNippori.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:JR-East.KeihinTohokuNegishi",
+      "odpt.Railway:JR-East.Yamanote",
+      "odpt.Railway:Toei.NipporiToneri"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C46DB",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.665652,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "表参道",
+    "geo:long": 139.711346,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.OmoteSando",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C04",
+    "stationTitle": {
+      "en": "Omote-Sando",
+      "ja": "表参道"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.OmoteSando"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.OmoteSando.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.OmoteSando.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.OmoteSando.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.OmoteSando.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:TokyoMetro.Ginza",
+      "odpt.Railway:TokyoMetro.Hanzomon"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C46D4",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.68525,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "大手町",
+    "geo:long": 139.763285,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Otemachi",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C11",
+    "stationTitle": {
+      "en": "Otemachi",
+      "ja": "大手町"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Otemachi"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Otemachi.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Otemachi.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Otemachi.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Otemachi.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:Toei.Mita",
+      "odpt.Railway:TokyoMetro.Hanzomon",
+      "odpt.Railway:TokyoMetro.Marunouchi",
+      "odpt.Railway:TokyoMetro.Tozai"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C471A",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.725746,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "千駄木",
+    "geo:long": 139.763303,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Sendagi",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C15",
+    "stationTitle": {
+      "en": "Sendagi",
+      "ja": "千駄木"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Sendagi"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Sendagi.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Sendagi.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Sendagi.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Sendagi.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C470A",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.696925,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "新御茶ノ水",
+    "geo:long": 139.76545,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.ShinOchanomizu",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C12",
+    "stationTitle": {
+      "en": "Shin-Ochanomizu",
+      "ja": "新御茶ノ水"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.ShinOchanomizu"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.ShinOchanomizu.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.ShinOchanomizu.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.ShinOchanomizu.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.ShinOchanomizu.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ],
+    "connectingRailway": [
+      "odpt.Railway:Toei.Shinjuku",
+      "odpt.Railway:TokyoMetro.Marunouchi"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C4763",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.669104,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "代々木公園",
+    "geo:long": 139.689791,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.YoyogiKoen",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C02",
+    "stationTitle": {
+      "en": "Yoyogi-Koen",
+      "ja": "代々木公園"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.YoyogiKoen"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.YoyogiKoen.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.YoyogiKoen.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.YoyogiKoen.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.YoyogiKoen.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000030C475E",
+    "@type": "Station",
+    "dc:date": "2018-08-21T19:00:00+09:00",
+    "geo:lat": 35.706805,
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "dc:title": "湯島",
+    "geo:long": 139.769981,
+    "sameAs": "odpt.Station:TokyoMetro.Chiyoda.Yushima",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "operator": "odpt.Operator:TokyoMetro",
+    "stationCode": "C13",
+    "stationTitle": {
+      "en": "Yushima",
+      "ja": "湯島"
+    },
+    "passengerSurvey": [
+      "odpt.PassengerSurvey:TokyoMetro.Yushima"
+    ],
+    "stationTimetable": [
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Yushima.TokyoMetro.Ayase.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Yushima.TokyoMetro.Ayase.SaturdayHoliday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Yushima.TokyoMetro.YoyogiUehara.Weekday",
+      "odpt.StationTimetable:TokyoMetro.Chiyoda.Yushima.TokyoMetro.YoyogiUehara.SaturdayHoliday"
+    ]
+  }
+]

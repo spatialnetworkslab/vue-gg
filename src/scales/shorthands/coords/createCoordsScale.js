@@ -22,7 +22,7 @@ export default function (prop, variableType, domain, range, scalingOptions) {
   if (variableType === 'temporal') {
     let scale = scalingOptions.type || 'temporal'
     checkValidScale(prop, variableType, scale, temporal)
-
+    console.log(domain, range)
     return temporal[scale](domain, range)
   }
 

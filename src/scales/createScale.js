@@ -24,14 +24,13 @@ export default function (prop, context, passedScalingOptions) {
   )
 
   let propType = getPropType(prop)
-
   // Coordinate props
   if (propType === 'coord') {
     domainType = getPrimitive(domainType)
     let dimension = getDimension(prop)
     let range = context.ranges[dimension]
     range = parseRange(range, scalingOptions)
-
+    console.log('+++', domain, range)
     return createCoordsScale(prop, domainType, domain, range, scalingOptions)
   }
 

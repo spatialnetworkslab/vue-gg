@@ -64,6 +64,7 @@ import Radar from './idcShortlist/Radar.vue'
 
 // Fun graphs
 import Minard from './funGraphs/Minard.vue'
+import App from './funGraphs/App.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -114,6 +115,7 @@ storiesOf('IDC Shortlist', module)
   .add('Scatterplot Matrix', () => (SPLOM))
 
 storiesOf('Fun Graphs', module)
+  .add('App', () => (App))
   .add('Minard', () => (Minard))
   .add('Selection test', () => (SelectTest))
   .add('Multiple selections', () => (MultipleSelections))

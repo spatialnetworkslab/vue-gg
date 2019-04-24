@@ -22,6 +22,7 @@ export default {
 
   computed: {
     _scales () {
+      console.log(this.scaleCache.scales)
       return this.scaleCache.scales
     }
   },

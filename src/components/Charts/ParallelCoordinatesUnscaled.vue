@@ -69,9 +69,10 @@ SAMPLE COMPONENT DEFINITION
               :y="segment.y"
               :stroke="segment.color"
               stroke-linecap="round"
-              @hover="handleHover($event, segment, dataframe[options][i], i)"
+              @hover="handleHover($event, dataframe[options][i], i)"
             />
           </vgg-map>
+
           <vgg-multi-line
             v-if="hoverRow"
             :x="hoverRow.x"
@@ -226,6 +227,18 @@ export default {
   },
   methods: {
     log: console.log,
+
+    // Customize as needed
+    handleHover (e, s, r, i) {
+      console.log('!!!', e, r, i)
+      this.hovered = e ? { r, i } : undefined
+      if (this.hovered) {
+        this.hoverRow = s
+      } else {
+        this.hovered = undefined
+        this.hoverRow = undefined
+      }
+    },
 
     getData () {
       // if (this.data) {
@@ -624,18 +637,6 @@ export default {
         }
         this.myData = dimensions
       })
-    },
-
-    // Customize as needed
-    handleHover (e, s, r, i) {
-      console.log('!!!', e, s, r, i)
-      this.hovered = e ? { r, i } : undefined
-      if (this.hovered) {
-        this.hoverRow = s
-      } else {
-        this.hovered = undefined
-        this.hoverRow = undefined
-      }
     },
 
     createDomain (dimension, domain) {

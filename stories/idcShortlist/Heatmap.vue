@@ -1,6 +1,13 @@
 <template>
   <vgg-heatmap
+    :x1="100"
+    :x2="1500"
+    :y1="100"
+    :y2="700"
+    :width="1600"
+    :height="800"
   />
+
 </template>
 
 <script>

@@ -1,216 +1,158 @@
 <template>
-  <div>
-    <div class="field-selector">
-    <label>Select document types</label>
-    <multiselect v-model="selectedType"
-    :options="uniqueType"
-    placeholder="Choose a type"
-    />
-    </div>
+    <div>
+      <!-- train timetable -->
+      <vgg-graphic v-if="train_timetable" :width="4500" :height="600" :data="train_timetable">
 
-     <div class = "hoverText" v-if="hoverInfo" style="fixed:right;">
-        <h4> {{hoverInfo.title}} </h4>
-        <h5> {{hoverInfo.author}} </h5>
-        <h4> Citation number  :  {{hoverInfo.citation_num}}</h4>
-        <h5> Publication Source  :  {{ hoverInfo.source}} </h5>
-        <h5> Year of publication  :  {{hoverInfo.year}} </h5>
-        <h5> Document type  :  {{hoverInfo.doc_type}} </h5>
-        <h5> Check test  :  {{hoverInfo.manual_cat}} </h5>
+        <vgg-scales :scales="{
+            timeScale: { domain: [new Date('April 22, 2039 00:03:00'), new Date('April 25, 2039 00:03:00')], domainMin: new Date('April 22, 2039 00:03:00')},
+            stationScale: { domain: 'station', order: decide_domain('odpt.Railway:TokyoMetro.Chiyoda')}
+          }"/>
 
+        <!-- diagram -->
+        <vgg-section
+          :x1="150"
+          :x2="4450"
+          :y1="50"
+          :y2="550"
+          :transform="{ groupBy: 'train' }"
+          :scale-x="[new Date('April 22, 2039 00:03:00'), new Date('April 25, 2039 00:03:00')]"
+          :scale-y="'#stationScale'">
+
+            <vgg-map v-slot="{row}">
+              <vgg-multi-line
+                :x="{val: row.grouped.time, scale: { domain: [new Date('April 22, 2039 00:03:00'), new Date('April 25, 2039 00:03:00')], domainMin: new Date('April 22, 2039 00:03:00')}}"
+                :y="{val: row.grouped.station}"
+                :stroke="'#009900'"
+                :stroke-width="row.train === hoveredRow.train ? 2 : 0.5"
+                @hover="onHover(row)">
+              </vgg-multi-line>
+            </vgg-map>
+
+            <vgg-x-axis
+              :scale="{ domain: [new Date('April 22, 2039 00:03:00'), new Date('April 25, 2039 00:03:00')], domainMin: new Date('April 22, 2039 00:03:00')}"
+              :tick-count="24"
+              :tick-extra="false"
+              :format="(date) => date.toLocaleTimeString([], {hour12: false, hour: '2-digit', minute: '2-digit'})"/>
+
+            <!-- <vgg-y-axis
+              :scale="'#stationScale'"
+              :format="(station) => station.split('.').pop()"/> -->
+
+            <!-- <vgg-x-grid :scale="[new Date('April 22, 2039 00:03:00'), new Date('April 25, 2039 00:03:00')]" :grid-line-count="48" :grid-colour="'white'"/>
+            <vgg-y-grid :scale="[0,19]" :grid-line-count="20"/> -->
+
+        </vgg-section>
+      </vgg-graphic>
+      <div>
+        <div class="line-selector">
+          <label>Select Line</label>
+          <multiselect v-model="selectedLine"
+            :options="availableLines"
+            :allow-empty="false"
+            :custom-label="prettify_linename"/>
+          <label>{{selectedLine}}</label>
         </div>
+        <!-- planning areas -->
+        <vgg-graphic :width="1200" :height="600" :data="train_timetable">
+          <!-- map will be here -->
+            <vgg-section
+              :x1="50"
+              :x2="1150"
+              :y1="50"
+              :y2="550"
+            >
+            </vgg-section>
 
-    <vgg-graphic :width="900" :height="620" :data="asdData">
-
-      <vgg-data
-      :transform="{ filter: row => {
-      if (selectedType === null) return true // if no types selected, include all data
-      else {
-        return row.doc_type === selectedType
-      }
-      }
-      }"
-      >
-
-    <!-- Fig. 1 Source vs year by category -->
-      <vgg-section
-      :x1="300"
-      :x2="750"
-      :y1="100"
-      :y2="580"
-      :transform="[
-        { groupBy: ['manual_cat', 'year', 'source', 'doc_type', 'title', 'author', 'citation_num']},
-
-        ]"
-        >
-
-      <vgg-plot-title
-      text="Research categories in document source over time"
-      :hjust="0.5"
-      :vjust="1.10"
-      color="#263238"
-      :fontSize="12"
-      fontFamily="Arial Black"
-      />
-
-      <vgg-x-grid
-      :scale="'year'" opacity="0.3"/>
-      <vgg-y-grid
-      :scale="'source'" opacity="0.3"/>
-      <vgg-scales :scales="{ categoryScale: { domain: 'manual_cat',  order: ['daylighting', 'wind', 'microclimate', 'thermal', 'energy']} }"/>
-      <vgg-scales :scales="{ fillScale: { range:[ '#FC9841', '#FBC644', '#E5536B', '#648174', '#4B91F0'], domain: 'manual_cat'}}"/>
-      <vgg-scales :scales="{ sourceScale: { domain: 'source'}}"/>
-      <vgg-scales :scales="{ yearScale: { domain: 'year'}}" />
-      <vgg-scales :scales="{ citScale: { domain: 'citation_num' }}" />
-
-
-
-      <vgg-map v-slot=" { row , i }">
-      <vgg-point
-        :x="{ val: row.year, scale: '#yearScale' }"
-        :y="{ val: row.source, scale: '#sourceScale' }"
-        :radius="{ val: row.citation_num, scale: { range: [3,9], domain:'citation_num'}}"
-        :fill="{ val: row.manual_cat, scale: '#fillScale'}"
-        :fill-opacity="0.8"
-        :stroke="hoverI === i ? 'black' : 'none'"
-        @hover="handleHover( $event, row, i)"
-
-      />
-
-       </vgg-map>
-
-
-      <vgg-x-axis
-      :scale="'#yearScale'"
-      :hjust="0"
-      :tick-count="22"
-      label-font="Arial Narrow"
-      :label-font-size="8"
-      title="Publication Year"
-      :title-vjust="-0.2"
-      :title-hjust="0.9"
-      title-color="grey"
-      title-font="Arial"
-      :title-font-size="12"
-      :title-font-weight="700"
-      rotate-label
-       />
-
-      <vgg-y-axis
-      :scale="'#sourceScale'"
-      :hjust="0"
-      :tick-extra="false"
-      label-font="Arial Narrow"
-      :label-font-size="6"
-      title="Document Source"
-      :title-hjust="-0.3"
-      :title-vjust="1.05"
-      title-color="grey"
-      title-font="Arial"
-      :title-font-size="12"
-      />
-
-      <vgg-symbol-legend
-      :rows="5"
-      :scale="{ domain: 'manual_cat', order: ['daylighting', 'wind', 'microclimate', 'thermal', 'energy']}"
-      stroke="none"
-      :fill="['#FC9841', '#FBC644', '#E5536B', '#648174', '#4B91F0']"
-      :fill-opacity="0.6"
-      title="Research Category"
-      :title-font-size="14"
-      title-font="Arial"
-      title-anchor-point="right"
-      orientation="vertical"
-      :symbol-padding="0.001"
-      :row-padding="0.1"
-      :title-padding="4"
-      :x1="5"
-      :x2="100"
-      :y1="100"
-      :y2="230"
-      :label-font-size="12"
-      label-font="Arial"
-      :size="12"
-       />
-
-      </vgg-section>
-      </vgg-data>
-
-
-
-    </vgg-graphic>
-  </div>
+        </vgg-graphic>
+      </div>
+    </div>
 </template>
-
 <script>
-import asdData from './dataset_3.json'
-import multiselect from 'vue-multiselect'
+import planning_areas from './planning_areas.json'
+import train_timetable from './odpt_TrainTimetable (1).json'
+import stations from './odpt_Station'
 
+import Multiselect from 'vue-multiselect'
 
 export default {
   name: 'app',
-  components: {multiselect},
+  components: { Multiselect },
   data () {
     return {
-      docType: [],
-      asdData: asdData,
-      selectedType: null,
-      hoverI: null,
-      hoverInfo:null
-
+      planning_areas: Object.freeze(planning_areas),
+      trains: train_timetable,
+      stations: Object.freeze(stations),
+      availableLines: ['odpt.Railway:TokyoMetro.Chiyoda'],
+      selectedLine: 'odpt.Railway:TokyoMetro.Chiyoda',
+      hoveredRow: {},
+      selectedRow: {}
+    }
+  },
+  methods: {
+    prettify_linename (railway) {
+      return `${railway.split('.').pop()} Line`
+    },
+    onHover (row) {
+      console.log('Hover caught')
+      this.hoveredRow = row
+    },
+    onSelect (row) {
+      this.hoveredRow = {}
+      this.selectedRow = row === this.selectedRow ? {} : row
+    },
+    unnest_stoplist (currTrain) {
+      currTrain.Time = { 'time': currTrain.trainTimetableObject.map(i => new Date('2039-04-22 ' + i.Time)) }
+      currTrain.Station = { 'station': currTrain.trainTimetableObject.map(i => i.Station) }
+      delete currTrain.trainTimetableObject
+    },
+    decide_domain (railway) {
+      let order = this.Stations
+        .filter(stn => stn.railway)
+        .sort((a, b) => parseInt(a.StationCode.replace(/\D/g, '')) - parseInt(b.StationCode.replace(/\D/g, '')))
+        .map(stn => stn.sameAs)
+      console.log(order)
+      return order
     }
   },
   computed: {
-    uniqueType () {
-      let docType = asdData.map(row => row.doc_type)
-      return [...new Set(docType)].sort()
-    }
-  },
-   methods: {
-    handleClick () {
-      if (this.selectedType === row.doc_type) { this.selectedType = null } else {
-        this.selectedType = row.doc_type
+    train_timetable () {
+      // Thanks to Jo Hsi and Luuc for providing this
+      let timetable = {
+        train: [],
+        station: [],
+        time: []
       }
-    },
 
-    handleHover (e, row, i) {
-      if (e) {
-        this.hoverI = i
-        this.hoverInfo = row
-      } else {
-        this.hoverI = null
-        this.hoverInfo = null
-}
-}
-   }
+      for (let trainData of this.trains) {
+        let train = trainData.train
+        let stops = trainData.trainTimetableObject
+
+        for (let stop of stops) {
+          timetable.train.push(train)
+          timetable.Station.push(stop.Station)
+
+          let date = new Date(`April 22, 2039 ${stop.Time}:00`)
+          if (date.getHours() < 3) {
+            date.setDate(date.getDate() + 1)
+          }
+
+          timetable.time.push(date)
+        }
+      }
+
+      return timetable
+    }
+  }
 }
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-
 <style>
-.field-selector {
-  width:200px;
-  height:200px;
-  font-family:Arial Narrow;
-  font-size:14px;
-  color: rgb(60, 60, 60);
-  position:absolute;
-  padding-left:10px;
-  padding-top:50px;
-  }
-
-.hoverText {
-    position: absolute;
-    font-family: Arial Narrow;
-    font-size:13px;
-    color: rgb(60, 60, 60);
-    bottom:180px;
-    right: 150px;
-    width: 300px;
-    height:100px;
-    text-align: left;
-  }
-
-
-
+.line-selector {
+  width: 300px;
+  float: left;
+}
+.line-diagram {
+  float: left;
+}
 </style>

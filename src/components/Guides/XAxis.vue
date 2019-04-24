@@ -204,7 +204,6 @@ export default {
     },
     _tickLength () {
       if (this.tickLength) { return this.tickLength }
-      console.log('___', this.tickLength, this.widthY / 5)
       return this.widthY / 5
     },
     parsedScale () {
