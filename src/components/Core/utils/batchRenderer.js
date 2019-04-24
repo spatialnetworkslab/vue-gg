@@ -46,9 +46,10 @@ function generateInterpolate (tag, interpolateProp, interpolationNecessary) {
 }
 
 function createIndexFunction (tag, interactionManager, props, events, uuid, sectionParentChain) {
+  let markType = indexArgLookup[tag]
   return coords => {
     if (events) {
-      interactionManager.addItem(uuid, 'point', coords, props, events, sectionParentChain)
+      interactionManager.addItem(uuid, markType, coords, props, events, sectionParentChain)
     }
   }
 }
@@ -105,5 +106,18 @@ const pathTypeLookup = {
   'vgg-multi-line': 'multiline',
   'vgg-path': 'path',
   'vgg-polygon': 'polygon',
+  'vgg-trail': 'trail'
+}
+
+const indexArgLookup = {
+  'vgg-area': 'area',
+  'vgg-label': undefined,
+  'vgg-line': 'line',
+  'vgg-multi-line': 'multiline',
+  'vgg-path': 'path',
+  'vgg-point': 'point',
+  'vgg-polygon': 'polygon',
+  'vgg-rectangle': 'rectangle',
+  'vgg-symbol': 'symbol',
   'vgg-trail': 'trail'
 }

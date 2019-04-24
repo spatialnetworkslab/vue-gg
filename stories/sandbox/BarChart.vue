@@ -33,6 +33,7 @@
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           :fill="'red'"
           :opacity="{ val: row.fruit, scale: 'fruit' }"
+          @hover="log(row)"
         />
 
         <vgg-line
