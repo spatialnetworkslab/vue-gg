@@ -10,6 +10,7 @@ import componentPropDefaults from './componentPropDefaults.js'
 import componentInterpolateDefaults from './componentInterpolateDefaults.js'
 
 export function createRenderOptions (slotEntry, interpolationNecessary) {
+  if (!slotEntry) return
   let tag = slotEntry.componentOptions.tag
   let props = generateProps(tag, slotEntry.componentOptions.propsData)
   let interpolate = generateInterpolate(tag, slotEntry.componentOptions.propsData.interpolate, interpolationNecessary)
@@ -40,6 +41,7 @@ function getPathType (tag) {
 }
 
 export function renderMark (tag, createElement, renderContext, renderOptions) {
+  if (!renderOptions) return
   let renderFunc = renderFuncLookup[tag]
   return renderFunc(createElement, renderContext, renderOptions)
 }

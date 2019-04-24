@@ -73,7 +73,7 @@ export default {
           let mappedContent = mapRow(mappings, slotContent, scope.i)
 
           let renderOptions = mappedContent.map(entry => createRenderOptions(entry, this.__interpolationNecessary))
-          let tags = mappedContent.map(entry => entry.componentOptions.tag)
+          let tags = mappedContent.map(entry => entry ? entry.componentOptions.tag : undefined)
 
           let renderedEntries = renderOptions.map((options, i) => {
             return renderMark(tags[i], createElement, this._renderContext, options)

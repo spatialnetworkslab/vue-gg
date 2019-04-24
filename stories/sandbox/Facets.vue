@@ -35,7 +35,7 @@
 
         <vgg-map v-slot="{ row: facet }">
 
-          <vgg-section
+          <!-- <vgg-section
             :data="facet.grouped"
             :transform="[
               { groupBy: 'flat_type'},
@@ -68,7 +68,7 @@
               rotate-label
             />
 
-          </vgg-section>
+          </vgg-section> -->
 
         </vgg-map>
 

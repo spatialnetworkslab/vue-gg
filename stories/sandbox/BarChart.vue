@@ -43,7 +43,7 @@
           stroke="#ced02d"
         /> -->
 
-        <vgg-section
+        <!-- <vgg-section
           :x="{ val: row.fruit, scale: 'fruit' }"
           :w="{ band: { domain: 'fruit', padding: 0.2 } }"
           :y1="0"
@@ -66,7 +66,7 @@
             fill="#8b0000"
           />
 
-        </vgg-section>
+        </vgg-section> -->
 
       </vgg-map>
 
