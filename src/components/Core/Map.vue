@@ -10,10 +10,7 @@ import {
   updateGridComponents
 } from './utils/grid.js'
 
-import { initMappingTree, extractMappings, mapRow } from './utils/mappings.js'
-
-import { createRenderOptions, renderMark } from './utils/batchRenderer.js'
-
+import { initMappingTree, extractMappings } from './map/mappingTree.js'
 import getRelevantOptions from './map/getRelevantOptions.js'
 
 export default {
@@ -106,6 +103,8 @@ export default {
       let mappingTree = null
       let context = this.context
 
+      let mappedElements = []
+
       this.$$dataInterface.forEachRow(scope => {
         let slotContent = this.$scopedSlots.default(scope)
         let relevantOptions = getRelevantOptions(slotContent)
@@ -114,6 +113,17 @@ export default {
         if (changedIndices.length > 0) {
           if (mappingTree === null) { mappingTree = initMappingTree(slotContent) }
           mappingTree = extractMappings(mappingTree, slotContent, context)
+
+          let indicesThatNeedChanging = relevantOptions.map((_, i) => changedIndices.includes(i))
+
+          for (let i = 0; i < indicesThatNeedChanging.length; i++) {
+            let indexNeedsChanging = indicesThatNeedChanging[i]
+            if (indexNeedsChanging) {
+
+            } else {
+
+            }
+          }
         } else {
           // TODO
         }
@@ -175,16 +185,26 @@ export default {
       for (let j = 0; i < rowOptions.length; j++) {
         let elementOptions = rowOptions[j]
 
+        if (!elementOptions) {
+          if (!this.rowCache[i][j]) {
+            continue
+          } else {
+            delete this.rowCache[i][j]
+            changedIndices.push(j)
+            continue
+          }
+        }
+
         // If there are sections in here, we will always tag them as dirty
         if (elementOptions.tag === 'vgg-section') {
-          changedIndices.push(i)
+          changedIndices.push(j)
           continue
         }
 
         // If this thing doesn't matched our cached version:
-        // Tag as dirty
+        // Tag as dirty and update cache
         if (!this.matchCache(i, j, elementOptions)) {
-          changedIndices.push(i)
+          changedIndices.push(j)
           this.cacheRow(i, j, elementOptions)
         }
       }
