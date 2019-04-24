@@ -12,41 +12,45 @@
         :x2="600"
         :y1="0"
         :y2="600"
-        :scale-x="domains.x"
-        :scale-y="domains.y">
+        :scale-x="[0, 100]"
+        :scale-y="[0, 100]"
+      >
 
-        <vgg-section
-          v-for="(cs, i) in nestedCoordinateSystems"
-          :type="innerTransformation"
-          :key="'cs' + i"
-          :x1="cs.x"
-          :x2="cs.x2"
-          :y1="cs.y"
-          :y2="cs.y2"
-          :scale-x="domains.x"
-          :scale-y="domains.y"
-        >
+        <vgg-grid :cols="2">
 
-          <vgg-point
-            v-for="(p, j) in points"
-            :key="'p' + j"
-            :x="p.x"
-            :y="p.y"
-            :fill="cs.color"
-            :radius="4"
-            @mouseover="log('test')"
-          />
+          <vgg-section
+            v-for="(cs, i) in nestedCoordinateSystems"
+            :type="innerTransformation"
+            :key="'cs' + i"
+            :scale-x="[0, 100]"
+            :scale-y="[0, 100]"
+            :data="points"
+          >
 
-          <vgg-rectangle
-            :x1="0"
-            :x2="100"
-            :y1="0"
-            :y2="100"
-            :fill="cs.color"
-            :opacity="0.2"
-          />
+            <vgg-map v-slot="{ row }">
 
-        </vgg-section>
+              <vgg-point
+                :x="row.x"
+                :y="row.y"
+                :fill="cs.color"
+                :radius="4"
+                @hover="log('test')"
+              />
+
+            </vgg-map>
+
+            <vgg-rectangle
+              :x1="0"
+              :x2="100"
+              :y1="0"
+              :y2="100"
+              :fill="cs.color"
+              :opacity="0.2"
+            />
+
+          </vgg-section>
+
+        </vgg-grid>
 
       </vgg-section>
 
@@ -92,13 +96,6 @@ export default {
         { x: 0, x2: 50, y: 50, y2: 100, color: 'yellow' },
         { x: 50, x2: 100, y: 50, y2: 100, color: 'blue' }
       ]
-    },
-
-    domains () {
-      return {
-        x: [0, 100],
-        y: [0, 100]
-      }
     },
 
     points () {

@@ -231,8 +231,12 @@ export default {
           // If this is the last one, and it is just about to be deleted:
           // emit 'null'
           if (listenerTracker.hoverItems === 1) {
-            let invoker = cache.getItem(uid).eventsPerListener.mousemove.hover
-            invoker(null)
+            let mousemoveEvents = cache.getItem(uid).eventsPerListener.mousemove
+
+            if (mousemoveEvents.hasOwnProperty('hover')) {
+              let invoker = cache.getItem(uid).eventsPerListener.mousemove.hover
+              invoker(null)
+            }
           }
 
           delete listenerTracker.hovering[uid]
