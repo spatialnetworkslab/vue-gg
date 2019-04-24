@@ -8,7 +8,9 @@ export default {
   'vgg-polygon': pathInterpolate,
   'vgg-rectangle': defaultInterpolate,
   'vgg-symbol': defaultInterpolate,
-  'vgg-trail': pathInterpolate
+  'vgg-trail': pathInterpolate,
+
+  'vgg-section': () => undefined
 }
 
 function defaultInterpolate (interpolate, interpolationNecessary) {

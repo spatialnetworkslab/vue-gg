@@ -18,7 +18,7 @@
 
       <vgg-map v-slot="{ row }">
 
-        <!-- <vgg-section
+        <vgg-section
           :x="{ val: row.c, scale: 'c' }"
           :w="{ band: { domain: 'c', padding: 25 } }"
           :y1="25"
@@ -37,7 +37,7 @@
 
           </vgg-map>
 
-        </vgg-section> -->
+        </vgg-section>
 
       </vgg-map>
 

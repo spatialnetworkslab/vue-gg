@@ -6,6 +6,8 @@ import { renderSVG as renderRectangleSVG } from '../../../rendering/rectangle.js
 import { renderSVG as renderSymbolSVG } from '../../../rendering/symbol.js'
 import { renderSVG as renderTrailSVG } from '../../../rendering/trail.js'
 
+import Section from '../Section.vue'
+
 import componentPropDefaults from './componentPropDefaults.js'
 import componentInterpolateDefaults from './componentInterpolateDefaults.js'
 
@@ -40,10 +42,14 @@ function getPathType (tag) {
   return pathTypeLookup[tag]
 }
 
-export function renderMark (tag, createElement, renderContext, renderOptions) {
+export function renderMark (tag, createElement, renderContext, renderOptions, mappedContent) {
   if (!renderOptions) return
   let renderFunc = renderFuncLookup[tag]
-  return renderFunc(createElement, renderContext, renderOptions)
+  return renderFunc(createElement, renderContext, renderOptions, mappedContent)
+}
+
+function renderSection (createElement, renderContext, renderOptions, mappedContent) {
+  return createElement(Section, { props: renderOptions.props }, mappedContent.componentOptions.children)
 }
 
 const renderFuncLookup = {
@@ -56,7 +62,9 @@ const renderFuncLookup = {
   'vgg-polygon': renderPathSVG,
   'vgg-rectangle': renderRectangleSVG,
   'vgg-symbol': renderSymbolSVG,
-  'vgg-trail': renderTrailSVG
+  'vgg-trail': renderTrailSVG,
+
+  'vgg-section': renderSection
 }
 
 const pathTypeLookup = {

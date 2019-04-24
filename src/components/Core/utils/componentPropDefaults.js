@@ -9,6 +9,8 @@ import Rectangle from '../../Marks/Rectangle.vue'
 import Symbol from '../../Marks/Symbol.vue'
 import Trail from '../../Marks/Trail.vue'
 
+import Section from '../../Core/Section.vue'
+
 import PathMixin from '../../../mixins/Marks/Path.js'
 import Rectangular from '../../../mixins/Marks/Rectangular.js'
 
@@ -53,6 +55,10 @@ function extractAllDefaults () {
   // vgg-trail
   let trailDefaults = extractDefaults(Trail)
   defaults['vgg-trail'] = mergeDefaults(pathMixinDefaults, trailDefaults)
+
+  // vgg-section
+  let sectionDefaults = extractDefaults(Section)
+  defaults['vgg-section'] = mergeDefaults(rectangularMixinDefaults, sectionDefaults)
 }
 
 function extractDefaults (component) {

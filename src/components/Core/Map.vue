@@ -76,7 +76,7 @@ export default {
           let tags = mappedContent.map(entry => entry ? entry.componentOptions.tag : undefined)
 
           let renderedEntries = renderOptions.map((options, i) => {
-            return renderMark(tags[i], createElement, this._renderContext, options)
+            return renderMark(tags[i], createElement, this._renderContext, options, mappedContent[i])
           })
 
           mappedElements.push(...renderedEntries)

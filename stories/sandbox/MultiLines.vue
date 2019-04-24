@@ -47,7 +47,7 @@
 
         <vgg-map v-slot="{ row }">
 
-          <!-- <vgg-section
+          <vgg-section
             :x="row.colors"
             :w="{ band: { domain: 'colors', padding: 10 } }"
             :y1="0"
@@ -75,7 +75,7 @@
 
             </vgg-map>
 
-          </vgg-section> -->
+          </vgg-section>
 
         </vgg-map>
 
