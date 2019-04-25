@@ -1,6 +1,4 @@
 <script>
-import stringify from 'fast-stringify'
-
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
@@ -48,7 +46,7 @@ export default {
     },
 
     sectionParentChain () {
-      return JSON.stringify(this.$$sectionParentChain)
+      return JSON.JSON.stringify(this.$$sectionParentChain)
     },
 
     _renderContext () {
@@ -221,7 +219,7 @@ export default {
         return false
       }
 
-      return cachedElement.props === stringify(elementOptions.props)
+      return cachedElement.props === JSON.stringify(elementOptions.props)
     },
 
     cacheRow (i, relevantRowOptions, marks) {
@@ -232,7 +230,7 @@ export default {
 
         this.rowCache[i][j] = {
           tag: elementOptions.tag,
-          props: stringify(elementOptions.props),
+          props: JSON.stringify(elementOptions.props),
           mark: marks[j]
         }
       }

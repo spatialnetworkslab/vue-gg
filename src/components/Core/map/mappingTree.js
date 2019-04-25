@@ -1,5 +1,3 @@
-import stringify from 'fast-stringify'
-
 import createScale from '../../../scales/createScale.js'
 import createGeoScale from '../../../scales/createGeoScale.js'
 import createBand from '../../../scales/createBand.js'
@@ -66,7 +64,7 @@ function updateMapping (mapping, element, context) {
 
         if (prop.hasOwnProperty('scale')) {
           let scaleOptions = prop.scale
-          let scaleStr = stringify(scaleOptions)
+          let scaleStr = JSON.stringify(scaleOptions)
 
           mapping.scales[propKey] = mapping.scales[propKey] || {}
 
@@ -78,7 +76,7 @@ function updateMapping (mapping, element, context) {
 
         if (prop.hasOwnProperty('scaleGeo')) {
           let scaleOptions = prop.scaleGeo
-          let scaleStr = stringify(scaleOptions)
+          let scaleStr = JSON.stringify(scaleOptions)
 
           mapping.geoScales[propKey] = mapping.geoScales[propKey] || {}
 
@@ -92,7 +90,7 @@ function updateMapping (mapping, element, context) {
 
         if (prop.hasOwnProperty('band')) {
           let bandOptions = prop.band
-          let bandStr = stringify(bandOptions)
+          let bandStr = JSON.stringify(bandOptions)
 
           mapping.bands[propKey] = mapping.bands[propKey] || {}
 
