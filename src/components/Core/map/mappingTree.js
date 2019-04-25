@@ -7,7 +7,11 @@ import mappableProps from '../../../scales/utils/mappableProps.js'
 export function initMappingTree (slotContent) {
   let tree = []
   slotContent.forEach(element => {
-    tree.push(createNode(element))
+    if (element && element.componentOptions && element.componentOptions.tag) {
+      tree.push(createNode(element))
+    } else {
+      tree.push(undefined)
+    }
   })
 
   return tree

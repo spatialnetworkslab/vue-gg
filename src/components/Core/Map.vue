@@ -94,7 +94,9 @@ export default {
           // We extract the 'relevant' parts: props, events, the tag name, etc
           let relevantOptions = getRelevantOptions(slotContent)
 
-          let mappedMarks = this.mapMarks(createElement, mappingTree, slotContent, scope.i)
+          let _temp = this.mapMarks(createElement, mappingTree, slotContent, scope.i)
+          let mappedMarks = _temp.mappedMarks
+          mappingTree = _temp.mappingTree
 
           mappedElements.push(...mappedMarks.filter(mark => mark !== undefined))
           this.cacheRow(scope.i, relevantOptions, mappedMarks)
@@ -114,7 +116,9 @@ export default {
           let anythingChanged = this.anythingChanged(scope.i, relevantOptions)
 
           if (anythingChanged) {
-            let mappedMarks = this.mapMarks(createElement, mappingTree, slotContent, scope.i)
+            let _temp = this.mapMarks(createElement, mappingTree, slotContent, scope.i)
+            let mappedMarks = _temp.mappedMarks
+            mappingTree = _temp.mappingTree
 
             mappedElements.push(...mappedMarks)
             this.cacheRow(scope.i, relevantOptions, mappedMarks)
@@ -139,7 +143,8 @@ export default {
 
       let slotContent = this.$scopedSlots.default(scope)
 
-      return this.mapMarks(createElement, mappingTree, slotContent, 0)
+      let mappedMarks = this.mapMarks(createElement, mappingTree, slotContent, 0).mappedMarks
+      return mappedMarks
     },
 
     mapMarks (createElement, mappingTree, slotContent, i) {
@@ -175,7 +180,7 @@ export default {
         mappedMarks.push(renderedMark)
       }
 
-      return mappedMarks
+      return { mappedMarks, mappingTree }
     },
 
     validateComponents (elements) {
