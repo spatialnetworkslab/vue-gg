@@ -15,20 +15,20 @@
 
       <vgg-map v-slot="{ row }">
 
-        <!-- <vgg-point
-          :x="row.a"
-          :y="row.b"
-          :radius="3"
-          :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
-          @hover="handleHover($event, row)"
-        /> -->
-
         <vgg-point
           :x="row.a"
           :y="row.b"
           :radius="3"
           :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
+          @hover="handleHover($event, row)"
         />
+
+        <!-- <vgg-point
+          :x="row.a"
+          :y="row.b"
+          :radius="3"
+          :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
+        /> -->
 
       </vgg-map>
 

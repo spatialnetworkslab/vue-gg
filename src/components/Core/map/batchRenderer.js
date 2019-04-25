@@ -25,9 +25,14 @@ export function createRenderOptions (slotEntry, interpolationNecessary, interact
   let listeners = slotEntry.componentOptions.listeners
   let events = parseEvents(listeners)
 
-  let addToSpatialIndex = createIndexFunction(
-    tag, interactionManager, props, events, uuid, sectionParentChain
-  )
+  let addToSpatialIndex
+  if (events) {
+    addToSpatialIndex = createIndexFunction(
+      tag, interactionManager, props, events, uuid, sectionParentChain
+    )
+  } else {
+    addToSpatialIndex = x => x
+  }
 
   let pathType = getPathType(tag)
 
@@ -48,9 +53,7 @@ function generateInterpolate (tag, interpolateProp, interpolationNecessary) {
 function createIndexFunction (tag, interactionManager, props, events, uuid, sectionParentChain) {
   let markType = indexArgLookup[tag]
   return coords => {
-    if (events) {
-      interactionManager.addItem(uuid, markType, coords, props, events, sectionParentChain)
-    }
+    interactionManager.addItem(uuid, markType, coords, props, events, sectionParentChain)
   }
 }
 

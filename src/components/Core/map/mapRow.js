@@ -1,3 +1,5 @@
+import stringify from 'fast-stringify'
+
 import { getChildren } from './mappingTree.js'
 
 import mappableProps from '../../../scales/utils/mappableProps.js'
@@ -32,14 +34,14 @@ function mapElement (mapping, element, rowNumber) {
         value = prop.val
 
         if (prop.hasOwnProperty('scale')) {
-          let scaleKey = JSON.stringify(prop.scale)
+          let scaleKey = stringify(prop.scale)
           let scale = mapping.scales[propKey][scaleKey]
 
           value = applyScale(value, scale, propKey)
         }
 
         if (prop.hasOwnProperty('scaleGeo')) {
-          let scaleKey = JSON.stringify(prop.scaleGeo)
+          let scaleKey = stringify(prop.scaleGeo)
           let scale = mapping.geoScales[propKey][scaleKey]
 
           value = applyScale(value, scale, propKey)
@@ -47,7 +49,7 @@ function mapElement (mapping, element, rowNumber) {
       }
 
       if (prop.hasOwnProperty('band')) {
-        let bandKey = JSON.stringify(prop.band)
+        let bandKey = stringify(prop.band)
         let band = mapping.bands[propKey][bandKey]
 
         value = band

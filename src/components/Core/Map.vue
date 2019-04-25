@@ -1,4 +1,6 @@
 <script>
+import stringify from 'fast-stringify'
+
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import CoordinateTreeUser from '../../mixins/CoordinateTreeUser.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
@@ -30,8 +32,8 @@ export default {
 
   data () {
     return {
-      mappedElements: [],
-      rowCache: {}
+      rowCache: {},
+      firstRender: true
     }
   },
 
@@ -69,25 +71,23 @@ export default {
 
       let mappedElements = []
 
-      let firstRender = true // TODO
-
-      if (firstRender) {
+      if (this.firstRender) {
         this.$$dataInterface.forEachRow(scope => {
           // // We create slotContent, an array of elements.
           // // For each row we might create one or more elements.
           let slotContent = this.$scopedSlots.default(scope)
 
           // We extract the 'relevant' parts: props, events, the tag name, etc
-          // let relevantOptions = getRelevantOptions(slotContent)
+          let relevantOptions = getRelevantOptions(slotContent)
 
           let mappedMarks = this.mapMarks(createElement, mappingTree, slotContent, scope.i)
 
           mappedElements.push(...mappedMarks.filter(mark => mark !== undefined))
-          // this.cacheRow(scope.i, relevantOptions, mappedMarks)
+          this.cacheRow(scope.i, relevantOptions, mappedMarks)
         })
       }
 
-      if (!firstRender) {
+      if (!this.firstRender) {
         this.$$dataInterface.forEachRow(scope => {
           // We create slotContent, an array of elements.
           // For each row we might create one or more elements.
@@ -112,6 +112,8 @@ export default {
           }
         })
       }
+
+      this.firstRender = false
 
       return mappedElements
     },
@@ -219,7 +221,7 @@ export default {
         return false
       }
 
-      return cachedElement.props === JSON.stringify(elementOptions.props)
+      return cachedElement.props === stringify(elementOptions.props)
     },
 
     cacheRow (i, relevantRowOptions, marks) {
@@ -230,9 +232,20 @@ export default {
 
         this.rowCache[i][j] = {
           tag: elementOptions.tag,
-          props: JSON.stringify(elementOptions.props)
+          props: stringify(elementOptions.props),
+          mark: marks[j]
         }
       }
+    },
+
+    getRowFromCache (i) {
+      let cachedRow = this.rowCache[i]
+      let marks = []
+      for (let key in cachedRow) {
+        marks.push(cachedRow[key].mark)
+      }
+
+      return marks
     }
   },
 
