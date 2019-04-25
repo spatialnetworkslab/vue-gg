@@ -10,8 +10,10 @@ import {
   updateGridComponents
 } from './utils/grid.js'
 
-import { initMappingTree, extractMappings } from './map/mappingTree.js'
 import getRelevantOptions from './map/getRelevantOptions.js'
+import { initMappingTree, extractMappings } from './map/mappingTree.js'
+import mapRow from './map/mapRow.js'
+import { createRenderOptions, renderMark } from './map/batchRenderer.js'
 
 export default {
   mixins: [DataReceiver, CoordinateTreeUser, ScaleReceiver],
@@ -62,92 +64,107 @@ export default {
   },
 
   methods: {
-    // mapRows (createElement) {
-    //   let mappings = null
-    //   let context = this.context
-    //
-    //   let mappedElements = []
-    //
-    //   this.$$dataInterface.forEachRow(scope => {
-    //     let rowUUID = `${this.uuid}_${scope.i}`
-    //
-    //     let slotContent = this.$scopedSlots.default(scope) || []
-    //     slotContent = slotContent.filter(el => el.tag !== undefined)
-    //
-    //     if (slotContent.length > 0) {
-    //       if (mappings === null) { mappings = initMappingTree(slotContent) }
-    //       mappings = extractMappings(mappings, slotContent, context)
-    //
-    //       let mappedContent = mapRow(mappings, slotContent, scope.i)
-    //
-    //       let renderOptions = mappedContent.map((entry, i) => {
-    //         return createRenderOptions(
-    //           entry, this.__interpolationNecessary, this.$$interactionManager,
-    //           `${rowUUID}_${i}`, this.sectionParentChain
-    //         )
-    //       })
-    //       let tags = mappedContent.map(entry => entry ? entry.componentOptions.tag : undefined)
-    //
-    //       let renderedEntries = renderOptions.map((options, i) => {
-    //         return renderMark(tags[i], createElement, this._renderContext, options, mappedContent[i])
-    //       })
-    //
-    //       mappedElements.push(...renderedEntries)
-    //     }
-    //   })
-    //
-    //   return mappedElements
-    // },
-
     mapRows (createElement) {
       let mappingTree = null
-      let context = this.context
 
       let mappedElements = []
 
-      this.$$dataInterface.forEachRow(scope => {
-        let slotContent = this.$scopedSlots.default(scope)
-        let relevantOptions = getRelevantOptions(slotContent)
-        let changedIndices = this.getChangedIndices(scope.i, relevantOptions)
+      let firstRender = true // TODO
 
-        if (changedIndices.length > 0) {
-          if (mappingTree === null) { mappingTree = initMappingTree(slotContent) }
-          mappingTree = extractMappings(mappingTree, slotContent, context)
+      if (firstRender) {
+        this.$$dataInterface.forEachRow(scope => {
+          // // We create slotContent, an array of elements.
+          // // For each row we might create one or more elements.
+          let slotContent = this.$scopedSlots.default(scope)
 
-          let indicesThatNeedChanging = relevantOptions.map((_, i) => changedIndices.includes(i))
+          // We extract the 'relevant' parts: props, events, the tag name, etc
+          let relevantOptions = getRelevantOptions(slotContent)
 
-          for (let i = 0; i < indicesThatNeedChanging.length; i++) {
-            let indexNeedsChanging = indicesThatNeedChanging[i]
-            if (indexNeedsChanging) {
+          let mappedMarks = this.mapMarks(createElement, mappingTree, slotContent, scope.i)
 
-            } else {
+          mappedElements.push(...mappedMarks)
+          this.cacheRow(scope.i, relevantOptions, mappedMarks)
+        })
+      }
 
-            }
+      if (!firstRender) {
+        this.$$dataInterface.forEachRow(scope => {
+          // We create slotContent, an array of elements.
+          // For each row we might create one or more elements.
+          let slotContent = this.$scopedSlots.default(scope)
+
+          // We extract the 'relevant' parts: props, events, the tag name, etc
+          let relevantOptions = getRelevantOptions(slotContent)
+
+          // Based on the 'relevant' parts, we check if anything changed
+          let anythingChanged = this.anythingChanged(scope.i, relevantOptions)
+
+          if (anythingChanged) {
+            let mappedMarks = this.mapMarks(createElement, mappingTree, slotContent, scope.i)
+
+            mappedElements.push(...mappedMarks)
+            this.cacheRow(scope.i, relevantOptions, mappedMarks)
           }
-        } else {
-          // TODO
-        }
-      })
+
+          if (!anythingChanged) {
+            let cachedMarks = this.getRowFromCache(scope.i)
+            mappedElements.push(...cachedMarks)
+          }
+        })
+      }
     },
 
-    mapDataframe () {
+    // mapDataframe () {
+    //   let context = this.context
+    //
+    //   let dataframe = this.$$dataInterface.getDataset()
+    //   let scope = { dataframe }
+    //
+    //   let slotContent = this.$scopedSlots.default(scope) || []
+    //   slotContent = slotContent.filter(el => el.tag !== undefined)
+    //
+    //   if (slotContent.length > 0) {
+    //     let mappings = initMappingTree(slotContent)
+    //     mappings = extractMappings(mappings, slotContent, context)
+    //
+    //     let mappedElements = mapRow(mappings, slotContent, 0)
+    //     return mappedElements
+    //   } else {
+    //     return []
+    //   }
+    // },
+
+    mapMarks (createElement, mappingTree, slotContent, i) {
       let context = this.context
+      let rowUUID = `${this.uuid}_${i}`
 
-      let dataframe = this.$$dataInterface.getDataset()
-      let scope = { dataframe }
+      // The mapping tree caches scale definitions, so that we
+      // don't need to rebuild the scale functions for every row
+      if (mappingTree === null) { mappingTree = initMappingTree(slotContent) }
+      mappingTree = extractMappings(mappingTree, slotContent, context)
 
-      let slotContent = this.$scopedSlots.default(scope) || []
-      slotContent = slotContent.filter(el => el.tag !== undefined)
+      let mappedRow = mapRow(mappingTree, slotContent, i)
 
-      if (slotContent.length > 0) {
-        let mappings = initMappingTree(slotContent)
-        mappings = extractMappings(mappings, slotContent, context)
+      let mappedMarks = []
 
-        let mappedElements = mapRow(mappings, slotContent, 0)
-        return mappedElements
-      } else {
-        return []
+      for (let j = 0; j < mappedRow.length; j++) {
+        let element = mappedRow[j]
+
+        let renderOptions = createRenderOptions(
+          element, this.__interpolationNecessary, this.$$interactionManager,
+          `${rowUUID}_${j}`, this.sectionParentChain
+        )
+
+        let tag = element ? element.componentOptions.tag : undefined
+
+        let renderedMark = renderMark(
+          tag, createElement, this._renderContext, renderOptions, element
+        )
+
+        mappedMarks.push(renderedMark)
       }
+
+      return mappedMarks
     },
 
     validateComponents (elements) {
@@ -178,56 +195,42 @@ export default {
       return false
     },
 
-    getChangedIndices (i, rowOptions) {
-      let changedIndices = []
-      this.rowCache[i] = this.rowCache[i] || []
+    anythingChanged (i, rowOptions) {
+      let cachedRow = this.rowCache[i]
 
-      for (let j = 0; i < rowOptions.length; j++) {
+      for (let j = 0; j < rowOptions.length; j++) {
         let elementOptions = rowOptions[j]
+        let cachedElement = cachedRow[j]
 
-        if (!elementOptions) {
-          if (!this.rowCache[i][j]) {
-            continue
-          } else {
-            delete this.rowCache[i][j]
-            changedIndices.push(j)
-            continue
-          }
-        }
-
-        // If there are sections in here, we will always tag them as dirty
-        if (elementOptions.tag === 'vgg-section') {
-          changedIndices.push(j)
-          continue
-        }
-
-        // If this thing doesn't matched our cached version:
-        // Tag as dirty and update cache
-        if (!this.matchCache(i, j, elementOptions)) {
-          changedIndices.push(j)
-          this.cacheRow(i, j, elementOptions)
-        }
+        if (!this.match(elementOptions, cachedElement)) return true
       }
 
-      return changedIndices
+      return false
     },
 
-    cacheRow (i, j, elementOptions) {
-      this.rowCache[i][j] = {
-        tag: elementOptions.tag,
-        props: JSON.stringify(elementOptions.props)
-      }
-    },
-
-    matchCache (i, j, elementOptions) {
-      let cachedElement = this.rowCache[i][j]
-      if (!cachedElement) { return false }
+    match (elementOptions, cachedElement) {
+      if (!cachedElement && !elementOptions) return true
+      if (!cachedElement && elementOptions) return false
+      if (cachedElement && !elementOptions) return false
 
       if (cachedElement.tag !== elementOptions.tag) {
         return false
       }
 
       return cachedElement.props === JSON.stringify(elementOptions.props)
+    },
+
+    cacheRow (i, relevantRowOptions, marks) {
+      this.rowCache[i] = this.rowCache[i] || {}
+
+      for (let j = 0; j < relevantRowOptions.length; j++) {
+        let elementOptions = relevantRowOptions[j]
+
+        this.rowCache[i][j] = {
+          tag: elementOptions.tag,
+          props: JSON.stringify(elementOptions.props)
+        }
+      }
     }
   },
 
