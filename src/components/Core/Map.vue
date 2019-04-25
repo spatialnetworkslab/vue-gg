@@ -31,7 +31,9 @@ export default {
   data () {
     return {
       rowCache: {},
-      firstRender: true
+      firstRender: true,
+      dataLength: null,
+      markIDs: {}
     }
   },
 
@@ -46,7 +48,7 @@ export default {
     },
 
     sectionParentChain () {
-      return JSON.JSON.stringify(this.$$sectionParentChain)
+      return JSON.stringify(this.$$sectionParentChain)
     },
 
     _renderContext () {
@@ -63,11 +65,25 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    this.cleanupSpatialIndex()
+  },
+
   methods: {
     mapRows (createElement) {
       let mappingTree = null
 
       let mappedElements = []
+
+      let dataLength = this.$$dataInterface.getDataset().length
+      if (this.dataLength !== dataLength) {
+        if (!this.firstRender) {
+          this.cleanupSpatialIndex()
+        }
+
+        this.firstRender = true
+        this.dataLength = dataLength
+      }
 
       if (this.firstRender) {
         this.$$dataInterface.forEachRow(scope => {
@@ -151,10 +167,11 @@ export default {
 
       for (let j = 0; j < mappedRow.length; j++) {
         let element = mappedRow[j]
+        let markID = `${rowUUID}_${j}`
 
         let renderOptions = createRenderOptions(
           element, this.__interpolationNecessary, this.$$interactionManager,
-          `${rowUUID}_${j}`, this.sectionParentChain
+          markID, this.sectionParentChain
         )
 
         let tag = element ? element.componentOptions.tag : undefined
@@ -162,6 +179,8 @@ export default {
         let renderedMark = renderMark(
           tag, createElement, this._renderContext, renderOptions, element
         )
+
+        this.markIDs[markID] = true
 
         mappedMarks.push(renderedMark)
       }
@@ -244,6 +263,13 @@ export default {
       }
 
       return marks
+    },
+
+    cleanupSpatialIndex () {
+      for (let markID in this.markIDs) {
+        this.$$interactionManager.removeItem(markID)
+        delete this.markIDs[markID]
+      }
     }
   },
 
