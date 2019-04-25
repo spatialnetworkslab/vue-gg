@@ -132,25 +132,15 @@ export default {
       return mappedElements
     },
 
-    // mapDataframe () {
-    //   let context = this.context
-    //
-    //   let dataframe = this.$$dataInterface.getDataset()
-    //   let scope = { dataframe }
-    //
-    //   let slotContent = this.$scopedSlots.default(scope) || []
-    //   slotContent = slotContent.filter(el => el.tag !== undefined)
-    //
-    //   if (slotContent.length > 0) {
-    //     let mappings = initMappingTree(slotContent)
-    //     mappings = extractMappings(mappings, slotContent, context)
-    //
-    //     let mappedElements = mapRow(mappings, slotContent, 0)
-    //     return mappedElements
-    //   } else {
-    //     return []
-    //   }
-    // },
+    mapDataframe (createElement) {
+      let mappingTree = null
+      let dataframe = this.$$dataInterface.getDataset()
+      let scope = { dataframe }
+
+      let slotContent = this.$scopedSlots.default(scope)
+
+      return this.mapMarks(createElement, mappingTree, slotContent, 0)
+    },
 
     mapMarks (createElement, mappingTree, slotContent, i) {
       let context = this.context
@@ -247,10 +237,14 @@ export default {
       for (let j = 0; j < relevantRowOptions.length; j++) {
         let elementOptions = relevantRowOptions[j]
 
-        this.rowCache[i][j] = {
-          tag: elementOptions.tag,
-          props: JSON.stringify(elementOptions.props),
-          mark: marks[j]
+        if (elementOptions) {
+          this.rowCache[i][j] = {
+            tag: elementOptions.tag,
+            props: JSON.stringify(elementOptions.props),
+            mark: marks[j]
+          }
+        } else {
+          this.rowCache[i][j] = {}
         }
       }
     },
@@ -285,7 +279,7 @@ export default {
     }
 
     if (this.unit === 'dataframe') {
-      elements = this.mapDataframe()
+      elements = this.mapDataframe(createElement)
     }
 
     elements = elements.filter(el => {
