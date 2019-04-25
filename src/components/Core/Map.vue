@@ -38,6 +38,10 @@ export default {
   },
 
   computed: {
+    __update () {
+      return this.parentBranch.updateCount
+    },
+
     context () {
       return {
         ranges: this.parentBranch.domains,
@@ -85,7 +89,14 @@ export default {
         this.dataLength = dataLength
       }
 
+      if (this.lastUpdate !== this.__update) {
+        this.rowCache = {}
+        this.firstRender = true
+      }
+
       if (this.firstRender) {
+        this.lastUpdate = this.__update
+
         this.$$dataInterface.forEachRow(scope => {
           // // We create slotContent, an array of elements.
           // // For each row we might create one or more elements.
