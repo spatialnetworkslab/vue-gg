@@ -8,5 +8,6 @@ export default {
   'vgg-polygon': ['Polygon', 'MultiPolygon', 'LineString', 'MultiLineString'],
   'vgg-rectangle': null,
   'vgg-symbol': ['Point'],
-  'vgg-trail': null
+  'vgg-trail': null,
+  'vgg-multi-point': ['MultiPoint']
 }

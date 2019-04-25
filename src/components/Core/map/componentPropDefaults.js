@@ -8,6 +8,7 @@ import Polygon from '../../Marks/Polygon.vue'
 import Rectangle from '../../Marks/Rectangle.vue'
 import Symbol from '../../Marks/Symbol.vue'
 import Trail from '../../Marks/Trail.vue'
+import MultiPoint from '../../Marks/MultiPoint.vue'
 
 import Section from '../../Core/Section.vue'
 
@@ -55,6 +56,9 @@ function extractAllDefaults () {
   // vgg-trail
   let trailDefaults = extractDefaults(Trail)
   defaults['vgg-trail'] = mergeDefaults(pathMixinDefaults, trailDefaults)
+
+  // vgg-multi-point
+  defaults['vgg-multi-point'] = extractDefaults(MultiPoint)
 
   // vgg-section
   let sectionDefaults = extractDefaults(Section)
