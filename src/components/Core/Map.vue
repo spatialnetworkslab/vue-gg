@@ -78,12 +78,12 @@ export default {
           let slotContent = this.$scopedSlots.default(scope)
 
           // We extract the 'relevant' parts: props, events, the tag name, etc
-          let relevantOptions = getRelevantOptions(slotContent)
+          // let relevantOptions = getRelevantOptions(slotContent)
 
           let mappedMarks = this.mapMarks(createElement, mappingTree, slotContent, scope.i)
 
-          mappedElements.push(...mappedMarks)
-          this.cacheRow(scope.i, relevantOptions, mappedMarks)
+          mappedElements.push(...mappedMarks.filter(mark => mark !== undefined))
+          // this.cacheRow(scope.i, relevantOptions, mappedMarks)
         })
       }
 
@@ -112,6 +112,8 @@ export default {
           }
         })
       }
+
+      return mappedElements
     },
 
     // mapDataframe () {

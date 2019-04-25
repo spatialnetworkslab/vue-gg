@@ -1,3 +1,5 @@
+import { getChildren } from './mappingTree.js'
+
 import mappableProps from '../../../scales/utils/mappableProps.js'
 
 import { transform } from '../../../utils/geojson.js'

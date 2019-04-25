@@ -118,7 +118,7 @@ function updateMapping (mapping, element, context) {
   return mapping
 }
 
-function getChildren (element) {
+export function getChildren (element) {
   if (element && element.componentOptions && element.componentOptions.children) {
     return element.componentOptions.children
   }
