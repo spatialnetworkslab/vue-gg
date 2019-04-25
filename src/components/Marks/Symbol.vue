@@ -8,12 +8,12 @@ export default {
   props: {
     x: {
       type: [Number, String, Date],
-      required: true
+      default: undefined
     },
 
     y: {
       type: [Number, String, Date],
-      required: true
+      default: undefined
     },
 
     fill: {
@@ -59,6 +59,18 @@ export default {
     transition: {
       type: Number,
       default: 0
+    },
+
+    geometry: {
+      type: undefined,
+      default: undefined
+    }
+  },
+
+  data () {
+    return {
+      markType: 'symbol',
+      validGeomTypes: ['Point']
     }
   },
 

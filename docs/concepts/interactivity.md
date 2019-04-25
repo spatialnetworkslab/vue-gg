@@ -2,12 +2,12 @@
 title: Interactivity
 ---
 
-# Introduction
+# Interactivity
 
 Adding interactivity to graphics can greatly aid the discovery of patterns in
 data. Below, some ways to interact with graphics are described.
 
-# Hovering and clicking
+## Hovering and clicking
 
 The first and most straightforward way of interacting with data is clicking
 or hovering over the marks that data has been mapped to. All marks, except for
@@ -105,7 +105,7 @@ export default {
 
 <hover-bar-chart />
 
-# Selecting
+## Selecting
 
 If hovering and clicking are ways to interact with individual marks, selecting
 is a way to interact with multiple marks at the same time. To enable selections:
@@ -193,10 +193,62 @@ export default {
 
 <select-test />
 
-# Zooming
+## Zooming
 
 TODO
 
-# Brushing
+## Brushing
 
 TODO
+
+## A Caveat on Mapping
+
+Generally, if rendering an additional mark when an interaction is performed, it is best to place the new mark component outside of any `<vgg-map>` components.
+
+This is because in most cases only a single new mark is needed for a single row of data, there is thus no need to map all the rows. Placing the new mark within the map component may cause significant lagging.
+
+This is fast:
+
+```html
+<vgg-map v-slot="{ row }">
+
+  <vgg-point
+    @hover="handleHover($event, row)"
+    :x="row[x]"
+    :y="row[y]"
+    :radius="3"
+  />
+
+</vgg-map>
+
+<vgg-point
+  v-if="hoverRow"
+  :x="hoverRow[x]"
+  :y="hoverRow[y]"
+  fill="red"
+  :radius="3"
+/>
+```
+
+But this is slow:
+
+```html
+<vgg-map v-slot="{ row }">
+
+  <vgg-point
+    @hover="handleHover($event, row)"
+    :x="row[x]"
+    :y="row[y]"
+    :radius="3"
+  />
+
+  <vgg-point
+    v-if="hoverRow"
+    :x="hoverRow[x]"
+    :y="hoverRow[y]"
+    fill="red"
+    :radius="3"
+  />
+
+</vgg-map>
+```

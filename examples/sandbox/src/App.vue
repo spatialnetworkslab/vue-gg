@@ -114,7 +114,13 @@ export default {
       } else {
         this.hoverRow = null
       }
+      // console.log(timetable)
+      return timetable
     }
+  },
+
+  methods: {
+    log: console.log
   }
 }
 </script>

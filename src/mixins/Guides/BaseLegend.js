@@ -190,7 +190,7 @@ export default {
 
     nice: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     rowPadding: {
@@ -201,6 +201,16 @@ export default {
     colPadding: {
       type: Number,
       default: 0
+    },
+
+    showLast: {
+      type: Boolean,
+      default: true
+    },
+
+    showFirst: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -267,7 +277,9 @@ export default {
     },
 
     legendLeft () {
-      if (isNaN(this.x)) {
+      if (this.position !== 'left' && (!isNaN(this.x) || !isNaN(this.x1) || !isNaN(this.x2))) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y` or `position`')
+      } else if (isNaN(this.x) && isNaN(this.x1) && isNaN(this.x2)) {
         let p = this.position
         if (p === 'right' || p === 'tr' || p === 'br') {
           return (this.plotWidth - this.sectionWidth) * 0.95
@@ -276,16 +288,36 @@ export default {
         } else {
           return this.plotWidth * 0.02
         }
-      } else {
+      } else if (!isNaN(this.x) && isNaN(this.x1) && isNaN(this.x2)) {
         if (this.position && this.position !== 'left') {
           console.warn('Ignoring position value `' + this.position + '` because of `x` input ' + this.x)
         }
-        return this.x
+        return (this.x - this.sectionWidth / 2)
+      } else if (!isNaN(this.x1) && !isNaN(this.x2) && isNaN(this.x)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `x1` input ' + this.x1 + ' and `x2` input ' + this.x2)
+        }
+        return this.x1
+      } else if ((!isNaN(this.x1) || !isNaN(this.x2)) && isNaN(this.x)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `x1`, `x2`, `x` inputs')
+        }
+        if (!isNaN(this.x1)) {
+          return this.x1
+        }
+
+        if (!isNaN(this.x2)) {
+          return this.x2 - this.sectionWidth
+        }
+      } else if (!isNaN(this.x) && !isNaN(this.x1) && !isNaN(this.x2)) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
       }
     },
 
     legendTop () {
-      if (isNaN(this.y)) {
+      if (this.position !== 'left' && (!isNaN(this.y) || !isNaN(this.y1) || !isNaN(this.y2))) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y` or `position`')
+      } else if (isNaN(this.y) && isNaN(this.y1) && isNaN(this.y2)) {
         let p = this.position
         if (p === 'top' || p === 'tl' || p === 'tr' || p === 'tc') {
           if (this.plotHeight - this.sectionHeight < 0) {
@@ -306,16 +338,33 @@ export default {
             return -this.plotHeight * 0.45 + this.sectionHeight / 2
           }
         }
-      } else {
+      } else if (!isNaN(this.y) && isNaN(this.y1) && isNaN(this.y2)) {
         if (this.position && this.position !== 'left') {
-          console.warn('Ignoring position value `' + this.position + '` because of `x` and `y` inputs')
+          console.warn('Ignoring position value `' + this.position + '` because of `x` input ' + this.y)
+        }
+        return (-this.y + this.sectionHeight / 2)
+      } else if (!isNaN(this.y1) && !isNaN(this.y2) && isNaN(this.y)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `y1` input ' + this.y1 + ' and `y2` input ' + this.y2)
+        }
+        return -this.y1
+      } else if ((!isNaN(this.y1) || !isNaN(this.y2)) && isNaN(this.y)) {
+        if (this.position && this.position !== 'left') {
+          console.warn('Ignoring position value `' + this.position + '` because of `y1`, `y2`, `y` inputs')
+        }
+        if (!isNaN(this.y1)) {
+          return -this.y1
         }
 
-        return -this.y
+        if (!isNaN(this.y2)) {
+          return this.sectionHeight - this.y2
+        }
+      } else if (!isNaN(this.y) && !isNaN(this.y1) && !isNaN(this.y2)) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
       }
     },
 
-    legendLabels () {
+    legendTicks () {
       let firstValue = this._domain[0]
       let newTickValues
 
@@ -326,12 +375,22 @@ export default {
           newTickValues.unshift(firstValue)
         }
 
-        return newTickValues.map(value => {
-          return { value }
-        })
+        if (this._domainType.includes('interval')) {
+          let processedTicks = []; let i = 0
+          while (i < newTickValues.length) {
+            processedTicks.push({ value: newTickValues[i][0], label: newTickValues[i][0] })
+            i++
+          }
+          processedTicks.push({ value: newTickValues[i - 1][1], label: newTickValues[i - 1][1] })
+          return processedTicks
+        } else {
+          return newTickValues.map(value => {
+            return { value }
+          })
+        }
       } else {
         let ticks
-        let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
+        let format = this.format ? this.format : defaultFormat
         let domain = this._domain
 
         if (this.legendCache.scale.domainMin) {
@@ -343,7 +402,8 @@ export default {
         }
 
         if (this._domainType === 'quantitative') {
-          newTickValues = arrayTicks(...domain, this.tickCount)
+          let numTicks = this.tickCount ? this.tickCount : 10
+          newTickValues = arrayTicks(...domain, numTicks)
           if (this.tickExtra && newTickValues[0] !== firstValue) {
             newTickValues.unshift(firstValue)
           }
@@ -352,7 +412,7 @@ export default {
             if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
               return { value, label: '' }
             } else {
-              return { value, label: this.nice ? format(value, 1) : format(value) }
+              return { value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
             }
           })
         }
@@ -391,19 +451,17 @@ export default {
 
         if (this._domainType === 'interval:quantitative') {
           let intervals
+
           if (this.legendCache.scale.constructor === String) {
             intervals = this.$$dataInterface.getColumn(this.legendCache.scale)
           } else if (this.legendCache.scale.constructor === Object) {
             intervals = this.$$dataInterface.getColumn(this.legendCache.scale.domain)
+          } else if (this.legendCache.scale.constructor === Array) {
+            intervals = this.legendCache.scale
           }
 
-          // ticks = intervals.map((value, i) => {
-          //   let mean = (value[0] + value[1]) / 2
-          //   return { value: mean, label: this.nice ? format(this.round(mean, 1)) : format(mean) }
-          // })
-
           ticks = ticksFromIntervals(intervals).map(value => {
-            return { value: value, label: this.nice ? format(value, 1) : format(value) }
+            return { value: value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
           })
         }
 
@@ -419,35 +477,50 @@ export default {
             let date = new Date(value)
             return { value: date, label: format(date) }
           })
+
+          if (this.tickCount) {
+            let step = Math.floor(ticks.length / this.tickCount)
+            ticks = ticks.filter((value, i) => (i % step) === 0)
+          }
         }
 
         return ticks
       }
     },
 
+    // w
+    // x1, x2
     sectionWidth () {
-      if (!this.w) {
+      if (!this.w && !this.x1 && !this.x2) {
         if (this.orientation === 'vertical') {
           return this.plotWidth * 0.1 + this.rowPadding
         } else {
-          let width = this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
-          return (width / this.tickCount * this.legendLabels.length >= width ? width / this.tickCount * this.legendLabels.length : width)
+          return this.plotWidth * 0.35 + this.titleFontSize + this.colPadding
         }
-      } else {
+      } else if (this.x1 && this.x2 && this.w) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
+      } else if (this.x1 && this.x2 && !this.w) {
+        return (this.x2 - this.x1)
+      } else if (this.w && !this.x1 && !this.x2) {
         return this.w
       }
     },
 
+    // h
+    // y1, y2
     sectionHeight () {
-      if (!this.h) {
+      if (!this.h && !this.y1 && !this.y2) {
         if (this.orientation === 'vertical') {
           // return this.plotHeight * 0.3 + this.titleFontSize + this.colPadding
-          let height = this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
-          return (height / this.tickCount * this.legendLabels.length >= height ? height / this.tickCount * this.legendLabels.length : height)
+          return this.plotHeight * 0.35 + this.titleFontSize + this.colPadding
         } else {
           return this.plotHeight * 0.1 + this.rowPadding
         }
-      } else {
+      } else if (this.y1 && this.y2 && this.h) {
+        throw new Error('Invalid combination of props. Use only either `x1`, `x2`, `y1`, `y2` or `w`, `h`, `x`, `y`')
+      } else if (this.y1 && this.y2 && !this.h) {
+        return (this.y2 - this.y1)
+      } else if (this.h && !this.y1 && !this.y2) {
         return this.h
       }
     },
@@ -539,7 +612,11 @@ export default {
       } else {
         // Domain is dependent on scale inputs
         // Range is dependent on aesthetic inputs
-        scaleOptions.domain = this.legendCache.scale.domain ? this.legendCache.scale.domain : this.legendCache.scale
+        if (this.legendCache.scale.domain) {
+          scaleOptions.domain = this.legendCache.scale.domain
+        } else {
+          scaleOptions.domain = this.legendCache.scale
+        }
 
         if (this.legendCache.scale.domainMin) {
           scaleOptions.domainMin = this.legendCache.scale.domainMin
@@ -580,7 +657,7 @@ export default {
         }
 
         if (prop === 'strokeOpacity' || prop === 'fillOpacity' || prop === 'opacity') {
-          scaleOptions.range = scaleBasis.range ? scaleBasis.range : [0, 1]
+          scaleOptions.range = scaleBasis.range ? scaleBasis.range : scaleBasis.constructor === Array ? scaleBasis : [0, 1]
         } else if (prop === 'stroke' || prop === 'fill' || prop === 'shape') {
           if (scaleBasis.type) {
             scaleOptions.type = scaleBasis.type
@@ -588,13 +665,15 @@ export default {
 
           if (scaleBasis.range) {
             if (prop === 'stroke' || prop === 'fill') {
-              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
             } else {
-              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
             }
+          } else if (scaleBasis.constructor === Array) {
+            scaleOptions.range = scaleBasis
           }
         } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {
-          scaleOptions.range = scaleBasis.range ? scaleBasis.range : [0, 10]
+          scaleOptions.range = scaleBasis.range ? scaleBasis.range : scaleBasis.constructor === Array ? scaleBasis : [0, 10]
         }
 
         // custom scales with # signs only apply to domains

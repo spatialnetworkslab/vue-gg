@@ -3,8 +3,8 @@
     :width="900"
     :height="600"
     :data="data">
-    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
 
+    <vgg-scales :scales="{ rainfallScale: 'rainfall' }" />
     <vgg-section
       :x1="100"
       :x2="500"
@@ -12,8 +12,8 @@
       :y2="500"
       :scale-x="'xValues'"
       :scale-y="'yValues'"
+      :transform="{transform: df => {log(df); return df;}}"
     >
-
       <vgg-trail
         :points="[[0.50, 11], [1, 20], [3, 14], [7, 30], [3, 16], [9, 19]]"
         :stroke-width="[1, 5, 5, 3, 4, 2]"
@@ -23,12 +23,12 @@
         @click="log('test')"
       />
 
-      <vgg-data :transform="{ groupBy: 'colors' }">
+      <vgg-data :transform="[{ groupBy: 'colors' }, {transform: df => {log(df); return df;}}]">
         <vgg-map v-slot="{ row }">
           <vgg-trail
             :x="row.grouped.xValues"
             :y="row.grouped.yValues"
-            :stroke-width="{ val: row.grouped.rainfall, scale: '#rainfallScale'}"
+            :stroke-width="{val: row.grouped.rainfall, scale: '#rainfallScale'}"
             :fill="row.colors"
             :fill-opacity="0.7"
             :sort="'x'"
@@ -38,17 +38,15 @@
         </vgg-map>
       </vgg-data>
       </vgg-data>
-
     </vgg-section>
 
     <vgg-symbol-legend
       :scale="'#rainfallScale'"
       :font-size="10"
       :size="15"
-      :x="600"
-      :y="300"
       :stroke-width="{ range: [2, 12] }"
-      :h="200"
+      :x="600"
+      :y="400"
       shape="line"
       stroke="orange"
       direction="vertical"
@@ -59,20 +57,22 @@
       :scale="'colors'"
       :font-size="10"
       :stroke-width="8"
-      :stroke="{ range: ['red', 'green', 'blue', 'purple'] }"
+      :stroke="['red', 'green', 'blue', 'purple']"
       :x="600"
-      :y="0"
+      :y="100"
       shape="line"
       title="Stroke color"
     />
     <vgg-symbol-legend
-      :scale="'rainfall'"
+      :scale="'#rainfallScale'"
       :font-size="10"
       :size="15"
-      :x="0"
-      :y="520"
       :stroke-width="10"
       :stroke-opacity="{ range: [0, 0.7] }"
+      :y="540"
+      :h="80"
+      :x="180"
+      :w="300"
       shape="line"
       title="Opacity test"
       orientation="horizontal"
@@ -131,6 +131,10 @@ export default {
 
       return data
     }
+  },
+  methods: {
+    log: console.log
+
   },
 
   methods: { log: console.log }

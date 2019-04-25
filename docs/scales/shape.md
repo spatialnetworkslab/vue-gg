@@ -12,9 +12,7 @@ We provide a few default shape schemes that can be used as scales for categorica
 <vgg-map v-slot="{ row }">
 
 	<vgg-symbol
-	    :shape="{ val: row.x,
-	    		  scale: { type: 'shape8', domain: 'row.x' } }"
-	/>
+	    :shape="{ val: row.x, scale: { type: 'shape8', domain: 'x' } }" />
 
 </vgg-map>
 ```
@@ -45,7 +43,7 @@ This scale provides 6 distinct polygons that can be assigned to different catego
 
 # Custom Shape Schemes
 
-It is possible to define a custom shape scheme by providing an array of `ranges` to the scaling options instead of `type`. Elements of the array can be pre-defined shape names or custom shape paths.
+It is possible to define a custom shape scheme by providing a `range` array to the scaling options instead of `type`. Elements of the array can be pre-defined shape names or custom shape paths.
 
 ### prop definition
 
@@ -53,8 +51,8 @@ It is possible to define a custom shape scheme by providing an array of `ranges`
 <vgg-symbol
 	:shape = "{
 		val: row.x,
-		scale: { ranges: ['circle', 'star', 'M-1,-1H1V1H-1Z', 'diamond'],
-				 domain: 'row.x' }
+		scale: { range: ['circle', 'star', 'M-1,-1H1V1H-1Z', 'diamond'],
+				 domain: 'x' }
 	}" >
 ```
 

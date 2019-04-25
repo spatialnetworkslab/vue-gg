@@ -5,8 +5,8 @@ import categorical from './categorical.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'categorical') {
-    if (scalingOptions.ranges) {
-      return scaleFromRange(domain, scalingOptions.ranges)
+    if (scalingOptions.range) {
+      return scaleFromRange(domain, scalingOptions.range)
     }
 
     let scale = scalingOptions.type || 'shape8'

@@ -10,16 +10,17 @@ import createSVGStyle from './utils/createSVGStyle.js'
 import checkPoints from './utils/checkPoints.js'
 
 import { invalidPoint } from '../utils/equals.js'
+import checkGeometry from './utils/checkGeometry.js'
 
 export function renderSVG (
   createElement,
   { $$transform },
-  { props, pathType, interpolate, addToSpatialIndex }
+  { props, pathType, interpolate, addToSpatialIndex, validGeomTypes }
 ) {
   let area = pathType === 'area'
   checkPoints(props.points, props.geometry, props.x, props.y, props.x2, props.y2, area)
-
   if (props.geometry) {
+    checkGeometry(pathType, validGeomTypes, props.geometry)
     let tranformedFeature = transformFeature(props.geometry, $$transform)
 
     addToSpatialIndex(tranformedFeature)

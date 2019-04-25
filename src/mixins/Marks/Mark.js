@@ -62,7 +62,8 @@ export default {
         props: this._props,
         addToSpatialIndex: this.addToSpatialIndex,
         interpolate: this._interpolate,
-        pathType: this.pathType
+        pathType: this.pathType,
+        validGeomTypes: this.validGeomTypes
       }
     }
   },

@@ -1,15 +1,26 @@
 import createSVGStyle from './utils/createSVGStyle.js'
+import checkGeometry from './utils/checkGeometry.js'
 
-export function renderSVG (createElement, { $$transform }, { props, addToSpatialIndex }) {
+export function renderSVG (createElement, { $$transform }, { props, addToSpatialIndex, validGeomTypes }) {
+  if (props.geometry) {
+    checkGeometry('symbol', validGeomTypes, props.geometry)
+  }
+
+  let xy = props.geometry
+    ? props.geometry.coordinates
+    : [props.x, props.y]
+
+  let [cx, cy] = $$transform(xy)
+
   if (props.shape === 'circle') {
-    return createCircle(createElement, $$transform, props, addToSpatialIndex)
+    return createCircle(createElement, props, cx, cy, addToSpatialIndex)
   } else if (props.shape === 'square') {
-    return createSquare(createElement, $$transform, props, addToSpatialIndex)
+    return createSquare(createElement, props, cx, cy, addToSpatialIndex)
   } else if (pathAlias.hasOwnProperty(props.shape)) {
     let path = pathAlias[props.shape]
-    return createPath(createElement, $$transform, props, path, addToSpatialIndex)
+    return createPath(createElement, props, path, cx, cy, addToSpatialIndex)
   } else {
-    return createPath(createElement, $$transform, props, props.shape, addToSpatialIndex)
+    return createPath(createElement, props, props.shape, cx, cy, addToSpatialIndex)
   }
 }
 
@@ -17,8 +28,7 @@ export function renderSVG (createElement, { $$transform }, { props, addToSpatial
 // HELPERS
 //
 
-function createCircle (createElement, $$transform, props, addToSpatialIndex) {
-  let [cx, cy] = $$transform([props.x, props.y])
+function createCircle (createElement, props, cx, cy, addToSpatialIndex) {
   let r = props.size / 2
 
   addToSpatialIndex([cx, cy])
@@ -33,9 +43,7 @@ function createCircle (createElement, $$transform, props, addToSpatialIndex) {
   })
 }
 
-function createSquare (createElement, $$transform, props, addToSpatialIndex) {
-  let [cx, cy] = $$transform([props.x, props.y])
-
+function createSquare (createElement, props, cx, cy, addToSpatialIndex) {
   let l = props.size
   let x = cx - (l / 2)
   let y = cy - (l / 2)
@@ -53,9 +61,7 @@ function createSquare (createElement, $$transform, props, addToSpatialIndex) {
   })
 }
 
-function createPath (createElement, $$transform, props, d, addToSpatialIndex) {
-  let [cx, cy] = $$transform([props.x, props.y])
-
+function createPath (createElement, props, d, cx, cy, addToSpatialIndex) {
   addToSpatialIndex([cx, cy])
 
   let s = createSVGStyle(props)

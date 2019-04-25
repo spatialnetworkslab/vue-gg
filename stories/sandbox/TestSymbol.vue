@@ -20,7 +20,7 @@
           <vgg-symbol
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
-            :size="{ val: row.dependent, scale: {domain: 'dependent', range: [5, 20]} }"
+            :size="{ val: row.dependent, scale: {domain: 'dependent', range:[5, 20]} }"
             :stroke="color(row.categorical)"
             :stroke-width="2"
             :shape="shape(row.categorical)"
@@ -45,28 +45,27 @@
           :scale="'explanatory'"
         />
 
-      <vgg-x-grid
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale="[0, 150]"
-      />
+        <vgg-x-grid
+          :x1="100"
+          :x2="500"
+          :y1="100"
+          :y2="500"
+          :scale="[0, 150]"
+        />
 
-      <vgg-y-grid
-        :scale="'dependent'"
-      />
+        <vgg-y-grid
+          :scale="'dependent'"
+        />
 
       </vgg-section>
       <vgg-symbol-legend
         :scale="{ domain: 'categorical'}"
         :title-font-size="20"
-        :size="{ range: [5, 20] }"
-        :x="sectionWidth * 0.6"
-        :y="sectionHeight * 0.5"
+        :x="600"
         :label-padding="-0.2"
         :stroke="colorLegend(colorScheme)"
         :shape="shapeLegend(shapeScheme)"
+        :size="15"
         fill="none"
         title="Fruits"
       />
@@ -133,33 +132,33 @@ export default {
       ]
       for (let i = 0; i < newData.length; i++) {
         newData[i].categorical = fruits[Math.floor(i / 12)]
-        newData[i].dependent = newData[i].dependent + Math.random() * 100
+        newData[i].dependent = newData[i].dependent + Math.abs(Math.random() * 100)
       }
       return newData
     },
     color (value) {
       if (this.colorScheme === 'custom') {
-        return { val: value, scale: { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }
+        return { val: value, scale: { range: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'], domain: 'categorical' } }
       }
       return { val: value, scale: { type: this.colorScheme, domain: 'categorical' } }
     },
     shape (value) {
       if (this.shapeScheme === 'custom') {
-        return { val: value, scale: { ranges: ['circle', 'square'], domain: 'categorical' } }
+        return { val: value, scale: { range: ['circle', 'square'], domain: 'categorical' } }
       }
       return { val: value, scale: { type: this.shapeScheme, domain: 'categorical' } }
     },
 
     colorLegend (colorScheme) {
       if (this.colorScheme === 'custom') {
-        return { ranges: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'] }
+        return { range: ['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange'] }
       }
       return { type: colorScheme }
     },
 
     shapeLegend () {
       if (this.shapeScheme === 'custom') {
-        return { ranges: ['circle', 'square'] }
+        return { range: ['circle', 'square'] }
       }
       return { type: this.shapeScheme }
     }

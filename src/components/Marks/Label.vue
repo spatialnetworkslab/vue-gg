@@ -13,12 +13,12 @@ export default {
 
     x: {
       type: [Number, String, Date],
-      required: true
+      default: undefined
     },
 
     y: {
       type: [Number, String, Date],
-      required: true
+      default: undefined
     },
 
     fill: {
@@ -71,6 +71,11 @@ export default {
       default: 0
     },
 
+    geometry: {
+      type: undefined,
+      default: undefined
+    },
+
     // Unmappable
     anchorPoint: {
       type: String,
@@ -81,7 +86,8 @@ export default {
 
   data () {
     return {
-      markType: 'label-mark'
+      markType: 'label',
+      validGeomTypes: ['Point']
     }
   },
 

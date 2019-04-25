@@ -50,8 +50,8 @@ The positioning properties of the Rectangle can only be used in certain combinat
 | `x2` + `w`  | `x1 = x2 - w`                                                                                                                  |
 | `y1` + `y2` | `y1` refers to y-coordinate of the bottom side of the rectangle, `y2` refers to y-coordinate of the top side of the rectangle. |
 | `y` + `h`   | `y` is the center of the rectangle in the x-dimension, `h` is the width. Here, `y1 = y - h / 2`, and `y2 = y + h / 2`.         |
-| `y1` + `h`  | `y2 = y1 + w`                                                                                                                  |
-| `y2` + `h`  | `y1 = y2 - w`                                                                                                                  |
+| `y1` + `h`  | `y2 = y1 + h`                                                                                                                  |
+| `y2` + `h`  | `y1 = y2 - h`                                                                                                                  |
 
 ### Other aesthetics
 
@@ -96,7 +96,7 @@ Instead, the coordinate system of the first parent component that has a quantita
 coordinate system will be used. For example:
 
 ::: v-pre
-```html{14}
+```html{13}
 <vgg-graphic :width="500" :height="500">
   <vgg-section
     :x1="50"

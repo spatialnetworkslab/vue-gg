@@ -1,8 +1,18 @@
 import { textAnchorPoint } from '../utils/anchorPoint.js'
 import createSVGStyle from './utils/createSVGStyle.js'
+import checkGeometry from './utils/checkGeometry.js'
 
-export function renderSVG (createElement, { $$transform }, { props }) {
-  let [cx, cy] = $$transform([props.x, props.y])
+export function renderSVG (createElement, { $$transform }, { props, validGeomTypes }) {
+  if (props.geometry) {
+    checkGeometry('label', validGeomTypes, props.geometry)
+  }
+
+  let xy = props.geometry
+    ? props.geometry.coordinates
+    : [props.x, props.y]
+
+  let [cx, cy] = this.$$transform(xy)
+
   let anchorPoint = textAnchorPoint(props.anchorPoint)
   let transform = calcTransform(props.rotation, cx, cy)
   let styles = createSVGStyle(props)

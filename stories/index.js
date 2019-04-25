@@ -12,6 +12,7 @@ import TestAbsolute from './sandbox/TestAbsolute.vue'
 import TransformTest from './sandbox/TransformTest.vue'
 import BinningTest from './sandbox/BinningTest.vue'
 import GeoShape from './sandbox/GeoShape.vue'
+import OtherGeoShapes from './sandbox/OtherGeoShapes.vue'
 import MissingInvalidData from './sandbox/MissingInvalidData.vue'
 import MultiLines from './sandbox/MultiLines.vue'
 import Areas from './sandbox/Areas.vue'
@@ -32,6 +33,8 @@ import Facets from './sandbox/Facets.vue'
 import DomainError from './sandbox/DomainError.vue'
 import EmptyData from './sandbox/EmptyData.vue'
 import DuplicateScales from './sandbox/DuplicateScales.vue'
+import ClassificationTest from './sandbox/ClassificationTest.vue'
+import ScaleTransformation from './sandbox/ScaleTransformation.vue'
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -47,6 +50,7 @@ storiesOf('Sandbox', module)
   .add('Test: transform', () => (TransformTest))
   .add('Test: binning', () => (BinningTest))
   .add('Test: GeoShape', () => (GeoShape))
+  .add('Test: Error handling for invalid geometries', () => (OtherGeoShapes))
   .add('Test: missing', () => (MissingInvalidData))
   .add('Test: Area Mark', () => (Areas))
   .add('MultiLines', () => (MultiLines))
@@ -67,3 +71,5 @@ storiesOf('Sandbox', module)
   .add('DomainError', () => (DomainError))
   .add('Empty data', () => (EmptyData))
   .add('Duplicate scales', () => (DuplicateScales))
+  .add('Classification test', () => ClassificationTest)
+  .add('Scale transformation', () => (ScaleTransformation))

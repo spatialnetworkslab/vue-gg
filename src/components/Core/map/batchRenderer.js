@@ -10,6 +10,7 @@ import Section from '../Section.vue'
 
 import componentPropDefaults from './componentPropDefaults.js'
 import componentInterpolateDefaults from './componentInterpolateDefaults.js'
+import componentValidGeomTypes from './componentValidGeomTypes.js'
 
 export function createRenderOptions (slotEntry, interpolationNecessary, interactionManager, uuid, sectionParentChain) {
   if (!slotEntry) return
@@ -36,7 +37,9 @@ export function createRenderOptions (slotEntry, interpolationNecessary, interact
 
   let pathType = getPathType(tag)
 
-  return { props, interpolate, addToSpatialIndex, pathType }
+  let validGeomType = componentValidGeomTypes[tag]
+
+  return { props, interpolate, addToSpatialIndex, pathType, validGeomType }
 }
 
 function generateProps (tag, props) {
