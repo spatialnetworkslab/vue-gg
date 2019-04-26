@@ -37,9 +37,9 @@ export function createRenderOptions (slotEntry, interpolationNecessary, interact
 
   let pathType = getPathType(tag)
 
-  let validGeomType = componentValidGeomTypes[tag]
+  let validGeomTypes = componentValidGeomTypes[tag]
 
-  return { props, interpolate, addToSpatialIndex, pathType, validGeomType }
+  return { props, interpolate, addToSpatialIndex, pathType, validGeomTypes }
 }
 
 function generateProps (tag, props) {
