@@ -96,13 +96,13 @@
           :fill-opacity="{ range: [0, 1]}"
           :h="400"
           :show-first="false"
-          :show-last="false"
+
           title="Discrete"
           position="tl"
           fill="blue"
         />
 
-        <vgg-gradient-legend
+        <!-- <vgg-gradient-legend
           :scale="[[0, 10], [10, 20], [20, 40], [40, 45], [45, 60], [60, 100]]"
           :tick-values="[[0, 10], [10, 20], [20, 40], [40, 45], [45, 60]]"
           :title-padding="2"
@@ -110,7 +110,7 @@
           position="tr"
           title="Gradient"
           fill="blue"
-        />
+        /> -->
 
       </vgg-data>
     </vgg-graphic>

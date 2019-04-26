@@ -699,6 +699,16 @@ export default {
         return false
       }
       return true
+    },
+
+    checkValidity (color, opacity, indexItem) {
+      if (!this.checkValidColor(color)) {
+        throw new Error('The tick value(s) ' + indexItem + ' is/are not part of the domain given to the ' + this.type + ' legend')
+      }
+
+      if (isNaN(opacity)) {
+        throw new Error('The tick value(s) ' + indexItem + ' is/are not part of the domain given to the ' + this.type + ' discrete legend')
+      }
     }
   }
 }

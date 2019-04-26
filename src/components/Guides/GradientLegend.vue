@@ -188,7 +188,7 @@ export default {
 
             let offset = 100 - (this._domainType.includes('interval') ? sectionScale(l[i - 1][0]) : sectionScale(l[i - 1].value))
 
-            this.checkValidity([color, opacity], l[i - 1])
+            this.checkValidity(color, opacity, l[i - 1])
 
             colors.push({ color, offset, opacity })
           }
@@ -202,7 +202,7 @@ export default {
               opacity = this._domainType.includes('interval') ? fillOpacity(l[i]) : fillOpacity(l[i].value)
             }
 
-            this.checkValidity([color, opacity], l[i])
+            this.checkValidity(color, opacity, l[i])
 
             let offset = this._domainType.includes('interval') ? sectionScale(l[i][0]) : sectionScale(l[i].value)
             colors.push({ color, offset, opacity })
@@ -219,7 +219,7 @@ export default {
               opacity = this._domainType.includes('interval') ? fillOpacity(l[i]) : fillOpacity(l[i].value)
             }
 
-            this.checkValidity([color, opacity], l[i])
+            this.checkValidity(color, opacity, l[i])
             let offset = this._domainType.includes('interval') ? sectionScale(l[i][0]) : sectionScale(l[i].value)
             colors.push({ color, offset, opacity })
           }
@@ -233,7 +233,8 @@ export default {
               opacity = this._domainType.includes('interval') ? fillOpacity(l[i - 1]) : fillOpacity(l[i - 1].value)
             }
 
-            this.checkValidity([color, opacity], l[i - 1])
+            this.checkValidity(color, opacity, l[i - 1])
+
             let offset = 100 - (this._domainType.includes('interval') ? sectionScale(l[i - 1][0]) : sectionScale(l[i - 1].value))
             colors.push({ color, offset, opacity })
           }
@@ -279,16 +280,6 @@ export default {
       }
 
       return boxes
-    }
-  },
-
-  methods: {
-    checkValidity (objects, indexItem) {
-      for (let i = 0; i < objects.length; i++) {
-        if (!objects[i]) {
-          throw new Error('The tick value(s) ' + indexItem + ' is/are not part of the domain given to the gradient legend')
-        }
-      }
     }
   }
 }
