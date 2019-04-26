@@ -1,4 +1,19 @@
 <!--
+SAMPLE COMPONENT DEFINITION
+
+When changing number of dimensions:
+
+1. Change vgg-section being used (creates scales per dimension)
+2. Change vgg-multi-line being used (different coordinates specified for y)
+3. Change dimensions prop (see props)
+
+When changing number of options:
+
+1. Comment out parts of JSON in getData() as needed (this file has 40 objects by default)
+
+When changing which dimensions have their domains flipped
+
+1. Go to `flipScale`, add name of dimension accdg to specification in JSON
 
 -->
 <template>
@@ -63,7 +78,18 @@
                   :opacity="0.7"
                   :font-size="12"
                   :font-weight="600"
+                />
 
+                <vgg-rectangle
+                  :key="40+i"
+                  :x1="0"
+                  :x2="10"
+                  :y1="0"
+                  :y2="10"
+                  :fill-opacity="0.1"
+                  fill="grey"
+                  @hover="handleHover($event, row, i)"
+                  @click="handleClick($event, row, i)"
                 />
 
                 <vgg-y-axis
@@ -73,7 +99,7 @@
                   :w="20"
                   :y1="0"
                   :y2="10"
-                  :scale="flipScale.includes(v) ? {domain: v, reverse: true, domainMin: 0} : {domain: v, domainMin: 0}"
+                  :scale="{domain: v, domainMin: 0}"
                   :tick-count="2"
                   :tick-opacity="0.6"
                   :title-font-size="6"
@@ -95,21 +121,9 @@
                     :fill-opacity="0.4"
                     :fill="row.Color"
                     stroke-linecap="round"
-                    @hover="handleHover($event, row, i)"
                   />
 
                 </vgg-map>
-
-                <!-- <vgg-multi-line
-                  v-if="hoverRow"
-                  :x="[0, 1, 2, 3, 4, 5, 6, 7, 8,9, 10 ]"
-                  :y="[10]"
-                  :stroke="hoverRow.Name === row.Name ? 'red' : 'none'"
-                  :stroke-width="5"
-                  :fill="hoverRow.Name === row.Name ? 'red' : 'none'"
-                  :fill-opacity="0.2"
-                  close
-                /> -->
 
                 <vgg-multi-line
                   v-if="hoverRow"
@@ -125,7 +139,7 @@
                 <vgg-multi-line
                   v-if="clickRow"
                   :x="[0, 1, 2, 3, 4, 5, 6, 7, 8 , 9, 0]"
-                  :y="[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]"
+                  :y="[10]"
                   :stroke="clickRow.Name === row.Name ? 'red' : 'none'"
                   :stroke-width="5"
                   :fill="clickRow.Name === row.Name ? 'red' : 'none'"
@@ -182,11 +196,6 @@ export default {
       default: 'Color'
     },
 
-    colorScale: {
-      type: String,
-      default: 'blues'
-    },
-
     options: {
       type: String,
       default: undefined
@@ -227,11 +236,6 @@ export default {
       default: 5
     },
 
-    flipScale: {
-      type: Array,
-      default: () => ['MeanMPG', 'ZeroTo60', 'Stop60']
-    },
-
     dimensions: {
       type: [Object, Array],
       default: () => ['Price', 'Weight', 'Horsepower', 'Top Speed', 'Miles per Gallon']
@@ -249,41 +253,11 @@ export default {
       hovered: undefined,
       hoverRow: undefined,
       clicked: undefined,
-      clickRow: undefined,
-      axesScales: undefined,
-      dataframe: undefined
+      clickRow: undefined
     }
   },
 
   computed: {
-    newVariables () {
-      let renamedVars = []
-      for (let i of Object.keys(this.extractVariables)) {
-        renamedVars.push(this.extractVariables[i])
-      }
-      return renamedVars
-    },
-
-    newScales () {
-      let scales = {}
-      if (this.axesScales) {
-        for (let a in this.axesScales) {
-          let aScale = this.axesScales[a]; let scale
-          if (isNaN(parseFloat(aScale.domain[0]))) {
-            let range = []
-            let delta = 10 / aScale.domain.length
-            for (let i = 0.5; i <= aScale.domain.length; i++) {
-              range.push(delta * (i))
-            }
-            scale = scaleOrdinal().domain(aScale.domain).range(range)
-          } else {
-            scale = scaleLinear().domain(aScale.domain).range([0, 10])
-          }
-          scales[aScale.dimension] = scale
-        }
-      }
-      return scales
-    }
   },
 
   mounted () {
@@ -293,17 +267,6 @@ export default {
     log: console.log,
 
     getData () {
-      // if (this.data) {
-      //   this.myData = this.data
-      // } if (!this.csvURL) {
-      //   throw new Error('Please provide either data or csvURL')
-      // } else {
-      //   this.processCSV(this.csvURL)
-      // }
-
-      // JSON samples are in `static` folder (motorbikes, drinks, cameras, cars)
-      // to change data inside myData, load the relevant JSON here
-
       this.myData =
       [
         {
@@ -669,31 +632,6 @@ export default {
       ]
     },
 
-    processCSV (url) {
-      csv(url).then((data) => {
-        let allVariables = Object.keys(data[0])
-        let dimensions = {}
-        for (let i of allVariables) {
-          dimensions[i] = []
-        }
-        for (let i in data) {
-          let row = data[i]
-          if (row.constructor === Array) {
-            continue
-          }
-          for (let j of allVariables) {
-            let value = parseFloat(row[j])
-            if (isNaN(value)) {
-              dimensions[j].push(row[j])
-            } else {
-              dimensions[j].push(value)
-            }
-          }
-        }
-        this.myData = dimensions
-      })
-    },
-
     // Customize as needed
     handleHover (e, r, i) {
       this.hovered = e ? { r, i } : undefined
@@ -703,7 +641,6 @@ export default {
         this.hovered = undefined
         this.hoverRow = undefined
       }
-      console.log(e, r, i)
     },
 
     // Customize as needed
@@ -715,56 +652,6 @@ export default {
         this.clicked = undefined
         this.clickRow = undefined
       }
-    },
-
-    createDomain (domain) {
-      let newDomain = [ Math.min(...domain), Math.max(...domain)]; let rounder = 1
-
-      if (newDomain[0] > 1000 && newDomain[1] > 1000) {
-        rounder = 500
-      } else if (newDomain[0] > 100 && newDomain[1] > 100) {
-        rounder = 50
-      } else if (newDomain[0] > 10 && newDomain[1] > 10) {
-        rounder = 5
-      } else if (newDomain[0] > 1 && newDomain[1] > 1) {
-        rounder = 0.5
-      } else if (newDomain[0] < 1 && newDomain[1] < 1) {
-        rounder = 0.01
-      }
-
-      newDomain = [Math.floor(newDomain[0] / rounder) * rounder, Math.ceil(newDomain[1] / rounder) * rounder]
-
-      return newDomain
-    },
-
-    // Manually creates scales per dimension axes
-    axes (dataframe, dimensions, options, s) {
-      let newAxes = []
-      for (let dim = 0; dim < dimensions.length; dim++) {
-        let domain = dataframe[dimensions[dim]]
-
-        if (isNaN(parseFloat(domain[0]))) {
-          newAxes.push({ dimension: dimensions[dim], domain })
-        } else {
-          newAxes.push({ dimension: dimensions[dim], domain: this.createDomain(domain) })
-        }
-      }
-      this.axesScales = newAxes
-      this.dataframe = dataframe
-
-      return newAxes
-    },
-
-    scaleCoords (dataframe, s) {
-      let x = []; let y = []
-      let deltaX = 10 / this.dimensions.length
-      let name = dataframe[this.options][s]
-      for (let d = 0; d < this.dimensions.length; d++) {
-        y.push(this.newScales[this.dimensions[d]](dataframe[this.dimensions[d]][s]))
-        x.push(deltaX * d)
-      }
-
-      return { x, y, name }
     }
   }
 }
