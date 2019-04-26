@@ -5,6 +5,7 @@ import { renderSVG as renderPointSVG } from '../../../rendering/point.js'
 import { renderSVG as renderRectangleSVG } from '../../../rendering/rectangle.js'
 import { renderSVG as renderSymbolSVG } from '../../../rendering/symbol.js'
 import { renderSVG as renderTrailSVG } from '../../../rendering/trail.js'
+import { renderSVG as renderMultiPointSVG } from '../../../rendering/multiPoint.js'
 
 import Section from '../Section.vue'
 
@@ -103,6 +104,7 @@ const renderFuncLookup = {
   'vgg-rectangle': renderRectangleSVG,
   'vgg-symbol': renderSymbolSVG,
   'vgg-trail': renderTrailSVG,
+  'vgg-multi-point': renderMultiPointSVG,
 
   'vgg-section': renderSection
 }

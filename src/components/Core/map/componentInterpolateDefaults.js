@@ -10,6 +10,8 @@ export default {
   'vgg-symbol': defaultInterpolate,
   'vgg-trail': pathInterpolate,
 
+  'vgg-multi-point': () => false,
+
   'vgg-section': () => undefined
 }
 
