@@ -38,18 +38,20 @@
       >
         <g v-if="orientation==='vertical'">
           <vgg-data :data="aesthetics">
+            <text> {{ aesthetics[0] }}</text>
             <vgg-map v-slot="{ row }">
+              <!-- We use a default value for opacity because if row.fillOpacity is 0, then it registers as false -->
               <vgg-rectangle
                 :x1="positionElements.rectangle.x1"
                 :x2="positionElements.rectangle.x2"
                 :y1="row.start"
                 :y2="row.end"
                 :fill="row.fill"
-                :opacity="row.fillOpacity >= 0 ? row.fillOpacity : legendOpacity"
+                :opacity="row.fillOpacity ? row.fillOpacity : 0.000001"
               />
             </vgg-map>
           </vgg-data>
-          <text> {{ aesthetics }}</text>
+
           <vgg-data :data="ticks">
             <vgg-map v-slot="{ row }">
               <vgg-label
@@ -83,13 +85,14 @@
         </g><g v-else>
           <vgg-data :data="aesthetics">
             <vgg-map v-slot="{ row }">
+              <!-- We use a default value for opacity because if row.fillOpacity is 0, then it registers as false -->
               <vgg-rectangle
                 :x1="row.start"
                 :x2="row.end"
                 :y1="positionElements.rectangle.y1"
                 :y2="positionElements.rectangle.y2"
                 :fill="row.fill"
-                :opacity="row.fillOpacity ? row.fillOpacity : legendOpacity"
+                :opacity="row.fillOpacity ? row.fillOpacity : 0.000001"
               />
             </vgg-map>
           </vgg-data>
@@ -227,7 +230,7 @@ export default {
           this.checkValidity(aesthetics[i].fill, aesthetics[i].fillOpacity, valueDomain[i])
         }
       }
-      console.log(aesthetics)
+
       return aesthetics
     },
 
