@@ -44,6 +44,13 @@ function mapElement (mapping, element, rowNumber) {
 
           value = applyScale(value, scale, propKey)
         }
+
+        if (prop.hasOwnProperty('classification')) {
+          let classKey = JSON.stringify(prop.classification)
+          let scale = mapping.classifications[propKey][classKey]
+
+          value = applyScale(value, scale, propKey)
+        }
       }
 
       if (prop.hasOwnProperty('band')) {
