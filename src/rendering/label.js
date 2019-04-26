@@ -11,7 +11,7 @@ export function renderSVG (createElement, { $$transform }, { props, validGeomTyp
     ? props.geometry.coordinates
     : [props.x, props.y]
 
-  let [cx, cy] = this.$$transform(xy)
+  let [cx, cy] = $$transform(xy)
 
   let anchorPoint = textAnchorPoint(props.anchorPoint)
   let transform = calcTransform(props.rotation, cx, cy)

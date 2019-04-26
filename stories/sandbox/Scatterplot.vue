@@ -71,7 +71,7 @@
         position="tl"
       />
 
-      <vgg-gradient-legend
+      <!-- <vgg-gradient-legend
         :scale="'dependent'"
         :font-size="10"
         :fill="{ type: 'viridis'}"
@@ -79,7 +79,7 @@
         title-font-weight="bold"
         position="bl"
         orientation="horizontal"
-      />
+      /> -->
 
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
