@@ -66,6 +66,11 @@ export default {
       required: true
     },
 
+    classification: {
+      type: [Array, String, Object, undefined],
+      default: undefined
+    },
+
     format: {
       type: [String, Function, undefined],
       default: undefined
