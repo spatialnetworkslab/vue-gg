@@ -41,7 +41,7 @@
               :y1="0"
               :y2="{ val: row.binCount }"
               :fill="'blue'"
-              :opacity="{ val: row.bins, scale: { domain: 'bins' } }"
+              :opacity="{ val: row.bins, scale: { domain: 'bins', range: [0.001, 1] } }"
             />
 
             <!-- <vgg-rectangle
@@ -93,7 +93,7 @@
           :scale="'bins'"
           :font-size="10"
           :title-padding="2"
-          :fill-opacity="{ range: [0.05, 1]}"
+          :fill-opacity="{ range: [0.001, 1]}"
           :h="400"
           :show-last="false"
           title="Discrete"

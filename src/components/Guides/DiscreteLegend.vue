@@ -46,7 +46,7 @@
                 :y1="row.start"
                 :y2="row.end"
                 :fill="row.fill"
-                :opacity="row.fillOpacity ? row.fillOpacity : 0.05"
+                :opacity="row.fillOpacity ? row.fillOpacity : 0.001"
               />
             </vgg-map>
           </vgg-data>
@@ -91,7 +91,7 @@
                 :y1="positionElements.rectangle.y1"
                 :y2="positionElements.rectangle.y2"
                 :fill="row.fill"
-                :opacity="row.fillOpacity"
+                :opacity="row.fillOpacity ? row.fillOpacity : 0.001"
               />
             </vgg-map>
           </vgg-data>
