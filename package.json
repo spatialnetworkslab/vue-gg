@@ -38,7 +38,7 @@
     "@storybook/vue": "^4.1.1",
     "babel-loader": "^8.0.4",
     "babel-preset-vue": "^2.0.2",
-    "core-js": "2",
+    "core-js": "^2.6.5",
     "css-loader": "^2.0.1",
     "d3-fetch": "^1.1.2",
     "eslint": "^5.9.0",
