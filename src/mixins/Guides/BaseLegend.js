@@ -10,6 +10,7 @@ import { createPropCache, createWatchers } from '../../components/Core/utils/pro
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '../../scales/createScale.js'
+import createClassification from '../../scales/createClassification.js'
 import defaultFormat from './utils/defaultFormat.js'
 import ticksFromIntervals from './utils/ticksFromIntervals.js'
 
@@ -605,6 +606,89 @@ export default {
   methods: {
     sectionScale (domain) {
       return scaleLinear().domain(domain).range([0, 100])
+    },
+
+    generateClassification (prop, classBasis) {
+      let scaleOptions = {}
+
+      if (classBasis.constructor === Number) {
+        return () => { return classBasis }
+      // } else if (scaleBasis.constructor === Array) { // FIX THIS
+      //   return (index) => { return scaleBasis[index] }
+      } else {
+        // Domain is dependent on scale inputs
+        // Range is dependent on aesthetic inputs
+        if (this.legendCache.scale.domain) {
+          scaleOptions.domain = this.legendCache.scale.domain
+        } else {
+          scaleOptions.domain = this.legendCache.scale
+        }
+
+        if (this.legendCache.scale.domainMin) {
+          scaleOptions.domainMin = this.legendCache.scale.domainMin
+        }
+
+        if (this.legendCache.scale.domainMax) {
+          scaleOptions.domainMax = this.legendCache.scale.domainMax
+        }
+
+        if (this.legendCache.scale.domainMid) {
+          scaleOptions.domainMid = this.legendCache.scale.domainMid
+        }
+
+        if (this.legendCache.scale.order && this._domainType.includes('categorical')) {
+          scaleOptions.order = this.legendCache.scale.order
+        } else if (this.legendCache.scale.order && !this._domainType.includes('categorical')) {
+          console.warn('Data must be categorical to include `order` in `scale`')
+        }
+
+        if (this.legendCache.scale.absolute) {
+          scaleOptions.absolute = this.legendCache.scale.absolute
+        }
+
+        if (this.legendCache.scale.nice) {
+          scaleOptions.nice = this.legendCache.scale.nice
+        }
+
+        if (this.legendCache.scale.reverse) {
+          scaleOptions.reverse = this.legendCache.scale.reverse
+        }
+
+        if (scaleBasis.rangeMin) {
+          scaleOptions.rangeMin = scaleBasis.rangeMin
+        }
+
+        if (scaleBasis.rangeMax) {
+          scaleOptions.rangeMax = scaleBasis.rangeMax
+        }
+
+        if (prop === 'strokeOpacity' || prop === 'fillOpacity' || prop === 'opacity') {
+          scaleOptions.range = scaleBasis.range ? scaleBasis.range : scaleBasis.constructor === Array ? scaleBasis : [0, 1]
+        } else if (prop === 'stroke' || prop === 'fill' || prop === 'shape') {
+          if (scaleBasis.type) {
+            scaleOptions.type = scaleBasis.type
+          }
+
+          if (scaleBasis.range) {
+            if (prop === 'stroke' || prop === 'fill') {
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
+            } else {
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
+            }
+          } else if (scaleBasis.constructor === Array) {
+            scaleOptions.range = scaleBasis
+          }
+        } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {
+          scaleOptions.range = scaleBasis.range ? scaleBasis.range : scaleBasis.constructor === Array ? scaleBasis : [0, 10]
+        }
+
+        // custom scales with # signs only apply to domains
+        if (scaleOptions.domain.includes('#')) {
+          scaleOptions.domain = this.$$scaleManager.getScale(scaleOptions.domain)[0]
+        }
+
+        return createClassification(prop, this.context, classOptions)
+      }
     },
 
     generateScale (prop, scaleBasis) {
