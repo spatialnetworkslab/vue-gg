@@ -1,12 +1,5 @@
 <template>
   <vgg-radar
-    :y1="100"
-    :y2="1950"
-    :height="2000"
-    :x1="100"
-    :x2="1600"
-    :width="1700"
-    :rows="8"
   />
   <!-- <vgg-graphic
     :width="width"

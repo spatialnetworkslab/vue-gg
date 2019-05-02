@@ -73,13 +73,13 @@ SAMPLE COMPONENT DEFINITION
             />
           </vgg-map>
 
-          <vgg-multi-line
+          <!-- <vgg-multi-line
             v-if="hoverRow"
             :x="hoverRow.x"
             :y="hoverRow.y"
             :stroke-width="5"
             stroke="black"
-          />
+          /> -->
 
         </vgg-section>
       </g>
@@ -133,7 +133,9 @@ export default {
 
     dimensions: {
       type: [Object, Array],
-      default: () => ['Price', 'Weight', 'Horsepower', 'Top Speed', 'Miles per Gallon']
+      default: () => ['Price', 'Weight', 'Horsepower', 'Top Speed', 'Miles per Gallon', 'Zero to 60', 'Braking 60 mph', 'Torque', 'Quartermile Second', 'Power to Ratio']
+      // ['Price', 'Weight', 'Horsepower', 'Top Speed', 'Miles per Gallon']
+      // ['Price', 'Weight', 'Horsepower']
     },
 
     options: {
@@ -258,6 +260,11 @@ export default {
           'Horsepower': 101.9,
           'Top Speed': 147,
           'Miles per Gallon': 31.6,
+          'Zero to 60': 3.03,
+          'Braking 60 mph': 116.8,
+          'Torque': 61.2,
+          'Quartermile Second': 10.97,
+          'Power to Ratio': 0.2,
           'Color': '#B3DE69'
         },
         {
@@ -267,6 +274,11 @@ export default {
           'Horsepower': 138,
           'Top Speed': 173,
           'Miles per Gallon': 35.9,
+          'Zero to 60': 3.01,
+          'Braking 60 mph': 114.9,
+          'Torque': 77.9,
+          'Quartermile Second': 10.16,
+          'Power to Ratio': 0.32,
           'Color': '#CBD5E8'
         },
         {
@@ -276,6 +288,11 @@ export default {
           'Horsepower': 127.1,
           'Top Speed': 158,
           'Miles per Gallon': 32.6,
+          'Zero to 60': 3.15,
+          'Braking 60 mph': 133.53,
+          'Torque': 71.1,
+          'Quartermile Second': 10.51,
+          'Power to Ratio': 0.27,
           'Color': '#E78AC3'
         },
         {
@@ -285,6 +302,11 @@ export default {
           'Horsepower': 171.8,
           'Top Speed': 177.6,
           'Miles per Gallon': 34.2,
+          'Zero to 60': 2.98,
+          'Braking 60 mph': 119.1,
+          'Torque': 86.04,
+          'Quartermile Second': 9.91,
+          'Power to Ratio': 0.4,
           'Color': '#1F78B4'
         },
         {
@@ -294,6 +316,11 @@ export default {
           'Horsepower': 61.97,
           'Top Speed': 119.5,
           'Miles per Gallon': 57.7,
+          'Zero to 60': 3.73,
+          'Braking 60 mph': 117.5,
+          'Torque': 46.58,
+          'Quartermile Second': 12.05,
+          'Power to Ratio': 0.26,
           'Color': '#8DD3C7'
         },
         {
@@ -303,6 +330,11 @@ export default {
           'Horsepower': 46.21,
           'Top Speed': 107.5,
           'Miles per Gallon': 45.6,
+          'Zero to 60': 4.56,
+          'Braking 60 mph': 144.2,
+          'Torque': 35.65,
+          'Quartermile Second': 13.12,
+          'Power to Ratio': 0.14,
           'Color': '#FED9A6'
         },
         {
@@ -312,6 +344,11 @@ export default {
           'Horsepower': 104.5,
           'Top Speed': 130,
           'Miles per Gallon': 29.4,
+          'Zero to 60': 3.88,
+          'Braking 60 mph': 120.4,
+          'Torque': 110.2,
+          'Quartermile Second': 11.91,
+          'Power to Ratio': 0.16,
           'Color': '#FFFF99'
         },
         {
@@ -321,6 +358,11 @@ export default {
           'Horsepower': 118.08,
           'Top Speed': 152.3,
           'Miles per Gallon': 41.1,
+          'Zero to 60': 3.24,
+          'Braking 60 mph': 112.9,
+          'Torque': 62.68,
+          'Quartermile Second': 10.88,
+          'Power to Ratio': 0.27,
           'Color': '#8DA0CB'
         },
         {
@@ -330,6 +372,11 @@ export default {
           'Horsepower': 74.7,
           'Top Speed': 139,
           'Miles per Gallon': 45,
+          'Zero to 60': 3.64,
+          'Braking 60 mph': 114.4,
+          'Torque': 55.3,
+          'Quartermile Second': 11.74,
+          'Power to Ratio': 0.17,
           'Color': '#B3CDE3'
         },
         {
@@ -339,6 +386,11 @@ export default {
           'Horsepower': 85.2,
           'Top Speed': 139,
           'Miles per Gallon': 37.3,
+          'Zero to 60': 3.22,
+          'Braking 60 mph': 128.5,
+          'Torque': 60.4,
+          'Quartermile Second': 11.18,
+          'Power to Ratio': 0.17,
           'Color': '#FDDAEC'
         },
         {
@@ -348,6 +400,11 @@ export default {
           'Horsepower': 92.2,
           'Top Speed': 137,
           'Miles per Gallon': 37.1,
+          'Zero to 60': 3.6,
+          'Braking 60 mph': 118.5,
+          'Torque': 62.6,
+          'Quartermile Second': 11.45,
+          'Power to Ratio': 0.2,
           'Color': '#CCEBC5'
         },
         {
@@ -357,6 +414,11 @@ export default {
           'Horsepower': 85.4,
           'Top Speed': 156,
           'Miles per Gallon': 45.4,
+          'Zero to 60': 3.45,
+          'Braking 60 mph': 125,
+          'Torque': 61.1,
+          'Quartermile Second': 11.6,
+          'Power to Ratio': 0.16,
           'Color': '#33A02C'
         },
         {
@@ -366,6 +428,11 @@ export default {
           'Horsepower': 101.08,
           'Top Speed': 138.1,
           'Miles per Gallon': 37.5,
+          'Zero to 60': 3.53,
+          'Braking 60 mph': 127.7,
+          'Torque': 64.52,
+          'Quartermile Second': 11.7,
+          'Power to Ratio': 0.2,
           'Color': '#FCCDE5'
         },
         {
@@ -375,6 +442,11 @@ export default {
           'Horsepower': 106.8,
           'Top Speed': 139,
           'Miles per Gallon': 37.7,
+          'Zero to 60': 3.32,
+          'Braking 60 mph': 115.1,
+          'Torque': 66.3,
+          'Quartermile Second': 11.15,
+          'Power to Ratio': 0.23,
           'Color': '#7FC97F'
         },
         {
@@ -384,6 +456,11 @@ export default {
           'Horsepower': 106.51,
           'Top Speed': 140,
           'Miles per Gallon': 38.1,
+          'Zero to 60': 3.35,
+          'Braking 60 mph': 126,
+          'Torque': 67.73,
+          'Quartermile Second': 11.17,
+          'Power to Ratio': 0.24,
           'Color': '#CCEBC5'
         },
         {
@@ -393,6 +470,11 @@ export default {
           'Horsepower': 163.9,
           'Top Speed': 158,
           'Miles per Gallon': 33.8,
+          'Zero to 60': 2.86,
+          'Braking 60 mph': 119.6,
+          'Torque': 97.2,
+          'Quartermile Second': 9.99,
+          'Power to Ratio': 0.28,
           'Color': '#D95F02'
         },
         {
@@ -402,6 +484,11 @@ export default {
           'Horsepower': 101.7,
           'Top Speed': 151,
           'Miles per Gallon': 37,
+          'Zero to 60': 3.07,
+          'Braking 60 mph': 114.2,
+          'Torque': 73.8,
+          'Quartermile Second': 10.75,
+          'Power to Ratio': 0.19,
           'Color': '#FB9A99'
         },
         {
@@ -411,6 +498,11 @@ export default {
           'Horsepower': 99.2,
           'Top Speed': 152,
           'Miles per Gallon': 39.3,
+          'Zero to 60': 3.36,
+          'Braking 60 mph': 116.5,
+          'Torque': 77.1,
+          'Quartermile Second': 11.34,
+          'Power to Ratio': 0.18,
           'Color': '#A6D854'
         },
         {
@@ -420,6 +512,11 @@ export default {
           'Horsepower': 68.6,
           'Top Speed': 127,
           'Miles per Gallon': 32.3,
+          'Zero to 60': 3.97,
+          'Braking 60 mph': 114.1,
+          'Torque': 36.5,
+          'Quartermile Second': 12.16,
+          'Power to Ratio': 0.14,
           'Color': '#FFFFCC'
         },
         {
@@ -429,6 +526,11 @@ export default {
           'Horsepower': 99.9,
           'Top Speed': 144,
           'Miles per Gallon': 30.6,
+          'Zero to 60': 3.12,
+          'Braking 60 mph': 118.5,
+          'Torque': 70.8,
+          'Quartermile Second': 10.95,
+          'Power to Ratio': 0.19,
           'Color': '#BEBADA'
         },
         {
@@ -438,6 +540,11 @@ export default {
           'Horsepower': 53.9,
           'Top Speed': 114,
           'Miles per Gallon': 41.1,
+          'Zero to 60': 5.2,
+          'Braking 60 mph': 115,
+          'Torque': 40.8,
+          'Quartermile Second': 13.52,
+          'Power to Ratio': 0.11,
           'Color': '#CCCCCC'
         },
         {
@@ -447,6 +554,11 @@ export default {
           'Horsepower': 56.31,
           'Top Speed': 120.1,
           'Miles per Gallon': 48.4,
+          'Zero to 60': 5.21,
+          'Braking 60 mph': 117.1,
+          'Torque': 43.48,
+          'Quartermile Second': 13.52,
+          'Power to Ratio': 0.11,
           'Color': '#FF7F00'
         },
         {
@@ -456,6 +568,11 @@ export default {
           'Horsepower': 104.8,
           'Top Speed': 128,
           'Miles per Gallon': 40.7,
+          'Zero to 60': 3.65,
+          'Braking 60 mph': 135.4,
+          'Torque': 97.2,
+          'Quartermile Second': 11.62,
+          'Power to Ratio': 0.14,
           'Color': '#BC80BD'
         },
         {
@@ -465,6 +582,11 @@ export default {
           'Horsepower': 69.7,
           'Top Speed': 129,
           'Miles per Gallon': 45.4,
+          'Zero to 60': 5.14,
+          'Braking 60 mph': 127.7,
+          'Torque': 54.1,
+          'Quartermile Second': 13.1,
+          'Power to Ratio': 0.12,
           'Color': '#FC8D62'
         },
         {
@@ -474,6 +596,11 @@ export default {
           'Horsepower': 72.2,
           'Top Speed': 131,
           'Miles per Gallon': 43.3,
+          'Zero to 60': 3.87,
+          'Braking 60 mph': 119.4,
+          'Torque': 61.9,
+          'Quartermile Second': 12.11,
+          'Power to Ratio': 0.13,
           'Color': '#FB8072'
         },
         {
@@ -483,6 +610,11 @@ export default {
           'Horsepower': 121.08,
           'Top Speed': 153.5,
           'Miles per Gallon': 30.3,
+          'Zero to 60': 2.99,
+          'Braking 60 mph': 115.1,
+          'Torque': 71.85,
+          'Quartermile Second': 10.5,
+          'Power to Ratio': 0.26,
           'Color': '#FFFF33'
         },
         {
@@ -492,6 +624,11 @@ export default {
           'Horsepower': 115.35,
           'Top Speed': 141.75,
           'Miles per Gallon': 34.4,
+          'Zero to 60': 3.75,
+          'Braking 60 mph': 125.5,
+          'Torque': 55.11,
+          'Quartermile Second': 11.1,
+          'Power to Ratio': 0.28,
           'Color': '#984EA3'
         },
         {
@@ -501,6 +638,11 @@ export default {
           'Horsepower': 115.5,
           'Top Speed': 156,
           'Miles per Gallon': 32,
+          'Zero to 60': 3.24,
+          'Braking 60 mph': 123.6,
+          'Torque': 62.2,
+          'Quartermile Second': 10.67,
+          'Power to Ratio': 0.25,
           'Color': '#E31A1C'
         },
         {
@@ -510,6 +652,11 @@ export default {
           'Horsepower': 83.6,
           'Top Speed': 123.1,
           'Miles per Gallon': 30,
+          'Zero to 60': 5.05,
+          'Braking 60 mph': 119.8,
+          'Torque': 73,
+          'Quartermile Second': 13.3,
+          'Power to Ratio': 0.13,
           'Color': '#377EB8'
         },
         {
@@ -519,6 +666,11 @@ export default {
           'Horsepower': 109.44,
           'Top Speed': 141.7,
           'Miles per Gallon': 44.3,
+          'Zero to 60': 3.15,
+          'Braking 60 mph': 114.5,
+          'Torque': 64.45,
+          'Quartermile Second': 10.99,
+          'Power to Ratio': 0.23,
           'Color': '#BEAED4'
         },
         {
@@ -528,6 +680,11 @@ export default {
           'Horsepower': 150.9,
           'Top Speed': 178,
           'Miles per Gallon': 38.5,
+          'Zero to 60': 2.95,
+          'Braking 60 mph': 122.8,
+          'Torque': 75.7,
+          'Quartermile Second': 9.94,
+          'Power to Ratio': 0.34,
           'Color': '#E7298A'
         },
         {
@@ -537,6 +694,11 @@ export default {
           'Horsepower': 136.1,
           'Top Speed': 177,
           'Miles per Gallon': 41,
+          'Zero to 60': 3.19,
+          'Braking 60 mph': 114.4,
+          'Torque': 71.4,
+          'Quartermile Second': 10.26,
+          'Power to Ratio': 0.29,
           'Color': '#FFFF99'
         },
         {
@@ -546,6 +708,11 @@ export default {
           'Horsepower': 142.6,
           'Top Speed': 177,
           'Miles per Gallon': 37.7,
+          'Zero to 60': 3,
+          'Braking 60 mph': 117.5,
+          'Torque': 73.3,
+          'Quartermile Second': 9.99,
+          'Power to Ratio': 0.32,
           'Color': '#E6AB02'
         },
         {
@@ -555,6 +722,11 @@ export default {
           'Horsepower': 132.9,
           'Top Speed': 170,
           'Miles per Gallon': 41.7,
+          'Zero to 60': 2.91,
+          'Braking 60 mph': 112.4,
+          'Torque': 76.4,
+          'Quartermile Second': 10.24,
+          'Power to Ratio': 0.24,
           'Color': '#80B1D3'
         },
         {
@@ -564,6 +736,11 @@ export default {
           'Horsepower': 134.4,
           'Top Speed': 174,
           'Miles per Gallon': 40.5,
+          'Zero to 60': 2.91,
+          'Braking 60 mph': 115.3,
+          'Torque': 80,
+          'Quartermile Second': 10.24,
+          'Power to Ratio': 0.24,
           'Color': '#BF5B17'
         },
         {
@@ -573,6 +750,11 @@ export default {
           'Horsepower': 90.2,
           'Top Speed': 153,
           'Miles per Gallon': 39.3,
+          'Zero to 60': 3.36,
+          'Braking 60 mph': 114.5,
+          'Torque': 43,
+          'Quartermile Second': 11.03,
+          'Power to Ratio': 0.2,
           'Color': '#66C2A5'
         },
         {
@@ -582,6 +764,11 @@ export default {
           'Horsepower': 94.1,
           'Top Speed': 156,
           'Miles per Gallon': 39.7,
+          'Zero to 60': 3.46,
+          'Braking 60 mph': 115.5,
+          'Torque': 42.9,
+          'Quartermile Second': 11.19,
+          'Power to Ratio': 0.22,
           'Color': '#B15928'
         },
         {
@@ -591,6 +778,11 @@ export default {
           'Horsepower': 96.6,
           'Top Speed': 155,
           'Miles per Gallon': 40.7,
+          'Zero to 60': 2.89,
+          'Braking 60 mph': 111.3,
+          'Torque': 43.6,
+          'Quartermile Second': 10.59,
+          'Power to Ratio': 0.22,
           'Color': '#F2F2F2'
         },
         {
@@ -600,6 +792,11 @@ export default {
           'Horsepower': 90.1,
           'Top Speed': 156,
           'Miles per Gallon': 36.7,
+          'Zero to 60': 3.52,
+          'Braking 60 mph': 123.5,
+          'Torque': 40.3,
+          'Quartermile Second': 11.26,
+          'Power to Ratio': 0.2,
           'Color': '#F1E2CC'
         },
         {
@@ -609,6 +806,11 @@ export default {
           'Horsepower': 99.61,
           'Top Speed': 158.3,
           'Miles per Gallon': 43.1,
+          'Zero to 60': 3.18,
+          'Braking 60 mph': 126,
+          'Torque': 43.01,
+          'Quartermile Second': 10.89,
+          'Power to Ratio': 0.23,
           'Color': '#1B9E77'
         }
       ]

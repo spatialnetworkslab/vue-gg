@@ -23,7 +23,7 @@
     :options="'Name'"
   /> -->
 
-  <vgg-parallel-coordinates-unscaled
+  <vgg-parallel-coordinates
     :x1="100"
     :x2="1500"
     :y1="100"

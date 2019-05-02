@@ -1,11 +1,11 @@
 <template>
   <vgg-heatmap
     :x1="100"
-    :x2="1500"
+    :x2="900"
     :y1="100"
-    :y2="700"
-    :width="1600"
-    :height="800"
+    :y2="900"
+    :width="1000"
+    :height="1000"
   />
 
 </template>
