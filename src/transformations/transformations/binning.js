@@ -42,7 +42,7 @@ export function getIntervalBounds (data, binningObj) {
   let geoStat = new Geostats(variableData)
 
   let ranges
-
+  console.log(method)
   // Calculate ranges to obtain bins of a specified size
   if (method === 'IntervalSize') {
     let binSize = binningObj.binSize

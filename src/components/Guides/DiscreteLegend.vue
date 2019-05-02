@@ -176,11 +176,25 @@ export default {
       _fill = this.legendCache.fill || 'none'
 
       if (!this.checkValidColor(_fill)) {
-        fill = this.generateScale('fill', _fill)
-        fillOpacity = 1
+        if (this.legendCache.scale && !this.legendCache.classification) {
+          throw new Error('Invalid input: Use only `scale` or `classification`')
+        } else if (this.legendCache.scale && !this.legendCache.classification) {
+          fill = this.generateScale('fill', _fill)
+          fillOpacity = 1
+        } else if (!this.legendCache.scale && this.legendCache.classification) {
+          fill = this.generateClassification('fill', _fill)
+          fillOpacity = 1
+        }
       } else if (this.legendCache.fillOpacity && this.checkValidColor(_fill)) {
-        fill = _fill
-        fillOpacity = this.generateScale('fillOpacity', this.legendCache.fillOpacity)
+        if (this.legendCache.scale && !this.legendCache.classification) {
+          throw new Error('Invalid input: Use only `scale` or `classification`')
+        } else if (this.legendCache.scale && !this.legendCache.classification) {
+          fill = _fill
+          fillOpacity = this.generateScale('fillOpacity', this.legendCache.fillOpacity)
+        } else if (!this.legendCache.scale && this.legendCache.classification) {
+          fill = _fill
+          fillOpacity = this.generateClassification('fillOpacity', this.legendCache.fillOpacity)
+        }
       } else {
         throw new Error('If `fill` is set to a color (HSL, RGB or CSS value), then `fillOpacity` must be specified to create the legend')
       }

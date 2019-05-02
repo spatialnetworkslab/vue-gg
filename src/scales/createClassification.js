@@ -14,7 +14,6 @@ export default function (prop, context, classificationOptions) {
   let dataType = 'quantitative'
   let binning = classificationOptions.binning
   let column = classificationOptions.column
-
   let data = context.dataInterface.getDataset()
 
   if (binning.groupBy) {

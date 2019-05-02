@@ -35,6 +35,10 @@
 
       </vgg-section>
 
+      <vgg-discrete-legend
+        :classification="{ column: 'b', binning: { method: selected, numClasses: 5 } }"
+        :fill="{type:'blues'}"
+        />
     </vgg-graphic>
 
   </div>
