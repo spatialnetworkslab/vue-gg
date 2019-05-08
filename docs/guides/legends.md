@@ -413,7 +413,7 @@ need to be specified in the `classification` object as seen below.
 ```html
 <vgg-discrete-legend
   :classification="{ column: 'b', binning: { method: 'Jenks', numClasses: 5 } }"
-  :fill="{type:'blues'}"
+  :fill="{type:'reds'}"
   :position="'center'"
   :h="50"
   :w='200'
@@ -422,8 +422,7 @@ need to be specified in the `classification` object as seen below.
 
 <vgg-gradient-legend
   :classification="{ column: 'b', binning: { method: 'Jenks', numClasses: 5 } }"
-  :fill-opacity="{ range: [0.001, 1]}"
-  :fill="'blue'"
+  :fill="{type:'reds'}"
   :position="'tc'"
   :h="50"
   :w='200'
