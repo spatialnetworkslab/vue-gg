@@ -170,13 +170,20 @@ export default {
         domain = [0, valueDomain.length - 1]
       }
 
-      sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / this.legendTicks.length
+      // sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / this.legendTicks.length
+      if (this._domainType.includes('interval')) {
+        sectionScale = this.sectionScale(domain)
+      } else if (this.legendCache.classification) {
+        sectionScale = this.sectionScale([this._parsedScalingOptions.boundaries[0], this._parsedScalingOptions.boundaries[this._parsedScalingOptions.boundaries.length - 1]])
+      } else {
+        sectionScale = 100 / this.legendTicks.length
+      }
 
       // create fill/fillOpacity scales for rectangles
       _fill = this.legendCache.fill || 'none'
 
       if (!this.checkValidColor(_fill)) {
-        if (this.legendCache.scale && !this.legendCache.classification) {
+        if (this.legendCache.scale && this.legendCache.classification) {
           throw new Error('Invalid input: Use only `scale` or `classification`')
         } else if (this.legendCache.scale && !this.legendCache.classification) {
           fill = this.generateScale('fill', _fill)
@@ -186,7 +193,7 @@ export default {
           fillOpacity = 1
         }
       } else if (this.legendCache.fillOpacity && this.checkValidColor(_fill)) {
-        if (this.legendCache.scale && !this.legendCache.classification) {
+        if (this.legendCache.scale && this.legendCache.classification) {
           throw new Error('Invalid input: Use only `scale` or `classification`')
         } else if (this.legendCache.scale && !this.legendCache.classification) {
           fill = _fill
@@ -207,6 +214,8 @@ export default {
 
           if (this._domainType.includes('interval')) {
             aesthetics[i].end = sectionScale(valueDomain[i][1])
+          } else if (this.legendCache.classification) {
+            aesthetics[i].end = sectionScale(valueDomain[i].value)
           } else {
             aesthetics[i].end = sectionScale * (i + 1)
           }
@@ -228,6 +237,8 @@ export default {
 
           if (this._domainType.includes('interval')) {
             aesthetics[i].end = 100 - sectionScale(valueDomain[i][0])
+          } else if (this.legendCache.classification) {
+            aesthetics[i].end = sectionScale(valueDomain[i].value)
           } else {
             aesthetics[i].end = 100 - (sectionScale * i)
           }
@@ -252,7 +263,15 @@ export default {
       let l = this.legendTicks
       let start = 0; let end = 0; let location
       let domain = this._domainType.includes('interval') ? [this.legendTicks[0].value, this.legendTicks[this.legendTicks.length - 1].value] : this._domain
-      let sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / l.length
+      let sectionScale
+      if (this._domainType.includes('interval')) {
+        sectionScale = this.sectionScale(domain)
+      } else if (this.legendCache.classification) {
+        sectionScale = this.sectionScale([this._parsedScalingOptions.boundaries[0], this._parsedScalingOptions.boundaries[this._parsedScalingOptions.boundaries.length - 1]])
+      } else {
+        sectionScale = 100 / l.length
+      }
+      // let sectionScale = this._domainType.includes('interval') ? this.sectionScale(domain) : 100 / l.length
 
       if (!this.showFirst) {
         l.shift()
@@ -265,27 +284,27 @@ export default {
       if (!this.flip) {
         for (let i = 0; i < l.length; i++) {
           start = end
-          if (this._domainType.includes('interval')) {
+          if (this._domainType.includes('interval') || this.legendCache.classification) {
             end = sectionScale(l[i].value)
           } else {
             end += sectionScale
           }
 
-          location = this._domainType.includes('interval') ? end : (start + end) / 2
+          location = this._domainType.includes('interval') || this.legendCache.classification ? end : (start + end) / 2
           ticks.push({ location: location, label: l[i].label })
         }
       } else {
         for (let i = l.length - 1; i >= 0; i--) {
           start = end
 
-          if (this._domainType.includes('interval')) {
+          if (this._domainType.includes('interval') || this.legendCache.classification) {
             end = 100 - sectionScale(l[i].value)
           } else {
             end = 100 - sectionScale * i
           }
 
           // end = 100 - sectionScale(l[i].value)
-          location = this._domainType.includes('interval') ? end : (start + end) / 2
+          location = this._domainType.includes('interval') || this.legendCache.classification ? end : (start + end) / 2
           ticks.push({ location: location, label: l[i].label })
         }
       }

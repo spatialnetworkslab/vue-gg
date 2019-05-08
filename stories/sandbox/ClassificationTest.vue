@@ -32,13 +32,15 @@
             :fill="{ val: row.b, classification: { column: 'b', binning: { method: selected, numClasses: 5 } } }"
           />
         </vgg-map>
-
+        <vgg-discrete-legend
+          :classification="{ column: 'b', binning: { method: selected, numClasses: 5 } }"
+          :fill="{type:'blues'}"
+          :y="50"
+          orientation="horizontal"
+        />
       </vgg-section>
 
-      <vgg-discrete-legend
-        :classification="{ column: 'b', binning: { method: selected, numClasses: 5 } }"
-        :fill="{type:'blues'}"
-        />
+
     </vgg-graphic>
 
   </div>

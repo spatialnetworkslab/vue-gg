@@ -441,23 +441,29 @@ export default {
             domain = [this._domain[0], this.legendCache.scale.domainMax]
           }
         } else if (this.legendCache.classification) {
-          domain = this._parsedScalingOptions.intervalBounds
+          domain = this._parsedScalingOptions.intervalBounds.bins
         }
 
         if (this._domainType === 'quantitative') {
-          let numTicks = this.tickCount ? this.tickCount : 10
-          newTickValues = arrayTicks(...domain, numTicks)
-          if (this.tickExtra && newTickValues[0] !== firstValue) {
-            newTickValues.unshift(firstValue)
-          }
-
-          ticks = newTickValues.map((value, i) => {
-            if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
-              return { value, label: '' }
-            } else {
-              return { value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
+          if (this.legendCache.scale) {
+            let numTicks = this.tickCount ? this.tickCount : 10
+            newTickValues = arrayTicks(...domain, numTicks)
+            if (this.tickExtra && newTickValues[0] !== firstValue) {
+              newTickValues.unshift(firstValue)
             }
-          })
+
+            ticks = newTickValues.map((value, i) => {
+              if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+                return { value, label: '' }
+              } else {
+                return { value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
+              }
+            })
+          } else if (this.legendCache.classification) {
+            ticks = ticksFromIntervals(domain).map(value => {
+              return { value: value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
+            })
+          }
         }
 
         if (this._domainType === 'categorical') {
@@ -531,8 +537,6 @@ export default {
       }
     },
 
-    // w
-    // x1, x2
     sectionWidth () {
       if (!this.w && !this.x1 && !this.x2) {
         if (this.orientation === 'vertical') {
@@ -647,7 +651,7 @@ export default {
 
     generateClassification (prop, classBasis) {
       let classOptions = {}
-      console.log('!!!')
+
       if (classBasis.constructor === Number) {
         return () => { return classBasis }
       // } else if (scaleBasis.constructor === Array) { // FIX THIS
@@ -656,7 +660,8 @@ export default {
         // Domain is dependent on scale inputs
         // Range is dependent on aesthetic inputs
         if (this.legendCache.classification) {
-          classOptions.domain = this.legendCache.classification
+          classOptions.column = this.legendCache.classification.column
+          classOptions.binning = this.legendCache.classification.binning
         }
 
         if (prop === 'strokeOpacity' || prop === 'fillOpacity' || prop === 'opacity') {
@@ -678,7 +683,7 @@ export default {
         } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {
           classOptions.range = classBasis.range ? classBasis.range : classBasis.constructor === Array ? classBasis : [0, 10]
         }
-        console.log(createScale)
+
         return createClassification(prop, this.context, classOptions)
       }
     },
