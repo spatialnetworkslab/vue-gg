@@ -38,6 +38,15 @@
           :y="50"
           orientation="horizontal"
         />
+
+        <vgg-gradient-legend
+          :classification="{ column: 'b', binning: { method: selected, numClasses: 5 } }"
+          :fill-opacity="{ range: [0.001, 1]}"
+          :fill="'blue'"
+          :y="50"
+          :x="500"
+          orientation="horizontal"
+        />
       </vgg-section>
 
 

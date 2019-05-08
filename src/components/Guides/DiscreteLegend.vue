@@ -163,7 +163,6 @@ export default {
         for (let i = 0; i < this.legendTicks.length - 1; i++) {
           valueDomain.push([this.legendTicks[i].value, this.legendTicks[i + 1].value])
         }
-        // valueDomain = this.tickValues
         domain = [valueDomain[0][0], valueDomain[valueDomain.length - 1][1]]
       } else {
         valueDomain = this.legendTicks
