@@ -43,12 +43,11 @@
 
     <vgg-symbol-legend
       :scale="'a'"
-      :size="{ range: [10, 15] }"
+      :size="[10, 15]"
       title="Size"
       :title-font-size=12
       :title-padding="10"
       :w="350"
-      :tick-count="5"
       position="bl"
       orientation="horizontal"
     />

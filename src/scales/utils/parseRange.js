@@ -1,14 +1,18 @@
 import { is } from '../../utils/equals.js'
 
 export default function (range, scalingOptions) {
-  let newRange = [range[0], range[1]]
+  let newRange = JSON.parse(JSON.stringify(range))
+
+  if (is(scalingOptions.range)) {
+    newRange = scalingOptions.range
+  }
 
   if (is(scalingOptions.rangeMin)) {
-    newRange[0] = scalingOptions.domainMin
+    newRange[0] = scalingOptions.rangeMin
   }
 
   if (is(scalingOptions.rangeMax)) {
-    newRange[1] = scalingOptions.domainMax
+    newRange[newRange.length - 1] = scalingOptions.rangeMax
   }
 
   return newRange

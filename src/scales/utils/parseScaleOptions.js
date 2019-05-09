@@ -37,7 +37,7 @@ export default function (passedScaleOptions, dataInterface, scaleManager) {
 
     if (dataInterface.ready()) {
       if (!dataInterface.hasColumn(scaleOptions.domain)) {
-        throw new Error(`Invalid scale options: domain '${domain}' not found`)
+        throw new Error(`Invalid scale options: domain '${scaleOptions.domain}' not found`)
       }
 
       if (scaleOptions.absolute) {
@@ -106,7 +106,7 @@ function updateDomain (domain, domainType, scalingOptions, dataInterface) {
       newDomain[1] = scalingOptions.domainMax
     }
 
-    if (!(is(scalingOptions.domainMin) | is(scalingOptions.domainMax)) & domainType !== 'categorical') {
+    if (!(is(scalingOptions.domainMin) || is(scalingOptions.domainMax)) && domainType === 'quantitative') {
       // nice domains turned on by default for non-categorical domains
       // TODO specific logic for temporal domains
       let domainNice = true

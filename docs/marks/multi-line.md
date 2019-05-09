@@ -79,7 +79,9 @@ documentation.
 
 ### Positioning
 
-To render a Multi-line mark, you will need to set the `x` and `y` or the `geometry` props. The two uses are mutually exclusive. `x` and `y` have to be passed an Array of values/coordinates of the same length, with one exception: when the shorter of the two arrays has length 1, its value will be repeated to match the length of the other array. For example
+To render a Multi-line mark, you will need to set the `x` and `y` or the `geometry` props. The two uses are mutually exclusive. 
+
+`x` and `y` have to be passed an Array of values/coordinates of the same length, with one exception: when the shorter of the two arrays has length 1, its value will be repeated to match the length of the other array. For example
 
 ::: v-pre
 ```html
@@ -101,9 +103,35 @@ will be treated as
 ```
 :::
 
-`geometry` accepts GeoJSON LineString and MultiLineString objects only. To render other geometry types, see documentation on the [Point](point.md) and [Polygon](polygon.md) marks.
+It is also possible to use an entire column within the data scope as coordinates using `vgg-map` with `unit="dataframe"`. The rule of equal lengths still holds: if `x` is passed a dataframe column, and `y` is passed an array, the array has to be of the same length as the data column (except, again, if `y` is of length 1).
 
-It is also possible to use an entire column within the data scope as coordinates using `vgg-map` with `unit="dataframe"` (see [Map](../core/map.md) documentation). The rule of equal lengths still holds: if `x` is passed a dataframe column, and `y` is passed an array, the array has to be of the same length as the data column (except, again, if `y` is of length 1).
+```vue
+<vgg-map 
+  v-slot="{ dataframe }"
+  unit="dataframe">
+
+  <!-- the entire year and population columns are passed to x and y -->
+  <vgg-multi-line
+    :x="dataframe.year"
+    :y="dataframe.population"
+    stroke="#c66366"
+  />
+```
+
+`geometry` accepts GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.4), [MultiLineString](https://tools.ietf.org/html/rfc7946#section-3.1.5), [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6) and [MultiPolygon](https://tools.ietf.org/html/rfc7946#section-3.1.7) objects only. To render other geometry types, see the overview on [Geo marks](geomarks.md).
+
+It can only be mapped with row:
+```vue
+<vgg-map v-slot="{ row }">
+  <vgg-multi-line
+    :geometry="row.geometry"
+  />
+</vgg-map>
+```
+
+For a more in-depth explanation on how mapping works, see the [Map](../core/map.html#description) section under Core components.
+
+</vgg-map>
 
 ### Other props
 
@@ -121,7 +149,7 @@ set `sort` to `'y'`.
 
 <MarkMultiLineStacked />
 
-<CodeLayout width="60%" style="margin-top: 25px;">
+<CodeLayout style="margin-top: 25px;">
 
 ```html
 <vgg-graphic
@@ -137,8 +165,9 @@ set `sort` to `'y'`.
       200, 310, 430, 480
     ],
     color: [
-      '#c66366', '#c66366', '#c66366', '#c66366',
-      '#7CAE00', '#7CAE00', '#7CAE00', '#7CAE00'
+      '#c66366', '#c66366', '#c66366',
+      '#c66366', '#008080', '#008080',
+      '#008080', '#008080'
     ]
   }">
 

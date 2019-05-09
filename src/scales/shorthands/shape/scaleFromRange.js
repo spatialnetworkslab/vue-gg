@@ -1,9 +1,9 @@
-export default function (domain, ranges) {
+export default function (domain, range) {
   let mapping = {}
   let i = 0
 
   domain.forEach(entry => {
-    mapping[entry] = ranges[i % ranges.length]
+    mapping[entry] = range[i % range.length]
     i++
   })
 

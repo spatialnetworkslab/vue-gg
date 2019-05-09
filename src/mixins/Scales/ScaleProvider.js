@@ -20,8 +20,14 @@ export default {
     }
   },
 
+  computed: {
+    _scales () {
+      return this.scaleCache.scales
+    }
+  },
+
   watch: {
-    scales: {
+    _scales: {
       handler (newScales, oldScales) {
         let newScaleKeys = this.difference(newScales, oldScales)
         for (let scaleName of newScaleKeys) {
@@ -31,7 +37,7 @@ export default {
             scale, this.$$dataInterface, this.$$scaleManager
           )
 
-          this.$$scaleManager.storeScale(name, parsedScale)
+          this.$$scaleManager.storeScale(name, parsedScale, this.uuid)
         }
 
         let oldScaleKeys = this.difference(oldScales, newScales)
@@ -44,6 +50,7 @@ export default {
   },
 
   created () {
+    createWatchers(this, this.scaleCache)
     for (let scaleName in this.scaleCache.scales) {
       let scale = this.scaleCache.scales[scaleName]
 
@@ -51,12 +58,8 @@ export default {
         scale, this.$$dataInterface, this.$$scaleManager
       )
 
-      this.$$scaleManager.storeScale(scaleName, parsedScale)
+      this.$$scaleManager.storeScale(scaleName, parsedScale, this.uuid)
     }
-  },
-
-  mounted () {
-    createWatchers(this, this.scaleCache)
   },
 
   methods: {

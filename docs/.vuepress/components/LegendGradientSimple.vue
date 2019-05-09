@@ -42,7 +42,7 @@
 
         <vgg-gradient-legend
           :scale="'bins'"
-          :h="100"
+          :h="120"
         />
 
       </vgg-data>

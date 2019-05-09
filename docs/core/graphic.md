@@ -13,14 +13,16 @@ components should be used outside of the Graphic component.
 
 # Props
 
-| Prop      | Required | Types           | Default   | Description                                   |
-| --------- | -------- | --------------- | --------- | --------------------------------------------- |
-| width     | true     | Number          | undefined | Width in screen pixels of graphic             |
-| height    | true     | Number          | undefined | Height in screen pixels of graphic            |
-| flip      | false    | Boolean         | true      | If true, y-coordinates run from bottom to top |
-| data      | false    | [Array, Object] | undefined | Some supported data structure                 |
-| format    | false    | String          | undefined | Format of data structure                      |
-| transform | false    | [Array, Object] | undefined | Transformation(s) to be applied               |
+| Prop       | Required | Types           | Default   | Description                                                 |
+| ---------- | -------- | --------------- | --------- | ----------------------------------------------------------- |
+| width      | true     | Number          | undefined | Width in screen pixels of graphic                           |
+| height     | true     | Number          | undefined | Height in screen pixels of graphic                          |
+| flip       | false    | Boolean         | true      | If true, y-coordinates run from bottom to top               |
+| data       | false    | [Array, Object] | undefined | Some supported data structure                               |
+| format     | false    | String          | undefined | Format of data structure                                    |
+| transform  | false    | [Array, Object] | undefined | Transformation(s) to be applied                             |
+| dataID     | false    | String          | undefined | ID for referencing from other data scope                    |
+| allowEmpty | false    | Boolean         | false     | When false, won't render children when receiving empty data |
 
 # Usage
 

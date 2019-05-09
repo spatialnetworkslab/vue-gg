@@ -21,7 +21,7 @@ of two (2) or more colors housed in a rectangular section.
 ```html
 <vgg-gradient-legend
   :scale="'bins'"
-  :h="100"
+  :h="120"
 />
 ```
 
@@ -49,7 +49,7 @@ composed of discrete colors.
 
 </CodeDemoLayout>
 
-For gradient and discrete legends, either the `fill` or `fill-opacity` props may
+For gradient and discrete legends, either the `fill` or `fill-opacity` properties may
 be used to encode the domain given to `scale`. Applying transformations onto the
 data fed to `scale`, such as `binning`, will alter the placement of ticks and
 the progression of colors to match the transformations. The progression of the
@@ -89,7 +89,7 @@ Even if different domains are given per aesthetic, the legend will follow that w
 
 | Prop   | Required | Regular types           | Default   | Description                                               |
 | ------ | -------- | ----------------------- | --------- | --------------------------------------------------------- |
-| scale  | true     | [Array, String, Object] | undefined | Domain of values visualized by the legend, can be variable name |
+| scale  | true     | [Array, String, Object] | undefined | Domain of values visualised by the legend; this can be variable name |
 | orientation   | false    | String               | 'vertical'     | orientation of legend (vertical/horizontal)|
 | flip   | false    | Boolean               | false     | flip order of legend labels; if true, shows decreasing order                        |
 | flip-numbers   | false    | Boolean               | false     | flip placement of numbers and gradient section                        |
@@ -97,7 +97,7 @@ Even if different domains are given per aesthetic, the legend will follow that w
 
 Note that any aspects to do with the `domain` mapped to the legend, such as
 `domainMin`, `absolute`, etc., should be handled in `scale`. The input to `scale`
-can be a String (the name of the column or a custom scale with the `#` tag) or
+can be a String (the name of the column or a custom scale with the `#` tag), an array of values, or an
 an object. When stating other aspects of `domain` such as `domainMin`, `domainMax`,
 the input must be an object, and the target domain of the legend must be listed under `domain` in the object.
 
@@ -111,17 +111,45 @@ the input must be an object, and the target domain of the legend must be listed 
 // OR
 
 :scale="{ domain: <data column name>, domainMin: <value>, domainMax: <value>, ... }"
+
+// OR
+
+:scale="[[0, 10], [10, 20], [20, 40], [40, 60], [60, 100]]"
 ```
+
+<CodeDemoLayout>
+
+<LegendSpecScale />
+
+<CodeLayout>
+
+```html
+<vgg-gradient-legend
+  :scale="[[0, 10], [10, 20], [20, 40], [40, 49], [49, 60], [60, 100]]"
+  orientation="horizontal"
+  position="tc"
+  :w="180"
+  :h="100"
+/>
+
+<vgg-discrete-legend
+  :scale="[[0, 10], [10, 20], [20, 40], [40, 60], [60, 70], [70, 85], [85, 100]]"
+  orientation="horizontal"
+  position="bc"
+  :w="180"
+  :h="100"
+/>
+```
+
+</CodeLayout>
+
+</CodeDemoLayout>
 
 On the other hand, `range`, `rangeMin`, etc. should be specified in the target
 aesthetic's input when giving the output of said aesthetic, such as the `range`
 of the `size` property in the symbol legend in the symbol legend example.
 
 ```js
-:size="'#rangeScale'"
-
-// OR
-
 :size="{ range: [<value 1>, <value 2>, ...], rangeMin: <value>, rangeMax: <value>, ... }"
 ```
 
@@ -156,22 +184,35 @@ examples on how to set inputs to `domain` and the legend's aesthetic properties.
 
 ### Legend Positioning
 
-A legend component can contain the following position properties.
+A legend component can take the following position properties. These take after [Marks > Rectangle](../marks/rectangle.md).
 
-| Prop | Required | Types | Default   | Description                             | Unit(s)           |
-| ---- | -------- | ----- | --------- | --------------------------------------- | ----------------- |
-| x    | true     | Number | undefined | position of legend along section x-axis              | Local coordinates |
-| y    | true     | Number | undefined | position of legend along section y-axis              | Local coordinates |
-| position| false    | String | 'left' | position of legend with respect to parent section | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
+| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
+| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
+| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinates |
+| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinates |
+| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
+| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
+| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinates |
+| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates |
+| w    | depends  | Number                 | If `horizontal`, automatically computed according to 35% of parent section width + `title-font-size` (screen pixels) + and `col-padding` (screen pixels); if `vertical`, 10% of parent section width + `row-padding`  | Width                | Local coordinates |
+| h    | depends  | Number                 | If `vertical`, automatically computed according to 35% of parent section height + `title-font-size` (screen pixels) + `col-padding` (screen pixels); if `horizontal`, 10% of parent section height + `row-padding`  | Height              | Local coordinates |
+| position| false | String | 'left' | position of legend based on parent section dimensions | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
 
-#### Allowed combinations of positioning props
+#### Allowed combinations of positioning properties
 
-| Combination      | Explanation         |
-|------------------|----------------------|
-| `x` only | Manually positions the legend within the section along the section's x axis   |
-| `y` only | Manually positions the legend within the section along the section's y axis |
-| `x` + `y` | Manually positions the legend within the section along the sections' x and y axes  |
-| `position` | Automatically computes the exact x-y coordinates to position the legend within the parent section, according to its input |
+The positioning properties of the legend can only be used in certain combinations.
+
+| Combination | Explanation    |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `x1` + `x2` | `x1` refers to x-coordinate of the left side of the rectangle, `x2` refers to x-coordinate of the right side of the rectangle. |
+| `x` + `w`   | `x` is the center of the rectangle in the x-dimension, `w` is the width. Here, `x1 = x - w / 2`, and `x2 = x + w / 2`.         |
+| `x1` + `w`  | `x2 = x1 + w`|
+| `x2` + `w`  | `x1 = x2 - w`|
+| `y1` + `y2` | `y1` refers to y-coordinate of the bottom side of the rectangle, `y2` refers to y-coordinate of the top side of the rectangle. |
+| `y` + `h`   | `y` is the center of the rectangle in the x-dimension, `h` is the width. Here, `y1 = y - h / 2`, and `y2 = y + h / 2`.         |
+| `y1` + `h`  | `y2 = y1 + h`|
+| `y2` + `h`  | `y1 = y2 - h`|
+| `position` only  | Legend is positioned according to dimensions of parent section |
 
 If left empty, then the default position of the x-axis is `position = 'left'`
 (center leftmost of parent section).
@@ -180,8 +221,6 @@ If left empty, then the default position of the x-axis is `position = 'left'`
 
 | Prop | Required | Types | Default   | Description                             | Unit(s)           |
 | ---- | -------- | ----- | --------- | --------------------------------------- | ----------------- |
-| h   | false | Number | If `vertical`, automatically computed according to  parent section height, title font size (screen pixels), title padding (screen pixels), and number of tick; if `horizontal`, 10% of parent section height | height of legend section | Screen pixels |
-| w   | false | Number | If `horizontal`, automatically computed according to  parent section width, title font size (screen pixels), title padding (screen pixels), and number of tick; if `vertical`, 10% of parent section width   | width of legend section | Screen pixels |
 | legend-stroke | false | String | none | stroke color surrounding legend section | Named color, hex, rgb, hsl |
 | legend-fill | false | String | none | fill color of legend section | Named color, hex, rgb, hsl |
 | legend-stroke-width | false    | Number | 0  | stroke width of rectangle surrounding legend section | Named color, hex, rgb, hsl |
@@ -198,12 +237,12 @@ the bounding rectangle of the legend, should the legend section have `stroke`,
 
 | Prop            | Required | Regular types    | Default     | Description                             | Unit(s)                    |
 | --------------- | -------- | ---------------- | ----------- | --------------------------------------- | --------------------------|
-| title           | false    | String         | ''          | text to render as axis title            |                           |
+| title           | false    | String         | ''          | text to render as legend title            |                           |
 | title-anchor-point | false    | String         | 'center'    | baseline and alignment of title text    | left, right, top, bottom, tl, tr, bl, br, center                          |
 | title-font     | false    | String         | 'Helvetica'     | font family of title                          | Named font |
 | title-font-color      | false    | String         | 'black'     | color of title                          | Named color, hex, rgb, hsl |
 | title-font-size   | false    | Number         | 16          | size of font used for legend title        | Screen pixels              |
-| title-font-weight | false    | [String, Number] | 'normal'    | weight of font used for axis title      | Any valid css font weight  |
+| title-font-weight | false    | [String, Number] | 'normal'    | weight of font used for legend title      | Any valid css font weight  |
 | title-opacity    | false    | Number         | 1           | opacity of title                        | Number between 0 and 1     |
 | title-padding    | false    | Number         | 0           | space between title and legend labels + gradient section                     | Screen pixels     |
 
@@ -215,11 +254,11 @@ output must be of type `String`.
 
 | Prop           | Required | Regular types      | Default     | Description                             | Unit(s)                    |
 | -------------- | -------- | ------------------ | ----------- | --------------------------------------- | -------------------------- |
-| format         | false    | [String, Function] | undefined   | formatting of axis labels               |                            |
+| format         | false    | [String, Function] | undefined   | formatting of legend labels, i.e. rounding off/down               |                            |
 | label-color     | false    | String           | 'black'     | color of labels                         | Named color, hex, rgb, hsl |
-| label-font      | false    | String           | 'Helvetica' | font used for axis labels               | Named font                 |
-| label-font-size  | false    | Number           | 10          | size of font used for axis labels       | Screen pixels              |
-| label-font-weight| false    | [String, Number]   | 'normal'    | weight of font used for axis labels     | Any valid css font weight  |
+| label-font      | false    | String           | 'Helvetica' | font used for legend labels               | Named font                 |
+| label-font-size  | false    | Number           | 10          | size of font used for legend labels       | Screen pixels              |
+| label-font-weight| false    | [String, Number]   | 'normal'    | weight of font used for legend labels     | Any valid css font weight  |
 | label-opacity   | false    | Number           | 1           | opacity of labels                       | Number between 0 and 1     |
 | label-rotate    | false    | Boolean          | false       | if true rotate labels                   | Degrees                   |
 | label-padding    | false    | Number        | 0        | space between symbol and label | Number between 0 and 1 |
@@ -227,13 +266,47 @@ output must be of type `String`.
 ### Ticks
 
 These properties control the number of ticks or labels, and the minimum interval
-between the labels (if they are `quantitative` data) of the legend. By default,
+between the labels (unless they are `categorical` or `interval` data) of the legend. By default,
 all three legend types have ten (10) ticks drawn.
 
-| Prop           | Required | Regular types    | Default     | Description                                    | Unit(s)                    |
-| -------------- | -------- | ---------------- | ----------- | ---------------------------------------------- | -------------------------- |
+| Prop           | Required | Regular types    | Default     | Description  | Unit(s)                    |
+| -------------- | -------- | ---------------- | ----------- | ------------ | -------------------------- |
 | tick-count          | false    | Object        | 10        | number of ticks/labels to render                         | Any integer greater than 0                           |
+| tick-values          | false    | Array        | undefined        | actual tick values to render                         | Any integer greater than 0                           |
 | tick-min-step          | false    | Object        | undefined        | minimum interval between ticks/labels                           | Any positive rational number                           |
+| show-last         | false    | Boolean        | true        | show last legend tick   |                         |
+| show-first         | false    | Boolean        | true        | show first legend tick                           |                           |
+
+If the data fed to the legend is `categorical` or `interval` and the user needs to control the exact ticks to be rendered, then the values of the legend ticks to be shown must be specified as an `Array` input to `tick-values`. Each value in the array given to `tick-values` must correspond to values in the domain derived from the input to `scale`.
+
+<CodeDemoLayout>
+
+<LegendBinning />
+
+<CodeLayout>
+
+```html
+<vgg-gradient-legend
+  :scale="[[0, 10], [10, 20], [20, 40], [40, 45], [45, 60], [60, 100]]"
+  :tick-values="[[0, 10], [10, 20], [20, 40], [40, 45],]"
+  orientation="horizontal"
+  position="tc"
+  :w="180"
+  :h="100"
+/>
+<vgg-discrete-legend
+  :scale="[[0, 10], [10, 20], [20, 40], [40, 60], [60, 70], [70, 85], [85, 100]]"
+  :tick-values="[[40, 60], [60, 70], [70, 85], [85, 100]]"
+  orientation="horizontal"
+  position="bc"
+  :w="180"
+  :h="100"
+/>
+```
+
+</CodeLayout>
+
+</CodeDemoLayout>
 
 ## Events
 
@@ -454,12 +527,11 @@ can specified with objects or arrays, i.e. `{ type: ... }` or `[ red, green, blu
 // size
 <vgg-symbol-legend
   :scale="'a'"
-  :size="{ range: [10, 15] }"
+  :size="[10, 15]"
   title="Size"
   :title-font-size=12
   :title-padding="10"
   :w="350"
-  :tick-count="5"
   position="bl"
   orientation="horizontal"
 />
@@ -472,8 +544,8 @@ can specified with objects or arrays, i.e. `{ type: ... }` or `[ red, green, blu
 This legend uses the `stroke-width`, `opacity` and `fill` properties to elaborate
 on the values of the `trail` mark. Scales created using `vgg-scales` can be
 called as input to `scale`. Custom ranges for the output of the legend aesthetics
-can be set using objects or arrays (for categorical data), i.e. `{ range: ... }`
-or `[ <value 1>, <value 2>, <value 3>]`.
+can be set using objects, i.e. `{ range: ..., rangeMin: ... }`
+or `{ range: [ <value 1>, <value 2>, <value 3>] }`, or as arrays: `[ <value 1>, <value 2>, <value 3>]`.
 
 <CodeDemoLayout>
 
@@ -491,8 +563,8 @@ or `[ <value 1>, <value 2>, <value 3>]`.
   :stroke-width="{ range: [2, 12] }"
   :stroke-opacity="{ range: [0, 0.7] }"
   shape="line"
-  :x="10"
-  :y="500"
+  :x="150"
+  :y="520"
   :w="250"
   title="Stroke width, opacity"
   title-font-weight="bold"
@@ -506,7 +578,7 @@ or `[ <value 1>, <value 2>, <value 3>]`.
   :font-size="10"
   :stroke-width="10"
   :stroke="['#F8766D', '#7CAE00', '#00BFC4', '#C77CFF', 'orange']"
-  :x="10"
+  :x="150"
   :y="50"
   :w="250"
   shape="line"
@@ -515,7 +587,6 @@ or `[ <value 1>, <value 2>, <value 3>]`.
   :title-font-size="12"
   orientation="horizontal"
 />
-
 ```
 :::
 </CodeLayout>

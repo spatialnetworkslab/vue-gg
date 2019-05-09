@@ -2,8 +2,10 @@ import DataContainer from '../../classes/Data/DataContainer.js'
 import applyTransformations from '../../transformations/applyTransformations.js'
 import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
 
+import isEmptyDataframe from '../../utils/isEmptyDataframe.js'
+
 export default {
-  inject: ['$$dataManager', '$$dataScope'],
+  inject: ['$$dataManager', '$$dataScope', '$$scaleManager'],
 
   props: {
     data: {
@@ -19,6 +21,16 @@ export default {
     transform: {
       type: [Array, Object, undefined],
       default: undefined
+    },
+
+    dataID: {
+      type: [String, undefined],
+      default: undefined
+    },
+
+    allowEmpty: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -31,12 +43,22 @@ export default {
   computed: {
     dataContainer () {
       if (this.data) {
+        if (!this.allowEmpty && isEmptyDataframe(this.data)) {
+          return false
+        }
+
         let container = new DataContainer(this.data, this.format)
         if (this.dataProviderCache.transform) {
           let transformedData = applyTransformations(
             container.getDataset(),
-            this.dataProviderCache.transform
+            this.dataProviderCache.transform,
+            this.allowEmpty,
+            this.$$scaleManager
           )
+
+          if (transformedData === false) {
+            return false
+          }
 
           return new DataContainer(transformedData)
         } else {
@@ -48,26 +70,22 @@ export default {
         let data = this.parentDataInterface.getDataset()
         let transformedData = applyTransformations(
           data,
-          this.dataProviderCache.transform
+          this.dataProviderCache.transform,
+          this.allowEmpty,
+          this.$$scaleManager
         )
+
+        if (transformedData === false) {
+          return false
+        }
 
         return new DataContainer(transformedData)
       }
     },
 
     dataScopeID () {
-      let id
-      if (this.$attrs.id) {
-        // use id if given
-        id = this.$attrs.id
-      } else if (this.$vnode.data.staticClass) {
-        // fall back on class if no id is given
-        let elClass = this.$vnode.data.staticClass.replace(/\s+/g, '_')
-        id = elClass + '_' + this.uuid
-      } else {
-        id = '_' + this.uuid
-      }
-      return id
+      if (this.dataID) { return this.dataID }
+      return '_' + this.uuid
     },
 
     parentDataInterface () {
@@ -90,11 +108,8 @@ export default {
   },
 
   created () {
-    this.$$dataManager.register(this.dataScopeID, this.dataContainer)
-  },
-
-  mounted () {
     createWatchers(this, this.dataProviderCache)
+    this.$$dataManager.register(this.dataScopeID, this.dataContainer)
   },
 
   watch: {

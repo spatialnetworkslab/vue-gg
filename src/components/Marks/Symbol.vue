@@ -1,5 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
+import checkGeometry from '../../mixins/Marks/utils/checkGeometry.js'
 
 export default {
   mixins: [Mark],
@@ -7,12 +8,12 @@ export default {
   props: {
     x: {
       type: [Number, String, Date],
-      required: true
+      default: undefined
     },
 
     y: {
       type: [Number, String, Date],
-      required: true
+      default: undefined
     },
 
     fill: {
@@ -58,6 +59,18 @@ export default {
     transition: {
       type: Number,
       default: 0
+    },
+
+    geometry: {
+      type: undefined,
+      default: undefined
+    }
+  },
+
+  data () {
+    return {
+      markType: 'symbol',
+      validGeomTypes: ['Point']
     }
   },
 
@@ -99,8 +112,7 @@ export default {
   },
 
   methods: {
-    createCircle (createElement, aesthetics) {
-      let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
+    createCircle (createElement, aesthetics, cx, cy) {
       let r = aesthetics.size / 2
 
       let events = this.events
@@ -118,9 +130,7 @@ export default {
       })
     },
 
-    createSquare (createElement, aesthetics) {
-      let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
-
+    createSquare (createElement, aesthetics, cx, cy) {
       let l = aesthetics.size
       let x = cx - (l / 2)
       let y = cy - (l / 2)
@@ -141,9 +151,7 @@ export default {
       })
     },
 
-    createPath (createElement, aesthetics, d) {
-      let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
-
+    createPath (createElement, aesthetics, d, cx, cy) {
       let events = this.events
       if (events.length > 0) {
         this.addToSpatialIndex([cx, cy], events)
@@ -165,19 +173,28 @@ export default {
     renderSVG (createElement) {
       let aesthetics = this._props
 
+      if (this.geometry) {
+        checkGeometry(this.markType, this.validGeomTypes, this.geometry)
+      }
+
+      let xy = this.geometry
+        ? aesthetics.geometry.coordinates
+        : [aesthetics.x, aesthetics.y]
+
+      let [cx, cy] = this.$$transform(xy)
+
       let path
 
       if (this.shape === 'circle') {
-        return this.createCircle(createElement, aesthetics)
+        return this.createCircle(createElement, aesthetics, cx, cy)
       } else if (this.shape === 'square') {
-        return this.createSquare(createElement, aesthetics)
+        return this.createSquare(createElement, aesthetics, cx, cy)
       } else if (this.pathAlias.hasOwnProperty(this.shape)) {
         path = this.pathAlias[this.shape]
       } else {
-        return this.createPath(createElement, aesthetics, this.shape)
+        return this.createPath(createElement, aesthetics, this.shape, cx, cy)
       }
-
-      return this.createPath(createElement, aesthetics, path)
+      return this.createPath(createElement, aesthetics, path, cx, cy)
     },
 
     addToSpatialIndex (coordinates, events) {

@@ -6,6 +6,8 @@ import Rectangular from '../Marks/Rectangular.js'
 import DataReceiver from '../../mixins/Data/DataReceiver.js'
 import ScaleReceiver from '../../mixins/Scales/ScaleReceiver.js'
 
+import { createPropCache, createWatchers } from '../../components/Core/utils/propCache.js'
+
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import defaultFormat from './utils/defaultFormat.js'
 import ticksFromIntervals from './utils/ticksFromIntervals.js'
@@ -198,13 +200,14 @@ export default {
 
   data () {
     return {
-      justLookup: { l: 0, b: 0, r: 1, t: 1, center: 0.5 }
+      justLookup: { l: 0, b: 0, r: 1, t: 1, center: 0.5 },
+      axisCache: createPropCache(this, ['scale', 'tickValues'])
     }
   },
 
   computed: {
     parsedScalingOptions () {
-      return parseScaleOptions(this.scale, this.$$dataInterface, this.$$scaleManager)
+      return parseScaleOptions(this.axisCache.scale, this.$$dataInterface, this.$$scaleManager)
     },
 
     _domain () {
@@ -260,8 +263,8 @@ export default {
       let firstValue = this._domain[0]
       let newTickValues
 
-      if (this.tickValues) {
-        newTickValues = this.tickValues
+      if (this.axisCache.tickValues) {
+        newTickValues = this.axisCache.tickValues
 
         let format = this.format && this.format.constructor === Function ? this.format : defaultFormat
 
@@ -294,8 +297,10 @@ export default {
           })
 
           if (this.tickCount) {
-            let step = Math.floor(ticks.length / this.tickCount)
-            ticks = ticks.filter((value, i) => (i % step) === 0)
+            if (ticks.length > this.tickCount) {
+              let step = Math.floor(ticks.length / this.tickCount)
+              ticks = ticks.filter((value, i) => (i % step) === 0)
+            }
           }
         }
 
@@ -332,8 +337,10 @@ export default {
           })
 
           if (this.tickCount) {
-            let step = Math.floor(ticks.length / this.tickCount)
-            ticks = ticks.filter((value, i) => (i % step) === 0)
+            if (ticks.length > this.tickCount) {
+              let step = Math.floor(ticks.length / this.tickCount)
+              ticks = ticks.filter((value, i) => (i % step) === 0)
+            }
           }
         }
 
@@ -351,8 +358,10 @@ export default {
           })
 
           if (this.tickCount) {
-            let step = Math.floor(ticks.length / this.tickCount)
-            ticks = ticks.filter((value, i) => (i % step) === 0)
+            if (ticks.length > this.tickCount) {
+              let step = Math.floor(ticks.length / this.tickCount)
+              ticks = ticks.filter((value, i) => (i % step) === 0)
+            }
           }
         }
 
@@ -362,6 +371,10 @@ export default {
         })
       }
     }
+  },
+
+  created () {
+    createWatchers(this, this.axisCache)
   },
 
   methods: {
