@@ -30,16 +30,13 @@ import MultipleSelections from './sandbox/MultipleSelections.vue'
 import NestedSelection from './sandbox/NestedSelection.vue'
 import AteAxisScaleBug from './sandbox/AteAxisScaleBug.vue'
 import Facets from './sandbox/Facets.vue'
-<<<<<<< HEAD
 import CurveExplorer from './sandbox/CurveExplorer.vue'
 import RegressionExplorer from './sandbox/RegressionExplorer.vue'
-=======
 import DomainError from './sandbox/DomainError.vue'
 import EmptyData from './sandbox/EmptyData.vue'
 import DuplicateScales from './sandbox/DuplicateScales.vue'
 import ClassificationTest from './sandbox/ClassificationTest.vue'
 import ScaleTransformation from './sandbox/ScaleTransformation.vue'
->>>>>>> 1d8830604336471069d6859937511b447762b57b
 
 storiesOf('Charts', module)
   .add('Scatterplot', () => (Scatterplot))
@@ -73,13 +70,10 @@ storiesOf('Sandbox', module)
   .add('Nested selection', () => (NestedSelection))
   .add('Ate axis scale bug', () => (AteAxisScaleBug))
   .add('Facets', () => (Facets))
-<<<<<<< HEAD
   .add('Curve Explorer', () => (CurveExplorer))
   .add('Regression Explorer', () => (RegressionExplorer))
-=======
   .add('DomainError', () => (DomainError))
   .add('Empty data', () => (EmptyData))
   .add('Duplicate scales', () => (DuplicateScales))
   .add('Classification test', () => ClassificationTest)
   .add('Scale transformation', () => (ScaleTransformation))
->>>>>>> 1d8830604336471069d6859937511b447762b57b

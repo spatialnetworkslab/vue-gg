@@ -1,59 +1,61 @@
 <template>
   <div>
     <vgg-graphic
-      :width="600"
-      :height="600"
+      :width="900"
+      :height="900"
       :data="data">
 
-      <text x="50" y="50" font-size="15" dy="0" font-family="sans-serif">
-        <tspan x="50" dy="15">exponential and polynomial exist</tspan>
-        <tspan x="50" dy="15">but do not fit this dataset well</tspan>
-      </text>
+      <vgg-grid :rows="3" :layout-padding="5" :cell-padding="30" start="t">
 
-      <vgg-section
-        :x1="100"
-        :x2="500"
-        :y1="100"
-        :y2="500"
-        :scale-x="'xValues'"
-        :scale-y="'yValues'"
-      >
+        <vgg-section
+          v-for="regression in ['linear', 'logarithmic', 'quadratic', 'polynomial', 'exponential', 'power', 'loess', ]"
+          :key="regression"
+        >
 
-        <vgg-map v-slot="{ dataframe }" unit="dataframe">
+          <vgg-plot-title :text="regression" :vjust="1.05" :font-size="14" />
 
-          <vgg-multi-line
-            :x="dataframe.xValues"
-            :y="dataframe.yValues"
-            :stroke-width="1"
-            :opacity="0.6"
-            :regression="selected"
-          />
+          <vgg-data :data="getData(regression)">
 
-        </vgg-map>
+            <vgg-map v-slot="{ dataframe }" unit="dataframe">
 
-        <vgg-map v-slot="{ row }">
+              <vgg-multi-line
+                :x="{ val: dataframe.xValues, scale: 'xValues'}"
+                :y="{ val: dataframe.yValues, scale: 'yValues'}"
+                :stroke-width="1.5"
+                fill="none"
+                :regression="regression"
+              />
 
-          <vgg-symbol
-            :x="row.xValues"
-            :y="row.yValues"
-            stroke="grey"
-            :strokeWidth="1"
-            :strokeOpacity="0.6"
-            fill="none"
-            :size="5"
-          />
+            </vgg-map>
 
-        </vgg-map>
+            <vgg-map v-slot="{ row }">
 
-      </vgg-section>
+              <vgg-symbol
+                :x="{ val: row.xValues, scale: 'xValues'}"
+                :y="{ val: row.yValues, scale: 'yValues'}"
+                :size="4"
+              />
+
+            </vgg-map>
+
+            <vgg-x-axis scale="xValues" :tickCount="5" />
+
+            <vgg-y-axis scale="yValues" :tickCount="5" />
+
+          </vgg-data>
+
+        </vgg-section>
+
+      </vgg-grid>
 
     </vgg-graphic>
 
-    <select v-model="selected">
+    <!-- <select v-model="selected">
       <option value="linear">linear</option>
       <option value="logarithmic">logarithmic</option>
       <option value="power">power</option>
-    </select>
+      <option value="loess">loess</option>
+    </select> -->
 
     <!-- <div style="margin-top: 10px;">
       <button @click="generateNewData()">Generate new data</button>
@@ -72,6 +74,46 @@ export default {
   mounted () {
     this.generateNewData()
   },
+
+  computed : {
+    linearData () {
+      return { xValues: [8, 2, 11, 6, 5, 4, 12, 9, 6, 1],
+               yValues: [3, 10, 3, 6, 8, 12, 1, 4, 9, 14] }
+    },
+
+    quadraticData () {
+      return { xValues: [-3, -2, -1, 0, 1, 2, 3],
+               yValues: [7.5, 3, 0.5, 1, 3, 6, 14] }
+    },
+
+    polynomialData () {
+      return { xValues: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+               yValues: [140, 149, 159.6, 159, 155.9, 169, 162.9, 169, 180] }
+    },
+
+    exponentialData () {
+      return { xValues: [0, 1, 2, 3, 4, 5],
+               yValues: [3, 7, 10, 24, 50, 95] }
+    },
+
+    logarithmicData () {
+      return { xValues: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                         11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+               yValues: [4.181, 4.665, 5.296, 5.365, 5.448, 5.744, 5.653, 5.844, 6.362, 6.38,
+                         6.311, 6.457, 6.479, 6.59, 6.74, 6.58, 6.852, 6.531, 6.682, 7.013] }
+    },
+
+    powerData () {
+      return { xValues: [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010],
+               yValues: [47.3, 50.0, 54.1, 59.7, 62.9, 68.2, 69.7, 70.8, 73.7, 75.4, 76.8, 78.7] }
+    },
+
+    loessData () {
+      return { xValues: [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010],
+               yValues: [47.3, 50.0, 54.1, 59.7, 62.9, 68.2, 69.7, 70.8, 73.7, 75.4, 76.8, 78.7] }
+    },
+  },
+
   methods: {
     generateNewData () {
       let xValues = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010]
@@ -81,6 +123,10 @@ export default {
         newData.push({xValues: xValues[ix], yValues: yValues[ix]})
       }
       this.data = newData
+    },
+
+    getData (name) {
+      return this[name+'Data']
     }
   },
 }
