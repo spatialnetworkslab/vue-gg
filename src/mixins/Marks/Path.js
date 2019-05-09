@@ -12,6 +12,7 @@ import {
 import checkPoints from './utils/checkPoints.js'
 import checkGeometry from './utils/checkGeometry.js'
 import { invalidPoint } from '../../utils/equals.js'
+import * as d3shape from 'd3-shape'
 
 export default {
   mixins: [Mark],
@@ -263,8 +264,10 @@ export default {
       }
 
       if (regressDef) {
-        transformedPoints = transformPoints(points, this.$$transform)
-        path = createRegress(transformedPoints, regressDef['type'], regressDef.regressSpec)
+        transformedPoints = createRegress(points, regressDef['type'], regressDef.regressSpec, this.parentBranch.domains)
+        transformedPoints = transformPoints(transformedPoints, this.$$transform)
+        let lineGenerator = d3shape.line().curve(d3shape.curveBasis)
+        path = lineGenerator(transformedPoints)
 
         return path
       }
@@ -292,7 +295,6 @@ export default {
       let area = this.pathType === 'area'
       checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, area)
       let aesthetics = this._props
-
       if (this.geometry) {
         checkGeometry(this.pathType, this.validGeomTypes, this.geometry)
         let tranformedFeature = transformFeature(aesthetics.geometry, this.$$transform)

@@ -104,8 +104,7 @@ export default {
     },
 
     powerData () {
-      return { xValues: [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010],
-               yValues: [47.3, 50.0, 54.1, 59.7, 62.9, 68.2, 69.7, 70.8, 73.7, 75.4, 76.8, 78.7] }
+      return [{"yValues":82.74,"xValues":1},{"yValues":30.26,"xValues":6},{"yValues":20.22,"xValues":20},{"yValues":9.49,"xValues":70},{"yValues":4.01,"xValues":300},{"yValues":2.09,"xValues":800},{"yValues":1.46,"xValues":1300},{"yValues":1.14,"xValues":1800},{"yValues":0.9,"xValues":2300},{"yValues":0.73,"xValues":2800},{"yValues":0.61,"xValues":3300},{"yValues":0.53,"xValues":3800},{"yValues":0.46,"xValues":4300},{"yValues":0.4,"xValues":4800}]
     },
 
     loessData () {

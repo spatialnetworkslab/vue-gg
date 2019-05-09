@@ -91,7 +91,7 @@ export function createArc (points, generator, curveSpec) {
   return arcGenerator(points)
 }
 
-export function createRegress (points, regress, regressSpec) {
+export function createRegress (points, regress, regressSpec, domain) {
   let allRegression = {
     'linear': d3regression.regressionLinear(),
     'exponential': d3regression.regressionExp(),
@@ -102,6 +102,10 @@ export function createRegress (points, regress, regressSpec) {
     'loess': d3regression.regressionLoess(),
   }
 
+  let xMin = domain.x[0]
+  let yMin = domain.y[0]
+
+  points = points.map(p => [p[0] - xMin, p[1] - yMin])
   let regressionFunc
 
   if (regress === true) {
@@ -114,14 +118,10 @@ export function createRegress (points, regress, regressSpec) {
   }
 
   let transformedPoints = regressionFunc(points)
-  if (regress === 'exponential') {
-    console.log(points, transformedPoints)
-  }
 
-  let lineGenerator = d3shape.line().curve(d3shape.curveBasis)
-  let path = lineGenerator(transformedPoints)
+  transformedPoints = transformedPoints.map(p => [p[0] + xMin, p[1] + yMin])
 
-  return path
+  return transformedPoints
 }
 
 // Helpers
