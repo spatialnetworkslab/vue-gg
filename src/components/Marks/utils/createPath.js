@@ -99,7 +99,7 @@ export function createRegress (points, regress, regressSpec, domain) {
     'quadratic': d3regression.regressionQuad(),
     'polynomial': d3regression.regressionPoly(),
     'power': d3regression.regressionPow(),
-    'loess': d3regression.regressionLoess(),
+    'loess': d3regression.regressionLoess()
   }
 
   let xMin = domain.x[0]
