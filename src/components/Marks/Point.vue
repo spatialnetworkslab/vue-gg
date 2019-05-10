@@ -1,5 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
+import checkGeometry from '../../mixins/Marks/utils/checkGeometry.js'
 
 export default {
   mixins: [Mark],
@@ -7,12 +8,12 @@ export default {
   props: {
     x: {
       type: [Number, String, Date],
-      required: true
+      default: undefined
     },
 
     y: {
       type: [Number, String, Date],
-      required: true
+      default: undefined
     },
 
     fill: {
@@ -53,6 +54,18 @@ export default {
     transition: {
       type: Number,
       default: 0
+    },
+
+    geometry: {
+      type: undefined,
+      default: undefined
+    }
+  },
+
+  data () {
+    return {
+      markType: 'point',
+      validGeomTypes: ['Point']
     }
   },
 
@@ -66,7 +79,16 @@ export default {
   methods: {
     renderSVG (createElement) {
       let aesthetics = this._props
-      let [cx, cy] = this.$$transform([aesthetics.x, aesthetics.y])
+
+      if (this.geometry) {
+        checkGeometry(this.markType, this.validGeomTypes, this.geometry)
+      }
+
+      let xy = this.geometry
+        ? aesthetics.geometry.coordinates
+        : [aesthetics.x, aesthetics.y]
+
+      let [cx, cy] = this.$$transform(xy)
 
       let events = this.events
       if (events.length > 0) {

@@ -360,3 +360,30 @@ dataframe.
 :::
 
 [Go to the transform documentation](../transform/transform.md)
+
+### Scale
+
+The `scale` transformation exposes `vue-gg`'s built-in scaling functionality as a data
+transformation.
+
+::: v-pre
+```html
+<vgg-data
+  :data="{ a: [1, 2, 3, 4] }"
+  :transform="{
+    scale: {
+      b: { prop: 'x', column: 'a', scale: { domain: 'a', range: [2, 8] } }
+    }
+  }"
+>
+
+  <!-- Data scope: {
+    a: [1, 2, 3, 4],
+    b: [2, 4, 6, 8]
+  } -->
+
+</vgg-data>
+```
+:::
+
+[Go to the scale documentation](../transform/scale.md)

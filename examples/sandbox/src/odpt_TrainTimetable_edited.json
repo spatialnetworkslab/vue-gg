@@ -1,0 +1,406 @@
+[
+  {
+    "@id": "urn:ucode:_00001C00000000000001000003208AA5",
+    "@type": "TrainTimetable",
+    "dc:date": "2018-08-09T12:00:00+09:00",
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "train": "odpt.Train:TokyoMetro.Chiyoda.B1911S",
+    "owl:sameAs": "odpt.TrainTimetable:TokyoMetro.Chiyoda.B1911S.Weekday",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "calendar": "odpt.Calendar:Weekday",
+    "operator": "odpt.Operator:TokyoMetro",
+    "trainType": "odpt.TrainType:TokyoMetro.Local",
+    "trainNumber": "B1911S",
+    "railDirection": "odpt.RailDirection:TokyoMetro.Ayase",
+    "trainTimetableObject": [
+      {
+        "Time": "19:12",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Kasumigaseki"
+      },
+      {
+        "Time": "19:14",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Hibiya"
+      },
+      {
+        "Time": "19:16",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nijubashimae"
+      },
+      {
+        "Time": "19:17",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Otemachi"
+      },
+      {
+        "Time": "19:20",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.ShinOchanomizu"
+      },
+      {
+        "Time": "19:22",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Yushima"
+      },
+      {
+        "Time": "19:24",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nezu"
+      },
+      {
+        "Time": "19:26",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Sendagi"
+      },
+      {
+        "Time": "19:28",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.NishiNippori"
+      },
+      {
+        "Time": "19:31",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Machiya"
+      },
+      {
+        "Time": "19:34",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.KitaSenju"
+      },
+      {
+        "Time": "19:37",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Ayase"
+      }
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C00000000000001000003208B06",
+    "@type": "TrainTimetable",
+    "dc:date": "2018-08-09T12:00:00+09:00",
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "train": "odpt.Train:TokyoMetro.Chiyoda.B2239S",
+    "owl:sameAs": "odpt.TrainTimetable:TokyoMetro.Chiyoda.B2239S.Weekday",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "calendar": "odpt.Calendar:Weekday",
+    "operator": "odpt.Operator:TokyoMetro",
+    "trainType": "odpt.TrainType:TokyoMetro.Local",
+    "trainNumber": "B2239S",
+    "railDirection": "odpt.RailDirection:TokyoMetro.Ayase",
+    "trainTimetableObject": [
+      {
+        "Time": "22:28",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Kasumigaseki"
+      },
+      {
+        "Time": "22:31",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Hibiya"
+      },
+      {
+        "Time": "22:32",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nijubashimae"
+      },
+      {
+        "Time": "22:34",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Otemachi"
+      },
+      {
+        "Time": "22:36",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.ShinOchanomizu"
+      },
+      {
+        "Time": "22:38",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Yushima"
+      },
+      {
+        "Time": "22:40",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nezu"
+      },
+      {
+        "Time": "22:43",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Sendagi"
+      },
+      {
+        "Time": "22:45",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.NishiNippori"
+      },
+      {
+        "Time": "22:48",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Machiya"
+      },
+      {
+        "Time": "22:52",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.KitaSenju"
+      },
+      {
+        "Time": "22:55",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Ayase"
+      }
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C000000000000010000031036A6",
+    "@type": "TrainTimetable",
+    "dc:date": "2018-08-09T12:00:00+09:00",
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "train": "odpt.Train:TokyoMetro.Chiyoda.A1003S",
+    "owl:sameAs": "odpt.TrainTimetable:TokyoMetro.Chiyoda.A1003S.SaturdayHoliday",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "calendar": "odpt.Calendar:SaturdayHoliday",
+    "operator": "odpt.Operator:TokyoMetro",
+    "trainType": "odpt.TrainType:TokyoMetro.Local",
+    "trainNumber": "A1003S",
+    "railDirection": "odpt.RailDirection:TokyoMetro.YoyogiUehara",
+    "trainTimetableObject": [
+      {
+        "Time": "10:15",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Ayase"
+      },
+      {
+        "Time": "10:19",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.KitaSenju"
+      },
+      {
+        "Time": "10:22",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Machiya"
+      },
+      {
+        "Time": "10:25",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.NishiNippori"
+      },
+      {
+        "Time": "10:27",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Sendagi"
+      },
+      {
+        "Time": "10:29",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nezu"
+      },
+      {
+        "Time": "10:31",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Yushima"
+      },
+      {
+        "Time": "10:33",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.ShinOchanomizu"
+      },
+      {
+        "Time": "10:35",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Otemachi"
+      },
+      {
+        "Time": "10:37",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nijubashimae"
+      },
+      {
+        "Time": "10:39",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Hibiya"
+      },
+      {
+        "Time": "10:41",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Kasumigaseki"
+      },
+      {
+        "Time": "10:43",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.KokkaiGijidomae"
+      },
+      {
+        "Time": "10:45",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Akasaka"
+      },
+      {
+        "Time": "10:47",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nogizaka"
+      },
+      {
+        "Time": "10:49",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.OmoteSando"
+      },
+      {
+        "Time": "10:51",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.MeijiJingumae"
+      },
+      {
+        "Time": "10:53",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.YoyogiKoen"
+      },
+      {
+        "Time": "10:55",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.YoyogiUehara"
+      }
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C00000000000001000003208784",
+    "@type": "TrainTimetable",
+    "dc:date": "2018-08-09T12:00:00+09:00",
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "train": "odpt.Train:TokyoMetro.Chiyoda.A1031K",
+    "owl:sameAs": "odpt.TrainTimetable:TokyoMetro.Chiyoda.A1031K.Weekday",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "calendar": "odpt.Calendar:Weekday",
+    "operator": "odpt.Operator:TokyoMetro",
+    "trainType": "odpt.TrainType:TokyoMetro.Local",
+    "trainNumber": "A1031K",
+    "railDirection": "odpt.RailDirection:TokyoMetro.YoyogiUehara",
+    "trainTimetableObject": [
+      {
+        "Time": "10:42",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Ayase"
+      },
+      {
+        "Time": "10:46",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.KitaSenju"
+      },
+      {
+        "Time": "10:49",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Machiya"
+      },
+      {
+        "Time": "10:52",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.NishiNippori"
+      },
+      {
+        "Time": "10:54",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Sendagi"
+      },
+      {
+        "Time": "10:56",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nezu"
+      },
+      {
+        "Time": "10:58",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Yushima"
+      },
+      {
+        "Time": "11:00",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.ShinOchanomizu"
+      },
+      {
+        "Time": "11:02",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Otemachi"
+      },
+      {
+        "Time": "11:04",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nijubashimae"
+      },
+      {
+        "Time": "11:06",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Hibiya"
+      },
+      {
+        "Time": "11:08",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Kasumigaseki"
+      },
+      {
+        "Time": "11:10",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.KokkaiGijidomae"
+      },
+      {
+        "Time": "11:11",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Akasaka"
+      },
+      {
+        "Time": "11:14",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nogizaka"
+      },
+      {
+        "Time": "11:16",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.OmoteSando"
+      },
+      {
+        "Time": "11:18",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.MeijiJingumae"
+      },
+      {
+        "Time": "11:21",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.YoyogiKoen"
+      },
+      {
+        "Time": "11:23",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.YoyogiUehara"
+      }
+    ]
+  },
+  {
+    "@id": "urn:ucode:_00001C00000000000001000003103555",
+    "@type": "TrainTimetable",
+    "dc:date": "2018-08-09T12:00:00+09:00",
+    "@context": "http://vocab.odpt.org/context_odpt.jsonld",
+    "train": "odpt.Train:TokyoMetro.Chiyoda.A1103K",
+    "owl:sameAs": "odpt.TrainTimetable:TokyoMetro.Chiyoda.A1103K.Weekday",
+    "railway": "odpt.Railway:TokyoMetro.Chiyoda",
+    "calendar": "odpt.Calendar:Weekday",
+    "operator": "odpt.Operator:TokyoMetro",
+    "trainType": "odpt.TrainType:TokyoMetro.Local",
+    "trainNumber": "A1103K",
+    "railDirection": "odpt.RailDirection:TokyoMetro.YoyogiUehara",
+    "trainTimetableObject": [
+      {
+        "Time": "11:22",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Ayase"
+      },
+      {
+        "Time": "11:26",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.KitaSenju"
+      },
+      {
+        "Time": "11:29",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Machiya"
+      },
+      {
+        "Time": "11:32",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.NishiNippori"
+      },
+      {
+        "Time": "11:34",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Sendagi"
+      },
+      {
+        "Time": "11:36",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nezu"
+      },
+      {
+        "Time": "11:38",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Yushima"
+      },
+      {
+        "Time": "11:40",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.ShinOchanomizu"
+      },
+      {
+        "Time": "11:42",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Otemachi"
+      },
+      {
+        "Time": "11:44",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nijubashimae"
+      },
+      {
+        "Time": "11:46",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Hibiya"
+      },
+      {
+        "Time": "11:48",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Kasumigaseki"
+      },
+      {
+        "Time": "11:50",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.KokkaiGijidomae"
+      },
+      {
+        "Time": "11:51",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Akasaka"
+      },
+      {
+        "Time": "11:54",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.Nogizaka"
+      },
+      {
+        "Time": "11:56",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.OmoteSando"
+      },
+      {
+        "Time": "11:58",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.MeijiJingumae"
+      },
+      {
+        "Time": "12:01",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.YoyogiKoen"
+      },
+      {
+        "Time": "12:02",
+        "Station": "odpt.Station:TokyoMetro.Chiyoda.YoyogiUehara"
+      }
+    ]
+  }
+]

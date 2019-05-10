@@ -5,7 +5,7 @@ import { createPropCache, createWatchers } from '../../components/Core/utils/pro
 import isEmptyDataframe from '../../utils/isEmptyDataframe.js'
 
 export default {
-  inject: ['$$dataManager', '$$dataScope'],
+  inject: ['$$dataManager', '$$dataScope', '$$scaleManager'],
 
   props: {
     data: {
@@ -52,7 +52,8 @@ export default {
           let transformedData = applyTransformations(
             container.getDataset(),
             this.dataProviderCache.transform,
-            this.allowEmpty
+            this.allowEmpty,
+            this.$$scaleManager
           )
 
           if (transformedData === false) {
@@ -70,7 +71,8 @@ export default {
         let transformedData = applyTransformations(
           data,
           this.dataProviderCache.transform,
-          this.allowEmpty
+          this.allowEmpty,
+          this.$$scaleManager
         )
 
         if (transformedData === false) {

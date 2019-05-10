@@ -5,8 +5,8 @@
   >
 
     <vgg-data
-      :dataID="original"
       :data="testData"
+      :dataID="'original'"
     >
 
       <vgg-data :transform="{ filter: row => row.a > 2 }">

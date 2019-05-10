@@ -39,7 +39,7 @@ data () {
 		fruits_data: {	fruit: ['lime', 'lemon', 'grapefruit', ..., 'grapefruit'],
 						diameter: [4.7, 6.1, 7.9, ..., 9.4] }
 	}
-	
+
 }
 ```
 
@@ -169,8 +169,8 @@ Also note that we defined two scales `diameterScale` and `colorScale` outside of
 	<vgg-plot-title text="Distribution of Fruit Sizes" :vjust="0.95" />
 
     <vgg-scales :scales="{ diameterScale: 'diameter' }" />
-    <vgg-scales :scales="{ colorScale: { 
-    	ranges: ['#ffc300', '#ff9d26', '#c70039', '#900c3f', '#581845'],
+    <vgg-scales :scales="{ colorScale: {
+    	range: ['#ffc300', '#ff9d26', '#c70039', '#900c3f', '#581845'],
     	domain: 'fruit' } }"
    	/>
 

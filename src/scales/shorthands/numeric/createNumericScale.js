@@ -1,4 +1,5 @@
 import checkValidScale from '../../utils/checkValidScale.js'
+import parseRange from '../../utils/parseRange.js'
 
 import quantitative from '../coords/quantitative.js'
 import categorical from '../coords/categorical.js'
@@ -9,20 +10,25 @@ export default function (prop, variableType, domain, scalingOptions) {
   let range
   if (['opacity', 'strokeOpacity', 'fillOpacity'].includes(prop)) {
     range = [0.05, 1]
+    range = parseRange(range, scalingOptions)
   }
 
   if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
     if (!scalingOptions.range) {
       console.warn(`No range specified for prop ${prop}. Defaulting to [0, 10]`)
-      range = [0, 10]
-    } else { range = scalingOptions.range }
+    }
+
+    range = [0, 10]
+    parseRange(range, scalingOptions)
   }
 
   if (prop === 'radius') {
     if (!scalingOptions.range) {
       console.warn(`No range specified for prop ${prop}. Defaulting to [0, 8]`)
-      range = [0, 8]
-    } else { range = scalingOptions.range }
+    }
+
+    range = [0, 8]
+    parseRange(range, scalingOptions)
   }
 
   if (variableType === 'quantitative') {

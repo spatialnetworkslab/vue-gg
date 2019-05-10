@@ -50,7 +50,8 @@ export default {
           let transformedData = applyTransformations(
             container.getDataset(),
             this.transform,
-            this.allowEmpty
+            this.allowEmpty,
+            this
           )
 
           if (transformedData === false) {

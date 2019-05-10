@@ -26,6 +26,15 @@ export default {
     }
   },
 
+  computed: {
+    ranges () {
+      return {
+        x: [0, this.width],
+        y: [0, this.height]
+      }
+    }
+  },
+
   mounted () {
     this.setCoordinateTreeRoot()
     this.ready = true
@@ -33,15 +42,8 @@ export default {
 
   methods: {
     setCoordinateTreeRoot () {
-      let domains = {
-        x: [0, this.width],
-        y: [0, this.height]
-      }
-
-      let ranges = {
-        x: [0, this.width],
-        y: [0, this.height]
-      }
+      let domains = this.ranges
+      let ranges = JSON.parse(JSON.stringify(this.ranges))
 
       if (this.flip) {
         ranges.y = [this.height, 0]

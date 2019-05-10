@@ -657,7 +657,7 @@ export default {
         }
 
         if (prop === 'strokeOpacity' || prop === 'fillOpacity' || prop === 'opacity') {
-          scaleOptions.range = scaleBasis.range ? scaleBasis.range : [0, 1]
+          scaleOptions.range = scaleBasis.range ? scaleBasis.range : scaleBasis.constructor === Array ? scaleBasis : [0, 1]
         } else if (prop === 'stroke' || prop === 'fill' || prop === 'shape') {
           if (scaleBasis.type) {
             scaleOptions.type = scaleBasis.type
@@ -665,13 +665,15 @@ export default {
 
           if (scaleBasis.range) {
             if (prop === 'stroke' || prop === 'fill') {
-              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
             } else {
-              scaleOptions.ranges = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
+              scaleOptions.range = scaleBasis.range ? scaleBasis.range : ['circle', 'square']
             }
+          } else if (scaleBasis.constructor === Array) {
+            scaleOptions.range = scaleBasis
           }
         } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {
-          scaleOptions.range = scaleBasis.range ? scaleBasis.range : [0, 10]
+          scaleOptions.range = scaleBasis.range ? scaleBasis.range : scaleBasis.constructor === Array ? scaleBasis : [0, 10]
         }
 
         // custom scales with # signs only apply to domains
