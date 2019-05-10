@@ -9,8 +9,11 @@ import createOrdinalScale from '../../utils/createOrdinalScale.js'
 export default function (prop, variableType, domain, scalingOptions) {
   let range
   if (['opacity', 'strokeOpacity', 'fillOpacity'].includes(prop)) {
+    if (!scalingOptions.range) {
+      console.warn(`No range specified for prop ${prop}. Defaulting to [0.05, 1]`)
+    }
+
     range = [0.05, 1]
-    range = parseRange(range, scalingOptions)
   }
 
   if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
@@ -19,7 +22,6 @@ export default function (prop, variableType, domain, scalingOptions) {
     }
 
     range = [0, 10]
-    parseRange(range, scalingOptions)
   }
 
   if (prop === 'radius') {
@@ -28,8 +30,9 @@ export default function (prop, variableType, domain, scalingOptions) {
     }
 
     range = [0, 8]
-    parseRange(range, scalingOptions)
   }
+
+  range = parseRange(range, scalingOptions)
 
   if (variableType === 'quantitative') {
     let defaultScale = ['radius', 'fontSize'].includes(prop) ? 'squareRoot' : 'linear'
