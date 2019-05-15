@@ -1,5 +1,6 @@
+// import { range } from 'd3'
 import * as d3 from 'd3-scale-chromatic'
-import { scaleDiverging, scaleSequential } from 'd3-scale'
+import { scaleDiverging, scaleSequential, scalePow, scaleLog, scaleSqrt, scaleQuantile, scaleQuantize } from 'd3-scale'
 
 export default {
   brownBlue,
@@ -28,7 +29,13 @@ export default {
   cubehelixDefault,
 
   rainbow,
-  sinebow
+  sinebow,
+
+  log,
+  exp,
+  squareRoot,
+  quantile,
+  quantize
 }
 
 function scale (interpolator, domain, domainMid) {
@@ -141,4 +148,39 @@ function rainbow (domain, domainMid) {
 
 function sinebow (domain, domainMid) {
   return scale(d3.interpolateSinebow, domain, domainMid)
+}
+
+function log (domain, colorRange) {
+  // console.log(scaleLog().domain(domain).range(range))
+  // console.log()
+  // let numRange = [0, 500]
+  // let logScale = scaleLog().domain(domain).range(numRange)
+  //
+  // // Map colours across the range in equal intervals
+  // let numColors = colorRange.length
+  // let diff = numRange[1] - numRange[0]
+  //
+  // let step = diff / (colorRange.length - 1)
+  // console.log(range, numRange, step, numColors)
+  // let forInvert = range(numColors).map(function (d) { return numRange[0] + d * step })
+  // let logColors = forInvert.map(logScale.invert)
+  // console.log(logColors, colorRange)
+  // let logColourScale = scaleLog().domain(logColors).range(colorRange)
+  return scaleLog().domain(domain).range(colorRange)
+}
+
+function exp (domain, range) {
+  return scalePow().domain(domain).range(range)
+}
+
+function squareRoot (domain, range) {
+  return scaleSqrt().domain(domain).range(range)
+}
+
+function quantile (domain, range) {
+  return scaleQuantile().domain(domain).range(range)
+}
+
+function quantize (domain, range) {
+  return scaleQuantize().domain(domain).range(range)
 }

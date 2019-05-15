@@ -7,9 +7,14 @@ import createOrdinalScale from '../../utils/createOrdinalScale.js'
 export default function (prop, variableType, domain, scalingOptions) {
   if (variableType === 'quantitative') {
     let scale = scalingOptions.type || 'blues'
-    checkValidScale(prop, variableType, scale, quantitative)
+    let scaleFunc
 
-    let scaleFunc = quantitative[scale](domain, scalingOptions.domainMid)
+    checkValidScale(prop, variableType, scale, quantitative)
+    if (['log', 'exp', 'squareRoot', 'quantile', 'quantize'].includes(scale)) {
+      scaleFunc = quantitative[scale](domain, scalingOptions.range)
+    } else {
+      scaleFunc = quantitative[scale](domain, scalingOptions.domainMid)
+    }
 
     if (scalingOptions.absolute) {
       return x => scaleFunc(Math.abs(x))

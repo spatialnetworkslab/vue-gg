@@ -17,15 +17,25 @@
 
         <vgg-map v-slot="{ row }">
 
-          <vgg-symbol
+          <!-- <vgg-symbol
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
             :size="{ val: row.dependent, scale: { domain: 'dependent', range: [10, 20] } }"
             :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
             @click="log($event)"
             @mouseover="log(row)"
-          />
+          /> -->
 
+
+
+          <vgg-symbol
+            :x="{ val: row.explanatory, scale: 'explanatory' }"
+            :y="{ val: row.dependent, scale: 'dependent' }"
+            :size="{ val: row.dependent, scale: { domain: 'dependent', range: [10, 20] } }"
+            :fill="{ val: row.explanatory, scale: { type: 'exp', domain: 'explanatory', range: ['pink', 'green'] } }"
+            @click="log($event)"
+            @mouseover="log(row)"
+          />
         </vgg-map>
 
         <vgg-x-axis
@@ -64,7 +74,7 @@
         :font-size="10"
         :title-font-size="12"
         :w="50"
-        :fill="{ type: 'viridis'}"
+        :fill="{ type: 'exp', domain: 'explanatory', range: ['pink', 'green' ] }"
         :tick-count="8"
         title-font-weight="bold"
         title="Legend"
@@ -74,7 +84,7 @@
       <vgg-gradient-legend
         :scale="'dependent'"
         :font-size="10"
-        :fill="{ type: 'viridis'}"
+        :fill="{ type: 'exp', domain: 'explanatory', range: ['pink', 'green' ] }"
         :title-font-size="12"
         title-font-weight="bold"
         position="bl"
@@ -94,7 +104,7 @@
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
         :stroke="'none'"
-        :fill="{ type: 'viridis'}"
+        :fill="{ type: 'exp', domain: 'explanatory', range: ['pink', 'green' ] }"
         :columns="2"
         :w="100"
         :col-padding="10"
