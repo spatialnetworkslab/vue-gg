@@ -1,6 +1,6 @@
 // import { range } from 'd3'
 import * as d3 from 'd3-scale-chromatic'
-import { scaleDiverging, scaleSequential, scalePow, scaleLog, scaleSqrt, scaleQuantile, scaleQuantize } from 'd3-scale'
+import { scaleLinear, scaleDiverging, scaleSequential, scalePow, scaleLog, scaleSqrt, scaleQuantile, scaleQuantize } from 'd3-scale'
 
 export default {
   brownBlue,
@@ -32,6 +32,7 @@ export default {
   sinebow,
 
   log,
+  linear,
   exp,
   squareRoot,
   quantile,
@@ -183,4 +184,8 @@ function quantile (domain, range) {
 
 function quantize (domain, range) {
   return scaleQuantize().domain(domain).range(range)
+}
+
+function linear (domain, range) {
+  return scaleLinear().domain(domain).range(range)
 }

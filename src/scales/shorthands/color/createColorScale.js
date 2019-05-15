@@ -10,7 +10,7 @@ export default function (prop, variableType, domain, scalingOptions) {
     let scaleFunc
 
     checkValidScale(prop, variableType, scale, quantitative)
-    if (['log', 'exp', 'squareRoot', 'quantile', 'quantize'].includes(scale)) {
+    if (['linear', 'log', 'exp', 'squareRoot', 'quantile', 'quantize'].includes(scale)) {
       scaleFunc = quantitative[scale](domain, scalingOptions.range)
     } else {
       scaleFunc = quantitative[scale](domain, scalingOptions.domainMid)
