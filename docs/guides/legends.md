@@ -89,7 +89,8 @@ Even if different domains are given per aesthetic, the legend will follow that w
 
 | Prop   | Required | Regular types           | Default   | Description                                               |
 | ------ | -------- | ----------------------- | --------- | --------------------------------------------------------- |
-| scale  | true     | [Array, String, Object] | undefined | Domain of values visualised by the legend; this can be variable name |
+| scale  | true     | [Array, String, Object] | undefined | Domain of values visualised by the legend; this can be the variable name |
+| classification  | false     | Object | undefined | Domain of values visualised by the legend; use only either scale or classification |
 | orientation   | false    | String               | 'vertical'     | orientation of legend (vertical/horizontal)|
 | flip   | false    | Boolean               | false     | flip order of legend labels; if true, shows decreasing order                        |
 | flip-numbers   | false    | Boolean               | false     | flip placement of numbers and gradient section                        |
@@ -115,6 +116,10 @@ the input must be an object, and the target domain of the legend must be listed 
 // OR
 
 :scale="[[0, 10], [10, 20], [20, 40], [40, 60], [60, 100]]"
+
+// OR
+
+:classification="{ column: <variable>, binning: { method: <binning method>, numClasses: <positive integer> } }"
 ```
 
 <CodeDemoLayout>
@@ -360,9 +365,8 @@ see [Concepts > Scaling](../concepts/scaling.md).
 
 ### Rendering
 
-To render a legend, at bare minimum the `scale` prop must be provided. For discrete
-and gradient legends, the default encoding is set to `fill`, using the `'blues'` color
-scale. For `vgg-symbol-legend` specifically, the default shape is `circle`, with `stroke`
+To render a legend, at bare minimum the `scale` (or `classification`) prop must be provided. For discrete and gradient legends, the default encoding is set to `fill`, using the `'blues'` color scale.
+For `vgg-symbol-legend` specifically, the default shape is `circle`, with `stroke`
 set to `'black'` and `fill` set to `'none'`.
 
 <CodeDemoLayout>
@@ -392,6 +396,37 @@ set to `'black'` and `fill` set to `'none'`.
   position="right"
   :h="110"
   :w="50"
+/>
+```
+</CodeLayout>
+
+</CodeDemoLayout>
+
+When specifying the `domain` that the legend maps to, only `scale` or `classification` may be used at any given time. The same aesthetic properties apply when using `classification` instead of `legends`. However, `column` and `binning`
+need to be specified in the `classification` object as seen below.
+
+<CodeDemoLayout>
+
+<LegendClassification/>
+
+<CodeLayout>
+```html
+<vgg-discrete-legend
+  :classification="{ column: 'b', binning: { method: 'Jenks', numClasses: 5 } }"
+  :fill="{type:'reds'}"
+  :position="'center'"
+  :h="50"
+  :w='200'
+  orientation="horizontal"
+/>
+
+<vgg-gradient-legend
+  :classification="{ column: 'b', binning: { method: 'Jenks', numClasses: 5 } }"
+  :fill="{type:'reds'}"
+  :position="'tc'"
+  :h="50"
+  :w='200'
+  orientation="horizontal"
 />
 ```
 </CodeLayout>

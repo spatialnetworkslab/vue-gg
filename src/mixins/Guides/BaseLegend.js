@@ -10,8 +10,10 @@ import { createPropCache, createWatchers } from '../../components/Core/utils/pro
 
 import parseScaleOptions from '../../scales/utils/parseScaleOptions.js'
 import createScale from '../../scales/createScale.js'
+import createClassification from '../../scales/createClassification.js'
 import defaultFormat from './utils/defaultFormat.js'
 import ticksFromIntervals from './utils/ticksFromIntervals.js'
+import getIntervalBounds from '../../transformations/transformations/binning.js'
 
 export default {
   mixins: [Rectangular, DataReceiver, ScaleReceiver],
@@ -62,8 +64,12 @@ export default {
 
     scale: {
       type: [Array, String, Object, undefined],
-      default: undefined,
-      required: true
+      default: undefined
+    },
+
+    classification: {
+      type: [Array, String, Object, undefined],
+      default: undefined
     },
 
     format: {
@@ -216,29 +222,62 @@ export default {
 
   data () {
     return {
-      legendCache: createPropCache(this, ['scale', 'fill', 'fillOpacity', 'tickValues'])
+      legendCache: createPropCache(this, ['scale', 'fill', 'fillOpacity', 'tickValues', 'classification'])
     }
   },
 
   computed: {
-    _parsedScalingOptions () {
-      return parseScaleOptions(this.legendCache.scale, this.$$dataInterface, this.$$scaleManager)
-    },
-
-    _domain () {
-      return this._parsedScalingOptions[0]
-    },
-
-    _domainType () {
-      return this._parsedScalingOptions[1]
-    },
-
     context () {
       return {
         ranges: this.ranges,
         parentBranch: this.parentBranch,
         dataInterface: this.$$dataInterface,
         scaleManager: this.$$scaleManager
+      }
+    },
+
+    _parsedScalingOptions () {
+      if (this.legendCache.scale) {
+        return parseScaleOptions(this.legendCache.scale, this.$$dataInterface, this.$$scaleManager)
+      } else {
+        let binning = this.legendCache.classification.binning
+        let column = this.legendCache.classification.column
+        let data = this.$$dataInterface.getDataset()
+        if (binning.groupBy) {
+          console.warn(`groupBy value '${binning.groupBy}' ignored. Don't use groupBy in classifications.`)
+        }
+
+        let binningCopy = JSON.parse(JSON.stringify(binning))
+        binningCopy.groupBy = column
+
+        let intervalBounds = getIntervalBounds(data, binningCopy)
+        let boundaries = []
+        for (let i = 0; i < intervalBounds.bins.length; i++) {
+          boundaries.push(intervalBounds.bins[i][0])
+        }
+
+        boundaries.push(intervalBounds.bins[intervalBounds.bins.length - 1][1])
+
+        let intervals = boundaries.length - 1
+        let domain = [0, intervals - 1]
+        return { domain, boundaries, intervalBounds }
+      }
+    },
+
+    _domain () {
+      if (this.legendCache.scale) {
+        return this._parsedScalingOptions[0]
+      } else {
+        return this._parsedScalingOptions.domain
+      }
+    },
+
+    _domainType () {
+      if (this.legendCache.scale) {
+        return this._parsedScalingOptions[1]
+      } else {
+        // By default, classification only handles quantitative data
+        return 'quantitative'
       }
     },
 
@@ -393,28 +432,38 @@ export default {
         let format = this.format ? this.format : defaultFormat
         let domain = this._domain
 
-        if (this.legendCache.scale.domainMin) {
-          domain = [this.legendCache.scale.domainMin, this._domain[this._domain.length - 1]]
-        }
+        if (this.legendCache.scale) {
+          if (this.legendCache.scale.domainMin) {
+            domain = [this.legendCache.scale.domainMin, this._domain[this._domain.length - 1]]
+          }
 
-        if (this.legendCache.scale.domainMax) {
-          domain = [this._domain[0], this.legendCache.scale.domainMax]
+          if (this.legendCache.scale.domainMax) {
+            domain = [this._domain[0], this.legendCache.scale.domainMax]
+          }
+        } else if (this.legendCache.classification) {
+          domain = this._parsedScalingOptions.intervalBounds.bins
         }
 
         if (this._domainType === 'quantitative') {
-          let numTicks = this.tickCount ? this.tickCount : 10
-          newTickValues = arrayTicks(...domain, numTicks)
-          if (this.tickExtra && newTickValues[0] !== firstValue) {
-            newTickValues.unshift(firstValue)
-          }
-
-          ticks = newTickValues.map((value, i) => {
-            if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
-              return { value, label: '' }
-            } else {
-              return { value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
+          if (this.legendCache.scale) {
+            let numTicks = this.tickCount ? this.tickCount : 10
+            newTickValues = arrayTicks(...domain, numTicks)
+            if (this.tickExtra && newTickValues[0] !== firstValue) {
+              newTickValues.unshift(firstValue)
             }
-          })
+
+            ticks = newTickValues.map((value, i) => {
+              if (i === 0 && this.tickExtra && !this.tickExtraLabel) {
+                return { value, label: '' }
+              } else {
+                return { value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
+              }
+            })
+          } else if (this.legendCache.classification) {
+            ticks = ticksFromIntervals(domain).map(value => {
+              return { value: value, label: this.nice ? Math.ceil(value, 0.1) : format(value) }
+            })
+          }
         }
 
         if (this._domainType === 'categorical') {
@@ -488,8 +537,6 @@ export default {
       }
     },
 
-    // w
-    // x1, x2
     sectionWidth () {
       if (!this.w && !this.x1 && !this.x2) {
         if (this.orientation === 'vertical') {
@@ -600,6 +647,45 @@ export default {
   methods: {
     sectionScale (domain) {
       return scaleLinear().domain(domain).range([0, 100])
+    },
+
+    generateClassification (prop, classBasis) {
+      let classOptions = {}
+
+      if (classBasis.constructor === Number) {
+        return () => { return classBasis }
+      // } else if (scaleBasis.constructor === Array) { // FIX THIS
+      //   return (index) => { return scaleBasis[index] }
+      } else {
+        // Domain is dependent on scale inputs
+        // Range is dependent on aesthetic inputs
+        if (this.legendCache.classification) {
+          classOptions.column = this.legendCache.classification.column
+          classOptions.binning = this.legendCache.classification.binning
+        }
+
+        if (prop === 'strokeOpacity' || prop === 'fillOpacity' || prop === 'opacity') {
+          classOptions.range = classBasis.range ? classBasis.range : classBasis.constructor === Array ? classBasis : [0, 1]
+        } else if (prop === 'stroke' || prop === 'fill' || prop === 'shape') {
+          if (classBasis.type) {
+            classOptions.type = classBasis.type
+          }
+
+          if (classBasis.range) {
+            if (prop === 'stroke' || prop === 'fill') {
+              classOptions.range = classBasis.range ? classBasis.range : (this._domainType === 'categorical' || this._domainType.includes('interval')) ? 'category10' : 'blues'
+            } else {
+              classOptions.range = classBasis.range ? classBasis.range : ['circle', 'square']
+            }
+          } else if (classBasis.constructor === Array) {
+            classOptions.range = classOptions
+          }
+        } else if (prop === 'size' || prop === 'radius' || prop === 'strokeWidth') {
+          classOptions.range = classBasis.range ? classBasis.range : classBasis.constructor === Array ? classBasis : [0, 10]
+        }
+
+        return createClassification(prop, this.context, classOptions)
+      }
     },
 
     generateScale (prop, scaleBasis) {

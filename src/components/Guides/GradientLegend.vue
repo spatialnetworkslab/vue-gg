@@ -161,17 +161,41 @@ export default {
 
       // create fill/fillOpacity scales for rectangles
       let _fill = this.legendCache.fill || 'none'
+
       if (!this.checkValidColor(_fill)) {
-        fill = this.generateScale('fill', _fill)
-        fillOpacity = 1
+        if (this.legendCache.scale && this.legendCache.classification) {
+          throw new Error('Invalid input: Use only `scale` or `classification`')
+        } else if (this.legendCache.scale && !this.legendCache.classification) {
+          fill = this.generateScale('fill', _fill)
+          fillOpacity = 1
+        } else if (!this.legendCache.scale && this.legendCache.classification) {
+          fill = this.generateClassification('fill', _fill)
+          fillOpacity = 1
+        }
       } else if (this.legendCache.fillOpacity && this.checkValidColor(_fill)) {
-        fill = _fill
-        fillOpacity = this.generateScale('fillOpacity', this.legendCache.fillOpacity)
+        if (this.legendCache.scale && this.legendCache.classification) {
+          throw new Error('Invalid input: Use only `scale` or `classification`')
+        } else if (this.legendCache.scale && !this.legendCache.classification) {
+          fill = _fill
+          fillOpacity = this.generateScale('fillOpacity', this.legendCache.fillOpacity)
+        } else if (!this.legendCache.scale && this.legendCache.classification) {
+          fill = _fill
+          fillOpacity = this.generateClassification('fillOpacity', this.legendCache.fillOpacity)
+        }
       } else {
         throw new Error('If `fill` is set to a color (HSL, RGB or CSS value), then `fillOpacity` must be specified to create the legend')
       }
 
-      let domain = this._domainType.includes('interval') ? [l[0][0], l[l.length - 1][1]] : this._domain
+      let domain
+
+      if (this._domainType.includes('interval')) {
+        domain = [l[0][0], l[l.length - 1][1]]
+      } else if (this.legendCache.classification) {
+        domain = [this._parsedScalingOptions.boundaries[0], this._parsedScalingOptions.boundaries[this._parsedScalingOptions.boundaries.length - 1]]
+      } else {
+        domain = this._domain
+      }
+
       let sectionScale = this.sectionScale(domain)
       let opacity = 1; let color
 
@@ -240,6 +264,7 @@ export default {
           }
         }
       }
+
       return colors
     },
 
@@ -258,7 +283,15 @@ export default {
     boxes () {
       let boxes = []
       let l = this.legendTicks
-      let domain = this._domainType.includes('interval') ? [this.legendTicks[0].value, this.legendTicks[this.legendTicks.length - 1].value] : this._domain
+      let domain
+      if (this._domainType.includes('interval')) {
+        domain = [this.legendTicks[0].value, this.legendTicks[this.legendTicks.length - 1].value]
+      } else if (this.legendCache.classification) {
+        domain = [this._parsedScalingOptions.boundaries[0], this._parsedScalingOptions.boundaries[this._parsedScalingOptions.boundaries.length - 1]]
+      } else {
+        domain = this._domain
+      }
+
       let sectionScale = scaleLinear().domain(domain).range([0, 100])
 
       if (!this.showFirst) {
