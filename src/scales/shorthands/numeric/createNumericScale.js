@@ -7,10 +7,10 @@ import categorical from '../coords/categorical.js'
 import createOrdinalScale from '../../utils/createOrdinalScale.js'
 
 export default function (prop, variableType, domain, scalingOptions) {
-  let range
+  let range // Array used as first argument in prop is used as default range
+
   if (['opacity', 'strokeOpacity', 'fillOpacity'].includes(prop)) {
-    range = [0.05, 1]
-    range = parseRange(range, scalingOptions)
+    range = parseRange([0.05, 1], scalingOptions)
   }
 
   if (['width', 'height', 'fontSize', 'strokeWidth', 'size'].includes(prop)) {
@@ -18,8 +18,7 @@ export default function (prop, variableType, domain, scalingOptions) {
       console.warn(`No range specified for prop ${prop}. Defaulting to [0, 10]`)
     }
 
-    range = [0, 10]
-    parseRange(range, scalingOptions)
+    range = parseRange([0, 10], scalingOptions)
   }
 
   if (prop === 'radius') {
@@ -27,8 +26,7 @@ export default function (prop, variableType, domain, scalingOptions) {
       console.warn(`No range specified for prop ${prop}. Defaulting to [0, 8]`)
     }
 
-    range = [0, 8]
-    parseRange(range, scalingOptions)
+    range = parseRange([0, 8], scalingOptions)
   }
 
   if (variableType === 'quantitative') {

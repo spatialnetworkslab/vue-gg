@@ -20,7 +20,7 @@
           <vgg-symbol
             :x="{ val: row.explanatory, scale: 'explanatory' }"
             :y="{ val: row.dependent, scale: 'dependent' }"
-            :size="{ val: row.dependent, scale: { domain: 'dependent' } }"
+            :size="{ val: row.dependent, scale: { domain: 'dependent', range: [10, 20] } }"
             :fill="{ val: row.explanatory, scale: { type: 'viridis', domain: 'explanatory' } }"
             @click="log($event)"
             @mouseover="log(row)"
@@ -83,7 +83,7 @@
 
       <vgg-symbol-legend
         :scale="{ domain: 'dependent'}"
-        :size="[0, 10]"
+        :size="[10, 20]"
         :tick-count="8"
         position="br"
         title="Size"
