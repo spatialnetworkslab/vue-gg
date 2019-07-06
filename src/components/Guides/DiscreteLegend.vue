@@ -39,13 +39,14 @@
         <g v-if="orientation==='vertical'">
           <vgg-data :data="aesthetics">
             <vgg-map v-slot="{ row }">
+              <!-- We use a default value for opacity because if row.fillOpacity is 0, then it registers as false -->
               <vgg-rectangle
                 :x1="positionElements.rectangle.x1"
                 :x2="positionElements.rectangle.x2"
                 :y1="row.start"
                 :y2="row.end"
                 :fill="row.fill"
-                :opacity="row.fillOpacity ? row.fillOpacity : legendOpacity"
+                :opacity="row.fillOpacity ? row.fillOpacity : 0.001"
               />
             </vgg-map>
           </vgg-data>
@@ -83,13 +84,14 @@
         </g><g v-else>
           <vgg-data :data="aesthetics">
             <vgg-map v-slot="{ row }">
+              <!-- We use a default value for opacity because if row.fillOpacity is 0, then it registers as false -->
               <vgg-rectangle
                 :x1="row.start"
                 :x2="row.end"
                 :y1="positionElements.rectangle.y1"
                 :y2="positionElements.rectangle.y2"
                 :fill="row.fill"
-                :opacity="row.fillOpacity ? row.fillOpacity : legendOpacity"
+                :opacity="row.fillOpacity ? row.fillOpacity : 0.001"
               />
             </vgg-map>
           </vgg-data>
@@ -203,7 +205,7 @@ export default {
             aesthetics[i].fillOpacity = this._domainType.includes('interval') ? fillOpacity(valueDomain[i]) : fillOpacity(valueDomain[i].value)
           }
 
-          this.checkValidity([aesthetics[i].fill, aesthetics[i].fillOpacity], valueDomain[i])
+          this.checkValidity(aesthetics[i].fill, aesthetics[i].fillOpacity, valueDomain[i])
         }
       } else {
         for (let i = valueDomain.length - 1; i >= 0; i--) {
@@ -224,7 +226,7 @@ export default {
             aesthetics[i].fillOpacity = this._domainType.includes('interval') ? fillOpacity(valueDomain[i]) : fillOpacity(valueDomain[i].value)
           }
 
-          this.checkValidity([aesthetics[i].fill, aesthetics[i].fillOpacity], valueDomain[i])
+          this.checkValidity(aesthetics[i].fill, aesthetics[i].fillOpacity, valueDomain[i])
         }
       }
 
@@ -276,17 +278,8 @@ export default {
 
       return ticks
     }
-  },
-
-  methods: {
-    checkValidity (objects, indexItem) {
-      for (let i = 0; i < objects.length; i++) {
-        if (!objects[i]) {
-          throw new Error('The tick value(s) ' + indexItem + ' is/are not part of the domain given to the gradient legend')
-        }
-      }
-    }
   }
+
 }
 </script>
 this.legendCache.fillOpacity

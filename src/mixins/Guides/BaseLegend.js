@@ -685,7 +685,7 @@ export default {
       }
     },
 
-    // CSS color recognition for color reliant properties
+    // checks if input is a valid RGB, HEX or color name
     checkValidColor (color) {
       let e = document.getElementById('divValidColor')
       if (!e) {
@@ -699,6 +699,18 @@ export default {
         return false
       }
       return true
+    },
+
+    // Checks if fill, fillOpacity scales have returned valid values
+    // If no, then warning is thrown to inform user which tickValue caused the undefined value
+    checkValidity (color, opacity, indexItem) {
+      if (!this.checkValidColor(color)) {
+        throw new Error('The tick value(s) ' + indexItem + ' is/are not part of the domain given to the ' + this.type + ' legend')
+      }
+
+      if (isNaN(opacity)) {
+        throw new Error('The tick value(s) ' + indexItem + ' is/are not part of the domain given to the ' + this.type + ' discrete legend')
+      }
     }
   }
 }

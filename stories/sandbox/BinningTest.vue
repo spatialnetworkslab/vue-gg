@@ -19,7 +19,7 @@
       <vgg-data
         :transform="[
           { rename: { a: 'apple', b: 'banana', d: 'durian' } },
-          { binning: { groupBy: 'apple', method: selected, numClasses: 20 } },
+          { binning: { groupBy: 'apple', method: selected, numClasses: 30 } },
           { summarise: { binCount: { apple: 'count' } } }
         ]"
       >
@@ -41,7 +41,7 @@
               :y1="0"
               :y2="{ val: row.binCount }"
               :fill="'blue'"
-              :opacity="{ val: row.bins, scale: { domain: 'bins' } }"
+              :opacity="{ val: row.bins, scale: { domain: 'bins', range: [0.001, 1] } }"
             />
 
             <!-- <vgg-rectangle
@@ -93,9 +93,8 @@
           :scale="'bins'"
           :font-size="10"
           :title-padding="2"
-          :fill-opacity="{ range: [0, 1]}"
+          :fill-opacity="{ range: [0.001, 1]}"
           :h="400"
-          :show-first="false"
           :show-last="false"
           title="Discrete"
           position="tl"
