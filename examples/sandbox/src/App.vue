@@ -1,131 +1,118 @@
 <template>
-  <div>
-    <vgg-graphic
-      :width="1500"
-      :height="600"
-      :data="train_timetable"
+  <vgg-graphic
+    :width="600"
+    :height="600"
+    :data="data">
+
+    <vgg-section
+      :x1="100"
+      :x2="500"
+      :y1="100"
+      :y2="500"
+      :scale-x="'a'"
+      :scale-y="'b'"
     >
 
-      <!-- <vgg-scales :scales="{
-        timeScale: { domain: [new Date('April 22, 2019 00:04:00'), new Date('April 23, 2019 00:04:00')] },
-        stationScale: { domain: 'station' }
-      }"
-      /> -->
-      <vgg-scales :scales="{
-        timeScale: { domain: [new Date('April 22, 2019 04:00:00'), new Date('April 23, 2019 04:00:00')] },
-        stationScale: { domain: 'station' }
-      }"
+      <vgg-map v-slot="{ row }">
+
+        <vgg-point
+          :x="row.a"
+          :y="row.b"
+          :radius="3"
+          :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
+          @hover="handleHover($event, row)"
+        />
+
+        <!-- <vgg-point
+          :x="row.a"
+          :y="row.b"
+          :radius="3"
+          :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
+        /> -->
+
+      </vgg-map>
+
+      <vgg-point
+        v-if="hoverRow"
+        :x="hoverRow.a"
+        :y="hoverRow.b"
+        :radius="5"
+        :fill="'pink'"
       />
 
-      <vgg-section
-        :x1="150"
-        :x2="1450"
-        :y1="50"
-        :y2="550"
-        :transform="{ groupBy: 'train' }"
-      >
+      <vgg-x-axis
+        :scale="'a'"
+        :title-hjust="1.1"
+        :vjust="-.05"
+      />
 
-        <vgg-map v-slot="{ row }">
+      <vgg-y-axis
+        :scale="'b'"
+        :hjust="-.05"
+        flip
+      />
 
-          <vgg-multi-line
-            :x="{val: row.grouped.time, scale: '#timeScale'}"
-            :y="{val: row.grouped.station, scale: '#stationScale'}"
-            :stroke="'#009900'"
-          />
+    </vgg-section>
 
-        </vgg-map>
+    <vgg-x-grid
+      :x1="100"
+      :x2="500"
+      :y1="100"
+      :y2="500"
+      :scale="'a'"
+    />
 
-        <vgg-x-axis
-          :scale="'#timeScale'"
-          :tick-count="24"
-          :tick-extra="false"
-          :format="(date) => date.toLocaleTimeString([], {hour12: false, hour: '2-digit', minute: '2-digit'})"
-        />
+    <vgg-y-grid
+      :x1="100"
+      :x2="500"
+      :y1="100"
+      :y2="500"
+      :scale="'b'"
+    />
 
-        <vgg-y-axis
-          :scale="'#stationScale'"
-          :format="(station) => station.split('.').pop()"
-        />
-
-        <vgg-x-grid
-          :scale="[new Date('April 22, 2019 00:04:00'), new Date('April 23, 2019 00:04:00')]"
-          :grid-line-count="48" :grid-colour="'white'"
-        />
-
-        <vgg-y-grid
-          :scale="[0,19]"
-          :grid-line-count="20"
-        />
-
-      </vgg-section>
-
-    </vgg-graphic>
-
-    <!-- <div class="line-selector">
-      <label>Select Line</label>
-      <multiselect v-model="selectedLine"
-        :options="availableLines"
-        :allow-empty="false"
-        :custom-label="prettify_linename"/>
-      <label>{{selectedLine}}</label>
-    </div> -->
-
-  </div>
-
+  </vgg-graphic>
 </template>
 
 <script>
-import train_timetable from './odpt_TrainTimetable.json'
-// import stations from './odpt_Station'
-
-import Multiselect from 'vue-multiselect'
-
+/* eslint-disable */
 export default {
-  name: 'app',
-  components: { Multiselect },
   data () {
     return {
-      trains: train_timetable,
-      // stations: Object.freeze(stations),
-      availableLines: ['odpt.Railway:TokyoMetro.Chiyoda'],
-      selectedLine: 'odpt.Railway:TokyoMetro.Chiyoda',
-      hoveredRow: {},
-      selectedRow: {}
+      data: this.generateData(),
+      hoverRow: null
     }
   },
+
+  created () {
+    console.time('scatter')
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      console.timeEnd('scatter')
+    })
+  },
+
   methods: {
-    prettify_linename (railway) {
-      return `${railway.split('.').pop()} Line`
-    },
-    onHover (row) {
-      this.hoveredRow = row
-    },
-    onSelect (row) {
-      this.hoveredRow = {}
-      this.selectedRow = row === this.selectedRow ? {} : row
-    }
-  },
-  computed: {
-    train_timetable () {
-      // Thanks to Luuc for providing this
-      let timetable = {
-        train: [],
-        station: [],
-        time: []
+    generateData () {
+      let data = []
+      let beta0 = Math.random() * 100
+      let beta1 = 0.25 + Math.random() * 2
+      let range = Math.random() * 1000
+      for (let i = 0; i < 10000; i++) {
+        let a = Math.random() * range
+        let error = Math.random() * range
+        let b = beta0 + a * beta1 + error
+        data.push({ a, b })
       }
+      return data
+    },
 
-      for (let trainData of this.trains) {
-        let train = trainData.train
-        let stops = trainData.trainTimetableObject
-
-        for (let stop of stops) {
-          timetable.train.push(train)
-          timetable.station.push(stop.Station)
-
-          let date = new Date(`April 22, 2019 ${stop.Time}:00`)
-
-          timetable.time.push(date)
-        }
+    handleHover (e, row) {
+      if (e) {
+        this.hoverRow = row
+      } else {
+        this.hoverRow = null
       }
       // console.log(timetable)
       return timetable
@@ -137,15 +124,3 @@ export default {
   }
 }
 </script>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style>
-.line-selector {
-  width: 300px;
-  float: left;
-}
-.line-diagram {
-  float: left;
-}
-</style>
-

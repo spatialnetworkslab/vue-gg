@@ -243,7 +243,8 @@ export default {
 
         // Empty current selection
         for (let uid in selection) {
-          selection[uid].instance.$emit('deselect')
+          let invoker = selection[uid].events.deselect
+          if (invoker) { invoker() }
           delete selection[uid]
         }
 
@@ -403,14 +404,16 @@ export default {
 
             if (!this.selectionManager.selection[uid]) {
               this.selectionManager.selection[uid] = hit
-              hit.instance.$emit('select')
+              let invoker = hit.events.select
+              if (invoker) { invoker() }
             }
           }
         }
 
         for (let uid in this.selectionManager.selection) {
           if (!currentSelection[uid]) {
-            this.selectionManager.selection[uid].instance.$emit('deselect')
+            let invoker = this.selectionManager.selection[uid].events.deselect
+            if (invoker) { invoker() }
             delete this.selectionManager.selection[uid]
           }
         }
@@ -439,9 +442,11 @@ export default {
 
               if (!this.selectionManager.selection[uid]) {
                 this.selectionManager.selection[uid] = hit
-                hit.instance.$emit('select')
+                let invoker = hit.events.select
+                if (invoker) { invoker() }
               } else {
-                this.selectionManager.selection[uid].instance.$emit('deselect')
+                let invoker = this.selectionManager.selection[uid].events.deselect
+                if (invoker) { invoker() }
                 delete this.selectionManager.selection[uid]
               }
             }

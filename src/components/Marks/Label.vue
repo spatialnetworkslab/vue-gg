@@ -1,7 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import { textAnchorPoint } from '../../utils/anchorPoint.js'
-import checkGeometry from '../../mixins/Marks/utils/checkGeometry.js'
+import { renderSVG } from '../../rendering/label.js'
 
 export default {
   mixins: [Mark],
@@ -93,48 +92,7 @@ export default {
   },
 
   methods: {
-    calcTransform (rotation, cx, cy) {
-      return `rotate(${rotation}, ${cx}, ${cy})`
-    },
-
-    renderSVG (createElement) {
-      let aesthetics = this._props
-
-      if (this.geometry) {
-        checkGeometry(this.markType, this.validGeomTypes, this.geometry)
-      }
-
-      let xy = this.geometry
-        ? aesthetics.geometry.coordinates
-        : [aesthetics.x, aesthetics.y]
-
-      let [cx, cy] = this.$$transform(xy)
-
-      let anchorPoint = textAnchorPoint(this.anchorPoint)
-
-      let transform = this.calcTransform(aesthetics.rotation, cx, cy)
-
-      let styles = this.createSVGStyle(aesthetics)
-
-      styles['fontSize'] = aesthetics.fontSize + 'px'
-      styles['font-family'] = this.fontFamily
-      styles['font-weight'] = this.fontWeight
-
-      let el = createElement('text', {
-        attrs: {
-          'x': cx,
-          'y': cy,
-          'fill': aesthetics.color,
-          'text-anchor': anchorPoint.textAnchor,
-          'dominant-baseline': anchorPoint.dominantBaseline,
-          'transform': transform,
-          'class': 'vgg-label'
-        },
-        style: styles
-      }, aesthetics.text)
-
-      return el
-    }
+    renderSVG
   }
 }
 

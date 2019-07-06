@@ -1,11 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import {
-  interpolatePoints,
-  interpolatePointsFromFunc,
-  transformPoints,
-  createPath
-} from './utils/createPath.js'
+import { renderSVG } from '../../rendering/line.js'
 
 export default {
   mixins: [Mark],
@@ -75,64 +70,20 @@ export default {
 
   beforeDestroy () {
     let uid = this.uuid
-    if (this.events.length > 0) {
+    if (this.events) {
       this.$$interactionManager.removeItem(uid)
     }
   },
 
   methods: {
-    createPath (func, coords) {
-      let transformedPoints
-      let path
+    renderSVG,
 
-      if (func) {
-        let parentId = this.$$coordinateTreeParent
-        let domains = this.$$coordinateTree.getBranch(parentId).domains
-
-        let points = interpolatePointsFromFunc(this.func, domains)
-        transformedPoints = transformPoints(points, this.$$transform)
-        path = createPath(transformedPoints)
+    addToSpatialIndex (coordinates) {
+      if (this.events) {
+        this.$$interactionManager.addItem(
+          this.uuid, 'line', coordinates, this._props, this.events, this.sectionParentChain
+        )
       }
-
-      if (!func) {
-        if (this._interpolate) {
-          let points = interpolatePoints(coords)
-          transformedPoints = transformPoints(points, this.$$transform)
-          path = createPath(transformedPoints)
-        }
-
-        if (!this._interpolate) {
-          transformedPoints = transformPoints(coords, this.$$transform)
-          path = createPath(transformedPoints)
-        }
-      }
-
-      let events = this.events
-      if (events.length > 0) {
-        this.addToSpatialIndex(transformedPoints, events)
-      }
-
-      return path
-    },
-
-    renderSVG (createElement) {
-      let aesthetics = this._props
-      let coords = [
-        [aesthetics.x1, aesthetics.y1],
-        [aesthetics.x2, aesthetics.y2]
-      ]
-      let path = this.createPath(aesthetics.func, coords)
-
-      return createElement('path', {
-        attrs: {
-          'd': path
-        },
-        style: this.createSVGStyle(aesthetics)
-      })
-    },
-
-    addToSpatialIndex (coordinates, events) {
-      this.$$interactionManager.addItem(this.uuid, 'line', coordinates, this, events, this.sectionParentChain)
     }
   }
 }

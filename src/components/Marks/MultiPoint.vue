@@ -1,6 +1,6 @@
 <script>
 import Mark from '../../mixins/Marks/Mark.js'
-import checkGeometry from '../../mixins/Marks/utils/checkGeometry.js'
+import { renderSVG } from '../../rendering/multiPoint.js'
 
 export default {
   mixins: [Mark],
@@ -66,31 +66,7 @@ export default {
   },
 
   methods: {
-    renderSVG (createElement) {
-      let aesthetics = this._props
-
-      if (this.geometry) {
-        checkGeometry(this.markType, this.validGeomTypes, this.geometry)
-      }
-
-      let points = this.geometry
-        ? aesthetics.geometry.coordinates
-        : aesthetics.points
-
-      return createElement('g',
-        points.map(p => {
-          let [cx, cy] = this.$$transform(p)
-          return createElement('circle', {
-            attrs: {
-              'cx': cx,
-              'cy': cy,
-              'r': aesthetics.radius
-            },
-            style: this.createSVGStyle(aesthetics)
-          })
-        })
-      )
-    }
+    renderSVG
   }
 }
 </script>

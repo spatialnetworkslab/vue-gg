@@ -1,15 +1,5 @@
 import Mark from './Mark.js'
-import {
-  interpolatePoints,
-  transformPoints,
-  transformFeature,
-  createPath,
-  createGeoPath
-} from '../../components/Marks/utils/createPath.js'
-
-import checkPoints from './utils/checkPoints.js'
-import checkGeometry from './utils/checkGeometry.js'
-import { invalidPoint } from '../../utils/equals.js'
+import { renderSVG } from '../../rendering/path.js'
 
 export default {
   mixins: [Mark],
@@ -108,173 +98,20 @@ export default {
 
   beforeDestroy () {
     let uid = this.uuid
-    if (this.events.length > 0) {
+    if (this.events) {
       this.$$interactionManager.removeItem(uid)
     }
   },
 
   methods: {
-    generatePoints (x, y) {
-      let points = []
-      if (x.length !== y.length) {
-        // x and y arrays should have equal length
-        // if not we throw an error EXCEPT when one of the two arrays
-        // has length 1, in which case we reuse that value for all points
-        if (x.length === 1 || y.length === 1) {
-          if (x.length === 1) {
-            for (let i = 0; i < y.length; ++i) {
-              points.push([x[0], y[i]])
-            }
-          } else if (y.length === 1) {
-            for (let i = 0; i < x.length; ++i) {
-              points.push([x[i], y[0]])
-            }
-          }
-        } else {
-          throw new Error(`'x' and 'y' coordinate sets have different lengths`)
-        }
-      } else {
-        for (let i = 0; i < x.length; ++i) {
-          points.push([x[i], y[i]])
-        }
+    renderSVG,
+
+    addToSpatialIndex (coordinates) {
+      if (this.events) {
+        this.$$interactionManager.addItem(
+          this.uuid, this.pathType, coordinates, this._props, this.events, this.sectionParentChain
+        )
       }
-
-      return this.filterInvalid(points)
-    },
-
-    filterInvalid (points) {
-      let filtered = []
-      for (let i = 0; i < points.length; i++) {
-        let point = points[i]
-        if (invalidPoint(point)) {
-          console.warn(`Skipped invalid point ${JSON.stringify(point)} at index ${i}`)
-        } else {
-          filtered.push(point)
-        }
-      }
-
-      return filtered
-    },
-
-    sortPoints (points) {
-      if (this.sort === 'x') {
-        return points.sort((a, b) => a[0] - b[0])
-      }
-      if (this.sort === 'y') {
-        return points.sort((a, b) => a[1] - b[1])
-      }
-    },
-
-    closePoints (points) {
-      // Check if polygon is closed
-      let lastID = points.length - 1
-
-      if (points[0][0] !== points[lastID][0] ||
-        points[0][1] !== points[lastID][1]) {
-        // If not, close
-        points.push(points[0])
-      }
-
-      return points
-    },
-
-    createPath (points) {
-      let transformedPoints
-      let path
-
-      if (this._interpolate) {
-        let interpolatedPoints = interpolatePoints(points)
-        transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
-        path = createPath(transformedPoints)
-      }
-
-      if (!this._interpolate) {
-        transformedPoints = transformPoints(points, this.$$transform)
-        path = createPath(transformedPoints)
-      }
-
-      let events = this.events
-      if (events.length > 0) {
-        this.addToSpatialIndex(transformedPoints, events)
-      }
-
-      return path
-    },
-
-    renderSVG (createElement) {
-      let area = this.pathType === 'area'
-      checkPoints(this.points, this.geometry, this.x, this.y, this.x2, this.y2, area)
-      let aesthetics = this._props
-
-      if (this.geometry) {
-        checkGeometry(this.pathType, this.validGeomTypes, this.geometry)
-        let tranformedFeature = transformFeature(aesthetics.geometry, this.$$transform)
-
-        let events = this.events
-        if (events.length > 0) {
-          this.addToSpatialIndex(tranformedFeature, events)
-        }
-
-        let path = createGeoPath(tranformedFeature)
-        return createElement('path', {
-          attrs: {
-            'd': path
-          },
-          style: this.createSVGStyle(aesthetics)
-        })
-      } else {
-        let points = []
-        if (aesthetics.points) {
-          points = this.filterInvalid(aesthetics.points)
-        } else {
-          points = this.generatePoints(aesthetics.x, aesthetics.y)
-        }
-        if (points.length > 1) {
-          if (this.sort) {
-            points = this.sortPoints(points)
-          }
-
-          if (area) {
-            let points2
-
-            if (aesthetics.x2 && !aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x2, aesthetics.y)
-            }
-
-            if (!aesthetics.x2 && aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x, aesthetics.y2)
-            }
-
-            if (aesthetics.x2 && aesthetics.y2) {
-              points2 = this.generatePoints(aesthetics.x2, aesthetics.y2)
-            }
-
-            if (this.sort) { points2 = this.sortPoints(points2) }
-            points = points.concat(points2.reverse())
-          }
-
-          if (this.close) {
-            points = this.closePoints(points)
-          }
-
-          let path = this.createPath(points)
-
-          let element = createElement('path', {
-            attrs: {
-              'd': path
-            },
-            style: this.createSVGStyle(aesthetics)
-          })
-
-          return element
-        } else {
-          console.warn('Not enough valid points to draw Mark')
-        }
-      }
-    },
-
-    addToSpatialIndex (coordinates, events) {
-      this.$$interactionManager.addItem(this.uuid, this.pathType, coordinates, this, events, this.sectionParentChain)
     }
   }
 }

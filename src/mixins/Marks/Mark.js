@@ -1,5 +1,4 @@
 import CoordinateTreeUser from '../CoordinateTreeUser.js'
-import createSVGStyle from './utils/createSVGStyle.js'
 
 export default {
   mixins: [CoordinateTreeUser],
@@ -28,28 +27,48 @@ export default {
     },
 
     events () {
-      let events = []
-      if (!this.$options._parentListeners) { return events }
+      if (!this.$options._parentListeners) { return undefined }
 
       const allowedEvents = ['click', 'hover', 'mouseover', 'mouseout', 'select', 'deselect']
 
+      let events = {}
+      let moreThanZeroAllowedEvents = false
+
       for (let event of allowedEvents) {
         if (this.$options._parentListeners.hasOwnProperty(event)) {
-          events.push(event)
+          events[event] = this.$options._parentListeners[event]
+          moreThanZeroAllowedEvents = true
         }
       }
 
-      return events
+      return moreThanZeroAllowedEvents ? events : undefined
     },
 
     sectionParentChain () {
       return JSON.stringify(this.$$sectionParentChain)
+    },
+
+    _renderContext () {
+      return {
+        $$transform: this.$$transform,
+        $$coordinateTreeParent: this.$$coordinateTreeParent,
+        $$coordinateTree: this.$$coordinateTree,
+        parentBranch: this.parentBranch
+      }
+    },
+
+    _renderOptions () {
+      return {
+        props: this._props,
+        addToSpatialIndex: this.addToSpatialIndex,
+        interpolate: this._interpolate,
+        pathType: this.pathType,
+        validGeomTypes: this.validGeomTypes
+      }
     }
   },
 
   methods: {
-    createSVGStyle,
-
     interpolationNecessary (id) {
       let currentLocation = this.$$coordinateTree.getBranch(id)
       if (currentLocation.type !== 'scale') { return true }
@@ -65,7 +84,7 @@ export default {
 
   render (createElement) {
     if (this.__update) {
-      return this.renderSVG(createElement)
+      return this.renderSVG(createElement, this._renderContext, this._renderOptions)
     }
   }
 }

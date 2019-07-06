@@ -1,10 +1,6 @@
 <script>
 import Rectangular from '../../mixins/Marks/Rectangular.js'
-import {
-  interpolatePoints,
-  transformPoints,
-  createPath
-} from './utils/createPath.js'
+import { renderSVG } from '../../rendering/rectangle.js'
 
 export default {
   mixins: [Rectangular],
@@ -48,53 +44,20 @@ export default {
 
   beforeDestroy () {
     let uid = this.uuid
-    if (this.events.length > 0) {
+    if (this.events) {
       this.$$interactionManager.removeItem(uid)
     }
   },
 
   methods: {
-    renderSVG (createElement) {
-      let aesthetics = this._props
-      let coords = this.coordinateSpecification
+    renderSVG,
 
-      let points = [
-        [coords.x1, coords.y1],
-        [coords.x1, coords.y2],
-        [coords.x2, coords.y2],
-        [coords.x2, coords.y1],
-        [coords.x1, coords.y1]
-      ]
-
-      let transformedPoints
-      let path
-
-      if (this._interpolate) {
-        let interpolatedPoints = interpolatePoints(points)
-        transformedPoints = transformPoints(interpolatedPoints, this.$$transform)
-        path = createPath(transformedPoints)
+    addToSpatialIndex (coordinates) {
+      if (this.events) {
+        this.$$interactionManager.addItem(
+          this.uuid, 'rectangle', coordinates, this._props, this.events, this.sectionParentChain
+        )
       }
-
-      if (!this._interpolate) {
-        transformedPoints = transformPoints(points, this.$$transform)
-        path = createPath(transformedPoints)
-      }
-
-      let events = this.events
-      if (events.length > 0) {
-        this.addToSpatialIndex(transformedPoints, events)
-      }
-
-      return createElement('path', {
-        attrs: {
-          'd': path
-        },
-        style: this.createSVGStyle(aesthetics)
-      })
-    },
-
-    addToSpatialIndex (coordinates, events) {
-      this.$$interactionManager.addItem(this.uuid, 'rectangle', coordinates, this, events, this.sectionParentChain)
     }
   }
 }

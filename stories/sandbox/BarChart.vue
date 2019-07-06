@@ -33,15 +33,16 @@
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           :fill="'red'"
           :opacity="{ val: row.fruit, scale: 'fruit' }"
+          @hover="log(row)"
         />
 
-        <!-- <vgg-line
+        <vgg-line
           :x1="{ val: row.fruit, scale: 'fruit' }"
           :x2="{ val: row.fruit, scale: 'fruit' }"
           :y1="0"
           :y2="{ val: row.quantity, scale: { domain: 'quantity', domainMin: 0 } }"
           stroke="#ced02d"
-        /> -->
+        />
 
         <vgg-section
           :x="{ val: row.fruit, scale: 'fruit' }"

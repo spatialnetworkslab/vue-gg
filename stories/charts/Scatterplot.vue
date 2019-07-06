@@ -20,9 +20,18 @@
           :y="row.b"
           :radius="3"
           :fill="{ val: row.a, scale: { type: 'viridis', domain: 'a' } }"
+          @hover="handleHover($event, row)"
         />
 
       </vgg-map>
+
+      <vgg-point
+        v-if="hoverRow"
+        :x="hoverRow.a"
+        :y="hoverRow.b"
+        :radius="5"
+        :fill="'pink'"
+      />
 
       <vgg-x-axis
         :scale="'a'"
@@ -61,22 +70,42 @@
 export default {
   data () {
     return {
-      data: this.generateData()
+      data: this.generateData(),
+      hoverRow: null
     }
   },
+
+  created () {
+    console.time('scatter')
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      console.timeEnd('scatter')
+    })
+  },
+
   methods: {
     generateData () {
       let data = []
       let beta0 = Math.random() * 100
       let beta1 = 0.25 + Math.random() * 2
       let range = Math.random() * 1000
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 10000; i++) {
         let a = Math.random() * range
         let error = Math.random() * range
         let b = beta0 + a * beta1 + error
         data.push({ a, b })
       }
       return data
+    },
+
+    handleHover (e, row) {
+      if (e) {
+        this.hoverRow = row
+      } else {
+        this.hoverRow = null
+      }
     }
   }
 }

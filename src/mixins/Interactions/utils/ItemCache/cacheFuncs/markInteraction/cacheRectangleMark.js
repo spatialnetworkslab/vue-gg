@@ -1,7 +1,7 @@
 import findBoundingBox from '../../../geometry/findBoundingBox.js'
 import { syncListenerTrackers, updateListenerTrackers } from './syncListenerTrackers.js'
 
-export default function (uid, type, coordinates, instance, cache, listeners, listenerTrackers) {
+export default function (uid, type, coordinates, props, cache, eventsPerListener, listenerTrackers) {
   let args = [coordinates]
   let hasnt = !cache.hasItem(uid)
   let nonIdentical = !cache.itemIsIdentical(uid, args)
@@ -18,17 +18,17 @@ export default function (uid, type, coordinates, instance, cache, listeners, lis
     let { minX, minY, maxX, maxY } = findBoundingBox(coordinates)
     let geometry = { type, coordinates }
 
-    let item = { uid, geometry, instance, minX, maxX, minY, maxY }
+    let item = { uid, eventsPerListener, geometry, minX, maxX, minY, maxY }
 
-    updateListenerTrackers(listenerTrackers, oldListeners, listeners, oldItem, item)
+    updateListenerTrackers(listenerTrackers, oldListeners, eventsPerListener, oldItem, item)
 
     if (hasnt) {
-      cache.addItem(uid, args, item, listeners)
+      cache.addItem(uid, args, item, eventsPerListener)
     } else {
-      cache.updateItem(uid, args, item, listeners)
+      cache.updateItem(uid, args, item, eventsPerListener)
     }
   } else {
-    syncListenerTrackers(listenerTrackers, oldListeners, listeners, oldItem)
-    cache.updateListeners(uid, listeners)
+    syncListenerTrackers(listenerTrackers, oldListeners, eventsPerListener, oldItem)
+    cache.updateListeners(uid, eventsPerListener)
   }
 }
